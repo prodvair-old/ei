@@ -36,14 +36,55 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            //'suffix' => '.html',
             'rules' => [
-            ],
+                
+                '' => 'site/index',
+                '/login'      => 'site/login',
+                '/logout'     => 'site/logout',
+                '/signup'     => 'site/signup',
+                '/signup/emailcheck' => 'site/emailcheck',
+                '/repass'     => 'site/repass',
+                '/image'      => 'site/image',
+                
+                '/test' => 'test/index',
+                '/404' => 'site/error',
+
+                '/arbitrs'        => 'arbitr/list',
+                '/arbitrs/<arb_id:\d+>' => 'arbitr/arbitr_page',
+
+                '/doljniks'         => 'doljnik/list',
+                '/doljniks/<bnkr_id:\d+>' => 'doljnik/doljnik_page',
+
+                '/profile'         => 'user/index',
+                '/profile/setting' => 'user/setting',
+
+                '/about'   => 'other/about',
+                '/licens'  => 'other/licens',
+                '/politic' => 'other/politic',
+                '/contact' => 'other/contact',
+                '/service' => 'other/service',
+                '/faq'     => 'other/faq',
+                '/sitemap' => 'other/sitemap',
+
+                '/sitemap.xml' => 'sitemap/index',
+                '/sitemap_other_page.xml' => 'sitemap/other',
+                '/sitemap_lots-<category_lot:(transport_i_tekhnika|nedvizhimost|oborudovanie|selskoe_hozyajstvo|imushchestvennyj_kompleks|tovarno-materialnye_cennosti|debitorskaya_zadolzhennost|cennye_bumagi_nma_doli_v_ustavnyh_kapitalah|syre|prochee|lot-list)>.xml' => 'sitemap/lots',
+                '/sitemap_lots-filter.xml' => 'sitemap/lotsfilter',
+                '/sitemap_lots-arrest-filter.xml' => 'sitemap/lotsarrestfilter',
+                '/sitemap_lots-arrest-<limit:\d+>.xml' => 'sitemap/lotsarrest',
+                '/sitemap_arbitrs-<is_have:(is_have_lot|is_not_have_lot)>.xml' => 'sitemap/arbtr',
+                '/sitemap_bankrupts-<is_type:(company|person)>-<limit:\d+>.xml' => 'sitemap/bnkr',
+                
+                '/<type:(bankrupt|arrest)>'    => 'lot/type',
+                '/<type:(bankrupt|arrest)>/<category>'    => 'lot/category',
+                '/<type:(bankrupt|arrest)>/<category>/<subcategory>'    => 'lot/subcategory',
+                '/<type:(bankrupt|arrest)>/<category>/<subcategory>/<id:\d+>'    => 'lot/lot_page',
+            ]
         ],
-        */
     ],
     'params' => $params,
 ];
