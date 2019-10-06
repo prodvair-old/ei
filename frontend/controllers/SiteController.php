@@ -15,6 +15,9 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 
+// Запросы
+use common\models\Query\Bankrupt\LotsBankrupt;
+
 /**
  * Site controller
  */
@@ -74,7 +77,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $lots = LotsBankrupt::find()->limit(10)->all();
+        return $this->render('index', [
+            'lots' => $lots
+        ]);
     }
 
     /**

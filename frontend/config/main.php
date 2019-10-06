@@ -10,8 +10,15 @@ return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'language'=>'ru-RU',
+    'sourceLanguage'=>'ru-RU',
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
+        'formatter' => [
+            'decimalSeparator' => '.',
+            'thousandSeparator' => ' ',
+            'currencyCode' => 'RUB',
+       ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],
@@ -43,6 +50,15 @@ return [
             'rules' => [
                 
                 '' => 'site/index',
+
+                '/about'   => 'pages/about',
+                '/licens'  => 'pages/licens',
+                '/politic' => 'pages/politic',
+                '/contact' => 'pages/contact',
+                '/service' => 'pages/service',
+                '/faq'     => 'pages/faq',
+                '/sitemap' => 'pages/sitemap',
+
                 '/login'      => 'site/login',
                 '/logout'     => 'site/logout',
                 '/signup'     => 'site/signup',
@@ -62,13 +78,7 @@ return [
                 '/profile'         => 'user/index',
                 '/profile/setting' => 'user/setting',
 
-                '/about'   => 'other/about',
-                '/licens'  => 'other/licens',
-                '/politic' => 'other/politic',
-                '/contact' => 'other/contact',
-                '/service' => 'other/service',
-                '/faq'     => 'other/faq',
-                '/sitemap' => 'other/sitemap',
+                
 
                 '/sitemap.xml' => 'sitemap/index',
                 '/sitemap_other_page.xml' => 'sitemap/other',
@@ -85,6 +95,13 @@ return [
                 '/<type:(bankrupt|arrest)>/<category>/<subcategory>/<id:\d+>'    => 'lot/lot_page',
             ]
         ],
+        'assetManager' => [
+            'basePath' => '@webroot/assets',
+            'baseUrl' => '@web/assets'
+        ],  
+        'request' => [
+            'baseUrl' => ''
+        ]
     ],
     'params' => $params,
 ];
