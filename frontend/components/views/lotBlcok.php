@@ -33,7 +33,7 @@ try {
                                 <input type="hidden" class="rating" data-filled="rating-icon ri-star rating-rated" data-empty="rating-icon ri-star-empty" data-fractions="2" data-readonly value="4.5"/>
                             </div>
                             <?$view = 1446?>
-                            <p class="rating-text font600 text-muted font-12 letter-spacing-1"><?=NumberWords::widget(['number' => 543, 'words' => ['просмотр', 'просмотра', 'просмотров']]) ?></p>
+                            <p class="rating-text font600 text-muted font-12 letter-spacing-1"><?=NumberWords::widget(['number' => $lot->lotViews, 'words' => ['просмотр', 'просмотра', 'просмотров']]) ?></p>
                         </div>
                     </li>
                 </ul>

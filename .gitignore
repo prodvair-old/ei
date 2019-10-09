@@ -44,3 +44,6 @@ phpunit.phar
 
 
 /frontend/web/img/lot/*
+
+/node_modules
+package-lock.json

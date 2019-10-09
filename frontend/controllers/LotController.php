@@ -6,6 +6,11 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
+// Запросы
+use common\models\Query\MetaDate;
+use common\models\Query\Bankrupt\LotsBankrupt;
+use common\models\Query\Arrest\LotsArrest;
+
 /**
  * Lot controller
  */
@@ -62,9 +67,28 @@ class LotController extends Controller
      *
      * @return mixed
      */
-    public function actionType()
+    public function actionIndex($type)
     {
-        return $this->render('type');
+        if ($type == 'bankrupt') {
+            $lots = LotsBankrupt::find()->limit(3)->all();
+        } else if ($type == 'arrest') {
+            $lots = LotsArrest::find()->limit(10)->all();
+        } else {
+            Yii::$app->response->statusCode = 404;
+            throw new \yii\web\NotFoundHttpException;
+        }
+
+        $metaData = MetaDate::find()->where(['mdName' => $type])->one();
+
+        Yii::$app->params['description'] = $metaData->mdDescription;
+        Yii::$app->params['text'] = $metaData->mdText;
+        Yii::$app->params['title'] = $metaData->mdTitle;
+        Yii::$app->params['h1'] = $metaData->mdH1;
+
+        return $this->render('index', [
+            'type'  => $type,
+            'lots'  => $lots
+        ]);
     }
     public function actionCategory()
     {

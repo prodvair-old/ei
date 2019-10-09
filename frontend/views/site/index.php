@@ -4,19 +4,26 @@
 
 use yii\helpers\Url;
 use frontend\components\LotBlock;
+use common\models\Query\Settings;
 
-$this->title = 'My Yii Application';
+
+
+$this->title = Yii::$app->params['title'];
 ?>
 
-<div class="hero-banner hero-banner-01 overlay-light opacity-2" style="background-image:url('images/image-bg/19-2.jpg'); background-position: bottom  center;">
+<div class="hero-banner hero-banner-01 overlay-light opacity-2" style="background-image:url('img/image-bg/19-2.jpg'); background-position: bottom  center;">
         
     <div class="overlay-holder bottom"></div>	
     
     <div class="hero-inner">
     
         <div class="container">
-            <h1>Go <span class="font200">tour <span class="block">with <span class="font700">Gi</span>Jalan </span></span></h1>
-            <p class="font-lg spacing-1">Visit Europe, America, Asia, Africa or beyond!</p>
+            <div class="row">
+                <div class="col-lg-4"><h1 class="main__title"><?=Yii::$app->params['h1']?></h1></div>
+                <div class="col-lg-8"><p class="font-lg spacing-1"><?=Yii::$app->params['text']?></p></div>
+            </div>
+            
+            
             
             <div class="search-form-main">
                 <form>
@@ -147,7 +154,7 @@ $this->title = 'My Yii Application';
                 <figure class="destination-grid-item-01">
                     <a href="#">
                         <div class="image">
-                            <img src="images/image-destination/01.jpg"alt="image"/>
+                            <img src="img/image-destination/01.jpg"alt="image"/>
                         </div>
                         <figcaption class="content">
                             <h5>Bangkok</h5>
@@ -163,7 +170,7 @@ $this->title = 'My Yii Application';
                 <figure class="destination-grid-item-01">
                     <a href="#">
                         <div class="image">
-                            <img src="images/image-destination/02.jpg"alt="image"/>
+                            <img src="img/image-destination/02.jpg"alt="image"/>
                         </div>
                         <figcaption class="content">
                             <h5>Hong Kong</h5>
@@ -179,7 +186,7 @@ $this->title = 'My Yii Application';
                 <figure class="destination-grid-item-01">
                     <a href="#">
                         <div class="image">
-                            <img src="images/image-destination/03.jpg"alt="image"/>
+                            <img src="img/image-destination/03.jpg"alt="image"/>
                         </div>
                         <figcaption class="content">
                             <h5>London</h5>
@@ -195,7 +202,7 @@ $this->title = 'My Yii Application';
                 <figure class="destination-grid-item-01">
                     <a href="#">
                         <div class="image">
-                            <img src="images/image-destination/04.jpg"alt="image"/>
+                            <img src="img/image-destination/04.jpg"alt="image"/>
                         </div>
                         <figcaption class="content">
                             <h5>New York</h5>
@@ -216,7 +223,7 @@ $this->title = 'My Yii Application';
         
         <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
 
-            <?foreach ($tab as $dat): ($lots as $lot) { echo LotBlock::widget(['lot' => $lot]); }?>
+            <?foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot]); }?>
             
         </div>
         
@@ -229,7 +236,7 @@ $this->title = 'My Yii Application';
     <div class="bg-gradient-top"></div>
     <div class="bg-gradient-bottom"></div>
     
-    <div class="bg-image pv-100 overlay-relative" style="background-image:url('images/image-bg/44.jpg');">
+    <div class="bg-image pv-100 overlay-relative" style="background-image:url('img/image-bg/44.jpg');">
     
         <div class="overlay-holder overlay-white opacity-8"></div>
     
@@ -265,7 +272,7 @@ $this->title = 'My Yii Application';
                                         <div class="man clearfix">
                                         
                                             <div class="image">
-                                                <img src="images/image-man/01.jpg" alt="images" class="img-circle" />
+                                                <img src="img/image-man/01.jpg" alt="img" class="img-circle" />
                                             </div>
                                             
                                             <div class="texting">
@@ -292,7 +299,7 @@ $this->title = 'My Yii Application';
                                         <div class="man clearfix">
                                         
                                             <div class="image">
-                                                <img src="images/image-man/02.jpg" alt="images" class="img-circle" />
+                                                <img src="img/image-man/02.jpg" alt="img" class="img-circle" />
                                             </div>
                                             
                                             <div class="texting">
@@ -320,7 +327,7 @@ $this->title = 'My Yii Application';
                                         <div class="man clearfix">
                                         
                                             <div class="image">
-                                                <img src="images/image-man/03.jpg" alt="images" class="img-circle" />
+                                                <img src="img/image-man/03.jpg" alt="img" class="img-circle" />
                                             </div>
                                             
                                             <div class="texting">
@@ -347,7 +354,7 @@ $this->title = 'My Yii Application';
                                         <div class="man clearfix">
                                         
                                             <div class="image">
-                                                <img src="images/image-man/02.jpg" alt="images" class="img-circle" />
+                                                <img src="img/image-man/02.jpg" alt="img" class="img-circle" />
                                             </div>
                                             
                                             <div class="texting">
@@ -375,7 +382,7 @@ $this->title = 'My Yii Application';
                                         <div class="man clearfix">
                                         
                                             <div class="image">
-                                                <img src="images/image-man/03.jpg" alt="images" class="img-circle" />
+                                                <img src="img/image-man/03.jpg" alt="img" class="img-circle" />
                                             </div>
                                             
                                             <div class="texting">
@@ -402,7 +409,7 @@ $this->title = 'My Yii Application';
                                         <div class="man clearfix">
                                         
                                             <div class="image">
-                                                <img src="images/image-man/01.jpg" alt="images" class="img-circle" />
+                                                <img src="img/image-man/01.jpg" alt="img" class="img-circle" />
                                             </div>
                                             
                                             <div class="texting">
@@ -453,7 +460,7 @@ $this->title = 'My Yii Application';
                     <article class="post-grid-01">
                     
                         <div class="image">
-                            <img src="images/image-regular/07.jpg" alt="images" />
+                            <img src="img/image-regular/07.jpg" alt="img" />
                         </div>
                         <div class="content">
                             <span class="post-date text-muted">Mar 15, 2017</span>
@@ -470,7 +477,7 @@ $this->title = 'My Yii Application';
                     <article class="post-grid-01">
                     
                         <div class="image">
-                            <img src="images/image-regular/08.jpg" alt="images" />
+                            <img src="img/image-regular/08.jpg" alt="img" />
                         </div>
                         <div class="content">
                             <span class="post-date text-muted">Mar 15, 2017</span>
@@ -487,7 +494,7 @@ $this->title = 'My Yii Application';
                     <article class="post-grid-01">
                     
                         <div class="image">
-                            <img src="images/image-regular/09.jpg" alt="images" />
+                            <img src="img/image-regular/09.jpg" alt="img" />
                         </div>
                         <div class="content">
                             <span class="post-date text-muted">Mar 15, 2017</span>

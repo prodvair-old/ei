@@ -89,7 +89,7 @@ return [
                 '/sitemap_arbitrs-<is_have:(is_have_lot|is_not_have_lot)>.xml' => 'sitemap/arbtr',
                 '/sitemap_bankrupts-<is_type:(company|person)>-<limit:\d+>.xml' => 'sitemap/bnkr',
                 
-                '/<type:(bankrupt|arrest)>'    => 'lot/type',
+                '/<type:(bankrupt|arrest)>'    => 'lot/index',
                 '/<type:(bankrupt|arrest)>/<category>'    => 'lot/category',
                 '/<type:(bankrupt|arrest)>/<category>/<subcategory>'    => 'lot/subcategory',
                 '/<type:(bankrupt|arrest)>/<category>/<subcategory>/<id:\d+>'    => 'lot/lot_page',

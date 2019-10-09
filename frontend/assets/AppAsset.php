@@ -14,16 +14,18 @@ class AppAsset extends AssetBundle
     public $css = [
         'https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i|Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i&display=swap',
         'font-faces/metropolis/metropolis.css',
+        'css/font-icons.css',
         'css/animate.min.css',
         'css/main.css',
         'css/plugin.css',
         'css/style.css',
-        'css/your-style.css'
+        'css/custom.min.css'
     ];
     public $js = [
         'js/jquery-2.2.4.min.js',
         'js/plugins.js',
-        'js/custom-core.js'
+        'js/custom-core.js',
+        'js/scripts.min.js'
     ];
     public $depends = [
         // 'yii\web\YiiAsset',

@@ -14,10 +14,12 @@ use common\models\Query\Bankrupt\Value;
 use common\models\Query\Bankrupt\Bankrupts;
 use common\models\Query\Bankrupt\Company;
 use common\models\Query\Bankrupt\Persons;
-use common\models\Query\Bankrupt\WishList;
 use common\models\Query\Bankrupt\Torgy;
 use common\models\Query\Bankrupt\Offerreductions;
 use common\models\Query\Bankrupt\Purchaselots;
+
+use common\models\Query\WishList;
+use common\models\Query\PageViews;
 
 class LotsBankrupt extends ActiveRecord 
 {
@@ -95,6 +97,10 @@ class LotsBankrupt extends ActiveRecord
         } else {
             return false;
         }
+    }
+    public function getLotViews() 
+    {
+        return count($this->views);
     }
     public function getLotEtpId() 
     {
@@ -365,12 +371,19 @@ class LotsBankrupt extends ActiveRecord
             'lot_category'      => 'lotCategory',
             'lot_cadastre_id'   => 'lotCadastre',
             'lot_category_translit' => 'lotCategoryTranslit',
-            'wish_id'       => 'lotWishId',
-            'lotType'       => 'lotType'
+            'wish_id'           => 'lotWishId',
+            'lotType'           => 'lotType',
+            'lot_views'         => 'lotViews'
         ];
     }
 
     // Связи с таблицами
+    public function getViews()
+    {
+        return $this->hasMany(PageViews::className(), ['page_id' => 'id'])->alias('views')->onCondition([
+            'page_type' => 'lot_bankrupt'
+        ]);
+    }
     public function getTorgy()
     {
         return $this->hasOne(Torgy::className(), ['id' => 'auctionid'])->alias('torgy');

@@ -15,7 +15,10 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 
+
+
 // Запросы
+use common\models\Query\MetaDate;
 use common\models\Query\Bankrupt\LotsBankrupt;
 
 /**
@@ -77,6 +80,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $metaData = MetaDate::find()->where(['mdName' => 'index'])->one();
+
+        Yii::$app->params['description'] = $metaData->mdDescription;
+        Yii::$app->params['text'] = $metaData->mdText;
+        Yii::$app->params['title'] = $metaData->mdTitle;
+        Yii::$app->params['h1'] = $metaData->mdH1;
+
         $lots = LotsBankrupt::find()->limit(10)->all();
         return $this->render('index', [
             'lots' => $lots
@@ -99,10 +109,7 @@ class SiteController extends Controller
             return $this->goBack();
         } else {
             $model->password = '';
-
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+            return $this->goBack();
         }
     }
 

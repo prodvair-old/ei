@@ -1,108 +1,74 @@
-var gulp          = require('gulp'),
-		gutil         = require('gulp-util' ),
-    sass          = require('gulp-sass'),
-    sourcemaps    = require('gulp-sourcemaps'),
-    browserSync   = require('browser-sync'),
-    connect       = require('gulp-connect-php'),
-		concat        = require('gulp-concat'),
-		uglify        = require('gulp-uglify'),
-		cleancss      = require('gulp-clean-css'),
-		rename        = require('gulp-rename'),
-		autoprefixer  = require('gulp-autoprefixer'),
-		notify        = require("gulp-notify"),
-		plumber       = require("gulp-plumber"),
-    rsync         = require('gulp-rsync');
+var gulp         = require('gulp'),
+		sass         = require('gulp-sass'),
+		browserSync  = require('browser-sync'),
+		concat       = require('gulp-concat'),
+		uglify       = require('gulp-uglify-es').default,
+		cleancss     = require('gulp-clean-css'),
+		autoprefixer = require('gulp-autoprefixer'),
+		rsync        = require('gulp-rsync'),
+		newer        = require('gulp-newer'),
+		rename       = require('gulp-rename'),
+		responsive   = require('gulp-responsive'),
+		del          = require('del');
 
-var computername   = process.env.computername
-function startMsg(){
-  console.log("Запуск от имени компьютера " + process.env.computername );
-  console.log("Локальный хостинг " + localhost);
-}
-
-// var watchStartTask = ['styles', 'js'];
-var watchStartTask = ['styles', 'js', 'browser-sync'];
-var watchStartTask_cp = ['browser-sync-cp'];
-
+// Local Server
 gulp.task('browser-sync', function() {
-    connect.server({
-
-    }, function (){
-      connect.server({}, function (){
-        browserSync({
-          ui: {
-            port: 3002
-          },
-          baseDir: 'frontend/web/',
-          proxy: localhost,
-          port: 3004,
-          ghostMode: {
-            codeSync: false,
-            clicks: false,
-            forms: false,
-            scroll: false,
-            location: false                                                                                                                                                                                           
-        }
-        });
-      });
-    });
+	browserSync({
+		ui: {
+      port: 3002
+		},
+		baseDir: 'frontend/web/',
+		proxy: 'ei.front',
+		port: 3005,
+		ghostMode: {
+      codeSync: false,
+      clicks: false,
+      forms: false,
+      scroll: false,
+      location: false                                                                                                                                                                                           
+    },
+		// tunnel: true, tunnel: 'ei', // Demonstration page: http://ei.localtunnel.me
+	})
 });
-gulp.task('browser-sync-cp', function() {
-  connect.server({
+function bsReload(done) { browserSync.reload(); done(); };
 
-  }, function (){
-    connect.server({}, function (){
-      browserSync({
-        ui: {
-          port: 3003
-        },
-        baseDir: 'backend/web/',
-        proxy: 'http://localhost.cp',
-        port: 3005,
-        ghostMode: {
-          clicks: false,
-          forms: false,
-          scroll: false,
-          location: false
-      }
-      });
-    });
-  });
-});
-
+// Custom Styles
 gulp.task('styles', function() {
-  return gulp.src('frontend/web/sass/**/*.sass')
-  .pipe(sourcemaps.init())
-	.pipe(sass({ outputStyle: 'expanded' }).on("error", notify.onError()))
-	.pipe(rename({ suffix: '.min', prefix : '' }))
-	.pipe(autoprefixer(['last 15 versions']))
-  .pipe(cleancss( {level: { 1: { specialComments: 0 } } })) // Opt., comment out when debugging
-  .pipe(sourcemaps.write())
+	return gulp.src('frontend/web/sass/**/*.sass')
+	.pipe(sass({ outputStyle: 'expanded' }))
+	.pipe(concat('custom.min.css'))
+	.pipe(autoprefixer({
+		grid: true,
+		overrideBrowserslist: ['last 10 versions']
+	}))
+	.pipe(cleancss( {level: { 1: { specialComments: 0 } } })) // Optional. Comment out when debugging
 	.pipe(gulp.dest('frontend/web/css'))
-	.pipe(browserSync.stream());
+	.pipe(browserSync.stream())
 });
 
-gulp.task('js', function() {
+// Scripts & JS Libraries
+gulp.task('scripts', function() {
 	return gulp.src([
-    'frontend/web/js/common.js',
+		'frontend/web/js/_custom.js', // Custom scripts. Always at the end
 		])
 	.pipe(concat('scripts.min.js'))
-	// .pipe(uglify()) // Mifify js (opt.)
+	// .pipe(uglify()) // Minify js (opt.)
 	.pipe(gulp.dest('frontend/web/js'))
-	.pipe(browserSync.reload({ stream: true }));
+	.pipe(browserSync.reload({ stream: true }))
 });
 
-gulp.task('frontend', watchStartTask , function() {
-	gulp.watch(['frontend/web/sass/**/*.sass', 'frontend/web/libs/bootstrap/**/*.scss'], ['styles']);
-  gulp.watch(['frontend/web/libs/**/*.js', 'frontend/web/js/common.js','frontend/web/js/**/*.js'], ['js']);
-  gulp.watch('frontend/web/**/*.svg' , browserSync.reload);
-  gulp.watch(['frontend/views/**/*.php' ] , browserSync.reload);
-});
-gulp.task('backend', watchStartTask_cp , function() {
-	gulp.watch(['backend/web/sass/**/*.sass', 'backend/web/libs/bootstrap/**/*.scss'], ['styles']);
-  gulp.watch(['backend/web/libs/**/*.js', 'backend/web/css/main.js'], ['js']);
-  gulp.watch('backend/web/**/*.svg' , browserSync.reload);
-  gulp.watch(['backend/controllers/**/*.php', 'backend/views/**/*.php' ] , browserSync.reload);
+// Code & Reload
+gulp.task('code', function() {
+	return gulp.src('frontend/view/**/*.php')
+	.pipe(browserSync.reload({ stream: true }))
 });
 
-gulp.task('default', ['frontend']);
-gulp.task('admin', ['backend']);
+
+gulp.task('watch', function() {
+	gulp.watch('frontend/web/sass/**/*.sass', gulp.parallel('styles'));
+	gulp.watch('frontend/web/js/_custom.js', gulp.parallel('scripts'));
+	gulp.watch(['frontend/view/**/*.php','frontend/controllers/*.php','frontend/components/**/*.php'], gulp.parallel('code'));
+	// gulp.watch('frontend/web/img/**/*', gulp.parallel('img'));
+});
+
+gulp.task('default', gulp.parallel('styles', 'scripts', 'browser-sync', 'watch'));
