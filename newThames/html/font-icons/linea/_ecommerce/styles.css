@@ -1,0 +1,296 @@
+@charset "UTF-8";
+
+@font-face {
+  font-family: "linea-ecommerce-10";
+  src:url("fonts/linea-ecommerce-10.eot");
+  src:url("fonts/linea-ecommerce-10.eot?#iefix") format("embedded-opentype"),
+    url("fonts/linea-ecommerce-10.woff") format("woff"),
+    url("fonts/linea-ecommerce-10.ttf") format("truetype"),
+    url("fonts/linea-ecommerce-10.svg#linea-ecommerce-10") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+[data-icon]:before {
+  font-family: "linea-ecommerce-10" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="linea-icon-ecommerce-"]:before,
+[class*=" linea-icon-ecommerce-"]:before {
+  font-family: "linea-ecommerce-10" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
+}
+
+.linea-icon-ecommerce-bag:before {
+  content: "a";
+}
+.linea-icon-ecommerce-bag-check:before {
+  content: "b";
+}
+.linea-icon-ecommerce-bag-cloud:before {
+  content: "c";
+}
+.linea-icon-ecommerce-bag-download:before {
+  content: "d";
+}
+.linea-icon-ecommerce-bag-minus:before {
+  content: "e";
+}
+.linea-icon-ecommerce-bag-plus:before {
+  content: "f";
+}
+.linea-icon-ecommerce-bag-refresh:before {
+  content: "g";
+}
+.linea-icon-ecommerce-bag-remove:before {
+  content: "h";
+}
+.linea-icon-ecommerce-bag-search:before {
+  content: "i";
+}
+.linea-icon-ecommerce-bag-upload:before {
+  content: "j";
+}
+.linea-icon-ecommerce-banknote:before {
+  content: "k";
+}
+.linea-icon-ecommerce-banknotes:before {
+  content: "l";
+}
+.linea-icon-ecommerce-basket:before {
+  content: "m";
+}
+.linea-icon-ecommerce-basket-check:before {
+  content: "n";
+}
+.linea-icon-ecommerce-basket-cloud:before {
+  content: "o";
+}
+.linea-icon-ecommerce-basket-download:before {
+  content: "p";
+}
+.linea-icon-ecommerce-basket-minus:before {
+  content: "q";
+}
+.linea-icon-ecommerce-basket-plus:before {
+  content: "r";
+}
+.linea-icon-ecommerce-basket-refresh:before {
+  content: "s";
+}
+.linea-icon-ecommerce-basket-remove:before {
+  content: "t";
+}
+.linea-icon-ecommerce-basket-search:before {
+  content: "u";
+}
+.linea-icon-ecommerce-basket-upload:before {
+  content: "v";
+}
+.linea-icon-ecommerce-bath:before {
+  content: "w";
+}
+.linea-icon-ecommerce-cart:before {
+  content: "x";
+}
+.linea-icon-ecommerce-cart-check:before {
+  content: "y";
+}
+.linea-icon-ecommerce-cart-cloud:before {
+  content: "z";
+}
+.linea-icon-ecommerce-cart-content:before {
+  content: "A";
+}
+.linea-icon-ecommerce-cart-download:before {
+  content: "B";
+}
+.linea-icon-ecommerce-cart-minus:before {
+  content: "C";
+}
+.linea-icon-ecommerce-cart-plus:before {
+  content: "D";
+}
+.linea-icon-ecommerce-cart-refresh:before {
+  content: "E";
+}
+.linea-icon-ecommerce-cart-remove:before {
+  content: "F";
+}
+.linea-icon-ecommerce-cart-search:before {
+  content: "G";
+}
+.linea-icon-ecommerce-cart-upload:before {
+  content: "H";
+}
+.linea-icon-ecommerce-cent:before {
+  content: "I";
+}
+.linea-icon-ecommerce-colon:before {
+  content: "J";
+}
+.linea-icon-ecommerce-creditcard:before {
+  content: "K";
+}
+.linea-icon-ecommerce-diamond:before {
+  content: "L";
+}
+.linea-icon-ecommerce-dollar:before {
+  content: "M";
+}
+.linea-icon-ecommerce-euro:before {
+  content: "N";
+}
+.linea-icon-ecommerce-franc:before {
+  content: "O";
+}
+.linea-icon-ecommerce-gift:before {
+  content: "P";
+}
+.linea-icon-ecommerce-graph1:before {
+  content: "Q";
+}
+.linea-icon-ecommerce-graph2:before {
+  content: "R";
+}
+.linea-icon-ecommerce-graph3:before {
+  content: "S";
+}
+.linea-icon-ecommerce-graph-decrease:before {
+  content: "T";
+}
+.linea-icon-ecommerce-graph-increase:before {
+  content: "U";
+}
+.linea-icon-ecommerce-guarani:before {
+  content: "V";
+}
+.linea-icon-ecommerce-kips:before {
+  content: "W";
+}
+.linea-icon-ecommerce-lira:before {
+  content: "X";
+}
+.linea-icon-ecommerce-megaphone:before {
+  content: "Y";
+}
+.linea-icon-ecommerce-money:before {
+  content: "Z";
+}
+.linea-icon-ecommerce-naira:before {
+  content: "0";
+}
+.linea-icon-ecommerce-pesos:before {
+  content: "1";
+}
+.linea-icon-ecommerce-pound:before {
+  content: "2";
+}
+.linea-icon-ecommerce-receipt:before {
+  content: "3";
+}
+.linea-icon-ecommerce-receipt-bath:before {
+  content: "4";
+}
+.linea-icon-ecommerce-receipt-cent:before {
+  content: "5";
+}
+.linea-icon-ecommerce-receipt-dollar:before {
+  content: "6";
+}
+.linea-icon-ecommerce-receipt-euro:before {
+  content: "7";
+}
+.linea-icon-ecommerce-receipt-franc:before {
+  content: "8";
+}
+.linea-icon-ecommerce-receipt-guarani:before {
+  content: "9";
+}
+.linea-icon-ecommerce-receipt-kips:before {
+  content: "!";
+}
+.linea-icon-ecommerce-receipt-lira:before {
+  content: "\"";
+}
+.linea-icon-ecommerce-receipt-naira:before {
+  content: "#";
+}
+.linea-icon-ecommerce-receipt-pesos:before {
+  content: "$";
+}
+.linea-icon-ecommerce-receipt-pound:before {
+  content: "%";
+}
+.linea-icon-ecommerce-receipt-rublo:before {
+  content: "&";
+}
+.linea-icon-ecommerce-receipt-rupee:before {
+  content: "'";
+}
+.linea-icon-ecommerce-receipt-tugrik:before {
+  content: "(";
+}
+.linea-icon-ecommerce-receipt-won:before {
+  content: ")";
+}
+.linea-icon-ecommerce-receipt-yen:before {
+  content: "*";
+}
+.linea-icon-ecommerce-receipt-yen2:before {
+  content: "+";
+}
+.linea-icon-ecommerce-recept-colon:before {
+  content: ",";
+}
+.linea-icon-ecommerce-rublo:before {
+  content: "-";
+}
+.linea-icon-ecommerce-rupee:before {
+  content: ".";
+}
+.linea-icon-ecommerce-safe:before {
+  content: "/";
+}
+.linea-icon-ecommerce-sale:before {
+  content: ":";
+}
+.linea-icon-ecommerce-sales:before {
+  content: ";";
+}
+.linea-icon-ecommerce-ticket:before {
+  content: "<";
+}
+.linea-icon-ecommerce-tugriks:before {
+  content: "=";
+}
+.linea-icon-ecommerce-wallet:before {
+  content: ">";
+}
+.linea-icon-ecommerce-won:before {
+  content: "?";
+}
+.linea-icon-ecommerce-yen:before {
+  content: "@";
+}
+.linea-icon-ecommerce-yen2:before {
+  content: "[";
+}
