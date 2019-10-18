@@ -7,7 +7,8 @@ class LotBlock extends Widget
 {
     public $lot;
 
-    public function run(){
+    public function run()
+    {
         return $this->render('lotBlcok', ['lot' => $this->lot]);
     }
 }
