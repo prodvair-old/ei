@@ -4,7 +4,11 @@
 
 use yii\helpers\Url;
 use frontend\components\LotBlock;
+<<<<<<< HEAD
 use frontend\components\SearchForm;
+=======
+use frontend\components\LotDetailSidebar;
+>>>>>>> c4eb65e203f2b29dbdb75dfa4cee83289e6b03e8
 use common\models\Query\Settings;
 
 
@@ -141,7 +145,10 @@ $this->title = Yii::$app->params['title'];
             </div>
             
         </div>
-        
+
+        <div class="col-12 col-lg-4">
+        <?=LotDetailSidebar::widget()?>
+        </div>
         <div class="clear mb-100"></div>
         
         <div class="section-title">

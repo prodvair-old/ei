@@ -46,4 +46,6 @@ phpunit.phar
 /frontend/web/img/lot/*
 
 /node_modules
+# /newThames
 package-lock.json
+composer.lock

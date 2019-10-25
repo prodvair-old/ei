@@ -8,7 +8,7 @@ var gulp         = require('gulp'),
 		rsync        = require('gulp-rsync'),
 		newer        = require('gulp-newer'),
 		rename       = require('gulp-rename'),
-		responsive   = require('gulp-responsive'),
+		// responsive   = require('gulp-responsive'),
 		del          = require('del');
 
 // Local Server
