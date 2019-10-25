@@ -131,8 +131,8 @@ AppAsset::register($this);
                                             'items' => [
                                                 ['label' => 'Главная', 'url' => ['site/index']],
                                                 ['label' => 'О компании', 'url' => ['pages/about']],
-                                                ['label' => 'Услуги', 'url' => ['pages/services']],
-                                                ['label' => 'Контакты', 'url' => ['pages/contacts']],
+                                                ['label' => 'Услуги', 'url' => ['pages/service']],
+                                                ['label' => 'Контакты', 'url' => ['pages/contact']],
                                             ],
                                             'options' => [
                                                 'class' => 'main-nav',

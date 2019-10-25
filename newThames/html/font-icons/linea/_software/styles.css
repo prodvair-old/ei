@@ -1,0 +1,341 @@
+@charset "UTF-8";
+
+@font-face {
+  font-family: "linea-software-10";
+  src:url("fonts/linea-software-10.eot");
+  src:url("fonts/linea-software-10.eot?#iefix") format("embedded-opentype"),
+    url("fonts/linea-software-10.woff") format("woff"),
+    url("fonts/linea-software-10.ttf") format("truetype"),
+    url("fonts/linea-software-10.svg#linea-software-10") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+[data-icon]:before {
+  font-family: "linea-software-10" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="linea-icon-software-"]:before,
+[class*=" linea-icon-software-"]:before {
+  font-family: "linea-software-10" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
+}
+
+.linea-icon-software-add-vectorpoint:before {
+  content: "a";
+}
+.linea-icon-software-box-oval:before {
+  content: "b";
+}
+.linea-icon-software-box-polygon:before {
+  content: "c";
+}
+.linea-icon-software-box-rectangle:before {
+  content: "d";
+}
+.linea-icon-software-box-roundedrectangle:before {
+  content: "e";
+}
+.linea-icon-software-character:before {
+  content: "f";
+}
+.linea-icon-software-crop:before {
+  content: "g";
+}
+.linea-icon-software-eyedropper:before {
+  content: "h";
+}
+.linea-icon-software-font-allcaps:before {
+  content: "i";
+}
+.linea-icon-software-font-baseline-shift:before {
+  content: "j";
+}
+.linea-icon-software-font-horizontal-scale:before {
+  content: "k";
+}
+.linea-icon-software-font-kerning:before {
+  content: "l";
+}
+.linea-icon-software-font-leading:before {
+  content: "m";
+}
+.linea-icon-software-font-size:before {
+  content: "n";
+}
+.linea-icon-software-font-smallcapital:before {
+  content: "o";
+}
+.linea-icon-software-font-smallcaps:before {
+  content: "p";
+}
+.linea-icon-software-font-strikethrough:before {
+  content: "q";
+}
+.linea-icon-software-font-tracking:before {
+  content: "r";
+}
+.linea-icon-software-font-underline:before {
+  content: "s";
+}
+.linea-icon-software-font-vertical-scale:before {
+  content: "t";
+}
+.linea-icon-software-horizontal-align-center:before {
+  content: "u";
+}
+.linea-icon-software-horizontal-align-left:before {
+  content: "v";
+}
+.linea-icon-software-horizontal-align-right:before {
+  content: "w";
+}
+.linea-icon-software-horizontal-distribute-center:before {
+  content: "x";
+}
+.linea-icon-software-horizontal-distribute-left:before {
+  content: "y";
+}
+.linea-icon-software-horizontal-distribute-right:before {
+  content: "z";
+}
+.linea-icon-software-indent-firstline:before {
+  content: "A";
+}
+.linea-icon-software-indent-left:before {
+  content: "B";
+}
+.linea-icon-software-indent-right:before {
+  content: "C";
+}
+.linea-icon-software-lasso:before {
+  content: "D";
+}
+.linea-icon-software-layers1:before {
+  content: "E";
+}
+.linea-icon-software-layers2:before {
+  content: "F";
+}
+.linea-icon-software-layout:before {
+  content: "G";
+}
+.linea-icon-software-layout-2columns:before {
+  content: "H";
+}
+.linea-icon-software-layout-3columns:before {
+  content: "I";
+}
+.linea-icon-software-layout-4boxes:before {
+  content: "J";
+}
+.linea-icon-software-layout-4columns:before {
+  content: "K";
+}
+.linea-icon-software-layout-4lines:before {
+  content: "L";
+}
+.linea-icon-software-layout-8boxes:before {
+  content: "M";
+}
+.linea-icon-software-layout-header:before {
+  content: "N";
+}
+.linea-icon-software-layout-header-2columns:before {
+  content: "O";
+}
+.linea-icon-software-layout-header-3columns:before {
+  content: "P";
+}
+.linea-icon-software-layout-header-4boxes:before {
+  content: "Q";
+}
+.linea-icon-software-layout-header-4columns:before {
+  content: "R";
+}
+.linea-icon-software-layout-header-complex:before {
+  content: "S";
+}
+.linea-icon-software-layout-header-complex2:before {
+  content: "T";
+}
+.linea-icon-software-layout-header-complex3:before {
+  content: "U";
+}
+.linea-icon-software-layout-header-complex4:before {
+  content: "V";
+}
+.linea-icon-software-layout-header-sideleft:before {
+  content: "W";
+}
+.linea-icon-software-layout-header-sideright:before {
+  content: "X";
+}
+.linea-icon-software-layout-sidebar-left:before {
+  content: "Y";
+}
+.linea-icon-software-layout-sidebar-right:before {
+  content: "Z";
+}
+.linea-icon-software-magnete:before {
+  content: "0";
+}
+.linea-icon-software-pages:before {
+  content: "1";
+}
+.linea-icon-software-paintbrush:before {
+  content: "2";
+}
+.linea-icon-software-paintbucket:before {
+  content: "3";
+}
+.linea-icon-software-paintroller:before {
+  content: "4";
+}
+.linea-icon-software-paragraph:before {
+  content: "5";
+}
+.linea-icon-software-paragraph-align-left:before {
+  content: "6";
+}
+.linea-icon-software-paragraph-align-right:before {
+  content: "7";
+}
+.linea-icon-software-paragraph-center:before {
+  content: "8";
+}
+.linea-icon-software-paragraph-justify-all:before {
+  content: "9";
+}
+.linea-icon-software-paragraph-justify-center:before {
+  content: "!";
+}
+.linea-icon-software-paragraph-justify-left:before {
+  content: "\"";
+}
+.linea-icon-software-paragraph-justify-right:before {
+  content: "#";
+}
+.linea-icon-software-paragraph-space-after:before {
+  content: "$";
+}
+.linea-icon-software-paragraph-space-before:before {
+  content: "%";
+}
+.linea-icon-software-pathfinder-exclude:before {
+  content: "&";
+}
+.linea-icon-software-pathfinder-intersect:before {
+  content: "'";
+}
+.linea-icon-software-pathfinder-subtract:before {
+  content: "(";
+}
+.linea-icon-software-pathfinder-unite:before {
+  content: ")";
+}
+.linea-icon-software-pen:before {
+  content: "*";
+}
+.linea-icon-software-pen-add:before {
+  content: "+";
+}
+.linea-icon-software-pen-remove:before {
+  content: ",";
+}
+.linea-icon-software-pencil:before {
+  content: "-";
+}
+.linea-icon-software-polygonallasso:before {
+  content: ".";
+}
+.linea-icon-software-reflect-horizontal:before {
+  content: "/";
+}
+.linea-icon-software-reflect-vertical:before {
+  content: ":";
+}
+.linea-icon-software-remove-vectorpoint:before {
+  content: ";";
+}
+.linea-icon-software-scale-expand:before {
+  content: "<";
+}
+.linea-icon-software-scale-reduce:before {
+  content: "=";
+}
+.linea-icon-software-selection-oval:before {
+  content: ">";
+}
+.linea-icon-software-selection-polygon:before {
+  content: "?";
+}
+.linea-icon-software-selection-rectangle:before {
+  content: "@";
+}
+.linea-icon-software-selection-roundedrectangle:before {
+  content: "[";
+}
+.linea-icon-software-shape-oval:before {
+  content: "]";
+}
+.linea-icon-software-shape-polygon:before {
+  content: "^";
+}
+.linea-icon-software-shape-rectangle:before {
+  content: "_";
+}
+.linea-icon-software-shape-roundedrectangle:before {
+  content: "`";
+}
+.linea-icon-software-slice:before {
+  content: "{";
+}
+.linea-icon-software-transform-bezier:before {
+  content: "|";
+}
+.linea-icon-software-vector-box:before {
+  content: "}";
+}
+.linea-icon-software-vector-composite:before {
+  content: "~";
+}
+.linea-icon-software-vector-line:before {
+  content: "\\";
+}
+.linea-icon-software-vertical-align-bottom:before {
+  content: "\e000";
+}
+.linea-icon-software-vertical-align-center:before {
+  content: "\e001";
+}
+.linea-icon-software-vertical-align-top:before {
+  content: "\e002";
+}
+.linea-icon-software-vertical-distribute-bottom:before {
+  content: "\e003";
+}
+.linea-icon-software-vertical-distribute-center:before {
+  content: "\e004";
+}
+.linea-icon-software-vertical-distribute-top:before {
+  content: "\e005";
+}
