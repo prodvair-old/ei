@@ -3,17 +3,17 @@ namespace frontend\components;
 
 use Yii;
 use yii\base\Widget;
-use common\models\LoginForm;
+use frontend\models\SignupForm;
 
-class LoginWidget extends Widget
+class SignupWidget extends Widget
 {
     public function run(){
         if (!Yii::$app->user->isGuest) {
             return false;
         }
-        $model = new LoginForm();
+        $model = new SignupForm();
 
-        return $this->render('login',[
+        return $this->render('signup',[
             'model' => $model,
         ]);
     }

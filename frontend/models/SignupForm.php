@@ -10,30 +10,34 @@ use common\models\User;
  */
 class SignupForm extends Model
 {
-    public $username;
+    public $phone;
     public $email;
     public $password;
+    public $passwordConfirm;
+    public $checkPolicy;
 
-
+    
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            ['username', 'trim'],
-            ['username', 'required'],
-            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
-            ['username', 'string', 'min' => 2, 'max' => 255],
+            ['phone', 'trim'],
+            ['phone', 'required'],
+            // ['phone', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
+            ['phone', 'string', 'min' => 5, 'max' => 12],
 
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetAttribute' => 'username', 'targetClass' => User::className(), 'message' => 'Такой пользователь уже зарегистрирован.'],
+            
+            [['password', 'passwordConfirm'], 'required'],
+            [['password', 'passwordConfirm'], 'string', 'min' => 6],
 
-            ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            ['checkPolicy', 'required'],
         ];
     }
 
@@ -48,9 +52,20 @@ class SignupForm extends Model
             return null;
         }
         
+
         $user = new User();
-        $user->username = $this->username;
-        $user->email = $this->email;
+        $user->username = $this->email;
+        $user->info = [
+            'contacts' => [
+                'phones' => [ 
+                    $this->phone
+                ],
+                'emails' => [
+                    $this->email
+                ]
+            ]
+            
+        ];
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
@@ -66,14 +81,14 @@ class SignupForm extends Model
     protected function sendEmail($user)
     {
         return Yii::$app
-            ->mailer
+            ->mailer_support
             ->compose(
-                ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
-                ['user' => $user]
+                ['html' => 'emailVerify-html'],
+                ['user' => $user, 'password'=>$this->password]
             )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            ->setFrom(['support@ei.ru' => Yii::$app->name . ' robot'])
             ->setTo($this->email)
-            ->setSubject('Account registration at ' . Yii::$app->name)
+            ->setSubject('Подтверите регистрацию на сайте ei.ru')
             ->send();
     }
 }

@@ -8,7 +8,10 @@ use yii\helpers\StringHelper;
 
 use common\models\Query\Arrest\Documents;
 use common\models\Query\Arrest\LotDocuments;
+
 use common\models\Query\WishList;
+use common\models\Query\PageViews;
+use common\models\Query\LotsCategory;
 
 // Таблица лотов арестовки
 class LotsArrest extends ActiveRecord
@@ -17,15 +20,43 @@ class LotsArrest extends ActiveRecord
     {
         return 'bailiff.{{lots}}';
     }
-    public static function getDb()
-    {
-        return Yii::$app->get('db');
-    }
     public function getLotTitle() 
     {
         return (strlen($this->lotPropName) < 140)? $this->lotPropName : mb_substr($this->lotPropName, 0, 130, 'UTF-8').'...';
     }
-    public function getLotPublication() 
+    public function getLotUrl() {
+        $items = LotsCategory::find()->all();
+        foreach ($items as $value) {
+            if ($value->arrest_categorys[$this->lotPropertyTypeId]['translit'] !== null) {
+                return 'arrest/'.$value->translit_name.'/'.$value->arrest_categorys[$this->lotPropertyTypeId]['translit'].'/'.$this->lotId;
+            }
+        }
+        // $categorys = explode(';',$this->lotPropertyTypeName);
+
+        // $converter = array(
+        //     'а' => 'a',    'б' => 'b',    'в' => 'v',    'г' => 'g',    'д' => 'd',
+        //     'е' => 'e',    'ё' => 'e',    'ж' => 'zh',   'з' => 'z',    'и' => 'i',
+        //     'й' => 'y',    'к' => 'k',    'л' => 'l',    'м' => 'm',    'н' => 'n',
+        //     'о' => 'o',    'п' => 'p',    'р' => 'r',    'с' => 's',    'т' => 't',
+        //     'у' => 'u',    'ф' => 'f',    'х' => 'h',    'ц' => 'c',    'ч' => 'ch',
+        //     'ш' => 'sh',   'щ' => 'sch',  'ь' => '',     'ы' => 'y',    'ъ' => '',
+        //     'э' => 'e',    'ю' => 'yu',   'я' => 'ya',   '(' => '',     ')' => '',
+        //     ',' => '',     '.' => '',     '-' => '',     ';' => '/',
+        // );
+
+        // $category = mb_strtolower($categorys[0]);
+        // $category = strtr($category, $converter);
+        // $category = mb_ereg_replace('[^-0-9a-z]', '-', $category);
+        // $category = mb_ereg_replace('[-]+', '-', $category);
+        // $category = trim($category, '-');
+        // $subCategory = mb_strtolower($categorys[1]);
+        // $subCategory = strtr($subCategory, $converter);
+        // $subCategory = mb_ereg_replace('[^-0-9a-z]', '-', $subCategory);
+        // $subCategory = mb_ereg_replace('[-]+', '-', $subCategory);
+        // $subCategory = trim($subCategory, '-');
+        // return "arrest/$category/$subCategory/".$this->lotId;
+    }
+    public function getLot_timepublication() 
     {
         return $this->torgs->trgPublished;
     }
@@ -44,6 +75,10 @@ class LotsArrest extends ActiveRecord
     public function getLotPrice() 
     {
         return $this->lotStartPrice;
+    }
+    public function getLotOldPrice() 
+    {
+        return null;
     }
     public function getLotType()
     {
@@ -68,31 +103,13 @@ class LotsArrest extends ActiveRecord
             $result[] = null;
         }
     }
-    public function getLotCategoryTranslit() {
-        $categorys = explode(';',$this->lotPropertyTypeName);
-
-        $converter = array(
-            'а' => 'a',    'б' => 'b',    'в' => 'v',    'г' => 'g',    'д' => 'd',
-            'е' => 'e',    'ё' => 'e',    'ж' => 'zh',   'з' => 'z',    'и' => 'i',
-            'й' => 'y',    'к' => 'k',    'л' => 'l',    'м' => 'm',    'н' => 'n',
-            'о' => 'o',    'п' => 'p',    'р' => 'r',    'с' => 's',    'т' => 't',
-            'у' => 'u',    'ф' => 'f',    'х' => 'h',    'ц' => 'c',    'ч' => 'ch',
-            'ш' => 'sh',   'щ' => 'sch',  'ь' => '',     'ы' => 'y',    'ъ' => '',
-            'э' => 'e',    'ю' => 'yu',   'я' => 'ya',   '(' => '',     ')' => '',
-            ',' => '',     '.' => '',     '-' => '',     ';' => '/',
-        );
-
-        $category = mb_strtolower($categorys[0]);
-        $category = strtr($category, $converter);
-        $category = mb_ereg_replace('[^-0-9a-z]', '-', $category);
-        $category = mb_ereg_replace('[-]+', '-', $category);
-        $category = trim($category, '-');
-        $subCategory = mb_strtolower($categorys[1]);
-        $subCategory = strtr($subCategory, $converter);
-        $subCategory = mb_ereg_replace('[^-0-9a-z]', '-', $subCategory);
-        $subCategory = mb_ereg_replace('[-]+', '-', $subCategory);
-        $subCategory = trim($subCategory, '-');
-        return "arrest/$category/$subCategory";
+    public function getLotViews() 
+    {
+        return count($this->views);
+    }
+    public function getLotCategory() {
+        $categorys[0] = (explode(';',$this->lotPropertyTypeName))[1];
+        return $categorys;
     }
     public function fields()
     {
@@ -118,6 +135,12 @@ class LotsArrest extends ActiveRecord
             'lotType'           => 'lotType'
 
         ];
+    }
+    public function getViews()
+    {
+        return $this->hasMany(PageViews::className(), ['page_id' => 'lotId'])->alias('views')->onCondition([
+            'page_type' => 'lot_arrest'
+        ]);
     }
     public function getLotDocuments()
     {

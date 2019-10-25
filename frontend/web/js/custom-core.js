@@ -338,16 +338,49 @@ jQuery(function($) {
 	/**
 	 * Range Slider
 	 */
-	 
-	 $("#price_range").ionRangeSlider({
+	var priceMin = $('.lot__price-min'),
+		priceMax = $('.lot__price-max');
+
+	var saveResult = function (data) {
+		priceMin.val(data.from);
+		priceMax.val(data.to);
+	};
+
+	$("#price_range").ionRangeSlider({
 		type: "double",
 		grid: true,
-		min: 0,
-		max: 1000,
-		from: 200,
-		to: 800,
-		prefix: "$"
+		min: $("#price_range").data('min'),
+		max: $("#price_range").data('max'),
+		from: $("#price_range").data('min'),
+		to: $("#price_range").data('max'),
+		prefix: "₽",
+		onLoad: function (data) {
+			saveResult(data);
+			onLoadPriceRange($('#price_range').data("ionRangeSlider"));
+		},
+		onChange: saveResult,
+		onFinish: saveResult
 	});
+
+	onLoadPriceRange($('#price_range').data("ionRangeSlider"));
+
+	function onLoadPriceRange(price_range) {
+		console.log(priceMin.val());
+		if (priceMin.val()) {
+			var fromNumber = priceMin.val();
+		} else {
+			var fromNumber = $("#price_range").data('min');
+		}
+		if (priceMax.val()) {
+			var toNumber = priceMax.val();
+		} else {
+			var toNumber = $("#price_range").data('max');
+		}
+		price_range.update({
+			from: fromNumber,
+			to: toNumber
+		});
+	};
 	
 	$("#star_range").ionRangeSlider({
 		type: "double",

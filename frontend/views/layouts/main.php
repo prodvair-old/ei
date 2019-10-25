@@ -12,6 +12,8 @@ use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use yii\widgets\Menu;
 use common\models\Query\Settings;
+use frontend\components\LoginWidget;
+use frontend\components\SignupWidget;
 
 $setting = Settings::find()->orderBy('id ASC')->all();
 AppAsset::register($this);
@@ -23,6 +25,7 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base href="<?= (Yii::$app->request->hostInfo == 'http://ei.front')? 'http://localhost:3005' : Yii::$app->request->hostInfo ; ?>">
     <?php $this->registerCsrfMetaTags() ?>
 
 	<!-- Title Of Site -->
@@ -57,7 +60,6 @@ AppAsset::register($this);
 
 <!-- start Body Inner -->
 <div class="body-inner">
-	
 	
     <!-- start Header -->
     <header id="header-waypoint-sticky" class="header-main header-mobile-menu with-absolute-navbar">
@@ -111,7 +113,20 @@ AppAsset::register($this);
                                         <button class="btn btn-toggle collapsed" data-toggle="collapse" data-target="#mobileMenu"></button>
                                     </li>
                                 <? } else { ?>
-
+                                    <li class="d-block d-sm-block">
+                                        <a href="<?=Url::to(['profile/index'])?>">
+                                            <div class="image">
+                                                <!-- <img src="img/image-man/01.jpg" alt="Image" /> -->
+                                            </div>
+                                            </span><?=(Yii::$app->user->identity->info['firstname'] || Yii::$app->user->identity->info['lastname'])? Yii::$app->user->identity->info['firstname'].' '.Yii::$app->user->identity->info['lastname'] : Yii::$app->user->identity->info['contacts']['emails'][0] ?>
+                                            <?=(Yii::$app->user->identity->info['firstname'] || Yii::$app->user->identity->info['lastname'])? '<p class="mb-15">'.Yii::$app->user->identity->info['contacts']['emails'][0].'</p>': ''?>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="<?=Url::to(['site/logout'])?>">
+                                            <span class="icon-font ml-15"><i class="icon-logout"></i></span>
+                                        </a>
+                                    </li>
                                 <? } ?>
                             </ul>
                         </div>
@@ -488,195 +503,10 @@ AppAsset::register($this);
             
             <div class="tab-content">
 
-                <div role="tabpanel" class="tab-pane active" id="loginFormTabInModal-login">
+                <?=LoginWidget::widget()?>
                 
-                    <div class="form-login">
-
-                        <div class="form-header">
-                            <h4>Добро пожаловать на Ei.ru</h4>
-                            <p>Авторизуйтесь на сайте, что бы дальше пользоваться им.</p>
-                        </div>
-                        
-                        <div class="form-body">
-                        <!-- ['site/login'] -->
-                            <?= Html::beginForm('', 'POST', ['class' => 'form-ajax-js']); ?>
-
-                                <div class="d-flex flex-column flex-lg-row align-items-stretch">
-                                    <div class="flex-md-grow-1 bg-primary-light">
-                                        <div class="form-inner">
-
-                                            <div class="form-group">
-                                                <label>E-mail адрес</label>
-                                                <?=Html::input('text', 'username', '', ['autofocus' => true, 'class' => 'form-control'])?>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Пароль</label>
-                                                <?=Html::input('password', 'password', '', ['class' => 'form-control'])?>
-                                            </div>
-                                            
-
-                                            <div class="d-flex flex-column flex-md-row mt-25">
-                                                <div class="flex-shrink-0">
-                                                    <?=Html::submitButton('Войти', ['class' => 'btn btn-primary btn-wide'])?>
-                                                </div>
-                                                <div class="ml-0 ml-md-15 mt-15 mt-md-0">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <?=Html::input('checkbox', 'rememberMe', '', ['class' => 'custom-control-input', 'id' => 'loginFormTabInModal-rememberMe', 'autofocus' => true])?>
-                                                        <label class="custom-control-label" for="loginFormTabInModal-rememberMe">Запомнить меня</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <a href="#loginFormTabInModal-forgot-pass" class="tab-external-link block mt-25 font600">Забыл пароль?</a>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            <?= Html::endForm(); ?>
-
-                            <?php
-                                $js = <<<JS
-                                    $('form').on('beforeSubmit', function(){
-                                        alert('Работает!');
-                                    return false;
-                                });
-JS;
-
-                                $this->registerJs($js);
-                            ?>
-
-                            <!-- <form method="post" action="#">
-                            
-                                <div class="d-flex flex-column flex-lg-row align-items-stretch">
-                                
-                                    <div class="flex-md-grow-1 bg-primary-light">
-
-                                        <div class="form-inner">
-                                            <div class="form-group">
-                                                <label>Email adress/username</label>
-                                                <input type="text" class="form-control" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Password</label>
-                                                <input type="password" class="form-control" />
-                                            </div>
-                                            <div class="d-flex flex-column flex-md-row mt-25">
-                                                <div class="flex-shrink-0">
-                                                    <a href="#" class="btn btn-primary btn-wide">Sign-in</a>
-                                                </div>
-                                                <div class="ml-0 ml-md-15 mt-15 mt-md-0">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="loginFormTabInModal-rememberMe">
-                                                        <label class="custom-control-label" for="loginFormTabInModal-rememberMe">Remember me</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <a href="#loginFormTabInModal-forgot-pass" class="tab-external-link block mt-25 font600">Forgot password?</a>
-                                        </div>
-
-                                    </div>
-                                    
-                                    <div class="form-login-socials">
-                                        <div class="login-socials-inner">
-                                            <h5 class="mb-20">Or sign-up with your socials</h5>
-                                            <button class="btn btn-login-with btn-facebook btn-block"><i class="fab fa-facebook"></i> facebook</button>
-                                            <button class="btn btn-login-with btn-google btn-block"><i class="fab fa-google"></i> google</button>
-                                            <button class="btn btn-login-with btn-twitter btn-block"><i class="fab fa-twitter"></i> google</button>
-                                        </div>
-                                    </div>
-                                
-                                </div>
-                        
-                            </form> -->
-                            
-                        </div>
-                        
-                        <div class="form-footer">
-                            <p>Not a member yet? <a href="#loginFormTabInModal-register" class="tab-external-link font600">Sign up</a> for free</p>
-                        </div>
-                        
-                    </div>
+                <?=SignupWidget::widget()?>
                 
-                </div>
-                
-                <div role="tabpanel" class="tab-pane fade in" id="loginFormTabInModal-register">
-                
-                    <div class="form-login">
-
-                        <div class="form-header">
-                            <h4>Join SiteName for Free</h4>
-                            <p>Access thousands of online classes in design, business, and more!</p>
-                        </div>
-                        
-                        <div class="form-body">
-                        
-                            <form method="post" action="#">
-                            
-                                <div class="d-flex flex-column flex-lg-row align-items-stretch">
-                                
-                                    <div class="flex-grow-1 bg-primary-light">
-
-                                        <div class="form-inner">
-                                            <div class="form-group">
-                                                <label>Full name</label>
-                                                <input type="text" class="form-control" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Email adress</label>
-                                                <input type="text" class="form-control" />
-                                            </div>
-                                            <div class="row cols-2 gap-10">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>Password</label>
-                                                        <input type="password" class="form-control" />
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label>Confirm password</label>
-                                                        <input type="password" class="form-control" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    
-                                    <div class="form-login-socials">
-                                        <div class="login-socials-inner">
-                                            <h5 class="mb-20">Or sign-in with your socials</h5>
-                                            <button class="btn btn-login-with btn-facebook btn-block"><i class="fab fa-facebook"></i> facebook</button>
-                                            <button class="btn btn-login-with btn-google btn-block"><i class="fab fa-google"></i> google</button>
-                                            <button class="btn btn-login-with btn-twitter btn-block"><i class="fab fa-twitter"></i> google</button>
-                                        </div>
-                                    </div>
-                                
-                                </div>
-                            
-                                <div class="d-flex flex-column flex-md-row mt-30 mt-lg-10">
-                                    <div class="flex-shrink-0">
-                                        <a href="#" class="btn btn-primary btn-wide mt-5">Sign-up</a>
-                                    </div>
-                                    <div class="pt-1 ml-0 ml-md-15 mt-15 mt-md-0">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="loginFormTabInModal-acceptTerm">
-                                            <label class="custom-control-label line-145" for="loginFormTabInModal-acceptTerm">By clicking this, you are agree to to our <a href="#">terms of use</a> and <a href="#">privacy policy</a> including the use of cookies</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-                            </form>
-                            
-                        </div>
-                        
-                        <div class="form-footer">
-                            <p>Already a member? <a href="#loginFormTabInModal-login" class="tab-external-link font600">Sign in</a></p>
-                        </div>
-                        
-                    </div>
-                    
-                </div>
                 
                 <div role="tabpanel" class="tab-pane fade in" id="loginFormTabInModal-forgot-pass">
                     

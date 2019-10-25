@@ -51,7 +51,8 @@ class SiteController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'login' => ['post'],
+                    // 'logout' => ['post'],
                 ],
             ],
         ];
@@ -87,7 +88,7 @@ class SiteController extends Controller
         Yii::$app->params['title'] = $metaData->mdTitle;
         Yii::$app->params['h1'] = $metaData->mdH1;
 
-        $lots = LotsBankrupt::find()->limit(10)->all();
+        $lots = LotsBankrupt::find()->limit(6)->orderBy('lot_image DESC, lot_timepublication DESC')->all();
         return $this->render('index', [
             'lots' => $lots
         ]);
@@ -101,15 +102,20 @@ class SiteController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            if (Yii::$app->request->isPost) {
+                return ['result'=>false, 'error'=>'Уже авторизованы'];
+            } else {
+                return $this->goHome();
+            }
+            
         }
-
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return ['result'=>true];
         } else {
             $model->password = '';
-            return $this->goBack();
+            return ['result'=>false, 'error'=>'Неверный логин или пароль'];
         }
     }
 
@@ -165,15 +171,14 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-            return $this->goHome();
+            return ['result'=>false, 'error'=>'Спасибо за регистрацию!'];
         }
 
-        return $this->render('signup', [
-            'model' => $model,
-        ]);
+        return ['result'=>false, 'error'=>'Такой пользователь уже существует'];
     }
 
     /**

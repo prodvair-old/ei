@@ -24,9 +24,9 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    const STATUS_DELETED = 0;
-    const STATUS_INACTIVE = 9;
-    const STATUS_ACTIVE = 10;
+    const STATUS_DELETED = false;
+    const STATUS_INACTIVE = false;
+    const STATUS_ACTIVE = true;
 
 
     /**
@@ -34,18 +34,23 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function tableName()
     {
-        return 'site.{{user}}';
+        return 'site.user';
+    }
+
+    public function getNameForUser()
+    {
+        return $this->info['firstname'].' '.$this->info['lastname'];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::className(),
-        ];
-    }
+    // public function behaviors()
+    // {
+    //     return [
+    //         TimestampBehavior::className(),
+    //     ];
+    // }
 
     /**
      * {@inheritdoc}
@@ -141,6 +146,11 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->getPrimaryKey();
     }
 
+    public function getInfo()
+    {
+        return $this->info;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -165,7 +175,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function validatePassword($password)
     {
-        return Yii::$app->security->validatePassword($password, $this->password_hash);
+        return Yii::$app->security->validatePassword($password, $this->password);
     }
 
     /**
@@ -175,7 +185,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function setPassword($password)
     {
-        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+        $this->password = Yii::$app->security->generatePasswordHash($password);
     }
 
     /**

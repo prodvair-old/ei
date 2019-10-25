@@ -4,6 +4,7 @@
 
 use yii\helpers\Url;
 use frontend\components\LotBlock;
+use frontend\components\SearchForm;
 use common\models\Query\Settings;
 
 
@@ -24,8 +25,8 @@ $this->title = Yii::$app->params['title'];
             </div>
             
             
-            
-            <div class="search-form-main">
+            <?= SearchForm::widget(['type' => 'small'])?>
+            <!-- <div class="search-form-main">
                 <form>
                     <div class="from-inner">
                         
@@ -89,7 +90,7 @@ $this->title = Yii::$app->params['title'];
                         </div>
                     </div>
                 </form>
-            </div>
+            </div> -->
 
         </div>
         

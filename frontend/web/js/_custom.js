@@ -1,16 +1,37 @@
 $(document).ready(function() {
-    $('.form-ajax-js').on('beforeSubmit', function(e) {
+    $('#login-form').on('beforeSubmit', function(e) {
         e.preventDefault();
         $.ajax({
-            type : $(this).attr('method'),
+            type : 'POST',
             url : '/login',
             data : $(this).serializeArray()
         }).done(function(data) {
-                if (data.error == null) {
-                    // location.reload();
+                if (data.result) {
                     console.log(data)
+                        location.reload();
+                        $('.login-form-error').html('');
                 } else {
-                    console.log(data.error)
+                        $('.login-form-error').html(data.error);
+                }
+        }).fail(function() {
+            console.log('fail');
+        })
+        return false;
+    });
+
+    $('#signup-form').on('beforeSubmit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            type : 'POST',
+            url : '/signup',
+            data : $(this).serializeArray()
+        }).done(function(data) {
+                if (data.result) {
+                    console.log(data)
+                        location.reload();
+                        $('.signup-form-error').html('');
+                } else {
+                        $('.signup-form-error').html(data.error);
                 }
         }).fail(function() {
             console.log('fail');

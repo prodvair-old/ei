@@ -12,8 +12,4 @@ class LotsCategory extends ActiveRecord
     {
         return 'site.{{lotsCategory}}';
     }
-    public static function getDb()
-    {
-        return Yii::$app->get('db');
-    }
 }
