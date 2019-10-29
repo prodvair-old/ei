@@ -23,7 +23,7 @@ try {
         
                 <?=($type == 'long')? '<div>' : ''?>
                     <div class="image">
-                        <img src="<?=$lot->lotImage[0]?>" alt="" />
+                        <img src="<?=($lot->lotImage)? $lot->lotImage[0] : 'img/img.svg'?>" alt="" />
                     </div>
                 <?=($type == 'long')? '</div>' : ''?>
 

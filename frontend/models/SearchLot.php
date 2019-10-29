@@ -44,7 +44,7 @@ class SearchLot extends Model
      *
      * @return bool whether the creating new account was successful and email was sent
      */
-    public function search($lots, $type = null, $category = null)
+    public function search($lots, $url = null)
     {
         if (!$this->validate()) {
             return null;
@@ -53,52 +53,70 @@ class SearchLot extends Model
         if (!empty($type) && empty($this->type)) {
             $this->type = $type;
         }
-        if (!empty($category) && $category != 'all' && empty($this->category)) {
+        if (!empty($category) && $category != 'all' && $category != 'lot-list' && empty($this->category) && $this->category != 0) {
             $this->category = $category;
+        }
+
+        $checkUrl = false;
+
+        $urlArray = explode('/', $url);
+
+        if ($urlArray[0] != $this->type) {
+            $url = $this->type;
         }
         
         switch ($this->type) {
             case 'bankrupt':
                     $where = ['and'];
                     $whereAnd = ['and'];
-                    if (!empty($this->search)) {
-                        $where[] = [
-                            'or',
-                            ['like', 'LOWER(lot_description)', mb_strtolower($this->search, 'UTF-8')],
-                            ['like', 'LOWER(torgy_description)', mb_strtolower($this->search, 'UTF-8')],
-                            ['like', 'LOWER(bnkr__name)', mb_strtolower($this->search, 'UTF-8')],
-                            ['like', 'LOWER(bnkr__inn)', mb_strtolower($this->search, 'UTF-8')],
-                            ['like', 'LOWER(bnkr__address)', mb_strtolower($this->search, 'UTF-8')],
-                        ];
-                    }
-                    if (!empty($this->category) && $this->category != 'all') {
+                    $addresSearchCheck = false;
+
+                    if ($this->category == '0') {
+                        $url = $this->type.'/lot-list';
+                    } else if (!empty($this->category) && $this->category != 'all') {
                         $category = LotsCategory::findOne($this->category);
+                        $url = $this->type.'/'.$category->translit_name;
+
                         $lots->joinWith('category');
 
-                        if (empty($this->subCategory) || $this->subCategory == 'all') {
+                        if (empty($this->subCategory) || $this->subCategory == 'all' || $this->subCategory == '0') {
                             $orWhere = ['or'];
                             foreach ($category->bankrupt_categorys as $key => $value) {
                                 $orWhere[] = ['category.lotclassifier'=>$key];
                             }
                             $where[] = $orWhere;
-                        } else {
-                            $subCategory = explode(';',$this->subCategory);
-
-                            if (count($subCategory) == 1) {
-                                $where[] = ['category.lotclassifier'=>$subCategory[0]];
+                        } else if ($this->subCategory != '0'){
+                            if (count($this->subCategory) == 1) {
+                                foreach ($category->bankrupt_categorys as $key => $value) {
+                                    if ($this->subCategory[0] == $key) {
+                                        $where[] = ['category.lotclassifier'=>$key];
+                                        $url .= '/'.$value['translit'];
+                                        $checkUrl = true;
+                                    }
+                                }
                             } else {
                                 $orWhere = ['or'];
-                                foreach ($subCategory as $value) {
-                                    $orWhere[] = ['category.lotclassifier'=>$value];
+                                foreach ($this->subCategory as $keySubCategory => $subCategory) {
+                                    foreach ($category->bankrupt_categorys as $key => $value) {
+                                        if ($subCategory == $key) {
+                                            $orWhere[] = ['category.lotclassifier'=>$key];
+                                            if ($keySubCategory == 0) {
+                                                $url .= '/'.$value['translit'];
+                                                $checkUrl = true;
+                                            }
+                                        }
+                                    }
                                 }
                                 $where[] = $orWhere;
                             }
-
                         }
                     }
                     if (!empty($this->region)) {
+                        $addresSearchCheck = true;
                         if (count($this->region) == 1) {
                             $regionInfo = Regions::findOne($this->region[0]);
+
+                            $url .= '/'.$regionInfo->name_translit;
 
                             $where[] = [
                                 'or',
@@ -107,8 +125,12 @@ class SearchLot extends Model
                             ];
                         } else {
                             $orWhere = ['or'];
-                            foreach ($this->region as $value) {
+                            foreach ($this->region as $key => $value) {
                                 $regionInfo = Regions::findOne($value);
+
+                                if ($key == 0 && $checkUrl) {
+                                    $url .= '/'.$regionInfo->name_translit;
+                                }
 
                                 $orWhere[] = ['lot_regionid'=>$value];
                                 $orWhere[] = ['like', 'LOWER(bnkr__address)', mb_strtolower($regionInfo->name, 'UTF-8')];
@@ -116,14 +138,25 @@ class SearchLot extends Model
                             $where[] = $orWhere;
                         }
                     }
+                    if (!empty($this->search)) {
+                        $whereSearch = [
+                            'or',
+                            ['like', 'LOWER(lot_description)', mb_strtolower($this->search, 'UTF-8')],
+                            ['like', 'LOWER(torgy_description)', mb_strtolower($this->search, 'UTF-8')],
+                            ['like', 'LOWER(bnkr__name)', mb_strtolower($this->search, 'UTF-8')],
+                            ['like', 'LOWER(bnkr__inn)', mb_strtolower($this->search, 'UTF-8')],
+                        ];
+                        if (!$addresSearchCheck) {
+                            $whereSearch[] = ['like', 'LOWER(bnkr__address)', mb_strtolower($this->search, 'UTF-8')];
+                        }
+                        $where[] = $whereSearch;
+                    }
                     if (!empty($this->etp)) {
-                        $etp = explode(';',$this->etp);
-
-                        if (count($etp) == 1) {
-                            $where[] = ['lot_idtradeplace'=>$etp[0]];
+                        if (count($this->etp) == 1) {
+                            $where[] = ['lot_idtradeplace'=>$this->etp[0]];
                         } else {
                             $orWhere = ['or'];
-                            foreach ($etp as $value) {
+                            foreach ($this->etp as $value) {
                                 $orWhere[] = ['lot_idtradeplace'=>$value];
                             }
                             $where[] = $orWhere;
@@ -143,6 +176,7 @@ class SearchLot extends Model
                             ];
                         }
                     }
+                    $lotsPrice = Clone $lots;
                     if (!empty($this->minPrice)) {
                         $whereAnd[] = ['>=', 'lot_startprice', $this->minPrice];
                     }
@@ -154,14 +188,119 @@ class SearchLot extends Model
                     }
                 break;
             case 'arrest':
-                
+                    $where = ['and'];
+                    $whereAnd = ['and'];
+                    $addresSearchCheck = false;
+
+                    $lots->joinWith('torgs');
+
+                    if ($this->category == '0') {
+                        $url = $this->type.'/lot-list';
+                    } else if (!empty($this->category) && $this->category != 'all') {
+                        $category = LotsCategory::findOne($this->category);
+                        $url = $this->type.'/'.$category->translit_name;
+
+                        
+                        if (empty($this->subCategory) || $this->subCategory == 'all' || $this->subCategory == '0') {
+                            $orWhere = ['or'];
+                            foreach ($category->arrest_categorys as $key => $value) {
+                                $orWhere[] = ['lots.lotPropertyTypeId'=>$key];
+                            }
+                            $where[] = $orWhere;
+                        } else if ($this->subCategory != '0'){
+                            if (count($this->subCategory) == 1) {
+                                foreach ($category->arrest_categorys as $key => $value) {
+                                    if ($this->subCategory[0] == $key) {
+                                        $where[] = ['lots.lotPropertyTypeId'=>$key];
+                                        $url .= '/'.$value['translit'];
+                                        $checkUrl = true;
+                                    }
+                                }
+                            } else {
+                                $orWhere = ['or'];
+                                foreach ($this->subCategory as $keySubCategory => $subCategory) {
+                                    foreach ($category->arrest_categorys as $key => $value) {
+                                        if ($subCategory == $key) {
+                                            $orWhere[] = ['lots.lotPropertyTypeId'=>$key];
+                                            if ($keySubCategory == 0) {
+                                                $url .= '/'.$value['translit'];
+                                                $checkUrl = true;
+                                            }
+                                        }
+                                    }
+                                }
+                                $where[] = $orWhere;
+                            }
+                        }
+                    }
+                    if (!empty($this->region)) {
+                        $addresSearchCheck = true;
+                        if (count($this->region) == 1) {
+                            $regionInfo = Regions::findOne($this->region[0]);
+
+                            $url .= '/'.$regionInfo->name_translit;
+
+                            $where[] = ['like', 'LOWER(lots.lotKladrLocationName)', mb_strtolower($regionInfo->name, 'UTF-8')];
+                        } else {
+                            $orWhere = ['or'];
+                            foreach ($this->region as $key => $value) {
+                                $regionInfo = Regions::findOne($value);
+
+                                if ($key == 0 && $checkUrl) {
+                                    $url .= '/'.$regionInfo->name_translit;
+                                }
+                                $orWhere[] = ['like', 'LOWER(lots.lotKladrLocationName)', mb_strtolower($regionInfo->name, 'UTF-8')];
+                            }
+                            $where[] = $orWhere;
+                        }
+                    }
+                    if (!empty($this->search)) {
+                        $whereSearch = [
+                            'or',
+                            ['like', 'LOWER(lots.lotTorgReason)', mb_strtolower($this->search, 'UTF-8')],
+                            ['like', 'LOWER(lots.lotPropName)', mb_strtolower($this->search, 'UTF-8')],
+                            ['like', 'LOWER(lots.lotKladrLocationName)', mb_strtolower($this->search, 'UTF-8')],
+                            ['like', 'LOWER(lots.lotBurdenDesc)', mb_strtolower($this->search, 'UTF-8')],
+                            ['like', 'LOWER(lots.lotDepositDesc)', mb_strtolower($this->search, 'UTF-8')],
+                            ['like', 'LOWER(lots.lotContractDesc)', mb_strtolower($this->search, 'UTF-8')],
+                            ['like', 'LOWER(lots.lotContractTerm)', mb_strtolower($this->search, 'UTF-8')]
+                        ];
+                        if (!$addresSearchCheck) {
+                            $whereSearch[] = ['like', 'LOWER(bnkr__address)', mb_strtolower($this->search, 'UTF-8')];
+                        }
+                        $where[] = $whereSearch;
+                    }
+                    if (!empty($this->tradeType)) {
+                        if (!empty($this->tradeType[0]) && empty($this->tradeType[1])) {
+                            $where[] = ['torgs.trgBidFormId'=>$this->tradeType[0]];
+                        }
+                        if (!empty($this->tradeType[1]) && empty($this->tradeType[0])) {
+                            $where[] = ['torgs.trgBidFormId'=>$this->tradeType[1]];
+                        } else if (!empty($this->tradeType[1]) && !empty($this->tradeType[0])) {
+                            $where = [
+                                'or',
+                                ['torgs.trgBidFormId'=>$this->tradeType[0]],
+                                ['torgs.trgBidFormId'=>$this->tradeType[1]]
+                            ];
+                        }
+                    }
+                    $lotsPrice = Clone $lots;
+                    if (!empty($this->minPrice)) {
+                        $whereAnd[] = ['>=', 'lots.lotStartPrice', $this->minPrice];
+                    }
+                    if (!empty($this->maxPrice)) {
+                        $whereAnd[] = ['<=', 'lots.lotStartPrice', $this->maxPrice];
+                    }
+                    if (!empty($this->imageCheck)) {
+                        $where[] = ['lot_image' => $this->imageCheck];
+                    }
                 break;
             default:
                 return ['error' => 'Что то пошло не так :('];
                 break;
         }
 
-        return ['lots'=>$lots->where($where)->andWhere($whereAnd), 'lotsPrice'=>$lots->where($where)];
+        return ['lots'=>$lots->where($where)->andWhere($whereAnd), 'lotsPrice'=>$lotsPrice->where($where), 'url'=>$url];
     }
 }
  

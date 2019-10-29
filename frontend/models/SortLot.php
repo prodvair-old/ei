@@ -7,6 +7,7 @@ use yii\base\Model;
  */
 class SortLot extends Model
 {
+    public $type;
     public $sortBy;
     
 
@@ -16,6 +17,7 @@ class SortLot extends Model
     public function rules()
     {
         return [
+            ['type', 'string'],
             ['sortBy', 'string'],
         ];
     }
@@ -59,28 +61,28 @@ class SortLot extends Model
                     }
                 break;
             case 'arrest':
-                    $sort .= 'lot_image DESC, ';
+                    // $sort .= 'lot_image DESC, ';
                     switch ($this->sortBy) {
                         case 'nameASC':
-                                $sort .= 'lot_description ASC';
+                                $sort .= 'lots."lotPropName" ASC';
                             break;
                         case 'nameDESC':
-                                $sort .= 'lot_description DESC';
+                                $sort .= 'lots."lotPropName" DESC';
                             break;
                         case 'dateASC':
-                                $sort .= 'lot_timepublication ASC';
+                                $sort .= 'torgs."trgPublished" ASC';
                             break;
                         case 'dateDESC':
-                                $sort .= 'lot_timepublication DESC';
+                                $sort .= 'torgs."trgPublished" DESC';
                             break;
                         case 'priceASC':
-                                $sort .= 'lot_startprice ASC';
+                                $sort .= 'lots."lotStartPrice" ASC';
                             break;
                         case 'priceDESC':
-                                $sort .= 'lot_startprice DESC';
+                                $sort .= 'lots."lotStartPrice" DESC';
                             break;
                         default:
-                                $sort .= 'lot_timepublication DESC';
+                                $sort .= 'torgs."trgPublished" DESC';
                             break;
                     }
                 break;

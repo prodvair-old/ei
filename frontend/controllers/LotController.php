@@ -10,6 +10,7 @@ use yii\data\Pagination;
 // Запросы
 use common\models\Query\MetaDate;
 use common\models\Query\Bankrupt\LotsBankrupt;
+use common\models\Query\Bankrupt\Lots;
 use common\models\Query\Arrest\LotsArrest;
 
 use common\models\Query\LotsCategory;
@@ -52,6 +53,13 @@ class LotController extends Controller
                 ],
             ],
         ];
+    }
+    public function beforeAction($action)
+    {
+        if (in_array($action->id, ['load_category'])) {
+            $this->enableCsrfValidation = false;
+        }
+        return parent::beforeAction($action);
     }
     /**
      * {@inheritdoc}
@@ -104,57 +112,125 @@ class LotController extends Controller
         return $this->render('index', compact('type', 'lots'));
     }
     // Ссылка на категории лотов
-    public function actionCategory($type, $category)
+    public function actionSearch($type, $category, $subcategory = null, $region = null)
     {
         $model = new SearchLot();
         $modelSort = new SortLot();
         
         // Проверка ссылок ЧПУ и подставление типа лотов Strat->
-        if ($category == 'lot-list') {
-            $queryCategory = 'all';
+        if ($category == 'lot-list' && $subcategory == null) {
+            $queryCategory = '0';
+            $title = 'Все лоты';
+            $url = "$type/$category";
         } else if (!empty($items = LotsCategory::find()->where(['translit_name'=>$category])->one())) {
             $queryCategory = $items->id;
             $model->category = $items->id;
+            $titleCategory = $items->name;
+            $title = $items->name;
+            $url = "$type/$category";
         } else {
             Yii::$app->response->statusCode = 404;
             throw new \yii\web\NotFoundHttpException;
         }
 
+        $model->type = $type;
+        $modelSort->type = $type;
         switch ($type) {
             case 'bankrupt':
                 $lotsQuery = LotsBankrupt::find();
                 $lotsPrice = LotsBankrupt::find();
+
+                $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Банкротное имущество';
+
+                if ($subcategory != null) {
+                    foreach ($items->bankrupt_categorys_translit as $key => $value) {
+                        if ($key == $subcategory) {
+                            $querySubcategory = $value['id'];    
+                            $model->subCategory[0] = $value['id'];    
+                            $titleSubcategory = $value['name'];
+                            $title = $value['name'];
+                            $url = "$type/$category/$subcategory";
+                        }
+                    }
+                    if (empty($querySubcategory)) {
+                        Yii::$app->response->statusCode = 404;
+                        throw new \yii\web\NotFoundHttpException;
+                    }
+                }
                 break;
             case 'arrest':
                 $lotsQuery = LotsArrest::find();
                 $lotsPrice = LotsArrest::find();
 
+                $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Арестованное имущество';
+
+                if ($subcategory != null) {
+                    foreach ($items->arrest_categorys_translit as $key => $value) {
+                        if ($key == $subcategory) {
+                            $querySubcategory = $value['id'];        
+                            $model->subCategory[0] = $value['id']; 
+                            $titleSubcategory = $value['name'];
+                            $title = $value['name'];
+                            $url = "$type/$category/$subcategory";
+                        }
+                    }
+                    if (empty($querySubcategory)) {
+                        Yii::$app->response->statusCode = 404;
+                        throw new \yii\web\NotFoundHttpException;
+                    }
+                }
                 break;
             default:
                 Yii::$app->response->statusCode = 404;
                 throw new \yii\web\NotFoundHttpException;
                 break;
         }
+        
+        if ($region != null) {
+            try {
+                $regionItem = Regions::findOne(['name_translit' => $region]);
+                $queryRegion = $regionItem->id;
+                $model->region = $value['id'];
+                $title = $items->name;
+                $url = "$type/$category/$subcategory/$region";
+            } catch (\Throwable $th) {
+                Yii::$app->response->statusCode = 404;
+                throw new \yii\web\NotFoundHttpException;
+            }
+        }
         // Проверка ссылок ЧПУ и подставление типа лотов <-End 
 
         // Мета данные Strat-> 
-        $metaData = MetaDate::find()->where(['mdName' => "$type/$category"])->one();
+        $metaData = MetaDate::find()->where(['mdName' => $url])->one();
 
         Yii::$app->params['description'] = $metaData->mdDescription;
         Yii::$app->params['text'] = $metaData->mdText;
-        Yii::$app->params['title'] = $metaData->mdTitle;
-        Yii::$app->params['h1'] = $metaData->mdH1;
+        Yii::$app->params['title'] = ($metaData->mdTitle)? $metaData->mdTitle : $title;
+        Yii::$app->params['h1'] = ($metaData->mdH1)? $metaData->mdH1 : $title;
         // Мета данные <-End 
-
+        
         // Фильтрация лотов Start->
-        $model->load(Yii::$app->request->post());
-        $query = $model->search($lotsQuery, $type);
+        $model->load(Yii::$app->request->get());
+        $query = $model->search($lotsQuery, $url);
+
+        if ($url != $query['url']) {
+            return $this->redirect([$query['url'],Yii::$app->request->get()]);
+        }
 
         $lotsQuery = Clone $query['lots'];
         $lotsPrice = Clone $query['lotsPrice'];
         $lotsCount = Clone $lotsQuery;
-        
-        $price = $lotsPrice->select(['min(lot_startprice)','max(lot_startprice)'])->asArray()->one();
+
+        switch ($type) {
+            case 'bankrupt':
+                    $price = $lotsPrice->select(['min(lot_startprice)','max(lot_startprice)'])->asArray()->one();
+                break;
+            case 'arrest':
+                    $price = $lotsPrice->select(['min(lots."lotStartPrice")','max(lots."lotStartPrice")'])->asArray()->one();
+                break;
+        }
         $count = $lotsCount->count();
 
         $modelSort->load(Yii::$app->request->post());
@@ -166,123 +242,45 @@ class LotController extends Controller
             ->limit($pages->limit)
             ->all();
         // Фильтрация лотов <-End 
+
+        // Хлебные крошки Start->
+
+        Yii::$app->params['breadcrumbs'][] = [
+            'label' => ' '.$titleType,
+            'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
+            'url' => ["/$type"]
+        ];
+        if ($subcategory != null) {
+            Yii::$app->params['breadcrumbs'][] = [
+                'label' => ' '.$titleCategory,
+                'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
+                'url' => ["/$type/$category"]
+            ];
+        }
+        if ($region != null) {
+            Yii::$app->params['breadcrumbs'][] = [
+                'label' => ' '.$titleSubcategory,
+                'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
+                'url' => ["/$type/$category/$subcategory"]
+            ];
+        }
+        Yii::$app->params['breadcrumbs'][] = [
+            'label' => ' '.Yii::$app->params['h1'],
+            'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
+            'url' => [$url]
+        ];
+        // Хлебные крошки <-End
         
         $offset = $pages->offset;
         $limit = $pages->limit;
-        return $this->render('lot_find', compact('model', 'modelSort', 'type', 'lots', 'pages', 'count', 'offset', 'limit', 'price'));
+        return $this->render('search', compact('model', 'modelSort', 'type', 'queryCategory', 'lots', 'pages', 'count', 'offset', 'limit', 'price', 'url'));
     }
-    // Ссылка на подкатегории лотов
-    public function actionSubcategory($type, $category, $subcategory)
-    {
-        // Проверка ссылок ЧПУ и подставление типа лотов Strat->
-        if (!empty($items = LotsCategory::findOne(['translit_name'=>$category]))) {
-            $queryCategory = $items->id;
-        } else {
-            Yii::$app->response->statusCode = 404;
-            throw new \yii\web\NotFoundHttpException;
-        }
-        
-        switch ($type) {
-            case 'bankrupt':
-                foreach ($items->bankrupt_categorys_translit as $key => $value) {
-                    if ($key == $subcategory) {
-                        $querySubcategory = $value['id'];        
-                    }
-                }
-                
-                break;
-            case 'arrest':
-                foreach ($items->arrest_categorys_translit as $key => $value) {
-                    if ($key == $subcategory) {
-                        $querySubcategory = $value['id'];        
-                    }
-                }
-                break;
-            default:
-                Yii::$app->response->statusCode = 404;
-                throw new \yii\web\NotFoundHttpException;
-                break;
-        }
-
-        if (empty($querySubcategory)) {
-            Yii::$app->response->statusCode = 404;
-            throw new \yii\web\NotFoundHttpException;
-        }
-        // Проверка ссылок ЧПУ и подставление типа лотов <-End 
-
-        // Мета данные Strat-> 
-        $metaData = MetaDate::find()->where(['mdName' => "$type/$category/$subcategory"])->one();
-
-        Yii::$app->params['description'] = $metaData->mdDescription;
-        Yii::$app->params['text'] = $metaData->mdText;
-        Yii::$app->params['title'] = $metaData->mdTitle;
-        Yii::$app->params['h1'] = $metaData->mdH1;
-        // Мета данные <-End 
-
-        return $this->render('lot_find');
-    }
-    // Ссылка на регионы
-    public function actionRegion($type, $category, $subcategory, $region)
-    {
-        // Проверка ссылок ЧПУ и подставление типа лотов Strat->
-        if (!empty($items = LotsCategory::findOne(['translit_name'=>$category]))) {
-            $queryCategory = $items->id;
-        } else {
-            Yii::$app->response->statusCode = 404;
-            throw new \yii\web\NotFoundHttpException;
-        }
-
-        if (!empty($regionItem = Regions::findOne(['name_translit' => $region]))) {
-            $queryRegion = $regionItem->id;
-        } else {
-            Yii::$app->response->statusCode = 404;
-            throw new \yii\web\NotFoundHttpException;
-        }
-        
-        switch ($type) {
-            case 'bankrupt':
-                foreach ($items->bankrupt_categorys_translit as $key => $value) {
-                    if ($key == $subcategory) {
-                        $querySubcategory = $value['id'];        
-                    }
-                }
-                break;
-            case 'arrest':
-                foreach ($items->arrest_categorys_translit as $key => $value) {
-                    if ($key == $subcategory) {
-                        $querySubcategory = $value['id'];        
-                    }
-                }
-                break;
-            default:
-                Yii::$app->response->statusCode = 404;
-                throw new \yii\web\NotFoundHttpException;
-                break;
-        }
-
-        if (empty($querySubcategory)) {
-            Yii::$app->response->statusCode = 404;
-            throw new \yii\web\NotFoundHttpException;
-        }
-        // Проверка ссылок ЧПУ и подставление типа лотов <-End 
-
-        // Мета данные Strat-> 
-        $metaData = MetaDate::find()->where(['mdName' => "$type/$category/$subcategory/$region"])->one();
-
-        Yii::$app->params['description'] = $metaData->mdDescription;
-        Yii::$app->params['text'] = $metaData->mdText;
-        Yii::$app->params['title'] = $metaData->mdTitle;
-        Yii::$app->params['h1'] = $metaData->mdH1;
-        // Мета данные <-End 
-
-        return $this->render('lot_find');
-    }
-    public function actionLot_page($type, $category, $subcategory, $id)
+    public function actionPage($type, $category, $subcategory, $id)
     {
         // Проверка ссылок ЧПУ и подставление типа лотов Strat->
         switch ($type) {
             case 'bankrupt':
-                $lots = LotsBankrupt::findOne(['lot_id'=>$id]);
+                $lots = Lots::findOne(['lot_id'=>$id]);
                 break;
             case 'arrest':
                 $lots = LotsArrest::findOne(['lotId'=>$id]);
@@ -303,6 +301,54 @@ class LotController extends Controller
         Yii::$app->params['h1'] = $metaData->mdH1;
         // Мета данные <-End 
 
-        return $this->render('lot_page');
+        return $this->render('page');
+    }
+    public function actionLoad_category()
+    {
+        $post = Yii::$app->request->post();
+        
+        switch ($post['type']) {
+            case 'bankrupt':
+                    if ($post['get'] == 'category') {
+                        $lotsCategory = LotsCategory::find()->where(['not', ['bankrupt_categorys' => null]])->orderBy('id ASC')->all();
+                        $categorys = '<option value="0">Все категории</option>';
+                        foreach ($lotsCategory as $key => $value) {
+                            $categorys .= '<option value="'.$key.'">'.$value['name'].'</option>';
+                        }
+                        return $categorys;
+                    } else {
+                        $lotsCategory = LotsCategory::findOne($post['id']);
+                        $lotsSubcategory = '<option value="0">Все подкатегории</option>';
+                        if ($lotsCategory->bankrupt_categorys != null) {
+                            foreach ($lotsCategory->bankrupt_categorys as $key => $value) {
+                                $lotsSubcategory .= '<option value="'.$key.'">'.$value['name'].'</option>';
+                            }
+                        }
+                    }
+                break;
+            case 'arrest':
+                    if ($post['get'] == 'category') {
+                        $lotsCategory = LotsCategory::find()->where(['not', ['bankrupt_categorys' => null]])->orderBy('id ASC')->all();
+                        $categorys = '<option value="0">Все категории</option>';
+                        foreach ($lotsCategory as $key => $value) {
+                            $categorys .= '<option value="'.$key.'">'.$value['name'].'</option>';
+                        }
+                        return $categorys;
+                    } else {
+                        $lotsCategory = LotsCategory::findOne($post['id']);
+                        $lotsSubcategory = '<option value="0">Все подкатегории</option>';
+                        if ($lotsCategory->arrest_categorys != null) {
+                            foreach ($lotsCategory->arrest_categorys as $key => $value) {
+                                $lotsSubcategory .= '<option value="'.$key.'">'.$value['name'].'</option>';
+                            }
+                        }
+                    }
+                break;
+            default:
+                    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                    return ['error'=>'не задан параметр type'];
+                break;
+        }
+        return $lotsSubcategory;
     }
 }

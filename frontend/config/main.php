@@ -89,11 +89,13 @@ return [
                 '/sitemap_arbitrs-<is_have:(is_have_lot|is_not_have_lot)>.xml' => 'sitemap/arbtr',
                 '/sitemap_bankrupts-<is_type:(company|person)>-<limit:\d+>.xml' => 'sitemap/bnkr',
                 
+                
+                '/load-category' => 'lot/load_category',
                 '/<type:(bankrupt|arrest)>'                                     => 'lot/index',
-                '/<type:(bankrupt|arrest)>/<category>'                          => 'lot/category',
-                '/<type:(bankrupt|arrest)>/<category>/<subcategory>'            => 'lot/subcategory',
-                '/<type:(bankrupt|arrest)>/<category>/<subcategory>/<id:\d+>'   => 'lot/lot_page',
-                '/<type:(bankrupt|arrest)>/<category>/<subcategory>/<region>'   => 'lot/region',
+                '/<type:(bankrupt|arrest)>/<category>'                          => 'lot/search',
+                '/<type:(bankrupt|arrest)>/<category>/<subcategory>'            => 'lot/search',
+                '/<type:(bankrupt|arrest)>/<category>/<subcategory>/<id:\d+>'   => 'lot/page',
+                '/<type:(bankrupt|arrest)>/<category>/<subcategory>/<region>'   => 'lot/search',
             ]
         ],
         'assetManager' => [

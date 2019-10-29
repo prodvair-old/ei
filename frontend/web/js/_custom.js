@@ -37,5 +37,11 @@ $(document).ready(function() {
             console.log('fail');
         })
         return false;
-    })
+    });
+
+    if (lotType == 'arrest') {
+        $('.bankrupt-type').hide();
+    } else {
+        $('.bankrupt-type').show();
+    }
 })

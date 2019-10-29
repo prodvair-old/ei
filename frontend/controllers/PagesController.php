@@ -86,7 +86,7 @@ class PagesController extends Controller
     {
         return $this->render('faq');
     }
-    public function actionFitemap()
+    public function actionSitemap()
     {
         return $this->render('sitemap');
     }

@@ -18,29 +18,52 @@ use common\models\Query\Regions;
 use common\models\Query\Bankrupt\TradePlace;
 
 $this->title = Yii::$app->params['title'];
-$this->params['breadcrumbs'][] = [
-    'label' => ' Имущество должников',
-    'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-    'url' => ["/$type"]
-];
+$this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
-$lotsCategory = LotsCategory::find()->orderBy('id ASC')->all();
-// switch ($type) {
-//     case 'bankrupt':
-//             foreach ($lotsCategory->bankrupt_categorys as $key => $value) {
-//                 $lotsSubcategory[] = [$key => $value['name']];
-//             }
-//         break;
-//     case 'bankrupt':
-//             foreach ($lotsCategory->arrest_categorys as $key => $value) {
-//                 $lotsSubcategory[] = [$key => $value['name']];
-//             }
-//         break;
-//     default:
-//         # code...
-//         break;
-// }
+$lotsSubcategory[0] = 'Все подкатегории';
+$lotsCategory[0] = ['id'=>0, 'name'=>'Все категории'];
+$subcategoryCheck = true;
+
+switch ($type) {
+    case 'bankrupt':
+            $lotsCategory = LotsCategory::find()->where(['not', ['bankrupt_categorys' => null]])->orderBy('id ASC')->all();
+        break;
+    case 'arrest':
+            $lotsCategory = LotsCategory::find()->where(['not', ['arrest_categorys' => null]])->orderBy('id ASC')->all();
+        break;
+}
+
+if ($queryCategory != '0') {
+    switch ($type) {
+        case 'bankrupt':
+                $lotsCategory = LotsCategory::find()->where(['not', ['bankrupt_categorys' => null]])->orderBy('id ASC')->all();
+                $category = LotsCategory::findOne($queryCategory);
+                if ($category->bankrupt_categorys != null) {
+                    $subcategoryCheck = false;
+                    foreach ($category->bankrupt_categorys as $key => $value) {
+                        $lotsSubcategory[$key] = $value['name'];
+                    }
+                }
+            break;
+        case 'arrest':
+                $lotsCategory = LotsCategory::find()->where(['not', ['arrest_categorys' => null]])->orderBy('id ASC')->all();
+                $category = LotsCategory::findOne($queryCategory);
+                if ($category->arrest_categorys != null) {
+                    $subcategoryCheck = false;
+                    foreach ($category->arrest_categorys as $key => $value) {
+                        $lotsSubcategory[$key] = $value['name'];
+                    }
+                }
+            break;
+    }
+}
+
 ?>
+
+<script>
+    var lotType = '<?=$type?>',
+        categorySelected = '<?=$queryCategory?>';
+</script>
 
 <section class="page-wrapper page-result pb-0">
 			
@@ -50,7 +73,7 @@ $lotsCategory = LotsCategory::find()->orderBy('id ASC')->all();
         
             <div class="row gap-15 align-items-center">
             
-                <div class="col-12 col-md-7">
+                <div class="col-12">
                     
                     <nav aria-label="breadcrumb">
                         <!-- <ol class="breadcrumb"> -->
@@ -80,7 +103,7 @@ $lotsCategory = LotsCategory::find()->orderBy('id ASC')->all();
             
             <div class="col-12 col-lg-4">
 
-                <?php $form = ActiveForm::begin(['id' => 'search-lot-form']); ?>
+                <?php $form = ActiveForm::begin(['id' => 'search-lot-form', 'action'=>$url, 'method' => 'GET']); ?>
 
                 <aside class="sidebar-wrapper pv">
                 
@@ -96,7 +119,7 @@ $lotsCategory = LotsCategory::find()->orderBy('id ASC')->all();
                                             'bankrupt' => 'Банкротное имущество',
                                             'arrest' => 'Арестованное имущество',
                                         ], [
-                                            'class'=>'chosen-the-basic form-control form-control-sm', 
+                                            'class'=>'chosen-type-select form-control form-control-sm', 
                                             'data-placeholder'=>'Выберите тип лота', 
                                             'tabindex'=>'2',
                                             'options' => [
@@ -111,13 +134,26 @@ $lotsCategory = LotsCategory::find()->orderBy('id ASC')->all();
                                     <?=$form->field($model, 'category')->dropDownList(
                                             ArrayHelper::map($lotsCategory, 'id', 'name'),
                                         [
-                                            'class'=>'chosen-the-basic form-control form-control-sm', 
+                                            'class'=>'chosen-category-select form-control form-control-sm', 
                                             'data-placeholder'=>'Все категории', 
-                                            'tabindex'=>'2',
-                                            'options' => [
-                                                $category => ['Selected' => true]
-                                            ]])
+                                            'tabindex'=>'2'
+                                        ])
                                         ->label('Категория');?>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="col-inner">
+                                    <?=$form->field($model, 'subCategory')->dropDownList(
+                                            $lotsSubcategory,
+                                        [
+                                            'class'=>'chosen-the-basic subcategory-load form-control form-control-sm', 
+                                            'data-placeholder'=>'Все подкатегории', 
+                                            'disabled' => $subcategoryCheck,
+                                            'multiple' => true,
+                                            'tabindex'=>'2'
+                                        ])
+                                        ->label('Подкатегория');?>
                                 </div>
                             </div>
                             
@@ -168,7 +204,7 @@ $lotsCategory = LotsCategory::find()->orderBy('id ASC')->all();
                         
                     </div>
                     
-                    <div class="sidebar-box">
+                    <div class="sidebar-box bankrupt-type">
                     
                         <div class="box-title"><h5>Тип торгов</h5></div>
                         
@@ -194,7 +230,7 @@ $lotsCategory = LotsCategory::find()->orderBy('id ASC')->all();
                         
                     </div>
 
-                    <div class="sidebar-box">
+                    <div class="sidebar-box bankrupt-type">
                     
                         <div class="box-title"><h5>Торговые площадки</h5></div>
                         
@@ -250,7 +286,7 @@ $lotsCategory = LotsCategory::find()->orderBy('id ASC')->all();
                             <div class="d-flex align-items-center sort-item">
                                 
                                 <label class="sort-label d-none d-sm-flex">Сортировка по:</label>
-                                <?php $form = ActiveForm::begin(['id' => 'sort-lot-form']); ?>
+                                <?php $form = ActiveForm::begin(['id' => 'sort-lot-form', 'method' => 'POST']); ?>
                                 <div class="sort-form">
                                     <?=$form->field($modelSort, 'sortBy')->dropDownList([
                                             'nameASC'   =>'Название от А до Я',
@@ -260,7 +296,7 @@ $lotsCategory = LotsCategory::find()->orderBy('id ASC')->all();
                                             'priceDESC' =>'Цена по убыванию',
                                             'priceASC'  =>'Цена по возрастанию'
                                         ],[
-                                            'class'=>'chosen-the-basic form-control', 
+                                            'class'=>'chosen-sort-select form-control sortSelect', 
                                             'data-placeholder'=>'Сортировка по', 
                                             'tabindex'=>'2',
                                             'options' => [
@@ -272,7 +308,7 @@ $lotsCategory = LotsCategory::find()->orderBy('id ASC')->all();
                                 
                             </div>
                         </div>
-                        <div class="sort-box">
+                        <!-- <div class="sort-box">
                             <div class="d-flex align-items-center sort-item">
                                 <label class="sort-label d-none d-sm-flex">View as:</label>
                                 <ul class="sort-nav">
@@ -280,7 +316,7 @@ $lotsCategory = LotsCategory::find()->orderBy('id ASC')->all();
                                     <li><a href="#" class="active"><i class="fas fa-th-list"></i></a></li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     
                     <div class="tour-long-item-wrapper-01">
@@ -294,7 +330,11 @@ $lotsCategory = LotsCategory::find()->orderBy('id ASC')->all();
                             <div class="row align-items-center text-center text-lg-left">
                             
                                 <div class="col-12 col-lg-5">
-                                    Выведено от <?=$offset+1?> до <?=$limit?> лотов. Всего <?=$count?>.
+                                    <? if (count($lots) > 0) {?>
+                                        Выведено от <?= $offset+1 ?> до <?= $offset + count($lots)?> лотов. Всего <?=$count?>.
+                                    <? } else { ?>
+                                        Лотов не найдено
+                                    <? } ?>
                                 </div>
                                 
                                 <div class="col-12 col-lg-7">

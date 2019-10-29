@@ -31,30 +31,6 @@ class LotsArrest extends ActiveRecord
                 return 'arrest/'.$value->translit_name.'/'.$value->arrest_categorys[$this->lotPropertyTypeId]['translit'].'/'.$this->lotId;
             }
         }
-        // $categorys = explode(';',$this->lotPropertyTypeName);
-
-        // $converter = array(
-        //     'а' => 'a',    'б' => 'b',    'в' => 'v',    'г' => 'g',    'д' => 'd',
-        //     'е' => 'e',    'ё' => 'e',    'ж' => 'zh',   'з' => 'z',    'и' => 'i',
-        //     'й' => 'y',    'к' => 'k',    'л' => 'l',    'м' => 'm',    'н' => 'n',
-        //     'о' => 'o',    'п' => 'p',    'р' => 'r',    'с' => 's',    'т' => 't',
-        //     'у' => 'u',    'ф' => 'f',    'х' => 'h',    'ц' => 'c',    'ч' => 'ch',
-        //     'ш' => 'sh',   'щ' => 'sch',  'ь' => '',     'ы' => 'y',    'ъ' => '',
-        //     'э' => 'e',    'ю' => 'yu',   'я' => 'ya',   '(' => '',     ')' => '',
-        //     ',' => '',     '.' => '',     '-' => '',     ';' => '/',
-        // );
-
-        // $category = mb_strtolower($categorys[0]);
-        // $category = strtr($category, $converter);
-        // $category = mb_ereg_replace('[^-0-9a-z]', '-', $category);
-        // $category = mb_ereg_replace('[-]+', '-', $category);
-        // $category = trim($category, '-');
-        // $subCategory = mb_strtolower($categorys[1]);
-        // $subCategory = strtr($subCategory, $converter);
-        // $subCategory = mb_ereg_replace('[^-0-9a-z]', '-', $subCategory);
-        // $subCategory = mb_ereg_replace('[-]+', '-', $subCategory);
-        // $subCategory = trim($subCategory, '-');
-        // return "arrest/$category/$subCategory/".$this->lotId;
     }
     public function getLot_timepublication() 
     {
@@ -122,7 +98,7 @@ class LotsArrest extends ActiveRecord
             'lot_address'       => 'lotKladrLocationName',
             // Другие поля для поиска
             'lot_title'         => 'lotTitle',
-            'lot_images'        => 'LotImage',
+            'lot_images'        => 'lotImage',
             'lot_publication'   => 'lotPublication',
             'lot_date_end'      => 'lotDateEnd',
             'lot_date_start'    => 'lotDateStart',

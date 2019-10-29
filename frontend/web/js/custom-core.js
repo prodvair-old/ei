@@ -102,8 +102,44 @@ jQuery(function($) {
 	 
 	$(".chosen-the-basic").chosen({disable_search_threshold: 10}); 
 	$(".chosen-no-search").chosen({disable_search: true}); 
+	$(".chosen-sort-select").chosen({disable_search_threshold: 10}).change( function() {
+        $("#sort-lot-form").submit();
+	});
 	
+	$(".chosen-type-select").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, type) {
+		lotType = type.selected;
+		if (lotType == 'arrest') {
+			$('.bankrupt-type').hide();
+		} else {
+			$('.bankrupt-type').show();
+		}
+		$("#searchlot-category").load("/load-category", {'get': 'category', 'type': lotType}, function(){
+			$("#searchlot-category").trigger("chosen:updated");
+		});
+		if (categorySelected == 0) {
+			$('#searchlot-subcategory').prop('disabled', true).trigger("chosen:updated");
+		} else {
+			console.log({'id': categorySelected, 'type': lotType});
+			$("#searchlot-subcategory").load("/load-category", {'id': categorySelected, 'type': lotType}, function(){
+				$("#searchlot-subcategory").prop('disabled', false).trigger("chosen:updated");
+			});
+		}
+    });
 	
+	$(".chosen-category-select").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, id) {
+		if (id.selected == 0) {
+			$('#searchlot-subcategory').prop('disabled', true).trigger("chosen:updated");
+		} else {
+			$("#searchlot-subcategory").load("/load-category", {'id': id.selected, 'type': lotType}, function(data){
+				if (data == '<option value="0">Все подкатегории</option>') {
+					$("#searchlot-subcategory").prop('disabled', true).trigger("chosen:updated");	
+				} else {
+					$("#searchlot-subcategory").prop('disabled', false).trigger("chosen:updated");
+				}
+			});
+		}
+		
+    });
 	
 	/**
 	 * Input Spinner
@@ -481,7 +517,7 @@ jQuery(function($) {
 		return false;
 	});
 	
-	backToTop.tooltip('show');
+	// backToTop.tooltip('show');
 	
 
 });
