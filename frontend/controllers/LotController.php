@@ -244,7 +244,6 @@ class LotController extends Controller
         // Фильтрация лотов <-End 
 
         // Хлебные крошки Start->
-
         Yii::$app->params['breadcrumbs'][] = [
             'label' => ' '.$titleType,
             'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
@@ -278,12 +277,52 @@ class LotController extends Controller
     public function actionPage($type, $category, $subcategory, $id)
     {
         // Проверка ссылок ЧПУ и подставление типа лотов Strat->
+        if (!empty($items = LotsCategory::find()->where(['translit_name'=>$category])->one())) {
+            $queryCategory = $items->id;
+            $titleCategory = $items->name;
+        } else {
+            Yii::$app->response->statusCode = 404;
+            throw new \yii\web\NotFoundHttpException;
+        }
+
         switch ($type) {
             case 'bankrupt':
-                $lots = Lots::findOne(['lot_id'=>$id]);
+            $lots = Lots::findOne($id);
+
+                $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Банкротное имущество';
+
+                if ($subcategory != null) {
+                    foreach ($items->bankrupt_categorys_translit as $key => $value) {
+                        if ($key == $subcategory) {
+                            $querySubcategory = $value['id'];    
+                            $titleSubcategory = $value['name'];
+                        }
+                    }
+                    if (empty($querySubcategory)) {
+                        Yii::$app->response->statusCode = 404;
+                        throw new \yii\web\NotFoundHttpException;
+                    }
+                }
                 break;
             case 'arrest':
-                $lots = LotsArrest::findOne(['lotId'=>$id]);
+                $lots = LotsArrest::findOne($id);
+
+                $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Арестованное имущество';
+
+                if ($subcategory != null) {
+                    foreach ($items->arrest_categorys_translit as $key => $value) {
+                        if ($key == $subcategory) {
+                            $querySubcategory = $value['id'];
+                            $titleSubcategory = $value['name'];
+                        }
+                    }
+                    if (empty($querySubcategory)) {
+                        Yii::$app->response->statusCode = 404;
+                        throw new \yii\web\NotFoundHttpException;
+                    }
+                }
                 break;
             default:
                 Yii::$app->response->statusCode = 404;
@@ -297,11 +336,34 @@ class LotController extends Controller
 
         Yii::$app->params['description'] = $metaData->mdDescription;
         Yii::$app->params['text'] = $metaData->mdText;
-        Yii::$app->params['title'] = $metaData->mdTitle;
-        Yii::$app->params['h1'] = $metaData->mdH1;
+        Yii::$app->params['title'] = ($metaData->mdTitle)? $metaData->mdTitle : $lots->lotTitle ;
+        Yii::$app->params['h1'] = ($metaData->mdH1)? $metaData->mdH1 : $lots->lotTitle ;;
         // Мета данные <-End 
 
-        return $this->render('page');
+        // Хлебные крошки Start->
+        Yii::$app->params['breadcrumbs'][] = [
+            'label' => ' '.$titleType,
+            'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
+            'url' => ["/$type"]
+        ];
+        Yii::$app->params['breadcrumbs'][] = [
+            'label' => ' '.$titleCategory,
+            'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
+            'url' => ["/$type/$category"]
+        ];
+        Yii::$app->params['breadcrumbs'][] = [
+            'label' => ' '.$titleSubcategory,
+            'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
+            'url' => ["/$type/$category/$subcategory"]
+        ];
+        Yii::$app->params['breadcrumbs'][] = [
+            'label' => ' '.Yii::$app->params['h1'],
+            'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
+            'url' => ["$type/$category/$subcategory/$id"]
+        ];
+        // Хлебные крошки <-End
+
+        return $this->render('page', ['lot'=>$lots, 'type'=>$type]);
     }
     public function actionLoad_category()
     {
@@ -349,6 +411,7 @@ class LotController extends Controller
                     return ['error'=>'не задан параметр type'];
                 break;
         }
+        
         return $lotsSubcategory;
     }
 }

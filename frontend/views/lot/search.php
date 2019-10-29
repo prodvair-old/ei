@@ -57,13 +57,10 @@ if ($queryCategory != '0') {
             break;
     }
 }
-
+$this->registerJsVar( 'lotType', $type, $position = yii\web\View::POS_HEAD );
+$this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\View::POS_HEAD );
 ?>
 
-<script>
-    var lotType = '<?=$type?>',
-        categorySelected = '<?=$queryCategory?>';
-</script>
 
 <section class="page-wrapper page-result pb-0">
 			
@@ -76,16 +73,14 @@ if ($queryCategory != '0') {
                 <div class="col-12">
                     
                     <nav aria-label="breadcrumb">
-                        <!-- <ol class="breadcrumb"> -->
-                            <?= Breadcrumbs::widget([
-                                'itemTemplate' => '<li class="breadcrumb-item">{link}</li>',
-                                'encodeLabels' => false,
-                                'tag' => 'ol',
-                                'activeItemTemplate' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-                                'homeLink' => ['label' => '<i class="fas fa-home"></i>', 'url' => '/'],
-                                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                            ]) ?>
-                        <!-- </ol> -->
+                        <?= Breadcrumbs::widget([
+                            'itemTemplate' => '<li class="breadcrumb-item">{link}</li>',
+                            'encodeLabels' => false,
+                            'tag' => 'ol',
+                            'activeItemTemplate' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
+                            'homeLink' => ['label' => '<i class="fas fa-home"></i>', 'url' => '/'],
+                            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                        ]) ?>
                     </nav>
                     
                     <h4 class="mt-0 line-125"><?=Yii::$app->params['h1']?></h4>
