@@ -46,7 +46,7 @@ class Lots extends ActiveRecord
         $value = Value::param($this->torgy->state);
         return $value['value'];
     }
-    public function getLotPublication() 
+    public function getLot_timepublication() 
     {
         return $this->torgy->timepublication;
     }
@@ -105,10 +105,6 @@ class Lots extends ActiveRecord
     public function getLotEtpId() 
     {
         return $this->torgy->idtradeplace;
-    }
-    public function getLotCadastre() 
-    {
-        return $this->cadastrelist->regionid;
     }
     public function getLotSro() 
     {
@@ -306,6 +302,18 @@ class Lots extends ActiveRecord
         } else {
             return ucwords(mb_strtolower($this->torgy->case->bnkr->company->postaddress, 'UTF-8'));
         }
+    }
+    public function getLotCadastre() 
+    {
+        $kadastr_check = preg_match("/[0-9]{2}:[0-9]{2}:[0-9]{6,7}:[0-9]{1,35}/", $this->description, $kadastr);
+        return ($kadastr_check)? $kadastr[0] : false;
+    }
+    public function getLotVin() 
+    {
+        $vin_text = str_replace('VIN', '',$this->description);
+        $vin_check = preg_match("/[ABCDEFGHJKLMNPRSTUVWXYZ,0-9]{17}/", $vin_text, $vin_t);
+        $vin_c = preg_match("/[\w\s\d]+/u", $vin_t[0], $vin);
+        return ($vin_check)? $vin[0] : false;
     }
     // Атрибуты для поиска
     public function attributeLabels() 

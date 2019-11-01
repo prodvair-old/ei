@@ -88,10 +88,12 @@ class LotController extends Controller
         // Проверка ссылок ЧПУ и подставление типа лотов Strat->
         switch ($type) {
             case 'bankrupt':
-                $lots = LotsBankrupt::find()->limit(10)->orderBy('lot_image DESC, lot_timepublication DESC')->all();
+                $lots = LotsBankrupt::find()->limit(6)->orderBy('lot_image DESC, lot_timepublication DESC')->all();
+                $title = 'Банкротное имущество';
                 break;
             case 'arrest':
-                $lots = LotsArrest::find()->limit(10)->orderBy('lot_image DESC, lot_timepublication DESC')->all();
+                $lots = LotsArrest::find()->joinWith('torgs')->limit(6)->orderBy('torgs."trgPublished" DESC')->all();
+                $title = 'Арестованное имущество';
                 break;
             default:
                 Yii::$app->response->statusCode = 404;
@@ -105,8 +107,8 @@ class LotController extends Controller
 
         Yii::$app->params['description'] = $metaData->mdDescription;
         Yii::$app->params['text'] = $metaData->mdText;
-        Yii::$app->params['title'] = $metaData->mdTitle;
-        Yii::$app->params['h1'] = $metaData->mdH1;
+        Yii::$app->params['title'] = ($metaData->mdTitle)? $metaData->mdTitle : $title;
+        Yii::$app->params['h1'] = ($metaData->mdH1)? $metaData->mdH1 : $title;
         // Мета данные <-End 
 
         return $this->render('index', compact('type', 'lots'));
@@ -137,8 +139,8 @@ class LotController extends Controller
         $modelSort->type = $type;
         switch ($type) {
             case 'bankrupt':
-                $lotsQuery = LotsBankrupt::find();
-                $lotsPrice = LotsBankrupt::find();
+                $lotsQuery = LotsBankrupt::find()->joinWith('category');
+                $lotsPrice = LotsBankrupt::find()->joinWith('category');
 
                 $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
                 $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Банкротное имущество';
@@ -160,8 +162,8 @@ class LotController extends Controller
                 }
                 break;
             case 'arrest':
-                $lotsQuery = LotsArrest::find();
-                $lotsPrice = LotsArrest::find();
+                $lotsQuery = LotsArrest::find()->joinWith('torgs');
+                $lotsPrice = LotsArrest::find()->joinWith('torgs');
 
                 $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
                 $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Арестованное имущество';
@@ -287,7 +289,7 @@ class LotController extends Controller
 
         switch ($type) {
             case 'bankrupt':
-            $lots = Lots::findOne($id);
+                $lots = Lots::findOne($id);
 
                 $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
                 $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Банкротное имущество';
@@ -363,7 +365,7 @@ class LotController extends Controller
         ];
         // Хлебные крошки <-End
 
-        return $this->render('page', ['lot'=>$lots, 'type'=>$type]);
+        return $this->render("page-$type", ['lot'=>$lots, 'type'=>$type]);
     }
     public function actionLoad_category()
     {

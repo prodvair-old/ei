@@ -4,382 +4,448 @@
 
 use yii\helpers\Url;
 use frontend\components\LotBlock;
+use frontend\components\SearchForm;
+use frontend\components\LotDetailSidebar;
 use common\models\Query\Settings;
-use yii\widgets\Breadcrumbs;
+
+
 
 $this->title = Yii::$app->params['title'];
-$this->params['breadcrumbs'][] = [
-    'label' => ' Имущество должников',
-    'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-    'url' => ["/$type"]
-];
 ?>
 
-<section class="page-wrapper page-result pb-0">
-			
-    <div class="page-title bg-light mb-0">
+<div class="hero-banner hero-banner-01 overlay-light opacity-2" style="background-image:url('img/image-bg/19-2.jpg'); background-position: bottom  center;">
+        
+    <div class="overlay-holder bottom"></div>	
+    
+    <div class="hero-inner">
+    
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4"><h1 class="main__title"><?=Yii::$app->params['h1']?></h1></div>
+                <div class="col-lg-8"><p class="font-lg spacing-1"><?=Yii::$app->params['text']?></p></div>
+            </div>
+            
+            <?= SearchForm::widget(['type' => $type])?>
+
+        </div>
+        
+    </div>
+    
+</div>
+
+<section class="pt-70 pb-0">
+
+    <div class="container">
+    
+        <div class="row cols-1 cols-lg-3 gap-20 gap-lg-40">
+            
+            <div class="col">
+                <div class="featured-icon-horizontal-01 clearfix">
+                    <div class="icon-font">
+                        <i class="elegent-icon-gift_alt text-primary"></i>
+                    </div>
+                    <div class="content">
+                        <h6>We ﬁnd better deals</h6>
+                        <p class="text-muted">Considered an invitation do introduced sufficient understood instrument it. </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col">
+                <div class="featured-icon-horizontal-01 clearfix">
+                    <div class="icon-font">
+                        <i class="elegent-icon-wallet text-primary"></i>
+                    </div>
+                    <div class="content">
+                        <h6>Best price guaranteed</h6>
+                        <p class="text-muted">Discovery sweetness principle discourse shameless bed one excellent.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col">
+                <div class="featured-icon-horizontal-01 clearfix">
+                    <div class="icon-font">
+                        <i class="elegent-icon-heart_alt text-primary"></i>
+                    </div>
+                    <div class="content">
+                        <h6>Travellers love us</h6>
+                        <p class="text-muted">Sentiments of surrounded friendship dispatched connection john shed hope.</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="clear mb-100"></div>
+        
+        <div class="section-title">
+            <h2><span><span>Top</span> Destinations</span></h2>
+        </div>
+        
+        <div class="row cols-1 cols-sm-2 cols-lg-4 gap-2 mb-20">
+        
+            <div class="col">
+            
+                <figure class="destination-grid-item-01">
+                    <a href="#">
+                        <div class="image">
+                            <img src="img/image-destination/01.jpg"alt="image"/>
+                        </div>
+                        <figcaption class="content">
+                            <h5>Bangkok</h5>
+                            <p class="text-muted">25 Tours</p>
+                        </figcaption>
+                    </a>
+                </figure>
+                
+            </div>
+            
+            <div class="col">
+            
+                <figure class="destination-grid-item-01">
+                    <a href="#">
+                        <div class="image">
+                            <img src="img/image-destination/02.jpg"alt="image"/>
+                        </div>
+                        <figcaption class="content">
+                            <h5>Hong Kong</h5>
+                            <p class="text-muted">36 Tours</p>
+                        </figcaption>
+                    </a>
+                </figure>
+                
+            </div>
+            
+            <div class="col">
+            
+                <figure class="destination-grid-item-01">
+                    <a href="#">
+                        <div class="image">
+                            <img src="img/image-destination/03.jpg"alt="image"/>
+                        </div>
+                        <figcaption class="content">
+                            <h5>London</h5>
+                            <p class="text-muted">40 Tours</p>
+                        </figcaption>
+                    </a>
+                </figure>
+                
+            </div>
+            
+            <div class="col">
+            
+                <figure class="destination-grid-item-01">
+                    <a href="#">
+                        <div class="image">
+                            <img src="img/image-destination/04.jpg"alt="image"/>
+                        </div>
+                        <figcaption class="content">
+                            <h5>New York</h5>
+                            <p class="text-muted">10 Tours</p>
+                        </figcaption>
+                    </a>
+                </figure>
+                
+            </div>
+            
+        </div>
+        
+        <div class="clear mb-100"></div>
+        
+        <div class="section-title">
+            <h2><span><span>Best</span> Tour Packages</span></h2>
+        </div>
+        
+        <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
+
+            <?foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot]); }?>
+            
+        </div>
+        
+    </div>
+    
+</section>
+
+<div class="bg-white-gradient-top-bottom pt-0 mt-40">
+
+    <div class="bg-gradient-top"></div>
+    <div class="bg-gradient-bottom"></div>
+    
+    <div class="bg-image pv-100 overlay-relative" style="background-image:url('img/image-bg/44.jpg');">
+    
+        <div class="overlay-holder overlay-white opacity-8"></div>
     
         <div class="container">
         
-            <div class="row gap-15 align-items-center">
-            
-                <div class="col-12 col-md-7">
-                    
-                    <nav aria-label="breadcrumb">
-                        <!-- <ol class="breadcrumb"> -->
-                            <?= Breadcrumbs::widget([
-                                'itemTemplate' => '<li class="breadcrumb-item">{link}</li>',
-                                'encodeLabels' => false,
-                                'tag' => 'ol',
-                                'activeItemTemplate' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-                                'homeLink' => ['label' => '<i class="fas fa-home"></i>', 'url' => '/'],
-                                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                            ]) ?>
-                        <!-- </ol> -->
-                    </nav>
-                    
-                    <h4 class="mt-0 line-125"><?=Yii::$app->params['h1']?></h4>
-                    
+            <div class="testimonial-grid-slick-carousel testimonial-grid-wrapper">
+        
+                <div class="testimonial-grid-arrow">
+                    <ul>
+                        <li class="testimonial-grid-prev"><button><span>previuos</span></button></li>
+                        <li class="testimonial-grid-next"><button><span>next</span></button></li>
+                    </ul>
                 </div>
-                
+
+                <div class="slick-carousel-wrapper gap-50">
+            
+                    <div class="slick-carousel-outer">
+                    
+                        <div class="slick-carousel-inner">
+
+                            <div class="slick-testimonial-grid-arrows">
+                                
+                                <div class="slick-item">
+                                
+                                    <div class="testimonial-grid-01">
+                                            
+                                        <div class="content">
+                                        
+                                            <p class="saying">Real sold my in call. Invitation on an advantages collecting. But event old above shy bed noisy. Had sister see wooded favour income has. Stuff rapid since hence.</p>
+                                            
+                                        </div>
+                                        
+                                        <div class="man clearfix">
+                                        
+                                            <div class="image">
+                                                <img src="img/image-man/01.jpg" alt="img" class="img-circle" />
+                                            </div>
+                                            
+                                            <div class="texting">
+                                                <h5>Ange Ermolova</h5>
+                                                <p class="text-muted testimonial-cite">Travel on July 2016</p>
+                                            </div>
+                                            
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
+                                
+                                <div class="slick-item">
+                                    
+                                    <div class="testimonial-grid-01">
+                                            
+                                        <div class="content">
+                                        
+                                            <p class="saying">Greatly hearted has who believe. Sir margaret drawings repeated recurred exercise laughing may you. Cheerful but whatever ladyship disposed yet judgment.</p>
+                                            
+                                        </div>
+                                        
+                                        <div class="man clearfix">
+                                        
+                                            <div class="image">
+                                                <img src="img/image-man/02.jpg" alt="img" class="img-circle" />
+                                            </div>
+                                            
+                                            <div class="texting">
+                                                <h5>Christine Gateau</h5>
+                                                <p class="text-muted testimonial-cite">Travel on November 2016</p>
+                                            </div>
+                                            
+                                        </div>
+
+                                    </div>
+                                    
+                                    
+                                </div>
+                                
+                                <div class="slick-item">
+                                    
+                                    <div class="testimonial-grid-01">
+                                            
+                                        <div class="content">
+                                        
+                                            <p class="saying">Ask especially collecting terminated may son expression. Extremely eagerness principle estimable cannot going laughing may you about water defer.</p>
+                                            
+                                        </div>
+                                        
+                                        <div class="man clearfix">
+                                        
+                                            <div class="image">
+                                                <img src="img/image-man/03.jpg" alt="img" class="img-circle" />
+                                            </div>
+                                            
+                                            <div class="texting">
+                                                <h5>Suttira Ketkaew</h5>
+                                                <p class="text-muted testimonial-cite">Travel on January 2017</p>
+                                            </div>
+                                            
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
+                                
+                                <div class="slick-item">
+                                    
+                                    <div class="testimonial-grid-01">
+                                            
+                                        <div class="content">
+                                        
+                                            <p class="saying">Greatly hearted has who believe. Sir margaret drawings repeated recurred exercise laughing may you. Cheerful but whatever ladyship disposed yet judgment.</p>
+                                            
+                                        </div>
+                                        
+                                        <div class="man clearfix">
+                                        
+                                            <div class="image">
+                                                <img src="img/image-man/02.jpg" alt="img" class="img-circle" />
+                                            </div>
+                                            
+                                            <div class="texting">
+                                                <h5>Christine Gateau</h5>
+                                                <p class="text-muted testimonial-cite">Travel on November 2016</p>
+                                            </div>
+                                            
+                                        </div>
+
+                                    </div>
+                                    
+                                    
+                                </div>
+                                
+                                <div class="slick-item">
+                                    
+                                    <div class="testimonial-grid-01">
+                                            
+                                        <div class="content">
+                                        
+                                            <p class="saying">Ask especially collecting terminated may son expression. Extremely eagerness principle estimable cannot going laughing may you about water defer.</p>
+                                            
+                                        </div>
+                                        
+                                        <div class="man clearfix">
+                                        
+                                            <div class="image">
+                                                <img src="img/image-man/03.jpg" alt="img" class="img-circle" />
+                                            </div>
+                                            
+                                            <div class="texting">
+                                                <h5>Suttira Ketkaew</h5>
+                                                <p class="text-muted testimonial-cite">Travel on January 2017</p>
+                                            </div>
+                                            
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
+                                
+                                <div class="slick-item">
+                                
+                                    <div class="testimonial-grid-01">
+                                            
+                                        <div class="content">
+                                        
+                                            <p class="saying">Real sold my in call. Invitation on an advantages collecting. But event old above shy bed noisy. Had sister see wooded favour income has. Stuff rapid since hence.</p>
+                                            
+                                        </div>
+                                        
+                                        <div class="man clearfix">
+                                        
+                                            <div class="image">
+                                                <img src="img/image-man/01.jpg" alt="img" class="img-circle" />
+                                            </div>
+                                            
+                                            <div class="texting">
+                                                <h5>Ange Ermolova</h5>
+                                                <p class="text-muted testimonial-cite">Travel on July 2016</p>
+                                            </div>
+                                            
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
+                                
+                            </div>
+                        
+                        </div>
+                        
+                    </div>
+
+                </div>
+
             </div>
-    
+            
         </div>
         
     </div>
     
+    <div class="overlay-relative overlay-gradient gradient-white set-height-01">
+        <div class="overlay-holder bottom"></div>
+    </div>
+
+</div>
+
+<section class="pt-40 pb-100">
+
     <div class="container">
-
-        <div class="row equal-height gap-30 gap-lg-40">
+        
+        <div class="section-title">
+            <h2><span><span>Travel</span> Articles</span></h2>
+        </div>
+        
+        <div class="post-grid-wrapper-01">
+        
+            <div class="row equal-height cols-1 cols-sm-2 cols-md-3 gap-10 gap-md-20 mb-40">
             
-            <div class="col-12 col-lg-4">
-
-                <aside class="sidebar-wrapper pv">
+                <div class="col-12 col-md-4">
+                    
+                    <article class="post-grid-01">
+                    
+                        <div class="image">
+                            <img src="img/image-regular/07.jpg" alt="img" />
+                        </div>
+                        <div class="content">
+                            <span class="post-date text-muted">Mar 15, 2017</span>
+                            <h4>Raising say express had chiefly detract</h4>
+                            <a href="#" class="h6">Read this <i class="elegent-icon-arrow_right"></i></a>
+                        </div>
+                        
+                    </article>
+                    
+                </div>
                 
-                    <div class="secondary-search-box mb-30">
+                <div class="col">
                     
-                        <h4 class="">Поиск</h4>
-                        
-                        <form>
-                        
-                            <div class="row">
-                            
-                                <div class="col-12">
-                                    <div class="col-inner">
-                                        <div class="form-group">
-                                            <label>Тип лота</label>
-                                            <select class="chosen-the-basic form-control form-control-sm" placeholder="Выберите тип лота" tabindex="2">
-                                                <option selected>Банкротное иммущество</option>
-                                                <option>Аррестованное иммущество</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-12">
-                                    <div class="col-inner">
-                                        <div class="form-group">
-                                            <label>Категория</label>
-                                            <select class="chosen-the-basic form-control form-control-sm" placeholder="Все категории" tabindex="2">
-                                                <option></option>
-                                                <option>All</option>
-                                                <option>Asia</option>
-                                                <option>Europe</option>
-                                                <option>Africa</option>
-                                                <option>America</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-12">
-                                    <div class="col-inner">
-                                        <div class="form-group">
-                                            <label>Регион</label>
-                                            <select class="chosen-the-basic form-control form-control-sm" placeholder="Все Регионы" tabindex="2">
-                                                <option></option>
-                                                <option>All</option>
-                                                <option>Asia</option>
-                                                <option>Europe</option>
-                                                <option>Africa</option>
-                                                <option>America</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-12">
-                                    <div class="col-inner ph-20 pv-15">
-                                        <a href="#" class="btn btn-primary btn-block"><i class="ion-android-search"></i> search</a>
-                                    </div>
-                                </div>
-                            
-                            </div>
-                        
-                        </form>
+                    <article class="post-grid-01">
                     
-                    </div>
-                    
-                    <div class="sidebar-box">
-                    
-                        <div class="box-title"><h5>Price Range</h5></div>
-                        
-                        <div class="box-content">
-                            <input id="price_range" />
+                        <div class="image">
+                            <img src="img/image-regular/08.jpg" alt="img" />
+                        </div>
+                        <div class="content">
+                            <span class="post-date text-muted">Mar 15, 2017</span>
+                            <h4>Cordially convinced incommode existence</h4>
+                            <a href="#" class="h6">Read this <i class="elegent-icon-arrow_right"></i></a>
                         </div>
                         
-                    </div>
+                    </article>
                     
-                    <div class="sidebar-box">
-                    
-                        <div class="box-title"><h5>Star Slider</h5></div>
-                        
-                        <div class="box-content">
-                            <input id="star_range" />
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="sidebar-box">
-                    
-                        <div class="box-title"><h5>Starting Point</h5></div>
-                        
-                        <div class="box-content">
-                        
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="filerStartPoint-01" name="filerStartPoint" checked>
-                                <label class="custom-control-label" for="filerStartPoint-01">Berlin <span class="text-muted font-sm">(854)</span></label>
-                            </div>
-                            
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="filerStartPoint-02" name="filerStartPoint" >
-                                <label class="custom-control-label" for="filerStartPoint-02">Paris <span class="checkbox-count">(25)</span></label>
-                            </div>
-                            
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="filerStartPoint-03" name="filerStartPoint" >
-                                <label class="custom-control-label" for="filerStartPoint-03">Munich <span class="checkbox-count">(254)</span></label>
-                            </div>
-                            
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="filerStartPoint-04" name="filerStartPoint" >
-                                <label class="custom-control-label" for="filerStartPoint-04">Lyon<span class="checkbox-count">(22)</span></label>
-                            </div>
-                            
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="filerStartPoint-05" name="filerStartPoint" >
-                                <label class="custom-control-label" for="filerStartPoint-05">Vienna  <span class="checkbox-count">(9)</span></label>
-                            </div>
-                            
-                            <div id="filerStartPointShowHide" class="collapse"> 
-                            
-                                <div class="collapse-inner">
-
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="filerStartPoint-06" name="filerStartPoint" >
-                                        <label class="custom-control-label" for="filerStartPoint-06">Toulouse <span class="checkbox-count">(3)</span></label>
-                                    </div>
-                                    
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="filerStartPoint-06" name="filerStartPoint" />
-                                        <label class="custom-control-label" for="filerStartPoint-06">Graz <span class="checkbox-count">(25)</span></label>
-                                    </div>
-                                    
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="filerStartPoint-07" name="filerStartPoint" />
-                                        <label class="custom-control-label" for="filerStartPoint-07">Linz  <span class="checkbox-count">(2)</span></label>
-                                    </div>
-
-                                </div>
-                            
-                            </div>
-                            
-                            <div class="clear mb-10"></div>
-                            
-                            <button class="btn btn-toggle btn-text-inherit text-primary text-uppercase font10 letter-spacing-2 font600 collapsed collapsed-on padding-0" type="buttom" data-toggle="collapse" data-target="#filerStartPointShowHide">Show more (+)</button>
-                            <button class="btn btn-toggle btn-text-inherit text-uppercase font10 letter-spacing-2 font600 collapsed collapsed-off padding-0" type="buttom" data-toggle="collapse" data-target="#filerStartPointShowHide">Show less (-)</button>
-                            
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="sidebar-box">
-                    
-                        <div class="box-title"><h5>Endong Point</h5></div>
-                        
-                        <div class="box-content">
-                        
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="filerEndPoint-01" name="filerEndPoint" checked>
-                                <label class="custom-control-label" for="filerEndPoint-01">Berlin <span class="text-muted font-sm">(854)</span></label>
-                            </div>
-                            
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="filerEndPoint-02" name="filerEndPoint" >
-                                <label class="custom-control-label" for="filerEndPoint-02">Paris <span class="checkbox-count">(25)</span></label>
-                            </div>
-                            
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="filerEndPoint-03" name="filerEndPoint" >
-                                <label class="custom-control-label" for="filerEndPoint-03">Munich <span class="checkbox-count">(254)</span></label>
-                            </div>
-                            
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="filerEndPoint-04" name="filerEndPoint" >
-                                <label class="custom-control-label" for="filerEndPoint-04">Lyon<span class="checkbox-count">(22)</span></label>
-                            </div>
-                            
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="filerEndPoint-05" name="filerEndPoint" >
-                                <label class="custom-control-label" for="filerEndPoint-05">Vienna  <span class="checkbox-count">(9)</span></label>
-                            </div>
-
-                            <div id="filerStartPointShowHide" class="collapse"> 
-                            
-                                <div class="collapse-inner">
-
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="filerEndPoint-06" name="filerEndPoint" />
-                                        <label class="custom-control-label" for="filerEndPoint-06">Toulouse <span class="checkbox-count">(3)</span></label>
-                                    </div>
-                                    
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="filerEndPoint-07" name="filerEndPoint" />
-                                        <label class="custom-control-label" for="filerEndPoint-07">Graz <span class="checkbox-count">(25)</span></label>
-                                    </div>
-                                    
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="filerEndPoint-08" name="filerEndPoint" />
-                                        <label class="custom-control-label" for="filerEndPoint-08">Linz <span class="checkbox-count">(2)</span></label>
-                                    </div>
-                                    
-                                </div>
-                            
-                            </div>
-                            
-                            <div class="clear mb-10"></div>
-                            
-                            <button class="btn btn-toggle btn-text-inherit text-primary text-uppercase font10 letter-spacing-2 font600 collapsed collapsed-on padding-0" type="buttom" data-toggle="collapse" data-target="#filerStartPointShowHide">Show more (+)</button>
-                            <button class="btn btn-toggle btn-text-inherit text-uppercase font10 letter-spacing-2 font600 collapsed collapsed-off padding-0" type="buttom" data-toggle="collapse" data-target="#filerStartPointShowHide">Show less (-)</button>
-                            
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="sidebar-box">
-                    
-                        <div class="box-title"><h5>Filter Select</h5></div>
-                        
-                        <div class="box-content">
-                            <div class="form-group">
-                                <select data-placeholder="Filter Select"  class="chosen-the-basic form-control" tabindex="2">
-                                    <option value=""></option>
-                                    <option value="filter-select-0">Filter Select One</option>
-                                    <option value="filter-select-1">Filter Select Two</option>
-                                    <option value="filter-select-2">Filter Select Three</option>
-                                    <option value="filter-select-3">Filter Select Four</option>
-                                    <option value="filter-select-4">Filter Select Five</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="sidebar-box">
-                    
-                        <div class="box-title"><h5>Filter Text</h5></div>
-                        
-                        <div class="box-content">
-                            <p>Park fat she nor does play deal our. Procured sex material his offering humanity laughing moderate can. Unreserved had she nay dissimilar admiration interested.</p>
-                        </div>
-                        
-                    </div>
-
-                </aside>
-
-            </div>
-            
-            <div class="col-12 col-lg-8">
+                </div>
                 
-                <div class="content-wrapper pv">
-                
-                    <div class="d-flex justify-content-between flex-row align-items-center sort-group page-result-01">
-                        <div class="sort-box">
-                            <div class="d-flex align-items-center sort-item">
-                                <label class="sort-label d-none d-sm-flex">Sort by:</label>
-                                <div class="sort-form">
-                                    <select class="chosen-the-basic form-control" tabindex="2">
-                                        <option value="sort-by-1">Name: A to Z</option>
-                                        <option value="sort-by-2">Name: Z to A</option>
-                                        <option value="sort-by-3">Price: Hight to Low</option>
-                                        <option value="sort-by-4">Price: Low to High</option>
-                                    </select>
-                                </div>
-                            </div>
+                <div class="col">
+                    
+                    <article class="post-grid-01">
+                    
+                        <div class="image">
+                            <img src="img/image-regular/09.jpg" alt="img" />
                         </div>
-                        <div class="sort-box">
-                            <div class="d-flex align-items-center sort-item">
-                                <label class="sort-label d-none d-sm-flex">View as:</label>
-                                <ul class="sort-nav">
-                                    <li><a href="#"><i class="fas fa-th"></i></a></li>
-                                    <li><a href="#" class="active"><i class="fas fa-th-list"></i></a></li>
-                                </ul>
-                            </div>
+                        <div class="content">
+                            <span class="post-date text-muted">Mar 15, 2017</span>
+                            <h4>Improving age our her cordially intention</h4>
+                            <a href="#" class="h6">Read this <i class="elegent-icon-arrow_right"></i></a>
                         </div>
-                    </div>
-                    
-                    <div class="tour-long-item-wrapper-01">
-                    
-                        <?foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot, 'type' => 'long']); }?>
                         
-                    </div>
-                    
-                    <div class="pager-wrappper mt-40">
-
-                        <div class="pager-innner">
-                        
-                            <div class="row align-items-center text-center text-lg-left">
-                            
-                                <div class="col-12 col-lg-5">
-                                    Showing reslut 1 to 15 from 248 
-                                </div>
-                                
-                                <div class="col-12 col-lg-7">
-                                    <nav class="float-lg-right mt-10 mt-lg-0">
-                                        <ul class="pagination justify-content-center justify-content-lg-left">
-                                            <li>
-                                                <a href="#" aria-label="Previous">
-                                                    <span aria-hidden="true">&laquo;</span>
-                                                </a>
-                                            </li>
-                                            <li class="active"><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                            <li><span>...</span></li>
-                                            <li><a href="#">11</a></li>
-                                            <li><a href="#">12</a></li>
-                                            <li><a href="#">13</a></li>
-                                            <li>
-                                                <a href="#" aria-label="Next">
-                                                    <span aria-hidden="true">&raquo;</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                                
-                            </div>
-                        
-                        </div>
-                    
-                    </div>
+                    </article>
                     
                 </div>
 
             </div>
-
+        
         </div>
         
     </div>
 
-</section>
+</div>

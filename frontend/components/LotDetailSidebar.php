@@ -5,10 +5,10 @@ use yii\base\Widget;
 
 class LotDetailSidebar extends Widget
 {
-    // public $lot;
+    public $lot;
 
     public function run()
     {
-        return $this->render('lotDetailSidebar');
+        return $this->render('lotDetailSidebar', ['lot'=>$this->lot]);
     }
 }

@@ -26,72 +26,7 @@ $this->title = Yii::$app->params['title'];
             </div>
             
             
-            <?= SearchForm::widget(['type' => 'small'])?>
-            <!-- <div class="search-form-main">
-                <form>
-                    <div class="from-inner">
-                        
-                        <div class="row shrink-auto-sm gap-1">
-                        
-                            <div class="col-12 col-auto">
-                                <div class="col-inner">
-                                    <div class="row cols-1 cols-sm-3 gap-1">
-                        
-                                        <div class="col">
-                                            <div class="col-inner">
-                                                <div class="form-group">
-                                                    <label>Tour Type</label>
-                                                    <select class="chosen-the-basic form-control form-control-sm" placeholder="Select one" tabindex="2">
-                                                        <option></option>
-                                                        <option>All</option>
-                                                        <option>Adventure</option>
-                                                        <option>City tour</option>
-                                                        <option>Honeymoon</option>
-                                                        <option>Cultural</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col">
-                                            <div class="col-inner">
-                                                <div class="form-group">
-                                                    <label>Destination</label>
-                                                    <select class="chosen-the-basic form-control form-control-sm" placeholder="Select two" tabindex="2">
-                                                        <option></option>
-                                                        <option>All</option>
-                                                        <option>Asia</option>
-                                                        <option>Europe</option>
-                                                        <option>Africa</option>
-                                                        <option>America</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="col">
-                                            <div class="col-inner">
-                                                <div class="form-group">
-                                                    <label>When</label>
-                                                    <input type="text" class="form-control form-readonly-control air-datepicker" placeholder="Pick a month" data-min-view="months" data-view="months" data-date-format="MM yyyy" data-language="en" data-auto-close="true" readonly>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-shrink">
-                                <div class="col-inner">
-                                    <a href="#" class="btn btn-primary btn-block"><i class="ion-android-search"></i></a>
-                                </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </form>
-            </div> -->
+            <?= SearchForm::widget(['type' => 'bankrupt'])?>
 
         </div>
         
@@ -143,9 +78,6 @@ $this->title = Yii::$app->params['title'];
             
         </div>
 
-        <div class="col-12 col-lg-4">
-        <?=LotDetailSidebar::widget()?>
-        </div>
         <div class="clear mb-100"></div>
         
         <div class="section-title">
@@ -217,18 +149,6 @@ $this->title = Yii::$app->params['title'];
                 </figure>
                 
             </div>
-            
-        </div>
-        
-        <div class="clear mb-100"></div>
-        
-        <div class="section-title">
-            <h2><span><span>Best</span> Tour Packages</span></h2>
-        </div>
-        
-        <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
-
-            <?foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot]); }?>
             
         </div>
         

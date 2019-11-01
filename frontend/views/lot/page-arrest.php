@@ -97,7 +97,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             </div>
                             <div>
                                 <div class="rating-item rating-inline">
-                                    <p class="rating-text font600 text-muted font-12 letter-spacing-1">| <?=($type == 'arrest')? $lot->lotId : $lot->id ?></p>
+                                    <p class="rating-text font600 text-muted font-12 letter-spacing-1">| <?=$lot->lotId?></p>
                                 </div>
                             </div>
                         </div>
@@ -151,7 +151,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         
                         <h5 class="mt-30">Описание</h5>
 
-                        <p><?=($type == 'arrest')? $lot->lotPropName : $lot->description ?></p>
+                        <p><?=$lot->lotPropName?></p>
 
                         <h5 class="mt-30">What makes this tour very interesting</h5>
                         

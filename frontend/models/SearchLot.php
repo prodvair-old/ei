@@ -46,9 +46,9 @@ class SearchLot extends Model
      */
     public function search($lots, $url = null)
     {
-        if (!$this->validate()) {
-            return null;
-        }
+        // if (!$this->validate()) {
+        //     return null;
+        // }
 
         if (!empty($type) && empty($this->type)) {
             $this->type = $type;
@@ -76,8 +76,6 @@ class SearchLot extends Model
                     } else if (!empty($this->category) && $this->category != 'all') {
                         $category = LotsCategory::findOne($this->category);
                         $url = $this->type.'/'.$category->translit_name;
-
-                        $lots->joinWith('category');
 
                         if (empty($this->subCategory) || $this->subCategory == 'all' || $this->subCategory == '0') {
                             $orWhere = ['or'];
@@ -116,8 +114,10 @@ class SearchLot extends Model
                         if (count($this->region) == 1) {
                             $regionInfo = Regions::findOne($this->region[0]);
 
-                            $url .= '/'.$regionInfo->name_translit;
-
+                            if ($checkUrl) {
+                                $url .= '/'.$regionInfo->name_translit;
+                            }
+                            
                             $where[] = [
                                 'or',
                                 ['lot_regionid'=>$this->region[0]],
@@ -192,8 +192,6 @@ class SearchLot extends Model
                     $whereAnd = ['and'];
                     $addresSearchCheck = false;
 
-                    $lots->joinWith('torgs');
-
                     if ($this->category == '0') {
                         $url = $this->type.'/lot-list';
                     } else if (!empty($this->category) && $this->category != 'all') {
@@ -238,7 +236,9 @@ class SearchLot extends Model
                         if (count($this->region) == 1) {
                             $regionInfo = Regions::findOne($this->region[0]);
 
-                            $url .= '/'.$regionInfo->name_translit;
+                            if ($checkUrl) {
+                                $url .= '/'.$regionInfo->name_translit;
+                            }
 
                             $where[] = ['like', 'LOWER(lots.lotKladrLocationName)', mb_strtolower($regionInfo->name, 'UTF-8')];
                         } else {

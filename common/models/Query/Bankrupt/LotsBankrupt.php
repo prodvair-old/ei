@@ -67,7 +67,8 @@ class LotsBankrupt extends ActiveRecord
     public function getLotVin() 
     {
         $vin_text = str_replace('VIN', '',$this->lot_description);
-        $vin_check = preg_match("/[ABCDEFGHJKLMNPRSTUVWXYZ,0-9]{17}/", $vin_text, $vin);
+        $vin_check = preg_match("/[ABCDEFGHJKLMNPRSTUVWXYZ,0-9]{17}/", $vin_text, $vin_t);
+        preg_match("/([\.|,|!|\?]+)/", $vin_t[0], $vin);
         return ($vin_check)? $vin[0] : false;
     }
     public function getLotOldPrice() 
@@ -333,15 +334,15 @@ class LotsBankrupt extends ActiveRecord
     // }
 }
 
-// Таблица Кадастрового номера
-class Cadastre extends ActiveRecord
-{
-    public static function tableName()
-    {
-        return 'uds.{{%cadastre}}';
-    }
-    public static function getDb()
-    {
-        return Yii::$app->get('db');
-    }
-}
+// // Таблица Кадастрового номера
+// class Cadastre extends ActiveRecord
+// {
+//     public static function tableName()
+//     {
+//         return 'uds.{{%cadastre}}';
+//     }
+//     public static function getDb()
+//     {
+//         return Yii::$app->get('db');
+//     }
+// }

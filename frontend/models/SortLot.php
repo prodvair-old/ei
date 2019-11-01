@@ -29,9 +29,6 @@ class SortLot extends Model
      */
     public function sortBy($lots, $type = null)
     {
-        if (!$this->validate()) {
-            return null;
-        }
         
         switch ($type) {
             case 'bankrupt':

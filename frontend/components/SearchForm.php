@@ -9,21 +9,15 @@ use frontend\models\SearchLot;
 
 class SearchForm extends Widget
 {
-    public $lot;
-    public $type = 'full';
+    public $type;
 
     public function run(){
 
         $model = new SearchLot();
-        if ($model->load(Yii::$app->request->post())) {
-            var_dump($model->search());
-        } else {
-            if ($this->type == 'small') {
-                return $this->render('smallSearch', compact('model'));    
-            } else {
-                return $this->render('fullSearch', ['lot' => $this->lot, 'type' => $this->type]);
-            }
-        }
+
+        $type = $model->type = $this->type;
+
+        return $this->render('smallSearch', compact('model', 'type'));
 
         
     }
