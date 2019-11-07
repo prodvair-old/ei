@@ -88,11 +88,15 @@ class LotController extends Controller
         // Проверка ссылок ЧПУ и подставление типа лотов Strat->
         switch ($type) {
             case 'bankrupt':
-                $lots = LotsBankrupt::find()->limit(6)->orderBy('lot_image DESC, lot_timepublication DESC')->all();
+                $lots = LotsBankrupt::find()->limit(3)->orderBy('lot_image DESC, lot_timepublication DESC')->all();
+                $lotsFovarit = LotsBankrupt::find()->limit(3)->orderBy('wish_count DESC')->all();
+
                 $title = 'Банкротное имущество';
                 break;
             case 'arrest':
-                $lots = LotsArrest::find()->joinWith('torgs')->limit(6)->orderBy('torgs."trgPublished" DESC')->all();
+                $lots = LotsArrest::find()->joinWith('torgs')->limit(3)->orderBy('torgs."trgPublished" DESC')->all();
+                $lotsFovarit = LotsArrest::find()->joinWith('torgs')->limit(3)->orderBy('torgs."trgPublished" DESC')->all();
+
                 $title = 'Арестованное имущество';
                 break;
             default:
@@ -111,8 +115,9 @@ class LotController extends Controller
         Yii::$app->params['h1'] = ($metaData->mdH1)? $metaData->mdH1 : $title;
         // Мета данные <-End 
 
-        return $this->render('index', compact('type', 'lots'));
+        return $this->render('index', compact('type', 'lots', 'lotsFovarit'));
     }
+
     // Ссылка на категории лотов
     public function actionSearch($type, $category, $subcategory = null, $region = null)
     {
@@ -194,8 +199,8 @@ class LotController extends Controller
             try {
                 $regionItem = Regions::findOne(['name_translit' => $region]);
                 $queryRegion = $regionItem->id;
-                $model->region = $value['id'];
-                $title = $items->name;
+                $model->region[0] = $regionItem->id;
+                $title = $regionItem->name;
                 $url = "$type/$category/$subcategory/$region";
             } catch (\Throwable $th) {
                 Yii::$app->response->statusCode = 404;

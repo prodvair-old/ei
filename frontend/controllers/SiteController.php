@@ -20,6 +20,7 @@ use frontend\models\ContactForm;
 // Запросы
 use common\models\Query\MetaDate;
 use common\models\Query\Bankrupt\LotsBankrupt;
+use common\models\Query\Arrest\LotsArrest;
 
 /**
  * Site controller
@@ -88,9 +89,12 @@ class SiteController extends Controller
         Yii::$app->params['title'] = $metaData->mdTitle;
         Yii::$app->params['h1'] = $metaData->mdH1;
 
-        $lots = LotsBankrupt::find()->limit(6)->orderBy('lot_image DESC, lot_timepublication DESC')->all();
+        $lotsBankruptCount = LotsBankrupt::find()->count();
+        $lotsArrestCount = LotsArrest::find()->count();
+
         return $this->render('index', [
-            'lots' => $lots
+            'lotsBankruptCount' => $lotsBankruptCount,
+            'lotsArrestCount' => $lotsArrestCount
         ]);
     }
 

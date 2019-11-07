@@ -30,15 +30,17 @@ $this->registerJsVar( 'categorySelected', 0, $position = yii\web\View::POS_HEAD 
                         <div class="row cols-1 cols-sm-4 gap-1">
             
                             <div class="col">
-                                <div class="col-inner">
+                                <div class="col-inner height-100">
                                     <?=$form->field($model, 'type')->dropDownList([
                                             'bankrupt' => 'Банкротное имущество',
                                             'arrest' => 'Арестованное имущество',
+                                            'zalog' => 'Залоговое имущество',
                                         ], [
                                             'class'=>'chosen-type-select form-control form-control-sm', 
                                             'data-placeholder'=>'Выберите тип лота', 
                                             'tabindex'=>'2',
                                             'options' => [
+                                                'zalog' => ['disabled' => true, 'title'=>'Скоро'],
                                                 $type => ['Selected' => true]
                                             ]])
                                         ->label('Тип лота');?>
@@ -46,7 +48,7 @@ $this->registerJsVar( 'categorySelected', 0, $position = yii\web\View::POS_HEAD 
                             </div>
 
                             <div class="col">
-                                <div class="col-inner">
+                                <div class="col-inner height-100">
                                     <?=$form->field($model, 'category')->dropDownList(
                                             ArrayHelper::map($lotsCategory, 'id', 'name'),
                                         [
@@ -55,6 +57,17 @@ $this->registerJsVar( 'categorySelected', 0, $position = yii\web\View::POS_HEAD 
                                             'tabindex'=>'2'
                                         ])
                                         ->label('Категория');?>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="col-inner height-100">
+                                    <?=$form->field($model, 'search')->textInput([
+                                            'class'=>'form-control form-control-sm', 
+                                            'placeholder'=>'Например: Машина, Квартира...',
+                                            'tabindex'=>'2',
+                                        ])
+                                        ->label('Поиск');?>
                                 </div>
                             </div>
 
@@ -69,17 +82,6 @@ $this->registerJsVar( 'categorySelected', 0, $position = yii\web\View::POS_HEAD 
                                             'multiple' => true
                                         ])
                                         ->label('Регион');?>
-                                </div>
-                            </div>
-
-                            <div class="col">
-                                <div class="col-inner">
-                                    <?=$form->field($model, 'search')->textInput([
-                                            'class'=>'form-control form-control-sm', 
-                                            'placeholder'=>'Например: Машина, Квартира...',
-                                            'tabindex'=>'2',
-                                        ])
-                                        ->label('Найти');?>
                                 </div>
                             </div>
 

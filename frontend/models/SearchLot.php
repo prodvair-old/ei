@@ -240,7 +240,7 @@ class SearchLot extends Model
                                 $url .= '/'.$regionInfo->name_translit;
                             }
 
-                            $where[] = ['like', 'LOWER(lots.lotKladrLocationName)', mb_strtolower($regionInfo->name, 'UTF-8')];
+                            $where[] = ['like', 'LOWER("lots"."lotKladrLocationName")', mb_strtolower($regionInfo->name, 'UTF-8')];
                         } else {
                             $orWhere = ['or'];
                             foreach ($this->region as $key => $value) {
@@ -249,7 +249,7 @@ class SearchLot extends Model
                                 if ($key == 0 && $checkUrl) {
                                     $url .= '/'.$regionInfo->name_translit;
                                 }
-                                $orWhere[] = ['like', 'LOWER(lots.lotKladrLocationName)', mb_strtolower($regionInfo->name, 'UTF-8')];
+                                $orWhere[] = ['like', 'LOWER("lots"."lotKladrLocationName")', mb_strtolower($regionInfo->name, 'UTF-8')];
                             }
                             $where[] = $orWhere;
                         }
@@ -257,16 +257,16 @@ class SearchLot extends Model
                     if (!empty($this->search)) {
                         $whereSearch = [
                             'or',
-                            ['like', 'LOWER(lots.lotTorgReason)', mb_strtolower($this->search, 'UTF-8')],
-                            ['like', 'LOWER(lots.lotPropName)', mb_strtolower($this->search, 'UTF-8')],
-                            ['like', 'LOWER(lots.lotKladrLocationName)', mb_strtolower($this->search, 'UTF-8')],
-                            ['like', 'LOWER(lots.lotBurdenDesc)', mb_strtolower($this->search, 'UTF-8')],
-                            ['like', 'LOWER(lots.lotDepositDesc)', mb_strtolower($this->search, 'UTF-8')],
-                            ['like', 'LOWER(lots.lotContractDesc)', mb_strtolower($this->search, 'UTF-8')],
-                            ['like', 'LOWER(lots.lotContractTerm)', mb_strtolower($this->search, 'UTF-8')]
+                            ['like', 'LOWER("lots"."lotTorgReason")', mb_strtolower($this->search, 'UTF-8')],
+                            ['like', 'LOWER("lots"."lotPropName")', mb_strtolower($this->search, 'UTF-8')],
+                            ['like', 'LOWER("lots"."lotKladrLocationName")', mb_strtolower($this->search, 'UTF-8')],
+                            ['like', 'LOWER("lots"."lotBurdenDesc")', mb_strtolower($this->search, 'UTF-8')],
+                            ['like', 'LOWER("lots"."lotDepositDesc")', mb_strtolower($this->search, 'UTF-8')],
+                            ['like', 'LOWER("lots"."lotContractDesc")', mb_strtolower($this->search, 'UTF-8')],
+                            ['like', 'LOWER("lots"."lotContractTerm")', mb_strtolower($this->search, 'UTF-8')]
                         ];
                         if (!$addresSearchCheck) {
-                            $whereSearch[] = ['like', 'LOWER(bnkr__address)', mb_strtolower($this->search, 'UTF-8')];
+                            $whereSearch[] = ['like', 'LOWER("lots"."lotKladrLocationName")', mb_strtolower($this->search, 'UTF-8')];
                         }
                         $where[] = $whereSearch;
                     }

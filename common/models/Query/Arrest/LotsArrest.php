@@ -114,9 +114,7 @@ class LotsArrest extends ActiveRecord
     }
     public function getViews()
     {
-        return $this->hasMany(PageViews::className(), ['page_id' => 'lotId'])->alias('views')->onCondition([
-            'page_type' => 'lot_arrest'
-        ]);
+        return $this->hasMany(PageViews::className(), ['page_id' => 'lotId'])->alias('views')->onCondition(['page_type' => 'lot_arrest']);
     }
     public function getLotDocuments()
     {
@@ -132,9 +130,7 @@ class LotsArrest extends ActiveRecord
     }
     public function getWishlist()
     {
-        return $this->hasOne(WishList::className(), ['lotId' => 'lotId'])->alias('wish')->onCondition([
-            'type' => 'arrest'
-        ]);
+        return $this->hasOne(WishList::className(), ['lotId' => 'lotId'])->alias('wish')->onCondition(['type' => 'arrest']);
     }
     // Избранные
     public function WishList($user_id)

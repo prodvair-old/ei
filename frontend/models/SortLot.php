@@ -61,25 +61,25 @@ class SortLot extends Model
                     // $sort .= 'lot_image DESC, ';
                     switch ($this->sortBy) {
                         case 'nameASC':
-                                $sort .= 'lots."lotPropName" ASC';
+                                $sort .= '"lots"."lotPropName" ASC';
                             break;
                         case 'nameDESC':
-                                $sort .= 'lots."lotPropName" DESC';
+                                $sort .= '"lots"."lotPropName" DESC';
                             break;
                         case 'dateASC':
-                                $sort .= 'torgs."trgPublished" ASC';
+                                $sort .= '"torgs"."trgPublished" ASC';
                             break;
                         case 'dateDESC':
-                                $sort .= 'torgs."trgPublished" DESC';
+                                $sort .= '"torgs"."trgPublished" DESC';
                             break;
                         case 'priceASC':
-                                $sort .= 'lots."lotStartPrice" ASC';
+                                $sort .= '"lots"."lotStartPrice" ASC';
                             break;
                         case 'priceDESC':
-                                $sort .= 'lots."lotStartPrice" DESC';
+                                $sort .= '"lots"."lotStartPrice" DESC';
                             break;
                         default:
-                                $sort .= 'torgs."trgPublished" DESC';
+                                $sort .= '"torgs"."trgPublished" DESC';
                             break;
                     }
                 break;

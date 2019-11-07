@@ -11,19 +11,25 @@ use common\models\Query\Settings;
 
 
 $this->title = Yii::$app->params['title'];
+
+if ($type == 'bankrupt') {
+    $title = 'Единая база торгоа <span class="font200 block">Имущество банкротов</span>';
+    $description = 'В нашей базе собрана исключительно актуальная информация об имущество банкротов и должников, выставленном и тендеры и торги на ЭТП и публичных аукционах.';
+} else {
+    $title = 'Единая база торгоа <span class="font200">Арестованное имущество</span>';
+    $description = '';
+}
 ?>
 
-<div class="hero-banner hero-banner-01 overlay-light opacity-2" style="background-image:url('img/image-bg/19-2.jpg'); background-position: bottom  center;">
+<div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03" style="background-image:url('img/01.jpg'); background-position: top  center;">
         
     <div class="overlay-holder bottom"></div>	
     
     <div class="hero-inner">
     
         <div class="container">
-            <div class="row">
-                <div class="col-lg-4"><h1 class="main__title"><?=Yii::$app->params['h1']?></h1></div>
-                <div class="col-lg-8"><p class="font-lg spacing-1"><?=Yii::$app->params['text']?></p></div>
-            </div>
+            <h1><?=$title?></h1>
+            <p class="font-lg spacing-1"><?=$description?></p>
             
             <?= SearchForm::widget(['type' => $type])?>
 
@@ -36,51 +42,11 @@ $this->title = Yii::$app->params['title'];
 <section class="pt-70 pb-0">
 
     <div class="container">
-    
-        <div class="row cols-1 cols-lg-3 gap-20 gap-lg-40">
-            
-            <div class="col">
-                <div class="featured-icon-horizontal-01 clearfix">
-                    <div class="icon-font">
-                        <i class="elegent-icon-gift_alt text-primary"></i>
-                    </div>
-                    <div class="content">
-                        <h6>We ﬁnd better deals</h6>
-                        <p class="text-muted">Considered an invitation do introduced sufficient understood instrument it. </p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col">
-                <div class="featured-icon-horizontal-01 clearfix">
-                    <div class="icon-font">
-                        <i class="elegent-icon-wallet text-primary"></i>
-                    </div>
-                    <div class="content">
-                        <h6>Best price guaranteed</h6>
-                        <p class="text-muted">Discovery sweetness principle discourse shameless bed one excellent.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col">
-                <div class="featured-icon-horizontal-01 clearfix">
-                    <div class="icon-font">
-                        <i class="elegent-icon-heart_alt text-primary"></i>
-                    </div>
-                    <div class="content">
-                        <h6>Travellers love us</h6>
-                        <p class="text-muted">Sentiments of surrounded friendship dispatched connection john shed hope.</p>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
 
         <div class="clear mb-100"></div>
-        
+
         <div class="section-title">
-            <h2><span><span>Top</span> Destinations</span></h2>
+            <h2><span><span>Популярные Категории </span> Лотов <?=($type == 'bankrupt')? 'Банкротного имущества': 'Арестованного имущество'?></span></h2>
         </div>
         
         <div class="row cols-1 cols-sm-2 cols-lg-4 gap-2 mb-20">
@@ -88,13 +54,13 @@ $this->title = Yii::$app->params['title'];
             <div class="col">
             
                 <figure class="destination-grid-item-01">
-                    <a href="#">
+                    <a href="/bankrupt/transport-i-tehnika">
                         <div class="image">
                             <img src="img/image-destination/01.jpg"alt="image"/>
                         </div>
                         <figcaption class="content">
-                            <h5>Bangkok</h5>
-                            <p class="text-muted">25 Tours</p>
+                            <h5>Автомобили</h5>
+                            <!-- <p class="text-muted">25 лотов</p> -->
                         </figcaption>
                     </a>
                 </figure>
@@ -104,13 +70,13 @@ $this->title = Yii::$app->params['title'];
             <div class="col">
             
                 <figure class="destination-grid-item-01">
-                    <a href="#">
+                    <a href="/bankrupt/nedvizhimost">
                         <div class="image">
                             <img src="img/image-destination/02.jpg"alt="image"/>
                         </div>
                         <figcaption class="content">
-                            <h5>Hong Kong</h5>
-                            <p class="text-muted">36 Tours</p>
+                            <h5>Недвищимость</h5>
+                            <!-- <p class="text-muted">36 лотов</p> -->
                         </figcaption>
                     </a>
                 </figure>
@@ -120,13 +86,13 @@ $this->title = Yii::$app->params['title'];
             <div class="col">
             
                 <figure class="destination-grid-item-01">
-                    <a href="#">
+                    <a href="/bankrupt/oborudovanie">
                         <div class="image">
                             <img src="img/image-destination/03.jpg"alt="image"/>
                         </div>
                         <figcaption class="content">
-                            <h5>London</h5>
-                            <p class="text-muted">40 Tours</p>
+                            <h5>Оборудование</h5>
+                            <!-- <p class="text-muted">40 лотов</p> -->
                         </figcaption>
                     </a>
                 </figure>
@@ -136,13 +102,13 @@ $this->title = Yii::$app->params['title'];
             <div class="col">
             
                 <figure class="destination-grid-item-01">
-                    <a href="#">
+                    <a href="/bankrupt/debitorskaya-zadolzhennost">
                         <div class="image">
                             <img src="img/image-destination/04.jpg"alt="image"/>
                         </div>
                         <figcaption class="content">
-                            <h5>New York</h5>
-                            <p class="text-muted">10 Tours</p>
+                            <h5>Дебиторская задолженность</h5>
+                            <!-- <p class="text-muted">10 лотов</p> -->
                         </figcaption>
                     </a>
                 </figure>
@@ -150,11 +116,11 @@ $this->title = Yii::$app->params['title'];
             </div>
             
         </div>
-        
+    
         <div class="clear mb-100"></div>
-        
+                
         <div class="section-title">
-            <h2><span><span>Best</span> Tour Packages</span></h2>
+            <h2><span><span>Горячие</span> Предложения Дня</span></h2>
         </div>
         
         <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
@@ -162,12 +128,68 @@ $this->title = Yii::$app->params['title'];
             <?foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot]); }?>
             
         </div>
+
+        <div class="clear mb-100"></div>
+                
+        <div class="section-title">
+            <h2><span><span>Интересные</span> Предложения Дня</span></h2>
+        </div>
+        
+        <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
+
+            <?foreach ($lotsFovarit as $lotFovarit) { echo LotBlock::widget(['lot' => $lotFovarit]); }?>
+            
+        </div>
+        
+        <? if ($type = 'bankrupt') { ?>
+        <div class="clear mb-100"></div>
+
+        <div class="row cols-1 cols-sm-2 cols-lg-2 gap-2 mb-20">
+        
+            <div class="col-lg-1"></div>
+
+            <div class="col-lg-5 col-md">
+            
+                <figure class="destination-grid-item-01">
+                    <a href="<?=Url::to(['arrest/list'])?>">
+                        <div class="image">
+                            <img src="img/image-destination/01.jpg"alt="image"/>
+                        </div>
+                        <figcaption class="content">
+                            <h5>Арбитражные управляющие</h5>
+                            <p class="text-muted">25 человек</p>
+                        </figcaption>
+                    </a>
+                </figure>
+                
+            </div>
+            
+            <div class="col-lg-5 col-md">
+            
+                <figure class="destination-grid-item-01">
+                    <a href="<?=Url::to(['doljnik/list'])?>">
+                        <div class="image">
+                            <img src="img/image-destination/02.jpg"alt="image"/>
+                        </div>
+                        <figcaption class="content">
+                            <h5>Должники</h5>
+                            <p class="text-muted">36 человек</p>
+                        </figcaption>
+                    </a>
+                </figure>
+                
+            </div>
+
+            <div class="col-lg-1"></div>
+            
+        </div>
+        <? } ?>
         
     </div>
     
 </section>
 
-<div class="bg-white-gradient-top-bottom pt-0 mt-40">
+<!-- <div class="bg-white-gradient-top-bottom pt-0 mt-40">
 
     <div class="bg-gradient-top"></div>
     <div class="bg-gradient-bottom"></div>
@@ -447,5 +469,7 @@ $this->title = Yii::$app->params['title'];
         </div>
         
     </div>
+
+</section> -->
 
 </div>

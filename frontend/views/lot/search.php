@@ -303,15 +303,11 @@ $this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\Vi
                                 
                             </div>
                         </div>
-                        <!-- <div class="sort-box">
+                        <div class="sort-box">
                             <div class="d-flex align-items-center sort-item">
-                                <label class="sort-label d-none d-sm-flex">View as:</label>
-                                <ul class="sort-nav">
-                                    <li><a href="#"><i class="fas fa-th"></i></a></li>
-                                    <li><a href="#" class="active"><i class="fas fa-th-list"></i></a></li>
-                                </ul>
+                                <label class="sort-label d-none d-sm-flex">Найдено лотов: <?=$count?></label>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                     
                     <div class="tour-long-item-wrapper-01">

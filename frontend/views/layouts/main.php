@@ -11,11 +11,27 @@ use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use yii\widgets\Menu;
+
 use common\models\Query\Settings;
+use common\models\Query\LotsCategory;
+
 use frontend\components\LoginWidget;
 use frontend\components\SignupWidget;
 
+
 $setting = Settings::find()->orderBy('id ASC')->all();
+$lotsCategory = LotsCategory::find()->where(['!=', 'translit_name', 'lot-list'])->orderBy('id ASC')->all();
+$bankruptLotsCategoryMenu = $arrestLotsCategoryMenu = null;
+
+foreach ($lotsCategory as $value) {
+    if ($value->bankrupt_categorys != null) {
+        $bankruptLotsCategoryMenu[] = ['label' => $value->name, 'url' => ['/bankrupt/'.$value->translit_name]];
+    }
+    if ($value->arrest_categorys != null) {
+        $arrestLotsCategoryMenu[] = ['label' => $value->name, 'url' => ['/arrest/'.$value->translit_name]];
+    }
+}
+
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -84,7 +100,8 @@ AppAsset::register($this);
                                         d="M1636 883c24.2 0 44.1 19.8 44.1 44.1v529.3c0 24.3-19.9 44.1-44.1 44.1-24.3 0-44.2-19.8-44.2-44.1V927.1c0-24.3 19.9-44.1 44.2-44.1zm-215.5 542c10.3-8 17-20.6 17-34.7 0-24.4-19.8-44.2-44.2-44.2-11.4 0-21.9 4.4-29.8 11.6l-.1-.1c-49 35.6-108 54.7-168.6 54.7v88.3c81.1 0 160-26.3 224.9-75l.8-.6zm83.1-233.2c0-170.6-138.2-308.8-308.8-308.8-170.5 0-308.8 138.2-308.8 308.8 0 170.5 138.3 308.8 308.8 308.8v-88.3c-106.7 0-195.7-75.7-216.1-176.4h480.8c24.3 0 44.1-19.9 44.1-44.1zm-524.9-44.1c20.4-100.7 109.4-176.5 216.1-176.5 106.7 0 195.7 75.8 216.2 176.5H978.7zM1636 707.1c24.3 0 44.1 19.7 44.1 44.1 0 24.3-19.8 44.1-44.1 44.1-24.4 0-44.2-19.8-44.2-44.1 0-24.4 19.8-44.1 44.2-44.1z" />
                                         <path class="logo-acronym"
                                         d="M1636 883c24.2 0 44.1 19.8 44.1 44.1v529.3c0 24.3-19.9 44.1-44.1 44.1-24.3 0-44.2-19.8-44.2-44.1V927.1c0-24.3 19.9-44.1 44.2-44.1zm-215.5 542c10.3-8 17-20.6 17-34.7 0-24.4-19.8-44.2-44.2-44.2-11.4 0-21.9 4.4-29.8 11.6l-.1-.1c-49 35.6-108 54.7-168.6 54.7v88.3c81.1 0 160-26.3 224.9-75l.8-.6zm83.1-233.2c0-170.6-138.2-308.8-308.8-308.8-170.5 0-308.8 138.2-308.8 308.8 0 170.5 138.3 308.8 308.8 308.8v-88.3c-106.7 0-195.7-75.7-216.1-176.4h480.8c24.3 0 44.1-19.9 44.1-44.1zm-524.9-44.1c20.4-100.7 109.4-176.5 216.1-176.5 106.7 0 195.7 75.8 216.2 176.5H978.7zM1636 707.1c24.3 0 44.1 19.7 44.1 44.1 0 24.3-19.8 44.1-44.1 44.1-24.4 0-44.2-19.8-44.2-44.1 0-24.4 19.8-44.1 44.2-44.1z" />
-                                    </svg>
+                                    </svg> 
+                                    <span class="d-none d-sm-inline">Единый агрегатор торгов</span>
                                 </a>
                             </div>
                         </div>
@@ -144,10 +161,21 @@ AppAsset::register($this);
                                     
                                         <?= Menu::widget([
                                             'items' => [
-                                                ['label' => 'Главная', 'url' => ['site/index']],
-                                                ['label' => 'О компании', 'url' => ['pages/about']],
+                                                ['label' => 'Торги', 'url' => ['/bankrupt'], 'items' => [
+                                                    ['label' => 'Банкротнное иммущество', 'url' => ['/bankrupt'], 'items' => $bankruptLotsCategoryMenu],
+                                                    ['label' => 'Арестованное иммущество', 'url' => ['/arrest'], 'items' => $arrestLotsCategoryMenu],
+                                                    ['label' => 'Залоговое иммущество', 'url' => 'javascript:void(0)', 'options'=>['class'=>'link-disabled']],
+                                                ]],
+                                                ['label' => 'О компании', 'url' => ['pages/about'], 'items' => [
+                                                    ['label' => 'О нас', 'url' => ['pages/about']], 
+                                                    ['label' => 'Контакты', 'url' => ['pages/contact']],
+                                                ]],
+                                                ['label' => 'Реестры', 'url' => ['arbitr/list'], 'items' => [
+                                                    ['label' => 'Арбитражные управляющие', 'url' => ['arbitr/list']],
+                                                    ['label' => 'Должники', 'url' => ['doljnik/list']],
+                                                    ['label' => 'СРО', 'url' => ['sro/list']]
+                                                ]],
                                                 ['label' => 'Услуги', 'url' => ['pages/service']],
-                                                ['label' => 'Контакты', 'url' => ['pages/contact']],
                                             ],
                                             'options' => [
                                                 'class' => 'main-nav',
@@ -155,78 +183,6 @@ AppAsset::register($this);
                                             'activeCssClass'=>'active',
                                         ]); ?>
 
-                                        <!-- <ul class="main-nav">
-                                            <li><a href="index.html">Home</a>
-                                                <ul>
-                                                    <li><a href="index.html">Home 01</a></li>
-                                                    <li><a href="index-02.html">Home 02</a></li>
-                                                    <li><a href="index-03.html">Home 03</a></li>
-                                                    <li><a href="index-04.html">Home 04</a></li>
-                                                    <li><a href="index-05.html">Home 05</a></li>
-                                                    <li><a href="index-06.html">Home 06</a></li>
-                                                    <li>
-                                                        <a href="javascript:void(0)">Sub-menu</a>
-                                                         <ul>
-                                                            <li><a href="javascript:void(0)">Sub-menu 2</a></li>
-                                                            <li><a href="javascript:void(0)">Sub-menu 2</a></li>
-                                                            <li><a href="javascript:void(0)">Sub-menu 2</a></li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="result-grid.html">Tour Package</a>
-                                                <ul>
-                                                    <li><a href="tour-result-list.html">Result - List</a></li>
-                                                    <li><a href="tour-result-grid.html">Result - Grid</a></li>
-                                                    <li><a href="tour-detail.html">Detail 01</a></li>
-                                                    <li><a href="tour-detail-02.html">Detail 02</a></li>
-                                                    <li><a href="tour-detail-03.html">Detail 03</a></li>
-                                                    <li><a href="tour-detail-04.html">Detail 04</a></li>
-                                                    <li><a href="tour-detail-05.html">Detail 05</a></li>
-                                                    <li><a href="tour-detail-empty-booking.html">Detail - empty booking</a></li>
-                                                    <li><a href="tour-payment.html">Payment</a></li>
-                                                    <li><a href="tour-conformation.html">Conformation</a></li>
-                                                    <li><a href="destinations-01.html">Destinations 01</a></li>
-                                                    <li><a href="destinations-02.html">Destinations 02</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="javascript:void(0)">Blog</a>
-                                                <ul>
-                                                    <li><a href="blog-01.html"> Blog - Grid Full 01</a></li>
-                                                    <li><a href="blog-02.html"> Blog - Grid Full 02</a></li>
-                                                    <li><a href="blog-03.html"> Blog - Long Full 01</a></li>
-                                                    <li><a href="blog-04.html"> Blog - Long Full 02</a></li>
-                                                    <li><a href="blog-05.html"> Blog - Grid Right Sidebar</a></li>
-                                                    <li><a href="blog-06.html"> Blog - Long Right Sidebar</a></li>
-                                                    <li><a href="blog-single-01.html">Blog Single - Full</a></li>
-                                                    <li><a href="blog-single-02.html">Blog Single - Right Sidebar</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="javascript:void(0)">Pages</a>
-                                                <ul>
-                                                    <li><a href="about-us.html">About Us</a></li>
-                                                    <li><a href="service.html">Service</a></li>
-                                                    <li><a href="service-single.html">Service Single</a></li>
-                                                    <li><a href="faq.html">FAQ</a></li>
-                                                    <li><a href="privacy-and-term.html">Privacy and Term</a></li>
-                                                    <li><a href="error-404.html">Error 404</a></li>
-                                                    <li><a href="dashboard.html">Dashboard</a></li>
-                                                    <li>
-                                                        <a href="javascript:void(0)">Shortcode</a>
-                                                        <ul>
-                                                            <li><a href="shortcode-typography.html">Typography</a></li>
-                                                            <li><a href="shortcode-element.html">Element</a></li>
-                                                            <li><a href="shortcode-layout-fullwidth.html">Layout Fullwidth</a></li>
-                                                            <li><a href="shortcode-layout-left-sidebar.html">Layout Left Sidebar</a></li>
-                                                            <li><a href="shortcode-layout-right-sidebar.html">Layout Right Sidebar</a></li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="contact-us.html">Contact us</a></li>
-                                        
-                                        </ul> -->
-                                    
                                     </nav><!--/.nav-collapse -->
                                 
                                 </div>
@@ -455,7 +411,7 @@ AppAsset::register($this);
             
                 <div class="row shrink-auto-md gap-10 gap-40-lg">
                 
-                    <div class="col-auto">
+                    <!-- <div class="col-auto">
                         <div class="col-inner">
                             <ul class="footer-menu-list-02">
                                 <li><a href="#">Cookies</a></li>
@@ -464,11 +420,14 @@ AppAsset::register($this);
                                 <li><a href="#">Blogs</a></li>
                             </ul>
                         </div>
-                    </div>
+                    </div> -->
+                    
+                </div>
+                <div class="row shrink-auto-md gap-10 gap-40-lg">
                 
-                    <div class="col-shrink">
+                    <div class="col-auto">
                         <div class="col-inner">
-                            <p class="footer-copy-right">© 2019 "ei.ru" Обращаем ваше внимание на то, что данный Интернет-сайт носит исключительно информационный характер и ни при каких условиях не является публичной офертой, определяемой положениями Статьи 437 Гражданского кодекса Российской Федерации.</p>
+                            <p class="footer-copy-center">© 2019 "ei.ru" Обращаем ваше внимание на то, что данный Интернет-сайт носит исключительно информационный характер и ни при каких условиях не является публичной офертой, определяемой положениями Статьи 437 Гражданского кодекса Российской Федерации.</p>
                         </div>
                     </div>
                     

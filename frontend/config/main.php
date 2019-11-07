@@ -69,11 +69,11 @@ return [
                 '/test' => 'test/index',
                 '/404' => 'site/error',
 
-                '/arbitrs'        => 'arbitr/list',
-                '/arbitrs/<arb_id:\d+>' => 'arbitr/arbitr_page',
+                '/arbitrazhnye-upravlyayushchie'        => 'arbitr/list',
+                '/arbitrazhnye-upravlyayushchie/<arb_id:\d+>' => 'arbitr/arbitr_page',
 
-                '/doljniks'         => 'doljnik/list',
-                '/doljniks/<bnkr_id:\d+>' => 'doljnik/doljnik_page',
+                '/dolzhniki'         => 'doljnik/list',
+                '/dolzhniki/<bnkr_id:\d+>' => 'doljnik/doljnik_page',
 
                 '/profile'         => 'user/index',
                 '/profile/setting' => 'user/setting',
