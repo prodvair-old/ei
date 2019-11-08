@@ -2,26 +2,29 @@
 						
     <li>
         <span class="icon-font"><i class="ion-android-pin"></i></span>
-        <h6>Address</h5>
-        545, Marina Rd.,<br/>Mohammed Bin Rashid Boulevard,<br/>Dubai 123234 
+        <h6>Адрес</h5>
+        Татарстан респ, г. Казань,<br/>проспект Ибрагимова, д. 56А офис 20Г 
+    </li>
+
+    <li>
+        <span class="icon-font"><i class="ion-android-print"></i></span>
+        <h6>Реквизиты</h5>
+        <p class="mb-0">ИНН: <span>123456123123</span></p>
+        <p class="mb-0">ОКПО: <span>123456123123</span></p>
     </li>
     
     <li>
         <span class="icon-font"><i class="ion-android-mail"></i></span>
         <h6>Email</h5>
-        <a href="#">office@company.com</a>
+        <a href="#">ei@ei.ru</a>
     </li>
     
     <li>
         <span class="icon-font"><i class="ion-android-call"></i></span>
-        <h6>Phone</h5>
-        1-866-599-6674
+        <h6>Служба поддержки пользователей</h5>
+        <a href="tel:+88006003305">8 (800) 600-33-05</a> 
     </li>
     
-    <li>
-        <span class="icon-font"><i class="ion-android-print"></i></span>
-        <h6>Fax</h5>
-        (123) 254-8547
-    </li>
+    
 
 </ul>

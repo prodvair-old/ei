@@ -12,7 +12,12 @@ use frontend\components\LotBlock;
 
 use frontend\models\ViewPage;
 
+use common\models\Query\WishList;
 use common\models\Query\Bankrupt\LotsBankrupt;
+
+if (!Yii::$app->user->isGuest) {
+    $wishCheck = WishList::find()->where(['userId' => Yii::$app->user->id, 'lotId' => $lot->id, 'type' => $type])->one();
+}
 
 $view = new ViewPage();
 
@@ -20,6 +25,13 @@ $view->page_type = "lot_$type";
 $view->page_id = $lot->id;
 
 $viewCount = $view->check();
+
+$now = time();
+$endDate = strtotime($lot->lotDateEnd);
+
+$dateSend = floor(($endDate - $now) / (60 * 60 * 24));
+
+$lots_bankrupt = LotsBankrupt::find()->where(['bnkr__id'=>$lot->lotBnkrId])->andWhere(['!=', 'lot_id', $lot->id])->all();
 
 $this->registerJsVar( 'lotType', 'bankrupt', $position = yii\web\View::POS_HEAD );
 $this->title = Yii::$app->params['title'];
@@ -65,26 +77,23 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         
                     <ul id="horizon-sticky-nav" class="horizon-sticky-nav clearfix">
                         <li>
-                            <a href="#detail-content-sticky-nav-01">Overview</a>
+                            <a href="#desc">Описание</a>
                         </li>
                         <li>
-                            <a href="#detail-content-sticky-nav-02">Itinerary</a>
+                            <a href="#info">Информация о лоте</a>
+                        </li>
+                        <?=($lot->torgy->tradetype == 'PublicOffer')? '<li><a href="#price-history">Этапы снижения цены</a></li>': ''?>
+                        <li>
+                            <a href="#docs">Документы</a>
+                        </li>
+                        <?=($lots_bankrupt[0] != null)? '<li><a href="#other-lot">Другие лоты</a></li>': ''?>
+                        <li>
+                            <a href="#torg">Информация о торге</a>
                         </li>
                         <li>
-                            <a href="#detail-content-sticky-nav-03">Map</a>
+                            <a href="#roles">Правила подачи заявки</a>
                         </li>
-                        <li>
-                            <a href="#detail-content-sticky-nav-04">What's included</a>
-                        </li>
-                        <li>
-                            <a href="#detail-content-sticky-nav-05">Availabilities</a>
-                        </li>
-                        <li>
-                            <a href="#detail-content-sticky-nav-06">FAQ</a>
-                        </li>
-                        <li>
-                            <a href="#detail-content-sticky-nav-07">Reviews</a>
-                        </li>
+                        
                     </ul>
 
                 </div>
@@ -101,17 +110,26 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                 
                 <div class="content-wrapper">
                     
-                    <div id="detail-content-sticky-nav-01" class="detail-header mb-30">
+                    <div id="desc" class="detail-header mb-30">
                         <h3><?=$lot->lotTitle?></h3>
                         
                         <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-20">
                             <div class="mr-15 font-lg">
                                 <?=NumberWords::widget(['number' => $lot->lotViews, 'words' => ['просмотр', 'просмотра', 'просмотров']]) ?>
                             </div>
-                            <div>
-                                <div class="rating-item rating-inline">
-                                    <p class="rating-text font600 text-muted font-12 letter-spacing-1">| <?=$lot->id?></p>
-                                </div>
+                            <div class="mr-15 text-muted">|</div>
+                            <div class="mr-15 rating-item rating-inline">
+                                <p class="rating-text font600 text-muted font-12"><?= Yii::$app->formatter->asDate($lot->lot_timepublication, 'long')?> </p>
+                            </div>
+                            <div class="mr-15 text-muted">|</div>
+                            <div class="mr-15 rating-item rating-inline">
+                                <p class="rating-text font400 text-muted font-12 letter-spacing-1"><?=$lot->id?> </p>
+                            </div>
+                            <div class="mr-15 text-muted">|</div>
+                            <div class="mr-15 rating-item rating-inline">
+                                <a href="#" class="wish-js" data-id="<?=$lot->id?>" data-type="<?=$type?>">
+                                    <img src="img/star<?=($wishCheck)? '' : '-o' ?>.svg" alt="">
+                                </a>
                             </div>
                         </div>
 
@@ -140,31 +158,33 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-basic-chronometer"></i>
                                 </span>
-                                <strong>3 days<br />2 nights</strong>
+                                До подачи заявки<br /> 
+                                <strong><?=($dateSend > 0)? NumberWords::widget(['number' => $dateSend, 'words' => ['день', 'дня', 'дней']]) : 'Прошло'?></strong>
                             </li>
                             <li>
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-basic-flag1"></i>
                                 </span>
-                                starting point:<br /><strong>Zagreb</strong>
+                                Старт торгов<br /><strong><?= Yii::$app->formatter->asDate($lot->lotDateStart, 'long')?></strong>
                             </li>
                             <li>
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-basic-flag2"></i>
                                 </span>
-                                ending point:<br /><strong>Athens</strong>
+                                Окончание торгов<br /><strong><?= Yii::$app->formatter->asDate($lot->lotDateEnd, 'long')?></strong>
                             </li>
                             <li>
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-ecommerce-dollar"></i>
                                 </span>
-                                From<br /><strong>$125.99</strong> / person
+                                Сумма задатка<br /><strong><?=($lot->advancestepunit == 'Percent')? Yii::$app->formatter->asCurrency((($lot->lotPrice / 100) * $lot->advance)) : Yii::$app->formatter->asCurrency($lot->advance)?></strong>
                             </li>
                         </ul>
                         
                         <h5 class="mt-30">Описание</h5>
 
-                        <p><?=$lot->description?></p>
+                        <p class="long-text"><?=$lot->description?></p>
+                        <a href="#desc" class="open-text-js">Подробнее</a>
                         
                     </div>
                     
@@ -235,17 +255,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         
                     </div> -->
                     
-                    <div id="detail-content-sticky-nav-03" class="fullwidth-horizon-sticky-section">
-                    
-                        <h4 class="heading-title">Карта</h4>
-                        
-                        <div id="gmap-8" style="height: 450px;"></div>
-                        
-                        <div class="mb-50"></div>
-                        
-                    </div>
-                    
-                    <div id="detail-content-sticky-nav-04" class="fullwidth-horizon-sticky-section">
+                    <div id="info" class="fullwidth-horizon-sticky-section">
                     
                         <h4 class="heading-title">Информация о лоте</h4>
                         
@@ -283,7 +293,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
                                 <h6>Должник</h6>
                                 <ul class="ul">
-                                    <li><span class="text-list-name">ФИО:</span> <?=$lot->lotBnkrName?></li>
+                                    <li><span class="text-list-name"></span> <?=$lot->lotBnkrName?></li>
                                     <li><span class="text-list-name">ИНН:</span> <?= ($lot->lotBnkrType == 'Person')? $lot->torgy->case->bnkr->person->inn : $lot->torgy->case->bnkr->company->inn;?></li>
                                     <li><span class="text-list-name">Адрес:</span> <?= ($lot->lotBnkrType == 'Person')? $lot->torgy->case->bnkr->person->address : $lot->torgy->case->bnkr->company->legaladdress;?></li>
                                 </ul>
@@ -303,7 +313,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
                                 <h6>Арбитражный управляющий</h6>
                                 <ul class="ul">
-                                    <li><span class="text-list-name">ФИО:</span> <?=$lot->lotArbtrName?></li>
+                                    <li><span class="text-list-name"></span> <?=$lot->lotArbtrName?></li>
                                     <li><span class="text-list-name">Рег. номер:</span> <?= $lot->torgy->case->arbitr->regnum?></li>
                                     <li><span class="text-list-name">ИНН:</span> <?= $lot->torgy->case->arbitr->person->inn?></li>
                                     <!-- <li><span class="text-list-name">ОГРН:</span> <?= $lot->torgy->case->arbitr->ogrn?></li> -->
@@ -316,238 +326,57 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         
                     </div>
                     
-                    <div id="detail-content-sticky-nav-05" class="fullwidth-horizon-sticky-section">
+                    <?php if($lot->torgy->tradetype == 'PublicOffer') { ?>
 
-                        <h4 class="heading-title">Availabilities</h4>
-                        
-                        <div class="row mt-30">
-                            <div class="col-12 col-md-6 col-lg-5">
-                                <div class="col-inner">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control form-readonly-control air-datepicker" placeholder="Pick a month" data-min-view="months" data-view="months" data-date-format="MM yyyy" data-language="en" data-auto-close="true" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-20"></div>
-                        
-                        <div class="item-text-long-wrapper">
-                    
-                            <div class="item-heading text-muted">
+                        <div id="price-history" class="fullwidth-horizon-sticky-section">
+
+                            <h4 class="heading-title">Этапы снижения цены</h4>
                             
-                                <div class="row d-none d-sm-flex">
+                            <div class="mb-20"></div>
+                            
+                            <div class="item-text-long-wrapper">
+                            
+                                <div class="item-heading text-muted">
                                 
-                                    <div class="col-12 col-sm-7">
+                                    <div class="row d-none d-sm-flex">
                                     
-                                        <div class="col-inner">
+                                        <div class="col-12 col-sm-6">
                                         
-                                            <div class="row gap-10">
+                                            <div class="col-inner">
                                             
-                                                <div class="col-5">
-                                                    from
+                                                <div class="row gap-10">
+                                                
+                                                    <div class="col-5">
+                                                        Начало периода
+                                                    </div>
+                                                    
+                                                    <div class="col-2">
+                                                    
+                                                    </div>
+                                                    
+                                                    <div class="col-5">
+                                                        Окончание периода
+                                                    </div>
+                                                    
                                                 </div>
-                                                
-                                                <div class="col-2">
-                                                
-                                                </div>
-                                                
-                                                <div class="col-5">
-                                                    to
-                                                </div>
-                                                
+                                            
                                             </div>
                                         
                                         </div>
-                                    
-                                    </div>
-                                    
-                                    <div class="col-12 col-sm-3">
-                                    
-                                        <div class="col-inner">
                                         
-                                            <div class="row gap-10">
+                                        <div class="col-12 col-sm-6">
+                                        
+                                            <div class="col-inner">
                                             
-                                                <div class="col-6 text-center">
-                                                    status
-                                                </div>
+                                                <div class="row gap-10">
                                                 
-                                                <div class="col-6 text-right">
-                                                    price
-                                                </div>
-                                                
-                                            </div>
-                                            
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                    
-                                </div>
-                            
-                            </div>
-                            
-                            <div class="item-text-long">
-                            
-                                <div class="row align-items-center">
-                                
-                                    <div class="col-12 col-sm-7">
-                                    
-                                        <div class="col-inner mb-10 mb-sm-0">
-                                        
-                                            <div class="row gap-10 align-items-center">
-                                            
-                                                <div class="col-5">
-                                                    <span class="font-sm">Monday</span>
-                                                    <strong class="d-block">March 7, 2019</strong>
-                                                </div>
-                                                
-                                                <div class="col-2">
-                                                    <span class="day-count mt-3">3<br/>days</span>
-                                                </div>
-                                                
-                                                <div class="col-5 text-right text-sm-left">
-                                                    <span class="font-sm">Thursday</span>
-                                                    <strong class="d-block">March 9, 2019</strong>
-                                                </div>
-                                                
-                                            </div>
-                                        
-                                        </div>
-                                    
-                                    </div>
-                                    
-                                    <div class="col-8 col-sm-3">
-                                    
-                                        <div class="col-inner">
-                                        
-                                            <div class="row gap-10 align-items-center">
-                                            
-                                                <div class="col-6 text-left text-sm-center">
-                                                    <span class="font-sm">seats left </span>
-                                                    <strong class="d-block">15</strong>
-                                                </div>
-                                                
-                                                <div class="col-6 text-left  text-sm-right">
-                                                    <strong class="d-block">$1458</strong>
-                                                    <span class="font-sm">/ person</span>
-                                                </div>
-                                                
-                                            </div>
-                                            
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                    <div class="col-4 col-sm-2">
-                                        <a href="#" class="btn btn-primary btn-block btn-sm mt-3">Book now</a>
-                                    </div>
-                                    
-                                </div>
-                            
-                            </div>
-                        
-                            <div class="item-text-long">
-                            
-                                <div class="row align-items-center">
-                                
-                                    <div class="col-12 col-sm-7">
-                                    
-                                        <div class="col-inner mb-10 mb-sm-0">
-                                        
-                                            <div class="row gap-10 align-items-center">
-                                            
-                                                <div class="col-5">
-                                                    <span class="font-sm">Monday</span>
-                                                    <strong class="d-block">March 26, 2019</strong>
-                                                </div>
-                                                
-                                                <div class="col-2">
-                                                    <span class="day-count mt-3">3<br/>days</span>
-                                                </div>
-                                                
-                                                <div class="col-5 text-right text-sm-left">
-                                                    <span class="font-sm">Thursday</span>
-                                                    <strong class="d-block">March 28, 2019</strong>
-                                                </div>
-                                                
-                                            </div>
-                                        
-                                        </div>
-                                    
-                                    </div>
-                                    
-                                    <div class="col-8 col-sm-3">
-                                    
-                                        <div class="col-inner">
-                                        
-                                            <div class="row gap-10 align-items-center">
-                                            
-                                                <div class="col-6 text-left text-sm-center">
-                                                    <span class="font-sm">seats left </span>
-                                                    <strong class="d-block">8</strong>
-                                                </div>
-                                                
-                                                <div class="col-6 text-left  text-sm-right">
-                                                    <strong class="d-block">$1458</strong>
-                                                    <span class="font-sm">/ person</span>
-                                                </div>
-                                                
-                                            </div>
-                                            
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                    <div class="col-4 col-sm-2">
-                                        <a href="#" class="btn btn-primary btn-block btn-sm mt-3">Book now</a>
-                                    </div>
-                                    
-                                </div>
-                            
-                            </div>
-                        
-                            <div class="item-text-long sold-out">
-                            
-                                <div class="row align-items-center">
-                                
-                                    <div class="col-12 col-sm-7">
-                                    
-                                        <div class="col-inner mb-10 mb-sm-0">
-                                        
-                                            <div class="row gap-10 align-items-center">
-                                            
-                                                <div class="col-5">
-                                                    <span class="font-sm">Monday</span>
-                                                    <strong class="d-block">April 10, 2019</strong>
-                                                </div>
-                                                
-                                                <div class="col-2">
-                                                    <span class="day-count mt-3">3<br/>days</span>
-                                                </div>
-                                                
-                                                <div class="col-5 text-right text-sm-left">
-                                                    <span class="font-sm">Thursday</span>
-                                                    <strong class="d-block">April 12, 2019</strong>
-                                                </div>
-                                                
-                                            </div>
-                                        
-                                        </div>
-                                    
-                                    </div>
-                                    
-                                    <div class="col-8 col-sm-3">
-                                    
-                                        <div class="col-inner">
-                                        
-                                            <div class="row gap-10 align-items-center">
-                                            
-                                                <div class="col-6 text-left text-sm-center">
-                                                    <strong class="d-block text-success">sold out</strong>
-                                                </div>
-                                                
-                                                <div class="col-6 text-left  text-sm-right">
+                                                    <div class="col-6 text-center">
+                                                        Текущая цена, руб.
+                                                    </div>
+                                                    
+                                                    <div class="col-6 text-right">
+                                                        Размер задатка, руб.
+                                                    </div>
                                                     
                                                 </div>
                                                 
@@ -555,88 +384,147 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                             
                                         </div>
                                         
+                                        
                                     </div>
-                                    
-                                    <div class="col-4 col-sm-2">
-                                        <a href="#" class="btn btn-primary btn-block btn-sm mt-3">Book now</a>
-                                    </div>
-                                    
-                                </div>
-                            
-                            </div>
-                        
-                            <div class="item-text-long">
-                            
-                                <div class="row align-items-center">
                                 
-                                    <div class="col-12 col-sm-7">
-                                    
-                                        <div class="col-inner mb-10 mb-sm-0">
-                                        
-                                            <div class="row gap-10 align-items-center">
-                                            
-                                                <div class="col-5">
-                                                    <span class="font-sm">Monday</span>
-                                                    <strong class="d-block">April 19, 2019</strong>
-                                                </div>
-                                                
-                                                <div class="col-2">
-                                                    <span class="day-count mt-3">3<br/>days</span>
-                                                </div>
-                                                
-                                                <div class="col-5 text-right text-sm-left">
-                                                    <span class="font-sm">Thursday</span>
-                                                    <strong class="d-block">April 21, 2019</strong>
-                                                </div>
-                                                
-                                            </div>
-                                        
-                                        </div>
-                                    
-                                    </div>
-                                    
-                                    <div class="col-8 col-sm-3">
-                                    
-                                        <div class="col-inner">
-                                        
-                                            <div class="row gap-10 align-items-center">
-                                            
-                                                <div class="col-6 text-left text-sm-center">
-                                                    <span class="font-sm">seats left </span>
-                                                    <strong class="d-block">8</strong>
-                                                </div>
-                                                
-                                                <div class="col-6 text-left  text-sm-right">
-                                                    <strong class="d-block">$1458</strong>
-                                                    <span class="font-sm">/ person</span>
-                                                </div>
-                                                
-                                            </div>
-                                            
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                    <div class="col-4 col-sm-2">
-                                        <a href="#" class="btn btn-primary btn-block btn-sm mt-3">Book now</a>
-                                    </div>
-                                    
                                 </div>
-                            
+                                
+                                <?php 
+                                    if ($lot->offer != null) { 
+                                        foreach ($lot->offer as $key => $value) { 
+                                        if ($value->ofrRdnLotNumber == $lot->lotid) {
+                                            $date = Yii::$app->formatter->asDatetime(new \DateTime(), "php:Y-m-d H:i:s");
+                                ?>
+                                    <div class="item-text-long <?=(($key == 0 || $value->ofrRdnDateTimeBeginInterval <= $date) && $value->ofrRdnDateTimeEndInterval >= $date)? '' : 'sold-out' ?>">
+                                    
+                                        <div class="row align-items-center">
+                                        
+                                            <div class="col-12 col-sm-6">
+                                            
+                                                <div class="col-inner mb-10 mb-sm-0">
+                                                
+                                                    <div class="row gap-10 align-items-center">
+                                                    
+                                                        <div class="col-6">
+                                                            <span class="font-sm">Начало</span>
+                                                            <strong class="d-block"><?=Yii::$app->formatter->asDate($value->ofrRdnDateTimeBeginInterval, 'long')?></strong>
+                                                        </div>
+                                                        
+                                                        <!-- <div class="col-2">
+                                                            <span class="day-count mt-3">3<br/>days</span>
+                                                        </div> -->
+                                                        
+                                                        <div class="col-6 text-right text-sm-left">
+                                                            <span class="font-sm">Канец</span>
+                                                            <strong class="d-block"><?=Yii::$app->formatter->asDate($value->ofrRdnDateTimeEndInterval, 'long')?></strong>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                
+                                                </div>
+                                            
+                                            </div>
+                                            
+                                            <div class="col-12 col-sm-6">
+                                            
+                                                <div class="col-inner">
+                                                
+                                                    <div class="row gap-10 align-items-center">
+                                                    
+                                                        <div class="col-6 text-left text-sm-center">
+                                                            <span class="font-sm">Цена </span>
+                                                            <strong class="d-block"><?=Yii::$app->formatter->asCurrency($value->ofrRdnPriceInInterval)?></strong>
+                                                        </div>
+                                                        
+                                                        <div class="col-6 text-left  text-sm-right">
+                                                            <span class="font-sm">Задаток</span>
+                                                            <strong class="d-block"><?=($lot->advancestepunit == 'Percent')? Yii::$app->formatter->asCurrency((($value->ofrRdnPriceInInterval / 100) * $lot->advance)) : Yii::$app->formatter->asCurrency($lot->advance)?></strong>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    
+                                                </div>
+                                                
+                                            </div>
+                                            
+                                            <div class="col-4 col-sm-2">
+                                                <a href="#" class="btn btn-primary btn-block btn-sm mt-3">Купить</a>
+                                            </div>
+                                            
+                                        </div>
+                                    
+                                    </div>
+                                <? } } }  else { ?>
+                                    <div class="item-text-long <?=(($key == 0 || $value->ofrRdnDateTimeBeginInterval <= $date) && $value->ofrRdnDateTimeEndInterval >= $date)? '' : 'sold-out' ?>">
+                                    
+                                        <div class="row align-items-center">
+                                        
+                                            <div class="col-7 col-sm-9">
+                                                <strong class="text-primary">Этапы снижения цены в данной момент находятся в обработке</strong>
+                                            </div>
+
+                                            <div class="col-5 col-sm-3">
+                                                <a href="#" class="btn btn-primary btn-block btn-sm mt-3">Задать вопрос</a>
+                                            </div>
+                                        </div>
+                                    
+                                    </div>
+                                <? } ?>
                             </div>
-                        
+
+                            <div class="mb-50"></div>
+                            
                         </div>
 
+                    <? } ?>
+
+                    <div id="docs" class="fullwidth-horizon-sticky-section">
+                        <h4 class="heading-title">Документы</h4>
+                        <ul class="list-icon-absolute what-included-list mb-30 long-text">
+
+                            <? foreach ($lot->torgy->case->files as $doc) { ?>
+
+                                <?
+                                    $fileType = strtolower(preg_replace('/^.*\.(.*)$/s', '$1', $doc->filename));
+
+                                    switch ($fileType) {
+                                        case 'doc':
+                                            $icon = '<i class="far fa-file-word"></i>';
+                                            break;
+                                        case 'docs':
+                                            $icon = '<i class="far fa-file-word"></i>';
+                                            break;
+                                        case 'xls':
+                                            $icon = '<i class="far fa-file-excel"></i>';
+                                            break;
+                                        case 'xlsx':
+                                            $icon = '<i class="far fa-file-excel"></i>';
+                                            break;
+                                        case 'pdf':
+                                            $icon = '<i class="far fa-file-pdf"></i>';
+                                            break;
+                                        case 'zip':
+                                            $icon = '<i class="far fa-file-archive"></i>';
+                                            break;
+                                        default:
+                                            $icon = '<i class="far fa-file"></i>';
+                                            break;
+                                    }
+                                ?>
+                                <li>
+                                    <span class="icon-font"><?=$icon?></span> 
+                                    <a href="<?=$doc->fileurl?>" target="_blank"><?=$doc->filename?></a>
+                                </li>
+                            
+                            <? } ?>
+                            
+                        </ul>
+                        <a href="#docs" class="open-text-js">Подробнее</a>
                         <div class="mb-50"></div>
-                        
                     </div>
 
-                    <?
-                        $lots_bankrupt = LotsBankrupt::find()->where(['bnkr__id'=>$lot->lotBnkrId])->andWhere(['!=', 'lot_id', $lot->id])->all();
-                        if ($lots_bankrupt[0] != null) {
-                    ?>
-                    
-                    <div class="fullwidth-horizon-sticky-section">
+                    <? if ($lots_bankrupt[0] != null) { ?>
+                    <div id="other-lot" class="fullwidth-horizon-sticky-section">
 
                         <h4 class="heading-title">Другие лоты должника</h4>
                         
@@ -651,7 +539,22 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                     </div>
                     <? } ?>
                     
-                    <div id="detail-content-sticky-nav-06" class="fullwidth-horizon-sticky-section">
+
+                    <div id="torg" class="detail-header mb-30">
+                        <h4 class="mt-30">Информация о торге</h5>
+                        <p class="long-text"><?=$lot->torgy->description?></p>
+                        <a href="#torg" class="open-text-js">Подробнее</a>
+                        <div class="mb-50"></div>
+                    </div>
+
+                    <div id="roles" class="detail-header mb-30">
+                        <h4 class="mt-30">Правила подачи заявок</h5>
+                        <p class="long-text"><?=$lot->torgy->rules?></p>
+                        <a href="#roles" class="open-text-js">Подробнее</a>
+                        <div class="mb-50"></div>
+                    </div>
+
+                    <div id="faq" class="fullwidth-horizon-sticky-section">
                     
                         <h4 class="heading-title">FAQ</h4>
                         
@@ -779,7 +682,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
             
             <div class="col-12 col-lg-4">
                 
-                <?=LotDetailSidebar::widget(['lot'=>$lot])?>
+                <?=LotDetailSidebar::widget(['lot'=>$lot, 'type' => $type])?>
                 
             </div>
             
@@ -790,68 +693,6 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 </section>
 
 <?php
-
-$this->registerJsFile( 'https://maps.google.com/maps/api/js?sensor=false&amp;libraries=geometry&amp;v=3.22', $options = ['position' => yii\web\View::POS_BEGIN], $key = 'map' );
-$this->registerJsFile( 'js/plugins/maplace.min.js', $options = ['position' => yii\web\View::POS_END], $key = 'maplace' );
-$js = <<< JS
-(function($) {
-    'use strict';
-    
-    var LocsD = [
-            {
-                    lat: 45.4654,
-                    lon: 9.1866,
-                    title: 'Milan, Italy',
-                    html: '<h3>Milan, Italy</h3>',
-                    icon: 'http://maps.google.com/mapfiles/markerA.png',
-            },
-            {
-                    lat: 47.36854,
-                    lon: 8.53910,
-                    title: 'Zurich, Switzerland',
-                    html: '<h3>Zurich, Switzerland</h3>',
-                    stopover: true,
-                    icon: 'http://maps.google.com/mapfiles/markerB.png',
-            },
-            {
-                    lat: 48.892,
-                    lon: 2.359,
-                    title: 'Paris, France',
-                    html: '<h3>Paris, France</h3>',
-                    stopover: true,
-                    icon: 'http://maps.google.com/mapfiles/markerC.png',
-            },
-            {
-                    lat: 48.13654,
-                    lon: 11.57706,
-                    title: 'Munich, Germany',
-                    html: '<h3>Munich, Germany</h3>',
-                    icon: 'http://maps.google.com/mapfiles/markerD.png',
-            }
-    ];
-    
-    
-    new Maplace({
-    locations: LocsD,
-    map_div: '#gmap-8',
-    generate_controls: false,
-    show_markers: true,
-    type: 'polyline',
-    draggable: true,
-        stroke_options : {
-            strokeColor: '#2929C0',
-            strokeOpacity: 1,
-            strokeWeight: 2,
-            fillColor: '#2929C0',
-            fillOpacity: 0.9
-        },
-    }).Load();
-    
-    
-
-})(jQuery);
-JS;
-$this->registerJs( $js, $position = yii\web\View::POS_END, $key = 'map-config' );
 $this->registerJsFile( 'js/custom-multiply-sticky.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-sticky' );
 $this->registerJsFile( 'js/custom-core.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-core' );
 ?>

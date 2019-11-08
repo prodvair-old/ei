@@ -131,7 +131,7 @@ AppAsset::register($this);
                                     </li>
                                 <? } else { ?>
                                     <li class="d-block d-sm-block">
-                                        <a href="<?=Url::to(['profile/index'])?>">
+                                        <a href="<?=Url::to(['user/index'])?>">
                                             <div class="image">
                                                 <!-- <img src="img/image-man/01.jpg" alt="Image" /> -->
                                             </div>

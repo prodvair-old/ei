@@ -9,50 +9,43 @@ use frontend\components\contact\ContactFormSendMessage;
 use frontend\components\contact\ContactMap;
 use frontend\components\contact\ContactTitleCategory;
 
-$this->title = 'Contact';
+$this->title = 'Контакты';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-contact">
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="main-wrapper scrollspy-container">
 
-    <p>This is the About page. You may modify the following file to customize its content:</p>
+    <section class="page-wrapper page-result pb-0">
+        
+        <?=ContactTitleCategory::widget()?>
 
-    <code><?= __FILE__ ?></code>
+        <div class="container pv-60">
 
-    <div class="main-wrapper scrollspy-container">
+            <h1 class="text-center pb-10"><?= Html::encode($this->title) ?></h1>
 
-        <section class="page-wrapper page-result pb-0">
+            <!-- <?=ContactMap::widget()?> -->
+
+            <div class="mb-50"></div>
+
+                <div class="row gap-50 gap-lg-0">
+                        
+                    <div class="col-12 col-lg-5 col-xl-4">
             
-            <?=ContactTitleCategory::widget()?>
+                        <h4 class="heading-title"><span>Написать <span class="font200">нам:</span></span></h4>
+        
+                        <?=ContactFormSendMessage::widget()?>
 
-            <div class="container pv-60">
-
-                <?=ContactMap::widget()?>
-
-                <div class="mb-50"></div>
-
-                    <div class="row gap-50 gap-lg-0">
+                    </div>
+            
+                    <div class="col-12 col-lg-6 ml-auto">
                             
-                        <div class="col-12 col-lg-5 col-xl-4">
+                        <h4 class="heading-title"><span>Контактная <span class="font200">информация:</span></span></h4>
+                        <p class="post-heading mb-10">ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ "ЕДИНЫЙ ИНФОРМАТОР"</p>
                 
-                            <h4 class="heading-title"><span>Drop us <span class="font200">a message:</span></span></h4>
+                        <?=ContactData::widget()?>
+
+                        <div class="mb-50"></div>
             
-                            <?=ContactFormSendMessage::widget()?>
-
-                        </div>
-                
-                        <div class="col-12 col-lg-6 ml-auto">
-                                
-                            <h4 class="heading-title"><span>Contact <span class="font200">information:</span></span></h4>
-                            <p class="post-heading">Excited him now natural saw passage offices you minuter. At by asked being court hopes</p>
-                    
-                            <?=ContactData::widget()?>
-
-                            <div class="mb-50"></div>
-                
-                            <?=ContactFindSociety::widget()?>
-
-                        </div>
+                        <?=ContactFindSociety::widget(['vk'=>'dsfsdf', 'google'=>'gadawd'])?>
 
                     </div>
 
@@ -60,8 +53,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
             </div>
 
-        </section>
+        </div>
 
-    </div>
-    
+    </section>
+
 </div>

@@ -9,11 +9,11 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Contact</li>
+                        <li class="breadcrumb-item active" aria-current="page">Контакты</li>
                     </ol>
                 </nav>
                 
-                <h4 class="mt-0 line-125">Contact</h4>
+                <h4 class="mt-0 line-125">Контакты</h4>
                 
             </div>
             

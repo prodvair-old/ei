@@ -1693,13 +1693,6 @@ this.maxHours=t.getHours(),this.maxMinutes=t.getMinutes(),this.d.lastSelectedDat
 
     Slick.prototype.initADA = function() {
         var _ = this;
-        _.$slides.add(_.$slideTrack.find('.slick-cloned')).attr({
-            'aria-hidden': 'true',
-            'tabindex': '-1'
-        }).find('a, input, button, select').attr({
-            'tabindex': '-1'
-        });
-
         _.$slideTrack.attr('role', 'listbox');
 
         _.$slides.not(_.$slideTrack.find('.slick-cloned')).each(function(i) {
@@ -1707,6 +1700,13 @@ this.maxHours=t.getHours(),this.maxMinutes=t.getMinutes(),this.d.lastSelectedDat
                 'role': 'option',
                 'aria-describedby': 'slick-slide' + _.instanceUid + i + ''
             });
+        });
+
+        _.$slides.add(_.$slideTrack.find('.slick-cloned')).attr({
+            'aria-hidden': 'true',
+            'tabindex': '-1'
+        }).find('a, input, button, select').attr({
+            'tabindex': '-1'
         });
 
         if (_.$dots !== null) {

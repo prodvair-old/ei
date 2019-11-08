@@ -5,7 +5,7 @@
 		        <img src="img/image-man/01.jpg" alt="Team" class="img-circle" />
 	        </div>
 	        <figcaption class="content">
-		        <h6 class="text-uppercase">Robert Smith</h6>
+		        <h6 class="text-uppercase">Иван Иванов</h6>
 		        <p>CEO</p>
 		        <ul class="social">
 			        <li><a href="#"><i class="fab fa-facebook"></i></a></li>

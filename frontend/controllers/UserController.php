@@ -6,6 +6,9 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
+
+use common\models\Query\WishList;
+
 /**
  * User controller
  */
@@ -64,11 +67,29 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        if (!Yii::$app->user->isGuest) {
+            return $this->render('index');
+        } else {
+            return $this->goHome();
+        }
     }
     public function actionSetting()
     {
-        return $this->render('setting');
+        if (!Yii::$app->user->isGuest) {
+                return $this->render('setting');
+        } else {
+            return $this->goHome();
+        }
+    }
+    public function actionWish_list()
+    {
+        if (!Yii::$app->user->isGuest) {
+            $wishList = WishList::find()->where(['userId' => Yii::$app->user->id])->all();
+            return $this->render('wish_list', ['wishList' => $wishList]);
+        } else {
+            return $this->goHome();
+        }
+            
     }
 
 }

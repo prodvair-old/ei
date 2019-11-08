@@ -78,7 +78,6 @@ return [
                 '/profile'         => 'user/index',
                 '/profile/setting' => 'user/setting',
 
-                
 
                 '/sitemap.xml' => 'sitemap/index',
                 '/sitemap_other_page.xml' => 'sitemap/other',
@@ -91,6 +90,7 @@ return [
                 
                 
                 '/load-category' => 'lot/load_category',
+                '/wish-list-edit' => 'lot/wish_list',
                 '/<type:(bankrupt|arrest)>'                                     => 'lot/index',
                 '/<type:(bankrupt|arrest)>/<category>'                          => 'lot/search',
                 '/<type:(bankrupt|arrest)>/<category>/<subcategory>'            => 'lot/search',

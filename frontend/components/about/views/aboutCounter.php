@@ -9,11 +9,11 @@
             <div class="col">
                     
                 <div class="item-counting">
-                    <div class="counting-inner">
+                    <div class="counting-inner text-center">
                         <div class="counting-number">
-                            <span class="counter" data-decimal-delimiter="," data-thousand-delimiter="," data-value="2542" ></span>
+                            <span class="counter fs-40" data-decimal-delimiter="," data-thousand-delimiter="," data-value="40000" ></span>
                         </div>
-                        <span class="counting-label">Happy Customers</span>
+                        <span class="counting-label">Торгов с 2010 года</span>
                     </div>
                 </div>
             
@@ -22,11 +22,11 @@
             <div class="col">
                 
                 <div class="item-counting">
-                    <div class="counting-inner">
+                    <div class="counting-inner text-center">
                         <div class="counting-number">
-                            <span class="counter" data-decimal-delimiter="," data-thousand-delimiter="," data-value="896" ></span>
+                            <span class="counter fs-40" data-decimal-delimiter="," data-thousand-delimiter="," data-value="1" ></span>
                         </div>
-                        <span class="counting-label">Tour Packages</span>
+                        <span class="counting-label">место в рейтинге торговых площадок</span>
                     </div>
                 </div>
             
@@ -35,11 +35,11 @@
             <div class="col">
                 
                 <div class="item-counting">
-                    <div class="counting-inner">
+                    <div class="counting-inner text-center">
                         <div class="counting-number">
-                            <span class="counter" data-decimal-delimiter="," data-thousand-delimiter="," data-value="365" ></span>
+                            <span class="counter fs-40" data-decimal-delimiter="," data-thousand-delimiter="," data-value="760000" ></span>
                         </div>
-                        <span class="counting-label">Great places</span>
+                        <span class="counting-label">млн. рублей объем проданных товаров и услуг</span>
                     </div>
                 </div>
             

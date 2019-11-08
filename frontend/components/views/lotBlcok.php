@@ -34,10 +34,9 @@ try {
                             <li><?= Yii::$app->formatter->asDate($lot->lot_timepublication, 'long')?></li>
                             <li>	
                                 <div class="rating-item rating-sm rating-inline clearfix">
-                                    <div class="rating-icons">
+                                    <!-- <div class="rating-icons">
                                         <input type="hidden" class="rating" data-filled="rating-icon ri-star rating-rated" data-empty="rating-icon ri-star-empty" data-fractions="2" data-readonly value="4.5"/>
-                                    </div>
-                                    <?$view = 1446?>
+                                    </div> -->
                                     <p class="rating-text font600 text-muted font-12 letter-spacing-1"><?=NumberWords::widget(['number' => $lot->lotViews, 'words' => ['просмотр', 'просмотра', 'просмотров']]) ?></p>
                                 </div>
                             </li>

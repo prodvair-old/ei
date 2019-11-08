@@ -5,7 +5,7 @@
     <div class="infobox-wrapper contact-infobox">
         <div id="infobox">
             <div class="infobox-address">
-                <h6>We Are Here</h6>
+                <h6>Мы находимся:</h6>
             </div>
         </div>
     </div>

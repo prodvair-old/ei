@@ -3,8 +3,8 @@ namespace common\models\Query;
 
 use Yii;
 use yii\db\ActiveRecord;
-use common\models\Query\Bankrupt\Lots;
-use common\models\Query\Arrest\Lot;
+use common\models\Query\Bankrupt\LotsBankrupt;
+use common\models\Query\Arrest\LotsArrest;
 
 class WishList extends ActiveRecord
 {
@@ -16,15 +16,15 @@ class WishList extends ActiveRecord
     {
         return Yii::$app->get('db');
     }
-    public function getLotsBaunkrupt()
+    public function getLotsBankrupt()
     {
-        return $this->hasOne(Lots::className(), ['id' => 'lotId'])->alias('lots_bankrupt')->onCondition([
+        return $this->hasOne(LotsBankrupt::className(), ['lot_id' => 'lotId'])->alias('lots_bankrupt')->onCondition([
             'type' => 'bankrupt'
         ]);
     }
     public function getLotsArrest()
     {
-        return $this->hasOne(Lot::className(), ['lotId' => 'lotId'])->alias('lots_arrest')->onCondition([
+        return $this->hasOne(LotsArrest::className(), ['lotId' => 'lotId'])->alias('lots_arrest')->onCondition([
             'type' => 'arrest'
         ]);
     }

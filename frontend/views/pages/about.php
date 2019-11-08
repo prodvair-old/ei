@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Html;
+
 use frontend\components\about\AboutCounter;
 use frontend\components\about\AboutDescription;
 use frontend\components\site\OurFeatures;
@@ -11,37 +12,33 @@ use frontend\components\contact\ContactFindSociety;
 
 
 
-$this->title = 'About';
+$this->title = 'О нас';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-about">
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>This is the About page. You may modify the following file to customize its content:</p>
-
-    <code><?= __FILE__ ?></code>
     <div class="container pt-100">
         <div class="section-title text-center w-100">
-	    	<h2>
-                <span><span>About</span> Us</span>
-            </h2>
-	    		<p>We are on the tour operator since since 2001</p>
+	    	<!-- <h2 class="font-weight-7">
+                О <span class="text-lowercase">нас</span>
+            </h2> -->
+            <h1 class="text-center pb-10 pt-50"><?= Html::encode($this->title) ?></h1>
+	    		<p>Мы создали электронную торговую площадку ЦДТ в 2010 году</p>
 	    </div>
         <?=AboutDescription::widget()?>
         
         <?=AboutCounter::widget()?>
         <div class="section-title text-center w-100">
 		    <h2>
-                <span><span>Our</span> features</span>
+                Почему<span class="text-lowercase"> выбирают нас</span>
             </h2>
-			<p>He doors quick child an point</p>
+			<p>Вот что отличает нас от остальных</p>
 	    </div>
         <?=OurFeatures::widget()?>
         <div class="section-title text-center w-100">
 		    <h2>
-                <span><span>Our</span> Teams</span>
+                Наша<span class="text-lowercase"> команда</span>
             </h2>
-			<p>People who control making Tourperator run</p>
+			<p>Люди, которые делают мир лучше</p>
 	    </div>
         <?=AboutTeams::widget()?>
         

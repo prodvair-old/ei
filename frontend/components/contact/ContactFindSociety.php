@@ -5,10 +5,14 @@ use yii\base\Widget;
 
 class ContactFindSociety extends Widget
 {
-    // public $lot;
+    public $vk;
+    public $google;
 
     public function run()
     {
-        return $this->render('contactFindSociety');
+        return $this->render('contactFindSociety', [
+            'vk' => $this->vk, 
+            'google' => $this->google,
+        ]);
     }
 }

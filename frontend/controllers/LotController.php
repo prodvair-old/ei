@@ -13,6 +13,8 @@ use common\models\Query\Bankrupt\LotsBankrupt;
 use common\models\Query\Bankrupt\Lots;
 use common\models\Query\Arrest\LotsArrest;
 
+use frontend\models\WishListEdit;
+
 use common\models\Query\LotsCategory;
 use common\models\Query\Regions;
 
@@ -56,7 +58,7 @@ class LotController extends Controller
     }
     public function beforeAction($action)
     {
-        if (in_array($action->id, ['load_category'])) {
+        if (in_array($action->id, ['load_category']) || in_array($action->id, ['wish_list'])) {
             $this->enableCsrfValidation = false;
         }
         return parent::beforeAction($action);
@@ -420,5 +422,25 @@ class LotController extends Controller
         }
         
         return $lotsSubcategory;
+    }
+
+    public function actionWish_list()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        
+        if (!Yii::$app->user->isGuest) {
+
+            $post = Yii::$app->request->post();
+
+            $model = new WishListEdit();
+
+            $model->lotId = $post['lotId'];
+            $model->type = $post['type'];
+    
+            return $model->wishEdit();
+        } else {
+            return false;
+        }
+        
     }
 }

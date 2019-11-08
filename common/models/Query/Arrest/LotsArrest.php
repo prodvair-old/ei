@@ -137,4 +137,8 @@ class LotsArrest extends ActiveRecord
     {
         return parent::find()->alias('lot')->joinWith(['torgs', 'wishlist'])->where(['wish.userId'=>$user_id])->andWhere(['not', ['wish.id' => null]])->orderBy('torgs.trgPublished DESC');
     }
+    // public function WishCount($limit = null, $offset = null)
+    // {
+    //     return parent::find()->select('count(wish.id)')->alias('lot')->joinWith(['torgs', 'wishlist'])->orderBy('torgs.trgPublished DESC'))['count'];
+    // }
 }

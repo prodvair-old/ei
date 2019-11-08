@@ -192,6 +192,8 @@ class SearchLot extends Model
                     $whereAnd = ['and'];
                     $addresSearchCheck = false;
 
+                    $where[] = ['not', ['torgs."trgPublished"'=>null]];
+                    
                     if ($this->category == '0') {
                         $url = $this->type.'/lot-list';
                     } else if (!empty($this->category) && $this->category != 'all') {

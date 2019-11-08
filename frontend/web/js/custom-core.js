@@ -401,7 +401,6 @@ jQuery(function($) {
 	onLoadPriceRange($('#price_range').data("ionRangeSlider"));
 
 	function onLoadPriceRange(price_range) {
-		console.log(priceMin.val());
 		if (priceMin.val()) {
 			var fromNumber = priceMin.val();
 		} else {
@@ -412,10 +411,13 @@ jQuery(function($) {
 		} else {
 			var toNumber = $("#price_range").data('max');
 		}
-		price_range.update({
-			from: fromNumber,
-			to: toNumber
-		});
+		if(typeof(price_range) != "undefined" && price_range !== null) {
+			price_range.update({
+				from: fromNumber,
+				to: toNumber
+			});
+		}
+		
 	};
 	
 	$("#star_range").ionRangeSlider({
