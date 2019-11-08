@@ -10,10 +10,10 @@ use frontend\components\LotBlock;
 
 if ($wishList) foreach ($wishList as $wish) {
     if ($wish->type == 'arrest') {
-        $lotArrestIds[] = $wish->lotId;
+        $lotArrestIds[] = LotsArrest::findOne($wish->lotId);
     }
     if ($wish->type == 'bankrupt') {
-        $lotBankruptIds[] = $wish->lotId;
+        $lotBankruptIds[] = LotsBankrupt::findOne($wish->lotId);
     }
 }
 
@@ -131,10 +131,10 @@ $this->params['breadcrumbs'][] = [
                         <div class="mb-50"></div>
 
                         <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list" id="arrest-wish">
-                            <? if ($lotArrestIds) foreach ($lotArrestIds as $lot) { echo LotBlock::widget(['lot' => LotsArrest::findOne($wish->lotId)]); } ?>
+                            <? if ($lotArrestIds) foreach ($lotArrestIds as $lot) { echo LotBlock::widget(['lot' => $lot]); } ?>
                         </div>
                         <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list" id="bankrupt-wish">
-                            <? if ($lotBankruptIds) foreach ($lotBankruptIds as $lot) { echo LotBlock::widget(['lot' => LotsBankrupt::findOne($lotBankruptIds[0])]); } ?>
+                            <? if ($lotBankruptIds) foreach ($lotBankruptIds as $lot) { echo LotBlock::widget(['lot' => $lot]); } ?>
                         </div>
 
                     </div>
