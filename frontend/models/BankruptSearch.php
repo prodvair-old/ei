@@ -37,11 +37,11 @@ class BankruptSearch extends Model
         if (!empty($this->type)) {
             switch ($this->type) {
                 case 'company':
-                        $bankrupt->joinWith('company')->orderBy('bnkr_cmpn.shortname ASC');
+                        $bankrupt->joinWith('company')->orderBy('bnkr_cmpn.shortname ASC, bnkr_cmpn.inn ASC');
                         $whereAnd = ['bankrupttype' => 'Organization'];
                     break;
                 case 'person':
-                        $bankrupt->joinWith('person')->orderBy('bnkr_prsn.lname ASC, bnkr_prsn.fname ASC, bnkr_prsn.mname ASC');
+                        $bankrupt->joinWith('person')->orderBy('bnkr_prsn.lname ASC, bnkr_prsn.fname ASC, bnkr_prsn.mname ASC, bnkr_prsn.inn ASC');
                         $whereAnd = ['bankrupttype' => 'Person'];
                     break;
             }
@@ -56,6 +56,7 @@ class BankruptSearch extends Model
                             foreach ($search as $value) {
                                 $whereSearch[] = ['like', 'LOWER("bnkr_cmpn"."shortname")', mb_strtolower($value, 'UTF-8')];
                                 $whereSearch[] = ['like', 'LOWER("bnkr_cmpn"."fullname")', mb_strtolower($value, 'UTF-8')];
+                                $whereSearch[] = ['like', 'LOWER("bnkr_cmpn"."inn")', mb_strtolower($value, 'UTF-8')];
                             }
                         break;
                     case 'person':
@@ -63,6 +64,7 @@ class BankruptSearch extends Model
                                 $whereSearch[] = ['like', 'LOWER("bnkr_prsn"."lname")', mb_strtolower($value, 'UTF-8')];
                                 $whereSearch[] = ['like', 'LOWER("bnkr_prsn"."fname")', mb_strtolower($value, 'UTF-8')];
                                 $whereSearch[] = ['like', 'LOWER("bnkr_prsn"."mname")', mb_strtolower($value, 'UTF-8')];
+                                $whereSearch[] = ['like', 'LOWER("bnkr_prsn"."inn")', mb_strtolower($value, 'UTF-8')];
                             }
                         break;
                 }

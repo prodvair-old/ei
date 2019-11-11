@@ -77,7 +77,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             
                             <div class="col-12">
                                 <div class="col-inner ph-20 pv-15">
-                                    <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block', 'name' => 'login-button']) ?>
+                                    <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
                                 </div>
                             </div>
                         
@@ -110,7 +110,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         </div>
                     </div>
                     
-                    <div class="row equal-height cols-1 cols-sm-2 gap-20 mb-25">
+                    <div class="row equal-height cols-1 cols-sm-2 gap-20 mb-25 load-list">
                         <?foreach ($arbitrs as $arbitr) { echo arbitrBlock::widget(['arbitr' => $arbitr]); }?>
                     </div>
                     
