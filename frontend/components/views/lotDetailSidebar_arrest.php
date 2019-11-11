@@ -31,7 +31,7 @@ use frontend\components\NumberWords;
             
             <p class="text-right font-sm"></p>
             
-            <a href="#" target="_blank" rel="nofollow" class="btn btn-primary btn-block">Подать заявку</a>
+            <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#lotFormTabInModal-service" data-toggle="modal" data-target="#lotFormTabInModal" data-backdrop="static" data-keyboard="false"'?> class="btn btn-primary btn-block">Подать заявку</a>
             
             <!-- <p class="line-115 mt-20">By clicking the above button you agree to our <a href="#">Terms of Service</a> and have read and understood our <a href="#">Privacy Policy</a></p> -->
             

@@ -9,6 +9,7 @@ use yii\helpers\Url;
 use frontend\components\NumberWords;
 use frontend\components\LotDetailSidebar;
 use frontend\components\LotBlock;
+use frontend\components\ServiceLotFormWidget;
 
 use frontend\models\ViewPage;
 
@@ -111,7 +112,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                 <div class="content-wrapper">
                     
                     <div id="desc" class="detail-header mb-30">
-                        <h3><?=$lot->lotTitle?></h3>
+                        <h3><?=Yii::$app->params['h1']?></h3>
                         
                         <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-20">
                             <div class="mr-15 font-lg">
@@ -127,7 +128,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             </div>
                             <div class="mr-15 text-muted">|</div>
                             <div class="mr-15 rating-item rating-inline">
-                                <a href="#" class="wish-js" data-id="<?=$lot->id?>" data-type="<?=$type?>">
+                                <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="wish-star" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star" data-id="'.$lot->id.'" data-type="'.$type.'"'?>>
                                     <img src="img/star<?=($wishCheck)? '' : '-o' ?>.svg" alt="">
                                 </a>
                             </div>
@@ -293,7 +294,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
                                 <h6>Должник</h6>
                                 <ul class="ul">
-                                    <li><span class="text-list-name"></span> <?=$lot->lotBnkrName?></li>
+                                    <li><a href="<?=Url::to(['doljnik/list'])?>/<?=$lot->torgy->case->bnkr->id?>" target="_blank"><?=$lot->lotBnkrName?></a></li>
                                     <li><span class="text-list-name">ИНН:</span> <?= ($lot->lotBnkrType == 'Person')? $lot->torgy->case->bnkr->person->inn : $lot->torgy->case->bnkr->company->inn;?></li>
                                     <li><span class="text-list-name">Адрес:</span> <?= ($lot->lotBnkrType == 'Person')? $lot->torgy->case->bnkr->person->address : $lot->torgy->case->bnkr->company->legaladdress;?></li>
                                 </ul>
@@ -313,7 +314,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
                                 <h6>Арбитражный управляющий</h6>
                                 <ul class="ul">
-                                    <li><span class="text-list-name"></span> <?=$lot->lotArbtrName?></li>
+                                    <li><a href="<?=Url::to(['arbitr/list'])?>/<?=$lot->torgy->case->arbitr->id?>" target="_blank"><?=$lot->lotArbtrName?></a></li>
                                     <li><span class="text-list-name">Рег. номер:</span> <?= $lot->torgy->case->arbitr->regnum?></li>
                                     <li><span class="text-list-name">ИНН:</span> <?= $lot->torgy->case->arbitr->person->inn?></li>
                                     <!-- <li><span class="text-list-name">ОГРН:</span> <?= $lot->torgy->case->arbitr->ogrn?></li> -->
@@ -447,9 +448,9 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                                 
                                             </div>
                                             
-                                            <div class="col-4 col-sm-2">
+                                            <!-- <div class="col-4 col-sm-2">
                                                 <a href="#" class="btn btn-primary btn-block btn-sm mt-3">Купить</a>
-                                            </div>
+                                            </div> -->
                                             
                                         </div>
                                     
@@ -519,7 +520,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             <? } ?>
                             
                         </ul>
-                        <a href="#docs" class="open-text-js">Подробнее</a>
+                        <a href="#docs" class="open-text-js">Все документы</a>
                         <div class="mb-50"></div>
                     </div>
 
@@ -551,10 +552,9 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         <h4 class="mt-30">Правила подачи заявок</h5>
                         <p class="long-text"><?=$lot->torgy->rules?></p>
                         <a href="#roles" class="open-text-js">Подробнее</a>
-                        <div class="mb-50"></div>
                     </div>
 
-                    <div id="faq" class="fullwidth-horizon-sticky-section">
+                    <!-- <div id="faq" class="fullwidth-horizon-sticky-section">
                     
                         <h4 class="heading-title">FAQ</h4>
                         
@@ -674,7 +674,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         
                         <div class="mb-50"></div>
                         
-                    </div>
+                    </div> -->
                     
                 </div>
                 
@@ -691,6 +691,23 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
     </div>
 
 </section>
+
+<!-- start lot form modal -->
+<div class="modal fade modal-with-tabs form-login-modal" id="lotFormTabInModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content shadow-lg">
+            
+            <?=ServiceLotFormWidget::widget(['lotId' => $lot->id, 'lotType' => $type])?>
+            
+            <div class="text-center pb-20">
+                <button type="button" class="close" data-dismiss="modal" aria-labelledby="Close">
+                    <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end lot form modal -->
 
 <?php
 $this->registerJsFile( 'js/custom-multiply-sticky.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-sticky' );

@@ -33,7 +33,7 @@ foreach ($lot->purchaselots as $key => $value) {
                 <li class="clearfix">Шаг<span class="float-right"><?=($lot->auctionstepunit == 'Percent')? $lot->stepprice.'% ('.Yii::$app->formatter->asCurrency((($lot->lotPrice / 100) * $lot->stepprice)).')' : Yii::$app->formatter->asCurrency($lot->stepprice) ?></span></li>
                 <li class="clearfix">Задаток<span class="float-right"><?=($lot->advancestepunit == 'Percent')? $lot->advance.'% ('.Yii::$app->formatter->asCurrency((($lot->lotPrice / 100) * $lot->advance)).')' : Yii::$app->formatter->asCurrency($lot->advance) ?></span></li>
                 <li class="clearfix">Форма предложения цены <span class="float-right"><?=($lot->torgy->pricetype == 'Public')? 'Открытая' : 'Закрытая'?></span></li>
-                <li class="clearfix">Тип торгов <span class="float-right text-<?=($lot->torgy->tradetype == 'OpenedAuction')? 'success' : 'primary'?>"><?=($lot->torgy->tradetype == 'OpenedAuction')? 'Открытый Аукцион' : 'Публичное предложение'?></span></li>
+                <li class="clearfix">Тип торгов <span class="float-right text-<?=($lot->torgy->tradetype == 'OpenedAuction')? 'success' : 'primary'?>"><?=($lot->torgy->tradetype == 'OpenedAuction')? 'Открытый аукцион' : 'Публичное предложение'?></span></li>
                 <li class="clearfix">ЭТП <span class="float-right"><?=$lot->torgy->tradesite?></span></li>
                 <li class="clearfix border-top"><?= ($etpUrl !== 'http://')? '<a href="'.$etpUrl.'" target="_blank" rel="nofollow">Ссылка на торги</a>' : null ?></li>
                 <li class="clearfix"><a href="https://bankrot.fedresurs.ru/MessageWindow.aspx?ID=<?=$lot->torgy->msgguid?>" target="_blank" rel="nofollow">Страница лота на ЕФРСБ</a></li>
@@ -46,10 +46,8 @@ foreach ($lot->purchaselots as $key => $value) {
             
             <p class="text-right font-sm"></p>
             
-            <a href="#" class="btn btn-primary btn-block">Подать заявку</a>
-            
-            <!-- <p class="line-115 mt-20">By clicking the above button you agree to our <a href="#">Terms of Service</a> and have read and understood our <a href="#">Privacy Policy</a></p> -->
-            
+            <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#lotFormTabInModal-service" data-toggle="modal" data-target="#lotFormTabInModal" data-backdrop="static" data-keyboard="false"'?> class="btn btn-primary btn-block">Подать заявку</a>
+                        
         </div>
         
         <div class="box-bottom bg-light">

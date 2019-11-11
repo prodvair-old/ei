@@ -18,7 +18,5 @@ class SearchForm extends Widget
         $type = $model->type = $this->type;
 
         return $this->render('smallSearch', compact('model', 'type'));
-
-        
     }
 }

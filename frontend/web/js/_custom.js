@@ -26,13 +26,35 @@ $(document).ready(function() {
             url : '/signup',
             data : $(this).serializeArray()
         }).done(function(data) {
-                if (data.result) {
-                    console.log(data)
-                        location.reload();
-                        $('.signup-form-error').html('');
-                } else {
-                        $('.signup-form-error').html(data.error);
-                }
+            if (data.result) {
+                console.log(data)
+                location.reload();
+                $('.signup-form-error').html('');
+            } else {
+                $('.signup-form-error').html(data.error);
+            }
+        }).fail(function() {
+            console.log('fail');
+        })
+        return false;
+    });
+    $('.form-confirm').hide();
+
+    $('#lot-service-form').on('beforeSubmit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            type : 'POST',
+            url : $(this).attr('action'),
+            data : $(this).serializeArray()
+        }).done(function(data) {
+        if (data) {
+            $('.form-service .form-header').hide();
+            $('.form-service .form-body').hide();
+            $('.form-service .form-confirm').show();
+            setTimeout(location.reload(), 1000);
+        } else {
+            console.log('error');
+        }
         }).fail(function() {
             console.log('fail');
         })
@@ -51,7 +73,6 @@ $(document).ready(function() {
         e.preventDefault();
         var lotId   = $(this).data('id'),
             type    = $(this).data('type');
-
         $.ajax({
             url: '/wish-list-edit',
             type: 'POST',
@@ -104,6 +125,11 @@ $(document).ready(function() {
         } else {
             $(this).html('Подробнее');
         }
+        if ($(this).html() == 'Все документы') {
+            $(this).html('Скрыть документы');
+        } else {
+            $(this).html('Все документы');
+        }
         var id = $(this).attr('href');
         $(id+' .long-text').toggleClass('hideText');
     });
@@ -120,5 +146,20 @@ $(document).ready(function() {
         $('.wish-lot-list').hide();
         $(id).show();
     })
+
+
+    var lotServicePrice = 0;
+
+    $('.service-check-inpurt').on('change', function () {
+        var price = Number($(this).data('price'));
+        if ($(this).is(':checked')) {
+            lotServicePrice = lotServicePrice + price;
+        } else {
+            lotServicePrice = lotServicePrice - price;
+            if (lotServicePrice < 0) { lotServicePrice = 0; }
+        }
+        $('.service-lot-itog').html(lotServicePrice);
+        $('.service-lot-itog-input').val(lotServicePrice);
+    });
 
 })

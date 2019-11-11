@@ -135,7 +135,7 @@ AppAsset::register($this);
                                             <div class="image">
                                                 <!-- <img src="img/image-man/01.jpg" alt="Image" /> -->
                                             </div>
-                                            </span><?=(Yii::$app->user->identity->info['firstname'] || Yii::$app->user->identity->info['lastname'])? Yii::$app->user->identity->info['firstname'].' '.Yii::$app->user->identity->info['lastname'] : Yii::$app->user->identity->info['contacts']['emails'][0] ?>
+                                            <?=(Yii::$app->user->identity->info['firstname'] || Yii::$app->user->identity->info['lastname'])? Yii::$app->user->identity->info['firstname'].' '.Yii::$app->user->identity->info['lastname'] : Yii::$app->user->identity->info['contacts']['emails'][0] ?>
                                             <?=(Yii::$app->user->identity->info['firstname'] || Yii::$app->user->identity->info['lastname'])? '<p class="mb-15">'.Yii::$app->user->identity->info['contacts']['emails'][0].'</p>': ''?>
                                         </a>
                                     </li>

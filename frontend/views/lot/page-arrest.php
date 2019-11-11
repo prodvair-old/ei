@@ -9,6 +9,7 @@ use yii\helpers\Url;
 use frontend\components\NumberWords;
 use frontend\components\LotDetailSidebar;
 use frontend\components\LotBlock;
+use frontend\components\ServiceLotFormWidget;
 
 use frontend\models\ViewPage;
 
@@ -110,7 +111,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                 <div class="content-wrapper">
                     
                     <div id="desc" class="detail-header mb-30">
-                        <h3><?=$lot->lotTitle?></h3>
+                        <h3><?=Yii::$app->params['h1']?></h3>
                         
                         <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-20">
                             <div class="mr-15 font-lg">
@@ -125,7 +126,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <p class="rating-text font400 text-muted font-12 letter-spacing-1"><?=$lot->lotId?> </p>
                             </div>
                             <div class="mr-15 rating-item rating-inline">
-                                <a href="#" class="wish-js" data-id="<?=$lot->lotId?>" data-type="<?=$type?>">
+                                <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="wish-star" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star" data-id="'.$lot->id.'" data-type="'.$type.'"'?>>
                                     <img src="img/star<?=($wishCheck)? '' : '-o' ?>.svg" alt="">
                                 </a>
                             </div>
@@ -402,7 +403,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             <? } ?>
                         </ul>
 
-                        <a href="#docs" class="open-text-js">Подробнее</a>
+                        <a href="#docs" class="open-text-js">Все документы</a>
 
                         
                         <div class="mb-50"></div>
@@ -436,10 +437,9 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         <h4 class="mt-30">Правила подачи заявок</h5>
                         <p class="long-text"><?=$lot->lotDepositDesc?></p>
                         <a href="#roles" class="open-text-js">Подробнее</a>
-                        <div class="mb-50"></div>
                     </div>
 
-                    <div id="faq" class="fullwidth-horizon-sticky-section">
+                    <!-- <div id="faq" class="fullwidth-horizon-sticky-section">
                     
                         <h4 class="heading-title">FAQ</h4>
                         
@@ -559,7 +559,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         
                         <div class="mb-50"></div>
                         
-                    </div>
+                    </div> -->
                     
                 </div>
                 
@@ -576,6 +576,23 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
     </div>
 
 </section>
+
+<!-- start lot form modal -->
+<div class="modal fade modal-with-tabs form-login-modal" id="lotFormTabInModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content shadow-lg">
+            
+            <?=ServiceLotFormWidget::widget(['lotId' => $lot->lotId, 'lotType' => $type])?>
+            
+            <div class="text-center pb-20">
+                <button type="button" class="close" data-dismiss="modal" aria-labelledby="Close">
+                    <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end lot form modal -->
 
 <?php
 $this->registerJsFile( 'js/custom-multiply-sticky.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-sticky' );

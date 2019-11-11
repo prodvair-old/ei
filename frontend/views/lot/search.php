@@ -113,11 +113,13 @@ $this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\Vi
                                     <?=$form->field($model, 'type')->dropDownList([
                                             'bankrupt' => 'Банкротное имущество',
                                             'arrest' => 'Арестованное имущество',
+                                            'zalog' => 'Залоговое имущество',
                                         ], [
                                             'class'=>'chosen-type-select form-control form-control-sm', 
                                             'data-placeholder'=>'Выберите тип лота', 
                                             'tabindex'=>'2',
                                             'options' => [
+                                                'zalog' => ['disabled' => true, 'title'=>'Скоро'],
                                                 $type => ['Selected' => true]
                                             ]])
                                         ->label('Тип лота');?>
@@ -266,6 +268,10 @@ $this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\Vi
                         
                     </div>
 
+                    <div class="sidebar-box">
+                        <p><?=Yii::$app->params['text']?></p>
+                    </div>
+
                 </aside>
 
                 <?php ActiveForm::end(); ?>
@@ -356,4 +362,4 @@ $this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\Vi
         
     </div>
 
-</section>8
+</section>

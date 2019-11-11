@@ -20,6 +20,7 @@ use common\models\Query\Regions;
 
 use frontend\models\SearchLot;
 use frontend\models\SortLot;
+use frontend\models\ServiceLotForm;
 
 /**
  * Lot controller
@@ -296,7 +297,50 @@ class LotController extends Controller
 
         switch ($type) {
             case 'bankrupt':
-                $lots = Lots::findOne($id);
+                $lot = Lots::findOne($id);
+                
+                $search  = [
+                    '${lotTitle}', 
+                    '${lotAddress}', 
+                    '${lotStatus}', 
+                    '${bnkrName}',
+                    '${arbitrName}',
+                    '${sroName}',
+                    '${etp}',
+                    '${tradeType}',
+                    '${caseId}', 
+                    '${category}',
+                    '${subCategory}',
+                    '${startPrice}',
+                    '${lotPrice}',
+                    '${stepPrice}',
+                    '${advance}',
+                    '${priceType}',
+                    '${timeEnd}',
+                    '${timeBegin}',
+                ];
+                $replace = [
+                    str_replace('"',"'",$lot->lotTitle),
+                    str_replace('"',"'",$lot->lotAddress),
+                    str_replace('"',"'",$lot->lotStatus),
+                    str_replace('"',"'",$lot->lotBnkrName),
+                    str_replace('"',"'",$lot->lotArbtrName),
+                    str_replace('"',"'",$lot->lotSroTitle),
+                    str_replace('"',"'",$lot->lotEtp),
+                    (($lot->lotTradeType != 'PublicOffer')? 'публичное предложение': 'открытый аукцион'),
+                    $lot->torgy->case->caseid, 
+                    $category_title,
+                    $subCategory,
+                    Yii::$app->formatter->asCurrency($lot->startprice),
+                    Yii::$app->formatter->asCurrency($lot->lotPrice),
+                    (($lot->auctionstepunit == 'Percent')? $lot->stepprice.'% ('.Yii::$app->formatter->asCurrency((($lot->lotPrice / 100) * $lot->stepprice)).')' : Yii::$app->formatter->asCurrency($lot->stepprice)),
+                    (($lot->advancestepunit == 'Percent')? $lot->advance.'% ('.Yii::$app->formatter->asCurrency((($lot->lotPrice / 100) * $lot->advance)).')' : Yii::$app->formatter->asCurrency($lot->advance)),
+                    (($lot->torgy->pricetype == 'Public')? 'Открытая' : 'Закрытая'),
+                    Yii::$app->formatter->asDate($lot->torgy->timeend, 'long'),
+                    Yii::$app->formatter->asDate($lot->torgy->timebegin, 'long'),
+c                ];
+
+                $metaType = 'lot-page';
 
                 $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
                 $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Банкротное имущество';
@@ -315,7 +359,57 @@ class LotController extends Controller
                 }
                 break;
             case 'arrest':
-                $lots = LotsArrest::findOne($id);
+                $lot = LotsArrest::findOne($id);
+
+                if ($lot->lotCancelReason != null) {
+                    $lotStatus = $lot->lotCancelReason;
+                } else if ($lot->lotSuspendReason != null) {
+                    $lotStatus = $lot->lotSuspendReason;
+                } else {
+                    $lotStatus = $lot->lotBidStatusName;
+                }
+
+                $search = [
+                    '${lotTitle}', 
+                    '${lotAddress}', 
+                    '${lotStatus}', 
+                    '${trgFullName}',
+                    '${trgHeadOrg}',
+                    '${trgEtpName}',
+                    '${trgBidFormName}',
+                    '${trgLotCount}', 
+                    '${lotCategory}',
+                    '${lotStartPrice}',
+                    '${lotPriceStep}',
+                    '${lotMinPrice}',
+                    '${lotDepositSize}',
+                    '${trgPublished}',
+                    '${trgExpireDate}',
+                    '${trgStartDateRequest}',
+                    '${trgOpeningDate}',
+                ];
+
+                $replace = [
+                    str_replace('"',"'",$lot->lotTitle),
+                    str_replace('"',"'",$lot->lotKladrLocationName),
+                    str_replace('"',"'",$lotStatus),
+                    str_replace('"',"'",$lot->torgs->trgFullName),
+                    str_replace('"',"'",$lot->torgs->trgHeadOrg),
+                    str_replace('"',"'",$lot->torgs->trgEtpName),
+                    $lot->torgs->trgBidFormName,
+                    $lot->torgs->trgLotCount, 
+                    $lot->lotPropKindName,
+                    Yii::$app->formatter->asCurrency($lot->lotStartPrice),
+                    Yii::$app->formatter->asCurrency($lot->lotPriceStep),
+                    Yii::$app->formatter->asCurrency($lot->lotMinPrice),
+                    Yii::$app->formatter->asCurrency($lot->lotDepositSize),
+                    Yii::$app->formatter->asDate($lot->torgs->trgPublished, 'long'),
+                    Yii::$app->formatter->asDate($lot->torgs->trgExpireDate, 'long'),
+                    Yii::$app->formatter->asDate($lot->torgs->trgStartDateRequest, 'long'),
+                    Yii::$app->formatter->asDate($lot->torgs->trgOpeningDate, 'long'),
+                ];
+
+                $metaType = 'lot-arrest-page';
 
                 $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
                 $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Арестованное имущество';
@@ -341,12 +435,12 @@ class LotController extends Controller
         // Проверка ссылок ЧПУ и подставление типа лотов <-End 
 
         // Мета данные Strat-> 
-        $metaData = MetaDate::find()->where(['mdName' => "$type/$category/$subcategory/$id"])->one();
-
-        Yii::$app->params['description'] = $metaData->mdDescription;
+        $metaData = MetaDate::find()->where(['mdName' => $metaType])->one();
+        
+        Yii::$app->params['description'] = str_replace($search, $replace, $metaData->mdDescription);
+        Yii::$app->params['title'] = str_replace($search, $replace, $metaData->mdTitle);
+        Yii::$app->params['h1'] = str_replace($search, $replace, $metaData->mdH1);
         Yii::$app->params['text'] = $metaData->mdText;
-        Yii::$app->params['title'] = ($metaData->mdTitle)? $metaData->mdTitle : $lots->lotTitle ;
-        Yii::$app->params['h1'] = ($metaData->mdH1)? $metaData->mdH1 : $lots->lotTitle ;;
         // Мета данные <-End 
 
         // Хлебные крошки Start->
@@ -372,7 +466,7 @@ class LotController extends Controller
         ];
         // Хлебные крошки <-End
 
-        return $this->render("page-$type", ['lot'=>$lots, 'type'=>$type]);
+        return $this->render("page-$type", ['lot'=>$lot, 'type'=>$type]);
     }
     public function actionLoad_category()
     {
@@ -438,6 +532,25 @@ class LotController extends Controller
             $model->type = $post['type'];
     
             return $model->wishEdit();
+        } else {
+            return false;
+        }
+        
+    }
+
+    public function actionLot_service()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        
+        if (!Yii::$app->user->isGuest) {
+
+            $post = Yii::$app->request->post();
+
+            $model = new ServiceLotForm();
+
+            if ($model->load(Yii::$app->request->post())) {
+                return $model->send();
+            }
         } else {
             return false;
         }

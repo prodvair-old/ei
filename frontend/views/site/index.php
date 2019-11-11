@@ -90,7 +90,7 @@ $this->title = Yii::$app->params['title'];
                 <figure class="destination-grid-item-01">
                     <a href="/bankrupt/lot-list">
                         <div class="image">
-                            <img src="img/image-destination/01.jpg"alt="image"/>
+                            <img src="img\bankrupt_lot.png"alt="image"/>
                         </div>
                         <figcaption class="content">
                             <h5>Банкротнное имущество</h5>
@@ -106,7 +106,7 @@ $this->title = Yii::$app->params['title'];
                 <figure class="destination-grid-item-01">
                     <a href="/arrest/lot-list">
                         <div class="image">
-                            <img src="img/image-destination/02.jpg"alt="image"/>
+                            <img src="img\arrest_lot.png"alt="image"/>
                         </div>
                         <figcaption class="content">
                             <h5>Арестованное имущество</h5>
@@ -122,7 +122,7 @@ $this->title = Yii::$app->params['title'];
                 <figure class="destination-grid-item-01">
                     <a href="javascript:void(0)">
                         <div class="image">
-                            <img src="img/image-destination/03.jpg"alt="image"/>
+                            <img src="img\zalog_lot.png"alt="image"/>
                         </div>
                         <figcaption class="content">
                             <h5>Залоговое имущество</h5>

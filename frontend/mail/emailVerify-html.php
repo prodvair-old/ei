@@ -21,5 +21,4 @@ $verifyLink = Yii::$app->urlManager->createAbsoluteUrl(['site/verify-email', 'to
         Пароль: <?= Html::encode($password) ?>
     </p>
     <br>
-    <p>© <?=Yii::$app->name?></p>
 </p>
