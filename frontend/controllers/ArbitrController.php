@@ -134,7 +134,7 @@ class ArbitrController extends Controller
             '${arbitrInn}',
             '${arbitrOgrn}',
             '${countCase}',
-            '${countLot}',
+            '${countLot}'
         ];
         $replace = [
             $arbitr->person->lname.' '.$arbitr->person->fname.' '.$arbitr->person->mname,
@@ -143,7 +143,7 @@ class ArbitrController extends Controller
             $arbitr->regnum,
             $arbitr->person->inn,
             $countCases,
-            count($lots_bankrupt),
+            count($lots_bankrupt)
         ];
         Yii::$app->params['description'] = str_replace($search, $replace, $metaData->mdDescription);
         Yii::$app->params['title'] = str_replace($search, $replace, $metaData->mdTitle);

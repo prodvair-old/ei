@@ -140,12 +140,12 @@ class DoljnikController extends Controller
         $search  = [
             '${bnkrName}',
             '${bnkrAddress}',
-            '${bnkrInn}',
+            '${bnkrInn}'
         ];
         $replace = [
             $name,
             $address,
-            $inn,
+            $inn
         ];
 
         Yii::$app->params['description'] = str_replace($search, $replace, $metaData->mdDescription);

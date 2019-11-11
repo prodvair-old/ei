@@ -328,7 +328,7 @@ class LotController extends Controller
                     '${advance}',
                     '${priceType}',
                     '${timeEnd}',
-                    '${timeBegin}',
+                    '${timeBegin}'
                 ];
                 $replace = [
                     str_replace('"',"'",$lot->lotTitle),
@@ -348,7 +348,7 @@ class LotController extends Controller
                     (($lot->advancestepunit == 'Percent')? $lot->advance.'% ('.Yii::$app->formatter->asCurrency((($lot->lotPrice / 100) * $lot->advance)).')' : Yii::$app->formatter->asCurrency($lot->advance)),
                     (($lot->torgy->pricetype == 'Public')? 'Открытая' : 'Закрытая'),
                     Yii::$app->formatter->asDate($lot->torgy->timeend, 'long'),
-                    Yii::$app->formatter->asDate($lot->torgy->timebegin, 'long'),
+                    Yii::$app->formatter->asDate($lot->torgy->timebegin, 'long')
 c                ];
 
                 $metaType = 'lot-page';
@@ -397,7 +397,7 @@ c                ];
                     '${trgPublished}',
                     '${trgExpireDate}',
                     '${trgStartDateRequest}',
-                    '${trgOpeningDate}',
+                    '${trgOpeningDate}'
                 ];
 
                 $replace = [
@@ -417,7 +417,7 @@ c                ];
                     Yii::$app->formatter->asDate($lot->torgs->trgPublished, 'long'),
                     Yii::$app->formatter->asDate($lot->torgs->trgExpireDate, 'long'),
                     Yii::$app->formatter->asDate($lot->torgs->trgStartDateRequest, 'long'),
-                    Yii::$app->formatter->asDate($lot->torgs->trgOpeningDate, 'long'),
+                    Yii::$app->formatter->asDate($lot->torgs->trgOpeningDate, 'long')
                 ];
 
                 $metaType = 'lot-arrest-page';
