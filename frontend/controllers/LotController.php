@@ -349,7 +349,7 @@ class LotController extends Controller
                     (($lot->torgy->pricetype == 'Public')? 'Открытая' : 'Закрытая'),
                     Yii::$app->formatter->asDate($lot->torgy->timeend, 'long'),
                     Yii::$app->formatter->asDate($lot->torgy->timebegin, 'long')
-c                ];
+                ];
 
                 $metaType = 'lot-page';
 

@@ -858,7 +858,7 @@ ul.horizon-sticky-nav > li.active a {
         right: -10000px;
     }
     .fullwidth-horizon-sticky.none-sticky-hide.fixed {
-        top: 62px;
+        top: 0;
         left: 0;
         right: 0;
         o-transition: all 0.3s ease-out;
@@ -871,7 +871,7 @@ ul.horizon-sticky-nav > li.active a {
 
 @media (min-width: 1200px) {
     .fullwidth-horizon-sticky.none-sticky-hide.fixed {
-        top: 75px;
+        top: 0;
     }
 }
 

@@ -31,13 +31,13 @@ $this->title = Yii::$app->params['title'];
     
 </div>
 
-<section class="pt-70 pb-0">
+<section class="pt-0 pb-0">
 
     <div class="container">
     
-        <div class="clear mb-100"></div>
+        <div class="clear"></div>
 
-        <div class="row cols-1 cols-lg-3 gap-20 gap-lg-40">
+        <!-- <div class="row cols-1 cols-lg-3 gap-20 gap-lg-40">
             
             <div class="col">
                 <div class="featured-icon-horizontal-01 clearfix">
@@ -75,17 +75,17 @@ $this->title = Yii::$app->params['title'];
                 </div>
             </div>
             
-        </div>
+        </div> -->
 
         <div class="clear mb-100"></div>
         
-        <div class="section-title">
+        <!-- <div class="section-title">
             <h2><span><span>Ищите</span> Нужные Лоты на Аукционах</span></h2>
-        </div>
+        </div> -->
         
-        <div class="row cols-1 cols-sm-2 cols-lg-3 gap-2 mb-20">
+        <div class="row">
         
-            <div class="col">
+            <div class="col px-5">
             
                 <figure class="destination-grid-item-01">
                     <a href="/bankrupt/lot-list">
@@ -98,11 +98,9 @@ $this->title = Yii::$app->params['title'];
                         </figcaption>
                     </a>
                 </figure>
-                
             </div>
             
-            <div class="col">
-            
+            <div class="col px-5">
                 <figure class="destination-grid-item-01">
                     <a href="/arrest/lot-list">
                         <div class="image">
@@ -117,8 +115,8 @@ $this->title = Yii::$app->params['title'];
                 
             </div>
             
-            <div class="col">
-            
+            <div class="col px-5">
+
                 <figure class="destination-grid-item-01">
                     <a href="javascript:void(0)">
                         <div class="image">

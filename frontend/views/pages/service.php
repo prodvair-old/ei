@@ -8,19 +8,15 @@ use frontend\components\service\ServiceHelp;
 use frontend\components\site\OurFeatures;
 use frontend\components\site\SiteFooterImage;
 
-$this->title = 'Service';
+$this->title = 'Услуги';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-service">
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>This is the About page. You may modify the following file to customize its content:</p>
-
-    <code><?= __FILE__ ?></code>
-    <div class="container pv-100">
-        <div class="section-title w-100 text-center">
-            <h2><span><span>Our</span> services</span></h2>
-            <p>Considered an invitation do introduced sufficient understood instrument it.</p>
+    <div class="container pt-100">
+        <div class="section-title w-100 text-center pt-10">
+            <h2>Наши услуги</h2>
+            <p>Мы предостовляем только качественные услуги</p>
         </div>
 
         <div class="row equal-height cols-1 cols-sm-2 cols-xl-4 gap-30 mb-40">
@@ -36,8 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="container">
 
         <div class="section-title text-center w-100">
-            <h2><span><span>Our</span> features</span></h2>
-            <p>He doors quick child an point</p>
+            <h2>Наши <span class="lowercase">преимущества</span></h2>
+            <p>Вот почему выбирают именно нас</p>
         </div>
 
         <div class="row cols-1 cols-sm-2 cols-lg-3 gap-20 gap-md-40">
