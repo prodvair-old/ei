@@ -181,7 +181,7 @@ $this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\Vi
                             
                             <div class="col-12">
                                 <div class="col-inner ph-20 pv-15">
-                                    <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block', 'name' => 'login-button']) ?>
+                                    <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
                                 </div>
                             </div>
                         
@@ -264,7 +264,7 @@ $this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\Vi
                     
                     <div class="sidebar-box">
                     
-                    <?= Html::submitButton('фильтровать', ['class' => 'btn btn-primary btn-block', 'name' => 'login-button']) ?>
+                    <?= Html::submitButton('фильтровать', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
                         
                     </div>
 
@@ -316,7 +316,7 @@ $this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\Vi
                         </div>
                     </div>
                     
-                    <div class="tour-long-item-wrapper-01">
+                    <div class="tour-long-item-wrapper-01 load-list">
                         <?foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot, 'type' => 'long']); }?>
                     </div>
                     

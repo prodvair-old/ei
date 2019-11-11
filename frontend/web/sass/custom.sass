@@ -110,6 +110,22 @@
     width: 100%
     padding: 40px 30px 10px
 
+.spinner
+    background-image: url('../img/spinner.png')
+    background-size: contain
+    width: 4rem
+    height: 4rem
+    margin: 0 auto
+    animation: spinner 1s linear infinite
+    &-wrapper
+        text-align: center
+
+@keyframes spinner
+    to
+        transform: rotate(360deg)
+    from
+        transform: rotate(0deg)
+
 @media (min-width: 992px)
     .hero-banner-01 .search-form-main .form-group
         padding-bottom: 13px

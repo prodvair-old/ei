@@ -126,6 +126,9 @@ class LotController extends Controller
     {
         $model = new SearchLot();
         $modelSort = new SortLot();
+        $urlParamServer = $_SERVER['REQUEST_URI'];
+        $lot_list_cache = 'lot_list_cache__'.$urlParamServer;
+        $lot_price_cache = 'lot_price_cache__'.$urlParamServer;
         
         // Проверка ссылок ЧПУ и подставление типа лотов Strat->
         if ($category == 'lot-list' && $subcategory == null) {
@@ -233,13 +236,16 @@ class LotController extends Controller
         $lotsPrice = Clone $query['lotsPrice'];
         $lotsCount = Clone $lotsQuery;
 
-        switch ($type) {
-            case 'bankrupt':
-                    $price = $lotsPrice->select(['min(lot_startprice)','max(lot_startprice)'])->asArray()->one();
-                break;
-            case 'arrest':
-                    $price = $lotsPrice->select(['min(lots."lotStartPrice")','max(lots."lotStartPrice")'])->asArray()->one();
-                break;
+        if (!$price = Yii::$app->cache->get($lot_price_cache)) {
+            switch ($type) {
+                case 'bankrupt':
+                        $price = $lotsPrice->select(['min(lot_startprice)','max(lot_startprice)'])->asArray()->one();
+                    break;
+                case 'arrest':
+                        $price = $lotsPrice->select(['min(lots."lotStartPrice")','max(lots."lotStartPrice")'])->asArray()->one();
+                    break;
+            }
+            Yii::$app->cache->set($lot_price_cache, $price, 3600*12);
         }
         $count = $lotsCount->count();
 
@@ -248,9 +254,14 @@ class LotController extends Controller
 
         $pages = new Pagination(['totalCount' => $count, 'pageSize'=> 10]);
 
-        $lots = $lotsQuery->offset($pages->offset)
-            ->limit($pages->limit)
-            ->all();
+        if (!$lots = Yii::$app->cache->get($lot_list_cache)) {
+
+            $lots = $lotsQuery->offset($pages->offset)
+                ->limit($pages->limit)
+                ->all();
+
+            Yii::$app->cache->set($lot_list_cache, $lots, 3600*12);
+        }
         // Фильтрация лотов <-End 
 
         // Хлебные крошки Start->

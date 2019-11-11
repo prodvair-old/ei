@@ -161,5 +161,8 @@ $(document).ready(function() {
         $('.service-lot-itog').html(lotServicePrice);
         $('.service-lot-itog-input').val(lotServicePrice);
     });
-
+    $('.load-list-click').on('click', function () {
+        $('.load-list').html('<div class="spinner-wrapper"><div class="spinner"></div>Ищем лоты...</div>');
+    });
+    
 })

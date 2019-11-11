@@ -11,6 +11,7 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'language'=>'ru-RU',
+    'name'=>'Единый агрегатор торгов',
     'sourceLanguage'=>'ru-RU',
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
