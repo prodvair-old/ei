@@ -42,7 +42,7 @@ use yii\bootstrap\ActiveForm;
                                 </div>
                             </div>
 
-                            <a href="#loginFormTabInModal-forgot-pass" class="tab-external-link block mt-25 font600">Забыл пароль?</a>
+                            <a href="#loginFormTabInModal-forgot-pass" class="tab-external-link block mt-25 font600">Забыли пароль?</a>
 
                         </div>
                     </div>

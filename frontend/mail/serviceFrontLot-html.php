@@ -12,7 +12,7 @@ switch ($params->lotType) {
         break;
     case 'bankrupt':
             $lot = LotsBankrupt::findOne($params->lotId);
-            $name = 'Банкротнное имущество';
+            $name = 'Банкротное имущество';
         break;
 }
 

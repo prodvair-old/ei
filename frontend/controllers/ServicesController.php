@@ -78,10 +78,10 @@ class PagesController extends Controller
     {
         return $this->render('contact');
     }
-    // public function actionService()
-    // {
-    //     return $this->render('service');
-    // }
+    public function actionService()
+    {
+        return $this->render('service');
+    }
     public function actionFaq()
     {
         return $this->render('faq');
@@ -90,5 +90,10 @@ class PagesController extends Controller
     {
         return $this->render('sitemap');
     }
+    public function actionServiceAgent()
+    {
+        return $this->render('serviceAgent');
+    }
+
 
 }

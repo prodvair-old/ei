@@ -10,7 +10,7 @@ switch ($params->lotType) {
             $name = 'Арестованное имущество';
         break;
     case 'bankrupt':
-            $name = 'Банкротнное имущество';
+            $name = 'Банкротное имущество';
         break;
 }
 

@@ -85,29 +85,28 @@ $this->title = Yii::$app->params['title'];
         
         <div class="row">
         
-            <div class="col px-5">
-            
+            <div class="col">
                 <figure class="destination-grid-item-01">
                     <a href="/bankrupt/lot-list">
-                        <div class="image">
+                        <div class="image mx-5">
                             <img src="img\bankrupt_lot.png"alt="image"/>
                         </div>
                         <figcaption class="content">
-                            <h5>Банкротнное имущество</h5>
+                            <h4 class="text-uppercase">Банкротное<br>имущество</h4>
                             <p class="text-muted"><?=$lotsBankruptCount?> лотов</p>
                         </figcaption>
                     </a>
                 </figure>
             </div>
             
-            <div class="col px-5">
+            <div class="col">
                 <figure class="destination-grid-item-01">
                     <a href="/arrest/lot-list">
-                        <div class="image">
+                        <div class="image mx-5">
                             <img src="img\arrest_lot.png"alt="image"/>
                         </div>
                         <figcaption class="content">
-                            <h5>Арестованное имущество</h5>
+                            <h4 class="text-uppercase">Арестованное <br>имущество</h4>
                             <p class="text-muted"><?=$lotsArrestCount?> лотов</p>
                         </figcaption>
                     </a>
@@ -115,15 +114,15 @@ $this->title = Yii::$app->params['title'];
                 
             </div>
             
-            <div class="col px-5">
+            <div class="col">
 
                 <figure class="destination-grid-item-01">
                     <a href="javascript:void(0)">
-                        <div class="image">
+                        <div class="image mx-5">
                             <img src="img\zalog_lot.png"alt="image"/>
                         </div>
                         <figcaption class="content">
-                            <h5>Залоговое имущество</h5>
+                            <h4 class="text-uppercase">Залоговое <br>имущество</h4>
                             <p class="text-muted">Скоро</p>
                         </figcaption>
                     </a>

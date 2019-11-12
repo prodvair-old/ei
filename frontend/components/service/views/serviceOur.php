@@ -29,7 +29,7 @@
 			<p>
 				Вам не нужно покупать электронную подпись — Агент использует собственную, которую принимают на всех торговых площадках;
 			</p>
-				<a href="#" class="h6 text-primary">Показать полностью<i class="elegent-icon-arrow_right"></i></a>
+				<a href="/uslugi-agent" class="h6 text-primary">Показать полностью<i class="elegent-icon-arrow_right"></i></a>
 		</div>
 	</div>
 </div>

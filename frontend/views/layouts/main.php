@@ -164,9 +164,9 @@ AppAsset::register($this);
                                         <?= Menu::widget([
                                             'items' => [
                                                 ['label' => 'Торги', 'url' => ['/bankrupt'], 'items' => [
-                                                    ['label' => 'Банкротнное иммущество', 'url' => ['/bankrupt'], 'items' => $bankruptLotsCategoryMenu],
-                                                    ['label' => 'Арестованное иммущество', 'url' => ['/arrest'], 'items' => $arrestLotsCategoryMenu],
-                                                    ['label' => 'Залоговое иммущество', 'url' => 'javascript:void(0)', 'options'=>['class'=>'link-disabled']],
+                                                    ['label' => 'Банкротное имущество', 'url' => ['/bankrupt'], 'items' => $bankruptLotsCategoryMenu],
+                                                    ['label' => 'Арестованное имущество', 'url' => ['/arrest'], 'items' => $arrestLotsCategoryMenu],
+                                                    ['label' => 'Залоговое имущество', 'url' => 'javascript:void(0)', 'options'=>['class'=>'link-disabled']],
                                                 ]],
                                                 ['label' => 'О компании', 'url' => ['pages/about'], 'items' => [
                                                     ['label' => 'О нас', 'url' => ['pages/about']], 
@@ -329,7 +329,7 @@ AppAsset::register($this);
                         
                         <p class="mt-20">Цель нашего проекта - помогать людям находить самое разнообразное имущество по самым низким ценам. Наш проект собирает, обрабатывает, дополняет, анализирует информацию со всех торговых площадок и аукционов России.</p>
                         
-                        <a href="<?=Url::to(['pages/about'])?>" class="text-capitalize font14 h6 line-1 mb-0 font500 mt-30">Узнать больше <i class="elegent-icon-arrow_right font18 inline-block-middle"></i></a>
+                        <!-- <a href="<?=Url::to(['pages/about'])?>" class="text-capitalize font14 h6 line-1 mb-0 font500 mt-30">Узнать больше <i class="elegent-icon-arrow_right font18 inline-block-middle"></i></a> -->
                         
                     </div>
                     
@@ -342,14 +342,14 @@ AppAsset::register($this);
                                 <div class="col-6 col-shrink">
                                     
                                     <div class="col-inner">
-                                        <h5 class="footer-title">About company</h5>
+                                        <h5 class="footer-title">Меню</h5>
                                         <ul class="footer-menu-list set-width">
-                                            <li><a href="#">Who we are</a></li>
-                                            <li><a href="#">Careers</a></li>
-                                            <li><a href="#">Company history</a></li>
-                                            <li><a href="#">Legal</a></li>
-                                            <li><a href="#">Partners</a></li>
-                                            <li><a href="#">Privacy notice</a></li>
+                                            <li><a href="/">Торги</a></li>
+                                            <li><a href="/about">О компании</a></li>
+                                            <li><a href="/arbitrazhnye-upravlyayushchie">Реестры</a></li>
+                                            <li><a href="/service">Услуги</a></li>
+                                            <li><a href="#">О нас</a></li>
+                                            <li><a href="#">Контакты</a></li>
                                         </ul>
                                     </div>
                                     
@@ -358,14 +358,14 @@ AppAsset::register($this);
                                 <div class="col-6 col-shrink">
                                     
                                     <div class="col-inner">
-                                        <h5 class="footer-title">Customer Service</h5>
+                                        <h5 class="footer-title">Купить имущество</h5>
                                         <ul class="footer-menu-list set-width">
-                                            <li><a href="#">Payment</a></li>
-                                            <li><a href="#">Feedback</a></li>
-                                            <li><a href="#">Contact us</a></li>
-                                            <li><a href="#">Our Service</a></li>
-                                            <li><a href="#">FAQ</a></li>
-                                            <li><a href="#">Site map</a></li>
+                                            <li><a href="#">Банкротное имущество</a></li>
+                                            <li><a href="#">Арестованное имущество</a></li>
+                                            <li><a href="#">Залоговое имущество</a></li>
+                                            <li><a href="#">Арбитражные управляющие</a></li>
+                                            <li><a href="#">Должники</a></li>
+                                            <li><a href="#">СРО</a></li>
                                         </ul>
                                     </div>
                                     
@@ -374,11 +374,11 @@ AppAsset::register($this);
                                 <div class="col-12 col-auto">
                                     
                                     <div class="col-inner">
-                                        <h5 class="footer-title">Newsletter &amp; Social</h5>
-                                        <p class="font12">Savings her pleased are several started females met. Short her not among being any.</p>
+                                        <h5 class="footer-title">Новости</h5>
+                                        <p class="font12">Введите свой email, чтобы получать все актуальные новости и обновления на портале ei.ru</p>
                                         <form class="footer-newsletter mt-20">
                                             <div class="input-group">
-                                                <input type="email" class="form-control" placeholder="Email address">
+                                                <input type="email" class="form-control" placeholder="Email">
                                                 <div class="input-group-append">
                                                     <button class="btn btn-primary" type="button"><i class="far fa-envelope"></i></button>
                                                 </div>
@@ -388,8 +388,7 @@ AppAsset::register($this);
                                             <a href="#"><i class="fab fa-facebook-square"></i></a>
                                             <a href="#"><i class="fab fa-twitter-square"></i></a>
                                             <a href="#"><i class="fab fa-google-plus-square"></i></a>
-                                            <a href="#"><i class="fab fa-pinterest-square"></i></a>
-                                            <a href="#"><i class="fab fa-flickr"></i></a>
+                                            <a href="#"><i class="fab fa-vk"></i></a>
                                         </div>
                                     </div>
                                     

@@ -13,26 +13,41 @@ use common\models\Query\Settings;
 $this->title = Yii::$app->params['title'];
 
 if ($type == 'bankrupt') {
-    $title = 'Единая база торгов <span class="font200 block">Имущество банкротов</span>';
-    $description = 'В нашей базе собрана исключительно актуальная информация об имущество банкротов и должников, выставленном и тендеры и торги на ЭТП и публичных аукционах.';
+    $title = 'Залоговое имущество <span class="font200 block">Банка Открытие</span>';
+    $description = ''; //'В нашей базе собрана исключительно актуальная информация об имущество банкротов и должников, выставленном и тендеры и торги на ЭТП и публичных аукционах.';
 } else {
     $title = 'Единая база торгов <span class="font200">Арестованное имущество</span>';
     $description = '';
 }
 ?>
 
-<div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03" style="background-image:url('img/01.jpg'); background-position: top  center;">
+<div class="otkrytie">
+
+<div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03" style="background-image:url(https://cdn.open.ru/storage/top_picture/39964/609796910__1__2bd3.png); background-position: top  center;" >
         
     <div class="overlay-holder bottom"></div>	
     
     <div class="hero-inner">
     
         <div class="container">
-            <h1><?=$title?></h1>
-            <p class="font-lg spacing-1"><?=$description?></p>
-            
-            <?= SearchForm::widget(['type' => $type])?>
 
+            <div class="hero-header">
+
+                <div class="hero-header__logo">
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000">
+                        <path fill="#fff" d="M1655.5 1048.54c0,235.52 -122.55,446.84 -320.02,551.43l-45.27 21.27c-14.93,6.93 -31.42,10.83 -47.22,10.83 -30.83,0 -55.32,-13.07 -69.86,-36.88 -11.61,-19.71 -14.83,-40.97 -10.44,-65.37 6.93,-33.66 33.27,-50.63 41.08,-54.83 116.49,-52.88 191.32,-171.8 191.32,-303.13l0 -343.52c0,-131.52 -74.54,-250.16 -189.86,-302.36 -0.19,-0.29 -34.64,-16.78 -42.54,-55.81 -4.39,-24.29 -1.17,-45.76 10.44,-65.17 14.54,-23.71 39.03,-36.98 69.86,-36.98 15.8,0 32.29,3.61 47.12,10.63 0,0 42.64,20.2 44.3,20.88 198.35,105.18 321.09,316.51 321.09,551.93l0 97.08zm-859.36 426.45l0 0c7.9,4.2 34.14,21.17 41.17,54.83 4.49,24.4 1.27,45.66 -10.44,65.37 -14.54,23.81 -39.03,36.88 -69.86,36.88 -15.8,0 -32.19,-3.9 -47.12,-10.83l-45.47 -21.27c-197.37,-104.59 -319.92,-315.91 -319.92,-551.43l0 -97.08c0,-235.42 122.84,-446.75 320.99,-551.93 1.86,-0.68 44.4,-20.88 44.4,-20.88 14.93,-7.02 31.32,-10.63 47.02,-10.63 30.74,0 55.42,13.27 69.96,36.98 11.71,19.41 14.93,40.88 10.44,65.17 -7.81,39.03 -42.15,55.52 -42.54,55.81 -115.23,52.2 -189.67,170.84 -189.67,302.36l0 343.52c0,131.33 74.54,250.25 191.04,303.13zm203.81 -1442.89l0 0c-534.56,0 -968.05,433.29 -968.05,967.86 0,534.64 433.49,967.93 968.05,967.93 534.66,0 968.15,-433.29 968.15,-967.93 0,-534.57 -433.49,-967.86 -968.15,-967.86z"/>
+                    </svg>
+
+                </div>
+            
+                <h1><?=$title?></h1>
+                <p class="font-lg spacing-1 "><?=$description?></p>
+
+                <?= SearchForm::widget(['type' => $type])?>
+            
+            </div>
+            
         </div>
         
     </div>
@@ -45,15 +60,11 @@ if ($type == 'bankrupt') {
 
         <div class="clear mb-100"></div>
 
-        <div class="section-title">
-            <h2><span><span>Популярные Категории </span> Лотов <?=($type == 'bankrupt')? 'Банкротного имущества': 'Арестованного имущество'?></span></h2>
-        </div>
-        
         <div class="row cols-1 cols-sm-2 cols-lg-4 gap-2 mb-20">
         
             <div class="col">
             
-                <figure class="destination-grid-item-01">
+                <figure class="category__item">
                     <a href="/bankrupt/transport-i-tehnika">
                         <div class="image">
                             <img src="img/image-destination/01.jpg"alt="image"/>
@@ -69,13 +80,13 @@ if ($type == 'bankrupt') {
             
             <div class="col">
             
-                <figure class="destination-grid-item-01">
+                <figure class="category__item">
                     <a href="/bankrupt/nedvizhimost">
                         <div class="image">
                             <img src="img/image-destination/02.jpg"alt="image"/>
                         </div>
                         <figcaption class="content">
-                            <h5>Недвищимость</h5>
+                            <h5>Недвижимость</h5>
                             <!-- <p class="text-muted">36 лотов</p> -->
                         </figcaption>
                     </a>
@@ -85,7 +96,7 @@ if ($type == 'bankrupt') {
             
             <div class="col">
             
-                <figure class="destination-grid-item-01">
+                <figure class="category__item">
                     <a href="/bankrupt/oborudovanie">
                         <div class="image">
                             <img src="img/image-destination/03.jpg"alt="image"/>
@@ -101,7 +112,7 @@ if ($type == 'bankrupt') {
             
             <div class="col">
             
-                <figure class="destination-grid-item-01">
+                <figure class="category__item">
                     <a href="/bankrupt/debitorskaya-zadolzhennost">
                         <div class="image">
                             <img src="img/image-destination/04.jpg"alt="image"/>
@@ -140,50 +151,7 @@ if ($type == 'bankrupt') {
             <?foreach ($lotsFovarit as $lotFovarit) { echo LotBlock::widget(['lot' => $lotFovarit]); }?>
             
         </div>
-        
-        <? if ($type = 'bankrupt') { ?>
         <div class="clear mb-100"></div>
-
-        <div class="row cols-1 cols-sm-2 cols-lg-2 gap-2 mb-20">
-        
-            <div class="col-lg-1"></div>
-
-            <div class="col-lg-5 col-md">
-            
-                <figure class="destination-grid-item-01">
-                    <a href="<?=Url::to(['arrest/list'])?>">
-                        <div class="image">
-                            <img src="img/image-destination/01.jpg"alt="image"/>
-                        </div>
-                        <figcaption class="content">
-                            <h5>Арбитражные управляющие</h5>
-                            <p class="text-muted">25 человек</p>
-                        </figcaption>
-                    </a>
-                </figure>
-                
-            </div>
-            
-            <div class="col-lg-5 col-md">
-            
-                <figure class="destination-grid-item-01">
-                    <a href="<?=Url::to(['doljnik/list'])?>">
-                        <div class="image">
-                            <img src="img/image-destination/02.jpg"alt="image"/>
-                        </div>
-                        <figcaption class="content">
-                            <h5>Должники</h5>
-                            <p class="text-muted">36 человек</p>
-                        </figcaption>
-                    </a>
-                </figure>
-                
-            </div>
-
-            <div class="col-lg-1"></div>
-            
-        </div>
-        <? } ?>
         
     </div>
     
@@ -472,4 +440,5 @@ if ($type == 'bankrupt') {
 
 </section> -->
 
+</div>
 </div>

@@ -123,7 +123,7 @@ $this->params['breadcrumbs'][] = [
 
                         <div class="wish__nav">
                             <ul class="row">
-                                <li class="col-md-6 col-12 border-bottom"><a href="#arrest-wish" class="wish-tabs active">Аррестованное иммущество</a></li>
+                                <li class="col-md-6 col-12 border-bottom"><a href="#arrest-wish" class="wish-tabs active">Аррестованное имущество</a></li>
                                 <li class="col-md-6 col-12 border-bottom"><a href="#bankrupt-wish" class="wish-tabs">Банкротное иммущество</a></li>
                             </ul>
                         </div>
