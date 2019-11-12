@@ -20,8 +20,8 @@ $this->title = Yii::$app->params['title'];
     <div class="hero-inner">
     
         <div class="container">
-            <h1><span class="font200"><span class="font700">Агрегатор</span> электронных</span><span class="block"><span class="font200">торгов <span class="font700">по</span> банкротству</span></span></h1>
-            <p class="font-lg spacing-1">Единая база торгов иммущества банкротов физических и юредических лиц, арестованноего и залогового имущества. Мы собираем данные с площадок со всей России, что бы предоставить Вам самую полную информацию.</p>
+            <h1><span class="font200"><span class="font700">Агрегатор</span> </span><span class="font200">торгов<span class="block"> <span class="font700">по</span> банкротству</span></span></h1>
+            <!-- <p class="font-lg spacing-1">Единая база торгов иммущества банкротов физических и юредических лиц, арестованноего и залогового имущества. Мы собираем данные с площадок со всей России, что бы предоставить Вам самую полную информацию.</p> -->
             
             <?= SearchForm::widget(['type' => 'bankrupt'])?>
 
@@ -31,83 +31,27 @@ $this->title = Yii::$app->params['title'];
     
 </div>
 
-<section class="pt-0 pb-0">
+
+<section class="pt-70 pb-0">
 
     <div class="container">
-    
-        <div class="clear"></div>
-
-        <!-- <div class="row cols-1 cols-lg-3 gap-20 gap-lg-40">
-            
-            <div class="col">
-                <div class="featured-icon-horizontal-01 clearfix">
-                    <div class="icon-font">
-                        <i class="elegent-icon-gift_alt text-primary"></i>
-                    </div>
-                    <div class="content">
-                        <h6>Актуальная база</h6>
-                        <p class="text-muted">Наша база обновляется ежедневно. На текущи момент в ней <br>содержится <?=$lotsBankruptCount + $lotsArrestCount?> лотов, выставленных на торги.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col">
-                <div class="featured-icon-horizontal-01 clearfix">
-                    <div class="icon-font">
-                        <i class="elegent-icon-wallet text-primary"></i>
-                    </div>
-                    <div class="content">
-                        <h6>Максимум информации</h6>
-                        <p class="text-muted">Все наши лоты и вся информация <br>о них доступны совершенно <br>бесплатно, без лимитов по цене,<br> регионам и количесву поисков.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col">
-                <div class="featured-icon-horizontal-01 clearfix">
-                    <div class="icon-font">
-                        <i class="elegent-icon-heart_alt text-primary"></i>
-                    </div>
-                    <div class="content">
-                        <h6>Удобный личный кабинет</h6>
-                        <p class="text-muted">выбирайте, сохраняйте <br>и подписывайтесь на все<br> интересующие Вас торги каких-<br>либо ограничений.</p>
-                    </div>
-                </div>
-            </div>
-            
-        </div> -->
 
         <div class="clear mb-100"></div>
-        
-        <!-- <div class="section-title">
-            <h2><span><span>Ищите</span> Нужные Лоты на Аукционах</span></h2>
-        </div> -->
-        
-        <div class="row">
+
+        <div class="row cols-1 cols-sm-2 cols-lg-4 gap-2 mb-20">
         
             <div class="col">
-                <figure class="destination-grid-item-01">
+
+                <figure style="background-color: #234559;" class="category__item">
                     <a href="/bankrupt/lot-list">
-                        <div class="image mx-5">
-                            <img src="img\bankrupt_lot.png"alt="image"/>
+                        <div class="image">
+                            <img  src="http://www.femak-kazan.com/wp-content/uploads/2018/06/bigstock-Chemical-Plant-Structure-47755258-400x400.jpg"alt="image"/>
                         </div>
                         <figcaption class="content">
-                            <h4 class="text-uppercase">Банкротное<br>имущество</h4>
-                            <p class="text-muted"><?=$lotsBankruptCount?> лотов</p>
-                        </figcaption>
-                    </a>
-                </figure>
-            </div>
-            
-            <div class="col">
-                <figure class="destination-grid-item-01">
-                    <a href="/arrest/lot-list">
-                        <div class="image mx-5">
-                            <img src="img\arrest_lot.png"alt="image"/>
-                        </div>
-                        <figcaption class="content">
-                            <h4 class="text-uppercase">Арестованное <br>имущество</h4>
-                            <p class="text-muted"><?=$lotsArrestCount?> лотов</p>
+                          <div class="content__wrapper">
+                            <h6>Банкротное<br>имущество</h6>
+                            <p ><?=$lotsBankruptCount?> лотов</p>
+                          </div>
                         </figcaption>
                     </a>
                 </figure>
@@ -116,14 +60,52 @@ $this->title = Yii::$app->params['title'];
             
             <div class="col">
 
-                <figure class="destination-grid-item-01">
-                    <a href="javascript:void(0)">
-                        <div class="image mx-5">
-                            <img src="img\zalog_lot.png"alt="image"/>
+           
+                <figure class="category__item" style="background-color: #5e100a;">
+                    <a href="/arrest/lot-list">
+                        <div class="image">
+                            <img src="https://cdn-st4.rtr-vesti.ru/vh/pictures/bq/142/045/9.jpg"alt="image"/>
                         </div>
                         <figcaption class="content">
-                            <h4 class="text-uppercase">Залоговое <br>имущество</h4>
-                            <p class="text-muted">Скоро</p>
+                            <div class="content__wrapper">
+                              <h6>Арестованное <br>имущество</h6>
+                              <p ><?=$lotsArrestCount?> лотов</p>
+                            <div>
+                        </figcaption>
+                    </a>
+                </figure>
+                
+            </div>
+            
+            <div class="col">
+
+                <figure class="category__item" style="background-color:#2b8ac6;">
+                    <a href="/business">
+                        <div class="image">
+                            <img src="https://cdn-st4.rtr-vesti.ru/vh/pictures/bq/201/451/5.jpg"alt="image"/>
+                        </div>
+                        <figcaption class="content">
+                           <div class="content__wrapper">
+                            <h6>Имущество организаций</h6>
+                            <p ><?=$lotsBankruptCount?> лотов</p>
+                          </div>
+                        </figcaption>
+                    </a>
+                </figure>
+                
+            </div>
+            
+            <div class="col">
+                <figure class="category__item" style="background-color: #555e63;">
+                    <a href="/bankrupt/debitorskaya-zadolzhennost">
+                        <div class="image">
+                            <img src="https://cdn.govexec.com/media/img/upload/2015/09/03/090415EIG_personnel_files/open-graph.jpg"alt="image"/>
+                        </div>
+                        <figcaption class="content">
+                          <div class="content__wrapper">
+                            <h6>Реестры</h6>
+                            <p><?=$lotsBankruptCount?> лотов</p>
+                          </div>
                         </figcaption>
                     </a>
                 </figure>
@@ -131,10 +113,23 @@ $this->title = Yii::$app->params['title'];
             </div>
             
         </div>
+    
+        <!-- <div class="section-title">
+            <h2><span><span>Горячие</span> Предложения Дня</span></h2>
+        </div>
+        
+        <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
+
+            <?//foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot]); }?>
+            
+        </div>
+
+        <div class="clear mb-100"></div> -->
+              
+        
+        <div class="clear mb-100"></div>
         
     </div>
-
-    <div class="clear mb-100"></div>
     
 </section>
 

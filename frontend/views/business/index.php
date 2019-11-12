@@ -12,13 +12,10 @@ use common\models\Query\Settings;
 
 $this->title = Yii::$app->params['title'];
 
-if ($type == 'bankrupt') {
-    $title = 'Залоговое имущество <span class="font200 block">Банка Открытие</span>';
-    $description = ''; //'В нашей базе собрана исключительно актуальная информация об имущество банкротов и должников, выставленном и тендеры и торги на ЭТП и публичных аукционах.';
-} else {
-    $title = 'Единая база торгов <span class="font200">Арестованное имущество</span>';
-    $description = '';
-}
+
+$title = 'Залоговое имущество <span class="font200 block">Банка Открытие</span>';
+$description = ''; //'В нашей базе собрана исключительно актуальная информация об имущество банкротов и должников, выставленном и тендеры и торги на ЭТП и публичных аукционах.';
+
 ?>
 
 <div class="otkrytie">
@@ -64,13 +61,13 @@ if ($type == 'bankrupt') {
         
             <div class="col">
             
-                <figure class="category__item">
+                <figure class="category__item color-1">
                     <a href="/bankrupt/transport-i-tehnika">
                         <div class="image">
-                            <img src="img/image-destination/01.jpg"alt="image"/>
+                            <img src="https://yt3.ggpht.com/a/AGF-l7-EVhBEj7aPvzyeC9QuZqwSPa8SgyuT-Ixttg=s800-mo-c-c0xffffffff-rj-k-no"alt="image"/>
                         </div>
                         <figcaption class="content">
-                            <h5>Автомобили</h5>
+                            <h6>Автомобили</h6>
                             <!-- <p class="text-muted">25 лотов</p> -->
                         </figcaption>
                     </a>
@@ -80,13 +77,13 @@ if ($type == 'bankrupt') {
             
             <div class="col">
             
-                <figure class="category__item">
+                <figure class="category__item color-2">
                     <a href="/bankrupt/nedvizhimost">
                         <div class="image">
-                            <img src="img/image-destination/02.jpg"alt="image"/>
+                            <img src="https://i.diymall.co/diygoods/1281/plitka_dekorativnaya_london_brik_tsvet_multikolor_116_m2_1.jpg"alt="image"/>
                         </div>
                         <figcaption class="content">
-                            <h5>Недвижимость</h5>
+                            <h6>Недвижимость</h6>
                             <!-- <p class="text-muted">36 лотов</p> -->
                         </figcaption>
                     </a>
@@ -96,13 +93,13 @@ if ($type == 'bankrupt') {
             
             <div class="col">
             
-                <figure class="category__item">
+                <figure class="category__item color-3">
                     <a href="/bankrupt/oborudovanie">
                         <div class="image">
-                            <img src="img/image-destination/03.jpg"alt="image"/>
+                            <img src="https://www.talenthero.de/wp-content/uploads/Metall-Glockengießer-2-800x800.jpg"alt="image"/>
                         </div>
                         <figcaption class="content">
-                            <h5>Оборудование</h5>
+                            <h6>Оборудование</h6>
                             <!-- <p class="text-muted">40 лотов</p> -->
                         </figcaption>
                     </a>
@@ -111,14 +108,14 @@ if ($type == 'bankrupt') {
             </div>
             
             <div class="col">
-            
-                <figure class="category__item">
+          
+                <figure class="category__item color-4">
                     <a href="/bankrupt/debitorskaya-zadolzhennost">
                         <div class="image">
-                            <img src="img/image-destination/04.jpg"alt="image"/>
+                            <img src="https://ae01.alicdn.com/kf/HTB15d0Gq1SSBuNjy0Flq6zBpVXad/-.jpg"alt="image"/>
                         </div>
                         <figcaption class="content">
-                            <h5>Дебиторская задолженность</h5>
+                            <h6>Дебиторская задолженность</h6>
                             <!-- <p class="text-muted">10 лотов</p> -->
                         </figcaption>
                     </a>
@@ -130,20 +127,20 @@ if ($type == 'bankrupt') {
     
         <div class="clear mb-100"></div>
                 
-        <div class="section-title">
+        <!-- <div class="section-title">
             <h2><span><span>Горячие</span> Предложения Дня</span></h2>
         </div>
         
         <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
 
-            <?foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot]); }?>
+            <?//foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot]); }?>
             
         </div>
 
-        <div class="clear mb-100"></div>
+        <div class="clear mb-100"></div> -->
                 
         <div class="section-title">
-            <h2><span><span>Интересные</span> Предложения Дня</span></h2>
+            <h2><span><span>Интересные</span> предложения дня</span></h2>
         </div>
         
         <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">

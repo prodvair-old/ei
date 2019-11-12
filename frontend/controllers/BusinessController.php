@@ -90,9 +90,9 @@ class BusinessController extends Controller
     
     {
         // Проверка ссылок ЧПУ и подставление типа лотов Strat->
-        $type = "bankrupt";
+        $type = "arrest";
         switch ($type) {
-            case 'arrest':
+            case 'bankrupt':
                 $lots = LotsBankrupt::find()->limit(3)->orderBy('lot_image DESC, lot_timepublication DESC')->all();
                 $lotsFovarit = LotsBankrupt::find()->limit(3)->orderBy('wish_count DESC')->all();
 
@@ -104,12 +104,12 @@ class BusinessController extends Controller
 
                 $title = 'Арестованное имущество';
                 break;
-            case 'business':
-                $lots = LotsArrest::find()->joinWith('torgs')->limit(3)->orderBy('torgs."trgPublished" DESC')->all();
-                $lotsFovarit = LotsArrest::find()->joinWith('torgs')->limit(3)->orderBy('torgs."trgPublished" DESC')->all();
+            // case 'business':
+            //     $lots = LotsArrest::find()->joinWith('torgs')->limit(3)->orderBy('torgs."trgPublished" DESC')->all();
+            //     $lotsFovarit = LotsArrest::find()->joinWith('torgs')->limit(3)->orderBy('torgs."trgPublished" DESC')->all();
     
-                $title = 'Арестованное имущество';
-                break;
+            //     $title = 'Арестованное имущество';
+            //     break;
 
 
             default:

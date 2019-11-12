@@ -1,29 +1,73 @@
 @import 'vars.sass'
 
-$otkrytie: #00B4E3
+
 .otkrytie
     .btn-primary, .btn.disabled, .btn:disabled
         background: $otkrytie
         border-color: $otkrytie
         color: #FFF
+    .text-primary
+      color: $otkrytie !important
     .hero-banner
         background: $otkrytie
         background-size: cover
     h1 
         color: #FFF
-
+        font-size: 4rem
 
 .hero-header
     display: flex
+    padding-bottom: 10rem
     &__logo
         display: flex
-        width: 150px
-        margin-right: 1rem
+        width: 100px
+        margin-right: 2rem
         position: relative
         top: .5rem
         svg 
             width: 150px
             margin: auto
+
+.category
+  &__item
+    background-color: $otkrytie
+    color: #fff
+    position: relative
+    &.color-1
+      background-color: #020202
+    &.color-2
+      background-color: #b7a897
+    &.color-3
+      background-color: #d13710
+    &.color-4
+      background-color: #a08661
+      з
+
+    .image
+      margin-left: 50%
+      // padding-bottom: 50%
+    
+    .content
+      display: flex
+      text-align: center
+      bottom: 0
+      left: 0
+      right: 0
+      padding: 0 2rem 
+      min-height: 10rem
+      color: #fff !important
+   
+
+
+      // position: absolute
+      h6
+        margin: auto
+        color: #fff !important
+        
+        text-transform: uppercase
+      &__wrapper
+        margin: auto
+
 
 body
     color: #454545
