@@ -92,7 +92,7 @@ class BusinessController extends Controller
         // Проверка ссылок ЧПУ и подставление типа лотов Strat->
         $type = "bankrupt";
         switch ($type) {
-            case 'bankrupt':
+            case 'arrest':
                 $lots = LotsBankrupt::find()->limit(3)->orderBy('lot_image DESC, lot_timepublication DESC')->all();
                 $lotsFovarit = LotsBankrupt::find()->limit(3)->orderBy('wish_count DESC')->all();
 
@@ -134,7 +134,7 @@ class BusinessController extends Controller
     // Ссылка на категории лотов
     public function actionSearch($type, $category, $subcategory = null, $region = null)
     {
-        $type = "bankrupt";
+        $type = "arrest";
         $model = new SearchLot();
         $modelSort = new SortLot();
         $urlParamServer = $_SERVER['REQUEST_URI'];
@@ -309,7 +309,7 @@ class BusinessController extends Controller
     public function actionPage($type, $category, $subcategory, $id)
     {
         // Проверка ссылок ЧПУ и подставление типа лотов Strat->
-        $type = "bankrupt";
+        $type = "arrest";
         if (!empty($items = LotsCategory::find()->where(['translit_name'=>$category])->one())) {
             $queryCategory = $items->id;
             $titleCategory = $items->name;
