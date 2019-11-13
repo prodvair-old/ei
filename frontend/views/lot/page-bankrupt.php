@@ -295,8 +295,8 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <h6>Должник</h6>
                                 <ul class="ul">
                                     <li><a href="<?=Url::to(['doljnik/list'])?>/<?=$lot->torgy->case->bnkr->id?>" target="_blank"><?=$lot->lotBnkrName?></a></li>
-                                    <li><span class="text-list-name">ИНН:</span> <?= ($lot->lotBnkrType == 'Person')? $lot->torgy->case->bnkr->person->inn : $lot->torgy->case->bnkr->company->inn;?></li>
-                                    <li><span class="text-list-name">Адрес:</span> <?= ($lot->lotBnkrType == 'Person')? $lot->torgy->case->bnkr->person->address : $lot->torgy->case->bnkr->company->legaladdress;?></li>
+                                    <li>ИНН: <span class="text-list-name"><?= ($lot->lotBnkrType == 'Person')? $lot->torgy->case->bnkr->person->inn : $lot->torgy->case->bnkr->company->inn;?></span></li>
+                                    <li>Адрес: <span class="text-list-name"><?= ($lot->lotBnkrType == 'Person')? $lot->torgy->case->bnkr->person->address : $lot->torgy->case->bnkr->company->legaladdress;?></span></li>
                                 </ul>
                             </li>
                             
@@ -304,9 +304,9 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
                                 <h6>Сведения о деле</h6>
                                 <ul class="ul">
-                                    <li><span class="text-list-name">Номер дела:</span> <?= $lot->torgy->case->caseid ?></li>
-                                    <li><span class="text-list-name">Арбитражный суд:</span> <a href="<?=Url::to(['sro/list'])?>/<?=$lot->lotSro->id?>" target="_blank"><?= $lot->lotSro->title?></a></li>
-                                    <li><span class="text-list-name">Адрес суда:</span> <?= $lot->lotSro->address?></li>
+                                    <li>Номер дела: <span class="text-list-name"><?= $lot->torgy->case->caseid ?></span></li>
+                                    <li>Арбитражный суд: <span class="text-list-name"><a href="<?=Url::to(['sro/list'])?>/<?=$lot->lotSro->id?>" target="_blank"><?= $lot->lotSro->title?></a></span></li>
+                                    <li>Адрес суда: <span class="text-list-name"><?= $lot->lotSro->address?></span></li>
                                 </ul>
                             </li>
                             
@@ -315,9 +315,9 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <h6>Арбитражный управляющий</h6>
                                 <ul class="ul">
                                     <li><a href="<?=Url::to(['arbitr/list'])?>/<?=$lot->torgy->case->arbitr->id?>" target="_blank"><?=$lot->lotArbtrName?></a></li>
-                                    <li><span class="text-list-name">Рег. номер:</span> <?= $lot->torgy->case->arbitr->regnum?></li>
-                                    <li><span class="text-list-name">ИНН:</span> <?= $lot->torgy->case->arbitr->person->inn?></li>
-                                    <!-- <li><span class="text-list-name">ОГРН:</span> <?= $lot->torgy->case->arbitr->ogrn?></li> -->
+                                    <li>Рег. номер: <span class="text-list-name"><?= $lot->torgy->case->arbitr->regnum?></span></li>
+                                    <li>ИНН: <span class="text-list-name"><?= $lot->torgy->case->arbitr->person->inn?></span></li>
+                                    <!-- <li>ОГРН: <span class="text-list-name"><?= $lot->torgy->case->arbitr->ogrn?></span></li> -->
                                 </ul>
                             </li>
                             

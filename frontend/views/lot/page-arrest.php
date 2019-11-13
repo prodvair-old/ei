@@ -291,10 +291,10 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <h6>Банк</h6>
                                 <ul class="ul">
                                     <li><?=$lot->lotPaymentRequisitesBankName?></li>
-                                    <li><span class="text-list-name">БИК:</span> <?=$lot->lotPaymentRequisitesBik?></li>
-                                    <li><span class="text-list-name">Кор. счет:</span> <?=$lot->lotPaymentRequisitesKs?></li>
-                                    <li><span class="text-list-name">Расчетный счет:</span> <?=$lot->lotPaymentRequisitesRs?></li>
-                                    <li><span class="text-list-name">Лицевой счет:</span> <?=$lot->lotPaymentRequisitesPs?></li>
+                                    <li>БИК: <span class="text-list-name"><?=$lot->lotPaymentRequisitesBik?></span></li>
+                                    <li>Кор. счет: <span class="text-list-name"><?=$lot->lotPaymentRequisitesKs?></span></li>
+                                    <li>Расчетный счет: <span class="text-list-name"><?=$lot->lotPaymentRequisitesRs?></span></li>
+                                    <li>Лицевой счет: <span class="text-list-name"><?=$lot->lotPaymentRequisitesPs?></span></li>
                                 </ul>
                             </li>
                             
@@ -303,20 +303,20 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <h6>Организатора торгов</h6>
                                 <ul class="ul">
                                     <li><?= $lot->torgs->trgFullName ?></li>
-                                    <li><span class="text-list-name">Вышестоящая организация:</span> <?= $lot->torgs->trgHeadOrg?></li>
-                                    <li><span class="text-list-name">Личный номер:</span> <?= $lot->torgs->trgOrganizationId?></li>
-                                    <li><span class="text-list-name">Порог крупной сделки:</span> <?= $lot->torgs->trgLimitBidDeal?></li>
-                                    <li><span class="text-list-name">ИНН:</span> <?= $lot->torgs->trgInn?></li>
-                                    <li><span class="text-list-name">КПП:</span> <?= $lot->torgs->trgKpp?></li>
-                                    <li><span class="text-list-name">ОКАТО:</span> <?= $lot->torgs->trgOkato?></li>
-                                    <li><span class="text-list-name">ОКПО:</span> <?= $lot->torgs->trgOkpo?></li>
-                                    <li><span class="text-list-name">ОКВЕД:</span> <?= $lot->torgs->trgOkved?></li>
-                                    <li><span class="text-list-name">ОГРН:</span> <?= $lot->torgs->trgOgrn?></li>
-                                    <li><span class="text-list-name">Факс:</span> <?= $lot->torgs->trgFax?></li>
-                                    <li><span class="text-list-name">E-mail:</span> <?= $lot->torgs->trgEmail?></li>
-                                    <li><span class="text-list-name">Номер телефона:</span> <?= $lot->torgs->trgPhone?></li>
-                                    <li><span class="text-list-name">Почтовый адрес:</span> <?= $lot->torgs->trgAddress?></li>
-                                    <li><span class="text-list-name">Фактический адрес:</span> <?= $lot->torgs->trgLocation?></li>
+                                    <li>Вышестоящая организация: <span class="text-list-name"><?= $lot->torgs->trgHeadOrg?></span></li>
+                                    <li>Личный номер: <span class="text-list-name"><?= $lot->torgs->trgOrganizationId?></span></li>
+                                    <li>Порог крупной сделки: <span class="text-list-name"><?= $lot->torgs->trgLimitBidDeal?></span></li>
+                                    <li>ИНН: <span class="text-list-name"><?= $lot->torgs->trgInn?></span></li>
+                                    <li>КПП: <span class="text-list-name"><?= $lot->torgs->trgKpp?></span></li>
+                                    <li>ОКАТО: <span class="text-list-name"><?= $lot->torgs->trgOkato?></span></li>
+                                    <li>ОКПО: <span class="text-list-name"><?= $lot->torgs->trgOkpo?></span></li>
+                                    <li>ОКВЕД: <span class="text-list-name"><?= $lot->torgs->trgOkved?></span></li>
+                                    <li>ОГРН: <span class="text-list-name"><?= $lot->torgs->trgOgrn?></span></li>
+                                    <li>Факс: <span class="text-list-name"><?= $lot->torgs->trgFax?></span></li>
+                                    <li>E-mail: <span class="text-list-name"><?= $lot->torgs->trgEmail?></span></li>
+                                    <li>Номер телефона: <span class="text-list-name"><?= $lot->torgs->trgPhone?></span></li>
+                                    <li>Почтовый адрес: <span class="text-list-name"><?= $lot->torgs->trgAddress?></span></li>
+                                    <li>Фактический адрес: <span class="text-list-name"><?= $lot->torgs->trgLocation?></span></li>
                                 </ul>
                             </li>
                             
