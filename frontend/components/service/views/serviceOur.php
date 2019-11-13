@@ -1,8 +1,8 @@
 <div class="col-lg-4">
 	<div class="featured-image-item-08">
 		<div class="image">
-			<div class="image-inner">
-				<img src="frontend\web\img\services\1.svg" alt="Imclass="service-img" ages" />
+			<div class="image-inner service-img">
+				<img src="\img\services\1.svg"/>
 			</div>
 		</div>
 	<div class="content">
@@ -19,8 +19,8 @@
 <div class="col-lg-4">
 	<div class="featured-image-item-08">
 		<div class="image">
-			<div class="image-inner">
-				<img src="frontend\web\img\services\2.svg" alt="Images" />
+			<div class="image-inner service-img">
+			<img src="\img\services\2.svg"/>
 			</div>
 		</div>
 	<div class="content">
@@ -37,8 +37,8 @@
 <div class="col-lg-4">
 	<div class="featured-image-item-08">
 		<div class="image">
-			<div class="image-inner">
-				<img src="frontend\web\img\services\3.svg" alt="Images" />
+			<div class="image-inner service-img">
+			<img src="\img\services\3.svg"/>
 			</div>
 		</div>
 	<div class="content">
