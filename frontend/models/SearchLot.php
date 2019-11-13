@@ -142,7 +142,6 @@ class SearchLot extends Model
                         $whereSearch = [
                             'or',
                             ['like', 'LOWER(lot_description)', mb_strtolower($this->search, 'UTF-8')],
-                            ['like', 'LOWER(torgy_description)', mb_strtolower($this->search, 'UTF-8')],
                             ['like', 'LOWER(bnkr__name)', mb_strtolower($this->search, 'UTF-8')],
                             ['like', 'LOWER(bnkr__inn)', mb_strtolower($this->search, 'UTF-8')],
                         ];
