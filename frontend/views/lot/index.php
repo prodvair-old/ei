@@ -46,7 +46,7 @@ if ($type == 'bankrupt') {
         <div class="clear mb-100"></div>
 
         <div class="section-title">
-            <h2><span><span>Популярные Категории </span> Лотов <?=($type == 'bankrupt')? 'Банкротного имущества': 'Арестованного имущество'?></span></h2>
+            <h2><span><span>Популярные категории </span> лотов <?=($type == 'bankrupt')? 'Банкротного имущества': 'Арестованного имущество'?></span></h2>
         </div>
         
         <div class="row cols-1 cols-sm-2 cols-lg-4 gap-2 mb-20">
@@ -120,7 +120,7 @@ if ($type == 'bankrupt') {
         <div class="clear mb-100"></div>
                 
         <div class="section-title">
-            <h2><span><span>Горячие</span> Предложения Дня</span></h2>
+            <h2><span><span>Горячие</span> предложения дня</span></h2>
         </div>
         
         <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
@@ -132,7 +132,7 @@ if ($type == 'bankrupt') {
         <div class="clear mb-100"></div>
                 
         <div class="section-title">
-            <h2><span><span>Интересные</span> Предложения Дня</span></h2>
+            <h2><span><span>Интересные</span> предложения дня</span></h2>
         </div>
         
         <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">

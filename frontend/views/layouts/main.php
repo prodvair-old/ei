@@ -290,7 +290,7 @@ AppAsset::register($this);
                             <ul class="footer-contact-list">
                                 <li>
                                     <a href="tel:<?=$setting[8]->value?>"><span class="icon-font text-primary inline-block-middle mr-5 font16"><i class="fa fa-phone"></i></span> <span class="font700 text-black"><?=$setting[8]->value?></span> <!--<span class="text-muted">Mon-Fri | 8.30am-6:30pm</span>--></a>
-                                </li>а где сам номер? это я нашел, а надо 8-800-600-33-05
+                                </li>
                                 <li>
                                     <a href="mailto:support@ei.ru"><span class="icon-font text-primary inline-block-middle mr-5 font16"><i class="fa fa-envelope"></i></span> <span class="font700 text-black">support@ei.ru</span></a>
                                 </li>
@@ -362,12 +362,12 @@ AppAsset::register($this);
                                     <div class="col-inner">
                                         <h5 class="footer-title">Купить имущество</h5>
                                         <ul class="footer-menu-list set-width">
-                                            <li><a href="#">Банкротное имущество</a></li>
-                                            <li><a href="#">Арестованное имущество</a></li>
+                                            <li><a href="/bankrupt">Банкротное имущество</a></li>
+                                            <li><a href="/arrest">Арестованное имущество</a></li>
                                             <li><a href="#">Залоговое имущество</a></li>
-                                            <li><a href="#">Арбитражные управляющие</a></li>
-                                            <li><a href="#">Должники</a></li>
-                                            <li><a href="#">СРО</a></li>
+                                            <li><a href="/arbitrazhnye-upravlyayushchie">Арбитражные управляющие</a></li>
+                                            <li><a href="/dolzhniki">Должники</a></li>
+                                            <li><a href="/sro">СРО</a></li>
                                         </ul>
                                     </div>
                                     

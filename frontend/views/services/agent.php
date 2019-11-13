@@ -10,9 +10,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container text-center">
     <h1 class="page-wrapper pb-20"><?= Html::encode($this->title) ?></h1>
+</div>
 
 
-<section class="page-wrapper pt-50 pb-50">
+<!-- <section class="page-wrapper pt-50 pb-50">
     <div class="row">
     
         <div class="col-lg-12 service-tab">
@@ -56,8 +57,8 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
     </div>
-</section>
-</div>
+</section> -->
+
 
 <section class="page-wrapper pt-50 pb-50">
     <?=FaqFormAskQuestion::widget()?>

@@ -1,10 +1,14 @@
-<?php
-
-use yii\helpers\Url;
-
-?>
-<div class="col-lg-4">
+<div class="col-lg-4"> 
 	<div class="featured-image-item-08">
+
+	<div class="image">
+
+		<div class="image-inner service-img">
+<img src="\img\services\1.svg"/>
+</div>
+
+			</div>
+		 
 		<div class="image">
 			<div class="image-inner service-img">
 				<img src="\img\services\1.svg"/>
@@ -23,16 +27,14 @@ use yii\helpers\Url;
 
 <div class="col-lg-4">
 	<div class="featured-image-item-08">
-		<div class="image">
-			<div class="image-inner service-img">
-			<img src="\img\services\2.svg"/>
+		<d<a href="<?=Url::to(['services/agent'])?>" class="h6 text-primary">Показать полностью<i class="elegent-icon-arrow_right"></i></a>				<img src="\img\services\2.svg"/>
 			</div>
 		</div>
 	<div class="content">
 		<div class="icon-font text-primary"><i class="flaticon-travel-icons-earth-globe"></i></div>
 			<h5>Услуги агента по торгам</h5>
 			<p>
-				Вам не нужно покупать электронную подпись — Агент использует собственную, которую принимают на всех торговых площадках;
+ 				Вам не нужно покупать электронную подпись — Агент использует собственную, которую принимают на всех торговых площадках;
 			</p>
 				<a href="<?=Url::to(['services/agent'])?>" class="h6 text-primary">Показать полностью<i class="elegent-icon-arrow_right"></i></a>
 		</div>
@@ -42,8 +44,7 @@ use yii\helpers\Url;
 <div class="col-lg-4">
 	<div class="featured-image-item-08">
 		<div class="image">
-			<div class="image-inner service-img">
-			<img src="\img\services\3.svg"/>
+			<div class="image-inner service-img<i class="flaticon-travel-icons-earth-globe"> --> --> -			<img src="\img\services\3.svg"/>
 			</div>
 		</div>
 	<div class="content">
@@ -52,7 +53,7 @@ use yii\helpers\Url;
 			<p>
 				Для самостоятельного участия потребуется собрать полный пакет документов, основные из них:кретного аукциона.
 			</p>
-			<a href="#" class="h6 text-primary">Показать полностью<i class="elegent-icon-arrow_right"></i></a>
+			<a href=""" class="h6 text-primary">Показать полностью<i class="elegent-icon-arrow_right"></i></a>
 		</div>
 	</div>
 </div>
@@ -73,4 +74,4 @@ use yii\helpers\Url;
 			<a href="#" class="h6 text-primary">Показать полностью<i class="elegent-icon-arrow_right"></i></a>
 		</div>
 	</div>
-</div> -->
+</div>
