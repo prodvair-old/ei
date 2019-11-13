@@ -23,6 +23,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row equal-height cols-1 cols-sm-2 cols-xl-4 gap-30 mb-40">
             <?=ServiceOur::widget()?>
         </div>
+        
+        <div class="mb-100"></div>
 
         <div class="row">
             <?=ServiceDescription::widget()?>

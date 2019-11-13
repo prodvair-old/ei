@@ -179,7 +179,7 @@ AppAsset::register($this);
                                                     ['label' => 'Должники', 'url' => ['doljnik/list']],
                                                     ['label' => 'СРО', 'url' => ['sro/list']]
                                                 ]],
-                                                ['label' => 'Услуги', 'url' => ['pages/service']],
+                                                ['label' => 'Услуги', 'url' => ['services/index']],
                                             ],
                                             'options' => [
                                                 'class' => 'main-nav',

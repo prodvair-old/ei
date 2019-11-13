@@ -56,9 +56,11 @@ return [
                 '/licens'  => 'pages/licens',
                 '/politic' => 'pages/politic',
                 '/contact' => 'pages/contact',
-                '/service' => 'pages/service',
+                // '/service' => 'pages/service',
                 '/faq'     => 'pages/faq',
                 '/sitemap' => 'pages/sitemap',
+
+                '/service' => 'services/index',
 
                 '/login'      => 'site/login',
                 '/logout'     => 'site/logout',

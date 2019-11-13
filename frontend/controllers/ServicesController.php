@@ -9,7 +9,7 @@ use yii\filters\AccessControl;
 /**
  * Pages controller
  */
-class PagesController extends Controller
+class ServicesController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -62,9 +62,9 @@ class PagesController extends Controller
      *
      * @return mixed
      */
-    public function actionAbout()
+    public function actionIndex()
     {
-        return $this->render('about');
+        return $this->render('index');
     }
     public function actionLicens()
     {
