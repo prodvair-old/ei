@@ -5,9 +5,9 @@ use Yii;
 use yii\base\Model;
 
 /**
- * Arbitr Search
+ * SRO Search
  */
-class ArbitrSearch extends Model
+class SroSearch extends Model
 {
     public $search;
     
@@ -28,7 +28,7 @@ class ArbitrSearch extends Model
      *
      * @return bool whether the creating new account was successful and email was sent
      */
-    public function search($arbitrs)
+    public function search($sro)
     {
         $where = ['and'];
         $whereAnd = ['and'];
@@ -37,15 +37,13 @@ class ArbitrSearch extends Model
             $search = explode(' ',$this->search);
             $whereSearch = ['or'];
             foreach ($search as $value) {
-                $whereSearch[] = ['like', 'LOWER("arb_prsn"."lname")', mb_strtolower($value, 'UTF-8')];
-                $whereSearch[] = ['like', 'LOWER("arb_prsn"."fname")', mb_strtolower($value, 'UTF-8')];
-                $whereSearch[] = ['like', 'LOWER("arb_prsn"."mname")', mb_strtolower($value, 'UTF-8')];
-                $whereSearch[] = ['like', 'LOWER("arb_prsn"."inn")', mb_strtolower($value, 'UTF-8')];
+                $whereSearch[] = ['like', 'LOWER("title")', mb_strtolower($value, 'UTF-8')];
+                $whereSearch[] = ['like', 'LOWER("inn")', mb_strtolower($value, 'UTF-8')];
             }
             $where[] = $whereSearch;
         }
 
-        return $arbitrs->where($where);
+        return $sro->andWhere($where);
     }
 }
  

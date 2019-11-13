@@ -78,7 +78,7 @@ $this->params['breadcrumbs'][] = [
                             <div class="dashboard-avatar mb-10">
                         
                                 <div class="image">
-                                    <img src="img/image-man/01.jpg" alt="Image" />
+                                <img class="setting-image-tag" src="<?=(Yii::$app->user->identity->avatar)? Yii::$app->user->identity->avatar: 'img/image-man/01.jpg'?>" alt="Image" />
                                 </div>
                                 
                                 <div class="content">

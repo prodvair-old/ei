@@ -5,7 +5,9 @@ use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\web\UploadedFile;
 
+use frontend\models\UserSetting;
 
 use common\models\Query\WishList;
 
@@ -76,7 +78,35 @@ class UserController extends Controller
     public function actionSetting()
     {
         if (!Yii::$app->user->isGuest) {
-                return $this->render('setting');
+
+            $model = new UserSetting();
+            $model_image = new UserSetting();
+
+            if($model->load(Yii::$app->request->post())){
+                $model->setting(Yii::$app->user->id);
+            }
+
+            return $this->render('setting', compact('model', 'model_image'));
+        } else {
+            return $this->goHome();
+        }
+    }
+    public function actionSetting_image()
+    {
+        if (!Yii::$app->user->isGuest) {
+
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            
+            $model = new UserSetting();
+
+            if($model->load(Yii::$app->request->post())){
+                $model->photo = UploadedFile::getInstance($model, 'photo');
+                $model->passport = UploadedFile::getInstance($model, 'passport');
+                
+                return $model->upload(Yii::$app->user->id);
+            }
+
+            return false;
         } else {
             return $this->goHome();
         }

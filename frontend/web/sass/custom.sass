@@ -227,6 +227,27 @@ body
 .lowercase
     text-transform: lowercase
 
+.head-email
+    font-size: 0.6rem
+    padding: 0
+    margin: 0
+
+.header-avatar
+    height: 50px
+    width: 50px
+    border-radius: 50%
+    overflow: hidden
+    box-shadow: 3px 3px 7px rgba(0,0,0,.3)
+    transform: scale(1)
+    transition: all .3s ease
+
+.nav-mini-right a:hover .header-avatar
+    transform: scale(1.05)
+
+.vertival-center
+    display: flex
+    align-items: center
+
 @keyframes spinner
     to
         transform: rotate(360deg)

@@ -73,6 +73,9 @@ return [
                 '/arbitrazhnye-upravlyayushchie'        => 'arbitr/list',
                 '/arbitrazhnye-upravlyayushchie/<arb_id:\d+>' => 'arbitr/arbitr_page',
 
+                '/sro'        => 'sro/list',
+                '/sro/<sro_id:\d+>' => 'sro/sro_page',
+
                 '/dolzhniki'         => 'doljnik/list',
                 '/dolzhniki/<bnkr_id:\d+>' => 'doljnik/doljnik_page',
 
