@@ -111,7 +111,7 @@ AppAsset::register($this);
 
                     <div class="col-7 col-shrink order-last-lg">
                         <div class="col-inner">
-                            <ul class="nav-mini-right">
+                            <ul class="nav-mini-right vertival-center">
                                 <? if (Yii::$app->user->isGuest) { ?>
                                     <li class="d-none d-sm-block">
                                         <a href="#loginFormTabInModal-register" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false">
@@ -133,12 +133,14 @@ AppAsset::register($this);
                                     </li>
                                 <? } else { ?>
                                     <li class="d-block d-sm-block">
-                                        <a href="<?=Url::to(['user/index'])?>">
-                                            <div class="image">
-                                                <!-- <img src="img/image-man/01.jpg" alt="Image" /> -->
+                                        <a href="<?=Url::to(['user/index'])?>" class="vertival-center">
+                                            <div class="image header-avatar">
+                                                <img class="setting-image-tag" src="<?=(Yii::$app->user->identity->avatar)? Yii::$app->user->identity->avatar: 'img/image-man/01.jpg'?>" alt="Image" />
                                             </div>
-                                            <?=(Yii::$app->user->identity->info['firstname'] || Yii::$app->user->identity->info['lastname'])? Yii::$app->user->identity->info['firstname'].' '.Yii::$app->user->identity->info['lastname'] : Yii::$app->user->identity->info['contacts']['emails'][0] ?>
-                                            <?=(Yii::$app->user->identity->info['firstname'] || Yii::$app->user->identity->info['lastname'])? '<p class="mb-15">'.Yii::$app->user->identity->info['contacts']['emails'][0].'</p>': ''?>
+                                            <div class="ml-15">
+                                                <?=(Yii::$app->user->identity->info['firstname'] || Yii::$app->user->identity->info['lastname'])? Yii::$app->user->identity->info['firstname'].' '.Yii::$app->user->identity->info['lastname'] : Yii::$app->user->identity->info['contacts']['emails'][0] ?>
+                                                <?=(Yii::$app->user->identity->info['firstname'] || Yii::$app->user->identity->info['lastname'])? '<p class="head-email lowercase">'.Yii::$app->user->identity->info['contacts']['emails'][0].'</p>': ''?>
+                                            </div>
                                         </a>
                                     </li>
                                     <li>

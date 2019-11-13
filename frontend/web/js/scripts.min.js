@@ -38,6 +38,54 @@ $(document).ready(function() {
         })
         return false;
     });
+
+    $('#setting-image').on('beforeSubmit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            type : 'POST',
+            url : $(this).attr('action'),
+            data : $(this).serializeArray(),
+            contentType: false,
+            processData: false,
+        }).done(function(data) {
+                if (data) {
+                    console.log(data)
+                    $('.setting-image-tag').attr('src', data.src);
+                    $('.setting-image-info').html('Успешно загружено');
+                } else {
+                    $('.setting-image-info').html(data.error);
+                }
+        }).fail(function() {
+        console.log('fail');
+        })
+        return false;
+    });
+
+    $('#avatar-upload').on('change', function () {
+        var formData = new FormData(document.getElementById('setting-image'));
+
+        // formData.append('_csrf',$('input[name="_csrf"').prop('files')[0]);
+        formData.append('photo',$('#avatar-upload').prop('files')[0]);
+
+        $.ajax({
+            type : 'POST',
+            contentType: false,
+            processData: false,
+            url : $('#setting-image').attr('action'),
+            data : formData
+        }).done(function(data) {
+            if (data) {
+                console.log(data)
+                $('.setting-image-tag').attr('src', data.src);
+                $('.setting-image-info').html('Успешно загружено');
+            } else {
+                $('.setting-image-info').html(data.error);
+            }
+        }).fail(function() {
+        console.log('fail');
+        })
+    })
+
     $('.form-confirm').hide();
 
     $('#lot-service-form').on('beforeSubmit', function(e) {

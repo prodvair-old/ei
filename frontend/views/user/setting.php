@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 
 $name = (\Yii::$app->user->identity->info['firstname'] || \Yii::$app->user->identity->info['lastname'])? \Yii::$app->user->identity->info['firstname'].' '.\Yii::$app->user->identity->info['lastname'] : \Yii::$app->user->identity->info['contacts']['emails'][0];
-$this->title = "Профиль – $name";
+$this->title = "Настройка профиля – $name";
 $this->params['breadcrumbs'][] = [
     'label' => 'Профиль',
     'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
