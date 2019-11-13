@@ -13,19 +13,26 @@
         background-size: cover
     h1 
         color: #FFF
-        font-size: 4rem
+        font-size: 38px
+        @media (min-width: 768px)
+          font-size: 4rem
 
 .hero-header
     display: flex
     padding-bottom: 10rem
+    @media (max-width: 768px)
+      flex-direction: column
+      text-align: center
     &__logo
         display: flex
         width: 100px
         margin-right: 2rem
         position: relative
         top: .5rem
+        @media (max-width: 768px)
+          width: 100%
         svg 
-            width: 150px
+            width: 90px
             margin: auto
 
 .category

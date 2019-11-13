@@ -20,9 +20,8 @@ $this->title = Yii::$app->params['title'];
     <div class="hero-inner">
     
         <div class="container">
+        
             <h1><span class="font200"><span class="font700">Агрегатор</span> </span><span class="font200">торгов<span class="block"> <span class="font700">по</span> банкротству</span></span></h1>
-            <!-- <p class="font-lg spacing-1">Единая база торгов иммущества банкротов физических и юредических лиц, арестованноего и залогового имущества. Мы собираем данные с площадок со всей России, что бы предоставить Вам самую полную информацию.</p> -->
-            
             <?= SearchForm::widget(['type' => 'bankrupt'])?>
 
         </div>
