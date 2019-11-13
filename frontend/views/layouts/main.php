@@ -290,7 +290,7 @@ AppAsset::register($this);
                             <ul class="footer-contact-list">
                                 <li>
                                     <a href="tel:<?=$setting[8]->value?>"><span class="icon-font text-primary inline-block-middle mr-5 font16"><i class="fa fa-phone"></i></span> <span class="font700 text-black"><?=$setting[8]->value?></span> <!--<span class="text-muted">Mon-Fri | 8.30am-6:30pm</span>--></a>
-                                </li>
+                                </li>а где сам номер? это я нашел, а надо 8-800-600-33-05
                                 <li>
                                     <a href="mailto:support@ei.ru"><span class="icon-font text-primary inline-block-middle mr-5 font16"><i class="fa fa-envelope"></i></span> <span class="font700 text-black">support@ei.ru</span></a>
                                 </li>

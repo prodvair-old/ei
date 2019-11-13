@@ -17,7 +17,7 @@ switch ($params->lotType) {
 $verifyLink = Yii::$app->urlManager->createAbsoluteUrl(['site/verify-email', 'token' => $user->verification_token]);
 ?>
 <p>
-    <h4>Запрос на услуги агента по лоту № <a href="<?$params->lot->lotUrl?>"><?= Html::encode($params->lotId) ?></a>, <?=$name?></h4>
+    <h4>Запрос на услуги агента по лоту № <a href="<?=Yii::$app->request->hostInfo.'/'.$params->lot->lotUrl?>"><?= Html::encode($params->lotId) ?></a>, <?=$name?></h4>
     <p>
         Пользователь: <b><?=($user->info['firstname'] || $user->info['lastname'])? $user->info['firstname'].' '.$user->info['lastname'] : $user->info['contacts']['emails'][0]?></b>
         <br>E-mail: <b><?=$user->info['contacts']['emails'][0]?></b>

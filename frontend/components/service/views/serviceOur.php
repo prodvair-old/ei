@@ -2,7 +2,7 @@
 	<div class="featured-image-item-08">
 		<div class="image">
 			<div class="image-inner">
-				<img src="img/image-regular/01.jpg" alt="Images" />
+				<img src="frontend\web\img\services\1.svg" alt="Imclass="service-img" ages" />
 			</div>
 		</div>
 	<div class="content">
@@ -20,7 +20,7 @@
 	<div class="featured-image-item-08">
 		<div class="image">
 			<div class="image-inner">
-				<img src="img/image-regular/01.jpg" alt="Images" />
+				<img src="frontend\web\img\services\2.svg" alt="Images" />
 			</div>
 		</div>
 	<div class="content">
@@ -38,7 +38,7 @@
 	<div class="featured-image-item-08">
 		<div class="image">
 			<div class="image-inner">
-				<img src="img/image-regular/01.jpg" alt="Images" />
+				<img src="frontend\web\img\services\3.svg" alt="Images" />
 			</div>
 		</div>
 	<div class="content">
