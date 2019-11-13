@@ -119,9 +119,8 @@ class SroController extends Controller
         // Сбор информации из бд Start->
         $sro = Sro::findOne($sro_id);
         $title = 'СРО — '.$sro->title;
-
         
-        $arbitrs = Arbitrs::find()->joinWith('sro')->where(['sro.id'=>$sro_id])->all();
+        $arbitrs = Arbitrs::find()->joinWith(['sro','person'])->where(['sro.id'=>$sro_id])->orderBy('arb_prsn.lname ASC, arb_prsn.fname ASC, arb_prsn.mname ASC')->all();
         $countCases = Cases::find()->joinWith('arbitr.sro')->where(['sro.id'=>$sro_id])->count();
         $lotsBankruptCount = LotsBankrupt::find()->joinWith('torgy.case.arbitr.sro')->where(['sro.id'=>$sro_id])->count();
         // Сбор информации из бд <-End

@@ -120,7 +120,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
                                     <li>
                                         <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
-                                        <h6><span class="font400">СРО </span><?=$arbitr->sro->title?></h6>
+                                        <h6><span class="font400">СРО </span> <a href="<?=Url::to(['sro/list'])?>/<?=$arbitr->sro->id?>" target="_blank"><?=$arbitr->sro->title?></a></h6>
                                     </li>
                                     
                                 </ul>

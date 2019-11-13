@@ -305,7 +305,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <h6>Сведения о деле</h6>
                                 <ul class="ul">
                                     <li><span class="text-list-name">Номер дела:</span> <?= $lot->torgy->case->caseid ?></li>
-                                    <li><span class="text-list-name">Арбитражный суд:</span> <?= $lot->lotSro->title?></li>
+                                    <li><span class="text-list-name">Арбитражный суд:</span> <a href="<?=Url::to(['sro/list'])?>/<?=$lot->lotSro->id?>" target="_blank"><?= $lot->lotSro->title?></a></li>
                                     <li><span class="text-list-name">Адрес суда:</span> <?= $lot->lotSro->address?></li>
                                 </ul>
                             </li>
