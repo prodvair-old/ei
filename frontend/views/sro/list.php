@@ -121,8 +121,8 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             <div class="row align-items-center text-center text-lg-left">
                             
                                 <div class="col-12 col-lg-5">
-                                    <? if (count($arbitrs) > 0) {?>
-                                        Выведено от <?= $offset+1 ?> до <?= $offset + count($arbitrs)?> СРО. Всего <?=$count?>.
+                                    <? if (count($sros) > 0) {?>
+                                        Выведено от <?= $offset+1 ?> до <?= $offset + count($sros)?> СРО. Всего <?=$count?>.
                                     <? } else { ?>
                                         СРО не найдено
                                     <? } ?>
