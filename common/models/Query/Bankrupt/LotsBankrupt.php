@@ -26,7 +26,7 @@ class LotsBankrupt extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'uds.{{lots_bankrupt}}';
+        return 'uds.{{lots_list}}';
     }
     public static function primaryKey()
     {
