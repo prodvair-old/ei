@@ -126,7 +126,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <p class="rating-text font400 text-muted font-12 letter-spacing-1"><?=$lot->lotId?> </p>
                             </div>
                             <div class="mr-15 rating-item rating-inline">
-                                <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="wish-star" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star" data-id="'.$lot->id.'" data-type="'.$type.'"'?>>
+                                <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="wish-star" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star" data-id="'.$lot->lotId.'" data-type="'.$type.'"'?>>
                                     <img src="img/star<?=($wishCheck)? '' : '-o' ?>.svg" alt="">
                                 </a>
                             </div>
