@@ -1,3 +1,8 @@
+<?php
+
+use yii\helpers\Url;
+
+?>
 <div class="col-lg-4">
 	<div class="featured-image-item-08">
 		<div class="image">
@@ -29,7 +34,7 @@
 			<p>
 				Вам не нужно покупать электронную подпись — Агент использует собственную, которую принимают на всех торговых площадках;
 			</p>
-				<a href="/uslugi-agent" class="h6 text-primary">Показать полностью<i class="elegent-icon-arrow_right"></i></a>
+				<a href="<?=Url::to(['services/agent'])?>" class="h6 text-primary">Показать полностью<i class="elegent-icon-arrow_right"></i></a>
 		</div>
 	</div>
 </div>

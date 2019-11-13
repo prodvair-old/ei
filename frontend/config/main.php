@@ -59,8 +59,9 @@ return [
                 // '/service' => 'pages/service',
                 '/faq'     => 'pages/faq',
                 '/sitemap' => 'pages/sitemap',
-
-                '/service' => 'services/index',
+                
+                '/service'          => 'services/index',
+                '/service/agent'    => 'services/agent',
 
                 '/login'      => 'site/login',
                 '/logout'     => 'site/logout',

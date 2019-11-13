@@ -6,8 +6,10 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
+use common\models\Query\MetaDate;
+
 /**
- * Pages controller
+ * Services controller
  */
 class ServicesController extends Controller
 {
@@ -64,35 +66,25 @@ class ServicesController extends Controller
      */
     public function actionIndex()
     {
+        $metaData = MetaDate::find()->where(['mdName' => 'service'])->one();
+
+        Yii::$app->params['description'] = $metaData->mdDescription;
+        Yii::$app->params['text'] = $metaData->mdText;
+        Yii::$app->params['title'] = $metaData->mdTitle;
+        Yii::$app->params['h1'] = $metaData->mdH1;
+
         return $this->render('index');
     }
-    public function actionLicens()
+    public function actionAgent()
     {
-        return $this->render('licens');
-    }
-    public function actionPolitic()
-    {
-        return $this->render('politic');
-    }
-    public function actionContact()
-    {
-        return $this->render('contact');
-    }
-    public function actionService()
-    {
-        return $this->render('service');
-    }
-    public function actionFaq()
-    {
-        return $this->render('faq');
-    }
-    public function actionSitemap()
-    {
-        return $this->render('sitemap');
-    }
-    public function actionServiceAgent()
-    {
-        return $this->render('serviceAgent');
+        $metaData = MetaDate::find()->where(['mdName' => 'service/agent'])->one();
+
+        Yii::$app->params['description'] = $metaData->mdDescription;
+        Yii::$app->params['text'] = $metaData->mdText;
+        Yii::$app->params['title'] = $metaData->mdTitle;
+        Yii::$app->params['h1'] = $metaData->mdH1;
+
+        return $this->render('agent');
     }
 
 
