@@ -3,7 +3,7 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Html;
-use frontend\components\faq\faqFormAskQuestion;
+use frontend\components\faq\FaqFormAskQuestion;
 
 $this->title = 'Услуги агента по торгам';
 $this->params['breadcrumbs'][] = $this->title;
@@ -60,5 +60,5 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <section class="page-wrapper pt-50 pb-50">
-    <?=faqFormAskQuestion::widget()?>
+    <?=FaqFormAskQuestion::widget()?>
 </section>
