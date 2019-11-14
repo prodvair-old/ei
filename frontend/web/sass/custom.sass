@@ -1,5 +1,126 @@
 @import 'vars.sass'
 
+@keyframes slideme
+  0%
+    left: -30px
+    margin-left: 0px
+
+  30%
+    left: 110%
+    margin-left: 80px
+
+  100%
+    left: 110%
+    margin-left: 80px
+
+.darwin
+  &__banner
+    display: flex
+    border: 1px solid $darwin
+  
+  &__logo
+    width: 210px
+    padding: 20px
+    background-color: #fff
+    display: flex
+    flex-direction: column
+    &__text
+      padding-top: 1rem
+      text-transform: uppercase
+      line-height: 1
+      margin-bottom: auto
+    img 
+      margin-top: auto
+  &__title
+    font-weight: 600
+    font-size: 1.5rem
+  &__content
+    padding: 20px
+    background-color: $darwin
+    width: 100%
+    color: #fff
+  &__row
+    display: flex
+  &__col
+    text-align: center
+    margin-left: auto
+    margin-top: auto
+  &__button,
+    display: flex
+    position: relative
+    background-color: $accent
+    color: #fff
+    min-height: 52px
+    padding: 7px 0
+    border-radius: .5rem
+    text-align: center
+    overflow: hidden
+    &:hover, &:focus, &:active
+      color: #fff
+    &:after,
+    &:before
+      content: ""
+      display: block
+      width: 50px
+      height: 300px
+      margin-left: 60px
+      background: #fff
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0.7) 100%)
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3ffffff', endColorstr='#b3ffffff',GradientType=0 )
+      position: absolute
+      left: -40px
+      top: -150px
+      z-index: 1
+      opacity: .2
+      transform: rotate(45deg)
+      transition: all 0.1s
+      animation-name: slideme
+      animation-duration: 2s
+      animation-delay: 0.05s
+      animation-timing-function: ease
+      animation-iteration-count: infinite
+    &:before
+      width: 30px
+
+
+    &__text
+      display: flex
+      padding: 0 12px
+      height: 100%
+      margin: auto
+      border-right: 1px solid #fff
+    &__icon
+      width: 21px
+      display: inline-block
+      &__svg 
+        width: 100%
+        height: auto
+    &__download
+      line-height: 1
+      padding: 0 12px
+    &__size
+      line-height: 1
+      font-size: .8rem
+  &__list
+  &__item
+    &:before
+        display: inline-block
+        content: " "
+        width: 1rem
+        height: 1rem
+        margin-right: .75rem
+        background-size: contain
+        background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQoNCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMjBtbSIgaGVpZ2h0PSIyMG1tIiB2ZXJzaW9uPSIxLjEiIHN0eWxlPSJzaGFwZS1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyB0ZXh0LXJlbmRlcmluZzpnZW9tZXRyaWNQcmVjaXNpb247IGltYWdlLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGZpbGwtcnVsZTpldmVub2RkOyBjbGlwLXJ1bGU6ZXZlbm9kZCINCnZpZXdCb3g9IjAgMCAyMDAwIDIwMDAiDQogeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPg0KIDxkZWZzPg0KICA8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KICAgPCFbQ0RBVEFbDQogICAgLmZpbDAge2ZpbGw6d2hpdGV9DQogICBdXT4NCiAgPC9zdHlsZT4NCiA8L2RlZnM+DQogPGcgaWQ9ItCh0LvQvtC5X3gwMDIwXzEiPg0KICA8bWV0YWRhdGEgaWQ9IkNvcmVsQ29ycElEXzBDb3JlbC1MYXllciIvPg0KICA8cGF0aCBjbGFzcz0iZmlsMCIgZD0iTTU5OC41NSA4MDkuMzJsLTAuMSAwLjFjLTE3LjUsLTE3LjQ5IC00MS42NywtMjguMzEgLTY4LjMzLC0yOC4zMSAtNTMuMzYsMCAtOTYuNjQsNDMuMjcgLTk2LjY0LDk2LjYzIDAsMjYuNjYgMTAuODcsNTAuNzggMjguMzIsNjguMjhsLTAuMTEgMC4xIDQzOS44MSA0MzkuNzYgOTc3LjMgLTk3Ny4yOSAtMC4wNSAtMC4wNmMxNy40OSwtMTcuNDkgMjguMzEsLTQxLjY2IDI4LjMxLC02OC4zMiAwLC01My4zNyAtNDMuMjcsLTk2LjY0IC05Ni42NCwtOTYuNjQgLTI2LjY1LDAgLTUwLjgzLDEwLjgyIC02OC4zMiwyOC4zMmwtMC4xMSAtMC4xMSAtODQwLjQ5IDg0MC40OSAtMzAyLjk1IC0zMDIuOTV6bTExODEuODUgMTkwLjY4YzAsLTUuMDcgMC4zNiwtMTAuMDkgMS4xNCwtMTQuOTZsMC4wNSAtMC4wNSAwLjA1IC0wLjY3YzUuMzQsLTQ5LjAyIDQ2Ljc0LC04Ny4wNiA5Ny4xNiwtODcuMDYgNTAuOTMsMCA5Mi42NSwzOC45NyA5Ny4yNiw4OC42NiAwLjYyLDQuNjEgMS4wMyw5LjI3IDEuMDMsMTQuMDggMCwyNjkuNjggLTEwOS4zNyw1MTMuOTkgLTI4Ni4xOCw2OTAuOGwtNS43IDUuMjNjLTE3Ni4zNSwxNzMuNzEgLTQxOC4zOCwyODAuOTYgLTY4NS4yLDI4MC45NiAtMjY5LjUyLDAgLTUxMy43MywtMTA5LjQzIC02OTAuNTQsLTI4Ni4xOSAtMTc3LjE4LC0xNzYuODEgLTI4Ni41NSwtNDIxLjEyIC0yODYuNTUsLTY5MC44IDAsLTI2OS42NyAxMDkuMzcsLTUxMy45OCAyODYuMTgsLTY5MC43OWw1LjcgLTUuMjNjMTc2LjM1LC0xNzMuNzEgNDE4LjM4LC0yODAuOTYgNjg1LjIxLC0yODAuOTYgNTYuNjIsMCAxMTMuNCw1LjA3IDE2OS40NiwxNC45MSA1NS4xOCw5LjY4IDExMC4zNSwyNC41MyAxNjQuNTUsNDQuMjUgNTAuODgsMTguNDMgNzcuMTcsNzQuNzUgNTguNzUsMTI1LjYzIC0xOC40Myw1MC44OCAtNzQuNzUsNzcuMTcgLTEyNS42Myw1OC43NCAtNDIuMDgsLTE1LjMyIC04Ni4yMywtMjcuMDcgLTEzMS41MiwtMzUuMDQgLTQ0LjMxLC03Ljc2IC04OS44MSwtMTEuOCAtMTM1LjYxLC0xMS44IC0yMTMuMzYsMCAtNDA2LjY5LDg1LjQ2IC01NDcuNDgsMjIzLjgxbC00LjQgNC43MWMtMTQxLjE1LDE0MS4xNiAtMjI4LjUyLDMzNi4yOSAtMjI4LjUyLDU1MS43NyAwLDIxNS40OCA4Ny4zNyw0MTAuNjIgMjI4LjUyLDU1MS43NyAxNDEsMTQxLjIxIDMzNi4yNCwyMjguNTMgNTUxLjg4LDIyOC41MyAyMTMuMzUsMCA0MDYuNjgsLTg1LjQ2IDU0Ny40NywtMjIzLjgybDQuNCAtNC43MWMxNDEuMTUsLTE0MS4xNSAyMjguNTIsLTMzNi4yOSAyMjguNTIsLTU1MS43N3oiLz4NCiA8L2c+DQo8L3N2Zz4NCg==")
+
+
+.sidebar
+  &-desktop
+    @media (max-width: 991px)
+      display: none
+  &-mobile
+    display: none
+    @media (max-width: 991px)
+      display: block
 
 .otkrytie
     .btn-primary, .btn.disabled, .btn:disabled
@@ -102,7 +223,7 @@ body
 .logo
     fill: $accent
     height: 60px
-    width: 60px
+    max-width: 40.734px
     display: inline-block
     margin-right: 1rem
     &-footer

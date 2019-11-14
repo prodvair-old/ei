@@ -23,9 +23,11 @@ jQuery(function($) {
 	});
 
 	// Arrow for Menu has sub-menu
-	$(".navbar-arrow ul li").has("ul").children("a").append("<span class='arrow-indicator'></span>");
+  $(".navbar-arrow ul li").has("ul").children("a").append("<span class='arrow-indicator'></span>");
+  $(".navbar-arrow ul li .arrow-indicator").on("click", function(e){
+    e.preventDefault()
+  })
 
-	
 	/**
 	 * Sticky Header
 	 */
