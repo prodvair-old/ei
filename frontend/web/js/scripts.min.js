@@ -8,10 +8,11 @@ $(document).ready(function() {
         }).done(function(data) {
                 if (data.result) {
                     console.log(data)
-                        location.reload();
-                        $('.login-form-error').html('');
+                    location.reload();
+                    $('.login-form-error').html('');
+                    toastr.error("Авторизация прошла успешно");
                 } else {
-                        $('.login-form-error').html(data.error);
+                    $('.login-form-error').html(data.error);
                 }
         }).fail(function() {
             console.log('fail');
@@ -28,6 +29,7 @@ $(document).ready(function() {
         }).done(function(data) {
             if (data.result) {
                 console.log(data)
+                toastr.error("Вы успешно зарегистрировались");
                 location.reload();
                 $('.signup-form-error').html('');
             } else {
@@ -35,28 +37,6 @@ $(document).ready(function() {
             }
         }).fail(function() {
             console.log('fail');
-        })
-        return false;
-    });
-
-    $('#setting-image').on('beforeSubmit', function(e) {
-        e.preventDefault();
-        $.ajax({
-            type : 'POST',
-            url : $(this).attr('action'),
-            data : $(this).serializeArray(),
-            contentType: false,
-            processData: false,
-        }).done(function(data) {
-                if (data) {
-                    console.log(data)
-                    $('.setting-image-tag').attr('src', data.src);
-                    $('.setting-image-info').html('Успешно загружено');
-                } else {
-                    $('.setting-image-info').html(data.error);
-                }
-        }).fail(function() {
-        console.log('fail');
         })
         return false;
     });
@@ -78,11 +58,13 @@ $(document).ready(function() {
                 console.log(data)
                 $('.setting-image-tag').attr('src', data.src);
                 $('.setting-image-info').html('Успешно загружено');
+                toastr.success("Фотография успешно загружена");
             } else {
                 $('.setting-image-info').html(data.error);
+                toastr.error("Ошибка при загрузки фото");
             }
         }).fail(function() {
-        console.log('fail');
+            toastr.error("Не удалось загрузить фото");
         })
     })
 
@@ -99,6 +81,7 @@ $(document).ready(function() {
             $('.form-service .form-header').hide();
             $('.form-service .form-body').hide();
             $('.form-service .form-confirm').show();
+            toastr.success("Ваша заявку отправлена");
             setTimeout(location.reload(), 1000);
         } else {
             console.log('error');
@@ -131,11 +114,15 @@ $(document).ready(function() {
             success: function (data) {
                 if (data['add']) {
                     $('.wish-js img').attr('src', 'img/star.svg');
+                    toastr.success("Лот добавлен в избранное");
                 } else if (data['del']){
                     $('.wish-js img').attr('src', 'img/star-o.svg');
+                    toastr.success("Лот удалён из избранных");
                 }
             }
-        })
+        }).fail(function() {
+            toastr.error("Произошла ошибка");
+        })
 
     });
 
@@ -170,13 +157,12 @@ $(document).ready(function() {
         e.preventDefault();
         if ($(this).html() == 'Подробнее') {
             $(this).html('Скрыть');
+        } else if ($(this).html() == 'Все документы') {
+            $(this).html('Скрыть документы');
+        } else if ($(this).html() == 'Скрыть документы'){
+            $(this).html('Все документы');
         } else {
             $(this).html('Подробнее');
-        }
-        if ($(this).html() == 'Все документы') {
-            $(this).html('Скрыть документы');
-        } else {
-            $(this).html('Все документы');
         }
         var id = $(this).attr('href');
         $(id+' .long-text').toggleClass('hideText');
@@ -214,5 +200,27 @@ $(document).ready(function() {
         $('.load-list').html('<div class="spinner-wrapper"><div class="spinner"></div>Ищем лоты...</div>');
     });
 
+  
     
+    // Уведомления Start-> 
+
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-bottom-left",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
+    // Уведомления <-End
 })

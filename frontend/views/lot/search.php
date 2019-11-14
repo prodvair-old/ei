@@ -287,7 +287,7 @@ $this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\Vi
                             <div class="d-flex align-items-center sort-item">
                                 
                                 <label class="sort-label d-none d-sm-flex">Сортировка по:</label>
-                                <?php $form = ActiveForm::begin(['id' => 'sort-lot-form', 'method' => 'POST']); ?>
+                                <?php $form = ActiveForm::begin(['id' => 'sort-lot-form', 'method' => 'GET']); ?>
                                 <div class="sort-form">
                                     <?=$form->field($modelSort, 'sortBy')->dropDownList([
                                             'nameASC'   =>'Название от А до Я',

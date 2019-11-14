@@ -19,12 +19,14 @@ class AppAsset extends AssetBundle
         'css/main.css',
         'css/plugin.css',
         'css/style.css',
+        'css/costom-plugins/toast.css',
         'css/custom.min.css'
     ];
     public $js = [
         'js/jquery-2.2.4.min.js',
         'js/scripts.min.js',
         'js/plugins.js',
+        'js/costom-plugins/toast.js',
         'js/custom-core.js',
     ];
     public $depends = [

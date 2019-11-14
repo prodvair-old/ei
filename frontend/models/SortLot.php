@@ -32,7 +32,6 @@ class SortLot extends Model
         
         switch ($type) {
             case 'bankrupt':
-                    $sort .= 'lot_image DESC, ';
                     switch ($this->sortBy) {
                         case 'nameASC':
                                 $sort .= 'lot_description ASC';
@@ -53,7 +52,7 @@ class SortLot extends Model
                                 $sort .= 'lot_startprice DESC';
                             break;
                         default:
-                                $sort .= 'lot_timepublication DESC';
+                                $sort .= 'lot_image DESC, lot_timepublication DESC';
                             break;
                     }
                 break;

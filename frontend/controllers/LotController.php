@@ -249,7 +249,7 @@ class LotController extends Controller
         }
         $count = $lotsCount->count();
 
-        $modelSort->load(Yii::$app->request->post());
+        $modelSort->load(Yii::$app->request->get());
         $lotsQuery = $modelSort->sortBy($lotsQuery, $type);
 
         $pages = new Pagination(['totalCount' => $count, 'pageSize'=> 10]);

@@ -104,6 +104,7 @@ jQuery(function($) {
 	$(".chosen-no-search").chosen({disable_search: true}); 
 	$(".chosen-sort-select").chosen({disable_search_threshold: 10}).change( function() {
 		$('.load-list').html('<div class="spinner-wrapper"><div class="spinner"></div>Ищем лоты...</div>');
+		console.log('work');
         $("#sort-lot-form").submit();
 	});
 	

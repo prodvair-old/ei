@@ -17,7 +17,7 @@ try {
                 
     <figure class="tour-<?=$type?>-item-01">
 
-        <a href="<?=$lot->lotUrl?>">
+        <a href="<?=$lot->lotUrl?>" target="_blank">
 
             <?=($type == 'long')? '<div class="d-flex flex-column flex-sm-row align-items-xl-center">' : ''?>
         

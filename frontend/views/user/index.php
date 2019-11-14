@@ -101,6 +101,15 @@ $this->params['breadcrumbs'][] = [
                         
                         <div class="clear"></div>
 
+                        <div>
+                        <a href="#" class="toast-js"> Уведомления</a>
+                        </div>
+
+                        <div class="toast">
+                            Текст сообщения...
+                            <button class="toast__close" type="button">&times;</button>
+                        </div>
+                        
                         
                     </div>
                     
