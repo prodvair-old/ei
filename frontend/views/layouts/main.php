@@ -313,7 +313,7 @@ AppAsset::register($this);
             
                 <div class="row gap-50">
                 
-                    <div class="col-12 col-lg-5">
+                    <div class="col-lg-4">
                     
                         <div class="footer-logo">
                             <svg xmlns="http://www.w3.org/2000/svg" class="logo logo-footer" width="168" height="150" viewBox="0 0 1680 1500"
@@ -335,13 +335,13 @@ AppAsset::register($this);
                         
                     </div>
                     
-                    <div class="col-12 col-lg-7">
+                    <div class="col-lg-8">
                     
                         <div class="col-inner">
                         
                             <div class="row shrink-auto-sm gap-30">
                     
-                                <div class="col-6 col-shrink">
+                                <div class="col-lg-4 col-shrink">
                                     
                                     <div class="col-inner">
                                         <h5 class="footer-title">Меню</h5>
@@ -350,21 +350,23 @@ AppAsset::register($this);
                                             <li><a href="/about">О компании</a></li>
                                             <li><a href="/arbitrazhnye-upravlyayushchie">Реестры</a></li>
                                             <li><a href="/service">Услуги</a></li>
-                                            <li><a href="#">О нас</a></li>
-                                            <li><a href="#">Контакты</a></li>
+                                            <li><a href="/about">О нас</a></li>
+                                            <li><a href="/contact">Контакты</a></li>
+                                            <li><a href="/policy">Политика конфиденциальности</a></li>
+                                            <li><a href="/license">Лицензионное соглашение</a></li>
                                         </ul>
                                     </div>
                                     
                                 </div>
                                 
-                                <div class="col-6 col-shrink">
+                                <div class="col-lg-4 col-shrink">
                                     
                                     <div class="col-inner">
                                         <h5 class="footer-title">Купить имущество</h5>
                                         <ul class="footer-menu-list set-width">
                                             <li><a href="/bankrupt">Банкротное имущество</a></li>
                                             <li><a href="/arrest">Арестованное имущество</a></li>
-                                            <li><a href="#">Залоговое имущество</a></li>
+                                            <li><a href="/business">Залоговое имущество</a></li>
                                             <li><a href="/arbitrazhnye-upravlyayushchie">Арбитражные управляющие</a></li>
                                             <li><a href="/dolzhniki">Должники</a></li>
                                             <li><a href="/sro">СРО</a></li>
@@ -373,7 +375,7 @@ AppAsset::register($this);
                                     
                                 </div>
                                 
-                                <div class="col-12 col-auto">
+                                <div class="col-lg-4 col-shrink">
                                     
                                     <div class="col-inner">
                                         <h5 class="footer-title">Новости</h5>

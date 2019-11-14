@@ -99,5 +99,17 @@ class ServicesController extends Controller
         return $this->render('ecp');
     }
 
+    public function actionSpecialist()
+    {
+        $metaData = MetaDate::find()->where(['mdName' => 'service/specialist'])->one();
+
+        Yii::$app->params['description'] = $metaData->mdDescription;
+        Yii::$app->params['text'] = $metaData->mdText;
+        Yii::$app->params['title'] = $metaData->mdTitle;
+        Yii::$app->params['h1'] = $metaData->mdH1;
+
+        return $this->render('specialist');
+    }
+
 
 }
