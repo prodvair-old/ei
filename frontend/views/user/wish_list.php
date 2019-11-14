@@ -2,19 +2,19 @@
 use yii\widgets\Breadcrumbs;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\LinkPager;
 
 use common\models\Query\Bankrupt\LotsBankrupt;
 use common\models\Query\Arrest\LotsArrest;
 
 use frontend\components\LotBlock;
 
-if ($wishList) foreach ($wishList as $wish) {
-    if ($wish->type == 'arrest') {
-        $lotArrestIds[] = LotsArrest::findOne($wish->lotId);
-    }
-    if ($wish->type == 'bankrupt') {
-        $lotBankruptIds[] = LotsBankrupt::findOne($wish->lotId);
-    }
+foreach ($wishArrestList as $wishArrest) {
+    $lotArrestIds[] = LotsArrest::findOne($wishArrest->lotId);
+}
+
+foreach ($wishBankruptList as $wishBankrupt) {
+    $lotBankruptIds[] = LotsBankrupt::findOne($wishBankrupt->lotId);
 }
 
 $name = (\Yii::$app->user->identity->info['firstname'] || \Yii::$app->user->identity->info['lastname'])? \Yii::$app->user->identity->info['firstname'].' '.\Yii::$app->user->identity->info['lastname'] : \Yii::$app->user->identity->info['contacts']['emails'][0];
@@ -132,9 +132,60 @@ $this->params['breadcrumbs'][] = [
 
                         <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list" id="arrest-wish">
                             <? if ($lotArrestIds) foreach ($lotArrestIds as $lot) { echo LotBlock::widget(['lot' => $lot]); } ?>
+
+                            <div class="pager-innner">
+                        
+                                <div class="row align-items-center text-center text-lg-left">
+                                
+                                    <div class="col-12 col-lg-5">
+                                    </div>
+                                    
+                                    <div class="col-12 col-lg-7">
+                                        
+                                        <nav class="float-lg-right mt-10 mt-lg-0">
+                                            <?= LinkPager::widget([
+                                                'pagination' => $pagesArrest,
+                                                'nextPageLabel' => "<span aria-hidden=\"true\">&raquo;</span></i>",
+                                                'prevPageLabel' => "<span aria-hidden=\"true\">&laquo;</span>",
+                                                'maxButtonCount' => 6,
+                                                'options' => ['class' => 'pagination justify-content-center justify-content-lg-left'],
+                                                'disabledPageCssClass' => false
+                                            ]); ?>
+                                        </nav>
+                                    </div>
+                                    
+                                </div>
+                            
+                            </div>
                         </div>
+
+
                         <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list" id="bankrupt-wish">
                             <? if ($lotBankruptIds) foreach ($lotBankruptIds as $lot) { echo LotBlock::widget(['lot' => $lot]); } ?>
+                            <div class="pager-innner">
+                        
+                                <div class="row align-items-center text-center text-lg-left">
+                                
+                                    <div class="col-12 col-lg-5">
+                                    </div>
+                                    
+                                    <div class="col-12 col-lg-7">
+                                        
+                                        <nav class="float-lg-right mt-10 mt-lg-0">
+                                            <?= LinkPager::widget([
+                                                'pagination' => $pagesBankrupt,
+                                                'nextPageLabel' => "<span aria-hidden=\"true\">&raquo;</span></i>",
+                                                'prevPageLabel' => "<span aria-hidden=\"true\">&laquo;</span>",
+                                                'maxButtonCount' => 6,
+                                                'options' => ['class' => 'pagination justify-content-center justify-content-lg-left'],
+                                                'disabledPageCssClass' => false
+                                            ]); ?>
+                                        </nav>
+                                    </div>
+                                    
+                                </div>
+                            
+                            </div>
                         </div>
 
                     </div>

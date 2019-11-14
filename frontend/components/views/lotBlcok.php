@@ -30,7 +30,7 @@ try {
                 <?=($type == 'long')? '<div>' : ''?>
                     <figcaption class="content">
                         <h5><?= $lot->lotTitle?></h5>
-                        <ul class="item-meta">
+                        <ul class="item-meta lot-block__info">
                             <li><?= Yii::$app->formatter->asDate($lot->lot_timepublication, 'long')?></li>
                             <li>	
                                 <div class="rating-item rating-sm rating-inline clearfix">
@@ -38,6 +38,11 @@ try {
                                         <input type="hidden" class="rating" data-filled="rating-icon ri-star rating-rated" data-empty="rating-icon ri-star-empty" data-fractions="2" data-readonly value="4.5"/>
                                     </div> -->
                                     <p class="rating-text font600 text-muted font-12 letter-spacing-1"><?=NumberWords::widget(['number' => $lot->lotViews, 'words' => ['просмотр', 'просмотра', 'просмотров']]) ?></p>
+                                </div>
+                            </li>
+                            <li>
+                                <div <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="wish-star" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star" data-id="'.$lot->lotId.'" data-type="'.$lot->lotType.'"'?>>
+                                    <img src="img/star<?=($lot->lotWishId)? '' : '-o' ?>.svg" alt="">
                                 </div>
                             </li>
                         </ul>

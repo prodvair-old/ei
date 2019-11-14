@@ -104,6 +104,7 @@ $(document).ready(function() {
         e.preventDefault();
         var lotId   = $(this).data('id'),
             type    = $(this).data('type');
+            star    = $(this).children("img");
         $.ajax({
             url: '/wish-list-edit',
             type: 'POST',
@@ -113,10 +114,10 @@ $(document).ready(function() {
             },
             success: function (data) {
                 if (data['add']) {
-                    $('.wish-js img').attr('src', 'img/star.svg');
+                    star.attr('src', 'img/star.svg');
                     toastr.success("Лот добавлен в избранное");
                 } else if (data['del']){
-                    $('.wish-js img').attr('src', 'img/star-o.svg');
+                    star.attr('src', 'img/star-o.svg');
                     toastr.success("Лот удалён из избранных");
                 }
             }
@@ -209,12 +210,12 @@ $(document).ready(function() {
         "debug": false,
         "newestOnTop": false,
         "progressBar": true,
-        "positionClass": "toast-bottom-left",
+        "positionClass": "toast-top-right",
         "preventDuplicates": false,
         "onclick": null,
         "showDuration": "300",
         "hideDuration": "1000",
-        "timeOut": "3000",
+        "timeOut": "2000",
         "extendedTimeOut": "1000",
         "showEasing": "swing",
         "hideEasing": "linear",

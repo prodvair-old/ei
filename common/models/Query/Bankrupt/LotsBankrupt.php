@@ -22,6 +22,8 @@ use common\models\Query\WishList;
 use common\models\Query\PageViews;
 use common\models\Query\LotsCategory;
 
+use frontend\models\getUserId;
+
 class LotsBankrupt extends ActiveRecord 
 {
     public static function tableName()
@@ -58,6 +60,10 @@ class LotsBankrupt extends ActiveRecord
                 return $this->lot_startprice;
             }
         }
+    }
+    public function getLotId() 
+    {
+        return $this->lot_id;
     }
     public function getLotCadastre() 
     {
@@ -180,14 +186,14 @@ class LotsBankrupt extends ActiveRecord
     }
     public function getLotType()
     {
-        return 'bankrupt_lots';
+        return 'bankrupt';
     }
     public function getLotWishId() 
     {
         try {
             return $this->wishlist->id;
         } catch (\Throwable $th) {
-            $result[] = null;
+            return false;
         }
     }
     public function getLotAddress() 
@@ -293,7 +299,8 @@ class LotsBankrupt extends ActiveRecord
     public function getWishlist()
     {
         return $this->hasOne(WishList::className(), ['lotId' => 'lot_id'])->alias('wish')->onCondition([
-            'type' => 'bankrupt'
+            'type' => 'bankrupt',
+            'userId' => getUserId::getId()
         ]);
     }
     public function getCategory()

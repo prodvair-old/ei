@@ -58,7 +58,7 @@ class LotsArrest extends ActiveRecord
     }
     public function getLotType()
     {
-        return 'lots_arrest';
+        return 'arrest';
     }
     public function getLotCadastre() 
     {

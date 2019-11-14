@@ -6,6 +6,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\UploadedFile;
+use yii\data\Pagination;
 
 use frontend\models\UserSetting;
 
@@ -114,8 +115,19 @@ class UserController extends Controller
     public function actionWish_list()
     {
         if (!Yii::$app->user->isGuest) {
-            $wishList = WishList::find()->where(['userId' => Yii::$app->user->id])->all();
-            return $this->render('wish_list', ['wishList' => $wishList]);
+
+            $wishBankruptCount = WishList::find()->where(['userId' => Yii::$app->user->id, 'type'=>'bankrupt'])->count();
+            $pagesBankrupt = new Pagination(['totalCount' => $wishBankruptCount, 'pageSize'=> 6]);
+
+            $wishBankruptList = WishList::find()->where(['userId' => Yii::$app->user->id, 'type'=>'bankrupt'])->offset($pagesBankrupt->offset)->limit($pagesBankrupt->limit)->all();
+
+
+            $wishArrestCount = WishList::find()->where(['userId' => Yii::$app->user->id, 'type'=>'arrest'])->count();
+            $pagesArrest = new Pagination(['totalCount' => $wishArrestCount, 'pageSize'=> 6]);
+
+            $wishArrestList = WishList::find()->where(['userId' => Yii::$app->user->id, 'type'=>'arrest'])->offset($pagesArrest->offset)->limit($pagesArrest->limit)->all();
+            
+            return $this->render('wish_list', ['wishBankruptList' => $wishBankruptList, 'wishArrestList' => $wishArrestList, 'pagesBankrupt' => $pagesBankrupt, 'pagesArrest' => $pagesArrest]);
         } else {
             return $this->goHome();
         }
