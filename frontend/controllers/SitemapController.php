@@ -66,13 +66,13 @@ class SitemapController extends Controller
     {
         return $this->render('about');
     }
-    public function actionLicens()
+    public function actionLicense()
     {
-        return $this->render('licens');
+        return $this->render('license');
     }
-    public function actionPolitic()
+    public function actionPolicy()
     {
-        return $this->render('politic');
+        return $this->render('policy');
     }
     public function actionContact()
     {

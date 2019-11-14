@@ -53,16 +53,17 @@ return [
                 '' => 'site/index',
 
                 '/about'   => 'pages/about',
-                '/licens'  => 'pages/licens',
-                '/politic' => 'pages/politic',
+                '/license'  => 'pages/license',
+                '/policy' => 'pages/policy',
                 '/contact' => 'pages/contact',
                 // '/service' => 'pages/service',
                 '/faq'     => 'pages/faq',
                 '/sitemap' => 'pages/sitemap',
                 
-                '/service'          => 'services/index',
-                '/service/agent'    => 'services/agent',
-                '/service/ecp'      => 'services/ecp',
+                '/service'             => 'services/index',
+                '/service/agent'       => 'services/agent',
+                '/service/ecp'         => 'services/ecp',
+                '/service/specialist'  => 'services/specialist',
 
                 '/login'      => 'site/login',
                 '/logout'     => 'site/logout',
