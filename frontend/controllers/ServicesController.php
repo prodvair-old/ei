@@ -87,5 +87,17 @@ class ServicesController extends Controller
         return $this->render('agent');
     }
 
+    public function actionEcp()
+    {
+        $metaData = MetaDate::find()->where(['mdName' => 'service/ecp'])->one();
+
+        Yii::$app->params['description'] = $metaData->mdDescription;
+        Yii::$app->params['text'] = $metaData->mdText;
+        Yii::$app->params['title'] = $metaData->mdTitle;
+        Yii::$app->params['h1'] = $metaData->mdH1;
+
+        return $this->render('ecp');
+    }
+
 
 }

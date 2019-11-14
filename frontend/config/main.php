@@ -62,6 +62,7 @@ return [
                 
                 '/service'          => 'services/index',
                 '/service/agent'    => 'services/agent',
+                '/service/ecp'      => 'services/ecp',
 
                 '/login'      => 'site/login',
                 '/logout'     => 'site/logout',
