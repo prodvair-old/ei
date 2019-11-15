@@ -131,7 +131,7 @@ if ($type == 'bankrupt') {
 
         <div class="clear mb-100"></div>
                 
-        <div class="section-title">
+        <!-- <div class="section-title">
             <h2><span><span>Интересные</span> предложения дня</span></h2>
         </div>
         
@@ -139,9 +139,9 @@ if ($type == 'bankrupt') {
 
             <?foreach ($lotsFovarit as $lotFovarit) { echo LotBlock::widget(['lot' => $lotFovarit]); }?>
             
-        </div>
+        </div> -->
         
-        <? if ($type = 'bankrupt') { ?>
+        <!-- <? if ($type = 'bankrupt') { ?>
         <div class="clear mb-100"></div>
 
         <div class="row cols-1 cols-sm-2 cols-lg-2 gap-2 mb-20">
@@ -183,7 +183,7 @@ if ($type == 'bankrupt') {
             <div class="col-lg-1"></div>
             
         </div>
-        <? } ?>
+        <? } ?> -->
         
     </div>
     

@@ -17,6 +17,8 @@
   &__banner
     display: flex
     border: 1px solid $darwin
+    @media (max-width: 768px)
+      flex-direction: column
   
   &__logo
     width: 210px
@@ -41,10 +43,15 @@
     color: #fff
   &__row
     display: flex
+    @media (max-width: 768px)
+      flex-direction: column
   &__col
     text-align: center
     margin-left: auto
     margin-top: auto
+    @media (max-width: 768px)
+      margin-left: 0
+      margin-top: 1rem
   &__button,
     display: flex
     position: relative

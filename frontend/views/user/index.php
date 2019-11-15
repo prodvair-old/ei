@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = [
 
                     <div class="bashboard-nav-box">
                     
-                        <div class="box-heading"><h3 class="h6 text-white text-uppercase">Вы авторизованы как:</h3></div>
+                        <div class="box-heading"><h3 class="h6 text-white text-uppercase">Профиль</h3></div>
                         <div class="box-content">
                         
                             <div class="dashboard-avatar mb-10">
