@@ -89,7 +89,7 @@ class SiteController extends Controller
         Yii::$app->params['title'] = $metaData->mdTitle;
         Yii::$app->params['h1'] = $metaData->mdH1;
 
-        $lotsBankruptCount = LotsBankrupt::find()->count();
+        $lotsBankruptCount = LotsBankrupt::find()->where('lot_timeend >= NOW()')->count();
         $lotsArrestCount = LotsArrest::find()->count();
 
         return $this->render('index', [

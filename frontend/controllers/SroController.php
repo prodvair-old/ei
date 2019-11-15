@@ -122,7 +122,7 @@ class SroController extends Controller
         
         $arbitrs = Arbitrs::find()->joinWith(['sro','person'])->where(['sro.id'=>$sro_id])->orderBy('arb_prsn.lname ASC, arb_prsn.fname ASC, arb_prsn.mname ASC')->all();
         $countCases = Cases::find()->joinWith('arbitr.sro')->where(['sro.id'=>$sro_id])->count();
-        $lotsBankruptCount = LotsBankrupt::find()->joinWith('torgy.case.arbitr.sro')->where(['sro.id'=>$sro_id])->count();
+        $lotsBankruptCount = LotsBankrupt::find()->joinWith('torgy.case.arbitr.sro')->where(['sro.id'=>$sro_id])->andWhere('lot_timeend >= NOW()')->count();
         // Сбор информации из бд <-End
 
         // Мета данные Strat-> 
