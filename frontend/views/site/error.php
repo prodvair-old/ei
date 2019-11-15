@@ -17,8 +17,8 @@ $this->title = $name;
                 <p class="error__text">страница не найдена</p>
             </div>
         </div>
-        <div class="row">
-            <div class="col-4 offset-lg-4 text-center">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-4 text-center col-sm-6 col-xs-12">
                 <a href="/" class="error__btn">Вернуться на главную</a>
             </div>
         </div>

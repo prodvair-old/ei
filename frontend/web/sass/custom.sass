@@ -307,26 +307,45 @@ body
 .fa-clipboard-list
     color: #3f61bf
 
+
     // 404
-    
+  
 .error
     &__header
         font-size: 80px
         color: 
-        padding-top: 150px
+        padding-top: 100px
     &__text
         font-size: 30px
     &__btn
+        position: relative
         margin: 50px 0
         border: 2px solid #b50726
-        padding: 15px 25px
+        padding: 15px 20px
         color: #b50726
         border-radius: 10px
         transition: all .5s ease
+        overflow: hidden
+        font-size: 18px
         font-weight: 700
+        &:before
+          content: ''
+          display: block
+          position: absolute
+          width: 120% 
+          height: 300px 
+          left: -10%
+          bottom: -300px
+          background: #b50726
+          border-radius: 50%
+          transition: all .7s ease
+          z-index: -1
         &:hover
             color: #ffffff
-            background: #b50726
+            &:before
+              transform: translateY(-70%)
+
+          
 
 
 #search-lot-form
