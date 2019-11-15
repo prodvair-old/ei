@@ -51,69 +51,69 @@ if ($type == 'bankrupt') {
         
         <div class="row cols-1 cols-sm-2 cols-lg-4 gap-2 mb-20">
         
-            <div class="col">
+        <div class="col">
             
-                <figure class="destination-grid-item-01">
-                    <a href="/bankrupt/transport-i-tehnika">
-                        <div class="image">
-                            <img src="img/image-destination/01.jpg"alt="image"/>
-                        </div>
-                        <figcaption class="content">
-                            <h5>Автомобили</h5>
-                            <!-- <p class="text-muted">25 лотов</p> -->
-                        </figcaption>
-                    </a>
-                </figure>
-                
-            </div>
+            <figure class="category__item color-1">
+                <a href="<?=$type?>/transport-i-tehnika">
+                    <div class="image">
+                        <img src="https://yt3.ggpht.com/a/AGF-l7-EVhBEj7aPvzyeC9QuZqwSPa8SgyuT-Ixttg=s800-mo-c-c0xffffffff-rj-k-no"alt="image"/>
+                    </div>
+                    <figcaption class="content">
+                        <h6>Автомобили</h6>
+                        <!-- <p class="text-muted">25 лотов</p> -->
+                    </figcaption>
+                </a>
+            </figure>
             
-            <div class="col">
+        </div>
+        
+        <div class="col">
+        
+            <figure class="category__item color-2">
+                <a href="/<?=$type?>/nedvizhimost">
+                    <div class="image">
+                        <img src="https://i.diymall.co/diygoods/1281/plitka_dekorativnaya_london_brik_tsvet_multikolor_116_m2_1.jpg"alt="image"/>
+                    </div>
+                    <figcaption class="content">
+                        <h6>Недвижимость</h6>
+                        <!-- <p class="text-muted">36 лотов</p> -->
+                    </figcaption>
+                </a>
+            </figure>
             
-                <figure class="destination-grid-item-01">
-                    <a href="/bankrupt/nedvizhimost">
-                        <div class="image">
-                            <img src="img/image-destination/02.jpg"alt="image"/>
-                        </div>
-                        <figcaption class="content">
-                            <h5>Недвищимость</h5>
-                            <!-- <p class="text-muted">36 лотов</p> -->
-                        </figcaption>
-                    </a>
-                </figure>
-                
-            </div>
+        </div>
+        
+        <div class="col">
+        
+            <figure class="category__item color-3">
+                <a href="/<?=$type?>/oborudovanie">
+                    <div class="image">
+                        <img src="https://www.talenthero.de/wp-content/uploads/Metall-Glockengießer-2-800x800.jpg"alt="image"/>
+                    </div>
+                    <figcaption class="content">
+                        <h6>Оборудование</h6>
+                        <!-- <p class="text-muted">40 лотов</p> -->
+                    </figcaption>
+                </a>
+            </figure>
             
-            <div class="col">
+        </div>
+        
+        <div class="col">
+      
+            <figure class="category__item color-4">
+                <a href="/<?=$type?>/debitorskaya-zadolzhennost">
+                    <div class="image">
+                        <img src="https://ae01.alicdn.com/kf/HTB15d0Gq1SSBuNjy0Flq6zBpVXad/-.jpg"alt="image"/>
+                    </div>
+                    <figcaption class="content">
+                        <h6>Дебиторская задолженность</h6>
+                        <!-- <p class="text-muted">10 лотов</p> -->
+                    </figcaption>
+                </a>
+            </figure>
             
-                <figure class="destination-grid-item-01">
-                    <a href="/bankrupt/oborudovanie">
-                        <div class="image">
-                            <img src="img/image-destination/03.jpg"alt="image"/>
-                        </div>
-                        <figcaption class="content">
-                            <h5>Оборудование</h5>
-                            <!-- <p class="text-muted">40 лотов</p> -->
-                        </figcaption>
-                    </a>
-                </figure>
-                
-            </div>
-            
-            <div class="col">
-            
-                <figure class="destination-grid-item-01">
-                    <a href="/bankrupt/debitorskaya-zadolzhennost">
-                        <div class="image">
-                            <img src="img/image-destination/04.jpg"alt="image"/>
-                        </div>
-                        <figcaption class="content">
-                            <h5>Дебиторская задолженность</h5>
-                            <!-- <p class="text-muted">10 лотов</p> -->
-                        </figcaption>
-                    </a>
-                </figure>
-                
-            </div>
+        </div>
             
         </div>
     
@@ -131,59 +131,7 @@ if ($type == 'bankrupt') {
 
         <div class="clear mb-100"></div>
                 
-        <!-- <div class="section-title">
-            <h2><span><span>Интересные</span> предложения дня</span></h2>
-        </div>
-        
-        <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
 
-            <?foreach ($lotsFovarit as $lotFovarit) { echo LotBlock::widget(['lot' => $lotFovarit]); }?>
-            
-        </div> -->
-        
-        <!-- <? if ($type = 'bankrupt') { ?>
-        <div class="clear mb-100"></div>
-
-        <div class="row cols-1 cols-sm-2 cols-lg-2 gap-2 mb-20">
-        
-            <div class="col-lg-1"></div>
-
-            <div class="col-lg-5 col-md">
-            
-                <figure class="destination-grid-item-01">
-                    <a href="<?=Url::to(['arrest/list'])?>">
-                        <div class="image">
-                            <img src="img/image-destination/01.jpg"alt="image"/>
-                        </div>
-                        <figcaption class="content">
-                            <h5>Арбитражные управляющие</h5>
-                            <p class="text-muted">25 человек</p>
-                        </figcaption>
-                    </a>
-                </figure>
-                
-            </div>
-            
-            <div class="col-lg-5 col-md">
-            
-                <figure class="destination-grid-item-01">
-                    <a href="<?=Url::to(['doljnik/list'])?>">
-                        <div class="image">
-                            <img src="img/image-destination/02.jpg"alt="image"/>
-                        </div>
-                        <figcaption class="content">
-                            <h5>Должники</h5>
-                            <p class="text-muted">36 человек</p>
-                        </figcaption>
-                    </a>
-                </figure>
-                
-            </div>
-
-            <div class="col-lg-1"></div>
-            
-        </div>
-        <? } ?> -->
         
     </div>
     
