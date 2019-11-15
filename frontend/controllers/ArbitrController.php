@@ -119,11 +119,11 @@ class ArbitrController extends Controller
         $arbitr = Arbitrs::findOne($arb_id);
         $title = 'Арбитражный управляющий - '.$arbitr->person->lname.' '.$arbitr->person->fname.' '.$arbitr->person->mname;
 
-        $lots_bankrupt = LotsBankrupt::find()->joinWith('torgy.case.arbitr')->where(['arbitr.id'=>$arb_id])->limit(20)->orderBy('lot_image DESC, lot_timepublication DESC')->all();
+        $lots_bankrupt = LotsBankrupt::find()->joinWith('torgy.case.arbitr')->where(['arbitr.id'=>$arb_id])->andWhere('lot_timeend >= NOW()')->limit(20)->orderBy('lot_image DESC, lot_timepublication DESC')->all();
         $countCases = Cases::find()->joinWith('arbitr')->where(['arbitr.id'=>$arb_id])->count();
         // Сбор информации из бд <-End
 
-        // Мета данные Strat-> 
+        // Мета данные Strat->
         $metaData = MetaDate::find()->where(['mdName' => "arbitr-page"])->one();
 
         $search  = [

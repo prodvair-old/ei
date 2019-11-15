@@ -131,7 +131,7 @@ class DoljnikController extends Controller
                 break;
         }
 
-        $lots_bankrupt = LotsBankrupt::find()->where(['bnkr__id' => $bnkr_id])->orderBy('lot_image DESC, lot_timepublication DESC')->all();
+        $lots_bankrupt = LotsBankrupt::find()->where(['bnkr__id' => $bnkr_id])->andWhere('lot_timeend >= NOW()')->orderBy('lot_image DESC, lot_timepublication DESC')->all();
         // Сбор информации из бд <-End
 
         // Мета данные Strat-> 

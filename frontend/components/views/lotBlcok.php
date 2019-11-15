@@ -29,7 +29,7 @@ try {
 
                 <?=($type == 'long')? '<div>' : ''?>
                     <figcaption class="content">
-                        <h5><?= $lot->lotTitle?></h5>
+                        <h5 class="<?=(!empty($lot->lot_archive))? ($lot->lot_archive)? 'text-muted' : '' : ''?>"><?= $lot->lotTitle?> <?=(!empty($lot->lot_archive))? ($lot->lot_archive)? '<span class="text-primary">(Архив)</span>' : '' : ''?></h5>
                         <ul class="item-meta lot-block__info">
                             <li><?= Yii::$app->formatter->asDate($lot->lot_timepublication, 'long')?></li>
                             <li>	
@@ -48,7 +48,7 @@ try {
                         </ul>
                         <ul class="item-meta mt-15">
                             <li>
-                                Категория: <span class="font700 h6"> <?= $lot->LotCategory[0]?></span>
+                                Категория: <span class="font700 h6 <?=(!empty($lot->lot_archive))? ($lot->lot_archive)? 'text-muted' : '' : ''?>"> <?= $lot->LotCategory[0]?></span>
                             </li>
                         </ul>
                         <p class="mt-3">Цена: <span class="h6 line-1 <?=$priceClass?> font16"><?= Yii::$app->formatter->asCurrency($lot->lotPrice)?></span> <span class="text-muted mr-5"><?= ($lot->lotOldPrice)? Yii::$app->formatter->asCurrency($lot->lotOldPrice) : '' ?></span></p>

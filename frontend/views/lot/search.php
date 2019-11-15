@@ -257,6 +257,13 @@ $this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\Vi
                                         'id' => 'imageCheck',
                                         'template' => '{input}<label class="custom-control-label" for="imageCheck">Только с фото</label>']) ?>
                             </div>
+                            <div class="custom-control custom-checkbox">
+                                <?= $form->field($model, 'archivCheck')->checkbox([
+                                        'class'=>'custom-control-input',
+                                        'value' => '1',
+                                        'id' => 'archivCheck',
+                                        'template' => '{input}<label class="custom-control-label" for="archivCheck">Лоты с архива</label>']) ?>
+                            </div>
                             
                         </div>
                         
