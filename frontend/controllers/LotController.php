@@ -91,8 +91,8 @@ class LotController extends Controller
         // Проверка ссылок ЧПУ и подставление типа лотов Strat->
         switch ($type) {
             case 'bankrupt':
-                $lots = LotsBankrupt::find()->limit(3)->orderBy('lot_image DESC, lot_timepublication DESC')->all();
-                $lotsFovarit = LotsBankrupt::find()->limit(3)->orderBy('wish_count DESC')->all();
+                $lots = LotsBankrupt::find()->limit(3)->where('lot_timeend >= NOW()')->orderBy('lot_image DESC, lot_timepublication DESC')->all();
+                $lotsFovarit = LotsBankrupt::find()->limit(3)->where('lot_timeend >= NOW()')->orderBy('wish_count DESC')->all();
 
                 $title = 'Банкротное имущество';
                 break;

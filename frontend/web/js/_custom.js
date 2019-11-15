@@ -10,7 +10,7 @@ $(document).ready(function() {
                     console.log(data)
                     location.reload();
                     $('.login-form-error').html('');
-                    toastr.error("Авторизация прошла успешно");
+                    toastr.success("Авторизация прошла успешно");
                 } else {
                     $('.login-form-error').html(data.error);
                 }
@@ -29,7 +29,7 @@ $(document).ready(function() {
         }).done(function(data) {
             if (data.result) {
                 console.log(data)
-                toastr.error("Вы успешно зарегистрировались");
+                toastr.success("Вы успешно зарегистрировались");
                 location.reload();
                 $('.signup-form-error').html('');
             } else {

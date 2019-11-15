@@ -21,6 +21,7 @@ class SearchLot extends Model
     public $minPrice;
     public $maxPrice;
     public $imageCheck;
+    public $archivCheck;
     public $tradeType;
     public $search;
     
@@ -35,7 +36,7 @@ class SearchLot extends Model
             [['type', 'category', 'search'], 'string'],
             [['subCategory', 'region', 'tradeType', 'etp'], 'default'],
             [['minPrice', 'maxPrice'], 'number'],
-            [['imageCheck'], 'boolean'],
+            [['imageCheck', 'archivCheck'], 'boolean'],
         ];
     }
 
@@ -181,6 +182,13 @@ class SearchLot extends Model
                     }
                     if (!empty($this->maxPrice)) {
                         $whereAnd[] = ['<=', 'lot_startprice', $this->maxPrice];
+                    }
+                    if (!empty($this->archivCheck)) {
+                        if (!$this->archivCheck) {
+                            $where[] = 'lot_timeend >= NOW()';
+                        }
+                    } else {
+                        $where[] = 'lot_timeend >= NOW()';
                     }
                     if (!empty($this->imageCheck)) {
                         $where[] = ['lot_image' => $this->imageCheck];

@@ -1824,7 +1824,7 @@ ul.horizon-sticky-nav > li.active a {
 }
 
 .page-wrapper .page-title.bg-light {
-    margin-top: -50px;
+    margin-top: -26px;
     padding: 20px 0;
     margin-bottom: 60px;
 }
@@ -1854,7 +1854,7 @@ ul.horizon-sticky-nav > li.active a {
 
 @media (min-width: 992px) {
     .page-wrapper .page-title.bg-light {
-        margin-top: -38px;
+        margin-top: -20px;
     }
 }
 
