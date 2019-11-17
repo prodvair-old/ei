@@ -174,7 +174,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             </li>
                             <li>
                                 <span class="icon-font d-block">
-                                    <i class="linea-icon-ecommerce-dollar"></i>
+                                    <i class="linea-icon-ecommerce-rublo"></i>
                                 </span>
                                 Сумма задатка<br /><strong><?=Yii::$app->formatter->asCurrency($lot->lotDepositSize)?></strong>
                             </li>
@@ -346,7 +346,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                               <li class="darwin__item">Без комиссий</li>
                             </ul>
                             <div class="darwin__col">
-                              <a href="" class="darwin__button">
+                              <a href="http://darwinsoft.ru/" target="_blank" class="darwin__button">
                                 <div class="darwin__button__text">СКАЧАЙТЕ ПРОГРАММУ</div>
                                 <div class="darwin__button__download">
                                   <div class="darwin__button__icon">

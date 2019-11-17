@@ -47,7 +47,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row pt-90 pb-90">
 
             <div class="col-lg-4 text-center">
-                <img src="" class="specialist_img" alt="Выбор">
+                <!-- <img src="" class="specialist_img" alt="Выбор"> -->
+                <p class="specialist_icon"><i class="fas fa-star specialist_icon"></i></p>
                 <h3>
                     Выбор
                 </h3>
@@ -57,7 +58,9 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
 
             <div class="col-lg-4 text-center">
-                <img src="" class="specialist_img" alt="Оценка">
+                <!-- <img src="" class="specialist_img" alt="Оценка"> -->
+                <p class="specialist_icon"><i class="fas fa-crosshairs"></i></p>
+
                 <h3>
                     Оценка
                 </h3>
@@ -67,7 +70,8 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
 
             <div class="col-lg-4 text-center">
-                <img src="" class="specialist_img" alt="Отчёт">
+                <!-- <img src="" class="specialist_img" alt="Отчёт"> -->
+                <p class="specialist_icon"><i class="fas fa-clipboard-list"></i></p>
                 <h3>
                     Отчёт
                 </h3>

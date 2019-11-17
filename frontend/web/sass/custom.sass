@@ -17,6 +17,8 @@
   &__banner
     display: flex
     border: 1px solid $darwin
+    @media (max-width: 768px)
+      flex-direction: column
   
   &__logo
     width: 210px
@@ -41,10 +43,15 @@
     color: #fff
   &__row
     display: flex
+    @media (max-width: 768px)
+      flex-direction: column
   &__col
     text-align: center
     margin-left: auto
     margin-top: auto
+    @media (max-width: 768px)
+      margin-left: 0
+      margin-top: 1rem
   &__button,
     display: flex
     position: relative
@@ -169,7 +176,6 @@
       background-color: #d13710
     &.color-4
       background-color: #a08661
-      з
 
     .image
       margin-left: 50%
@@ -288,6 +294,58 @@ body
 .specialist_text
     font-size: 18px
 
+.specialist_icon
+    font-size: 45px
+    
+
+.fa-star
+    color: #f5c63b
+
+.fa-crosshairs
+    color: #54ccbc
+    
+.fa-clipboard-list
+    color: #3f61bf
+
+
+    // 404
+  
+.error
+    &__header
+        font-size: 80px
+        color: 
+        padding-top: 100px
+    &__text
+        font-size: 30px
+    &__btn
+        position: relative
+        margin: 50px 0
+        border: 2px solid #b50726
+        padding: 15px 20px
+        color: #b50726
+        border-radius: 10px
+        transition: all .5s ease
+        overflow: hidden
+        font-size: 18px
+        font-weight: 700
+        &:before
+          content: ''
+          display: block
+          position: absolute
+          width: 120% 
+          height: 300px 
+          left: -10%
+          bottom: -300px
+          background: #b50726
+          border-radius: 50%
+          transition: all .7s ease
+          z-index: -1
+        &:hover
+            color: #ffffff
+            &:before
+              transform: translateY(-70%)
+
+          
 
 
 #search-lot-form
