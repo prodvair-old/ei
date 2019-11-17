@@ -71,7 +71,7 @@ return [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn'      => 'pgsql:host=localhost;port=5432;dbname=uds',
+            'dsn'      => 'pgsql:host=localhost;dbname=uds',
             'username' => 'bankrupt',
             'password' => 'bankrupt',
             'charset'  => 'utf8',

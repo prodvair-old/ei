@@ -49,3 +49,4 @@ phpunit.phar
 # /newThames
 package-lock.json
 composer.lock
+gulpfile.js
