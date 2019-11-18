@@ -5,15 +5,15 @@ use yii\helpers\Url;
 ?>
 <div class="row">
 
-	<div class="col-lg-4"> 
+	<div class="col-lg-4 mt-40"> 
 		<div class="featured-image-item-08">
 			<div class="image">
-				<div class="image-inner service-img">
-					<img src="\img\services\1.svg"/>
-				</div>
+				<a href="services/specialist" class="image-inner">
+					<img src="\img\services\1.svg" class="service-img__item"/>
+				</a>
 			</div>
 
-			<div class="content mt-50">
+			<div class="content mt-20">
 				<!-- <div class="icon-font text-primary"></div> -->
 				<h5>Консультация специалиста по лоту</h5>
 				<p>
@@ -24,14 +24,14 @@ use yii\helpers\Url;
 		</div>
 	</div>
 
-	<div class="col-lg-4">
+	<div class="col-lg-4 mt-40">
 		<div class="featured-image-item-08">
-			<div class="image-inner service-img">
-				<img src="\img\services\2.svg"/>
-			</div>
+			<a href="services/agent" class="image-inner">
+				<img src="\img\services\2.svg" class="service-img__item"/>
+			</a>
 		</div>
 		
-		<div class="content mt-50">
+		<div class="content mt-20">
 			<!-- <div class="icon-font text-primary"></div> -->
 			<h5>Услуги агента по торгам</h5>
 			<p>
@@ -41,14 +41,14 @@ use yii\helpers\Url;
 		</div>
 	</div>
 
-	<div class="col-lg-4">
+	<div class="col-lg-4 mt-40">
 		<div class="featured-image-item-08">
 			<div class="image">
-				<div class="image-inner service-img">
-					<img src="\img\services\3.svg"/>
-				</div>
+				<a href="services/ecp" class="image-inner">
+					<img src="\img\services\3.svg" class="service-img__item"/>
+				</a>
 			</div>
-			<div class="content mt-50">
+			<div class="content mt-20">
 				<!-- <div class="icon-font text-primary"></div> -->
 				<h5>Покупка ЭЦП для данной площадки</h5>
 				<p>

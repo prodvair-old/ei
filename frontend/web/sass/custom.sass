@@ -281,6 +281,10 @@ body
     height: 135px
     width: 230px
     margin: auto
+    &__item
+      height: 150px
+      width: 250px
+      margin: auto
 
 .icon-service
     display: flex
@@ -295,8 +299,29 @@ body
     font-size: 18px
 
 .specialist_icon
-    font-size: 45px
-    
+  font-size: 45px
+
+  // Услуги агента
+.agent
+  &__header
+    font-weight: 700
+    font-size: 20px
+  &__text
+  &__step
+    margin: 70px 0
+    &__header
+      font-weight: 700
+      font-size: 20px
+    &__img
+      margin: auto
+      height: 150px
+      width: 300px
+      &__mark
+      color: #285ca6
+
+
+
+    // Иконки   
 
 .fa-star
     color: #f5c63b
@@ -345,7 +370,48 @@ body
             &:before
               transform: translateY(-70%)
 
-          
+
+// Форма обратной связи
+
+.feedback 
+  background: #263e80
+  color: #fff
+  padding: 70px 10px
+  &__header
+    color: #fff
+  &__text
+    padding: 5px
+  &__form
+    input
+      padding: 5px 10px
+      border-radius: 3px
+      margin: 0 5px
+      border: none
+    button
+      padding: 5px
+      margin: 0 5px
+      width: 190px
+      color: #263e80
+      font-weight: 700
+      background: #ffffff
+      border-radius: 3px
+      border: none
+      transition: all .4s ease
+      &:hover
+        color: #448752
+        box-shadow: 2px 8px 8px rgba(30, 30, 30, 0.4)
+  &__policy
+    display: flex
+    justify-content: center
+    align-items: center
+    color: #fff
+    input
+      padding: 10px
+      vertical-align: center
+      height: 15px
+      width: 15px   
+      margin: 0 10px
+      margin-bottom: 2px
 
 
 #search-lot-form

@@ -179,7 +179,11 @@ AppAsset::register($this);
                                                     ['label' => 'Должники', 'url' => ['doljnik/list']],
                                                     ['label' => 'СРО', 'url' => ['sro/list']]
                                                 ]],
-                                                ['label' => 'Услуги', 'url' => ['services/index']],
+                                                ['label' => 'Услуги', 'url' => ['services/index'], 'items' => [
+                                                    ['label' => 'Консультация специалиста', 'url' => ['service/specialist']],
+                                                    ['label' => 'Услуги агента', 'url' => ['service/agent']],
+                                                    ['label' => 'Покупка ЭЦП', 'url' => ['service/ecp']]
+                                                ]],
                                             ],
                                             'options' => [
                                                 'class' => 'main-nav',
