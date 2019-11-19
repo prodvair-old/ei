@@ -78,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-4">
 
                 <div class="agent__step__img">
-                    <img src="" alt="Image">
+                    <img src="\img\services\flame-sign-up.png" alt="Image">
                 </div>
 
             </div>
@@ -121,7 +121,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-4">
 
                 <div class="agent__step__img">
-                    <img src="" alt="Image">
+                    <img src="\img\services\flame-6.png" alt="Image">
                 </div>
                 
             </div>
@@ -134,7 +134,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-4">
 
                 <div class="agent__step__img">
-                    <img src="" alt="Image">
+                    <img src="\img\services\flame-8.png" alt="Image">
                 </div>
 
             </div>
@@ -142,15 +142,15 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-8">
 
                 <p class="agent__step__header">
-                    Подготовка документов
+                    Изучение интерфейса площадки и особенностей работы на ней
                 </p>
 
                 <p>
-                    Вам необходимо внимательно подготовить полный пакет документов и правильно сделать их сканы.
+                    Все без исключений электронные торговые площадки имеют сложный интерфейс. На его изучение может уйти много времени.
                 </p>
 
                 <p class="agent__step__mark">
-                    Сканы документов могут отклонить из-за любой мелочи (тон печати, изгибы, видимость символов).
+                    Были прецеденты, когда участник не мог подать заявку 3 дня.
                 </p>
 
             </div>
@@ -162,15 +162,15 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-8">
 
                 <p class="agent__step__header">
-                    Покупка цифровой подписи (ЭЦП)
+                    Аккредитация на площадке
                 </p>
 
                 <p>
-                    Вам нужно получить электронную цифровую подпись, это трудный и долгий процесс. Кроме того, есть разные виды ЭЦП, и Вы рискуете приобрести неподходящую.
+                    Аккредитация на площадке занимает до 3 рабочих дней - если всё сделать правильно. При этом необходимо будет подготовить правильные сканы. Проверять придется все вплоть до каждого изгиба и тона печати, чтобы исключить ошибки.
                 </p>
 
                 <p class="agent__step__mark">
-                    Стоимость ЭЦП может доходить до 14 000 РУБ.
+                    Аккредитация может занять от 3 до 9 рабочих дней.
                 </p>
 
             </div>
@@ -178,7 +178,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-4">
 
                 <div class="agent__step__img">
-                    <img src="" alt="Image">
+                    <img src="\img\services\flame-2.png" alt="Image">
                 </div>
                 
             </div>
