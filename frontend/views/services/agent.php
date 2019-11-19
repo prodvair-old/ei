@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="container">
 
         <h1 class="pt-30 pb-20 text-center"><?= Html::encode($this->title) ?></h1>
-        <p class="text-center">Торги по банкротству, торги арестованного имущества</p>
+        <p class="text-center agent__underheader">Торги по банкротству, торги арестованного имущества</p>
 
         <div class="row text-center">
 
@@ -36,6 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="agent__icon">
                     <i class="elegent-icon-profile text-primary"></i>
                 </div>
+
                 <p class="agent__header">
                     Участие в торгах на любой ЭТП
                 </p>
