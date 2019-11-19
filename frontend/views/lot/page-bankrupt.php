@@ -110,10 +110,10 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
             <div class="col-12 col-lg-8">
                 
                 <div class="content-wrapper">
-                    
+                     
                     <div id="desc" class="detail-header mb-30">
-                        <h3><?=Yii::$app->params['h1']?></h3>
-                        
+                      <h1 class="h3"><?=Yii::$app->params['h1']?></h1>
+              
                         <div class="d-flex flex-row align-items-sm-center mb-20">
                             <div class="mr-10 font-lg text-muted">
                               <?=$lot->lotViews?> <i class="far fa-eye fa-sm"></i>
@@ -449,6 +449,8 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                                 
                                             </div>
                                             
+
+                                            
                                             <!-- <div class="col-4 col-sm-2">
                                                 <a href="#" class="btn btn-primary btn-block btn-sm mt-3">Купить</a>
                                             </div> -->
@@ -486,6 +488,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                           <img src="/img/darwin/darwin-logo.svg" alt="DarWin">
                           <div class="darwin__logo__text">Автоматизированная подача заявок</div>
                         </div>
+                        
                         <div class="darwin__content">
                           <div class="darwin__title">УЧАСТВУЙТЕ В ТОРГАХ</div>
                           <div class="darwin__row">
