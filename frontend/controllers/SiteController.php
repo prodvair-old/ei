@@ -190,7 +190,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionRequest_password_reset()
+    public function actionRequestPasswordReset()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $model = new PasswordResetRequestForm();

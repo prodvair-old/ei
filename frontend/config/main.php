@@ -70,7 +70,7 @@ return [
                 '/signup'     => 'site/signup',
                 '/signup/emailcheck'        => 'site/emailcheck',
                 '/verify-email'             => 'site/verify-email',
-                '/request-password-reset'   => 'site/request_password_reset',
+                '/request-password-reset'   => 'site/request-password-reset',
                 '/reset-password'           => 'site/reset-password',
                 '/image'      => 'site/image',
                 
