@@ -604,11 +604,13 @@ body
 .booking-box
   border: none
   // background-color: #f7f7f8
+.header-main .main-nav li ul,
+.header-main.header-mobile-menu .main-menu-nav .main-nav,
+.header-main.with-absolute-navbar .navbar:before, .with-absolute-navbar .navbar:after
+    background-color: darken($secondary, 10%)!important
 
-@media only screen and (max-width: 991px)
-  .header-main.header-mobile-menu .main-menu-nav .main-nav,
-  .header-main.with-absolute-navbar .navbar:before, .with-absolute-navbar .navbar:after
-    background-color: darken($secondary, 20%)!important
+.header-main .main-nav li ul
+  border-radius: 3px
 
 
 .hero-banner.hero-banner-01.alt-option-03 .search-form-main
