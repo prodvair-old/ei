@@ -9,6 +9,9 @@
 @import 'animate.scss'
 @import 'plugin.scss'
 @import 'style.scss'
+ 
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6, label
+  color: #333333
 
 
 @keyframes slideme
@@ -228,17 +231,19 @@ body
     &__link
         display: flex
         line-height: 1.25
+        color: $logo-color
         span 
             margin-top: .75rem
             text-transform: uppercase
             font-weight:  bold
             letter-spacing: 1px
+            font-size: 15px
 
 .row.gap-50
     margin-right: 0
 
 .logo
-    fill: $accent
+    fill: $logo-color
     height: 60px
     max-width: 40.734px
     display: inline-block
@@ -521,8 +526,10 @@ body
       font-weight: normal
       line-height: 1.25
       margin-bottom: 0
+      font-weight: 500
             
-
+.form-group label.custom-control-label
+  color: $secondary
 .wish-star
     img
         height: 1.1rem
@@ -596,7 +603,13 @@ body
   display: none !important
 .booking-box
   border: none
-  background-color: #f7f7f8
+  // background-color: #f7f7f8
+
+@media only screen and (max-width: 991px)
+  .header-main.header-mobile-menu .main-menu-nav .main-nav,
+  .header-main.with-absolute-navbar .navbar:before, .with-absolute-navbar .navbar:after
+    background-color: darken($secondary, 20%)!important
+
 
 .hero-banner.hero-banner-01.alt-option-03 .search-form-main
 
@@ -606,12 +619,12 @@ body
 .secondary-search-box 
     box-shadow: none
     border-radius: 3px
-    border: 1px solid $secondary
+    border: 1px solid #d6dade
     h4 
-     background:  $secondary
+     background:  #d6dade
      border-bottom: 1px solid #EDEDED
      font-size: 1.25rem
-     color: #FFF
+     //  color: #FFF
      border-radius: 3px 3px 0 0 
      padding-bottom: 15px
     .chosen-choices

@@ -246,7 +246,7 @@ a {
   -moz-transition: all 0.3s ease-out;
   -webkit-transition: all 0.3s ease-out;
   transition: all 0.3s ease-out;
-  color: $accent;
+  color: $link-color;
   font-weight: 400;
 }
 
@@ -258,7 +258,7 @@ a:focus {
   -moz-transition: all 0.3s ease-out;
   -webkit-transition: all 0.3s ease-out;
   transition: all 0.3s ease-out;
-  color: darken($accent, 10%);
+  color: darken($link-color, 10%);
 }
 
 ::selection {
@@ -8136,7 +8136,7 @@ ul.col-5 li {
 }
 
 .text-success {
-  color: #10C47F !important;
+  color: $success !important;
 }
 
 .text-warning {
@@ -8386,7 +8386,7 @@ ul.list-inline-block li:last-child {
 }
 
 .bg-success {
-  background: #10C47F !important;
+  background: $success !important;
   color: #FFF !important;
 }
 
@@ -8635,8 +8635,8 @@ ul.list-inline-block li:last-child {
 }
 
 .btn-success {
-  background: #10C47F;
-  border-color: #10C47F;
+  background: $success;
+  border-color: $success;
   color: #FFF;
 }
 
@@ -8698,7 +8698,7 @@ ul.list-inline-block li:last-child {
 }
 
 .btn-success.btn-border {
-  color: #10C47F;
+  color: $success;
 }
 
 .btn-warning.btn-border {
@@ -8733,8 +8733,8 @@ ul.list-inline-block li:last-child {
 }
 
 .btn-outline-success {
-  color: #10C47F;
-  border-color: #10C47F;
+  color: $success;
+  border-color: $success;
 }
 
 .btn-outline-warning {
@@ -8789,8 +8789,8 @@ ul.list-inline-block li:last-child {
 
 .btn-outline-success:hover,
 .btn-outline-success:focus {
-  background-color: #10C47F;
-  border-color: #10C47F;
+  background-color: $success;
+  border-color: $success;
 }
 
 .btn-outline-warning:hover,
