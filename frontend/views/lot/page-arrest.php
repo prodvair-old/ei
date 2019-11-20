@@ -111,7 +111,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                 <div class="content-wrapper">
                     
                     <div id="desc" class="detail-header mb-30">
-                        <h3><?=Yii::$app->params['h1']?></h3>
+                        <h1 class="h3"><?=Yii::$app->params['h1']?></h1>
                         
                         <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-20">
                             <div class="mr-15 font-lg">
@@ -365,7 +365,8 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                     <div id="docs" class="fullwidth-horizon-sticky-section">
                     
                         <h4 class="heading-title">Документы</h4>
-                        
+
+                        fdfdfdf
                         <ul class="list-icon-absolute what-included-list mb-30">
                             <? foreach ($lot->lotDocuments as $doc) { ?>
 
