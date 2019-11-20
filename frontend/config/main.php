@@ -68,8 +68,9 @@ return [
                 '/login'      => 'site/login',
                 '/logout'     => 'site/logout',
                 '/signup'     => 'site/signup',
-                '/signup/emailcheck' => 'site/emailcheck',
-                '/repass'     => 'site/repass',
+                '/signup/emailcheck'        => 'site/emailcheck',
+                '/request-password-reset'   => 'site/request_password_reset',
+                '/reset-password'           => 'site/reset-password',
                 '/image'      => 'site/image',
                 
                 '/test' => 'test/index',

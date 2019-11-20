@@ -126,6 +126,15 @@ class Lots extends ActiveRecord
     {
         return $this->torgy->msgid;
     }
+    public function getLot_archive()
+    {
+        $today = new \DateTime();
+        if (strtotime($this->torgy->timeend) <= strtotime($today->format('Y-m-d H:i:s'))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     public function getLotUrl()
     {
         $items = [
