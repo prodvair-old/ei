@@ -256,7 +256,6 @@ class SiteController extends Controller
         Yii::$app->session->setFlash('error', 'Извините но ваш токен не действителен.');
         return $this->goHome();
     }
-    git remote set-url origin https://prodvair:fv4ALGI97@github.com/prodvair/ei.git
     /**
      * Resend verification email
      *
