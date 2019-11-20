@@ -11,7 +11,8 @@ use common\models\User;
 class ResetPasswordForm extends Model
 {
     public $password;
-
+    public $confirm_password;
+    
     /**
      * @var \common\models\User
      */
@@ -28,11 +29,11 @@ class ResetPasswordForm extends Model
     public function __construct($token, $config = [])
     {
         if (empty($token) || !is_string($token)) {
-            throw new InvalidArgumentException('Password reset token cannot be blank.');
+            throw new InvalidArgumentException('Нету токена для восстановления пароля.');
         }
         $this->_user = User::findByPasswordResetToken($token);
         if (!$this->_user) {
-            throw new InvalidArgumentException('Wrong password reset token.');
+            throw new InvalidArgumentException('Не верный токен.');
         }
         parent::__construct($config);
     }
@@ -43,8 +44,10 @@ class ResetPasswordForm extends Model
     public function rules()
     {
         return [
-            ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            [['password', 'confirm_password'], 'required'],
+            [['password', 'confirm_password'], 'string', 'min' => 6],
+
+            ['password', 'compare', 'compareAttribute' => 'confirm_password'],
         ];
     }
 

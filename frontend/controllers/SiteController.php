@@ -248,15 +248,15 @@ class SiteController extends Controller
         }
         if ($user = $model->verifyEmail()) {
             if (Yii::$app->user->login($user)) {
-                Yii::$app->session->setFlash('success', 'Your email has been confirmed!');
-                return $this->goHome();
+                Yii::$app->session->setFlash('success', 'Ваш E-mail подтверждён!');
+                return $this->render('verifyEmail');
             }
         }
 
-        Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
+        Yii::$app->session->setFlash('error', 'Извините но ваш токен не действителен.');
         return $this->goHome();
     }
-
+    git remote set-url origin https://prodvair:fv4ALGI97@github.com/prodvair/ei.git
     /**
      * Resend verification email
      *
