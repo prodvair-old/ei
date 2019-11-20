@@ -190,7 +190,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionRequest_password_reset()
+    public function actionRequestPasswordReset()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $model = new PasswordResetRequestForm();
@@ -248,15 +248,14 @@ class SiteController extends Controller
         }
         if ($user = $model->verifyEmail()) {
             if (Yii::$app->user->login($user)) {
-                Yii::$app->session->setFlash('success', 'Your email has been confirmed!');
-                return $this->goHome();
+                Yii::$app->session->setFlash('success', 'Ваш E-mail подтверждён!');
+                return $this->render('verifyEmail');
             }
         }
 
-        Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
+        Yii::$app->session->setFlash('error', 'Извините но ваш токен не действителен.');
         return $this->goHome();
     }
-
     /**
      * Resend verification email
      *
