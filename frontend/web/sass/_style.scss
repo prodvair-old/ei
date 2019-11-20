@@ -1957,7 +1957,7 @@ ul.horizon-sticky-nav>li.active a {
 
 .pagination>li>a:hover,
 .pagination>li>a:focus {
-  color: #FF0000;
+  color: $accent;
 }
 
 .pagination>.active>a,
@@ -1966,7 +1966,7 @@ ul.horizon-sticky-nav>li.active a {
 .pagination>.active>span:hover,
 .pagination>.active>a:focus,
 .pagination>.active>span:focus {
-  color: #FF0000;
+  color: $accent;
   font-weight: 700;
 }
 
@@ -4200,7 +4200,7 @@ ul.contact-list-01 li .icon-font {
 }
 
 .social-btns-01 a:hover {
-  color: #E0163B;
+  color: darken($accent, 10%);
 }
 
 ul.review-list>li {

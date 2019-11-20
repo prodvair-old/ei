@@ -1,5 +1,12 @@
+@import 'https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i|Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i&display=swap'
+@import 'https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i,900,900i&display=swap&subset=cyrillic'
+@import '../bootstrap/css/bootstrap.min.css'
+@import '../font-faces/metropolis/metropolis.css'
+@import '../css/costom-plugins/toast.css'
 @import 'vars.sass'
 @import 'main.scss'
+@import 'font-icons.scss'
+@import 'animate.scss'
 @import 'plugin.scss'
 @import 'style.scss'
 
@@ -210,7 +217,7 @@
 body
     color: #454545
 .booking-box .box-heading 
-    background-color: #000000
+    background-color: $secondary
 
 .destination-grid-item-01 a:hover .image img 
     box-shadow: none
@@ -248,9 +255,25 @@ body
         align-items: center
 
 .tour-long-item-01 .image
+    position: relative
+    border-radius: 3px
+    // border: 1px solid $secondary
+    object-fit: cover
+    object-position: center
+    img
+      width: 100%
+      max-width: none
+      object-fit: cover
+      object-position: center
+      height: 100%
+      width: 100%
+
     @media (min-width: 1200px)
       width: 300px
-      object-fit: cover
+     
+.header-avatar
+  box-shadow: none !important
+
 
 .tour-long-item-01
     .image
@@ -489,6 +512,15 @@ body
     &__info
         display: flex
         align-items: center
+        color: $secondary
+        margin-bottom: 0
+    &__title
+      display: block
+      margin-top: 1rem !important
+      font-size: 1rem
+      font-weight: normal
+      line-height: 1.25
+      margin-bottom: 0
             
 
 .wish-star
@@ -549,12 +581,75 @@ body
         .search-form-main
             max-width: calc(100% - 30px)
 
-.profile-sidebar.sidebar-wrapper 
+.sidebar-wrapper 
     border-right: 0
     padding-right: 0
     .bashboard-nav-box 
       border: none
     .bashboard-nav-box .box-heading 
-      background-color: #a3a3a3
+      background-color: $secondary
+
+.arrow-indicator:nth-child(2)
+  display: none !important
+.booking-box
+  border: none
+  background-color: #f7f7f8
+
+.hero-banner.hero-banner-01.alt-option-03 .search-form-main
+
+    box-shadow: 0 0 8px -4px rgba(0,0,0,.4)
+
+  
+.secondary-search-box 
+    box-shadow: none
+    border-radius: 3px
+    border: 1px solid $secondary
+    h4 
+     background:  $secondary
+     border-bottom: 1px solid #EDEDED
+     font-size: 1.25rem
+     color: #FFF
+     border-radius: 3px 3px 0 0 
+     padding-bottom: 15px
+    .chosen-choices
+      margin-top: 10px
+      margin-bottom: 5px
+
+.sort-box 
+  font-size: 14px
+  color: $secondary !important
+  .sort-label
+    color: $secondary
+  .sort-item
+    margin-bottom: 10px
+
+.sort-group
+   border-bottom: 1px solid #EDEDED
+   padding-bottom: 10px
+   margin-bottom: 15px
+
+.tour-long-item-01+.tour-long-item-01
+  margin-top: 15px
 
 
+
+.booking-box .box-bottom
+  border: none !important
+  background: #e4e8ec
+
+.bg-light
+  background: #fafafa!important
+
+.header-waypoint-sticky.header-main
+  box-shadow: 0 3px 6px -6px rgba(0,0,0,.43)
+
+.footer-wrapper.light
+    background-color: #f6f7f7
+
+.footer-wrapper.light .bottom-footer
+    background-color: hsla(180, 6%, 81%, 1)
+    padding-top: 25px
+    padding-bottom: 12px
+    margin-top: 40px
+    font-size: 14px
+    line-height: 1.25

@@ -6,7 +6,7 @@ try {
     if ($lot->torgy_tradetype == 'PublicOffer') {
         $priceClass = 'text-primary';
     } else if ($lot->torgy_tradetype == 'OpenedAuction') {
-        $priceClass = 'text-success';
+        $priceClass = 'text-primary';
     }
 } catch (\Throwable $th) {
     $priceClass = 'text-primary';
@@ -29,7 +29,8 @@ try {
 
                 <?=($type == 'long')? '<div>' : ''?>
                     <figcaption class="content">
-                        <h5 class="<?=(!empty($lot->lot_archive))? ($lot->lot_archive)? 'text-muted' : '' : ''?>"><?= $lot->lotTitle?> <?=(!empty($lot->lot_archive))? ($lot->lot_archive)? '<span class="text-primary">(Архив)</span>' : '' : ''?></h5>
+                        <h3 class="lot-block__title <?=(!empty($lot->lot_archive))? ($lot->lot_archive)? 'text-muted' : '' : ''?>"><?= $lot->lotTitle?> <?=(!empty($lot->lot_archive))? ($lot->lot_archive)? '<span class="text-primary">(Архив)</span>' : '' : ''?></h3>
+                        <hr>
                         <ul class="item-meta lot-block__info">
                             <li><?= Yii::$app->formatter->asDate($lot->lot_timepublication, 'long')?></li>
                             <li>	
@@ -46,9 +47,10 @@ try {
                                 </div>
                             </li>
                         </ul>
-                        <ul class="item-meta mt-15">
+                        <hr>
+                        <ul class="item-meta lot-block__info">
                             <li>
-                                Категория: <span class="font700 h6 <?=(!empty($lot->lot_archive))? ($lot->lot_archive)? 'text-muted' : '' : ''?>"> <?= $lot->LotCategory[0]?></span>
+                                Категория: <span class="<?=(!empty($lot->lot_archive))? ($lot->lot_archive)? 'text-muted' : '' : ''?>"> <?= $lot->LotCategory[0]?></span>
                             </li>
                         </ul>
                         <p class="mt-3">Цена: <span class="h6 line-1 <?=$priceClass?> font16"><?= Yii::$app->formatter->asCurrency($lot->lotPrice)?></span> <span class="text-muted mr-5"><?= ($lot->lotOldPrice)? Yii::$app->formatter->asCurrency($lot->lotOldPrice) : '' ?></span></p>

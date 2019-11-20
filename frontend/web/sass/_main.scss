@@ -258,7 +258,7 @@ a:focus {
   -moz-transition: all 0.3s ease-out;
   -webkit-transition: all 0.3s ease-out;
   transition: all 0.3s ease-out;
-  color: #E0163B;
+  color: darken($accent, 10%);
 }
 
 ::selection {
@@ -538,7 +538,7 @@ h5 a:hover,
 .h5 a:hover,
 h6 a:hover,
 .h6 a:hover {
-  color: #E0163B;
+  color: darken($accent, 10%);
 }
 
 .font-serif {
@@ -8600,14 +8600,16 @@ ul.list-inline-block li:last-child {
   color: #FFF;
 }
 
+
 .btn-primary:hover,
 .btn.disabled:hover,
 .btn:disabled:hover,
 .btn-primary:not(:disabled):not(.disabled):active,
 .btn-primary:not(:disabled):not(.disabled).active,
 .show>.btn-primary.dropdown-toggle {
-  background: #E0163B;
-  border-color: #E0163B;
+  background: darken($accent, 10%);
+  border-color: darken($accent, 10%);
+  color: white
 }
 
 .btn-secondary {
