@@ -32,6 +32,15 @@ class LotsArrest extends ActiveRecord
             }
         }
     }
+    public function getLot_archive()
+    {
+        $today = new \DateTime();
+        if (strtotime($this->torgs->trgExpireDate) <= strtotime($today->format('Y-m-d H:i:s'))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     public function getLot_timepublication() 
     {
         return $this->torgs->trgPublished;

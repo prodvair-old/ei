@@ -17,6 +17,7 @@ use common\models\Query\LotsCategory;
 
 use frontend\components\LoginWidget;
 use frontend\components\SignupWidget;
+use frontend\components\ResetPasswordWidget;
 
 
 $setting = Settings::find()->orderBy('id ASC')->all();
@@ -474,38 +475,8 @@ AppAsset::register($this);
                 <?=LoginWidget::widget()?>
                 
                 <?=SignupWidget::widget()?>
-                
-                
-                <div role="tabpanel" class="tab-pane fade in" id="loginFormTabInModal-forgot-pass">
-                    
-                    <div class="form-login">
-                    
-                        <div class="form-header">
-                            <h4>Lost your password?</h4>
-                            <p>Please provide your detail.</p>
-                        </div>
-                        
-                        <div class="form-body">
-                            <form method="post" action="#">
-                                <p class="line-145">We'll send password reset instructions to the email address associated with your account.</p>
-                                <div class="row">
-                                    <div class="col-12 col-md-10 col-lg-8">
-                                        <div class="form-group">
-                                            <input type="password" class="form-control" placeholder="password" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary mt-5">Retreive password</button>
-                            </form>
-                        </div>
-                        
-                        <div class="form-footer">
-                            <p>Back to <a href="#loginFormTabInModal-login" class="tab-external-link font600">Sign in</a> or <a href="#loginFormTabInModal-register" class="tab-external-link font600">Sign up</a></p>
-                        </div>
-                        
-                    </div>
-                    
-                </div>
+
+                <?=ResetPasswordWidget::widget()?>
                 
             </div>
             

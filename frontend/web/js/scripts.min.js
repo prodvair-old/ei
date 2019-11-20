@@ -7,15 +7,15 @@ $(document).ready(function() {
             data : $(this).serializeArray()
         }).done(function(data) {
                 if (data.result) {
-                    console.log(data)
                     location.reload();
                     $('.login-form-error').html('');
                     toastr.success("Авторизация прошла успешно");
                 } else {
+                    toastr.warning("Не удалось авторизоваться");
                     $('.login-form-error').html(data.error);
                 }
         }).fail(function() {
-            console.log('fail');
+            toastr.error("Ошибка при авторизации");
         })
         return false;
     });
@@ -28,15 +28,36 @@ $(document).ready(function() {
             data : $(this).serializeArray()
         }).done(function(data) {
             if (data.result) {
-                console.log(data)
                 toastr.success("Вы успешно зарегистрировались");
                 location.reload();
                 $('.signup-form-error').html('');
             } else {
+                toastr.warning("Не удалось зарегистрироваться");
                 $('.signup-form-error').html(data.error);
             }
         }).fail(function() {
-            console.log('fail');
+            toastr.error("Ошибка при регистрации");
+        })
+        return false;
+    });
+
+    $('#password-reset-form').on('beforeSubmit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            type : 'POST',
+            url : $(this).attr('action'),
+            data : $(this).serializeArray()
+        }).done(function(data) {
+        if (data.result) {
+            toastr.success("Сообщение для восстановления пароля отправлено");
+            location.reload();
+            $('.password-reset-form-error').html('');
+        } else {
+            toastr.warning("Не удалось отправить сообщение");
+            $('.password-reset-form-error').html(data.error);
+        }
+        }).fail(function() {
+            toastr.error("Ошибка при отправке сообщения");
         })
         return false;
     });
@@ -55,16 +76,15 @@ $(document).ready(function() {
             data : formData
         }).done(function(data) {
             if (data) {
-                console.log(data)
                 $('.setting-image-tag').attr('src', data.src);
                 $('.setting-image-info').html('Успешно загружено');
                 toastr.success("Фотография успешно загружена");
             } else {
                 $('.setting-image-info').html(data.error);
-                toastr.error("Ошибка при загрузки фото");
+                toastr.warning("Не удалось загрузить фото");
             }
         }).fail(function() {
-            toastr.error("Не удалось загрузить фото");
+            toastr.error("Ошибка при загрузки фото");
         })
     })
 
@@ -84,10 +104,10 @@ $(document).ready(function() {
             toastr.success("Ваша заявку отправлена");
             setTimeout(location.reload(), 1000);
         } else {
-            console.log('error');
+            toastr.error("Не удалось отправить");
         }
         }).fail(function() {
-            console.log('fail');
+            toastr.error("Ошибка при отправке");
         })
         return false;
     });
