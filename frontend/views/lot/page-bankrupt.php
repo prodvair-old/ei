@@ -37,6 +37,7 @@ $lots_bankrupt = LotsBankrupt::find()->where(['bnkr__id'=>$lot->lotBnkrId])->and
 $this->registerJsVar( 'lotType', 'bankrupt', $position = yii\web\View::POS_HEAD );
 $this->title = Yii::$app->params['title'];
 $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
+
 ?>
 
 <section class="page-wrapper page-detail">
@@ -73,6 +74,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
         <div class="fullwidth-horizon-sticky-inner">
         
             <div class="container">
+           
                 
                 <div class="fullwidth-horizon-sticky-item clearfix">
                         
@@ -104,6 +106,8 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
     </div>
     
     <div class="container pt-30">
+       
+        <?=(!empty($lot->lot_archive))? ($lot->lot_archive)? '<span class="h3">Архив</span><hr>' : '' : '<span class="h3">Архив</span><hr>'?>                 
 
         <div class="row gap-20 gap-lg-40">
             
@@ -717,7 +721,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
             </div>
             
             <div class="col-12 col-lg-4">
-                
+
                 <?=LotDetailSidebar::widget(['lot'=>$lot, 'type' => $type])?>
                 
             </div>
@@ -727,6 +731,8 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
     </div>
 
 </section>
+
+
 
 <!-- start lot form modal -->
 <div class="modal fade modal-with-tabs form-login-modal" id="lotFormTabInModal" tabindex="-1" role="dialog" aria-hidden="true">

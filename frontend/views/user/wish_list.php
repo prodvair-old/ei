@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = [
 
                     <div class="bashboard-nav-box">
                     
-                        <div class="box-heading"><h3 class="h6 text-white text-uppercase">Вы авторизованы как:</h3></div>
+                        <div class="box-heading"><h3 class="h6 text-white text-uppercase">Профиль:</h3></div>
                         <div class="box-content">
                         
                             <div class="dashboard-avatar mb-10">
@@ -123,8 +123,10 @@ $this->params['breadcrumbs'][] = [
 
                         <div class="wish__nav">
                             <ul class="row">
-                                <li class="col-md-6 col-12 border-bottom"><a href="#arrest-wish" class="wish-tabs active">Аррестованное имущество</a></li>
-                                <li class="col-md-6 col-12 border-bottom"><a href="#bankrupt-wish" class="wish-tabs">Банкротное иммущество</a></li>
+                                
+                            <li class="col-md-6 col-12 border-bottom"><a href="#arrest-wish" class="wish-tabs active"><? if ($lotArrestIds) { echo 'Аррестованное имущество'; } ?></a></li>
+                            <li class="col-md-6 col-12 border-bottom"><a href="#bankrupt-wish" class="wish-tabs"><? if ($lotBankruptIds) { echo 'Банкротное иммущество'; } ?></a></li>
+
                             </ul>
                         </div>
 

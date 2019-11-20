@@ -44,7 +44,8 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
     <div class="page-title bg-light">
     
         <div class="container">
-        
+            
+
             <div class="row gap-15 align-items-center">
             
                 <div class="col-12">
@@ -103,7 +104,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
     </div>
     
     <div class="container pt-30">
-
+        <?=(!empty($lot->lot_archive))? ($lot->lot_archive)? '<span class="h3">Архив</span><hr>' : '' : '<span class="h3">Архив</span><hr>'?>
         <div class="row gap-20 gap-lg-40">
             
             <div class="col-12 col-lg-8">
