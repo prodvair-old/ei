@@ -107,7 +107,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
     
     <div class="container pt-30">
        
-        <?=(!empty($lot->lot_archive))? ($lot->lot_archive)? '<span class="h3">Архив</span><hr>' : '' : '<span class="h3">Архив</span><hr>'?>                 
+        <?=(!empty($lot->lot_archive))? ($lot->lot_archive)? '<span class="h3 text-primary">Архив</span><hr>' : '' : ''?>                 
 
         <div class="row gap-20 gap-lg-40">
             

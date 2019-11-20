@@ -45,8 +45,12 @@ foreach ($lot->purchaselots as $key => $value) {
             </ul>
             
             <p class="text-right font-sm"></p>
-            
-            <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#lotFormTabInModal-service" data-toggle="modal" data-target="#lotFormTabInModal" data-backdrop="static" data-keyboard="false"'?> class="btn btn-primary btn-block">Подать заявку</a>
+
+            <? if(empty($lot->lot_archive)): ?>
+              <? if (!$lot->lot_archive): ?>
+                <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#lotFormTabInModal-service" data-toggle="modal" data-target="#lotFormTabInModal" data-backdrop="static" data-keyboard="false"'?> class="btn btn-primary btn-block">Подать заявку</a>
+              <?php endif ?>
+            <?php endif ?>
                         
         </div>
         

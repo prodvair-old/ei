@@ -16,9 +16,9 @@ class AppAsset extends AssetBundle
         'font-faces/metropolis/metropolis.css',
         'css/font-icons.css',
         'css/animate.min.css',
-        'css/main.css',
-        'css/plugin.css',
-        'css/style.css',
+        // 'css/main.css',
+        //'css/plugin.css',
+        //'css/style.css',
         'css/costom-plugins/toast.css',
         'css/custom.min.css'
     ];

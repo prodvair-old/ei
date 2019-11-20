@@ -68,7 +68,7 @@ $this->params['breadcrumbs'][] = [
             
             <div class="col-12 col-lg-3">
                 
-                <aside class="sticky-kit sidebar-wrapper">
+                <aside class="sticky-kit sidebar-wrapper profile-sidebar">
 
                     <div class="bashboard-nav-box">
                     
@@ -123,18 +123,25 @@ $this->params['breadcrumbs'][] = [
 
                         <div class="wish__nav">
                             <ul class="row">
-                                
-                            <li class="col-md-6 col-12 border-bottom"><a href="#arrest-wish" class="wish-tabs active"><? if ($lotArrestIds) { echo 'Аррестованное имущество'; } ?></a></li>
-                            <li class="col-md-6 col-12 border-bottom"><a href="#bankrupt-wish" class="wish-tabs"><? if ($lotBankruptIds) { echo 'Банкротное иммущество'; } ?></a></li>
-
+                              <!-- <? if ($lotArrestIds) { echo '<li class="col-md-6 col-12"><a id="arrest-wish-btn" href="#arrest-wish" class="wish-tabs active">Аррестованное имущество</a></li>'; } ?>
+                              <? if ($lotBankruptIds) { echo '<li class="col-md-6 col-12"><a id="bankrupt-wish-btn"href="#bankrupt-wish" class="wish-tabs active">Банкротное иммущество</a></li>'; } ?> -->
+                              <li class="col-md-6 col-12"><a id="bankrupt-wish-btn"href="#bankrupt-wish" class="wish-tabs">Банкротное иммущество</a></li>
+                              <li class="col-md-6 col-12"><a id="arrest-wish-btn" href="#arrest-wish" class="wish-tabs">Арестованное имущество</a></li>
                             </ul>
+                            <hr class="mt-10">
                         </div>
 
                         <div class="mb-50"></div>
 
-                        <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list" id="arrest-wish">
-                            <? if ($lotArrestIds) foreach ($lotArrestIds as $lot) { echo LotBlock::widget(['lot' => $lot]); } ?>
 
+
+
+                        <div data-count="<?= count($lotBankruptIds)?>" class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list" id="bankrupt-wish">
+                            <? if ($lotBankruptIds) {
+                              foreach ($lotBankruptIds as $lot) { echo LotBlock::widget(['lot' => $lot]); }
+                            } else {
+                              echo "<div class='p-15 font-bold'>Пока нет избранных лотов по банкротным торгам</div>";
+                            } ?>
                             <div class="pager-innner">
                         
                                 <div class="row align-items-center text-center text-lg-left">
@@ -146,7 +153,7 @@ $this->params['breadcrumbs'][] = [
                                         
                                         <nav class="float-lg-right mt-10 mt-lg-0">
                                             <?= LinkPager::widget([
-                                                'pagination' => $pagesArrest,
+                                                'pagination' => $pagesBankrupt,
                                                 'nextPageLabel' => "<span aria-hidden=\"true\">&raquo;</span></i>",
                                                 'prevPageLabel' => "<span aria-hidden=\"true\">&laquo;</span>",
                                                 'maxButtonCount' => 6,
@@ -161,9 +168,13 @@ $this->params['breadcrumbs'][] = [
                             </div>
                         </div>
 
+                        <div data-count="<?= count($lotArrestIds)?>" class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list" id="arrest-wish">
+                            <? if ($lotArrestIds) {
+                              foreach ($lotArrestIds as $lot) { echo LotBlock::widget(['lot' => $lot]); } 
+                            } else {
+                              echo "<div class='p-15 font-bold'>Пока нет избранных лотов по арестованному имуществу</div>";
+                            } ?>
 
-                        <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list" id="bankrupt-wish">
-                            <? if ($lotBankruptIds) foreach ($lotBankruptIds as $lot) { echo LotBlock::widget(['lot' => $lot]); } ?>
                             <div class="pager-innner">
                         
                                 <div class="row align-items-center text-center text-lg-left">
@@ -175,7 +186,7 @@ $this->params['breadcrumbs'][] = [
                                         
                                         <nav class="float-lg-right mt-10 mt-lg-0">
                                             <?= LinkPager::widget([
-                                                'pagination' => $pagesBankrupt,
+                                                'pagination' => $pagesArrest,
                                                 'nextPageLabel' => "<span aria-hidden=\"true\">&raquo;</span></i>",
                                                 'prevPageLabel' => "<span aria-hidden=\"true\">&laquo;</span>",
                                                 'maxButtonCount' => 6,

@@ -104,7 +104,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
     </div>
     
     <div class="container pt-30">
-        <?=(!empty($lot->lot_archive))? ($lot->lot_archive)? '<span class="h3">Архив</span><hr>' : '' : '<span class="h3">Архив</span><hr>'?>
+        <?=(!empty($lot->lot_archive))? ($lot->lot_archive)? '<span class="h2 text-primary">Архив</span><hr>' : '' : ''?>
         <div class="row gap-20 gap-lg-40">
             
             <div class="col-12 col-lg-8">
@@ -367,7 +367,6 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                     
                         <h4 class="heading-title">Документы</h4>
 
-                        fdfdfdf
                         <ul class="list-icon-absolute what-included-list mb-30">
                             <? foreach ($lot->lotDocuments as $doc) { ?>
 
