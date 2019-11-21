@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 var gulp         = require('gulp'),
 		sass         = require('gulp-sass'),
 		browserSync  = require('browser-sync'),
@@ -11,20 +10,6 @@ var gulp         = require('gulp'),
 		rename       = require('gulp-rename');
 		// responsive   = require('gulp-responsive'),
 		// del          = require('del');
-=======
-var gulp = require("gulp"),
-  sass = require("gulp-sass"),
-  browserSync = require("browser-sync"),
-  concat = require("gulp-concat"),
-  uglify = require("gulp-uglify-es").default,
-  cleancss = require("gulp-clean-css"),
-  autoprefixer = require("gulp-autoprefixer"),
-  rsync = require("gulp-rsync"),
-  newer = require("gulp-newer"),
-  rename = require("gulp-rename"),
-  // responsive   = require('gulp-responsive'),
-  del = require("del");
->>>>>>> 0097bdb5e214c85092044b2b44cb9ac2d0bae68f
 
 // Local Server
 gulp.task("browser-sync", function() {
@@ -33,7 +18,7 @@ gulp.task("browser-sync", function() {
       port: 3002
     },
     baseDir: "frontend/web/",
-    proxy: "http://ei.front",
+    proxy: "http://n.ei.ru",
     port: 3005,
     ghostMode: {
       codeSync: false,
