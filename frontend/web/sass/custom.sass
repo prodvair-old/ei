@@ -11,8 +11,7 @@
 @import 'style.scss'
  
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6, label
-  color: #484848
-
+  color: #232323
 
 @keyframes slideme
   0%
@@ -190,11 +189,8 @@
       background-color: #d13710
     &.color-4
       background-color: #a08661
-
     .image
       margin-left: 50%
-      // padding-bottom: 50%
-    
     .content
       display: flex
       text-align: center
@@ -204,10 +200,6 @@
       padding: 0 2rem 
       min-height: 10rem
       color: #fff !important
-   
-
-
-      // position: absolute
       h6
         margin: auto
         color: #fff !important
@@ -218,9 +210,10 @@
 
 
 body
-    color: #454545
+    color: #232323
 .booking-box .box-heading 
     background-color: $secondary
+    display: none
 
 .destination-grid-item-01 a:hover .image img 
     box-shadow: none
@@ -647,7 +640,13 @@ body
    margin-bottom: 15px
 
 .tour-long-item-01+.tour-long-item-01
-  margin-top: 15px
+  margin-top: 30px
+.tour-long-item-01
+  hr
+    border-top: 1px solid #f5f5f5
+
+.secondary-search-box .form-group
+  border-bottom: 0px solid #f5f5f5
 
 
 
@@ -671,3 +670,33 @@ body
     margin-top: 40px
     font-size: 14px
     line-height: 1.25
+
+.image-galery
+  position: relative
+  &:hover
+    .image-galery__control
+      opacity: 1
+  // img:nth-child(2n)
+  //   transform: rotate(180deg)
+  &__control
+    display: flex
+    position: absolute
+    left: 0
+    right: 0
+    bottom: 0
+    padding: .5rem 
+    opacity: 1
+    z-index: 10
+    
+
+    &__item
+      height: 5px
+      background: $accent
+      width: 100%
+      margin: 0 .25rem
+      border-radius: 3px
+      opacity: .3
+      &.active 
+        opacity: 1
+
+

@@ -263,5 +263,64 @@ $(document).ready(function () {
     "hideMethod": "fadeOut"
   };
 
+  $(".image-galery").each(function (index) {
+    const images = $(this).children('img');
+    const count = images.length;
+    if (count <= 1) return;
+
+    const control = $(this).children('.image-galery__control')
+    const stepLength = 140;
+    let activeEl = 0;
+    let buttons;
+    let position;
+
+    $(this).on('mousemove', function (e) {
+      const cursor = e.pageX
+      if (!position) position = cursor
+      if (cursor < position && position - cursor > stepLength / count) {
+        selectedImage(valide(activeEl - 1));
+        position = cursor;
+      } else if (cursor - position && cursor - position > stepLength / count) {
+        selectedImage(valide(activeEl + 1));
+        position = cursor;
+      }
+    });
+
+    function valide(value) {
+      if (value < 0) {
+        return count - 1;
+      } else if (count - 1 < value) {
+        return 0;
+      } else {
+        return value;
+      }
+    }
+
+    function selectedImage(item) {
+      if (item !== activeEl) {
+        $(buttons[activeEl]).removeClass('active');
+        $(buttons[item]).addClass('active');
+        $(images[activeEl]).hide();
+        $(images[item]).show();
+        activeEl = item;
+      }
+    }
+
+    images.each((i, el) => {
+      const image = $(el);
+      buttons = control.append(`<div class="image-galery__control__item"></div>`).children()
+      if (i !== activeEl) {
+        image.hide();
+      } else {
+        $(buttons[activeEl]).addClass('active')
+      }
+      $(buttons[i]).on('click', function (e) {
+        e.preventDefault();
+        selectedImage(i);
+      });
+
+    });
+  });
+
   // Уведомления <-End
 })

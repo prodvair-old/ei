@@ -22,9 +22,15 @@ try {
             <?=($type == 'long')? '<div class="d-flex flex-column flex-sm-row align-items-xl-center">' : ''?>
         
                 <?=($type == 'long')? '<div>' : ''?>
-                    <div class="image">
+                    <div class="image image-galery">
                         <img src="<?=($lot->lotImage)? $lot->lotImage[0] : 'img/img.svg'?>" alt="" />
+                        <?= ($lot->lotImage[1])? '<img src="'.$lot->lotImage[1].'" alt="" />'  : ''?>
+                        <?= ($lot->lotImage[2])? '<img src="'.$lot->lotImage[2].'" alt="" />'  : ''?>
+                        <?= ($lot->lotImage[3])? '<img src="'.$lot->lotImage[3].'" alt="" />'  : ''?>
+                        <?= ($lot->lotImage[4])? '<img src="'.$lot->lotImage[4].'" alt="" />'  : ''?>
+                        <div class="image-galery__control"></div>
                     </div>
+                    <?printf($lot->lotImage[0]);?>
                 <?=($type == 'long')? '</div>' : ''?>
 
                 <?=($type == 'long')? '<div>' : ''?>
