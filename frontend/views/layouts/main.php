@@ -48,15 +48,12 @@ AppAsset::register($this);
 	<!-- Title Of Site -->
     <title><?= Html::encode($this->title) ?></title>
 
-	<meta name="description" content="Tour and Travel Bootstrap 4 HTML Template" />
-	<meta name="keywords" content="tour, tour agency, tour operator, tour package, tourism, travel, travel agency, trip, vacation, holiday, travel booking, tour booking, booking, " />
-	<meta name="author" content="zh-ar.ru">
+	  <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
 	
     <!-- Fav and Touch Icons -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i,900,900i&display=swap&subset=cyrillic" rel="stylesheet">
-	<link rel="apple-touch-icon" sizes="180x180" href="<?= Url::to('/img/favicon/apple-touch-icon.png', true)?>">
+	  <link rel="apple-touch-icon" sizes="180x180" href="<?= Url::to('/img/favicon/apple-touch-icon.png', true)?>">
     <link rel="icon" type="image/png" sizes="32x32" href="">
     <link rel="icon" type="image/png" sizes="16x16" href="<?= Url::to('/img/favicon/favicon-16x16.png', true)?>">
     <link rel="manifest" href="<?= Url::to('/img/favicon/site.webmanifest', true)?>">
@@ -64,7 +61,6 @@ AppAsset::register($this);
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" media="screen">	
 
     <?php $this->head() ?>
 
@@ -104,7 +100,7 @@ AppAsset::register($this);
                                         <path class="logo-acronym"
                                         d="M1636 883c24.2 0 44.1 19.8 44.1 44.1v529.3c0 24.3-19.9 44.1-44.1 44.1-24.3 0-44.2-19.8-44.2-44.1V927.1c0-24.3 19.9-44.1 44.2-44.1zm-215.5 542c10.3-8 17-20.6 17-34.7 0-24.4-19.8-44.2-44.2-44.2-11.4 0-21.9 4.4-29.8 11.6l-.1-.1c-49 35.6-108 54.7-168.6 54.7v88.3c81.1 0 160-26.3 224.9-75l.8-.6zm83.1-233.2c0-170.6-138.2-308.8-308.8-308.8-170.5 0-308.8 138.2-308.8 308.8 0 170.5 138.3 308.8 308.8 308.8v-88.3c-106.7 0-195.7-75.7-216.1-176.4h480.8c24.3 0 44.1-19.9 44.1-44.1zm-524.9-44.1c20.4-100.7 109.4-176.5 216.1-176.5 106.7 0 195.7 75.8 216.2 176.5H978.7zM1636 707.1c24.3 0 44.1 19.7 44.1 44.1 0 24.3-19.8 44.1-44.1 44.1-24.4 0-44.2-19.8-44.2-44.1 0-24.4 19.8-44.1 44.2-44.1z" />
                                     </svg> 
-                                    <span class="d-none d-sm-inline">Единый <br> интегратор</span>
+                                    <span class="d-none d-sm-inline">Единый <br> информатор</span>
                                 </a>
                             </div>
                         </div>

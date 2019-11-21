@@ -12,7 +12,7 @@ var gulp         = require('gulp'),
 		// del          = require('del');
 
 // Local Server
-gulp.task("browser-sync", function() {
+gulp.task("browser-sync", function () {
   browserSync({
     ui: {
       port: 3002
@@ -31,7 +31,7 @@ gulp.task("browser-sync", function() {
   });
 });
 
-gulp.task("browser-sync-server", function() {
+gulp.task("browser-sync-server", function () {
   browserSync({
     ui: {
       port: 3002
@@ -50,7 +50,7 @@ gulp.task("browser-sync-server", function() {
   });
 });
 
-gulp.task("browser-sync-max", function() {
+gulp.task("browser-sync-max", function () {
   browserSync({
     ui: {
       port: 3002
@@ -75,7 +75,7 @@ function bsReload(done) {
 }
 
 // Custom Styles
-gulp.task("styles", function() {
+gulp.task("styles", function () {
   return gulp
     .src("frontend/web/sass/**/*.sass")
     .pipe(
@@ -104,25 +104,25 @@ gulp.task("styles", function() {
 });
 
 // Scripts & JS Libraries
-gulp.task("scripts", function() {
+gulp.task("scripts", function () {
   return (
     gulp
-      .src([
-        "frontend/web/js/_custom.js" // Custom scripts. Always at the end
-      ])
-      .pipe(concat("scripts.min.js"))
-      // .pipe(uglify()) // Minify js (opt.)
-      .pipe(gulp.dest("frontend/web/js"))
-      .pipe(
-        browserSync.reload({
-          stream: true
-        })
-      )
+    .src([
+      "frontend/web/js/_custom.js" // Custom scripts. Always at the end
+    ])
+    .pipe(concat("scripts.min.js"))
+    // .pipe(uglify()) // Minify js (opt.)
+    .pipe(gulp.dest("frontend/web/js"))
+    .pipe(
+      browserSync.reload({
+        stream: true
+      })
+    )
   );
 });
 
 // Code & Reload
-gulp.task("code", function() {
+gulp.task("code", function () {
   return gulp.src("frontend/views/lot/index.php").pipe(
     browserSync.reload({
       stream: true
@@ -130,7 +130,7 @@ gulp.task("code", function() {
   );
 });
 
-gulp.task("watch", function() {
+gulp.task("watch", function () {
   gulp.watch("frontend/web/sass/**/*.sass", gulp.parallel("styles"));
   gulp.watch("frontend/web/js/_custom.js", gulp.parallel("scripts"));
   gulp.watch(["frontend/views/**/*.php"], gulp.parallel("code"));
