@@ -140,19 +140,9 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         </div>
 
                         <?if ($lot->lotImage) { ?>
-                            <div class="slick-gallery-slideshow detail-gallery mt-20 mb-40">
-            
-                                <div class="slider gallery-slideshow">
-                                    <? foreach ($lot->lotImage as $image) { ?>
-                                        <div><div class="image"><img src="<?=$image?>" alt="Images" /></div></div>
-                                    <? } ?>
-                                </div>
-                                <? if (count($lot->lotImage) > 1) { ?>
-                                    <div class="slider gallery-nav">
-                                        <? foreach ($lot->lotImage as $image) { ?>
-                                            <div><div class="image"><img src="<?=$image?>" alt="Images" /></div></div>
-                                        <? } ?>
-                                    </div>
+                            <div class="fotorama mt-20 mb-40" data-allowfullscreen="true" data-nav="thumbs" data-arrows="always" data-click="true">
+                                <? foreach ($lot->lotImage as $image) { ?>
+                                   <img href="<?=$image?>" alt="Images" />
                                 <? } ?>
                             </div>
                         <? } ?>
@@ -421,7 +411,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                                         </div> -->
                                                         
                                                         <div class="col-6 text-right text-sm-left">
-                                                            <span class="font-sm">Канец</span>
+                                                            <span class="font-sm">Конец</span>
                                                             <strong class="d-block"><?=Yii::$app->formatter->asDate($value->ofrRdnDateTimeEndInterval, 'long')?></strong>
                                                         </div>
                                                         
