@@ -30,7 +30,6 @@ try {
                         <?= ($lot->lotImage[4])? '<img src="'.$lot->lotImage[4].'" alt="" />'  : ''?>
                         <div class="image-galery__control"></div>
                     </div>
-                    <?printf($lot->lotImage[0]);?>
                 <?=($type == 'long')? '</div>' : ''?>
 
                 <?=($type == 'long')? '<div>' : ''?>
