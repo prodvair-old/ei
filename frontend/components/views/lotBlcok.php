@@ -63,8 +63,7 @@ try {
                 <?=($type == 'long')? '</div>' : ''?>
                 
             <?=($type == 'long')? '</div>' : ''?>
-           
-            
+
         </a>
         
     </figure>
