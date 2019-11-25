@@ -64,6 +64,10 @@ class DoljnikController extends Controller
             ],
         ];
     }
+    public function actionRedirect($bnkr_id = null)
+    {
+        return $this->redirect('/dolzhniki'.($bnkr_id)? '/'.$bnkr_id : '');
+    }
 
     /**
      * Displays homepage.

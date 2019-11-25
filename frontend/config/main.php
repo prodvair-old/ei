@@ -71,19 +71,23 @@ return [
                 '/verify-email'             => 'site/verify-email',
                 '/request-password-reset'   => 'site/request-password-reset',
                 '/reset-password'           => 'site/reset-password',
-                '/image'      => 'site/image',
+                '/image'                    => 'site/image',
                 
-                '/test' => 'test/index',
-                '/404' => 'site/error',
+                '/404'  => 'site/error',
 
-                '/arbitrazhnye-upravlyayushchie'        => 'arbitr/list',
-                '/arbitrazhnye-upravlyayushchie/<arb_id:\d+>' => 'arbitr/arbitr_page',
+                '/arbitr-list'                                  => 'arbitr/redirect',
+                '/arbitr-list/<arb_id:\d+>'                     => 'arbitr/redirect',
+                '/arbitrazhnye-upravlyayushchie'                => 'arbitr/list',
+                '/arbitrazhnye-upravlyayushchie/<arb_id:\d+>'   => 'arbitr/arbitr_page',
 
-                '/sro'        => 'sro/list',
+                '/sro'              => 'sro/list',
                 '/sro/<sro_id:\d+>' => 'sro/sro_page',
 
-                '/dolzhniki'         => 'doljnik/list',
-                '/dolzhniki/<bnkr_id:\d+>' => 'doljnik/doljnik_page',
+                '/doljnik-list'                 => 'doljnik/redirect',
+                '/doljnik-list/<bnkr_id:\d+>'   => 'doljnik/redirect',
+                '/dolzhniki'                    => 'doljnik/list',
+                '/dolzhniki/<bnkr_id:\d+>'      => 'doljnik/doljnik_page',
+                
 
                 '/profile'          => 'user/index',
                 '/profile/setting'  => 'user/setting',
@@ -95,8 +99,8 @@ return [
                 '/sitemap-<type>.xml'               => 'sitemap/pages',
                 
                 
-                '/load-category' => 'lot/load_category',
-                '/wish-list-edit' => 'lot/wish_list',
+                '/load-category'    => 'lot/load_category',
+                '/wish-list-edit'   => 'lot/wish_list',
                 
                 '/<type:(bankrupt|arrest)>'                                     => 'lot/index',
                 '/<type:(bankrupt|arrest)>/<category>'                          => 'lot/search',
