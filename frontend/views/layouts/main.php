@@ -130,7 +130,7 @@ AppAsset::register($this);
                                     </li>
                                 <? } else { ?>
                                     <li class="d-block d-sm-block">
-                                        <a href="<?=Url::to(['user/index'])?>" class="vertival-center">
+                                        <a href="<?=Url::to(['user/wish_list'])?>" class="vertival-center">
                                             <div class="image header-avatar">
                                                 <img class="setting-image-tag" src="<?=(Yii::$app->user->identity->avatar)? Yii::$app->user->identity->avatar: 'img/image-man/01.jpg'?>" alt="Image" />
                                             </div>

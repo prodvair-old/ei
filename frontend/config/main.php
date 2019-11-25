@@ -86,9 +86,9 @@ return [
                 '/dolzhniki'         => 'doljnik/list',
                 '/dolzhniki/<bnkr_id:\d+>' => 'doljnik/doljnik_page',
 
-                '/profile'         => 'user/index',
-                '/profile/setting' => 'user/setting',
-                '/profile/wish_list' => 'user/wish_list',
+                '/profile'          => 'user/index',
+                '/profile/setting'  => 'user/setting',
+                '/profile/favorite' => 'user/wish_list',
 
 
                 '/sitemap.xml' => 'sitemap/index',
