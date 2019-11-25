@@ -1,25 +1,17 @@
 <?php
 use yii\helpers\Url;
 
+use common\models\Query\Arrest\LotsArrest;
 use common\models\Query\Bankrupt\Lots;
 use common\models\Query\Bankrupt\Bankrupts;
 use common\models\Query\Bankrupt\Arbitrs;
 use common\models\Query\Bankrupt\Sro;
-use common\models\Query\Arrest\LotsArrest;
 
-$lotsBankruptCount  = Lots::find()->joinWith('torgy')->where('torgy.timeend >= NOW()')->count();
 $lotsArrestCount    = LotsArrest::find()->joinWith('torgs')->where('torgs."trgExpireDate" >= NOW()')->count();
-$arbitrsCount       = Arbitrs::find()->count();
+$lotsBankruptCount  = Lots::find()->joinWith('torgy')->where('torgy.timeend >= NOW()')->count();
 $doljnikCount       = Bankrupts::find()->count();
+$arbitrsCount       = Arbitrs::find()->count();
 $sroCount           = Sro::find()->count();
-
-$type = [
-    'lots_bankrupt',
-    'lots_arrest',
-    'arbtr',
-    'bnkr',
-    'sro',
-]
 
 ?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

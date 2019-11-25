@@ -29,8 +29,12 @@ class SiteMapCreater extends Model
             $offset = 0;
 
             if ($param['limit'] > 1000) {
-                $limit = 1000;
-                $offset = $param['limit'] - 1000;
+                if ($param['limit'] % 1000 == 0) {
+                    $limit = 1000;
+                    $offset = $param['limit'] - 1000;
+                } else {
+                    $limit = $param['limit'] % 1000;
+                }
             } else {
                 $limit = $param['limit'];
             }
