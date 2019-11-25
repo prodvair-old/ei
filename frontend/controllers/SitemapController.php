@@ -6,6 +6,8 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
+use frontend\models\SiteMapCreater;
+
 /**
  * Sitemap controller
  */
@@ -62,33 +64,221 @@ class SitemapController extends Controller
      *
      * @return mixed
      */
-    public function actionAbout()
+    public function actionIndex()
     {
-        return $this->render('about');
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        $headers = Yii::$app->response->headers;
+        $headers->add('Content-Type', 'text/xml');
+
+        return $this->renderPartial('index',['host' => Yii::$app->request->hostInfo]);
     }
-    public function actionLicense()
+
+    public function actionPages($type, $limit = null)
     {
-        return $this->render('license');
+        $sitemap = new SiteMapCreater();
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_XML;
+
+        // Если в кэше нет карты сайта        
+        if (!$xml_sitemap = Yii::$app->cache->get("sitemap-pages-$type-$limit-1")) {
+            //Получаем мыссив всех ссылок
+            $urls = $sitemap->getUrl([
+                'type' => $type,
+                'limit' => $limit
+            ]);
+
+            $xml_sitemap = $this->renderPartial('sitemap', [
+                'host' => Yii::$app->request->hostInfo,
+                'urls' => $urls,
+            ]);
+            Yii::$app->cache->set("sitemap-pages-$type-$limit", $xml_sitemap, 3600*24); 
+        }
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        $headers = Yii::$app->response->headers;
+        $headers->add('Content-Type', 'text/xml');
+
+        return $xml_sitemap;
     }
-    public function actionPolicy()
+
+    public function actionLotsfilter()
     {
-        return $this->render('policy');
+        $sitemap = new Sitemap();
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_XML;
+
+        
+        // Если в кэше нет карты сайта        
+        if (!$xml_sitemap = Yii::$app->cache->get('sitemap_lots-filter1')) {
+        //     //Получаем мыссив всех ссылок
+            $urls = $sitemap->getUrl([
+                'type' => 'lots-filter',
+            ]);
+
+
+            $xml_sitemap = $this->renderPartial('sitemap', [
+                'host' => Yii::$app->request->hostInfo,
+                'urls' => $urls,
+            ]);
+            
+            Yii::$app->cache->set('sitemap_lots-filter', $xml_sitemap, 3600*24*7);
+        } 
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        $headers = Yii::$app->response->headers;
+        $headers->add('Content-Type', 'text/xml');
+
+        return $xml_sitemap;
     }
-    public function actionContact()
+    public function actionLotsarrestfilter()
     {
-        return $this->render('contact');
+        $sitemap = new Sitemap();
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_XML;
+
+        
+        // Если в кэше нет карты сайта        
+        if (!$xml_sitemap = Yii::$app->cache->get('sitemap_lots-arrest-filter')) {
+        //     //Получаем мыссив всех ссылок
+            $urls = $sitemap->getUrl([
+                'type' => 'lots-arrest-filter',
+            ]);
+
+
+            $xml_sitemap = $this->renderPartial('sitemap', [
+                'host' => Yii::$app->request->hostInfo,
+                'urls' => $urls,
+            ]);
+            
+            Yii::$app->cache->set('sitemap_lots-arrest-filter', $xml_sitemap, 3600*24*7);
+        } 
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        $headers = Yii::$app->response->headers;
+        $headers->add('Content-Type', 'text/xml');
+
+        return $xml_sitemap;
     }
-    public function actionService()
+    public function actionLotsarrest($limit)
     {
-        return $this->render('service');
+        $sitemap = new Sitemap();
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_XML;
+        
+        // Если в кэше нет карты сайта        
+        if (!$xml_sitemap = Yii::$app->cache->get('sitemap_lots-arrest-'.$limit)) {
+            //Получаем мыссив всех ссылок
+            $urls = $sitemap->getUrl([
+                'type' => 'lots-arrest',
+                'limit' => $limit
+            ]);
+
+
+            $xml_sitemap = $this->renderPartial('sitemap', [
+                'host' => Yii::$app->request->hostInfo,
+                'urls' => $urls,
+            ]);
+            
+            Yii::$app->cache->set('sitemap_lots-arrest-'.$limit, $xml_sitemap, 3600*24*7);
+        } 
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        $headers = Yii::$app->response->headers;
+        $headers->add('Content-Type', 'text/xml');
+
+        return $xml_sitemap;
     }
-    public function actionFaq()
+    public function actionLots($category_lot)
     {
-        return $this->render('faq');
+        $sitemap = new Sitemap();
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_XML;
+
+        
+        // Если в кэше нет карты сайта        
+        if (!$xml_sitemap = Yii::$app->cache->get('sitemap_lots-'.$category_lot)) {
+        //     //Получаем мыссив всех ссылок
+            $urls = $sitemap->getUrl([
+                'type' => 'lots',
+                'category' => $category_lot
+            ]);
+
+
+            $xml_sitemap = $this->renderPartial('sitemap', [
+                'host' => Yii::$app->request->hostInfo,
+                'urls' => $urls,
+            ]);
+            
+            Yii::$app->cache->set('sitemap_lots-'.$category_lot, $xml_sitemap, 3600*24*7);
+        } 
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        $headers = Yii::$app->response->headers;
+        $headers->add('Content-Type', 'text/xml');
+
+        return $xml_sitemap;
     }
-    public function actionFitemap()
+    public function actionArbtr($is_have)
     {
-        return $this->render('sitemap');
+        $sitemap = new Sitemap();
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_XML;
+
+        // Если в кэше нет карты сайта        
+        if (!$xml_sitemap = Yii::$app->cache->get('sitemap_arbtr-'.$is_have)) {
+
+            if ($is_have == 'is_have_lot') {
+                $have = true;
+            } else {
+                $have = false;
+            }
+                
+            $urls = $sitemap->getUrl([
+                'type' => 'arbtr',
+                'have' => $have
+            ]);
+
+            $xml_sitemap = $this->renderPartial('sitemap', [
+                'host' => Yii::$app->request->hostInfo,
+                'urls' => $urls,
+            ]);
+            
+            Yii::$app->cache->set('sitemap_arbtr-'.$is_have, $xml_sitemap, 3600*24*7);
+        } 
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        $headers = Yii::$app->response->headers;
+        $headers->add('Content-Type', 'text/xml');
+
+        return $xml_sitemap;
+    }
+    public function actionBnkr($is_type, $limit)
+    {
+        
+        $sitemap = new Sitemap();
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_XML;
+
+        // Если в кэше нет карты сайта        
+        if (!$xml_sitemap = Yii::$app->cache->get('sitemap_bnkr12-'.$is_type)) {
+                
+            $urls = $sitemap->getUrl([
+                'type' => 'bnkr',
+                'is_type' => $is_type,
+                'limit' => $limit
+            ]);
+            $xml_sitemap = $this->renderPartial('sitemap', [
+                'host' => Yii::$app->request->hostInfo,
+                'urls' => $urls,
+            ]);
+            Yii::$app->cache->set('sitemap_bnkr-'.$is_type, $xml_sitemap, 3600*24*7);
+        } 
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        $headers = Yii::$app->response->headers;
+        $headers->add('Content-Type', 'text/xml');
+
+        return $xml_sitemap;
     }
 
 }
