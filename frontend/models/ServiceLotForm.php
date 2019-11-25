@@ -21,6 +21,8 @@ class ServiceLotForm extends Model
     public $serviceSendZ;
     public $serviceSendLastZ;
     public $serviceTorg;
+
+    public $agentPrice = 0;
     
     public $servicePrice;
     
@@ -40,7 +42,8 @@ class ServiceLotForm extends Model
                 'ecp', 'serviceAgent', 'serviceKonsultEcp', 'serviceRegEcp', 'serviceSendZ', 'serviceSendLastZ', 'serviceTorg',
             ], 
             'boolean'],
-            [['lotId', 'lotType', 'servicePrice', 'checkPolicy'], 'required'],
+            [['lotId', 'lotType', 'checkPolicy'], 'required'],
+            ['agentPrice', 'number'],
         ];
     }
 
@@ -64,28 +67,27 @@ class ServiceLotForm extends Model
                 break;
         }
 
-        $servicePrice = 0;
-
-        if ($this->serviceAgent) {
-            $servicePrice += 0;
+        if ($this->lot->lotPrice < 500000) {
+            $this->agentPrice = 8000;
+        } else if ($this->lot->lotPrice < 1000000) {
+            $this->agentPrice = 12000;
+        } else if ($this->lot->lotPrice < 2000000) {
+            $this->agentPrice = 15000;
+        } else if ($this->lot->lotPrice < 4000000) {
+            $this->agentPrice = 20000;
+        } else if ($this->lot->lotPrice < 6000000) {
+            $this->agentPrice = 25000;
+        } else if ($this->lot->lotPrice < 8000000) {
+            $this->agentPrice = 30000;
+        } else if ($this->lot->lotPrice < 10000000) {
+            $this->agentPrice = 35000;
+        } else if ($this->lot->lotPrice < 15000000) {
+            $this->agentPrice = 40000;
+        } else if ($this->lot->lotPrice < 30000000) {
+            $this->agentPrice = 50000;
+        } else {
+            $this->agentPrice = 60000;
         }
-        if ($this->serviceKonsultEcp) {
-            $servicePrice += $this->lot->lotPrice;
-        }
-        if ($this->serviceRegEcp) {
-            $servicePrice += 2500;
-        }
-        if ($this->serviceSendZ) {
-            $servicePrice += 5000;
-        }
-        if ($this->serviceTorg) {
-            $servicePrice += 5000;
-        }
-        if ($this->serviceSendLastZ) {
-            $servicePrice += 7000;
-        }
-
-        $this->servicePrice = $servicePrice;
         
         $user = Yii::$app->user->identity;
 

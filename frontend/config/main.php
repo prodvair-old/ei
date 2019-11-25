@@ -88,6 +88,7 @@ return [
 
                 '/profile'         => 'user/index',
                 '/profile/setting' => 'user/setting',
+                '/profile/wish_list' => 'user/wish_list',
 
 
                 '/sitemap.xml' => 'sitemap/index',
@@ -102,11 +103,17 @@ return [
                 
                 '/load-category' => 'lot/load_category',
                 '/wish-list-edit' => 'lot/wish_list',
+                
                 '/<type:(bankrupt|arrest)>'                                     => 'lot/index',
                 '/<type:(bankrupt|arrest)>/<category>'                          => 'lot/search',
                 '/<type:(bankrupt|arrest)>/<category>/<subcategory>'            => 'lot/search',
                 '/<type:(bankrupt|arrest)>/<category>/<subcategory>/<id:\d+>'   => 'lot/page',
                 '/<type:(bankrupt|arrest)>/<category>/<subcategory>/<region>'   => 'lot/search',
+
+                '/<category>'                           => 'lot/redirect',
+                '/<category>/<subcategory>'             => 'lot/redirect',
+                '/<category>/<subcategory>/<id:\d+>'    => 'lot/redirect',
+                '/<category>/<subcategory>/<region>'    => 'lot/redirect-region',
             ]
         ],
         'assetManager' => [

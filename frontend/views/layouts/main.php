@@ -48,12 +48,12 @@ AppAsset::register($this);
 	<!-- Title Of Site -->
     <title><?= Html::encode($this->title) ?></title>
 
-	  <meta name="description" content="" />
+    <meta name="description" content="<?=Yii::$app->params['description']?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
 	
     <!-- Fav and Touch Icons -->
-	  <link rel="apple-touch-icon" sizes="180x180" href="<?= Url::to('/img/favicon/apple-touch-icon.png', true)?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= Url::to('/img/favicon/apple-touch-icon.png', true)?>">
     <link rel="icon" type="image/png" sizes="32x32" href="">
     <link rel="icon" type="image/png" sizes="16x16" href="<?= Url::to('/img/favicon/favicon-16x16.png', true)?>">
     <link rel="manifest" href="<?= Url::to('/img/favicon/site.webmanifest', true)?>">
