@@ -75,8 +75,9 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                 <div class="content-wrapper">
                     
                     <div id="desc" class="detail-header mb-30">
-                        <h3> <?=Yii::$app->params['h1']?></h3>
-                        
+                        <span class="text-muted">Арбитражный управляющий</span>
+                        <h1 class="h3 mt-2"> <?=Yii::$app->params['h1']?></h1>
+                        <hr>
                         <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-20">
                             <div class="mr-15 font-lg">
                                 <?=$arbitr->id?>
