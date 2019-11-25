@@ -92,9 +92,9 @@ $this->params['breadcrumbs'][] = [
                     
                                 <ul>
                                     
-                                    <li><a href="<?=Url::to('user/index')?>">Профиль</a></li>
-                                    <li class="active"><a href="<?=Url::to('user/wish_list')?>">Избранные</a></li>
-                                    <li><a href="<?=Url::to('user/setting')?>">Настройки</a></li>
+                                    <li><a href="<?=Url::to(['user/index'])?>">Профиль</a></li>
+                                    <li class="active"><a href="<?=Url::to(['user/wish_list'])?>">Избранные</a></li>
+                                    <li><a href="<?=Url::to(['user/setting'])?>">Настройки</a></li>
                                     <li><a href="<?=Url::to(['site/logout'])?>">Выйти</a></li>
                                     
                                 </ul>
