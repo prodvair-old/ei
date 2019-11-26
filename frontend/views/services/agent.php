@@ -14,180 +14,180 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <section class="agent page-wrapper pb-50">
 
-    <div class="container">
+  <div class="container">
 
-        <h1 class="pt-30 pb-20 text-center"><?= Html::encode($this->title) ?></h1>
-        <p class="text-center agent__underheader">Торги по банкротству, торги арестованного имущества</p>
+    <h1 class="pt-30 pb-20 text-center"><?= Html::encode($this->title) ?></h1>
+    <p class="text-center agent__underheader">Торги по банкротству, торги арестованного имущества</p>
 
-        <div class="row text-center">
+    <div class="row text-center">
 
-            <div class="col-lg-3">
-                <div class="agent__icon">
-                    <i class="elegent-icon-profile text-primary"></i>
-                </div>
-                <p class="agent__header">
-                    Гарантированное участие
-                </p>
-                <p class="agent__text">
-                    У нас большой опыт в сфере электронных торгов. Мы подадим заявку на аукцион, которую не отклонят
-                </p>
-            </div>
-            <div class="col-lg-3">
-                <div class="agent__icon">
-                    <i class="elegent-icon-profile text-primary"></i>
-                </div>
-
-                <p class="agent__header">
-                    Участие в торгах на любой ЭТП
-                </p>
-                <p class="agent__text">
-                    Мы аккредитованы на всех площадках и сможем принять участие в торгах на любой из них
-                </p>
-            </div>
-            <div class="col-lg-3">
-                <div class="agent__icon">
-                    <i class="elegent-icon-profile text-primary"></i>
-                </div>
-                <p class="agent__header">
-                    Подача жалоб в УФАС
-                </p>
-                <p class="agent__text">
-                    Если Вашу заявку отклонят неправомерно, агент составит и подаст жалобу в УФАС и защитит Ваши интересы
-                </p>
-            </div>
-            <div class="col-lg-3">
-                <div class="agent__icon">
-                    <i class="elegent-icon-profile text-primary"></i>
-                </div>
-                <p class="agent__header">
-                    Невысокая стоимость
-                </p>
-                <p class="agent__text">
-                    В банкротных торгах наше участие ненамного дороже ЭЦП, которая Вам не понадобится. Также Вам не нужно проходить аккредитацию на ЭТП и участвовать в аукционе – мы примем участие за Вас.
-                </p>
-            </div>
-
+      <div class="col-lg-3">
+        <div class="agent__icon">
+          <i class="elegent-icon-profile text-primary"></i>
+        </div>
+        <p class="agent__header">
+          Гарантированное участие
+        </p>
+        <p class="agent__text">
+          У нас большой опыт в сфере электронных торгов. Мы подадим заявку на аукцион, которую не отклонят
+        </p>
+      </div>
+      <div class="col-lg-3">
+        <div class="agent__icon">
+          <i class="elegent-icon-profile text-primary"></i>
         </div>
 
-        <!-- Ожидает на торгах -->
-
-            <h2 class="text-center">Что Вас ждет на торгах за имущество</h2>
-
-        <div class="row agent__step">
-
-            <div class="col-lg-4">
-
-                <div class="agent__step__img">
-                    <img src="\img\services\flame-sign-up.png" alt="Image">
-                </div>
-
-            </div>
-
-            <div class="col-lg-8">
-
-                <p class="agent__step__header">
-                    Подготовка документов
-                </p>
-
-                <p>
-                    Вам необходимо внимательно подготовить полный пакет документов и правильно сделать их сканы.
-                </p>
-
-                <p class="agent__step__mark">
-                    Сканы документов могут отклонить из-за любой мелочи (тон печати, изгибы, видимость символов).
-                </p>
-
-            </div>
+        <p class="agent__header">
+          Участие в торгах на любой ЭТП
+        </p>
+        <p class="agent__text">
+          Мы аккредитованы на всех площадках и сможем принять участие в торгах на любой из них
+        </p>
+      </div>
+      <div class="col-lg-3">
+        <div class="agent__icon">
+          <i class="elegent-icon-profile text-primary"></i>
         </div>
-        
-        <div class="row agent__step">
-
-            <div class="col-lg-8">
-
-                <p class="agent__step__header">
-                    Покупка цифровой подписи (ЭЦП)
-                </p>
-
-                <p>
-                    Вам нужно получить электронную цифровую подпись, это трудный и долгий процесс. Кроме того, есть разные виды ЭЦП, и Вы рискуете приобрести неподходящую.
-                </p>
-
-                <p class="agent__step__mark">
-                    Стоимость ЭЦП может доходить до 14 000 РУБ.
-                </p>
-
-            </div>
-
-            <div class="col-lg-4">
-
-                <div class="agent__step__img">
-                    <img src="\img\services\flame-6.png" alt="Image">
-                </div>
-                
-            </div>
-            
+        <p class="agent__header">
+          Подача жалоб в УФАС
+        </p>
+        <p class="agent__text">
+          Если Вашу заявку отклонят неправомерно, агент составит и подаст жалобу в УФАС и защитит Ваши интересы
+        </p>
+      </div>
+      <div class="col-lg-3">
+        <div class="agent__icon">
+          <i class="elegent-icon-profile text-primary"></i>
         </div>
-
-
-        <div class="row agent__step">
-
-            <div class="col-lg-4">
-
-                <div class="agent__step__img">
-                    <img src="\img\services\flame-8.png" alt="Image">
-                </div>
-
-            </div>
-
-            <div class="col-lg-8">
-
-                <p class="agent__step__header">
-                    Изучение интерфейса площадки и особенностей работы на ней
-                </p>
-
-                <p>
-                    Все без исключений электронные торговые площадки имеют сложный интерфейс. На его изучение может уйти много времени.
-                </p>
-
-                <p class="agent__step__mark">
-                    Были прецеденты, когда участник не мог подать заявку 3 дня.
-                </p>
-
-            </div>
-        </div>
-        
-        
-        <div class="row agent__step">
-
-            <div class="col-lg-8">
-
-                <p class="agent__step__header">
-                    Аккредитация на площадке
-                </p>
-
-                <p>
-                    Аккредитация на площадке занимает до 3 рабочих дней - если всё сделать правильно. При этом необходимо будет подготовить правильные сканы. Проверять придется все вплоть до каждого изгиба и тона печати, чтобы исключить ошибки.
-                </p>
-
-                <p class="agent__step__mark">
-                    Аккредитация может занять от 3 до 9 рабочих дней.
-                </p>
-
-            </div>
-
-            <div class="col-lg-4">
-
-                <div class="agent__step__img">
-                    <img src="\img\services\flame-2.png" alt="Image">
-                </div>
-                
-            </div>
-            
-        </div>
+        <p class="agent__header">
+          Невысокая стоимость
+        </p>
+        <p class="agent__text">
+          В банкротных торгах наше участие ненамного дороже ЭЦП, которая Вам не понадобится. Также Вам не нужно проходить аккредитацию на ЭТП и участвовать в аукционе – мы примем участие за Вас.
+        </p>
+      </div>
 
     </div>
 
-    <!-- <div class="container">
+    <!-- Ожидает на торгах -->
+
+    <h2 class="text-center">Что Вас ждет на торгах за имущество</h2>
+
+    <div class="row agent__step">
+
+      <div class="col-lg-4">
+
+        <div class="agent__step__img mb-30">
+          <img src="\img\services\flame-sign-up.png" alt="Image">
+        </div>
+
+      </div>
+
+      <div class="col-lg-8">
+
+        <p class="agent__step__header">
+          Подготовка документов
+        </p>
+
+        <p>
+          Вам необходимо внимательно подготовить полный пакет документов и правильно сделать их сканы.
+        </p>
+
+        <p class="agent__step__mark">
+          Сканы документов могут отклонить из-за любой мелочи (тон печати, изгибы, видимость символов).
+        </p>
+
+      </div>
+    </div>
+
+    <div class="row agent__step">
+
+      <div class="col-lg-8 order-2 order-lg-1">
+
+        <p class="agent__step__header">
+          Покупка цифровой подписи (ЭЦП)
+        </p>
+
+        <p>
+          Вам нужно получить электронную цифровую подпись, это трудный и долгий процесс. Кроме того, есть разные виды ЭЦП, и Вы рискуете приобрести неподходящую.
+        </p>
+
+        <p class="agent__step__mark">
+          Стоимость ЭЦП может доходить до 14 000 РУБ.
+        </p>
+
+      </div>
+
+      <div class="col-lg-4 order-1 order-lg-2">
+
+        <div class="agent__step__img mb-30">
+          <img src="\img\services\flame-6.png" alt="Image">
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="row agent__step">
+
+      <div class="col-lg-4">
+
+        <div class="agent__step__img mb-30">
+          <img src="\img\services\flame-8.png" alt="Image">
+        </div>
+
+      </div>
+
+      <div class="col-lg-8">
+
+        <p class="agent__step__header">
+          Изучение интерфейса площадки и особенностей работы на ней
+        </p>
+
+        <p>
+          Все без исключений электронные торговые площадки имеют сложный интерфейс. На его изучение может уйти много времени.
+        </p>
+
+        <p class="agent__step__mark">
+          Были прецеденты, когда участник не мог подать заявку 3 дня.
+        </p>
+
+      </div>
+    </div>
+
+
+    <div class="row agent__step">
+
+      <div class="col-lg-8 order-2 order-lg-1">
+
+        <p class="agent__step__header">
+          Аккредитация на площадке
+        </p>
+
+        <p>
+          Аккредитация на площадке занимает до 3 рабочих дней - если всё сделать правильно. При этом необходимо будет подготовить правильные сканы. Проверять придется все вплоть до каждого изгиба и тона печати, чтобы исключить ошибки.
+        </p>
+
+        <p class="agent__step__mark">
+          Аккредитация может занять от 3 до 9 рабочих дней.
+        </p>
+
+      </div>
+
+      <div class="col-lg-4 order-1 order-lg-2">
+
+        <div class="agent__step__img mb-30 ">
+          <img src="\img\services\flame-2.png" alt="Image">
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- <div class="container">
         <h1 class="pt-30 pb-20 text-center"><?= Html::encode($this->title) ?></h1>
 
         <div class="row">
@@ -233,10 +233,10 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div> -->
-    
+
 </section>
 
 
 <!-- <section class="page-wrapper pt-50 pb-50">
-    <?=FaqFormAskQuestion::widget()?>
+    <?= FaqFormAskQuestion::widget() ?>
 </section> -->

@@ -5,7 +5,7 @@
 use yii\helpers\Html;
 use frontend\components\faq\FaqFormAskQuestion;
 
-$this->title = 'ЭЦП';
+$this->title = 'Как приобрести лот';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
