@@ -11,9 +11,9 @@
                 <div class="item-counting">
                     <div class="counting-inner text-center">
                         <div class="counting-number">
-                            <span class="counter fs-40" data-decimal-delimiter="," data-thousand-delimiter="," data-value="40000" ></span>
+                            <span class="counter fs-40" data-decimal-delimiter="," data-thousand-delimiter="," data-value="50000" ></span>
                         </div>
-                        <span class="counting-label">Торгов с 2010 года</span>
+                        <span class="counting-label">Актуальных лотов</span>
                     </div>
                 </div>
             
@@ -24,9 +24,9 @@
                 <div class="item-counting">
                     <div class="counting-inner text-center">
                         <div class="counting-number">
-                            <span class="counter fs-40" data-decimal-delimiter="," data-thousand-delimiter="," data-value="1" ></span>
+                            <span class="counter fs-40" data-decimal-delimiter="," data-thousand-delimiter="," data-value="24" ></span>
                         </div>
-                        <span class="counting-label">место в рейтинге торговых площадок</span>
+                        <span class="counting-label">Актуализация данных</span>
                     </div>
                 </div>
             
@@ -37,9 +37,9 @@
                 <div class="item-counting">
                     <div class="counting-inner text-center">
                         <div class="counting-number">
-                            <span class="counter fs-40" data-decimal-delimiter="," data-thousand-delimiter="," data-value="760000" ></span>
+                            <span class="counter fs-40" data-decimal-delimiter="," data-thousand-delimiter="," data-value="3" ></span>
                         </div>
-                        <span class="counting-label">млн. рублей объем проданных товаров и услуг</span>
+                        <span class="counting-label">Торговые секции: банкротное, арестованное, залоговое имущество</span>
                     </div>
                 </div>
             
