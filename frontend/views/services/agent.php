@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <div class="col-lg-3">
                 <div class="agent__icon">
-                    <i class="elegent-icon-profile text-primary"></i>
+                    <img src="\img\services\icon\secure.svg" alt="Гарантия">
                 </div>
                 <p class="agent__header">
                     Гарантированное участие
@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="col-lg-3">
                 <div class="agent__icon">
-                    <i class="elegent-icon-profile text-primary"></i>
+                    <img src="\img\services\icon\signature.svg" alt="Гарантия">
                 </div>
 
                 <p class="agent__header">
@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="col-lg-3">
                 <div class="agent__icon">
-                    <i class="elegent-icon-profile text-primary"></i>
+                    <img src="\img\services\icon\complaint.svg" alt="Гарантия">
                 </div>
                 <p class="agent__header">
                     Подача жалоб в УФАС
@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="col-lg-3">
                 <div class="agent__icon">
-                    <i class="elegent-icon-profile text-primary"></i>
+                    <img src="\img\services\icon\tag.svg" alt="Гарантия">
                 </div>
                 <p class="agent__header">
                     Невысокая стоимость
@@ -83,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             </div>
 
-            <div class="col-lg-8">
+            <div class="col-lg-8 agent__text-block">
 
                 <p class="agent__step__header">
                     Подготовка документов
@@ -102,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
         
         <div class="row agent__step">
 
-            <div class="col-lg-8">
+            <div class="col-lg-8 agent__text-block">
 
                 <p class="agent__step__header">
                     Покупка цифровой подписи (ЭЦП)
@@ -139,7 +139,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             </div>
 
-            <div class="col-lg-8">
+            <div class="col-lg-8 agent__text-block">
 
                 <p class="agent__step__header">
                     Изучение интерфейса площадки и особенностей работы на ней
@@ -159,7 +159,7 @@ $this->params['breadcrumbs'][] = $this->title;
         
         <div class="row agent__step">
 
-            <div class="col-lg-8">
+            <div class="col-lg-8 agent__text-block">
 
                 <p class="agent__step__header">
                     Аккредитация на площадке
