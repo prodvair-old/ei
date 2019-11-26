@@ -66,6 +66,12 @@ class ArbitrController extends Controller
         ];
     }
 
+    public function actionRedirect($arb_id = null)
+    {
+        
+        return $this->redirect('/arbitrazhnye-upravlyayushchie'.($arb_id)? '/'.$arb_id : '');
+    }
+    
     /**
      * Displays homepage.
      *

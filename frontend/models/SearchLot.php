@@ -303,6 +303,13 @@ class SearchLot extends Model
                     if (!empty($this->imageCheck)) {
                         $where[] = ['lot_image' => $this->imageCheck];
                     }
+                    if (!empty($this->archivCheck)) {
+                        if (!$this->archivCheck) {
+                            $where[] = 'torgs."trgExpireDate" >= NOW()';
+                        }
+                    } else {
+                        $where[] = 'torgs."trgExpireDate" >= NOW()';
+                    }
                 break;
             default:
                 return ['error' => 'Что то пошло не так :('];

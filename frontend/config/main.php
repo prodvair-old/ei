@@ -52,13 +52,12 @@ return [
                 
                 '' => 'site/index',
 
-                '/about'   => 'pages/about',
+                '/about'    => 'pages/about',
                 '/license'  => 'pages/license',
-                '/policy' => 'pages/policy',
-                '/contact' => 'pages/contact',
-                // '/service' => 'pages/service',
-                '/faq'     => 'pages/faq',
-                '/sitemap' => 'pages/sitemap',
+                '/policy'   => 'pages/policy',
+                '/contact'  => 'pages/contact',
+                '/faq'      => 'pages/faq',
+                '/sitemap'  => 'pages/sitemap',
                 
                 '/service'             => 'services/index',
                 '/service/agent'       => 'services/agent',
@@ -72,41 +71,47 @@ return [
                 '/verify-email'             => 'site/verify-email',
                 '/request-password-reset'   => 'site/request-password-reset',
                 '/reset-password'           => 'site/reset-password',
-                '/image'      => 'site/image',
+                '/image'                    => 'site/image',
                 
-                '/test' => 'test/index',
-                '/404' => 'site/error',
+                '/404'  => 'site/error',
 
-                '/arbitrazhnye-upravlyayushchie'        => 'arbitr/list',
-                '/arbitrazhnye-upravlyayushchie/<arb_id:\d+>' => 'arbitr/arbitr_page',
+                '/arbitr-list'                                  => 'arbitr/redirect',
+                '/arbitr-list/<arb_id:\d+>'                     => 'arbitr/redirect',
+                '/arbitrazhnye-upravlyayushchie'                => 'arbitr/list',
+                '/arbitrazhnye-upravlyayushchie/<arb_id:\d+>'   => 'arbitr/arbitr_page',
 
-                '/sro'        => 'sro/list',
+                '/sro'              => 'sro/list',
                 '/sro/<sro_id:\d+>' => 'sro/sro_page',
 
-                '/dolzhniki'         => 'doljnik/list',
-                '/dolzhniki/<bnkr_id:\d+>' => 'doljnik/doljnik_page',
+                '/doljnik-list'                 => 'doljnik/redirect',
+                '/doljnik-list/<bnkr_id:\d+>'   => 'doljnik/redirect',
+                '/dolzhniki'                    => 'doljnik/list',
+                '/dolzhniki/<bnkr_id:\d+>'      => 'doljnik/doljnik_page',
+                
 
-                '/profile'         => 'user/index',
-                '/profile/setting' => 'user/setting',
+                '/profile'          => 'user/index',
+                '/profile/setting'  => 'user/setting',
+                '/profile/favorite' => 'user/wish_list',
 
 
-                '/sitemap.xml' => 'sitemap/index',
-                '/sitemap_other_page.xml' => 'sitemap/other',
-                '/sitemap_lots-<category_lot:(transport_i_tekhnika|nedvizhimost|oborudovanie|selskoe_hozyajstvo|imushchestvennyj_kompleks|tovarno-materialnye_cennosti|debitorskaya_zadolzhennost|cennye_bumagi_nma_doli_v_ustavnyh_kapitalah|syre|prochee|lot-list)>.xml' => 'sitemap/lots',
-                '/sitemap_lots-filter.xml' => 'sitemap/lotsfilter',
-                '/sitemap_lots-arrest-filter.xml' => 'sitemap/lotsarrestfilter',
-                '/sitemap_lots-arrest-<limit:\d+>.xml' => 'sitemap/lotsarrest',
-                '/sitemap_arbitrs-<is_have:(is_have_lot|is_not_have_lot)>.xml' => 'sitemap/arbtr',
-                '/sitemap_bankrupts-<is_type:(company|person)>-<limit:\d+>.xml' => 'sitemap/bnkr',
+                '/sitemap.xml'                      => 'sitemap/index',
+                '/sitemap-<type>-<limit:\d+>.xml'   => 'sitemap/pages',
+                '/sitemap-<type>.xml'               => 'sitemap/pages',
                 
                 
-                '/load-category' => 'lot/load_category',
-                '/wish-list-edit' => 'lot/wish_list',
+                '/load-category'    => 'lot/load_category',
+                '/wish-list-edit'   => 'lot/wish_list',
+                
                 '/<type:(bankrupt|arrest)>'                                     => 'lot/index',
                 '/<type:(bankrupt|arrest)>/<category>'                          => 'lot/search',
                 '/<type:(bankrupt|arrest)>/<category>/<subcategory>'            => 'lot/search',
                 '/<type:(bankrupt|arrest)>/<category>/<subcategory>/<id:\d+>'   => 'lot/page',
                 '/<type:(bankrupt|arrest)>/<category>/<subcategory>/<region>'   => 'lot/search',
+
+                '/<category>'                           => 'lot/redirect',
+                '/<category>/<subcategory>'             => 'lot/redirect',
+                '/<category>/<subcategory>/<id:\d+>'    => 'lot/redirect',
+                '/<category>/<subcategory>/<region>'    => 'lot/redirect-region',
             ]
         ],
         'assetManager' => [

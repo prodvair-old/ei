@@ -11,9 +11,7 @@ use yii\base\Model;
 class ContactForm extends Model
 {
     public $name;
-    public $email;
-    public $subject;
-    public $body;
+    public $phone;
     public $verifyCode;
 
 
@@ -24,23 +22,10 @@ class ContactForm extends Model
     {
         return [
             // name, email, subject and body are required
-            [['name', 'email', 'subject', 'body'], 'required'],
-            // email has to be a valid email address
-            ['email', 'email'],
-            // verifyCode needs to be entered correctly
-            ['verifyCode', 'captcha'],
+            [['name', 'phone', 'captcha'], 'required'],
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
-    {
-        return [
-            'verifyCode' => 'Verification Code',
-        ];
-    }
 
     /**
      * Sends an email to the specified email address using the information collected by this model.
@@ -48,14 +33,20 @@ class ContactForm extends Model
      * @param string $email the target email address
      * @return bool whether the email was sent
      */
-    public function sendEmail($email)
+    public function sendEmail($type)
     {
-        return Yii::$app->mailer->compose()
+        if (!$this->validate()) {
+            return null;
+        }
+
+        return Yii::$app->mailer_support->compose(
+                ['html' => 'contactForm-html'],
+                ['type' => $type, 'param'=>$this]
+            )
             ->setTo($email)
-            ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
-            ->setReplyTo([$this->email => $this->name])
-            ->setSubject($this->subject)
-            ->setTextBody($this->body)
+            ->setFrom(['support@ei.ru' => 'Поддержка – '.Yii::$app->name])
+            ->setTo('support@ei.ru')
+            ->setSubject('Форма обратной связи')
             ->send();
     }
 }

@@ -6,6 +6,8 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
+use frontend\models\ContactForm;
+
 use common\models\Query\MetaDate;
 
 /**
@@ -101,6 +103,12 @@ class ServicesController extends Controller
 
     public function actionSpecialist()
     {
+        $model = new ContactForm();
+
+        if ($model->load(Yii::$app->request->post())) {
+            $model->sendEmail('specialist');
+        }
+
         $metaData = MetaDate::find()->where(['mdName' => 'service/specialist'])->one();
 
         Yii::$app->params['description'] = $metaData->mdDescription;
@@ -108,7 +116,7 @@ class ServicesController extends Controller
         Yii::$app->params['title'] = $metaData->mdTitle;
         Yii::$app->params['h1'] = $metaData->mdH1;
 
-        return $this->render('specialist');
+        return $this->render('specialist', compact('model'));
     }
 
 

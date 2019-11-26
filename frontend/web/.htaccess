@@ -1,12 +1,12 @@
 RewriteEngine On
-RewriteCond %{HTTP_HOST} ^www.ei.ru$ [NC]
-RewriteRule ^(.*)$ https://ei.ru/$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^www.n.ei.ru$ [NC]
+RewriteRule ^(.*)$ http://n.ei.ru/$1 [R=301,L]
 
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.php\ HTTP/
-RewriteRule ^index\.php$ https://ei.ru/ [R=301,L]
+RewriteRule ^index\.php$ http://n.ei.ru/ [R=301,L]
 
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.html\ HTTP/
-RewriteRule ^index\.html$ https://ei.ru/ [R=301,L]
+RewriteRule ^index\.html$ http://n.ei.ru/ [R=301,L]
 
 RewriteCond %{REQUEST_URI} !\?
 RewriteCond %{REQUEST_URI} !\&amp;
