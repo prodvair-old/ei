@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         <div class="mb-50"></div>
             
-                        <?=ContactFindSociety::widget(['vk'=>'dsfsdf', 'google'=>'gadawd'])?>
+                        <!-- <=ContactFindSociety::widget(['vk'=>'dsfsdf', 'google'=>'gadawd'])?> -->
 
                     </div>
 
