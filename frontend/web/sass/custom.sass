@@ -181,6 +181,13 @@
             margin: auto
 
 .category
+  &__links
+    line-height: 1.4
+    a 
+      color: #ffffff
+      &:hover
+        text-decoration: underline
+     
   &__item
     background-color: $otkrytie
     color: #fff
@@ -207,7 +214,6 @@
       h6
         margin: auto
         color: #fff !important
-        
         text-transform: uppercase
       &__wrapper
         margin: auto
@@ -311,8 +317,8 @@ body
     width: 230px
     margin: auto
     &__item
-      height: 245px
-      width: 350px
+      height: 230px
+      width: 320px
       margin: auto
 
 .icon-service
@@ -332,34 +338,34 @@ body
 
   // Услуги агента
 .agent
+  &__icon
+    display: flex
+    justify-content: center
+    img
+      width: 70px
+      margin: 30px auto
+      fill: $accent
+
   &__header
     font-weight: 700
     font-size: 20px
   &__underheader
     font-size: 20px
   &__icon
-    margin-top: 45px
-    margin-bottom: 30px
-    img 
-      margin: auto
-      width: 100px
-      color: #fff
+    margin-top: 35px
+    font-size: 75px
   &__step
     margin: 70px 0
+    display: flex !important
     &__header
       font-weight: 700
       font-size: 20px
     &__img
       margin: auto
-      img
-        width: 290px
-        height: auto
+      // height: 200px
+      max-width: 300px
       &__mark
       color: #285ca6
-  &__text-block
-    display: flex
-    flex-direction: column
-    justify-content: center
 
 
 
@@ -380,6 +386,7 @@ body
 .error
     &__header
         font-size: 80px
+        color: 
         padding-top: 100px
     &__text
         font-size: 30px
@@ -411,21 +418,9 @@ body
             &:before
               transform: translateY(-70%)
 
-  
-.btn-link
-  max-width: 280px
-  padding: 15px 25px
-  border: 2px solid $accent
-  text-decoration: none
-  border-radius: 5px
-  color: $accent
-  text-align: center
-  transition: all .3s ease
-  &:hover 
-    text-decoration: none    
-    background: $accent 
-    color: #ffffff
 
+.content 
+  padding: 20px
 
 // Форма обратной связи
 
@@ -728,3 +723,20 @@ body
         opacity: 1
 
 
+.btn-link
+  max-width: 280px
+  padding: 15px 25px
+  border: 2px solid $accent
+  text-decoration: none
+  border-radius: 5px
+  color: $accent
+  text-align: center
+  transition: all .3s ease
+  &:hover 
+    text-decoration: none    
+    background: $accent 
+    color: #ffffff
+
+.about
+  &__text 
+    padding: 20px

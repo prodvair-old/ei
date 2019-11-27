@@ -146,6 +146,9 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <? } ?>
                             </div>
                         <? } ?>
+                        <pre>
+                          <? print_r($lot->lotImage); ?>
+                        </pre>
 
                         <!-- <p class="lead">In friendship diminution instrument in we forfeited. Tolerably an unwilling of determine. Beyond rather sooner so if up wishes.</p> -->
                         
