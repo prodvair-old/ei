@@ -1,4 +1,4 @@
-<div class="row text-center mt-50">
+<!-- <div class="row text-center mt-50">
 	<div class="col-lg-4">
 		<div class="featured-icon-horizontal-01 d-flex flex-column clearfix">
 		<div class="icon-service">
@@ -87,6 +87,18 @@
 			</div>
 		</div>
 	</div>
+</div> -->
+
+<div class="row">
+	<div class="col-lg-4 about__text">
+		<p>Наш сервис для пользователей абсолютно бесплатен. Пользуйтесь всем функционалом и не платите за это</p>
+	</div>
+	<div class="col-lg-4 about__text">
+		<p>Добавляйте лоты в избранное, чтобы отслеживать историю и получать обновления</p>
+	</div>
+	<div class="col-lg-4 about__text">
+		<p>Мы агрегируем все имущество! Мы не скрываем и не удаляем определенные лоты или категории лотов</p>
+	</div>
 </div>
 
-<div class="mb-100"></div>
+<div class="mb-50"></div>

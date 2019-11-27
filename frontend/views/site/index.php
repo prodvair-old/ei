@@ -14,69 +14,69 @@ $this->title = Yii::$app->params['title'];
 ?>
 
 <div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03" style="background-image:url('img/01.jpg'); background-position: top  center;">
-        
-    <div class="overlay-holder bottom"></div>	
-    
-    <div class="hero-inner">
-    
-        <div class="container">
-        
-            <h1><span class="font200"><span class="font700">Агрегатор</span> </span><span class="font200">торгов<span class="block"> <span class="font700">по</span> банкротству</span></span></h1>
-            <?= SearchForm::widget(['type' => 'bankrupt'])?>
 
-        </div>
-        
+  <div class="overlay-holder bottom"></div>
+
+  <div class="hero-inner">
+
+    <div class="container">
+
+      <h1><span class="font200"><span class="font700">Агрегатор</span> </span><span class="font200">торгов<span class="block"> <span class="font700">по</span> банкротству</span></span></h1>
+      <?= SearchForm::widget(['type' => 'bankrupt']) ?>
+
     </div>
-    
+
+  </div>
+
 </div>
 
 
 <section class="pt-70 pb-0">
 
-    <div class="container">
+  <div class="container">
 
-        <div class="clear mb-100"></div>
+    <div class="clear mb-100"></div>
 
-        <div class="row cols-1 cols-sm-2 cols-lg-3 gap-2 mb-20">
-        
-            <div class="col">
+    <div class="row cols-1 cols-sm-2 cols-lg-3 gap-2 mb-20">
 
-                <figure style="background-color: #234559;" class="category__item">
-                    <a href="/bankrupt/lot-list">
-                        <div class="image">
-                            <img  src="http://www.femak-kazan.com/wp-content/uploads/2018/06/bigstock-Chemical-Plant-Structure-47755258-400x400.jpg"alt="image"/>
-                        </div>
-                        <figcaption class="content">
-                          <div class="content__wrapper">
-                            <h6>Банкротное<br>имущество</h6>
-                            <p ><?=$lotsBankruptCount?> лотов</p>
-                          </div>
-                        </figcaption>
-                    </a>
-                </figure>
-                
+      <div class="col">
+
+        <figure style="background-color: #234559;" class="category__item">
+          <a href="/bankrupt/lot-list">
+            <div class="image">
+              <img src="http://www.femak-kazan.com/wp-content/uploads/2018/06/bigstock-Chemical-Plant-Structure-47755258-400x400.jpg" alt="image" />
             </div>
-            
-            <div class="col">
+            <figcaption class="content">
+              <div class="content__wrapper">
+                <h6>Банкротное<br>имущество</h6>
+                <p><?= $lotsBankruptCount ?> лотов</p>
+              </div>
+            </figcaption>
+          </a>
+        </figure>
 
-           
-                <figure class="category__item" style="background-color: #5e100a;">
-                    <a href="/arrest/lot-list">
-                        <div class="image">
-                            <img src="https://cdn-st4.rtr-vesti.ru/vh/pictures/bq/142/045/9.jpg"alt="image"/>
-                        </div>
-                        <figcaption class="content">
-                            <div class="content__wrapper">
-                              <h6>Арестованное <br>имущество</h6>
-                              <p ><?=$lotsArrestCount?> лотов</p>
-                            <div>
-                        </figcaption>
-                    </a>
-                </figure>
-                
+      </div>
+
+      <div class="col">
+
+
+        <figure class="category__item" style="background-color: #5e100a;">
+          <a href="/arrest/lot-list">
+            <div class="image">
+              <img src="https://cdn-st4.rtr-vesti.ru/vh/pictures/bq/142/045/9.jpg" alt="image" />
             </div>
-            
-            <!-- <div class="col">
+            <figcaption class="content">
+              <div class="content__wrapper">
+                <h6>Арестованное <br>имущество</h6>
+                <p><?= $lotsArrestCount ?> лотов</p>
+                <div>
+            </figcaption>
+          </a>
+        </figure>
+
+      </div>
+
+      <!-- <div class="col">
 
                 <figure class="category__item" style="background-color:#2b8ac6;">
                     <a href="/business">
@@ -86,50 +86,55 @@ $this->title = Yii::$app->params['title'];
                         <figcaption class="content">
                            <div class="content__wrapper">
                             <h6>Имущество организаций</h6>
-                            <p ><?=$lotsBankruptCount?> лотов</p>
+                            <p ><?= $lotsBankruptCount ?> лотов</p>
                           </div>
                         </figcaption>
                     </a>
                 </figure>
                 
             </div> -->
-            
-            <div class="col">
-                <figure class="category__item" style="background-color: #555e63;">
-                    <a href="/bankrupt/debitorskaya-zadolzhennost">
-                        <div class="image">
-                            <img src="https://cdn.govexec.com/media/img/upload/2015/09/03/090415EIG_personnel_files/open-graph.jpg"alt="image"/>
-                        </div>
-                        <figcaption class="content">
-                          <div class="content__wrapper">
-                            <h6>Реестры</h6>
-                            <p><?//=$lotsBankruptCount?> </p>
-                          </div>
-                        </figcaption>
-                    </a>
-                </figure>
-                
+
+      <div class="col">
+        <figure class="category__item" style="background-color: #555e63;">
+          <div href="/bankrupt/debitorskaya-zadolzhennost">
+            <div class="image">
+              <img src="https://cdn.govexec.com/media/img/upload/2015/09/03/090415EIG_personnel_files/open-graph.jpg" alt="image" />
             </div>
-            
-        </div>
-    
-        <!-- <div class="section-title">
+            <figcaption class="content">
+              <div class="content__wrapper">
+                <h6>Реестры</h6>
+                <ul class="category__links">
+                  <li><a href="/arbitrazhnye-upravlyayushchie">Арбитражные управляющие</a></li>
+                  <li><a href="/dolzhniki">Должники</a></li>
+                  <li><a href="/sro">СРО</a></li>
+                </ul>
+              </div>
+            </figcaption>
+          </div>
+        </figure>
+
+      </div>
+
+    </div>
+
+    <!-- <div class="section-title">
             <h2><span><span>Горячие</span> Предложения Дня</span></h2>
         </div>
         
         <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
 
-            <?//foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot]); }?>
+            <? //foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot]); }
+            ?>
             
         </div>
 
         <div class="clear mb-100"></div> -->
-              
-        
-        <div class="clear mb-100"></div>
-        
-    </div>
-    
+
+
+    <div class="clear mb-100"></div>
+
+  </div>
+
 </section>
 
 <!-- <div class="bg-white-gradient-top-bottom pt-0 mt-40">
