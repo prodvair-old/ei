@@ -5,7 +5,7 @@ use yii\helpers\Url;
 ?>
 <div class="row">
 
-	<div class="col-lg-4 mt-40"> 
+	<!-- <div class="col-lg-4 mt-40"> 
 		<div class="featured-image-item-08">
 			<div class="image">
 				<a href="services/specialist" class="image-inner">
@@ -14,7 +14,6 @@ use yii\helpers\Url;
 			</div>
 
 			<div class="content mt-20">
-				<!-- <div class="icon-font text-primary"></div> -->
 				<h5>Консультация специалиста по лоту</h5>
 				<p>
 					Участие в торгах через Агента — максимум преимуществ, безопасность от приобретения мусорных лотов, отклонения заявки, отказа в регистрации на бирже, потери денег из-за неверно выбранной тактики и других «подводных камней».
@@ -22,9 +21,9 @@ use yii\helpers\Url;
 				<a href="<?=Url::to(['services/specialist'])?>" class="h6 text-primary">Показать полностью<i class="elegent-icon-arrow_right"></i></a>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
-	<div class="col-lg-4 mt-40">
+	<div class="col-lg-6 mt-40">
 		<div class="featured-image-item-08">
 			<a href="services/agent" class="image-inner">
 				<img src="\img\services\2.svg" class="service-img__item"/>
@@ -41,7 +40,7 @@ use yii\helpers\Url;
 		</div>
 	</div>
 
-	<div class="col-lg-4 mt-40">
+	<div class="col-lg-6 mt-40">
 		<div class="featured-image-item-08">
 			<div class="image">
 				<a href="services/ecp" class="image-inner">
@@ -50,9 +49,9 @@ use yii\helpers\Url;
 			</div>
 			<div class="content mt-20">
 				<!-- <div class="icon-font text-primary"></div> -->
-				<h5>Покупка ЭЦП для данной площадки</h5>
+				<h5>Покупка ЭЦП</h5>
 				<p>
-					Для самостоятельного участия потребуется собрать полный пакет документов, основные из них конкретного аукциона.
+					Решили участвовать в торгах самостоятельно? Тогда Вам понадобится цифровая подпись. Мы поможем Вам ее приобрести
 				</p>
 				<a href="<?=Url::to(['services/ecp'])?>" class="h6 text-primary">Показать полностью<i class="elegent-icon-arrow_right"></i></a>
 			</div>

@@ -39,21 +39,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="section-title text-center w-100">
 		    <h2>
-                Поиск<span class="text-lowercase"> лотов</span>
+            Делаем<span class="text-lowercase"> всё чтобы </span>Вам <span class="text-lowercase">было удобно!</span>
             </h2>
 			<!-- <p>Вот что отличает нас от остальных</p> -->
 	    </div>
         <?=AboutNavigation::widget()?>
 
-        <div class="section-title text-center w-100">
+        <!-- <div class="section-title text-center w-100">
 		    <h2>
                 Наша<span class="text-lowercase"> команда</span>
             </h2>
 			<p>Люди, которые делают мир лучше</p>
-	    </div>
-        <?=AboutTeams::widget()?>
+	    </div> -->
+        <!-- <=AboutTeams::widget()?> -->
         
-        <?=ContactFindSociety::widget()?>
+        <!-- <=ContactFindSociety::widget()?> -->
 
     </div>
 
