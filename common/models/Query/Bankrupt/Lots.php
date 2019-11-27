@@ -51,6 +51,10 @@ class Lots extends ActiveRecord
     {
         return $this->torgy->timepublication;
     }
+    public function getLotId() 
+    {
+        return $this->id;
+    }
     public function getLotDateEnd() 
     {
         return $this->torgy->timeend;

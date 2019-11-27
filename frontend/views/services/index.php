@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="container pt-100">
         <div class="section-title w-100 text-center pt-60">
-            <h1>Наши услуги</h1>
+            <h1>Воспользуйтесь нашими услугами</h1>
             <p>Мы предостовляем только качественные услуги</p>
         </div>
 
