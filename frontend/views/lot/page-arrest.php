@@ -104,21 +104,9 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
     </div>
   </div>
 
-<<<<<<< HEAD
-                        <?if ($lot->lotImage) { ?>
-                            <div class="fotorama mt-20 mb-40" data-allowfullscreen="true" data-nav="thumbs" data-arrows="always" data-click="true">
-                                <? foreach ($lot->lotImage as $image) { ?>
-                                   <img href="<?=$image?>" alt="Images" />
-                                <? } ?>
-                            </div>
-                        <? } ?>
-                        
-
-=======
   <div class="container pt-30">
     <?= (!empty($lot->lot_archive)) ? ($lot->lot_archive) ? '<span class="h2 text-primary">Архив</span><hr>' : '' : '' ?>
     <div class="row gap-20 gap-lg-40">
->>>>>>> 8e65969d063a8b7d62e887acf32a0d5ed4036615
 
       <div class="col-12 col-lg-8">
 

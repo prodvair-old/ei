@@ -112,31 +112,45 @@ class SearchLot extends Model
                     }
                     if (!empty($this->region)) {
                         $addresSearchCheck = true;
-                        if (count($this->region) == 1) {
-                            $regionInfo = Regions::findOne($this->region[0]);
+                        if (is_array($this->region)) {
+                            if (count($this->region) == 1) {
+                                $regionInfo = Regions::findOne($this->region[0]);
+
+                                if ($checkUrl) {
+                                    $url .= '/'.$regionInfo->name_translit;
+                                }
+                                
+                                $where[] = [
+                                    'or',
+                                    ['lot_regionid'=>$this->region[0]],
+                                    ['like', 'LOWER(bnkr__address)', mb_strtolower($regionInfo->name, 'UTF-8')]
+                                ];
+                            } else {
+                                $orWhere = ['or'];
+                                foreach ($this->region as $key => $value) {
+                                    $regionInfo = Regions::findOne($value);
+
+                                    if ($key == 0 && $checkUrl) {
+                                        $url .= '/'.$regionInfo->name_translit;
+                                    }
+
+                                    $orWhere[] = ['lot_regionid'=>$value];
+                                    $orWhere[] = ['like', 'LOWER(bnkr__address)', mb_strtolower($regionInfo->name, 'UTF-8')];
+                                }
+                                $where[] = $orWhere;
+                            }
+                        } else {
+                            $regionInfo = Regions::findOne($this->region);
 
                             if ($checkUrl) {
                                 $url .= '/'.$regionInfo->name_translit;
                             }
-                            
+
                             $where[] = [
                                 'or',
                                 ['lot_regionid'=>$this->region[0]],
                                 ['like', 'LOWER(bnkr__address)', mb_strtolower($regionInfo->name, 'UTF-8')]
                             ];
-                        } else {
-                            $orWhere = ['or'];
-                            foreach ($this->region as $key => $value) {
-                                $regionInfo = Regions::findOne($value);
-
-                                if ($key == 0 && $checkUrl) {
-                                    $url .= '/'.$regionInfo->name_translit;
-                                }
-
-                                $orWhere[] = ['lot_regionid'=>$value];
-                                $orWhere[] = ['like', 'LOWER(bnkr__address)', mb_strtolower($regionInfo->name, 'UTF-8')];
-                            }
-                            $where[] = $orWhere;
                         }
                     }
                     if (!empty($this->search)) {
@@ -242,25 +256,35 @@ class SearchLot extends Model
                     }
                     if (!empty($this->region)) {
                         $addresSearchCheck = true;
-                        if (count($this->region) == 1) {
-                            $regionInfo = Regions::findOne($this->region[0]);
+                        if (is_array($this->region)) {
+                            if (count($this->region) == 1) {
+                                $regionInfo = Regions::findOne($this->region[0]);
+
+                                if ($checkUrl) {
+                                    $url .= '/'.$regionInfo->name_translit;
+                                }
+
+                                $where[] = ['like', 'LOWER("lots"."lotKladrLocationName")', mb_strtolower($regionInfo->name, 'UTF-8')];
+                            } else {
+                                $orWhere = ['or'];
+                                foreach ($this->region as $key => $value) {
+                                    $regionInfo = Regions::findOne($value);
+
+                                    if ($key == 0 && $checkUrl) {
+                                        $url .= '/'.$regionInfo->name_translit;
+                                    }
+                                    $orWhere[] = ['like', 'LOWER("lots"."lotKladrLocationName")', mb_strtolower($regionInfo->name, 'UTF-8')];
+                                }
+                                $where[] = $orWhere;
+                            }
+                        } else {
+                            $regionInfo = Regions::findOne($this->region);
 
                             if ($checkUrl) {
                                 $url .= '/'.$regionInfo->name_translit;
                             }
 
                             $where[] = ['like', 'LOWER("lots"."lotKladrLocationName")', mb_strtolower($regionInfo->name, 'UTF-8')];
-                        } else {
-                            $orWhere = ['or'];
-                            foreach ($this->region as $key => $value) {
-                                $regionInfo = Regions::findOne($value);
-
-                                if ($key == 0 && $checkUrl) {
-                                    $url .= '/'.$regionInfo->name_translit;
-                                }
-                                $orWhere[] = ['like', 'LOWER("lots"."lotKladrLocationName")', mb_strtolower($regionInfo->name, 'UTF-8')];
-                            }
-                            $where[] = $orWhere;
                         }
                     }
                     if (!empty($this->search)) {

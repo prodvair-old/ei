@@ -133,7 +133,7 @@ class LotsBankrupt extends ActiveRecord
                 }
             } catch (\Throwable $th) {
                 foreach ($this->images as $image) {
-                    $result[] = 'https://ei.ru/img/lot/'.$image->objid.'/'.$image->fileurl;
+                    $result[] = 'http://n.ei.ru/img/lot/'.$image->objid.'/'.$image->fileurl;
                 }
             }
             

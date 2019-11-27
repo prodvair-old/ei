@@ -40,33 +40,57 @@ AppAsset::register($this);
 <html lang="<?= Yii::$app->language ?>">
 
 <head>
-  <meta charset="<?= Yii::$app->charset ?>">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <base href="<?= (Yii::$app->request->hostInfo == 'http://ei.front') ? 'http://localhost:3005' : Yii::$app->request->hostInfo; ?>">
-  <?php $this->registerCsrfMetaTags() ?>
+    <meta charset="<?= Yii::$app->charset ?>">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base href="<?=Yii::$app->request->hostInfo?>">
+    <?php $this->registerCsrfMetaTags() ?>
 
-  <!-- Title Of Site -->
-  <title><?= Html::encode($this->title) ?></title>
+	<!-- Title Of Site -->
+    <title><?= Html::encode($this->title) ?></title>
 
-  <meta name="description" content="<?= Yii::$app->params['description'] ?>" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="<?=Yii::$app->params['description']?>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+	
+    <!-- Fav and Touch Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= Url::to('/img/favicon/apple-touch-icon.png', true)?>">
+    <link rel="icon" type="image/png" sizes="32x32" href="">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= Url::to('/img/favicon/favicon-16x16.png', true)?>">
+    <link rel="manifest" href="<?= Url::to('/img/favicon/site.webmanifest', true)?>">
+    <link rel="mask-icon" href="<?= Url::to('/img/favicon/safari-pinned-tab.svg', true)?>" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-141584755-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-141584755-1');
+    </script>
 
-  <!-- Fav and Touch Icons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="<?= Url::to('/img/favicon/apple-touch-icon.png', true) ?>">
-  <link rel="icon" type="image/png" sizes="32x32" href="">
-  <link rel="icon" type="image/png" sizes="16x16" href="<?= Url::to('/img/favicon/favicon-16x16.png', true) ?>">
-  <link rel="manifest" href="<?= Url::to('/img/favicon/site.webmanifest', true) ?>">
-  <link rel="mask-icon" href="<?= Url::to('/img/favicon/safari-pinned-tab.svg', true) ?>" color="#5bbad5">
-  <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="theme-color" content="#ffffff">
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
+    ym(53770261, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true
+    });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/53770261" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
 
-  <?php $this->head() ?>
+    <?php $this->head() ?>
 
-  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->

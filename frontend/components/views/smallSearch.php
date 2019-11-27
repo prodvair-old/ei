@@ -16,6 +16,12 @@ switch ($type) {
             $lotsCategory = LotsCategory::find()->where(['or', ['not', ['arrest_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
         break;
 }
+
+$regionList[0] = 'Все регионы';
+$regions = Regions::find()->orderBy('id ASC')->all();
+foreach ($regions as $region) {
+    $regionList[$region->id] = $region->name;
+}
 $this->registerJsVar( 'lotType', $type, $position = yii\web\View::POS_HEAD );
 $this->registerJsVar( 'categorySelected', 0, $position = yii\web\View::POS_HEAD );
 ?>
@@ -74,7 +80,7 @@ $this->registerJsVar( 'categorySelected', 0, $position = yii\web\View::POS_HEAD 
                             <div class="col">
                                 <div class="col-inner">
                                     <?=$form->field($model, 'region')->dropDownList(
-                                            ArrayHelper::map(Regions::find()->orderBy('id ASC')->all(), 'id', 'name'),
+                                            $regionList,
                                         [
                                             'class'=>'chosen-the-basic form-control form-control-sm', 
                                             'data-placeholder'=>'Все регионы', 
