@@ -51,7 +51,6 @@ class SignupForm extends Model
         if (!$this->validate()) {
             return null;
         }
-        
 
         $user = new User();
         $user->username = $this->email;

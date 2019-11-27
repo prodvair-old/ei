@@ -38,9 +38,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                         ]) ?>
                     </nav>
-                    
-                    <h4 class="mt-0 line-125"><?=Yii::$app->params['h1']?></h4>
-                    
+
                 </div>
                 
             </div>
@@ -50,7 +48,10 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
     </div>
     
     <div class="container">
+        <h1 class="h3 mt-40 line-125 "><?=Yii::$app->params['h1']?></h1>
+        <hr>
         <div class="row equal-height gap-30 gap-lg-40">
+            
             
             <div class="col-12 col-lg-4">
 

@@ -66,6 +66,12 @@ class ArbitrController extends Controller
         ];
     }
 
+    public function actionRedirect($arb_id = null)
+    {
+        
+        return $this->redirect('/arbitrazhnye-upravlyayushchie'.($arb_id)? '/'.$arb_id : '');
+    }
+    
     /**
      * Displays homepage.
      *
@@ -147,7 +153,7 @@ class ArbitrController extends Controller
         ];
         Yii::$app->params['description'] = str_replace($search, $replace, $metaData->mdDescription);
         Yii::$app->params['title'] = str_replace($search, $replace, $metaData->mdTitle);
-        Yii::$app->params['h1'] = str_replace($search, $replace, $metaData->mdH1);
+        Yii::$app->params['h1'] = $arbitr->person->lname.' '.$arbitr->person->fname.' '.$arbitr->person->mname;
         Yii::$app->params['text'] = $metaData->mdText;
         // Мета данные <-End
 

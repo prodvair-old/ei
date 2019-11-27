@@ -55,7 +55,7 @@
 
 .bt-collapse-wrapper .collapse-header [data-toggle=collapse]:not(.collapsed),
 .bt-collapse-wrapper .collapse-header [data-toggle=collapse]:not(.collapsed):after {
-  color: #FF1944;
+  color: $accent;
 }
 
 .bt-collapse-wrapper .collapse-header h3,
@@ -387,7 +387,7 @@
 
 .rating-item .rating-icon {
   font-size: 14px;
-  color: #10C47F;
+  color: $success;
 }
 
 .rating-item .rating-symbol {
@@ -1239,14 +1239,14 @@ input[type="text"].chosen-focus-input {
 .irs-bar {
   height: 2px;
   top: 25px;
-  background: #FF0000;
+  background: $accent;
 }
 
 .irs-bar-edge {
   top: 25px;
   height: 2px;
   width: 14px;
-  background: #FF0000;
+  background: $accent;
   border-radius: 0;
 }
 
@@ -1267,7 +1267,7 @@ input[type="text"].chosen-focus-input {
   border-radius: 16px;
   top: 18px;
   background: #FFF;
-  border: 1px solid #FF0000;
+  border: 1px solid $accent;
   -webkit-box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.2);
   box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.2);
@@ -1305,7 +1305,7 @@ input[type="text"].chosen-focus-input {
 .irs-from,
 .irs-to,
 .irs-single {
-  color: #FF0000;
+  color: $accent;
   font-size: 12px;
   line-height: 1.333;
   text-shadow: none;
@@ -2072,7 +2072,7 @@ ul.slick-dots li.slick-active button:before {
 }
 
 .slick-carousel-wrapper.slick-creative-layout-wrapper [class*=custom-arrow-wrapper] ul li button {
-  color: #FF1944;
+  color: $accent;
   width: 40px;
   height: 40px;
   line-height: 40px;
@@ -3577,7 +3577,7 @@ ul.slick-dots li.slick-active button:before {
 }
 
 .datepicker--cell.-current- {
-  color: #FF1944
+  color: $accent
 }
 
 .datepicker--cell.-current-.-focus- {
@@ -3585,11 +3585,11 @@ ul.slick-dots li.slick-active button:before {
 }
 
 .datepicker--cell.-current-.-in-range- {
-  color: #FF1944
+  color: $accent
 }
 
 .datepicker--button {
-  color: #FF1944;
+  color: $accent;
   border-radius: 3px;
 }
 
@@ -3598,11 +3598,11 @@ ul.slick-dots li.slick-active button:before {
 }
 
 .datepicker--cell.-selected- {
-  background: #FF1944
+  background: $accent
 }
 
 .datepicker--cell.-selected-.-current- {
-  background: #FF1944
+  background: $accent
 }
 
 .datepicker--cell.-selected-.-current-:hover {
@@ -3610,26 +3610,26 @@ ul.slick-dots li.slick-active button:before {
 }
 
 .datepicker--time-row input[type='range']:focus::-webkit-slider-thumb {
-  background: #FF1944;
-  border-color: #FF1944
+  background: $accent;
+  border-color: $accent
 }
 
 .datepicker--time-row input[type='range']:focus::-moz-range-thumb {
-  background: #FF1944;
-  border-color: #FF1944
+  background: $accent;
+  border-color: $accent
 }
 
 .datepicker--time-row input[type='range']:focus::-ms-thumb {
-  background: #FF1944;
-  border-color: #FF1944
+  background: $accent;
+  border-color: $accent
 }
 
 .datepicker--day-name {
-  color: #FF1944;
+  color: $accent;
 }
 
 .datepicker--cell.-selected-.-focus- {
-  background: #FF1944
+  background: $accent
 }
 
 .-selected-.datepicker--cell-day.-other-month-,

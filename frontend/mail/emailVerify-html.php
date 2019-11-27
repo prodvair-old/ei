@@ -12,7 +12,7 @@ $verifyLink = Yii::$app->urlManager->createAbsoluteUrl(['site/verify-email', 'to
     <p>Мы рады привествтовать вас на нашем сайт ei.ru</p>
     <p>
         Пройдите по этой ссылка для подтверждения регистрации<br>
-        <?= Html::a(Html::encode($verifyLink), $verifyLink)?>
+        <?= Html::a('Подтвердить', $verifyLink)?>
     </p>
     <p>Ссылка действует 24 часа.</p>
     <br>
@@ -20,5 +20,4 @@ $verifyLink = Yii::$app->urlManager->createAbsoluteUrl(['site/verify-email', 'to
         Логин: <?= Html::encode($user->username) ?><br>
         Пароль: <?= Html::encode($password) ?>
     </p>
-    <br>
 </p>

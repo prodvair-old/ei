@@ -79,7 +79,7 @@ $this->registerJsVar( 'categorySelected', 0, $position = yii\web\View::POS_HEAD 
                                             'class'=>'chosen-the-basic form-control form-control-sm', 
                                             'data-placeholder'=>'Все регионы', 
                                             'tabindex'=>'2',
-                                            'multiple' => true
+                                            'multiple' => false
                                         ])
                                         ->label('Регион');?>
                                 </div>

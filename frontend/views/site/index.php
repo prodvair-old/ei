@@ -37,7 +37,7 @@ $this->title = Yii::$app->params['title'];
 
         <div class="clear mb-100"></div>
 
-        <div class="row cols-1 cols-sm-2 cols-lg-4 gap-2 mb-20">
+        <div class="row cols-1 cols-sm-2 cols-lg-3 gap-2 mb-20">
         
             <div class="col">
 
@@ -76,7 +76,7 @@ $this->title = Yii::$app->params['title'];
                 
             </div>
             
-            <div class="col">
+            <!-- <div class="col">
 
                 <figure class="category__item" style="background-color:#2b8ac6;">
                     <a href="/business">
@@ -92,7 +92,7 @@ $this->title = Yii::$app->params['title'];
                     </a>
                 </figure>
                 
-            </div>
+            </div> -->
             
             <div class="col">
                 <figure class="category__item" style="background-color: #555e63;">
@@ -103,7 +103,7 @@ $this->title = Yii::$app->params['title'];
                         <figcaption class="content">
                           <div class="content__wrapper">
                             <h6>Реестры</h6>
-                            <p><?=$lotsBankruptCount?> лотов</p>
+                            <p><?//=$lotsBankruptCount?> </p>
                           </div>
                         </figcaption>
                     </a>

@@ -1,8 +1,9 @@
 <?php
 
 /* @var $this yii\web\View */
-
 use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+
 use frontend\components\faq\FaqFormAskQuestion;
 
 $this->title = 'Консультация специалиста';
@@ -87,7 +88,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="container-fluid">
     
         <div class="row text-center feedback">
-            <form class="col-lg-12">
+            <?php $form = ActiveForm::begin(['method'=>'POST', 'options' => ['class'=>'col-lg-12'], 'fieldConfig' => [
+                'options' => [
+                    'tag' => false,
+                ],
+            ]]); ?>
                 <h2 class="feedback__header">
                     Остались вопросы?
                 </h2>
@@ -95,16 +100,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     Чтобы получить более подробную консультацию по нашим услугам, оставьте свои данные и мы свяжемся с Вами!
                 </p>
                 <p class="feedback__form">
-                    <input type="text" placeholder="Имя" required>
-                    <input type="text" placeholder="Телефон" required>
+                    <?= $form->field($model, 'name', ['template' => '{input}'])->textInput(['placeholder' => 'Имя', 'class' => '', 'required' => true])->label(false) ?>
+
+                    <?= $form->field($model, 'phone', ['template' => '{input}'])->textInput(['placeholder' => 'Телефон', 'class' => '', 'required' => true])->label(false) ?>
                     <!-- <input type="text" placeholder="Email"> -->
-                    <button type="submit" value="Отправить">Отправить</button>
+                    <?= Html::submitButton('Отправить') ?>
                 </p>
-                <label for="chkb-1" class="feedback__policy">
-                    <input type="checkbox" id="chkb-1" class="feedback__policy__checkbox" required>
+                <label for="contactform-verifycode" class="feedback__policy">
+                    <?= $form->field($model, 'verifyCode', ['template' => "{input}"])->checkbox(['class'=>'feedback__policy__checkbox', 'required' => true])->label(false) ?>
                     <div id="chkb-1">Я согласен с условиями <a href="/policy" target="_blank">политики конфиденциальности</a></div>
                 </label>
-            </form>
+            <?php ActiveForm::end(); ?>
         </div>
 
     </div>

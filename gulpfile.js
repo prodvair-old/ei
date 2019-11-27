@@ -7,9 +7,9 @@ var gulp = require("gulp"),
   autoprefixer = require("gulp-autoprefixer"),
   rsync = require("gulp-rsync"),
   newer = require("gulp-newer"),
-  rename = require("gulp-rename"),
-  // responsive   = require('gulp-responsive'),
-  del = require("del");
+  rename = require("gulp-rename");
+// responsive   = require('gulp-responsive'),
+// del          = require('del');
 
 // Local Server
 gulp.task("browser-sync", function() {
@@ -18,7 +18,7 @@ gulp.task("browser-sync", function() {
       port: 3002
     },
     baseDir: "frontend/web/",
-    proxy: "http://ei.front",
+    proxy: "http://n.ei.ru",
     port: 3005,
     ghostMode: {
       codeSync: false,
@@ -37,7 +37,7 @@ gulp.task("browser-sync-server", function() {
       port: 3002
     },
     baseDir: "frontend/web/",
-    proxy: "http://n.ei.ru",
+    proxy: "http://ei.front",
     port: 3005,
     ghostMode: {
       codeSync: false,

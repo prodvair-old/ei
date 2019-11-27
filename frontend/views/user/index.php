@@ -72,9 +72,9 @@ $this->params['breadcrumbs'][] = [
                     
                                 <ul>
                                     
-                                    <li class="active"><a href="<?=Url::to('user/index')?>">Профиль</a></li>
-                                    <li><a href="<?=Url::to('user/wish_list')?>">Избранные</a></li>
-                                    <li><a href="<?=Url::to('user/setting')?>">Настройки</a></li>
+                                    <li class="active"><a href="<?=Url::to(['user/index'])?>">Профиль</a></li>
+                                    <li><a href="<?=Url::to(['user/wish_list'])?>">Избранные</a></li>
+                                    <li><a href="<?=Url::to(['user/setting'])?>">Настройки</a></li>
                                     <li><a href="<?=Url::to(['site/logout'])?>">Выйти</a></li>
                                     
                                 </ul>
@@ -100,16 +100,6 @@ $this->params['breadcrumbs'][] = [
                         <h3 class="heading-title"><span>Мой <span class="font200"> профиль</span></span></h3>
                         
                         <div class="clear"></div>
-
-                        <div>
-                        <a href="#" class="toast-js"> Уведомления</a>
-                        </div>
-
-                        <div class="toast">
-                            Текст сообщения...
-                            <button class="toast__close" type="button">&times;</button>
-                        </div>
-                        
                         
                     </div>
                     

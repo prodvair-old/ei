@@ -20,6 +20,7 @@ use common\models\Query\Bankrupt\Purchaselots;
 
 use common\models\Query\WishList;
 use common\models\Query\PageViews;
+use common\models\Query\LotsCategory;
 
 class Lots extends ActiveRecord 
 {
@@ -126,28 +127,21 @@ class Lots extends ActiveRecord
     {
         return $this->torgy->msgid;
     }
+    public function getLot_archive()
+    {
+        $today = new \DateTime();
+        if (strtotime($this->torgy->timeend) <= strtotime($today->format('Y-m-d H:i:s'))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     public function getLotUrl()
     {
-        $items = [
-            'transport_i_tekhnika' => '1060,1062,1073,1075,1077,1092,1145,1176,1124,1120,1118,1127',
-            'nedvizhimost' => '1061,1064,1068,1078,1088,1090,1136,1148,1157,1161,1140,1143,1102,1173',
-            'oborudovanie' => '1065,1066,1071,1083,1093,1105,1114,1115,1116,1130,1201,1096,1101,1106,1111,1113,1117,1123,1135,1147,1141,1094,1095,1100,1126,1192',
-            'selskoe_hozyajstvo' => '1079,1179,1172,1185,1188,1189,1110,1191,1137,1200',
-            'imushchestvennyj_kompleks' => '1067,1069,1070,1076,1089,1098,1099,1108,1112,1119,1129,1131,1132,1134,1138,1149,1151,1190',
-            'tovarno-materialnye_cennosti' => '1080,1081,1082,1084,1152,1154,1159,1160,1168,1175,1177,1180,1181,1183',
-            'debitorskaya_zadolzhennost' => '1121,1142,1169,1170,1199',
-            'cennye_bumagi_nma_doli_v_ustavnyh_kapitalah' => '1072,1074,1091,1144,1166,1171',
-            'syre' => '1085,1086,1087,1103,1104,1128,1133,1139,1153,1158,1165,1174,1187,1186',
-            'prochee' => '1063,1097,1107,1109,1122,1125,1150,1155,1156,1162,1163,1164,1167,1178,1182,1184,1193'
-        ];
-        foreach ($items as $key => $value) {
-            foreach ($this->category as $category) {
-                $classes = explode(',',$value);
-                foreach ($classes as $class) {
-                    if ($class == $category->lotclassifier) {
-                        return 'bankrupt/'.$key.'/'.Translit::widget(['text' => (Value::param($class))['value']]).'/'.$this->id;
-                    }
-                }
+        $items = LotsCategory::find()->all();
+        foreach ($items as $value) {
+            if ($value->bankrupt_categorys[$this->category[0]->lotclassifier]['translit'] !== null) {
+                return 'bankrupt/'.$value->translit_name.'/'.$value->bankrupt_categorys[$this->category[0]->lotclassifier]['translit'].'/'.$this->id;
             }
         }
     }

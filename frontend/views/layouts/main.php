@@ -17,6 +17,7 @@ use common\models\Query\LotsCategory;
 
 use frontend\components\LoginWidget;
 use frontend\components\SignupWidget;
+use frontend\components\ResetPasswordWidget;
 
 
 $setting = Settings::find()->orderBy('id ASC')->all();
@@ -47,15 +48,12 @@ AppAsset::register($this);
 	<!-- Title Of Site -->
     <title><?= Html::encode($this->title) ?></title>
 
-	<meta name="description" content="Tour and Travel Bootstrap 4 HTML Template" />
-	<meta name="keywords" content="tour, tour agency, tour operator, tour package, tourism, travel, travel agency, trip, vacation, holiday, travel booking, tour booking, booking, " />
-	<meta name="author" content="zh-ar.ru">
+    <meta name="description" content="<?=Yii::$app->params['description']?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
 	
     <!-- Fav and Touch Icons -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i,900,900i&display=swap&subset=cyrillic" rel="stylesheet">
-	<link rel="apple-touch-icon" sizes="180x180" href="<?= Url::to('/img/favicon/apple-touch-icon.png', true)?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= Url::to('/img/favicon/apple-touch-icon.png', true)?>">
     <link rel="icon" type="image/png" sizes="32x32" href="">
     <link rel="icon" type="image/png" sizes="16x16" href="<?= Url::to('/img/favicon/favicon-16x16.png', true)?>">
     <link rel="manifest" href="<?= Url::to('/img/favicon/site.webmanifest', true)?>">
@@ -63,7 +61,6 @@ AppAsset::register($this);
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" media="screen">	
 
     <?php $this->head() ?>
 
@@ -103,7 +100,7 @@ AppAsset::register($this);
                                         <path class="logo-acronym"
                                         d="M1636 883c24.2 0 44.1 19.8 44.1 44.1v529.3c0 24.3-19.9 44.1-44.1 44.1-24.3 0-44.2-19.8-44.2-44.1V927.1c0-24.3 19.9-44.1 44.2-44.1zm-215.5 542c10.3-8 17-20.6 17-34.7 0-24.4-19.8-44.2-44.2-44.2-11.4 0-21.9 4.4-29.8 11.6l-.1-.1c-49 35.6-108 54.7-168.6 54.7v88.3c81.1 0 160-26.3 224.9-75l.8-.6zm83.1-233.2c0-170.6-138.2-308.8-308.8-308.8-170.5 0-308.8 138.2-308.8 308.8 0 170.5 138.3 308.8 308.8 308.8v-88.3c-106.7 0-195.7-75.7-216.1-176.4h480.8c24.3 0 44.1-19.9 44.1-44.1zm-524.9-44.1c20.4-100.7 109.4-176.5 216.1-176.5 106.7 0 195.7 75.8 216.2 176.5H978.7zM1636 707.1c24.3 0 44.1 19.7 44.1 44.1 0 24.3-19.8 44.1-44.1 44.1-24.4 0-44.2-19.8-44.2-44.1 0-24.4 19.8-44.1 44.2-44.1z" />
                                     </svg> 
-                                    <span class="d-none d-sm-inline">Единый <br> интегратор</span>
+                                    <span class="d-none d-sm-inline">Единый <br> информатор</span>
                                 </a>
                             </div>
                         </div>
@@ -133,7 +130,7 @@ AppAsset::register($this);
                                     </li>
                                 <? } else { ?>
                                     <li class="d-block d-sm-block">
-                                        <a href="<?=Url::to(['user/index'])?>" class="vertival-center">
+                                        <a href="<?=Url::to(['user/wish_list'])?>" class="vertival-center">
                                             <div class="image header-avatar">
                                                 <img class="setting-image-tag" src="<?=(Yii::$app->user->identity->avatar)? Yii::$app->user->identity->avatar: 'img/image-man/01.jpg'?>" alt="Image" />
                                             </div>
@@ -333,7 +330,7 @@ AppAsset::register($this);
                             </svg>
                         </div>
                         
-                        <p class="mt-20">Цель нашего проекта - помогать людям находить самое разнообразное имущество по самым низким ценам. Наш проект собирает, обрабатывает, дополняет, анализирует информацию со всех торговых площадок и аукционов России.</p>
+                        <p class="mt-20">Единый информатор собирает, обрабатывает, дополняет информацию со всех торговых площадок России.</p>
                         
                         <!-- <a href="<?=Url::to(['pages/about'])?>" class="text-capitalize font14 h6 line-1 mb-0 font500 mt-30">Узнать больше <i class="elegent-icon-arrow_right font18 inline-block-middle"></i></a> -->
                         
@@ -350,14 +347,16 @@ AppAsset::register($this);
                                     <div class="col-inner">
                                         <h5 class="footer-title">Меню</h5>
                                         <ul class="footer-menu-list set-width">
-                                            <li><a href="/">Торги</a></li>
+                                            <li><a href="/arbitrazhnye-upravlyayushchie">Арбитражные управляющие</a></li>
+                                            <li><a href="/sro">СРО</a></li>
+                                            <li><a href="/dolzhniki">Должники</a></li>
+                                            <li><a href="/service">Услуги</a></li>
+                                            <li><a href="/contact">Контакты</a></li>
+
+                                            <!-- <li><a href="/">Торги</a></li>
                                             <li><a href="/about">О компании</a></li>
                                             <li><a href="/arbitrazhnye-upravlyayushchie">Реестры</a></li>
-                                            <li><a href="/service">Услуги</a></li>
-                                            <li><a href="/about">О нас</a></li>
-                                            <li><a href="/contact">Контакты</a></li>
-                                            <li><a href="/policy">Политика конфиденциальности</a></li>
-                                            <li><a href="/license">Лицензионное соглашение</a></li>
+                                            <li><a href="/about">О нас</a></li> -->
                                         </ul>
                                     </div>
                                     
@@ -370,10 +369,8 @@ AppAsset::register($this);
                                         <ul class="footer-menu-list set-width">
                                             <li><a href="/bankrupt">Банкротное имущество</a></li>
                                             <li><a href="/arrest">Арестованное имущество</a></li>
-                                            <li><a href="/business">Залоговое имущество</a></li>
-                                            <li><a href="/arbitrazhnye-upravlyayushchie">Арбитражные управляющие</a></li>
-                                            <li><a href="/dolzhniki">Должники</a></li>
-                                            <li><a href="/sro">СРО</a></li>
+                                            <!-- <li><a href="/business">Залоговое имущество</a></li> -->
+                                            
                                         </ul>
                                     </div>
                                     
@@ -382,20 +379,10 @@ AppAsset::register($this);
                                 <div class="col-lg-4 col-shrink">
                                     
                                     <div class="col-inner">
-                                        <h5 class="footer-title">Новости</h5>
-                                        <p class="font12">Введите свой email, чтобы получать все актуальные новости и обновления на портале ei.ru</p>
-                                        <form class="footer-newsletter mt-20">
-                                            <div class="input-group">
-                                                <input type="email" class="form-control" placeholder="Email">
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-primary" type="button"><i class="far fa-envelope"></i></button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                        <h5 class="footer-title">Социальные сети</h5>
+                                        
                                         <div class="footer-socials mt-20">
-                                            <a href="#"><i class="fab fa-facebook-square"></i></a>
-                                            <a href="#"><i class="fab fa-twitter-square"></i></a>
-                                            <a href="#"><i class="fab fa-google-plus-square"></i></a>
+                                            <a href="#"><i class="fab fa-telegram"></i></a>
                                             <a href="#"><i class="fab fa-vk"></i></a>
                                         </div>
                                     </div>
@@ -436,7 +423,11 @@ AppAsset::register($this);
                 
                     <div class="col-auto">
                         <div class="col-inner">
-                            <p class="footer-copy-center">© 2019 "ei.ru" Обращаем ваше внимание на то, что данный Интернет-сайт носит исключительно информационный характер и ни при каких условиях не является публичной офертой, определяемой положениями Статьи 437 Гражданского кодекса Российской Федерации.</p>
+                            <p class="footer-copy-center">Обращаем ваше внимание на то, что данный Интернет-сайт носит исключительно информационный характер и ни при каких условиях не является публичной офертой, определяемой положениями Статьи 437 Гражданского кодекса Российской Федерации.</p>
+                            <p class="footer-copy-center">
+                            <a href="/policy">Политика конфиденциальности</a> и <a href="/license"> Лицензионное соглашение</a>  © 2019 ei.ru
+                            
+                            </p>
                         </div>
                     </div>
                     
@@ -474,38 +465,8 @@ AppAsset::register($this);
                 <?=LoginWidget::widget()?>
                 
                 <?=SignupWidget::widget()?>
-                
-                
-                <div role="tabpanel" class="tab-pane fade in" id="loginFormTabInModal-forgot-pass">
-                    
-                    <div class="form-login">
-                    
-                        <div class="form-header">
-                            <h4>Lost your password?</h4>
-                            <p>Please provide your detail.</p>
-                        </div>
-                        
-                        <div class="form-body">
-                            <form method="post" action="#">
-                                <p class="line-145">We'll send password reset instructions to the email address associated with your account.</p>
-                                <div class="row">
-                                    <div class="col-12 col-md-10 col-lg-8">
-                                        <div class="form-group">
-                                            <input type="password" class="form-control" placeholder="password" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary mt-5">Retreive password</button>
-                            </form>
-                        </div>
-                        
-                        <div class="form-footer">
-                            <p>Back to <a href="#loginFormTabInModal-login" class="tab-external-link font600">Sign in</a> or <a href="#loginFormTabInModal-register" class="tab-external-link font600">Sign up</a></p>
-                        </div>
-                        
-                    </div>
-                    
-                </div>
+
+                <?=ResetPasswordWidget::widget()?>
                 
             </div>
             

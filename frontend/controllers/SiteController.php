@@ -178,10 +178,10 @@ class SiteController extends Controller
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+            Yii::$app->session->setFlash('success', 'Спасибо за регистрацию. Пожайлуйста зайдите на почту для подтверждения акаунта.');
             return ['result'=>false, 'error'=>'Спасибо за регистрацию!'];
         }
-
+        Yii::$app->session->setFlash('error', 'Такой пользователь уже существует');
         return ['result'=>false, 'error'=>'Такой пользователь уже существует'];
     }
 
@@ -192,20 +192,18 @@ class SiteController extends Controller
      */
     public function actionRequestPasswordReset()
     {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
-
-                return $this->goHome();
+                Yii::$app->session->setFlash('success', 'Вам на почту отправлена ссылка для восстановления!');
+                return ['result'=>true, 'error'=>'Вам на почту отправлена ссылка для восстановления!'];
             } else {
-                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
+                Yii::$app->session->setFlash('error', 'Извините, мы не можем восстановить пароль. Такого E-mail не существует.');
+                return ['result'=>false, 'error'=>'Извините, мы не можем восстановить пароль. Такого E-mail не существует.'];
             }
         }
-
-        return $this->render('requestPasswordResetToken', [
-            'model' => $model,
-        ]);
+        return ['result'=>false, 'error'=>'Заполшните поля'];
     }
 
     /**
@@ -250,15 +248,14 @@ class SiteController extends Controller
         }
         if ($user = $model->verifyEmail()) {
             if (Yii::$app->user->login($user)) {
-                Yii::$app->session->setFlash('success', 'Your email has been confirmed!');
-                return $this->goHome();
+                Yii::$app->session->setFlash('success', 'Ваш E-mail подтверждён!');
+                return $this->render('verifyEmail');
             }
         }
 
-        Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
+        Yii::$app->session->setFlash('error', 'Извините но ваш токен не действителен.');
         return $this->goHome();
     }
-
     /**
      * Resend verification email
      *

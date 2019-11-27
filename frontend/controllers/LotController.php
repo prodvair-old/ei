@@ -80,6 +80,31 @@ class LotController extends Controller
         ];
     }
 
+    public function actionRedirect($category, $subcategory = null, $id = null)
+    {
+        if ($category && $subcategory && $id) {
+            $url = "$category/$subcategory/$id";
+        } else if ($category && $subcategory) {
+            $url = "$category/$subcategory";
+        } else {
+            $url = $category;
+        }
+
+        return $this->redirect("/bankrupt/$url");
+    }
+
+    public function actionRedirectRegion($category, $subcategory = null, $region = null)
+    {
+        if ($category && $subcategory && $region) {
+            $url = "$category/$subcategory/$region";
+        } else if ($category && $subcategory) {
+            $url = "$category/$subcategory";
+        } else {
+            $url = $category;
+        }
+
+        return $this->redirect("/bankrupt/$url");
+    }
     /**
      * Displays homepage.
      *
@@ -97,8 +122,8 @@ class LotController extends Controller
                 $title = 'Банкротное имущество';
                 break;
             case 'arrest':
-                $lots = LotsArrest::find()->joinWith('torgs')->limit(3)->orderBy('torgs."trgPublished" DESC')->all();
-                $lotsFovarit = LotsArrest::find()->joinWith('torgs')->limit(3)->orderBy('torgs."trgPublished" DESC')->all();
+                $lots = LotsArrest::find()->joinWith('torgs')->where('torgs."trgExpireDate" >= NOW()')->limit(3)->orderBy('torgs."trgPublished" DESC')->all();
+                $lotsFovarit = LotsArrest::find()->joinWith('torgs')->where('torgs."trgExpireDate" >= NOW()')->limit(3)->orderBy('torgs."trgPublished" DESC')->all();
 
                 $title = 'Арестованное имущество';
                 break;

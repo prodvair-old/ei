@@ -10,7 +10,7 @@ use common\models\User;
  */
 class PasswordResetRequestForm extends Model
 {
-    public $email;
+    public $username;
 
 
     /**
@@ -19,11 +19,11 @@ class PasswordResetRequestForm extends Model
     public function rules()
     {
         return [
-            ['email', 'trim'],
-            ['email', 'required'],
-            ['email', 'email'],
-            ['email', 'exist',
-                'targetClass' => '\common\models\User',
+            ['username', 'trim'],
+            ['username', 'required'],
+            ['username', 'email'],
+            ['username', 'exist',
+                'targetClass' => User::className(),
                 'filter' => ['status' => User::STATUS_ACTIVE],
                 'message' => 'There is no user with this email address.'
             ],
@@ -40,7 +40,7 @@ class PasswordResetRequestForm extends Model
         /* @var $user User */
         $user = User::findOne([
             'status' => User::STATUS_ACTIVE,
-            'email' => $this->email,
+            'username' => $this->username,
         ]);
 
         if (!$user) {
@@ -55,14 +55,14 @@ class PasswordResetRequestForm extends Model
         }
 
         return Yii::$app
-            ->mailer
+            ->mailer_support
             ->compose(
-                ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
+                ['html' => 'passwordResetToken-html'],
                 ['user' => $user]
             )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-            ->setTo($this->email)
-            ->setSubject('Password reset for ' . Yii::$app->name)
+            ->setFrom(['support@ei.ru' => Yii::$app->name . ' robot'])
+            ->setTo($this->username)
+            ->setSubject('Восстановление пароля ' . Yii::$app->name)
             ->send();
     }
 }
