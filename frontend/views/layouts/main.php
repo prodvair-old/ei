@@ -174,7 +174,7 @@ AppAsset::register($this);
                             ['label' => 'СРО', 'url' => ['sro/list']]
                           ]],
                           ['label' => 'Услуги', 'url' => ['services/index'], 'items' => [
-                            ['label' => 'Консультация специалиста', 'url' => ['service/specialist']],
+                            // ['label' => 'Консультация специалиста', 'url' => ['service/specialist']],
                             ['label' => 'Услуги агента', 'url' => ['service/agent']],
                             ['label' => 'Как приобрести лот?', 'url' => ['service/ecp']]
                           ]],
@@ -412,18 +412,18 @@ AppAsset::register($this);
 
           <div class="row shrink-auto-md gap-10 gap-40-lg">
 
-            <!-- <div class="col-auto">
-                        <div class="col-inner">
+            <div class="col-auto">
+                        <!-- <div class="col-inner">
                             <ul class="footer-menu-list-02">
                                 <li><a href="#">Cookies</a></li>
                                 <li><a href="#">Policies</a></li>
                                 <li><a href="#">Terms</a></li>
                                 <li><a href="#">Blogs</a></li>
                             </ul>
-                        </div>
-                    </div> -->
+                        </div> -->
+                    <!-- </div>
                     
-                </div>
+                </div> -->
                 <div class="row shrink-auto-md gap-10 gap-40-lg">
                 
                     <div class="col-auto">

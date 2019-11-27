@@ -47,9 +47,9 @@ $this->params['breadcrumbs'][] = $this->title;
             Делаем<span class="text-lowercase"> всё чтобы </span>Вам <span class="text-lowercase">было удобно!</span>
             </h2>
 	    </div>
-        <?=AboutNavigation::widget()?>
+        <=AboutNavigation::widget()?>
 
-        <!-- <div class="section-title text-center w-100">
+        <div class="section-title text-center w-100">
 		    <h2>
                 Наша<span class="text-lowercase"> команда</span>
             </h2>
