@@ -209,7 +209,9 @@ class Lots extends ActiveRecord
                 
             }
         } catch (\Throwable $th) {
-            $result[] = 'https://ei.ru/img/lot/'.$image->objid.'/'.$image->fileurl;
+            foreach ($images as $image) {
+                $result[] = 'http://n.ei.ru/img/lot/'.$image->objid.'/'.$image->fileurl;
+            }
         }
         
         return $result;
@@ -238,7 +240,7 @@ class Lots extends ActiveRecord
         } catch (\Throwable $th) {
             $result[] = [
                 'id' => $image->id,
-                'url' => 'https://ei.ru/img/lot/'.$image->objid.'/'.$image->fileurl,
+                'url' => 'http://n.ei.ru/img/lot/'.$image->objid.'/'.$image->fileurl,
                 'fileName' => $image->fileurl,
             ];
             ;

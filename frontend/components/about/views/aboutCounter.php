@@ -11,11 +11,7 @@
                 <div class="item-counting">
                     <div class="counting-inner text-center">
                         <div class="counting-number">
-<<<<<<< HEAD
                             <span class="fs-40">> 50,000</span>
-=======
-                            <span class="counter fs-40" data-decimal-delimiter="," data-thousand-delimiter="," data-value="50000" ></span>
->>>>>>> 1abcd090c335797365515af9fc3d0e12da769949
                         </div>
                         <span class="counting-label">Актуальных лотов</span>
                     </div>
@@ -28,15 +24,7 @@
                 <div class="item-counting">
                     <div class="counting-inner text-center">
                         <div class="counting-number">
-<<<<<<< HEAD
-                            <span class=" fs-40">24/7</span>
-=======
-<<<<<<< HEAD
                             <span class="fs-40">24/7</span>
-=======
-                            <span class=" fs-40">24/7</span>
->>>>>>> 1abcd090c335797365515af9fc3d0e12da769949
->>>>>>> 9b6389752e9292985174fcbcf97f32b473ee813f
                         </div>
                         <span class="counting-label">Актуализация данных</span>
                     </div>

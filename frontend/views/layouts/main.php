@@ -40,7 +40,6 @@ AppAsset::register($this);
 <html lang="<?= Yii::$app->language ?>">
 
 <head>
-<<<<<<< HEAD
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -92,35 +91,6 @@ AppAsset::register($this);
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
-=======
-  <meta charset="<?= Yii::$app->charset ?>">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <base href="<?= (Yii::$app->request->hostInfo == 'http://ei.front') ? 'http://localhost:3005' : Yii::$app->request->hostInfo; ?>">
-  <?php $this->registerCsrfMetaTags() ?>
-
-  <!-- Title Of Site -->
-  <title><?= Html::encode($this->title) ?></title>
-
-  <meta name="description" content="<?= Yii::$app->params['description'] ?>" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-  <!-- Fav and Touch Icons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="<?= Url::to('/img/favicon/apple-touch-icon.png', true) ?>">
-  <link rel="icon" type="image/png" sizes="32x32" href="">
-  <link rel="icon" type="image/png" sizes="16x16" href="<?= Url::to('/img/favicon/favicon-16x16.png', true) ?>">
-  <link rel="manifest" href="<?= Url::to('/img/favicon/site.webmanifest', true) ?>">
-  <link rel="mask-icon" href="<?= Url::to('/img/favicon/safari-pinned-tab.svg', true) ?>" color="#5bbad5">
-  <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="theme-color" content="#ffffff">
-
-
-  <?php $this->head() ?>
-
-  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
->>>>>>> 9b6389752e9292985174fcbcf97f32b473ee813f
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
