@@ -149,6 +149,7 @@ class LotController extends Controller
     // Ссылка на категории лотов
     public function actionSearch($type, $category, $subcategory = null, $region = null)
     {
+        $start = microtime(true);
         $model = new SearchLot();
         $modelSort = new SortLot();
         $urlParamServer = $_SERVER['REQUEST_URI'];
@@ -270,7 +271,7 @@ class LotController extends Controller
                         $price = $lotsPrice->select(['min(lots."lotStartPrice")','max(lots."lotStartPrice")'])->asArray()->one();
                     break;
             }
-            Yii::$app->cache->set($lot_price_cache, $price, 3600*12);
+            Yii::$app->cache->set($lot_price_cache, $price, 3600*24);
         }
         $count = $lotsCount->count();
 
@@ -285,10 +286,10 @@ class LotController extends Controller
                 ->limit($pages->limit)
                 ->all();
 
-            Yii::$app->cache->set($lot_list_cache, $lots, 3600*12);
+            Yii::$app->cache->set($lot_list_cache, $lots, 3600*24);
         }
         // Фильтрация лотов <-End 
-
+        // var_dump('Время генерации: ' . ( microtime(true) - $start ) . ' сек.');
         // Хлебные крошки Start->
         Yii::$app->params['breadcrumbs'][] = [
             'label' => ' '.$titleType,

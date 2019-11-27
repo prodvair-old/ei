@@ -183,13 +183,13 @@ class SearchLot extends Model
                     if (!empty($this->maxPrice)) {
                         $whereAnd[] = ['<=', 'lot_startprice', $this->maxPrice];
                     }
-                    if (!empty($this->archivCheck)) {
-                        if (!$this->archivCheck) {
-                            $where[] = 'lot_timeend >= NOW()';
-                        }
-                    } else {
-                        $where[] = 'lot_timeend >= NOW()';
-                    }
+                    // if (!empty($this->archivCheck)) {
+                    //     if (!$this->archivCheck) {
+                    //         $where[] = 'lot_timeend >= NOW()';
+                    //     }
+                    // } else {
+                    //     $where[] = 'lot_timeend >= NOW()';
+                    // }
                     if (!empty($this->imageCheck)) {
                         $where[] = ['lot_image' => $this->imageCheck];
                     }

@@ -65,18 +65,6 @@ class LotsBankrupt extends ActiveRecord
     {
         return $this->lot_id;
     }
-    public function getLotCadastre() 
-    {
-        $kadastr_check = preg_match("/[0-9]{2}:[0-9]{2}:[0-9]{6,7}:[0-9]{1,35}/", $this->lot_description, $kadastr);
-        return ($kadastr_check)? $kadastr[0] : false;
-    }
-    public function getLotVin() 
-    {
-        $vin_text = str_replace('VIN', '',$this->lot_description);
-        $vin_check = preg_match("/[ABCDEFGHJKLMNPRSTUVWXYZ,0-9]{17}/", $vin_text, $vin_t);
-        preg_match("/([\.|,|!|\?]+)/", $vin_t[0], $vin);
-        return ($vin_check)? $vin[0] : false;
-    }
     public function getLotOldPrice() 
     {
         if ($this->torgy_tradetype == 'OpenedAuction') {
@@ -144,7 +132,9 @@ class LotsBankrupt extends ActiveRecord
                     
                 }
             } catch (\Throwable $th) {
-                $result[] = 'https://ei.ru/img/lot/'.$image->objid.'/'.$image->fileurl;
+                foreach ($this->images as $image) {
+                    $result[] = 'https://ei.ru/img/lot/'.$image->objid.'/'.$image->fileurl;
+                }
             }
             
             return $result;
@@ -152,37 +142,6 @@ class LotsBankrupt extends ActiveRecord
             return false;
         }
         
-    }
-    public function getLotImageFromId() 
-    {
-        try {
-            foreach ($this->images as $image) {
-                if (!$imageUrl = Yii::$app->cache->get('lot_image-'.$image->objid.'-name-'.$image->fileurl)) {
-                    $imageUrl = '/img/lot/'.$image->objid.'/min-'.$image->fileurl;
-                    Image::frame(Yii::getAlias('@frontendWeb/img/lot/'.$image->objid.'/'.$image->fileurl))
-                        ->thumbnail(new Box(250, 250))
-                        ->save(Yii::getAlias('@frontendWeb'.$imageUrl), ['quality' => 50]);
-
-                    Yii::$app->cache->set('lot_image-'.$image->objid.'-name-'.$image->fileurl, $imageUrl, 3600*24*7);
-                }
-                
-                $result[] = [
-                    'id' => $image->id,
-                    'url' => $imageUrl,
-                    'fileName' => $image->fileurl,
-                ];
-                
-            }
-        } catch (\Throwable $th) {
-            $result[] = [
-                'id' => $image->id,
-                'url' => 'https://ei.ru/img/lot/'.$image->objid.'/'.$image->fileurl,
-                'fileName' => $image->fileurl,
-            ];
-            ;
-        }
-        
-        return $result;
     }
     public function getLotType()
     {
@@ -238,52 +197,52 @@ class LotsBankrupt extends ActiveRecord
     //     ];
     // }
     // Все поля
-    public function fields()
-    {
-        return [
-            'lot_id'            => 'lot_id',
-            'lot_torgy_id'      => 'torgy_id',
-            'lot_description'   => 'lot_description',
-            'lot_cadastre_id'   => 'lot_cadastreid',
-            'lot_start_price'   => 'lot_startprice',
-            'lot_step_price'    => 'lot_stepprice',
-            'lot_advance'       => 'lot_advance',
-            'lot_status'        => 'torgy_status',
-            'lot_publication'   => 'lot_timepublication',
-            'lot_tradetype'     => 'torgy_tradetype',
-            'lot_pricetype'     => 'torgy_pricetype',
-            'lot_date_start'    => 'lot_timebegin',
-            'lot_date_end'      => 'lot_timeend',
-            'lot_rules'         => 'torgy_rules',
-            'lot_etp'           => 'lot_tradename',
-            'lot_etp_link'      => 'lot_tradesite',
-            'lot_etp_id'        => 'lot_idtradeplace',
-            'lot_bnkt_inn'      => 'bnkr__inn',
-            'lot_bnkt_name'     => 'bnkr__name',
-            'lot_bnkt_addres'   => 'bnkr__address',
-            'lot_case_id'       => 'case_id',
-            'lot_regionid'      => 'lot_regionid',
-            'lot_areaid'        => 'lot_areaid',
-            'lot_image_check'   => 'lot_image',
-            'lot_advance_step_unit' => 'lot_advancestepunit',
-            'lot_auction_step_unit' => 'lot_auctionstepunit',
-            'lot_pricere_duction'   => 'lot_pricereduction',
-            'lot_torgy_description' => 'torgy_description',
-            // Другие поля для поиска
-            'lot_title'         => 'lotTitle',
-            'lot_price'         => 'lotPrice',
-            'lot_old_price'     => 'lotOldPrice',
-            'lot_images'        => 'lotImage',
-            'lot_address'       => 'lotAddress',
-            'lot_category'      => 'lotCategory',
-            'lot_cadastre'      => 'lotCadastre',
-            'lot_vin'           => 'lotVin',
-            // 'lot_category_translit' => 'lotCategoryTranslit',
-            'wish_id'           => 'lotWishId',
-            'lot_type'           => 'lotType',
-            'lot_views'         => 'lotViews'
-        ];
-    }
+    // public function fields()
+    // {
+    //     return [
+    //         'lot_id'            => 'lot_id',
+    //         'lot_torgy_id'      => 'torgy_id',
+    //         'lot_description'   => 'lot_description',
+    //         'lot_cadastre_id'   => 'lot_cadastreid',
+    //         'lot_start_price'   => 'lot_startprice',
+    //         'lot_step_price'    => 'lot_stepprice',
+    //         'lot_advance'       => 'lot_advance',
+    //         'lot_status'        => 'torgy_status',
+    //         'lot_publication'   => 'lot_timepublication',
+    //         'lot_tradetype'     => 'torgy_tradetype',
+    //         'lot_pricetype'     => 'torgy_pricetype',
+    //         'lot_date_start'    => 'lot_timebegin',
+    //         'lot_date_end'      => 'lot_timeend',
+    //         'lot_rules'         => 'torgy_rules',
+    //         'lot_etp'           => 'lot_tradename',
+    //         'lot_etp_link'      => 'lot_tradesite',
+    //         'lot_etp_id'        => 'lot_idtradeplace',
+    //         'lot_bnkt_inn'      => 'bnkr__inn',
+    //         'lot_bnkt_name'     => 'bnkr__name',
+    //         'lot_bnkt_addres'   => 'bnkr__address',
+    //         'lot_case_id'       => 'case_id',
+    //         'lot_regionid'      => 'lot_regionid',
+    //         'lot_areaid'        => 'lot_areaid',
+    //         'lot_image_check'   => 'lot_image',
+    //         'lot_advance_step_unit' => 'lot_advancestepunit',
+    //         'lot_auction_step_unit' => 'lot_auctionstepunit',
+    //         'lot_pricere_duction'   => 'lot_pricereduction',
+    //         'lot_torgy_description' => 'torgy_description',
+    //         // Другие поля для поиска
+    //         'lot_title'         => 'lotTitle',
+    //         'lot_price'         => 'lotPrice',
+    //         'lot_old_price'     => 'lotOldPrice',
+    //         'lot_images'        => 'lotImage',
+    //         'lot_address'       => 'lotAddress',
+    //         'lot_category'      => 'lotCategory',
+    //         'lot_cadastre'      => 'lotCadastre',
+    //         'lot_vin'           => 'lotVin',
+    //         // 'lot_category_translit' => 'lotCategoryTranslit',
+    //         'wish_id'           => 'lotWishId',
+    //         'lot_type'           => 'lotType',
+    //         'lot_views'         => 'lotViews'
+    //     ];
+    // }
 
     // Связи с таблицами
     public function getViews()
