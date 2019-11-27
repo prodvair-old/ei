@@ -683,17 +683,17 @@ section,
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 3000px;
+    width: 15px;
     background-color: #333;
     display: block;
   }
 
   .header-main.with-absolute-navbar .navbar:before {
-    left: -3000px;
+    left: -15px;
   }
 
   .header-main.with-absolute-navbar .navbar:after {
-    right: -3000px;
+    right: -15px;
   }
 
   .header-main.header-mobile-menu .main-menu-nav .main-nav {

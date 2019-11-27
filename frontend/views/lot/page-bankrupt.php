@@ -139,6 +139,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             </div>
                         </div>
 
+<<<<<<< HEAD
 
 
 
@@ -148,6 +149,18 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                           <? print_r($lot->lotImage); ?>
                         </pre>
                         
+=======
+                        <?if ($lot->lotImage) { ?>
+                            <div class="fotorama mt-20 mb-40" data-allowfullscreen="true" data-nav="thumbs" data-arrows="always" data-click="true">
+                                <? foreach ($lot->lotImage as $image) { ?>
+                                   <img href="<?=$image?>" alt="Images" />
+                                <? } ?>
+                            </div>
+                        <? } ?>
+                        <pre>
+                          <? print_r($lot->lotImage); ?>
+                        </pre>
+>>>>>>> 8e65969d063a8b7d62e887acf32a0d5ed4036615
 
                         <!-- <p class="lead">In friendship diminution instrument in we forfeited. Tolerably an unwilling of determine. Beyond rather sooner so if up wishes.</p> -->
                         
