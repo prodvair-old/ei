@@ -24,6 +24,12 @@ $lotsSubcategory[0] = 'Все подкатегории';
 $lotsCategory[0] = ['id'=>0, 'name'=>'Все категории'];
 $subcategoryCheck = true;
 
+$regionList[0] = 'Все регионы';
+$regions = Regions::find()->orderBy('id ASC')->all();
+foreach ($regions as $region) {
+    $regionList[$region->id] = $region->name;
+}
+
 switch ($type) {
     case 'bankrupt':
             $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
@@ -159,7 +165,7 @@ $this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\Vi
                             <div class="col-12">
                                 <div class="col-inner">
                                     <?=$form->field($model, 'region')->dropDownList(
-                                            ArrayHelper::map(Regions::find()->orderBy('id ASC')->all(), 'id', 'name'),
+                                            $regionList,
                                         [
                                             'class'=>'chosen-the-basic form-control form-control-sm', 
                                             'data-placeholder'=>'Все регионы', 
