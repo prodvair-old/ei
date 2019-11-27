@@ -181,6 +181,13 @@
             margin: auto
 
 .category
+  &__links
+    line-height: 1.4
+    a 
+      color: #ffffff
+      &:hover
+        text-decoration: underline
+     
   &__item
     background-color: $otkrytie
     color: #fff
@@ -207,7 +214,6 @@
       h6
         margin: auto
         color: #fff !important
-        
         text-transform: uppercase
       &__wrapper
         margin: auto
@@ -332,6 +338,7 @@ body
 
   // Услуги агента
 .agent
+
   &__header
     font-weight: 700
     font-size: 20px
@@ -342,6 +349,7 @@ body
     font-size: 75px
   &__step
     margin: 70px 0
+    display: flex !important
     &__header
       font-weight: 700
       font-size: 20px

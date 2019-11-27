@@ -70,121 +70,114 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <!-- Ожидает на торгах -->
-
-    <h2 class="text-center">Что Вас ждет на торгах за имущество</h2>
-
-    <div class="row agent__step">
-
-      <div class="col-lg-4">
-
-        <div class="agent__step__img mb-30">
-          <img src="\img\services\flame-sign-up.png" alt="Image">
-        </div>
-
-      </div>
-
+    <div class="row justify-content-center align-items-center mt-60">
       <div class="col-lg-8">
+        <h2 class="text-center">Что Вас ждет на торгах за имущество</h2>
 
-        <p class="agent__step__header">
-          Подготовка документов
-        </p>
+        <div class="row agent__step">
 
-        <p>
-          Вам необходимо внимательно подготовить полный пакет документов и правильно сделать их сканы.
-        </p>
+          <div class="col-md-4">
 
-        <p class="agent__step__mark">
-          Сканы документов могут отклонить из-за любой мелочи (тон печати, изгибы, видимость символов).
-        </p>
+            <div class="agent__step__img mb-30">
+              <img src="\img\services\flame-sign-up.png" alt="Image">
+            </div>
 
-      </div>
-    </div>
+          </div>
 
-    <div class="row agent__step">
+          <div class="col-md-8">
 
-      <div class="col-lg-8 order-2 order-lg-1">
+            <p class="agent__step__header">
+              Подготовка документов
+            </p>
 
-        <p class="agent__step__header">
-          Покупка цифровой подписи (ЭЦП)
-        </p>
+            <p>
+              Вам необходимо внимательно подготовить полный пакет документов и правильно сделать их сканы.
+              Сканы документов могут отклонить из-за любой мелочи (тон печати, изгибы, видимость символов).
+            </p>
 
-        <p>
-          Вам нужно получить электронную цифровую подпись, это трудный и долгий процесс. Кроме того, есть разные виды ЭЦП, и Вы рискуете приобрести неподходящую.
-        </p>
+          </div>
+        </div>
 
-        <p class="agent__step__mark">
-          Стоимость ЭЦП может доходить до 14 000 РУБ.
-        </p>
+        <div class="row agent__step">
 
-      </div>
+          <div class="col-md-8 order-2 order-lg-1">
 
-      <div class="col-lg-4 order-1 order-lg-2">
+            <p class="agent__step__header">
+              Покупка цифровой подписи (ЭЦП)
+            </p>
 
-        <div class="agent__step__img mb-30">
-          <img src="\img\services\flame-6.png" alt="Image">
+            <p>
+              Вам нужно получить электронную цифровую подпись, это трудный и долгий процесс. Кроме того, есть разные виды ЭЦП, и Вы рискуете приобрести неподходящую.
+              Стоимость ЭЦП может доходить до 14 000 РУБ.
+            </p>
+
+          </div>
+
+          <div class="col-md-4 order-1 order-md-2">
+
+            <div class="agent__step__img mb-30">
+              <img src="\img\services\flame-6.png" alt="Image">
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="row agent__step">
+
+          <div class="col-md-4">
+
+            <div class="agent__step__img mb-30">
+              <img src="\img\services\flame-8.png" alt="Image">
+            </div>
+
+          </div>
+
+          <div class="col-md-8">
+
+            <p class="agent__step__header">
+              Изучение интерфейса площадки и особенностей работы на ней
+            </p>
+
+            <p>
+              Все без исключений электронные торговые площадки имеют сложный интерфейс. На его изучение может уйти много времени.
+
+              Были прецеденты, когда участник не мог подать заявку 3 дня.
+            </p>
+
+          </div>
+        </div>
+
+
+        <div class="row agent__step">
+
+          <div class="col-md-8 order-2 order-lg-1">
+
+            <p class="agent__step__header">
+              Аккредитация на площадке
+            </p>
+
+            <p>
+              Аккредитация на площадке занимает до 3 рабочих дней - если всё сделать правильно. При этом необходимо будет подготовить правильные сканы. Проверять придется все вплоть до каждого изгиба и тона печати, чтобы исключить ошибки.
+
+              Аккредитация может занять от 3 до 9 рабочих дней.
+            </p>
+
+          </div>
+
+          <div class="col-md-4 order-1 order-md-2">
+
+            <div class="agent__step__img mb-30 ">
+              <img src="\img\services\flame-2.png" alt="Image">
+            </div>
+
+          </div>
+
         </div>
 
       </div>
-
     </div>
-
-
-    <div class="row agent__step">
-
-      <div class="col-lg-4">
-
-        <div class="agent__step__img mb-30">
-          <img src="\img\services\flame-8.png" alt="Image">
-        </div>
-
-      </div>
-
-      <div class="col-lg-8">
-
-        <p class="agent__step__header">
-          Изучение интерфейса площадки и особенностей работы на ней
-        </p>
-
-        <p>
-          Все без исключений электронные торговые площадки имеют сложный интерфейс. На его изучение может уйти много времени.
-        </p>
-
-        <p class="agent__step__mark">
-          Были прецеденты, когда участник не мог подать заявку 3 дня.
-        </p>
-
-      </div>
-    </div>
-
-
-    <div class="row agent__step">
-
-      <div class="col-lg-8 order-2 order-lg-1">
-
-        <p class="agent__step__header">
-          Аккредитация на площадке
-        </p>
-
-        <p>
-          Аккредитация на площадке занимает до 3 рабочих дней - если всё сделать правильно. При этом необходимо будет подготовить правильные сканы. Проверять придется все вплоть до каждого изгиба и тона печати, чтобы исключить ошибки.
-        </p>
-
-        <p class="agent__step__mark">
-          Аккредитация может занять от 3 до 9 рабочих дней.
-        </p>
-
-      </div>
-
-      <div class="col-lg-4 order-1 order-lg-2">
-
-        <div class="agent__step__img mb-30 ">
-          <img src="\img\services\flame-2.png" alt="Image">
-        </div>
-
-      </div>
-
-    </div>
-
   </div>
 
   <!-- <div class="container">
