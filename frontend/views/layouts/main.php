@@ -406,7 +406,7 @@ AppAsset::register($this);
                                             <!-- <a href="#"><i class="fab fa-telegram" target="_blank"></i></a> -->
                                             <!-- <a href="https://vk.com/eiru_torgi"><i class="fab fa-vk" target="_blank"></i></a> -->
                                             <a href="https://www.instagram.com/ei.ru_life" target="_blank"><i class="fab fa-instagram"></i></a>
-                                            <a href="https://www.facebook.com/ei.ru.life"><i class="fab fa-facebook" target="_blank"></i></a>
+                                            <a href="https://www.facebook.com/ei.ru.life" target="_blank"><i class="fab fa-facebook" target="_blank"></i></a>
                                         </div>
                                     </div>
                                     
