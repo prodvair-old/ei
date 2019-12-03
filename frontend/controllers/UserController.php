@@ -128,7 +128,7 @@ class UserController extends Controller
                             $model->additionalConditions    = (string)$sheetData[$baseRow]['T'];
                             $model->currentPeriod       = (string)$sheetData[$baseRow]['U'];
                             $model->contactPersonId     = Yii::$app->user->id;
-                            $model->ownerId             = 2;
+                            $model->ownerId             = Yii::$app->user->identity->ownerId;
 
                             if (Yii::$app->params['exelParseResult'][$baseRow]['status'] = $model->save()) {
                                 $loadCount++;

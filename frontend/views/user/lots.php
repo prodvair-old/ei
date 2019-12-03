@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
 
-use common\models\Query\Zalog\LotsZalog;
+use common\models\Query\Zalog\OwnerProperty;
 
 use frontend\components\LotBlockZalog;
 use frontend\components\ProfileMenu;
@@ -24,6 +24,8 @@ $this->params['breadcrumbs'][] = [
     'url' => ['user/lots']
 ];
 $this->registerJsVar( 'lotType', 'zalog', $position = yii\web\View::POS_HEAD );
+
+$owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
 ?>
 
 <section class="page-wrapper page-detail">
@@ -106,37 +108,37 @@ $this->registerJsVar( 'lotType', 'zalog', $position = yii\web\View::POS_HEAD );
 
                         <p>
                             Вам открыта возможность размещать лоты
-                            <br>Ваша организация: *название организации*
-                            <br>количество опубликованных лотов: <?=$lotsCount?>
+                            <br>Ваша организация: <strong>"<?=$owner->name?>"</strong>
+                            <br>Количество опубликованных лотов: <strong><?=$lotsCount?></strong>
                         </p>
                         
                         <hr>
 
                         <h4>Как загрузить лоты:</h4>
-                        <ul>
+                        <ul class="list-icon-absolute what-included-list mb-30">
                             <li>
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                <p>Скачайте <a href="<?=Url::to('files/Формат_добавления_лотов_в_залоговое_иммущество_ei.ru.xlsx')?>" target="_blank" downloa>шаблон excel</a> файла;</p>
+                                Скачайте <a href="<?=Url::to('files/Формат_добавления_лотов_в_залоговое_иммущество_ei.ru.xlsx')?>" target="_blank" downloa>шаблон excel</a> файла;
                             </li>
                             <li>
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                <p>Заполните файл в соответствии с  <a href="<?=Url::to('files/Формат_добавления_лотов_в_залоговое_иммущество_ei.ru.xlsx')?>" target="_blank" downloa>требованиями</a>;</p>
+                                Заполните файл в соответствии с  <a href="<?=Url::to('files/Формат_добавления_лотов_в_залоговое_иммущество_ei.ru.xlsx')?>" target="_blank" downloa>требованиями</a>;
                             </li>
                             <li>
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                <p>Загрузите заполненный вашими данными файл в соответствующую форму;</p>
+                                Загрузите заполненный вашими данными файл в соответствующую форму;
                             </li>
                             <li>
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                <p>Лоты из файла появятся в профиле со статусом “Архив”;</p>
+                                Лоты из файла появятся в профиле со статусом “Не опубликовано”;
                             </li>
                             <li>
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                <p>Добавьте каждому лоту вручную фотографии (возможно выбрать несколько), добавьте <br>категорию и подкатегорию (возможно выбрать несколько);</p>
+                                Добавьте каждому лоту вручную фотографии (возможно выбрать несколько), добавьте <br>категорию и подкатегорию (возможно выбрать несколько);
                             </li>
                             <li>
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                <p>Нажмите кнопку “Опубликовать”.</p>
+                                Нажмите кнопку “Опубликовать”.
                             </li>
                         </ul>
 
@@ -144,8 +146,15 @@ $this->registerJsVar( 'lotType', 'zalog', $position = yii\web\View::POS_HEAD );
 
                         <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]);?>
 
-                            <?= $form->field($modelImport,'fileImport')->fileInput() ?>
-                            <?= Html::submitButton('Импортировать лоты',['class'=>'btn btn-primary']);?>
+                            <?= $form->field($modelImport,'fileImport')->fileInput(['class'=> 'input-file'])->label(false) ?>
+
+                            <div class="form-control-file">
+                                <label for="dynamicmodel-fileimport" class="form__load-file">
+                                    <div></div>
+                                </label>
+                                <?= Html::submitButton('Импортировать лоты',['class'=>'btn btn-primary']);?>
+                            </div>
+                            
 
                         <?php ActiveForm::end();?>
 
