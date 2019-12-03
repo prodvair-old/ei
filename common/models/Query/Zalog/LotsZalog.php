@@ -30,12 +30,12 @@ class LotsZalog extends ActiveRecord
                 'ownerId'
             ], 'required'],
 
-            [['description', 'address', 'paymentDetails', 'additionalConditions', 'lotId'], 'string'],
+            [['description', 'address', 'paymentDetails', 'additionalConditions', 'lotId', 'currentPeriod'], 'string'],
             [['title'], 'string', 'max' => 150],
             [['country', 'city'], 'string', 'max' => 100],
             [['tradeType'], 'string', 'max' => 30],
 
-            [['startingPrice', 'step', 'stepCount', 'tradeTipeId', 'collateralPrice', 'contactPersonId', 'ownerId'], 'integer'],
+            [['startingPrice', 'step', 'stepCount', 'tradeTipeId', 'collateralPrice', 'contactPersonId', 'ownerId'], 'number'],
 
             [['publicationDate', 'startingDate', 'endingDate', 'completionDate', 'procedureDate', 'conclusionDate', 'viewInfo'], 'string'],
 
@@ -67,6 +67,7 @@ class LotsZalog extends ActiveRecord
             'viewInfo'          => Yii::t('app', 'ViewInfo'),
             'collateralPrice'   => Yii::t('app', 'CollateralPrice'),
             'paymentDetails'    => Yii::t('app', 'PaymentDetails'),
+            'currentPeriod'    => Yii::t('app', 'CurrentPeriod'),
             'additionalConditions'  => Yii::t('app', 'AdditionalConditions')
         ];
     }

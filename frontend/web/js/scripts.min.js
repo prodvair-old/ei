@@ -269,6 +269,7 @@ $(document).ready(function () {
 
   var bankruptWish = $('#bankrupt-wish')
   var arrestWish = $('#arrest-wish')
+  var zalogWish = $('#zalog-wish')
 
 
 
@@ -277,11 +278,17 @@ $(document).ready(function () {
 
   if (!!+bankruptWish.data('count')) {
     arrestWish.hide();
+    zalogWish.hide();
     $('#bankrupt-wish-btn').addClass('active');
 
+  } else if (!!+arrestWish.data('count')) {
+    bankruptWish.hide();
+    zalogWish.hide();
+    $('#arrest-wish-btn').addClass('active');
   } else {
     bankruptWish.hide();
-    $('#arrest-wish-btn').addClass('active');
+    arrestWish.hide();
+    $('#zalog-wish-btn').addClass('active');
   }
 
 

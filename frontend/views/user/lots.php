@@ -3,11 +3,13 @@ use yii\widgets\Breadcrumbs;
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\LinkPager;
 
 use common\models\Query\Zalog\LotsZalog;
 
 use frontend\components\LotBlockZalog;
 use frontend\components\ProfileMenu;
+use frontend\components\SearchForm;
 
 $name = (\Yii::$app->user->identity->info['firstname'] || \Yii::$app->user->identity->info['lastname'])? \Yii::$app->user->identity->info['firstname'].' '.\Yii::$app->user->identity->info['lastname'] : \Yii::$app->user->identity->info['contacts']['emails'][0];
 $this->title = "Мои лоты – $name";
@@ -22,7 +24,6 @@ $this->params['breadcrumbs'][] = [
     'url' => ['user/lots']
 ];
 $this->registerJsVar( 'lotType', 'zalog', $position = yii\web\View::POS_HEAD );
-$lots = LotsZalog::find()->where(['contactPersonId' => Yii::$app->user->id])->all();
 ?>
 
 <section class="page-wrapper page-detail">
@@ -99,14 +100,52 @@ $lots = LotsZalog::find()->where(['contactPersonId' => Yii::$app->user->id])->al
                     
                     <div class="form-draft-payment">
                     
-                        <h3 class="heading-title"><span>Мои <span class="font200"> лоты</span></span></h3>
+                        <h3 class="heading-title"><span>Публикация <span class="font200"> лотов</span></span></h3>
                         
                         <div class="clear"></div>
+
+                        <p>
+                            Вам открыта возможность размещать лоты
+                            <br>Ваша организация: *название организации*
+                            <br>количество опубликованных лотов: <?=$lotsCount?>
+                        </p>
+                        
+                        <hr>
+
+                        <h4>Как загрузить лоты:</h4>
+                        <ul>
+                            <li>
+                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                                <p>Скачайте <a href="<?=Url::to('files/Формат_добавления_лотов_в_залоговое_иммущество_ei.ru.xlsx')?>" target="_blank" downloa>шаблон excel</a> файла;</p>
+                            </li>
+                            <li>
+                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                                <p>Заполните файл в соответствии с  <a href="<?=Url::to('files/Формат_добавления_лотов_в_залоговое_иммущество_ei.ru.xlsx')?>" target="_blank" downloa>требованиями</a>;</p>
+                            </li>
+                            <li>
+                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                                <p>Загрузите заполненный вашими данными файл в соответствующую форму;</p>
+                            </li>
+                            <li>
+                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                                <p>Лоты из файла появятся в профиле со статусом “Архив”;</p>
+                            </li>
+                            <li>
+                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                                <p>Добавьте каждому лоту вручную фотографии (возможно выбрать несколько), добавьте <br>категорию и подкатегорию (возможно выбрать несколько);</p>
+                            </li>
+                            <li>
+                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                                <p>Нажмите кнопку “Опубликовать”.</p>
+                            </li>
+                        </ul>
+
+                        <hr>
 
                         <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]);?>
 
                             <?= $form->field($modelImport,'fileImport')->fileInput() ?>
-                            <?= Html::submitButton('Import',['class'=>'btn btn-primary']);?>
+                            <?= Html::submitButton('Импортировать лоты',['class'=>'btn btn-primary']);?>
 
                         <?php ActiveForm::end();?>
 
@@ -122,14 +161,46 @@ $lots = LotsZalog::find()->where(['contactPersonId' => Yii::$app->user->id])->al
                         </ul>
                         <? } ?>
 
-                        <div class="mt-100"></div>
+                        <hr>
 
-                        <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list">
+                        <div class="mt-80 pb-50">
+                            <div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03">
+                                <?= SearchForm::widget(['lotType' => 'zalog'])?>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row  equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list">
                             <? if ($lots) {
                                 foreach ($lots as $lot) { echo LotBlockZalog::widget(['lot' => $lot, 'type' => 'long']); } 
                             } else {
                                 echo "<div class='p-15 font-bold'>Пока что у вас нету лотов</div>";
                             } ?>
+
+                            <div class="pager-innner">
+                                <div class="row align-items-center text-center text-lg-left">
+                                
+                                    <div class="col-12 col-lg-5">
+                                    </div>
+                                    
+                                    <div class="col-12 col-lg-7">
+                                        
+                                        <nav class="float-lg-right mt-10 mt-lg-0">
+                                            <?= LinkPager::widget([
+                                                'pagination' => $pages,
+                                                'nextPageLabel' => "<span aria-hidden=\"true\">&raquo;</span></i>",
+                                                'prevPageLabel' => "<span aria-hidden=\"true\">&laquo;</span>",
+                                                'maxButtonCount' => 6,
+                                                'options' => ['class' => 'pagination justify-content-center justify-content-lg-left'],
+                                                'disabledPageCssClass' => false
+                                            ]); ?>
+                                        </nav>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
                         </div>
                         
                     </div>
