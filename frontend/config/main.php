@@ -19,7 +19,7 @@ return [
             'decimalSeparator' => '.',
             'thousandSeparator' => ' ',
             'currencyCode' => 'RUB',
-       ],
+        ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],
@@ -51,6 +51,8 @@ return [
             'rules' => [
                 
                 '' => 'site/index',
+                '/test' => 'test/index',
+
 
                 '/about'    => 'pages/about',
                 '/license'  => 'pages/license',
@@ -90,10 +92,19 @@ return [
                 
 
                 '/profile'          => 'user/index',
-                '/profile/setting'  => 'user/setting',
+
+                '/profile/setting'          => 'user/setting',
+                '/profile/setting_image'    => 'user/setting_image',
+
                 '/profile/favorite' => 'user/wish_list',
 
-
+                '/profile/lots'         => 'user/lots',
+                '/profile/lot-images'   => 'user/lot-images',
+                '/profile/lot-category' => 'user/lot-category',
+                '/profile/lot-remove'   => 'user/lot-remove',
+                '/profile/lot-status'   => 'user/lot-status',
+                
+                
                 '/sitemap.xml'                      => 'sitemap/index',
                 '/sitemap-<type>-<limit:\d+>.xml'   => 'sitemap/pages',
                 '/sitemap-<type>.xml'               => 'sitemap/pages',
@@ -102,11 +113,11 @@ return [
                 '/load-category'    => 'lot/load_category',
                 '/wish-list-edit'   => 'lot/wish_list',
                 
-                '/<type:(bankrupt|arrest)>'                                     => 'lot/index',
-                '/<type:(bankrupt|arrest)>/<category>'                          => 'lot/search',
-                '/<type:(bankrupt|arrest)>/<category>/<subcategory>'            => 'lot/search',
-                '/<type:(bankrupt|arrest)>/<category>/<subcategory>/<id:\d+>'   => 'lot/page',
-                '/<type:(bankrupt|arrest)>/<category>/<subcategory>/<region>'   => 'lot/search',
+                '/<type:(bankrupt|arrest|zalog)>'                                     => 'lot/index',
+                '/<type:(bankrupt|arrest|zalog)>/<category>'                          => 'lot/search',
+                '/<type:(bankrupt|arrest|zalog)>/<category>/<subcategory>'            => 'lot/search',
+                '/<type:(bankrupt|arrest|zalog)>/<category>/<subcategory>/<id:\d+>'   => 'lot/page',
+                '/<type:(bankrupt|arrest|zalog)>/<category>/<subcategory>/<region>'   => 'lot/search',
 
                 '/<category>'                           => 'lot/redirect',
                 '/<category>/<subcategory>'             => 'lot/redirect',

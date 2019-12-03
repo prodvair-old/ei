@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 
+use frontend\components\ProfileMenu;
+
 $name = (\Yii::$app->user->identity->info['firstname'] || \Yii::$app->user->identity->info['lastname'])? \Yii::$app->user->identity->info['firstname'].' '.\Yii::$app->user->identity->info['lastname'] : \Yii::$app->user->identity->info['contacts']['emails'][0];
 $this->title = "Настройка профиля – $name";
 $this->params['breadcrumbs'][] = [
@@ -73,18 +75,7 @@ $this->params['breadcrumbs'][] = [
                                 
                             </div>
                             
-                            <nav class="menu-vertical-01 mt-20">
-                    
-                                <ul>
-                                    
-                                    <li><a href="<?=Url::to(['user/index'])?>">Профиль</a></li>
-                                    <li><a href="<?=Url::to(['user/wish_list'])?>">Избранные</a></li>
-                                    <li class="active"><a href="<?=Url::to(['user/setting'])?>">Настройки</a></li>
-                                    <li><a href="<?=Url::to(['site/logout'])?>">Выйти</a></li>
-                                    
-                                </ul>
-
-                            </nav>
+                            <?=ProfileMenu::widget(['page'=>'setting'])?>
                             
                             <!-- <p class="font-sm mt-20">Your last logged-in: <span class="text-primary font700">4 hours ago</span></p> -->
 
@@ -110,7 +101,7 @@ $this->params['breadcrumbs'][] = [
 
                                 <div class="col-6 col-sm-5 col-md-4 col-lg-4 order-lg-last">
 
-                                    <?php $form = ActiveForm::begin(['action'=>Url::to('user/setting_image'), 'options' => ['enctype' => 'multipart/form-data', 'id'=>'setting-image']]) ?>
+                                    <?php $form = ActiveForm::begin(['action'=>Url::to(['user/setting_image']), 'options' => ['enctype' => 'multipart/form-data', 'id'=>'setting-image']]) ?>
 
                                     <div class="avatar-upload">
                                         <img class="profile-pic d-block setting-image-tag" src="<?=(Yii::$app->user->identity->avatar)? Yii::$app->user->identity->avatar: 'img/image-man/01.jpg'?>" alt="avatar" />

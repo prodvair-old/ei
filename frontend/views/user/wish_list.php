@@ -8,6 +8,7 @@ use common\models\Query\Bankrupt\LotsBankrupt;
 use common\models\Query\Arrest\LotsArrest;
 
 use frontend\components\LotBlock;
+use frontend\components\ProfileMenu;
 
 foreach ($wishArrestList as $wishArrest) {
     $lotArrestIds[] = LotsArrest::findOne($wishArrest->lotId);
@@ -88,18 +89,7 @@ $this->params['breadcrumbs'][] = [
                                 
                             </div>
                             
-                            <nav class="menu-vertical-01 mt-20">
-                    
-                                <ul>
-                                    
-                                    <li><a href="<?=Url::to(['user/index'])?>">Профиль</a></li>
-                                    <li class="active"><a href="<?=Url::to(['user/wish_list'])?>">Избранные</a></li>
-                                    <li><a href="<?=Url::to(['user/setting'])?>">Настройки</a></li>
-                                    <li><a href="<?=Url::to(['site/logout'])?>">Выйти</a></li>
-                                    
-                                </ul>
-
-                            </nav>
+                            <?=ProfileMenu::widget(['page'=>'wishlist'])?>
                             
                             <!-- <p class="font-sm mt-20">Your last logged-in: <span class="text-primary font700">4 hours ago</span></p> -->
 

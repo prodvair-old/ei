@@ -78,8 +78,8 @@ return [
             'tablePrefix' => 'obj$',
 
             // Schema cache options (for production environment)
-            'enableSchemaCache' => true,
-            'schemaCacheDuration' => 60000,
+            'enableSchemaCache' => false,
+            'schemaCacheDuration' => 6,
             'schemaCache' => 'cache',
         ],
     ],
