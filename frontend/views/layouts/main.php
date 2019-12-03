@@ -403,8 +403,10 @@ AppAsset::register($this);
                                         <h5 class="footer-title">Социальные сети</h5>
                                         
                                         <div class="footer-socials mt-20">
-                                            <a href="#"><i class="fab fa-telegram"></i></a>
-                                            <a href="#"><i class="fab fa-vk"></i></a>
+                                            <!-- <a href="#"><i class="fab fa-telegram" target="_blank"></i></a> -->
+                                            <!-- <a href="https://vk.com/eiru_torgi"><i class="fab fa-vk" target="_blank"></i></a> -->
+                                            <a href="https://www.instagram.com/ei.ru_life" target="_blank"><i class="fab fa-instagram"></i></a>
+                                            <a href="https://www.facebook.com/ei.ru.life" target="_blank"><i class="fab fa-facebook" target="_blank"></i></a>
                                         </div>
                                     </div>
                                     
