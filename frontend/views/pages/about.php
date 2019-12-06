@@ -22,8 +22,8 @@ $this->params['breadcrumbs'][] = $this->title;
 	    	<!-- <h2 class="font-weight-7">
                 О <span class="text-lowercase">нас</span>
             </h2> -->
-            <h1 class="text-center pb-10 pt-50"><?= Html::encode($this->title) ?></h1>
-	    		<p>Бесплатный доступ к информации о торгах в любом уголке России</p>
+            <h1 class="h2 text-center pb-10 pt-50">Единый информатор агрегирует всю информацию по имуществу организаций</h1>
+	    		<!-- <p>Бесплатный доступ к информации о торгах в любом уголке России</p> -->
 	    </div>
         <?=AboutDescription::widget()?>
         
@@ -31,21 +31,25 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="section-title text-center w-100">
 		    <h2>
-                Почему<span class="text-lowercase"> выбирают нас</span>
+                Делаем <span class="text-lowercase">всё чтобы</span> Вам <span class="text-lowercase">было удобно</span>
             </h2>
-			<p>Вот что отличает нас от остальных</p>
 	    </div>
         <?=OurFeatures::widget()?>
 
-        <div class="section-title text-center w-100">
+        <div class="mt-10 mb-50 text-center">
+            <a href="#loginFormTabInModal-register" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false" class="btn-link">
+                Регистрируйтесь на ei.ru
+            </a>
+        </div>
+
+        <!-- <div class="section-title text-center w-100">
 		    <h2>
             Делаем<span class="text-lowercase"> всё чтобы </span>Вам <span class="text-lowercase">было удобно!</span>
             </h2>
-			<!-- <p>Вот что отличает нас от остальных</p> -->
 	    </div>
-        <?=AboutNavigation::widget()?>
+        <=AboutNavigation::widget()?>
 
-        <!-- <div class="section-title text-center w-100">
+        <div class="section-title text-center w-100">
 		    <h2>
                 Наша<span class="text-lowercase"> команда</span>
             </h2>

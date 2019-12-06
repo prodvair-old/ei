@@ -11,7 +11,7 @@
                 <div class="item-counting">
                     <div class="counting-inner text-center">
                         <div class="counting-number">
-                            <span class="counter fs-40" data-decimal-delimiter="," data-thousand-delimiter="," data-value="50000" ></span>
+                            <span class="fs-40">> 50,000</span>
                         </div>
                         <span class="counting-label">Актуальных лотов</span>
                     </div>
@@ -24,7 +24,7 @@
                 <div class="item-counting">
                     <div class="counting-inner text-center">
                         <div class="counting-number">
-                            <span class=" fs-40">24/7</span>
+                            <span class="fs-40">24/7</span>
                         </div>
                         <span class="counting-label">Актуализация данных</span>
                     </div>

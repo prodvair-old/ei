@@ -338,6 +338,13 @@ body
 
   // Услуги агента
 .agent
+  &__icon
+    display: flex
+    justify-content: center
+    img
+      width: 70px
+      margin: 30px auto
+      fill: $accent
 
   &__header
     font-weight: 700
@@ -410,6 +417,10 @@ body
             color: #ffffff
             &:before
               transform: translateY(-70%)
+
+
+.content 
+  padding: 20px
 
 // Форма обратной связи
 
@@ -712,3 +723,31 @@ body
         opacity: 1
 
 
+.btn-link
+  max-width: 280px
+  padding: 15px 25px
+  border: 2px solid $accent
+  text-decoration: none
+  border-radius: 5px
+  color: $accent
+  text-align: center
+  transition: all .3s ease
+  &:hover 
+    text-decoration: none    
+    background: $accent 
+    color: #ffffff
+
+.about
+  &__text 
+    padding: 20px
+
+.input-file
+  display: none
+
+.form__load-file
+  display: block
+  border: 1px solid #777
+  border-radius: 3px
+  height: 40px
+  width: 200px
+  margin-bottom: 30px

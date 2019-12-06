@@ -6,8 +6,10 @@ use yii\widgets\LinkPager;
 
 use common\models\Query\Bankrupt\LotsBankrupt;
 use common\models\Query\Arrest\LotsArrest;
+use common\models\Query\Zalog\LotsZalog;
 
 use frontend\components\LotBlock;
+use frontend\components\ProfileMenu;
 
 foreach ($wishArrestList as $wishArrest) {
     $lotArrestIds[] = LotsArrest::findOne($wishArrest->lotId);
@@ -15,6 +17,12 @@ foreach ($wishArrestList as $wishArrest) {
 
 foreach ($wishBankruptList as $wishBankrupt) {
     $lotBankruptIds[] = LotsBankrupt::findOne($wishBankrupt->lotId);
+}
+
+foreach ($wishZalogList as $wishZalog) {
+    if ($zalog = LotsZalog::find()->where(['id' => $wishZalog->lotId, 'status' => true])->one()) {
+        $lotZalogIds[] = $zalog;
+    }
 }
 
 $name = (\Yii::$app->user->identity->info['firstname'] || \Yii::$app->user->identity->info['lastname'])? \Yii::$app->user->identity->info['firstname'].' '.\Yii::$app->user->identity->info['lastname'] : \Yii::$app->user->identity->info['contacts']['emails'][0];
@@ -88,18 +96,7 @@ $this->params['breadcrumbs'][] = [
                                 
                             </div>
                             
-                            <nav class="menu-vertical-01 mt-20">
-                    
-                                <ul>
-                                    
-                                    <li><a href="<?=Url::to(['user/index'])?>">Профиль</a></li>
-                                    <li class="active"><a href="<?=Url::to(['user/wish_list'])?>">Избранные</a></li>
-                                    <li><a href="<?=Url::to(['user/setting'])?>">Настройки</a></li>
-                                    <li><a href="<?=Url::to(['site/logout'])?>">Выйти</a></li>
-                                    
-                                </ul>
-
-                            </nav>
+                            <?=ProfileMenu::widget(['page'=>'wishlist'])?>
                             
                             <!-- <p class="font-sm mt-20">Your last logged-in: <span class="text-primary font700">4 hours ago</span></p> -->
 
@@ -125,8 +122,9 @@ $this->params['breadcrumbs'][] = [
                             <ul class="row">
                                 <!-- <? if ($lotArrestIds) { echo '<li class="col-md-6 col-12"><a id="arrest-wish-btn" href="#arrest-wish" class="wish-tabs active">Аррестованное имущество</a></li>'; } ?>
                                 <? if ($lotBankruptIds) { echo '<li class="col-md-6 col-12"><a id="bankrupt-wish-btn"href="#bankrupt-wish" class="wish-tabs active">Банкротное иммущество</a></li>'; } ?> -->
-                                <li class="col-md-6 col-12"><a id="bankrupt-wish-btn"href="#bankrupt-wish" class="wish-tabs">Банкротное иммущество</a></li>
-                                <li class="col-md-6 col-12"><a id="arrest-wish-btn" href="#arrest-wish" class="wish-tabs">Арестованное имущество</a></li>
+                                <li class="col-md-4 col-12"><a id="bankrupt-wish-btn"href="#bankrupt-wish" class="wish-tabs">Банкротное иммущество</a></li>
+                                <li class="col-md-4 col-12"><a id="arrest-wish-btn" href="#arrest-wish" class="wish-tabs">Арестованное имущество</a></li>
+                                <li class="col-md-4 col-12"><a id="zalog-wish-btn" href="#zalog-wish" class="wish-tabs">Залоговое имущество</a></li>
                             </ul>
                             <hr class="mt-10">
                         </div>
@@ -187,6 +185,38 @@ $this->params['breadcrumbs'][] = [
                                         <nav class="float-lg-right mt-10 mt-lg-0">
                                             <?= LinkPager::widget([
                                                 'pagination' => $pagesArrest,
+                                                'nextPageLabel' => "<span aria-hidden=\"true\">&raquo;</span></i>",
+                                                'prevPageLabel' => "<span aria-hidden=\"true\">&laquo;</span>",
+                                                'maxButtonCount' => 6,
+                                                'options' => ['class' => 'pagination justify-content-center justify-content-lg-left'],
+                                                'disabledPageCssClass' => false
+                                            ]); ?>
+                                        </nav>
+                                    </div>
+                                    
+                                </div>
+                            
+                            </div>
+                        </div>
+
+                        <div data-count="<?= ($lotZalogIds)? count($lotZalogIds) : 0?>" class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list" id="zalog-wish">
+                            <? if ($lotZalogIds) {
+                                foreach ($lotZalogIds as $lot) { echo LotBlock::widget(['lot' => $lot]); }
+                            } else {
+                                echo "<div class='p-15 font-bold'>Пока нет избранных лотов по залоговому имуществу</div>";
+                            } ?>
+                            <div class="pager-innner">
+                        
+                                <div class="row align-items-center text-center text-lg-left">
+                                
+                                    <div class="col-12 col-lg-5">
+                                    </div>
+                                    
+                                    <div class="col-12 col-lg-7">
+                                        
+                                        <nav class="float-lg-right mt-10 mt-lg-0">
+                                            <?= LinkPager::widget([
+                                                'pagination' => $pagesZalog,
                                                 'nextPageLabel' => "<span aria-hidden=\"true\">&raquo;</span></i>",
                                                 'prevPageLabel' => "<span aria-hidden=\"true\">&laquo;</span>",
                                                 'maxButtonCount' => 6,

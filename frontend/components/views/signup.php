@@ -23,7 +23,7 @@ use yii\bootstrap\ActiveForm;
 
                         <div class="form-inner">
                         <div class="form-group">
-                                <?= $form->field($model, 'email')->label('E-Mail Адрес') ?>
+                                <?= $form->field($model, 'email')->label('E-mail адрес') ?>
                             </div>
                             <div class="form-group">
                                 <?= $form->field($model, 'phone')->label('Номер телефона') ?>
@@ -54,7 +54,7 @@ use yii\bootstrap\ActiveForm;
                         <div class="custom-control custom-checkbox">
                             <?= $form->field($model, 'checkPolicy',[
                                 'template' => "{input}{label}"
-                                ])->checkbox(['labelOption' => ['class'=>'line-145']])->label('Я принимаю условия соглашения!') ?>
+                                ])->checkbox(['labelOption' => ['class'=>'line-145']])->label('Я принимаю <a href="/policy" target="_blank">соглашения!</a>') ?>
                         </div>
                     </div>
                 </div>

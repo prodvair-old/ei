@@ -18,8 +18,57 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1 class="pt-30 pb-20 text-center"><?= Html::encode($this->title) ?></h1>
     <p class="text-center agent__underheader">Торги по банкротству, торги арестованного имущества</p>
+      <div class="row">
+        <div class="col-lg-3">
+            <div class="agent__icon">
+                <img src="\img\services\icon\secure.svg" alt="Гарантия">
+            </div>
+            <p class="agent__header">
+                Гарантированное участие
+            </p>
+            <p class="agent__text">
+                У нас большой опыт в сфере электронных торгов. Мы подадим заявку на аукцион, которую не отклонят
+            </p>
+        </div>
+        <div class="col-lg-3">
+            <div class="agent__icon">
+                <img src="\img\services\icon\signature.svg" alt="Гарантия">
+            </div>
 
-    <div class="row text-center">
+            <p class="agent__header">
+                Участие в торгах на любой ЭТП
+            </p>
+            <p class="agent__text">
+                Мы аккредитованы на всех площадках и сможем принять участие в торгах на любой из них
+            </p>
+        </div>
+        <div class="col-lg-3">
+            <div class="agent__icon">
+                <img src="\img\services\icon\complaint.svg" alt="Гарантия">
+            </div>
+            <p class="agent__header">
+                Подача жалоб в УФАС
+            </p>
+            <p class="agent__text">
+                Если Вашу заявку отклонят неправомерно, агент составит и подаст жалобу в УФАС и защитит Ваши интересы
+            </p>
+        </div>
+        <div class="col-lg-3">
+            <div class="agent__icon">
+                <img src="\img\services\icon\tag.svg" alt="Гарантия">
+            </div>
+            <p class="agent__header">
+                Невысокая стоимость
+            </p>
+            <p class="agent__text">
+                В банкротных торгах наше участие ненамного дороже ЭЦП, которая Вам не понадобится. Также Вам не нужно проходить аккредитацию на ЭТП и участвовать в аукционе – мы примем участие за Вас.
+            </p>
+        </div>
+      </div>
+
+      
+            
+    <!-- <div class="row text-center">
 
       <div class="col-lg-3">
         <div class="agent__icon">
@@ -67,10 +116,10 @@ $this->params['breadcrumbs'][] = $this->title;
         </p>
       </div>
 
-    </div>
+    </div> -->
 
     <!-- Ожидает на торгах -->
-    <div class="row justify-content-center align-items-center mt-60">
+    <!-- <div class="row justify-content-center align-items-center mt-60">
       <div class="col-lg-8">
         <h2 class="text-center">Что Вас ждет на торгах за имущество</h2>
 
@@ -177,7 +226,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
       </div>
-    </div>
+    </div> -->
   </div>
 
   <!-- <div class="container">

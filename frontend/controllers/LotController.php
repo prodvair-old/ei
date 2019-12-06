@@ -12,6 +12,7 @@ use common\models\Query\MetaDate;
 use common\models\Query\Bankrupt\LotsBankrupt;
 use common\models\Query\Bankrupt\Lots;
 use common\models\Query\Arrest\LotsArrest;
+use common\models\Query\Zalog\LotsZalog;
 
 use frontend\models\WishListEdit;
 
@@ -464,6 +465,48 @@ class LotController extends Controller
                     }
                 }
                 break;
+            case 'zalog':
+                $lot = LotsZalog::findOne($id);
+
+                if (!$lot->status) {
+                    Yii::$app->response->statusCode = 404;
+                    throw new \yii\web\NotFoundHttpException;
+                }
+
+                $search = [
+                    '${lotTitle}', 
+                    '${lotAddress}', 
+                    '${lotCountry}',
+                    '${lotCity}',
+                    '${lotStartPrice}',
+                ];
+
+                $replace = [
+                    str_replace('"',"'",$lot->title),
+                    str_replace('"',"'",$lot->address),
+                    str_replace('"',"'",$lot->country),
+                    str_replace('"',"'",$lot->city),
+                    Yii::$app->formatter->asCurrency($lot->startingPrice),
+                ];
+
+                $metaType = 'lot-zalog-page';
+
+                $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Залоговое имущество';
+
+                if ($subcategory != null) {
+                    foreach ($items->zalog_categorys_translit as $key => $value) {
+                        if ($key == $subcategory) {
+                            $querySubcategory = $value['id'];
+                            $titleSubcategory = $value['name'];
+                        }
+                    }
+                    if (empty($querySubcategory)) {
+                        Yii::$app->response->statusCode = 404;
+                        throw new \yii\web\NotFoundHttpException;
+                    }
+                }
+                break;
             default:
                 Yii::$app->response->statusCode = 404;
                 throw new \yii\web\NotFoundHttpException;
@@ -471,6 +514,10 @@ class LotController extends Controller
         }
         // Проверка ссылок ЧПУ и подставление типа лотов <-End 
 
+        if (!$lot) {
+            Yii::$app->response->statusCode = 404;
+            throw new \yii\web\NotFoundHttpException;
+        }
         // Мета данные Strat-> 
         $metaData = MetaDate::find()->where(['mdName' => $metaType])->one();
         
@@ -497,7 +544,7 @@ class LotController extends Controller
             'url' => ["/$type/$category/$subcategory"]
         ];
         Yii::$app->params['breadcrumbs'][] = [
-            'label' => ' '.Yii::$app->params['h1'],
+            'label' => ' '.((Yii::$app->params['h1'])? Yii::$app->params['h1'] : $lot->title),
             'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
             'url' => ["$type/$category/$subcategory/$id"]
         ];
@@ -530,7 +577,7 @@ class LotController extends Controller
                 break;
             case 'arrest':
                     if ($post['get'] == 'category') {
-                        $lotsCategory = LotsCategory::find()->where(['not', ['bankrupt_categorys' => null]])->orderBy('id ASC')->all();
+                        $lotsCategory = LotsCategory::find()->where(['not', ['arrest_categorys' => null]])->orderBy('id ASC')->all();
                         $categorys = '<option value="0">Все категории</option>';
                         foreach ($lotsCategory as $key => $value) {
                             $categorys .= '<option value="'.$key.'">'.$value['name'].'</option>';
@@ -545,6 +592,24 @@ class LotController extends Controller
                             }
                         }
                     }
+                break;
+            case 'zalog':
+                if ($post['get'] == 'category') {
+                    $lotsCategory = LotsCategory::find()->where(['not', ['zalog_categorys' => null]])->orderBy('id ASC')->all();
+                    $categorys = '<option value="0">Все категории</option>';
+                    foreach ($lotsCategory as $key => $value) {
+                        $categorys .= '<option value="'.$key.'">'.$value['name'].'</option>';
+                    }
+                    return $categorys;
+                } else {
+                    $lotsCategory = LotsCategory::findOne($post['id']);
+                    $lotsSubcategory = '<option value="0">Все подкатегории</option>';
+                    if ($lotsCategory->zalog_categorys != null) {
+                        foreach ($lotsCategory->zalog_categorys as $key => $value) {
+                            $lotsSubcategory .= '<option value="'.$key.'">'.$value['name'].'</option>';
+                        }
+                    }
+                }
                 break;
             default:
                     Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

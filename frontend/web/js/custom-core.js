@@ -142,7 +142,45 @@ jQuery(function($) {
 			});
 		}
 		
-    });
+	});
+	
+	$(".chosen-zalog-category-select").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, id) {
+		var lotId = $(this).data('lotid');
+		if (id.selected == 0) {
+			$('.subcategory-'+lotId+'-load').prop('disabled', true).trigger("chosen:updated");
+		} else {
+			$(".subcategory-"+lotId+"-load").load("/load-category", {'id': id.selected, 'type': lotType}, function(data){
+				if (data == '<option value="0">Все подкатегории</option>') {
+					$(".subcategory-"+lotId+"-load").prop('disabled', true).trigger("chosen:updated");	
+				} else {
+					$(".subcategory-"+lotId+"-load").prop('disabled', false).trigger("chosen:updated");
+				}
+			});
+		}
+		
+	});
+
+	$(".chosen-zalog-subcategory-select").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, id) {
+		var lotId = $(this).data('lotid');
+		var formData = new FormData(document.getElementById('lot-'+lotId+'-zalog-categorys'));
+
+		$.ajax({
+			type: 'POST',
+			contentType: false,
+			processData: false,
+			url: $('#lot-'+lotId+'-zalog-categorys').attr('action'),
+			data: formData
+			}).done(function (data) {
+			if (data) {
+				toastr.success("Категории успешно присвоины на лот №"+lotId);
+			} else {
+				toastr.warning("Не удалось приминенить категории на лот №"+lotId);
+			}
+		}).fail(function () {
+			toastr.error("Ошибка при приминении категории на лот №"+lotId);
+		})
+			
+	});
 	
 	/**
 	 * Input Spinner
