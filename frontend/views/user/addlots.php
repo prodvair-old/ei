@@ -105,17 +105,17 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
 
           <div class="form-draft-payment">
 
-            <h3 class="heading-title"><span>Публикация <span class="font200"> лотов</span></span></h3>
+            <!-- <h3 class="heading-title">Публикация лотов</h3>
 
-            <div class="clear"></div>
+            <div class="clear"></div> -->
 
-            <p>
+            <!-- <p>
               Вам открыта возможность размещать лоты
               <br>Ваша организация: <strong>"<?= $owner->name ?>"</strong>
-              <br>Количество опубликованных лотов: <strong><?= $lotsCount ?></strong>
-            </p>
+              <br>Количество опубликованных лотов: <strong></strong>
+            </p> -->
 
-            <hr>
+            <!-- <hr> -->
 
             <h4>Как загрузить лоты:</h4>
             <ul class="list-icon-absolute what-included-list mb-30">
@@ -149,11 +149,11 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
 
             <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-            <?= $form->field($modelImport, 'fileImport')->fileInput(['class' => 'input-file'])->label(false) ?>
+            <!-- <?= $form->field($modelImport, 'fileImport')->fileInput(['class' => 'input-file'])->label(false) ?> -->
 
             <div class="form-control-file">
               <label for="dynamicmodel-fileimport" class="form__load-file">
-                <div></div>
+                <?= $form->field($modelImport, 'fileImport')->fileInput(['class' => 'input-file'])->label(false) ?>
               </label>
               <?= Html::submitButton('Импортировать лоты', ['class' => 'btn btn-primary']); ?>
             </div>

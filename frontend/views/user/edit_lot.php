@@ -88,7 +88,7 @@ $lot = $lots[8]
 
               </div>
 
-              <?= ProfileMenu::widget(['page' => 'addlots']) ?>
+              <?= ProfileMenu::widget(['page' => 'editlot']) ?>
 
               <!-- <p class="font-sm mt-20">Your last logged-in: <span class="text-primary font700">4 hours ago</span></p> -->
 
