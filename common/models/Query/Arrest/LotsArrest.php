@@ -96,31 +96,30 @@ class LotsArrest extends ActiveRecord
         $categorys[0] = (explode(';',$this->lotPropertyTypeName))[1];
         return $categorys;
     }
-    public function fields()
-    {
-        return [
-            'lot_id'            => 'lotId',
-            'lot_description'   => 'lotPropName',
-            'lot_start_price'   => 'lotStartPrice',
-            'lot_step_price'    => 'lotPriceStep',
-            'lot_advance'       => 'lotDepositSize',
-            'lot_address'       => 'lotKladrLocationName',
-            // Другие поля для поиска
-            'lot_title'         => 'lotTitle',
-            'lot_images'        => 'lotImage',
-            'lot_publication'   => 'lotPublication',
-            'lot_date_end'      => 'lotDateEnd',
-            'lot_date_start'    => 'lotDateStart',
-            'lot_price'         => 'lotPrice',
-            'lot_category'      => 'lotPropertyTypeName',
-            'lot_cadastre'      => 'lotCadastre',
-            'lot_vin'           => 'lotVin',
-            'lot_category_translit' => 'lotCategoryTranslit',
-            'wish_id'           => 'lotWishId',
-            'lotType'           => 'lotType'
+    // public function fields()
+    // {
+    //     return [
+    //         'lot_id'            => 'lotId',
+    //         'lot_description'   => 'lotPropName',
+    //         'lot_start_price'   => 'lotStartPrice',
+    //         'lot_step_price'    => 'lotPriceStep',
+    //         'lot_advance'       => 'lotDepositSize',
+    //         'lot_address'       => 'lotKladrLocationName',
+    //         // Другие поля для поиска
+    //         'lot_title'         => 'lotTitle',
+    //         'lot_images'        => 'lotImage',
+    //         'lot_date_end'      => 'lotDateEnd',
+    //         'lot_date_start'    => 'lotDateStart',
+    //         'lot_price'         => 'lotPrice',
+    //         'lot_category'      => 'lotPropertyTypeName',
+    //         'lot_cadastre'      => 'lotCadastre',
+    //         'lot_vin'           => 'lotVin',
+    //         'lot_category_translit' => 'lotCategoryTranslit',
+    //         'wish_id'           => 'lotWishId',
+    //         'lotType'           => 'lotType'
 
-        ];
-    }
+    //     ];
+    // }
     public function getViews()
     {
         return $this->hasMany(PageViews::className(), ['page_id' => 'lotId'])->alias('views')->onCondition(['page_type' => 'lot_arrest']);

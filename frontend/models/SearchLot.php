@@ -335,6 +335,145 @@ class SearchLot extends Model
                         $where[] = 'torgs."trgExpireDate" >= NOW()';
                     }
                 break;
+                case 'zalog':
+                    $where = ['and'];
+                    $whereAnd = ['and'];
+                    $addresSearchCheck = false;
+
+                    $where[] = ['status'=>true];
+
+
+                    if ($this->category == '0') {
+                        $url = $this->type.'/lot-list';
+                    } else if (!empty($this->category) && $this->category != 'all') {
+                        $category = LotsCategory::findOne($this->category);
+                        $url = $this->type.'/'.$category->translit_name;
+
+                        
+                        if (empty($this->subCategory) || $this->subCategory == 'all' || $this->subCategory == '0') {
+                            $orWhere = ['or'];
+                            foreach ($category->zalog_categorys as $key => $value) {
+                                $orWhere[] = ['categorys.categoryId'=>$key];
+                            }
+                            $where[] = $orWhere;
+                        } else if ($this->subCategory != '0'){
+                            if (count($this->subCategory) == 1) {
+                                foreach ($category->zalog_categorys as $key => $value) {
+                                    if ($this->subCategory[0] == $key) {
+                                        $where[] = ['categorys.categoryId'=>$key];
+                                        $url .= '/'.$value['translit'];
+                                        $checkUrl = true;
+                                    }
+                                }
+                            } else {
+                                $orWhere = ['or'];
+                                foreach ($this->subCategory as $keySubCategory => $subCategory) {
+                                    foreach ($category->zalog_categorys as $key => $value) {
+                                        if ($subCategory == $key) {
+                                            $orWhere[] = ['categorys.categoryId'=>$key];
+                                            if ($keySubCategory == 0) {
+                                                $url .= '/'.$value['translit'];
+                                                $checkUrl = true;
+                                            }
+                                        }
+                                    }
+                                }
+                                $where[] = $orWhere;
+                            }
+                        }
+                    }
+                    if (!empty($this->region)) {
+                        $addresSearchCheck = true;
+                        if (is_array($this->region)) {
+                            if (count($this->region) == 1) {
+                                $regionInfo = Regions::findOne($this->region[0]);
+
+                                if ($checkUrl) {
+                                    $url .= '/'.$regionInfo->name_translit;
+                                }
+
+                                $where[] = ['like', 'LOWER("address")', mb_strtolower($regionInfo->name, 'UTF-8')];
+                                $where[] = ['like', 'LOWER("city")', mb_strtolower($regionInfo->name, 'UTF-8')];
+                                $where[] = ['like', 'LOWER("country")', mb_strtolower($regionInfo->name, 'UTF-8')];
+                            } else {
+                                $orWhere = ['or'];
+                                foreach ($this->region as $key => $value) {
+                                    $regionInfo = Regions::findOne($value);
+
+                                    if ($key == 0 && $checkUrl) {
+                                        $url .= '/'.$regionInfo->name_translit;
+                                    }
+                                    $orWhere[] = ['like', 'LOWER("address")', mb_strtolower($regionInfo->name, 'UTF-8')];
+                                    $orWhere[] = ['like', 'LOWER("city")', mb_strtolower($regionInfo->name, 'UTF-8')];
+                                    $orWhere[] = ['like', 'LOWER("country")', mb_strtolower($regionInfo->name, 'UTF-8')];
+                                }
+                                $where[] = $orWhere;
+                            }
+                        } else {
+                            $regionInfo = Regions::findOne($this->region);
+
+                            if ($checkUrl) {
+                                $url .= '/'.$regionInfo->name_translit;
+                            }
+                            
+                            $where[] = ['like', 'LOWER("address")', mb_strtolower($regionInfo->name, 'UTF-8')];
+                            $where[] = ['like', 'LOWER("city")', mb_strtolower($regionInfo->name, 'UTF-8')];
+                            $where[] = ['like', 'LOWER("country")', mb_strtolower($regionInfo->name, 'UTF-8')];
+                        }
+                    }
+                    if (!empty($this->search)) {
+                        $whereSearch = [
+                            'or',
+                            ['like', 'LOWER("description")', mb_strtolower($this->search, 'UTF-8')],
+                            ['like', 'LOWER("title")', mb_strtolower($this->search, 'UTF-8')],
+                            ['like', 'LOWER("address")', mb_strtolower($this->search, 'UTF-8')],
+                            ['like', 'LOWER("city")', mb_strtolower($this->search, 'UTF-8')],
+                        ];
+                        $where[] = $whereSearch;
+                    }
+                    if (!empty($this->etp)) {
+                        if (count($this->etp) == 1) {
+                            $where[] = ['ownerId'=>$this->etp[0]];
+                        } else {
+                            $orWhere = ['or'];
+                            foreach ($this->etp as $value) {
+                                $orWhere[] = ['ownerId'=>$value];
+                            }
+                            $where[] = $orWhere;
+                        }
+                    }
+                    if (!empty($this->tradeType)) {
+                        if (!empty($this->tradeType[0]) && empty($this->tradeType[1]) && $this->tradeType[0] == 'OpenedAuction') {
+                            $where[] = ['tradeTipeId'=>(int)0];
+                        }
+                        if (!empty($this->tradeType[0]) && empty($this->tradeType[1]) && $this->tradeType[0] == 'PublicOffer') {
+                            $where[] = ['tradeTipeId'=>(int)1];
+                        } else if (!empty($this->tradeType[1]) && !empty($this->tradeType[0])) {
+                            $where[] = [
+                                'or',
+                                ['tradeTipeId'=>(int)0],
+                                ['tradeTipeId'=>(int)1]
+                            ];
+                        }
+                    }
+                    $lotsPrice = Clone $lots;
+                    if (!empty($this->minPrice)) {
+                        $whereAnd[] = ['>=', 'startingPrice', $this->minPrice];
+                    }
+                    if (!empty($this->maxPrice)) {
+                        $whereAnd[] = ['<=', 'startingPrice', $this->maxPrice];
+                    }
+                    if (!empty($this->imageCheck)) {
+                        $where[] = ['not', ['images' => NULL]];
+                    }
+                    if (!empty($this->archivCheck)) {
+                        if (!$this->archivCheck) {
+                            $where[] = '"endingDate" >= NOW()';
+                        }
+                    } else {
+                        $where[] = '"endingDate" >= NOW()';
+                    }
+                break;
             default:
                 return ['error' => 'Что то пошло не так :('];
                 break;
@@ -343,4 +482,3 @@ class SearchLot extends Model
         return ['lots'=>$lots->where($where)->andWhere($whereAnd), 'lotsPrice'=>$lotsPrice->where($where), 'url'=>$url];
     }
 }
- 

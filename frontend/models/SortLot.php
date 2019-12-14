@@ -81,6 +81,31 @@ class SortLot extends Model
                             break;
                     }
                 break;
+            case 'zalog':
+                    switch ($this->sortBy) {
+                        case 'nameASC':
+                                $sort .= '"title" ASC';
+                            break;
+                        case 'nameDESC':
+                                $sort .= '"title" DESC';
+                            break;
+                        case 'dateASC':
+                                $sort .= '"trgPpublicationDateublished" ASC';
+                            break;
+                        case 'dateDESC':
+                                $sort .= '"publicationDate" DESC';
+                            break;
+                        case 'priceASC':
+                                $sort .= '"startingPrice" ASC';
+                            break;
+                        case 'priceDESC':
+                                $sort .= '"startingPrice" DESC';
+                            break;
+                        default:
+                                $sort .= '"publicationDate" DESC';
+                            break;
+                    }
+                break;
             default:
                 return ['error' => 'Что то пошло не так :('];
                 break;

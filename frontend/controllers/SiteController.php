@@ -21,6 +21,7 @@ use frontend\models\ContactForm;
 use common\models\Query\MetaDate;
 use common\models\Query\Bankrupt\LotsBankrupt;
 use common\models\Query\Arrest\LotsArrest;
+use common\models\Query\Zalog\LotsZalog;
 
 /**
  * Site controller
@@ -90,11 +91,13 @@ class SiteController extends Controller
         Yii::$app->params['h1'] = $metaData->mdH1;
 
         $lotsBankruptCount = LotsBankrupt::find()->where('lot_timeend >= NOW()')->count();
-        $lotsArrestCount = LotsArrest::find()->count();
+        $lotsArrestCount = LotsArrest::find()->joinWith('torgs')->where('torgs."trgExpireDate" >= NOW()')->count();
+        $lotsZalogCount = LotsZalog::find()->where(['status'=>true])->andWhere('"completionDate" >= NOW()')->count();
 
         return $this->render('index', [
             'lotsBankruptCount' => $lotsBankruptCount,
-            'lotsArrestCount' => $lotsArrestCount
+            'lotsArrestCount' => $lotsArrestCount,
+            'lotsZalogCount' => $lotsZalogCount
         ]);
     }
 

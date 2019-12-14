@@ -32,9 +32,6 @@ if ($lot->categorys[0] != null) {
     }
 }
 
-
-
-
 if (!$lotSubCategorySelect) {
     $lotSubCategoryDisable = true;
 } else {
@@ -81,7 +78,7 @@ if (!$lotSubCategorySelect) {
 
                 <div>
                     <figcaption class="content">
-                        <a href="<?= ($lot->lotUrl)? $lot->lotUrl : 'javascript:void(0);' ?>" target="_blank">
+                        <a href="<?= ($lot->lotUrl)? $lot->lotUrl : 'javascript:void(0);' ?>" target="_blank" class="lot-<?=$lot->id?>-link">
                             <h3 class="lot-block__title <?=(!empty($lot->lot_archive))? ($lot->lot_archive)? 'text-muted' : '' : ''?>"><?= $lot->lotTitle?> <?=(!empty($lot->lot_archive))? ($lot->lot_archive)? '<span class="text-primary">(Архив)</span>' : '' : ''?></h3>
                         </a>
 
@@ -109,7 +106,8 @@ if (!$lotSubCategorySelect) {
                                                 [
                                                     'class'=>'chosen-zalog-category-select form-control form-control-sm', 
                                                     'data-placeholder'=>'Все категории', 
-                                                    'data-lotid'=>$lot->id, 
+                                                    'data-lotid'=>$lot->id,
+                                                    'data-lottype'=>'zalog',
                                                     'tabindex'=>'2',
                                                     'options' => $lotCategorySelect
                                                 ])
@@ -122,6 +120,7 @@ if (!$lotSubCategorySelect) {
                                                     'class'=>'chosen-zalog-subcategory-select subcategory-'.$lot->id.'-load form-control form-control-sm', 
                                                     'data-placeholder'=>'Все подкатегории', 
                                                     'data-lotid'=>$lot->id, 
+                                                    'data-lottype'=>'zalog',
                                                     'disabled' => $lotSubCategoryDisable,
                                                     'multiple' => true,
                                                     'tabindex'=>'2',

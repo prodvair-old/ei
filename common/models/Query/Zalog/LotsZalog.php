@@ -10,6 +10,7 @@ use common\models\Query\WishList;
 use common\models\Query\PageViews;
 use common\models\Query\LotsCategory;
 use common\models\Query\Zalog\lotCategorys;
+use common\models\Query\Zalog\OwnerProperty;
 
 // Таблица лотов залогового
 class LotsZalog extends ActiveRecord
@@ -81,12 +82,12 @@ class LotsZalog extends ActiveRecord
             foreach ($items as $value) {
                 foreach ($this->categorys as $category) {
                     if ($value->zalog_categorys[$category->categoryId]['translit'] !== null) {
-                        return 'zalog/'.$value->translit_name.'/'.$category->categoryTranslitName.'/'.$this->id;
+                        return $this->owner->linkForEi.'/'.$value->translit_name.'/'.$category->categoryTranslitName.'/'.$this->id;
                     }
                 }
             }
         } else {
-            return null;
+            return 'javascript:void(0);';
         }
     }
     public function getLot_archive()
@@ -158,7 +159,7 @@ class LotsZalog extends ActiveRecord
     }
     public function getLotCategory() {
         foreach ($this->categorys as $key => $value) {
-            $categorys[$value->categoryId] = $value->categoryName;
+            $categorys[] = $value->categoryName;
         }
         return $categorys;
     }
@@ -191,6 +192,10 @@ class LotsZalog extends ActiveRecord
     public function getCategorys()
     {
         return $this->hasMany(lotCategorys::className(), ['lotId' => 'id'])->alias('categorys');
+    }
+    public function getOwner()
+    {
+        return $this->hasOne(OwnerProperty::className(), ['id' => 'ownerId'])->alias('owner');
     }
     public function getViews()
     {

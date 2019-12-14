@@ -6,6 +6,7 @@ use yii\helpers\Url;
 use yii\widgets\LinkPager;
 
 use common\models\Query\Zalog\OwnerProperty;
+use common\models\Query\Zalog\LotsZalog;
 
 use frontend\components\LotBlockZalog;
 use frontend\components\ProfileMenu;
@@ -23,6 +24,7 @@ $this->params['breadcrumbs'][] = [
     'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
     'url' => ['user/lots']
 ];
+// $this->registerJsVar( 'lotType', 'zalog', $position = yii\web\View::POS_HEAD );
 $this->registerJsVar( 'lotType', 'zalog', $position = yii\web\View::POS_HEAD );
 
 $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
@@ -109,7 +111,7 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
                         <p>
                             Вам открыта возможность размещать лоты
                             <br>Ваша организация: <strong>"<?=$owner->name?>"</strong>
-                            <br>Количество опубликованных лотов: <strong><?=$lotsCount?></strong>
+                            <br>Количество опубликованных лотов: <strong><?=LotsZalog::find()->where(['status'=>true, 'contactPersonId' => Yii::$app->user->id])->count()?></strong>
                         </p>
                         
                         <hr>
@@ -146,14 +148,17 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
 
                         <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]);?>
 
-                            <?= $form->field($modelImport,'fileImport')->fileInput(['class'=> 'input-file'])->label(false) ?>
-
-                            <div class="form-control-file">
-                                <label for="dynamicmodel-fileimport" class="form__load-file">
-                                    <div></div>
-                                </label>
-                                <?= Html::submitButton('Импортировать лоты',['class'=>'btn btn-primary']);?>
+                            
+                            <div class="d-flex justify-content-between">
+                                <div class="form-group w-100">
+                                    <div class="custom-file custom-file-lg">
+                                    <?= $form->field($modelImport,'fileImport')->fileInput(['class'=> 'custom-file-input'])->label(false) ?>
+                                        <label class="custom-file-label">Загрузите файл с лотами</label>
+                                    </div>
+                                </div>
                             </div>
+                            
+                            <?= Html::submitButton('Импортировать лоты',['class'=>'btn btn-primary']);?>
                             
 
                         <?php ActiveForm::end();?>

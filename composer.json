@@ -24,7 +24,10 @@
         "yiier/yii2-phpexcel": "*",
         "nkovacs/yii2-datetimepicker": "*",
         "kartik-v/yii2-export": "^1.4",
-        "dmstr/yii2-adminlte-asset": "^2.1"
+        "dmstr/yii2-adminlte-asset": "^2.1",
+        "light/yii2-xmlparser": "^0.2.11",
+        "scotthuangzl/yii2-export2excel": "dev-master",
+        "moonlandsoft/yii2-phpexcel": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

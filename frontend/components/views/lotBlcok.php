@@ -52,12 +52,21 @@ try {
                                 </div>
                             </li>
                         </ul>
+                        <? if ($lot->lotType == 'zalog') { ?>
                         <hr>
                         <ul class="item-meta lot-block__info">
                             <li>
-                                Категория: <span class="<?=(!empty($lot->lot_archive))? ($lot->lot_archive)? 'text-muted' : '' : ''?>"> <?= $lot->LotCategory[0]?></span>
+                                Организация: <span class="<?=($lot->lot_archive)? 'text-muted' : '' ?>"> <?= $lot->owner->name?></span>
                             </li>
                         </ul>
+                        <? } ?>
+                        <hr>
+                        <ul class="item-meta lot-block__info">
+                            <li>
+                                Категория: <span class="<?=($lot->lot_archive)? 'text-muted' : '' ?>"> <?= $lot->LotCategory[0]?></span>
+                            </li>
+                        </ul>
+                        <hr>
                         <p class="mt-3">Цена: <span class="h6 line-1 <?=$priceClass?> font16"><?= Yii::$app->formatter->asCurrency($lot->lotPrice)?></span> <span class="text-muted mr-5"><?= ($lot->lotOldPrice)? Yii::$app->formatter->asCurrency($lot->lotOldPrice) : '' ?></span></p>
                     </figcaption>
                 <?=($type == 'long')? '</div>' : ''?>

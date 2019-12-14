@@ -8,14 +8,7 @@ use common\models\Query\LotsCategory;
 use common\models\Query\Regions;
 
 
-switch ($type) {
-    case 'bankrupt':
-            $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
-        break;
-    case 'arrest':
-            $lotsCategory = LotsCategory::find()->where(['or', ['not', ['arrest_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
-        break;
-}
+$lotsCategory = LotsCategory::find()->where(['or', ['not', [$type.'_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
 
 $regionList[0] = 'Все регионы';
 $regions = Regions::find()->orderBy('id ASC')->all();
@@ -46,7 +39,7 @@ $this->registerJsVar( 'categorySelected', 0, $position = yii\web\View::POS_HEAD 
                                             'data-placeholder'=>'Выберите тип лота', 
                                             'tabindex'=>'2',
                                             'options' => [
-                                                'zalog' => ['disabled' => true, 'title'=>'Скоро'],
+                                                // 'zalog' => ['disabled' => true, 'title'=>'Скоро'],
                                                 $type => ['Selected' => true]
                                             ]])
                                         ->label('Тип лота');?>

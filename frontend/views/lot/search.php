@@ -16,6 +16,7 @@ use common\models\Query\LotsCategory;
 use common\models\Query\Regions;
 
 use common\models\Query\Bankrupt\TradePlace;
+use common\models\Query\Zalog\OwnerProperty;
 
 $this->title = Yii::$app->params['title'];
 $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
@@ -30,14 +31,19 @@ foreach ($regions as $region) {
     $regionList[$region->id] = $region->name;
 }
 
-switch ($type) {
-    case 'bankrupt':
-            $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
-        break;
-    case 'arrest':
-            $lotsCategory = LotsCategory::find()->where(['or', ['not', ['arrest_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
-        break;
+$traderList = [];
+
+if ($type == 'bankrupt') {
+    $traderLabel = 'Торговые площадки';
+    $traderPlaceholder = 'Все торговые площадки';
+    $traderList = ArrayHelper::map(TradePlace::find()->orderBy('tradename ASC')->all(), 'idtradeplace', 'tradename');
+} else if ($type == 'zalog') {
+    $traderLabel = 'Организации';
+    $traderPlaceholder = 'Все организации';
+    $traderList = ArrayHelper::map(OwnerProperty::find()->orderBy('name ASC')->all(), 'id', 'name');
 }
+
+$lotsCategory = LotsCategory::find()->where(['or', ['not', [$type.'_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
 
 if ($queryCategory != '0') {
     switch ($type) {
@@ -57,6 +63,16 @@ if ($queryCategory != '0') {
                 if ($category->arrest_categorys != null) {
                     $subcategoryCheck = false;
                     foreach ($category->arrest_categorys as $key => $value) {
+                        $lotsSubcategory[$key] = $value['name'];
+                    }
+                }
+            break;
+        case 'zalog':
+                $lotsCategory = LotsCategory::find()->where(['not', ['zalog_categorys' => null]])->orderBy('id ASC')->all();
+                $category = LotsCategory::findOne($queryCategory);
+                if ($category->zalog_categorys != null) {
+                    $subcategoryCheck = false;
+                    foreach ($category->zalog_categorys as $key => $value) {
                         $lotsSubcategory[$key] = $value['name'];
                     }
                 }
@@ -127,7 +143,7 @@ $this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\Vi
                                             'data-placeholder'=>'Выберите тип лота', 
                                             'tabindex'=>'2',
                                             'options' => [
-                                                'zalog' => ['disabled' => true, 'title'=>'Скоро'],
+                                                // 'zalog' => ['disabled' => true, 'title'=>'Скоро'],
                                                 $type => ['Selected' => true]
                                             ]])
                                         ->label('Тип лота');?>
@@ -237,21 +253,22 @@ $this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\Vi
 
                     <div class="sidebar-box bankrupt-type">
                     
-                        <div class="box-title"><h5>Торговые площадки</h5></div>
+                        <div class="box-title"><h5><?=$traderLabel?></h5></div>
                         
                         <div class="box-content">
                             <?=$form->field($model, 'etp')->dropDownList(
-                                    ArrayHelper::map(TradePlace::find()->orderBy('tradename ASC')->all(), 'idtradeplace', 'tradename'), 
+                                    $traderList, 
                                 [
-                                    'class'=>'chosen-the-basic form-control', 
-                                    'data-placeholder'=>'Все торговые площадки', 
+                                    'class'=>'chosen-the-basic form-control',
+                                    'prompt' => $traderPlaceholder,
+                                    'data-placeholder'=>$traderPlaceholder, 
                                     'multiple' => true
                                 ])
                                 ->label(false);?>
                         </div>
                         
                     </div>
-                    
+
                     <div class="sidebar-box">
 
                         <div class="box-title"><h5>Другое</h5></div>
@@ -326,7 +343,7 @@ $this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\Vi
                         </div>
                         <div class="sort-box">
                             <div class="d-flex align-items-center sort-item">
-                                <label class="sort-label d-none d-sm-flex">Найдено лотов: <?=$count?></label>
+                                <label class="sort-label d-none d-sm-flex">Найдено лотов: <?=$count-1?></label>
                             </div>
                         </div>
                     </div>
@@ -343,7 +360,7 @@ $this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\Vi
                             
                                 <div class="col-12 col-lg-5">
                                     <? if (count($lots) > 0) {?>
-                                        Выведено от <?= $offset+1 ?> до <?= $offset + count($lots)?> лотов. Всего <?=$count?>.
+                                        Выведено от <?= $offset+1 ?> до <?= $offset + count($lots)?> лотов. Всего <?=$count-1?>.
                                     <? } else { ?>
                                         Лотов не найдено
                                     <? } ?>

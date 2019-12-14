@@ -146,6 +146,8 @@ jQuery(function($) {
 	
 	$(".chosen-zalog-category-select").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, id) {
 		var lotId = $(this).data('lotid');
+		var lotType = $(this).data('lottype');
+		console.log(lotType);
 		if (id.selected == 0) {
 			$('.subcategory-'+lotId+'-load').prop('disabled', true).trigger("chosen:updated");
 		} else {
@@ -162,6 +164,7 @@ jQuery(function($) {
 
 	$(".chosen-zalog-subcategory-select").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, id) {
 		var lotId = $(this).data('lotid');
+		var lotType = $(this).data('lottype');
 		var formData = new FormData(document.getElementById('lot-'+lotId+'-zalog-categorys'));
 
 		$.ajax({

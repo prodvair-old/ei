@@ -7,21 +7,46 @@ use frontend\components\LotBlock;
 use frontend\components\SearchForm;
 use frontend\components\LotDetailSidebar;
 use common\models\Query\Settings;
-
+use common\models\Query\Zalog\OwnerProperty;
 
 
 $this->title = Yii::$app->params['title'];
 
 if ($type == 'bankrupt') {
     $title = 'Единая база торгов <span class="font200 block">Имущество банкротов</span>';
+    $imgBG = 'img/01.jpg';
     $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : 'В нашей базе собрана исключительно актуальная информация об имущество банкротов и должников, выставленном и тендеры и торги на ЭТП и публичных аукционах.';
-} else {
-    $title = 'Единая база торгов <span class="font200"><br>Арестованное имущество</span>';
+} else if ($type == 'zalog') {
+    $title = 'Единая база торгов <span class="font200"><br>Залогового имущество</span>';
+    $imgBG = 'img/01.jpg';
     $description = Yii::$app->params['text'];
+}else if ($type == 'arrest') {
+    $title = 'Единая база торгов <span class="font200"><br>Арестованное имущество</span>';
+    $imgBG = 'img/01.jpg';
+    $description = Yii::$app->params['text'];
+} else {
+    $type = 'zalog';
+    $title = 'Единая база торгов <span class="font200"><br>'.$owner->name.'</span>';
+    $imgBG = 'https://n.ei.ru'.$owner->tamplate['bg'];
+    $description = $owner->description;
+    
+    // ID организации: $owner->id
+    // Название: $owner->name
+    // Логотип: $owner->logo
+    // Ссылка: $owner->link
+    // Описание: $owner->description
+    // Телефон: $owner->phone
+    // E-mail: $owner->email
+    // Страна: $owner->country
+    // Город: $owner->city
+    // Адрес: $owner->address
+    // Ссылка на нашем сайте: $owner->linkForEi
+    // Фоновая картинка: $owner->tamplate['bg']
+    // Дата добавления: $owner->createdAt
 }
 ?>
 
-<div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03" style="background-image:url('img/01.jpg'); background-position: top  center;">
+<div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03" style="background-image:url('<?=$imgBG?>'); background-position: top  center;">
         
     <div class="overlay-holder bottom"></div>	
     

@@ -91,56 +91,100 @@ class UserController extends Controller
                 'fileImport'=>'File Import',
             ]);
             $modelImport->addRule(['fileImport'],'required');
-            $modelImport->addRule(['fileImport'],'file',['extensions'=>'ods,xls,xlsx'],['maxSize'=>1024*1024*1024*1024]);
+            $modelImport->addRule(['fileImport'],'file',['extensions'=>'xls,xlsx,xml'],['maxSize'=>1024*1024]);
     
             if(Yii::$app->request->post()){
                 $modelImport->fileImport = \yii\web\UploadedFile::getInstance($modelImport,'fileImport');
                 if($modelImport->fileImport && $modelImport->validate()){
-                    $inputFileType = \PHPExcel_IOFactory::identify($modelImport->fileImport->tempName);
-                    $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
-                    $objPHPExcel = $objReader->load($modelImport->fileImport->tempName);
-                    $sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
-                    $baseRow = 3;
-                    $loadCount = 0;
-                    while(!empty($sheetData[$baseRow]['B'])){
-                        if (!LotsZalog::find()->where(['lotId'=>(string)$sheetData[$baseRow]['A'], 'contactPersonId' => Yii::$app->user->id])->one()) {
-                            $model = new LotsZalog();
-                            $model->lotId               = (string)$sheetData[$baseRow]['A'];
-                            $model->title               = mb_substr((string)$sheetData[$baseRow]['B'], 0, 150, 'UTF-8');
-                            $model->description         = (string)$sheetData[$baseRow]['C'];
-                            $model->publicationDate     = Yii::$app->formatter->asDate((string)$sheetData[$baseRow]['D'], 'php:Y-m-d H:i:s');
-                            $model->startingDate        = Yii::$app->formatter->asDate((string)$sheetData[$baseRow]['E'], 'php:Y-m-d H:i:s');
-                            $model->endingDate          = Yii::$app->formatter->asDate((string)$sheetData[$baseRow]['F'], 'php:Y-m-d H:i:s');
-                            $model->completionDate      = Yii::$app->formatter->asDate((string)$sheetData[$baseRow]['G'], 'php:Y-m-d H:i:s');
-                            $model->startingPrice       = floatval($sheetData[$baseRow]['H']);
-                            $model->step                = floatval($sheetData[$baseRow]['I']);
-                            $model->stepCount           = (int)$sheetData[$baseRow]['J'];
-                            $model->country             = (string)$sheetData[$baseRow]['K'];
-                            $model->city                = (string)$sheetData[$baseRow]['L'];
-                            $model->address             = (string)$sheetData[$baseRow]['M'];
-                            $model->tradeType           = (string)$sheetData[$baseRow]['N'];
-                            $model->tradeTipeId         = ((string)$sheetData[$baseRow]['N'] == 'Аукцион')? 0 : 1;
-                            $model->procedureDate       = Yii::$app->formatter->asDate((string)$sheetData[$baseRow]['O'], 'php:Y-m-d H:i:s');
-                            $model->conclusionDate      = Yii::$app->formatter->asDate((string)$sheetData[$baseRow]['P'], 'php:Y-m-d H:i:s');
-                            $model->viewInfo            = (string)$sheetData[$baseRow]['Q'];
-                            $model->collateralPrice     = floatval($sheetData[$baseRow]['R']);
-                            $model->paymentDetails      = (string)$sheetData[$baseRow]['S'];
-                            $model->additionalConditions    = (string)$sheetData[$baseRow]['T'];
-                            $model->currentPeriod       = (string)$sheetData[$baseRow]['U'];
-                            $model->contactPersonId     = Yii::$app->user->id;
-                            $model->ownerId             = Yii::$app->user->identity->ownerId;
+                    if ($modelImport->fileImport->getExtension() === 'xml') {
+                        $xml = simplexml_load_file($modelImport->fileImport->tempName);
+                            var_dump($xml->offer);
+                        
 
-                            if (Yii::$app->params['exelParseResult'][$baseRow]['status'] = $model->save()) {
-                                $loadCount++;
-                            } else {
-                                Yii::$app->params['exelParseResult'][$baseRow]['info'] = $model->errors;
+                        $model = new LotsZalog();
+                        // $model->lotId               = (string)$sheetData[$baseRow]['A'];
+                        // $model->title               = mb_substr((string)$sheetData[$baseRow]['B'], 0, 150, 'UTF-8');
+                        // $model->description         = (string)$sheetData[$baseRow]['C'];
+                        // $model->publicationDate     = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['D']), 'php:Y-m-d H:i:s');
+                        // $model->startingDate        = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['E']), 'php:Y-m-d H:i:s');
+                        // $model->endingDate          = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['F']), 'php:Y-m-d H:i:s');
+                        // $model->completionDate      = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['G']), 'php:Y-m-d H:i:s');
+                        // $model->startingPrice       = floatval(str_replace(' ', '',$sheetData[$baseRow]['H']));
+                        // $model->step                = floatval(str_replace(' ', '',$sheetData[$baseRow]['I']));
+                        // $model->stepCount           = (int)$sheetData[$baseRow]['J'];
+                        // $model->country             = (string)$sheetData[$baseRow]['K'];
+                        // $model->city                = (string)$sheetData[$baseRow]['L'];
+                        // $model->address             = (string)$sheetData[$baseRow]['M'];
+                        // $model->tradeType           = (string)$sheetData[$baseRow]['N'];
+                        // $model->tradeTipeId         = ((string)$sheetData[$baseRow]['N'] == 'Аукцион')? 0 : 1;
+                        // $model->procedureDate       = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['O']), 'php:Y-m-d H:i:s');
+                        // $model->conclusionDate      = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['P']), 'php:Y-m-d H:i:s');
+                        // $model->viewInfo            = (string)$sheetData[$baseRow]['Q'];
+                        // $model->collateralPrice     = floatval(str_replace(' ', '',$sheetData[$baseRow]['R']));
+                        // $model->paymentDetails      = (string)$sheetData[$baseRow]['S'];
+                        // $model->additionalConditions = (string)$sheetData[$baseRow]['T'];
+                        // $model->currentPeriod       = (string)$sheetData[$baseRow]['U'];
+                        // $model->contactPersonId     = Yii::$app->user->id;
+                        // $model->ownerId             = Yii::$app->user->identity->ownerId;
+
+                            foreach ($xml as $key => $value) {
+                                if ($key = 'generation-date') {
+                                    $model->publicationDate = $value;
+                                }
+                                if ($key = 'offer') {
+                                    $model->internalId          = (string)$value['internal-id'];
+                                    $model->tradeType           = (string)$value->type;
+                                }
                             }
                             
+
+                    } else {
+                        $inputFileType = \PHPExcel_IOFactory::identify($modelImport->fileImport->tempName);
+                        $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+                        $objPHPExcel = $objReader->load($modelImport->fileImport->tempName);
+                        $sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
+                        $baseRow = 3;
+                        $loadCount = 0;
+                        while(!empty($sheetData[$baseRow]['B'])){
+                            if (!LotsZalog::find()->where(['lotId'=>(string)$sheetData[$baseRow]['A'], 'contactPersonId' => Yii::$app->user->id])->one()) {
+                                $model = new LotsZalog();
+                                $model->lotId               = (string)$sheetData[$baseRow]['A'];
+                                $model->title               = mb_substr((string)$sheetData[$baseRow]['B'], 0, 150, 'UTF-8');
+                                $model->description         = (string)$sheetData[$baseRow]['C'];
+                                $model->publicationDate     = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['D']), 'php:Y-m-d H:i:s');
+                                $model->startingDate        = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['E']), 'php:Y-m-d H:i:s');
+                                $model->endingDate          = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['F']), 'php:Y-m-d H:i:s');
+                                $model->completionDate      = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['G']), 'php:Y-m-d H:i:s');
+                                $model->startingPrice       = floatval(str_replace(' ', '',$sheetData[$baseRow]['H']));
+                                $model->step                = floatval(str_replace(' ', '',$sheetData[$baseRow]['I']));
+                                $model->stepCount           = (int)$sheetData[$baseRow]['J'];
+                                $model->country             = (string)$sheetData[$baseRow]['K'];
+                                $model->city                = (string)$sheetData[$baseRow]['L'];
+                                $model->address             = (string)$sheetData[$baseRow]['M'];
+                                $model->tradeType           = (string)$sheetData[$baseRow]['N'];
+                                $model->tradeTipeId         = ((string)$sheetData[$baseRow]['N'] == 'Аукцион')? 0 : 1;
+                                $model->procedureDate       = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['O']), 'php:Y-m-d H:i:s');
+                                $model->conclusionDate      = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['P']), 'php:Y-m-d H:i:s');
+                                $model->viewInfo            = (string)$sheetData[$baseRow]['Q'];
+                                $model->collateralPrice     = floatval(str_replace(' ', '',$sheetData[$baseRow]['R']));
+                                $model->paymentDetails      = (string)$sheetData[$baseRow]['S'];
+                                $model->additionalConditions = (string)$sheetData[$baseRow]['T'];
+                                $model->currentPeriod       = (string)$sheetData[$baseRow]['U'];
+                                $model->contactPersonId     = Yii::$app->user->id;
+                                $model->ownerId             = Yii::$app->user->identity->ownerId;
+
+                                if (Yii::$app->params['exelParseResult'][$baseRow]['status'] = $model->save()) {
+                                    $loadCount++;
+                                } else {
+                                    Yii::$app->params['exelParseResult'][$baseRow]['info'] = $model->errors;
+                                }
+                                
+                            }
+                            $baseRow++;
                         }
-                        $baseRow++;
+                        Yii::$app->getSession()->setFlash('success','Success');
                     }
-                    Yii::$app->getSession()->setFlash('success','Success');
-                }else{
+                } else {
                     Yii::$app->getSession()->setFlash('error','Error');
                 }
             }
@@ -307,7 +351,7 @@ class UserController extends Controller
                 if ($lot->categorys[0] != null) {
                     $lot->status = !$lot->status;
                     $lot->update();
-                    return $lot->status;
+                    return ['status' => $lot->status, 'url' => $lot->lotUrl];
                 }
             }
 
