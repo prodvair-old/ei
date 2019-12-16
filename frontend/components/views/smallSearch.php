@@ -1,4 +1,5 @@
 <?php
+
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -15,8 +16,8 @@ $regions = Regions::find()->orderBy('id ASC')->all();
 foreach ($regions as $region) {
     $regionList[$region->id] = $region->name;
 }
-$this->registerJsVar( 'lotType', $type, $position = yii\web\View::POS_HEAD );
-$this->registerJsVar( 'categorySelected', 0, $position = yii\web\View::POS_HEAD );
+$this->registerJsVar('lotType', $type, $position = yii\web\View::POS_HEAD);
+$this->registerJsVar('categorySelected', 0, $position = yii\web\View::POS_HEAD);
 ?>
 <div class="search-form-main">
     <?php $form = ActiveForm::begin(['method' => 'get','action' => '/bankrupt/lot-list','options' => ['enctype' => 'multipart/form-data']]) ?>
@@ -96,5 +97,9 @@ $this->registerJsVar( 'categorySelected', 0, $position = yii\web\View::POS_HEAD 
                 
             </div>
         </div>
-    <?php ActiveForm::end() ?>
+
+        
+
+        <?php ActiveForm::end() ?>
+    </div>
 </div>

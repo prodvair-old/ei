@@ -1,4 +1,5 @@
 <?php
+
 use frontend\components\NumberWords;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
@@ -8,13 +9,13 @@ use common\models\Query\LotsCategory;
 
 $priceClass = 'text-secondary';
 try {
-    if ($lot->torgy_tradetype == 'PublicOffer') {
-        $priceClass = 'text-primary';
-    } else if ($lot->torgy_tradetype == 'OpenedAuction') {
-        $priceClass = 'text-primary';
-    }
-} catch (\Throwable $th) {
+  if ($lot->torgy_tradetype == 'PublicOffer') {
     $priceClass = 'text-primary';
+  } else if ($lot->torgy_tradetype == 'OpenedAuction') {
+    $priceClass = 'text-primary';
+  }
+} catch (\Throwable $th) {
+  $priceClass = 'text-primary';
 }
 
 $lotsSubcategory[0] = 'Все подкатегории';
@@ -24,6 +25,7 @@ if ($lot->categorys[0] != null) {
     foreach ($lotsCategory as $keyCategory => $value) {
         foreach ($lot->categorys as $category) {
             if ($value->zalog_categorys[$category->categoryId]['name'] !== null) {
+                
                 $lotCategorySelect[$keyCategory] = ['selected' => true];
                 $lotSubCategorySelect[$category->categoryId] = ['selected' => true];
                 $lotCategoryId = $keyCategory;
@@ -33,12 +35,12 @@ if ($lot->categorys[0] != null) {
 }
 
 if (!$lotSubCategorySelect) {
-    $lotSubCategoryDisable = true;
+  $lotSubCategoryDisable = true;
 } else {
-    foreach ($lotsCategory[$lotCategoryId]->zalog_categorys as $key => $value) {
-        $lotsSubcategory[$key] = $value['name'];
-    }
-    $lotSubCategoryDisable = false;
+  foreach ($lotsCategory[$lotCategoryId]->zalog_categorys as $key => $value) {
+    $lotsSubcategory[$key] = $value['name'];
+  }
+  $lotSubCategoryDisable = false;
 }
 ?>
                 

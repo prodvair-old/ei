@@ -1,27 +1,27 @@
 function uploadLotImage(lotId) {
-  var formData = new FormData(document.getElementById('lot-'+lotId+'-zalog-upload-images'));
+  var formData = new FormData(document.getElementById('lot-' + lotId + '-zalog-upload-images'));
 
   $.ajax({
     type: 'POST',
     contentType: false,
     processData: false,
-    url: $('lot-'+lotId+'-zalog-upload-images').attr('action'),
+    url: $('lot-' + lotId + '-zalog-upload-images').attr('action'),
     data: formData
   }).done(function (data) {
     if (data.status) {
-      
+
       var imagesTag = '';
-      
-      data.src.map(function(src) {
-        imagesTag = imagesTag+`<img class="profile-pic d-block" src="`+src.min+`" alt="" />`;
+
+      data.src.map(function (src) {
+        imagesTag = imagesTag + `<img class="profile-pic d-block" src="` + src.min + `" alt="" />`;
       });
 
-      $('.lot-'+lotId+'-upload-image-tag').html(imagesTag);
-      $('.lot-'+lotId+'-zalog-image-info').html('Успешно загружено');
+      $('.lot-' + lotId + '-upload-image-tag').html(imagesTag);
+      $('.lot-' + lotId + '-zalog-image-info').html('Успешно загружено');
 
       toastr.success("Фотографии успешно загружены");
     } else {
-      $('.lot-'+lotId+'-zalog-image-info').html('Ошибка загрузки');
+      $('.lot-' + lotId + '-zalog-image-info').html('Ошибка загрузки');
 
       toastr.warning("Не удалось загрузить фотографии");
     }
@@ -126,28 +126,32 @@ $(document).ready(function () {
     $.ajax({
       type: 'GET',
       url: $(this).attr('href'),
-      data: {lotId}
+      data: {
+        lotId
+      }
     }).done(function (data) {
       if (data) {
-        $('#zalog-'+lotId).hide()
-        toastr.success("Лот №"+lotId+" успешно удалён!");
+        $('#zalog-' + lotId).hide()
+        toastr.success("Лот №" + lotId + " успешно удалён!");
       } else {
-        toastr.warning("Не удалось удалить лот №"+lotId);
+        toastr.warning("Не удалось удалить лот №" + lotId);
       }
     }).fail(function () {
-      toastr.error("Ошибка при удалении лота №"+lotId);
+      toastr.error("Ошибка при удалении лота №" + lotId);
     })
   })
   $('.status-zalog-lot').on('click', function (e) {
     e.preventDefault();
     var lotId = $(this).data('lotid'),
-        element = $(this);
+      element = $(this);
 
 
     $.ajax({
       type: 'GET',
       url: element.attr('href'),
-      data: {lotId}
+      data: {
+        lotId
+      }
     }).done(function (data) {
         if (data['status'] == null) {
         element.html('Опубликовать');
@@ -160,9 +164,10 @@ $(document).ready(function () {
         element.html('Опубликовать');
         $('.lot-'+lotId+'-link').attr('href',data['url']);
         toastr.success("Лот №"+lotId+" успешно снят с публикации!");
+
       }
     }).fail(function () {
-      toastr.error("Ошибка при публикации/снятия с публикации лота №"+lotId);
+      toastr.error("Ошибка при публикации/снятия с публикации лота №" + lotId);
     })
   })
   
@@ -326,6 +331,10 @@ $(document).ready(function () {
   $('.load-list-click').on('click', function () {
     $('.load-list').html('<div class="spinner-wrapper"><div class="spinner"></div>Ищем лоты...</div>');
   });
+
+  $('.dropdown-btn').on("click", function (e) {
+    $(this).next('ul').toggleClass('open')
+  })
 
 
 

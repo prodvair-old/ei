@@ -3433,11 +3433,24 @@ ul.post-small-list li .recent-post-sm-meta {
   letter-spacing: 1px;
 }
 
-.menu-vertical-01 ul li.active a,
-.menu-vertical-01 ul li a.active,
-.menu-vertical-01 ul li a:hover {
+
+
+.menu-vertical-01 ul li.active>a,
+.menu-vertical-01 ul li>a.active,
+.menu-vertical-01 ul li.a:hover {
   color: $accent;
   border-color: $accent;
+}
+
+.dropdown-list.open {
+  display: block;
+  //margin-left: 5rem;
+}
+
+
+.dropdown-list {
+  display: none;
+  margin-left: 2rem;
 }
 
 .collapse-style-04 {}
