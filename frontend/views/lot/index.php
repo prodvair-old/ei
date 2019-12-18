@@ -25,9 +25,8 @@ if ($type == 'bankrupt') {
     $imgBG = 'img/01.jpg';
     $description = Yii::$app->params['text'];
 } else {
-    $type = 'zalog';
-    $title = 'Единая база торгов <span class="font200"><br>'.$owner->name.'</span>';
-    $imgBG = 'https://n.ei.ru'.$owner->tamplate['bg'];
+    $title = 'Единая база торгов <span class="font200"'.(($owner->tamplate['color-5'])? 'style="color: '.$owner->tamplate['color-5'].'"': '').'><br>'.$owner->name.'</span>';
+    $imgBG = 'http://n.ei.ru'.$owner->tamplate['bg'];
     $description = $owner->description;
     
     // ID организации: $owner->id
@@ -42,6 +41,12 @@ if ($type == 'bankrupt') {
     // Адрес: $owner->address
     // Ссылка на нашем сайте: $owner->linkForEi
     // Фоновая картинка: $owner->tamplate['bg']
+    // Цвет 1: $owner->tamplate['color-1']
+    // Цвет 2: $owner->tamplate['color-2']
+    // Цвет 3: $owner->tamplate['color-3']
+    // Цвет 4: $owner->tamplate['color-4']
+    // Цвет 5: $owner->tamplate['color-5']
+    // Цвет 6: $owner->tamplate['color-6']
     // Дата добавления: $owner->createdAt
 }
 ?>
@@ -54,9 +59,9 @@ if ($type == 'bankrupt') {
     
         <div class="container">
             <h1><?=$title?></h1>
-            <p class="font-lg spacing-1"><?=$description?></p>
+            <p class="font-lg spacing-1" <?=($owner->tamplate['color-5'])? 'style="color: '.$owner->tamplate['color-5'].'"': ''?>><?=$description?></p>
             
-            <?= SearchForm::widget(['type' => $type])?>
+            <?= SearchForm::widget(['type' => (($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog'), 'btnColor' => $owner->tamplate['color-1'], 'color' => $owner->tamplate['color-4']])?>
 
         </div>
         
@@ -78,7 +83,7 @@ if ($type == 'bankrupt') {
         
         <div class="col">
             
-            <figure class="category__item color-1">
+            <figure class="category__item color-1" <?=($owner->tamplate['color-2'])? 'style="background-color: '.$owner->tamplate['color-2'].'"': ''?>>
                 <a href="<?=$type?>/transport-i-tehnika">
                     <div class="image">
                         <img src="https://yt3.ggpht.com/a/AGF-l7-EVhBEj7aPvzyeC9QuZqwSPa8SgyuT-Ixttg=s800-mo-c-c0xffffffff-rj-k-no"alt="image"/>
@@ -94,7 +99,7 @@ if ($type == 'bankrupt') {
         
         <div class="col">
         
-            <figure class="category__item color-2">
+            <figure class="category__item color-2" <?=($owner->tamplate['color-3'])? 'style="background-color: '.$owner->tamplate['color-3'].'"': ''?>>
                 <a href="/<?=$type?>/nedvizhimost">
                     <div class="image">
                         <img src="https://i.diymall.co/diygoods/1281/plitka_dekorativnaya_london_brik_tsvet_multikolor_116_m2_1.jpg"alt="image"/>
@@ -110,7 +115,7 @@ if ($type == 'bankrupt') {
         
         <div class="col">
         
-            <figure class="category__item color-3">
+            <figure class="category__item color-3" <?=($owner->tamplate['color-1'])? 'style="background-color: '.$owner->tamplate['color-1'].'"': ''?>>
                 <a href="/<?=$type?>/oborudovanie">
                     <div class="image">
                         <img src="https://www.talenthero.de/wp-content/uploads/Metall-Glockengießer-2-800x800.jpg"alt="image"/>
@@ -125,8 +130,8 @@ if ($type == 'bankrupt') {
         </div>
         
         <div class="col">
-      
-            <figure class="category__item color-4">
+        
+            <figure class="category__item color-4" <?=($owner->tamplate['color-4'])? 'style="background-color: '.$owner->tamplate['color-4'].'"': ''?>>
                 <a href="/<?=$type?>/debitorskaya-zadolzhennost">
                     <div class="image">
                         <img src="https://ae01.alicdn.com/kf/HTB15d0Gq1SSBuNjy0Flq6zBpVXad/-.jpg"alt="image"/>
@@ -150,7 +155,7 @@ if ($type == 'bankrupt') {
         
         <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
 
-            <?foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot]); }?>
+            <?foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot, 'color' => $owner->tamplate['color-4']]); }?>
             
         </div>
 

@@ -67,7 +67,7 @@ try {
                             </li>
                         </ul>
                         <hr>
-                        <p class="mt-3">Цена: <span class="h6 line-1 <?=$priceClass?> font16"><?= Yii::$app->formatter->asCurrency($lot->lotPrice)?></span> <span class="text-muted mr-5"><?= ($lot->lotOldPrice)? Yii::$app->formatter->asCurrency($lot->lotOldPrice) : '' ?></span></p>
+                        <p class="mt-3">Цена: <span class="h6 line-1 <?=$priceClass?> font16" <?=($color)? 'style="color: '.$color.'!important"': ''?>><?= Yii::$app->formatter->asCurrency($lot->lotPrice)?></span> <span class="text-muted mr-5"><?= ($lot->lotOldPrice)? Yii::$app->formatter->asCurrency($lot->lotOldPrice) : '' ?></span></p>
                     </figcaption>
                 <?=($type == 'long')? '</div>' : ''?>
                 

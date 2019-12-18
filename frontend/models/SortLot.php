@@ -29,7 +29,7 @@ class SortLot extends Model
      */
     public function sortBy($lots, $type = null)
     {
-        switch ($type) {
+        switch ($this->type) {
             case 'bankrupt':
                     switch ($this->sortBy) {
                         case 'nameASC':

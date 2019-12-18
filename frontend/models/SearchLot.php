@@ -45,15 +45,16 @@ class SearchLot extends Model
      *
      * @return bool whether the creating new account was successful and email was sent
      */
-    public function search($lots, $url = null)
+    public function search($lots, $url = null, $type = null)
     {
         // if (!$this->validate()) {
         //     return null;
         // }
 
-        if (!empty($type) && empty($this->type)) {
-            $this->type = $type;
-        }
+        // if (!empty($type) && empty($this->type)) {
+        //     $this->type = $type;
+        // }
+
         if (!empty($category) && $category != 'all' && $category != 'lot-list' && empty($this->category) && $this->category != 0) {
             $this->category = $category;
         }
@@ -62,9 +63,9 @@ class SearchLot extends Model
 
         $urlArray = explode('/', $url);
 
-        if ($urlArray[0] != $this->type) {
-            $url = $this->type;
-        }
+        // if ($urlArray[0] != $this->type) {
+        //     $url = $this->type;
+        // }
         
         switch ($this->type) {
             case 'bankrupt':
@@ -335,20 +336,27 @@ class SearchLot extends Model
                         $where[] = 'torgs."trgExpireDate" >= NOW()';
                     }
                 break;
-                case 'zalog':
+            case 'zalog':
                     $where = ['and'];
                     $whereAnd = ['and'];
                     $addresSearchCheck = false;
 
                     $where[] = ['status'=>true];
 
-
                     if ($this->category == '0') {
-                        $url = $this->type.'/lot-list';
+                        If ($type) {
+                            $url = $type.'/lot-list';
+                        } else {
+                            $url = $this->type.'/lot-list';
+                        }
+                        
                     } else if (!empty($this->category) && $this->category != 'all') {
                         $category = LotsCategory::findOne($this->category);
-                        $url = $this->type.'/'.$category->translit_name;
-
+                        If ($type) {
+                            $url = $type.'/'.$category->translit_name;;
+                        } else {
+                            $url = $this->type.'/'.$category->translit_name;;
+                        }
                         
                         if (empty($this->subCategory) || $this->subCategory == 'all' || $this->subCategory == '0') {
                             $orWhere = ['or'];
@@ -382,6 +390,7 @@ class SearchLot extends Model
                             }
                         }
                     }
+                    
                     if (!empty($this->region)) {
                         $addresSearchCheck = true;
                         if (is_array($this->region)) {

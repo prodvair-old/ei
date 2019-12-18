@@ -246,6 +246,8 @@ class LotController extends Controller
                     $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
                     $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : $owner->name;
 
+                    $model->etp[0] = $owner->id; 
+
                     if ($subcategory != null) {
                         foreach ($items->zalog_categorys_translit as $key => $value) {
                             if ($key == $subcategory) {
@@ -290,11 +292,12 @@ class LotController extends Controller
         Yii::$app->params['title'] = ($metaData->mdTitle)? $metaData->mdTitle : $title;
         Yii::$app->params['h1'] = ($metaData->mdH1)? $metaData->mdH1 : $title;
         // Мета данные <-End 
-        
+            
         // Фильтрация лотов Start->
         $model->load(Yii::$app->request->get());
-        $query = $model->search($lotsQuery, $url);
+        $query = $model->search($lotsQuery, $url, (($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog')? $type : null));
 
+        /* http://dev.ei.ru/rosselkhozbank/lot-list */
         if ($url != $query['url']) {
             return $this->redirect([$query['url'],Yii::$app->request->get()]);
         }
@@ -323,6 +326,7 @@ class LotController extends Controller
         $lotsQuery = $modelSort->sortBy($lotsQuery, $type);
 
         $pages = new Pagination(['totalCount' => $count, 'pageSize'=> 10]);
+
 
         if (!$lots = Yii::$app->cache->get($lot_list_cache.'1')) {
 
@@ -363,6 +367,7 @@ class LotController extends Controller
         
         $offset = $pages->offset;
         $limit = $pages->limit;
+        $type = ($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog';
         return $this->render('search', compact('model', 'modelSort', 'type', 'queryCategory', 'lots', 'pages', 'count', 'offset', 'limit', 'price', 'url'));
     }
     public function actionPage($type, $category, $subcategory, $id)

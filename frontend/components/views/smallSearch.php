@@ -18,7 +18,34 @@ foreach ($regions as $region) {
 }
 $this->registerJsVar('lotType', $type, $position = yii\web\View::POS_HEAD);
 $this->registerJsVar('categorySelected', 0, $position = yii\web\View::POS_HEAD);
+
+$btnStyle = ($btnColor)? "background: $btnColor; border-color: $btnColor;" : '' ;
 ?>
+<? if ($color) { ?>
+<style>
+    .hero-banner-01 .search-form-main .form-group label {
+        color: <?=$color?>;
+    }
+    .hero-banner-01 .search-form-main .form-group .form-control::-webkit-input-placeholder {
+        color: <?=$color?>;
+    }
+    .hero-banner-01 .search-form-main .form-group .form-control::-moz-placeholder {
+        color: <?=$color?>;
+    }
+    .hero-banner-01 .search-form-main .form-group .form-control:-moz-placeholder {
+        color: <?=$color?>;
+    }
+    .hero-banner-01 .search-form-main .form-group .form-control:-ms-input-placeholder {
+        color: <?=$color?>;
+    }
+    .chosen-container-single a:not([href]):not([tabindex]).chosen-single:not(.chosen-default) {
+        color: <?=$color?>!important;
+    }
+    .chosen-container-single a:not([href]):not([tabindex]) {
+        color: <?=$color?>!important;
+    }
+</style>
+<? } ?>
 <div class="search-form-main">
     <?php $form = ActiveForm::begin(['method' => 'get','action' => '/bankrupt/lot-list','options' => ['enctype' => 'multipart/form-data']]) ?>
         <div class="from-inner">
@@ -91,7 +118,7 @@ $this->registerJsVar('categorySelected', 0, $position = yii\web\View::POS_HEAD);
 
                 <div class="col-12 col-shrink">
                     <div class="col-inner">
-                        <?= Html::submitButton('<i class="ion-android-search"></i>', ['class' => 'btn btn-primary btn-block', 'name' => 'login-button']) ?>
+                        <?= Html::submitButton('<i class="ion-android-search"></i>', ['class' => 'btn btn-primary btn-block', 'style' => $btnStyle, 'name' => 'login-button']) ?>
                     </div>
                 </div>
                 

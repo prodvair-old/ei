@@ -22,6 +22,7 @@ $this->params['breadcrumbs'][] = [
 ];
 
 $lotsCategory = LotsCategory::find()->where(['or', ['not', ['zalog_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
+$this->registerJsVar('lotType', 'zalog', $position = yii\web\View::POS_HEAD);
 ?>
 
 <section class="page-wrapper page-detail">
@@ -101,11 +102,38 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['zalog_categorys' =>
                         
                         <div class="clear"></div>
 
+                        <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
                             <div class="row gap-30">
-                                
+
                                 <div class="col-12">
 
-                                <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+                                    <div class="avatar-upload">
+                                        <div class="row">
+
+                                            <div class="col-2">
+                                                <img class="profile-pic d-block setting-image-tag" src="img/image-man/01.jpg" alt="avatar" />
+                                            </div>
+
+                                        </div>
+                                        
+                                        <label for="avatar-upload">
+                                            <div class="upload-button text-secondary line-1">
+                                                <div>
+                                                    <i class="fas fa-upload text-primary"></i>
+                                                    <span class="d-block font12 text-uppercase font700 mt-10 text-primary">Максимальный размер:<br/>250 Мб</span>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <?= $form->field($model, 'images[]')->fileInput(['class'=>'file-upload', 'id'=>'avatar-upload', 'accept' => 'image/*'])->label(false) ?>
+                                        <div class="labeling">
+                                            <i class="fas fa-upload"></i> <span class="setting-image-info">Изменить аватарку</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                
+                                <div class="col-12">
+                                
                                     <div class="col-inner">
                                     
                                         <div class="row gap-20">
@@ -123,7 +151,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['zalog_categorys' =>
                                                         'Публичное предложение'=>'Публичное предложение'
                                                     ],
                                                     [
-                                                        'class'=>'chosen-category-select form-control form-control-sm', 
+                                                        'class'=>'chosen-category-select form-control form-control-sm',
                                                         'data-placeholder'=>'Тип торгов', 
                                                         'tabindex'=>'2',
                                                     ])
@@ -134,29 +162,30 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['zalog_categorys' =>
 
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-group mb-0">
-                                                    <?/*=$form->field($model, 'category')->dropDownList(
+                                                    <?=$form->field($model, 'categorys')->dropDownList(
                                                             ArrayHelper::map($lotsCategory, 'id', 'name'),
                                                         [
                                                             'class'=>'chosen-category-select form-control form-control-sm', 
                                                             'data-placeholder'=>'Все категории', 
                                                             'tabindex'=>'2'
                                                         ])
-                                                        ->label('Категория');*/?>
+                                                        ->label('Категория');?>
                                                 </div>
                                             </div>
 
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-group mb-0">
-                                                    <?/*=$form->field($model, 'subCategory')->dropDownList(
-                                                            [0=>'Dсе подкатегории'],
+                                                    <?=$form->field($model, 'subCategory')->dropDownList(
+                                                            [0=>'Все подкатегории'],
                                                         [
                                                             'class'=>'chosen-the-basic subcategory-load form-control form-control-sm', 
                                                             'data-placeholder'=>'Все подкатегории', 
+                                                            'id' => 'searchlot-subcategory',
                                                             'disabled' => true,
                                                             'multiple' => true,
                                                             'tabindex'=>'2'
                                                         ])
-                                                        ->label('Подкатегория');*/?>
+                                                        ->label('Подкатегория');?>
                                                 </div>
                                             </div>
 
@@ -292,11 +321,11 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['zalog_categorys' =>
                                         </div>
                                         
                                     </div>
-                                <?php ActiveForm::end() ?>
                                 </div>
                             
                             </div>
-                            
+
+                        <?php ActiveForm::end() ?>
                     </div>
                     
                 </div>

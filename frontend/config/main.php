@@ -51,8 +51,6 @@ return [
       'rules' => [
 
         '' => 'site/index',
-        '/test' => 'test/index',
-
 
         '/about'    => 'pages/about',
         '/license'  => 'pages/license',
@@ -100,11 +98,14 @@ return [
         '/profile/import-lots'   => 'user/import-lots',
         '/profile/add'           => 'user/add-lot',
 
+
         '/profile/lot-images'    => 'user/lot-images',
         '/profile/lot-category'  => 'user/lot-category',
         '/profile/lot-remove'    => 'user/lot-remove',
         '/profile/lot-status'    => 'user/lot-status',
 
+
+        '/lots-arrest-<limit:\d+>.xlsx' => 'lots/arrest',
 
 
         '/sitemap.xml'                      => 'sitemap/index',
@@ -120,6 +121,7 @@ return [
         '/<type>/<category>/<subcategory>'            => 'lot/search',
         '/<type>/<category>/<subcategory>/<id:\d+>'   => 'lot/page',
         '/<type>/<category>/<subcategory>/<region>'   => 'lot/search',
+
       ]
     ],
     'assetManager' => [

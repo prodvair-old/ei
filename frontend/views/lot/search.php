@@ -359,7 +359,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                     
                       <div class="col-12 col-lg-5">
                         <? if (count($lots) > 0) {?>
-                            Выведено от <?= $offset+1 ?> до <?= $offset + count($lots)?> лотов. Всего <?=$count-1?>.
+                            Выведено от <?= $offset+1 ?> до <?= $offset + count($lots)?> лотов. Всего <?=$count?>.
                         <? } else { ?>
                             Лотов не найдено
                         <? } ?>

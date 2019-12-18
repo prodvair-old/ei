@@ -9,6 +9,9 @@ use common\models\Query\Zalog\lotCategorys;
 
 class LotsZalogUpdate extends ActiveRecord
 {
+    public $category;
+    public $image;
+
     public static function tableName()
     {
         return 'zlg."lots"';
