@@ -151,11 +151,23 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
         <aside class="sidebar-wrapper pv">
 
-          <div class="secondary-search-box mb-30">
+          <div class="search-box mb-30">
+            <!-- <div class="secondary-search-box mb-30"> -->
 
-            <h4 class="">Поиск</h4>
+            <!-- <h4 class="">Поиск</h4> -->
 
             <div class="row">
+
+              <div class="col-12">
+                <div class="">
+                  <?= $form->field($model, 'search')->textInput([
+                    'class' => 'form-control search-form-control',
+                    'placeholder' => 'Поиск: Машина, Квартира...',
+                    'tabindex' => '2',
+                  ])
+                    ->label('Поиск'); ?>
+                </div>
+              </div>
 
               <div class="col-12">
                 <div class="col-inner">
@@ -168,7 +180,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                     'data-placeholder' => 'Выберите тип лота',
                     'tabindex' => '2',
                     'options' => [
-                      // 'zalog' => ['disabled' => true, 'title'=>'Скоро'],
+                      'zalog' => ['disabled' => true, 'title' => 'Скоро'],
                       $type => ['Selected' => true]
                     ]
                   ])
@@ -221,19 +233,10 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                 </div>
               </div>
 
-              <div class="col-12">
-                <div class="col-inner">
-                  <?= $form->field($model, 'search')->textInput([
-                    'class' => 'form-control form-control-sm',
-                    'placeholder' => 'Например: Машина, Квартира...',
-                    'tabindex' => '2',
-                  ])
-                    ->label('Найти'); ?>
-                </div>
-              </div>
+
 
               <div class="col-12">
-                <div class="col-inner ph-20 pv-15">
+                <div class="col-inner  pv-15">
                   <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
                 </div>
               </div>
@@ -298,7 +301,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                   'class' => 'custom-control-input',
                   'value' => '1',
                   'id' => 'archivCheck',
-                  'template' => '{input}<label class="custom-control-label" for="archivCheck">Лоты с архива</label>'
+                  'template' => '{input}<label class="custom-control-label" for="archivCheck">Лоты из архива</label>'
                 ]) ?>
               </div>
 
@@ -307,163 +310,106 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
           </div>
 
           <div class="sidebar-box">
-            <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
+
+            <?= Html::submitButton('фильтровать', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
+
           </div>
+
           <div class="sidebar-box">
-            <p></p>
+            <p><?= Yii::$app->params['text'] ?></p>
           </div>
-
+          <?php ActiveForm::end(); ?>
         </aside>
+      </aside>
 
-        <?php ActiveForm::end(); ?>
+      <div class="col-12 col-lg-8">
 
-        <div class="box-title">
-          <h5>Торговые площадки</h5>
-        </div>
+        <div class="content-wrapper pv">
 
-        <div class="box-content">
-          <?= $form->field($model, 'etp')->dropDownList(
-            ArrayHelper::map(TradePlace::find()->orderBy('tradename ASC')->all(), 'idtradeplace', 'tradename'),
-            [
-              'class' => 'chosen-the-basic form-control',
-              'data-placeholder' => 'Все торговые площадки',
-              'multiple' => true
-            ]
-          )
-            ->label(false); ?>
-        </div>
+          <div class="d-flex justify-content-between flex-row align-items-center sort-group page-result-01">
+            <div class="sort-box">
+              <div class="d-flex align-items-center sort-item">
 
-    </div>
+                <label class="sort-label d-none d-sm-flex">Сортировка по:</label>
+                <?php $form = ActiveForm::begin(['id' => 'sort-lot-form', 'method' => 'GET']); ?>
+                <div class="sort-form">
+                  <?= $form->field($modelSort, 'sortBy')->dropDownList([
+                    'nameASC'   => 'Название от А до Я',
+                    'nameDESC'  => 'Название от Я до А',
+                    'dateDESC'  => 'Сначала новые',
+                    'dateASC'   => 'Сначала старые',
+                    'priceDESC' => 'Цена по убыванию',
+                    'priceASC'  => 'Цена по возрастанию'
+                  ], [
+                    'class' => 'chosen-sort-select form-control sortSelect',
+                    'data-placeholder' => 'Сортировка по',
+                    'tabindex' => '2',
+                    'options' => [
+                      'dateDESC' => ['Selected' => true]
+                    ]
+                  ])
+                    ->label(false); ?>
+                </div>
+                <?php ActiveForm::end(); ?>
 
-    <div class="sidebar-box">
-
-      <div class="box-title">
-        <h5>Другое</h5>
-      </div>
-
-      <div class="box-content">
-
-        <div class="custom-control custom-checkbox">
-          <?= $form->field($model, 'imageCheck')->checkbox([
-            'class' => 'custom-control-input',
-            'value' => '1',
-            'id' => 'imageCheck',
-            'template' => '{input}<label class="custom-control-label" for="imageCheck">Только с фото</label>'
-          ]) ?>
-        </div>
-        <div class="custom-control custom-checkbox">
-          <?= $form->field($model, 'archivCheck')->checkbox([
-            'class' => 'custom-control-input',
-            'value' => '1',
-            'id' => 'archivCheck',
-            'template' => '{input}<label class="custom-control-label" for="archivCheck">Лоты из архива</label>'
-          ]) ?>
-        </div>
-
-      </div>
-
-    </div>
-
-    <div class="sidebar-box">
-
-      <?= Html::submitButton('фильтровать', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
-
-    </div>
-
-    <div class="sidebar-box">
-      <p><?= Yii::$app->params['text'] ?></p>
-    </div>
-
-  </aside>
-
-  <div class="col-12 col-lg-8">
-
-    <div class="content-wrapper pv">
-
-      <div class="d-flex justify-content-between flex-row align-items-center sort-group page-result-01">
-        <div class="sort-box">
-          <div class="d-flex align-items-center sort-item">
-
-            <label class="sort-label d-none d-sm-flex">Сортировка по:</label>
-            <?php $form = ActiveForm::begin(['id' => 'sort-lot-form', 'method' => 'GET']); ?>
-            <div class="sort-form">
-              <?= $form->field($modelSort, 'sortBy')->dropDownList([
-                'nameASC'   => 'Название от А до Я',
-                'nameDESC'  => 'Название от Я до А',
-                'dateDESC'  => 'Сначала новые',
-                'dateASC'   => 'Сначала старые',
-                'priceDESC' => 'Цена по убыванию',
-                'priceASC'  => 'Цена по возрастанию'
-              ], [
-                'class' => 'chosen-sort-select form-control sortSelect',
-                'data-placeholder' => 'Сортировка по',
-                'tabindex' => '2',
-                'options' => [
-                  'dateDESC' => ['Selected' => true]
-                ]
-              ])
-                ->label(false); ?>
+              </div>
             </div>
-            <?php ActiveForm::end(); ?>
-
-          </div>
-        </div>
-        <div class="sort-box">
-          <div class="d-flex align-items-center sort-item">
-            <label class="sort-label d-none d-sm-flex">Найдено лотов: <?= $count - 1 ?></label>
-          </div>
-        </div>
-      </div>
-
-      <div class="tour-long-item-wrapper-01 load-list">
-        <? foreach ($lots as $lot) {
-          echo LotBlock::widget(['lot' => $lot, 'type' => 'long']);
-        } ?>
-      </div>
-
-      <div class="pager-wrappper mt-40">
-
-        <div class="pager-innner">
-
-          <div class="row align-items-center text-center text-lg-left">
-
-            <div class="col-12 col-lg-5">
-              <? if (count($lots) > 0) { ?>
-                Выведено от <?= $offset + 1 ?> до <?= $offset + count($lots) ?> лотов. Всего <?= $count ?>.
-              <? } else { ?>
-                Лотов не найдено
-              <? } ?>
+            <div class="sort-box">
+              <div class="d-flex align-items-center sort-item">
+                <label class="sort-label d-none d-sm-flex">Найдено лотов: <?= $count - 1 ?></label>
+              </div>
             </div>
+          </div>
 
-            <div class="col-12 col-lg-7">
-              <nav class="float-lg-right mt-10 mt-lg-0">
-                <?= LinkPager::widget([
-                  'pagination' => $pages,
-                  'nextPageLabel' => "<span aria-hidden=\"true\">&raquo;</span></i>",
-                  'prevPageLabel' => "<span aria-hidden=\"true\">&laquo;</span>",
-                  'maxButtonCount' => 6,
-                  'options' => ['class' => 'pagination justify-content-center justify-content-lg-left'],
-                  'disabledPageCssClass' => false
-                ]); ?>
-              </nav>
+          <div class="tour-long-item-wrapper-01 load-list">
+            <? foreach ($lots as $lot) {
+              echo LotBlock::widget(['lot' => $lot, 'type' => 'long']);
+            } ?>
+          </div>
+
+          <div class="pager-wrappper mt-40">
+
+            <div class="pager-innner">
+
+              <div class="row align-items-center text-center text-lg-left">
+
+                <div class="col-12 col-lg-5">
+                  <? if (count($lots) > 0) { ?>
+                    Выведено от <?= $offset + 1 ?> до <?= $offset + count($lots) ?> лотов. Всего <?= $count ?>.
+                  <? } else { ?>
+                    Лотов не найдено
+                  <? } ?>
+                </div>
+
+                <div class="col-12 col-lg-7">
+                  <nav class="float-lg-right mt-10 mt-lg-0">
+                    <?= LinkPager::widget([
+                      'pagination' => $pages,
+                      'nextPageLabel' => "<span aria-hidden=\"true\">&raquo;</span></i>",
+                      'prevPageLabel' => "<span aria-hidden=\"true\">&laquo;</span>",
+                      'maxButtonCount' => 6,
+                      'options' => ['class' => 'pagination justify-content-center justify-content-lg-left'],
+                      'disabledPageCssClass' => false
+                    ]); ?>
+                  </nav>
+                </div>
+
+              </div>
+
             </div>
 
           </div>
 
         </div>
 
+
+
       </div>
 
     </div>
 
+    </div>
 
-
-  </div>
-
-  </div>
-
-  </div>
-
-  </div>
+    </div>
 
 </section>
