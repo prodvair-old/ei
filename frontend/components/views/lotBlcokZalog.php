@@ -138,14 +138,18 @@ if (!$lotSubCategorySelect) {
         <hr>
 
         <ul class="item-meta lot-block__info">
-          <li><a href="<?= Url::to(['user/lot-remove']) ?>" data-lotid="<?= $lot->id ?>" class="remove-zalog-lot btn btn-primary text-white">Удалить</a></li>
-          <li><a href="profile/lots/edit?id=<?= $lot->id ?>" class="btn btn-success text-white-50">Редактировать</a></li>
-          <li><a href="<?= Url::to(['user/lot-status']) ?>" data-lotid="<?= $lot->id ?>" class="status-zalog-lot btn btn-secondary <?= ($lot->status) ? 'text-white' : 'text-white-50' ?>"><?= ($lot->status) ? 'Снять с публикации' : 'Опубликовать' ?></a></li>
+          <li><a href="<?= Url::to(['user/lot-remove']) ?>" data-lotid="<?= $lot->id ?>" class="remove-zalog-lot text-primary">
+              <!-- Удалить -->
+              <i class="fa fa-trash"></i>
+            </a></li>
+          <li><a href="profile/lots/edit?id=<?= $lot->id ?>" class="text-info">
+              <!-- Редактировать -->
+              <i class="fa fa-edit"></i>
+            </a></li>
+          <li><a href="<?= Url::to(['user/lot-status']) ?>" data-lotid="<?= $lot->id ?>" class="status-zalog-lot btn  btn-sm <?= ($lot->status) ? 'btn-outline-success text-success' : 'btn-success text-white' ?>"><?= ($lot->status) ? 'Снять с публикации' : 'Опубликовать' ?></a></li>
         </ul>
-
         <p class="mt-3">Цена: <span class="h6 line-1 <?= $priceClass ?> font16"><?= Yii::$app->formatter->asCurrency($lot->lotPrice) ?></span> <span class="text-muted mr-5"><?= ($lot->lotOldPrice) ? Yii::$app->formatter->asCurrency($lot->lotOldPrice) : '' ?></span></p>
       </figcaption>
     </div>
-
   </div>
 </figure>

@@ -147,6 +147,8 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
 
             <!-- <hr>
 
+            
+
             <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
             <?= $form->field($modelImport, 'fileImport')->fileInput(['class' => 'input-file'])->label(false) ?>
@@ -175,9 +177,15 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
             <? } ?>
 
             <hr> -->
+            <div class="">
+              <a class="btn btn-primary" href="<?= Url::to(['user/editlot']) ?>"><i class="fa fa-plus"></i> Добавить лот</a>
+              <a class="btn btn-primary" href="<?= Url::to(['user/addlots']) ?>"><i class="fa fa-list"></i> Импортировать лоты из CSV</a>
+            </div>
 
-            <div class="pb-50">
-              <div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03">
+            <hr>
+
+            <div>
+              <div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03 search-form-static">
                 <?= SearchForm::widget(['lotType' => 'zalog']) ?>
               </div>
             </div>

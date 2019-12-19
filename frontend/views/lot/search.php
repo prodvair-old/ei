@@ -312,7 +312,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                       'class' => 'custom-control-input',
                       'value' => '1',
                       'id' => 'archivCheck',
-                      'template' => '{input}<label class="custom-control-label" for="archivCheck">Лоты с архива</label>'
+                      'template' => '{input}<label class="custom-control-label" for="archivCheck">Лоты из архива</label>'
                     ]) ?>
                   </div>
 

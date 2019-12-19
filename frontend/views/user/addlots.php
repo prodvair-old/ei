@@ -174,49 +174,6 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
               </ul>
             <? } ?>
 
-            <!-- <hr>
-
-            <div class="mt-80 pb-50">
-              <div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03">
-                <?= SearchForm::widget(['lotType' => 'zalog']) ?>
-              </div>
-            </div>
-
-            <hr>
-
-            <div class="row  equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list">
-              <? if ($lots) {
-                foreach ($lots as $lot) {
-                  echo LotBlockZalog::widget(['lot' => $lot, 'type' => 'long']);
-                }
-              } else {
-                echo "<div class='p-15 font-bold'>Пока что у вас нету лотов</div>";
-              } ?>
-
-              <div class="pager-innner">
-                <div class="row align-items-center text-center text-lg-left">
-
-                  <div class="col-12 col-lg-5">
-                  </div>
-
-                  <div class="col-12 col-lg-7">
-
-                    <nav class="float-lg-right mt-10 mt-lg-0">
-                      <?= LinkPager::widget([
-                        'pagination' => $pages,
-                        'nextPageLabel' => "<span aria-hidden=\"true\">&raquo;</span></i>",
-                        'prevPageLabel' => "<span aria-hidden=\"true\">&laquo;</span>",
-                        'maxButtonCount' => 6,
-                        'options' => ['class' => 'pagination justify-content-center justify-content-lg-left'],
-                        'disabledPageCssClass' => false
-                      ]); ?>
-                    </nav>
-                  </div>
-
-                </div>
-              </div>
-
-            </div> -->
 
           </div>
 

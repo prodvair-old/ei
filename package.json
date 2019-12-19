@@ -23,5 +23,8 @@
 		"gulp-sass": "^4.0.2",
 		"gulp-uglify-es": "^1.0.4",
 		"slick": "^1.12.2"
+	},
+	"dependencies": {
+		"@nuxtjs/toast": "^3.3.0"
 	}
 }

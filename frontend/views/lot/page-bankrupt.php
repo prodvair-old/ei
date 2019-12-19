@@ -183,6 +183,10 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         <a href="#desc" class="open-text-js">Подробнее</a>
                         
                     </div>
+
+                    <div class="sidebar-mobile mb-40">
+                        <?= LotDetailSidebar::widget(['lot' => $lot, 'type' => $type]) ?>
+                      </div>
                     
                     <!-- <div class="mb-50"></div>
                     
@@ -680,7 +684,9 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
             
             <div class="col-12 col-lg-4">
 
-                <?=LotDetailSidebar::widget(['lot'=>$lot, 'type' => $type])?>
+            <div class="sidebar-desktop">
+          <?= LotDetailSidebar::widget(['lot' => $lot, 'type' => $type]) ?>
+        </div>
                 
             </div>
             

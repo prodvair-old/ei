@@ -12,9 +12,9 @@ use yii\helpers\Url;
     <? if (Yii::$app->user->identity->role == 'agent') { ?>
       <li <?= (strpos($page, 'lot') !== false) ? 'class="dropdown-btn active" ' : 'class="dropdown-btn"' ?>><a href="javascript:void(0);">Мои лоты</a></li>
       <ul <?= (strpos($page, 'lot') !== false) ? 'class="dropdown-list open" ' : 'class="dropdown-list"' ?>>
-        <li <?= ($page == 'lots') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/lots']) ?>">Все лоты</a></li>
-        <li <?= ($page == 'addlots') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/addlots']) ?>">Импортировать лоты</a></li>
         <li <?= ($page == 'editlot') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/editlot']) ?>">Добавить лот</a></li>
+        <li <?= ($page == 'addlots') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/addlots']) ?>">Импортировать лоты из CSV</a></li>
+        <li <?= ($page == 'lots') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/lots']) ?>">Все лоты</a></li>
       </ul>
 
     <? } ?>
