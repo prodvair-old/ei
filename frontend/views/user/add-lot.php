@@ -80,7 +80,7 @@ $this->registerJsVar('lotType', 'zalog', $position = yii\web\View::POS_HEAD);
                                 
                             </div>
                             
-                            <?=ProfileMenu::widget(['page'=>'setting'])?>
+                            <?=ProfileMenu::widget(['page'=>'addlot'])?>
                             
                             <!-- <p class="font-sm mt-20">Your last logged-in: <span class="text-primary font700">4 hours ago</span></p> -->
 
@@ -107,26 +107,27 @@ $this->registerJsVar('lotType', 'zalog', $position = yii\web\View::POS_HEAD);
 
                                 <div class="col-12">
 
+                                
                                     <div class="avatar-upload">
-                                        <div class="row">
+                                        <div class="row lot-load-images">
 
-                                            <div class="col-2">
-                                                <img class="profile-pic d-block setting-image-tag" src="img/image-man/01.jpg" alt="avatar" />
-                                            </div>
+                                        <!-- <div class="col-2 load-image-lot">
+                                            <img class="profile-pic d-block setting-image-tag" src="img/image-man/01.jpg" alt="avatar" />
+                                            <a href="#"><i class="fa fa-trash"></i></a>
+                                        </div> -->
 
-                                        </div>
+                                        </div> 
                                         
-                                        <label for="avatar-upload">
+                                        <label for="lot-upload" class="lot-upload">
                                             <div class="upload-button text-secondary line-1">
                                                 <div>
                                                     <i class="fas fa-upload text-primary"></i>
-                                                    <span class="d-block font12 text-uppercase font700 mt-10 text-primary">Максимальный размер:<br/>250 Мб</span>
                                                 </div>
                                             </div>
                                         </label>
-                                        <?= $form->field($model, 'images[]')->fileInput(['class'=>'file-upload', 'id'=>'avatar-upload', 'accept' => 'image/*'])->label(false) ?>
+                                        <?= $form->field($model, 'images[]')->fileInput(['multiple' => true, 'class'=>'file-upload', 'id'=>'lot-upload', 'accept' => 'image/*'])->label(false) ?>
                                         <div class="labeling">
-                                            <i class="fas fa-upload"></i> <span class="setting-image-info">Изменить аватарку</span>
+                                            <i class="fas fa-upload"></i> <span class="setting-image-info">Загрузить фото лота</span>
                                         </div>
                                     </div>
 

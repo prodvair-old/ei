@@ -93,7 +93,9 @@ class LotsZalog extends ActiveRecord
     public function getLot_archive()
     {
         $today = new \DateTime();
-        if (strtotime($this->completionDate) <= strtotime($today->format('Y-m-d H:i:s'))) {
+        if ($this->completionDate == null) {
+            return false;
+        } else if (strtotime($this->completionDate) <= strtotime($today->format('Y-m-d H:i:s'))) {
             return true;
         } else {
             return false;

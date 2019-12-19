@@ -298,7 +298,13 @@ class LotController extends Controller
         $query = $model->search($lotsQuery, $url, (($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog')? $type : null));
 
         /* http://dev.ei.ru/rosselkhozbank/lot-list */
-        if ($url != $query['url']) {
+        $urlArray = explode('/', $url);
+
+        if ($urlArray[0] != $model->type && ($urlArray[0] == 'bankrupt' || $urlArray[0] == 'arrest' || $urlArray[0] == 'zalog')) {
+            $urlArray[0] = $model->type;
+            $url = implode('/',$urlArray);
+            return $this->redirect([$url,Yii::$app->request->get()]);
+        } else if ($url != $query['url']) {
             return $this->redirect([$query['url'],Yii::$app->request->get()]);
         }
 

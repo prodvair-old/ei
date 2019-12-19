@@ -55,17 +55,12 @@ class SearchLot extends Model
         //     $this->type = $type;
         // }
 
+
         if (!empty($category) && $category != 'all' && $category != 'lot-list' && empty($this->category) && $this->category != 0) {
             $this->category = $category;
         }
 
         $checkUrl = false;
-
-        $urlArray = explode('/', $url);
-
-        // if ($urlArray[0] != $this->type) {
-        //     $url = $this->type;
-        // }
         
         switch ($this->type) {
             case 'bankrupt':
@@ -477,10 +472,10 @@ class SearchLot extends Model
                     }
                     if (!empty($this->archivCheck)) {
                         if (!$this->archivCheck) {
-                            $where[] = '"endingDate" >= NOW()';
+                            $where[] = '("completionDate" >= NOW() or "completionDate" IS NULL)';
                         }
                     } else {
-                        $where[] = '"endingDate" >= NOW()';
+                        $where[] = '("completionDate" >= NOW() or "completionDate" IS NULL)';
                     }
                 break;
             default:

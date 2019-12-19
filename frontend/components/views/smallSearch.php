@@ -47,7 +47,7 @@ $btnStyle = ($btnColor)? "background: $btnColor; border-color: $btnColor;" : '' 
 </style>
 <? } ?>
 <div class="search-form-main">
-    <?php $form = ActiveForm::begin(['method' => 'get','action' => '/bankrupt/lot-list','options' => ['enctype' => 'multipart/form-data']]) ?>
+    <?php $form = ActiveForm::begin(['method' => 'get','action' => '/'.(($typeZalog)? $typeZalog : $type).'/lot-list','options' => ['enctype' => 'multipart/form-data']]) ?>
         <div class="from-inner">
             
             <div class="row shrink-auto-sm gap-1">
@@ -67,7 +67,6 @@ $btnStyle = ($btnColor)? "background: $btnColor; border-color: $btnColor;" : '' 
                                             'data-placeholder'=>'Выберите тип лота', 
                                             'tabindex'=>'2',
                                             'options' => [
-                                                // 'zalog' => ['disabled' => true, 'title'=>'Скоро'],
                                                 $type => ['Selected' => true]
                                             ]])
                                         ->label('Тип лота');?>

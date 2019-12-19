@@ -142,7 +142,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         <?if ($lot->lotImage) { ?>
                             <div class="fotorama mt-20 mb-40" data-allowfullscreen="true" data-nav="thumbs" data-arrows="always" data-click="true">
                                 <? foreach ($lot->lotImage as $image) { ?>
-                                   <img href="<?=$image?>" alt="Images" />
+                                    <img href="<?=$image?>" alt="Images" />
                                 <? } ?>
                             </div>
                         <? } ?>

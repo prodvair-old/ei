@@ -11,6 +11,7 @@ use frontend\models\zalog\FilterLots;
 class SearchForm extends Widget
 {
     public $type;
+    public $typeZalog;
     public $lotType = 'all';
     public $btnColor;
     public $color;
@@ -30,10 +31,11 @@ class SearchForm extends Widget
 
                     $type = $model->type = $this->type;
                     
+                    $typeZalog  = $this->typeZalog;
                     $btnColor   = $this->btnColor;
                     $color      = $this->color;
             
-                    return $this->render('smallSearch', compact('model', 'type', 'btnColor', 'color'));
+                    return $this->render('smallSearch', compact('model', 'type', 'typeZalog', 'btnColor', 'color'));
                 break;
         }
         

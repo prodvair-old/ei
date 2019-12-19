@@ -418,4 +418,25 @@ $(document).ready(function () {
   });
 
   // Уведомления <-End
+  
+  // Загрузка фото для залогового Start->
+
+  $('#lot-upload').on('change', function () {
+    var input = $(this)
+    if (!window.FileReader) return false // check for browser support
+    
+    $.each( input[0].files, function( key, value ) {
+      var reader = new FileReader()
+        reader.onload = function (e) {
+            $('.lot-load-images').append(`<div class="col-2 load-image-lot">
+                <img class="profile-pic d-block setting-image-tag" src="`+e.target.result+`" alt="avatar" />
+                <a href="#"><i class="fa fa-trash"></i></a>
+            </div>`)
+        }
+        reader.readAsDataURL(value);
+    });
+  });
+  
+  // Загрузка фото для залогового <-End
+
 })

@@ -87,7 +87,7 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
 
               </div>
 
-              <?= ProfileMenu::widget(['page' => 'addlots']) ?>
+              <?= ProfileMenu::widget(['page' => 'importlots']) ?>
 
               <!-- <p class="font-sm mt-20">Your last logged-in: <span class="text-primary font700">4 hours ago</span></p> -->
 
@@ -166,9 +166,19 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
                 <?
                   foreach (Yii::$app->params['exelParseResult'] as $key => $value) {
                     if (!$value['status']) {
+                      if (is_array($value['info'])) {
+                      foreach ($value['info'] as $field => $err) {
                       ?>
-                    <?= '<li> Поле: ' . $key . ' (' . $value['info'] . ')</li>' ?>
-                <? }
+                        <?= '<li> Поле: ' . $field . ' (' . $err[0] . ')</li>' ?>
+                  
+                      <?} 
+                      } else { 
+                        echo '<li> Лот уже добавлен</li>';
+
+                      }
+                    } else { ?>
+                      Добавлено: <?=$value['count']?> лотов
+                <?  }
                   } ?>
 
               </ul>

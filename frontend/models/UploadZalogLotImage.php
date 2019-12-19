@@ -47,8 +47,7 @@ class UploadZalogLotImage extends Model
                 $image->saveAs( $pathImageMax );
                 Image::thumbnail($pathImageMax, 1000, 1000)->save(Yii::getAlias($pathImageMin), ['quality' => 80]);
 
-                $images[$id]['min'] = '/img/lots/zalog/'.$this->lotId.'/'.$id.'-min-image.'.$image->getExtension();
-                $images[$id]['max'] = '/img/lots/zalog/'.$this->lotId.'/'.$id.'-max-image.'.$image->getExtension();
+                $images[$id] = ['min' => '/img/lots/zalog/'.$this->lotId.'/'.$id.'-min-image.'.$image->getExtension(), 'max' => '/img/lots/zalog/'.$this->lotId.'/'.$id.'-max-image.'.$image->getExtension()];
                 
             }
 

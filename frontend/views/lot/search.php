@@ -340,7 +340,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                     </div>
                     <div class="sort-box">
                         <div class="d-flex align-items-center sort-item">
-                            <label class="sort-label d-none d-sm-flex">Найдено лотов: <?=$count-1?></label>
+                            <label class="sort-label d-none d-sm-flex">Найдено лотов: <?=$count?></label>
                         </div>
                     </div>
                 </div>
