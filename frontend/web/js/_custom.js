@@ -153,20 +153,24 @@ $(document).ready(function () {
         lotId
       }
     }).done(function (data) {
-      if (data == null) {
+        if (data['status'] == null) {
         element.html('Опубликовать');
         toastr.warning("Не удаётся опубликовать лот!");
-      } else if (data) {
+      } else if (data['status']) {
         element.html('Снять с публикации');
-        toastr.success("Лот №" + lotId + " успешно опубликован!");
+        $('.lot-'+lotId+'-link').attr('href',data['url']);
+        toastr.success("Лот №"+lotId+" успешно опубликован!");
       } else {
         element.html('Опубликовать');
-        toastr.success("Лот №" + lotId + " успешно снят с публикации!");
+        $('.lot-'+lotId+'-link').attr('href',data['url']);
+        toastr.success("Лот №"+lotId+" успешно снят с публикации!");
+
       }
     }).fail(function () {
       toastr.error("Ошибка при публикации/снятия с публикации лота №" + lotId);
     })
   })
+  
 
   $('.form-confirm').hide();
 

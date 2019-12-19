@@ -51,8 +51,6 @@ return [
       'rules' => [
 
         '' => 'site/index',
-        '/test' => 'test/index',
-
 
         '/about'    => 'pages/about',
         '/license'  => 'pages/license',
@@ -77,16 +75,12 @@ return [
 
         '/404'  => 'site/error',
 
-        '/arbitr-list'                                  => 'arbitr/redirect',
-        '/arbitr-list/<arb_id:\d+>'                     => 'arbitr/redirect',
         '/arbitrazhnye-upravlyayushchie'                => 'arbitr/list',
         '/arbitrazhnye-upravlyayushchie/<arb_id:\d+>'   => 'arbitr/arbitr_page',
 
         '/sro'              => 'sro/list',
         '/sro/<sro_id:\d+>' => 'sro/sro_page',
 
-        '/doljnik-list'                 => 'doljnik/redirect',
-        '/doljnik-list/<bnkr_id:\d+>'   => 'doljnik/redirect',
         '/dolzhniki'                    => 'doljnik/list',
         '/dolzhniki/<bnkr_id:\d+>'      => 'doljnik/doljnik_page',
 
@@ -99,14 +93,19 @@ return [
         '/profile/favorite'      => 'user/wish_list',
 
         '/profile/lots'          => 'user/lots',
-        '/profile/addlots'       => 'user/addlots',
-        '/profile/lots/edit'     => 'user/editlot',
+        '/profile/lots/<id:\d+>' => 'user/edit-lot',
+
+        '/profile/import-lots'   => 'user/import-lots',
+        '/profile/add'           => 'user/add-lot',
+
 
         '/profile/lot-images'    => 'user/lot-images',
         '/profile/lot-category'  => 'user/lot-category',
         '/profile/lot-remove'    => 'user/lot-remove',
         '/profile/lot-status'    => 'user/lot-status',
 
+
+        '/lots-arrest-<limit:\d+>.xlsx' => 'lots/arrest',
 
 
         '/sitemap.xml'                      => 'sitemap/index',
@@ -117,16 +116,12 @@ return [
         '/load-category'    => 'lot/load_category',
         '/wish-list-edit'   => 'lot/wish_list',
 
-        '/<type:(bankrupt|arrest|zalog)>'                                     => 'lot/index',
-        '/<type:(bankrupt|arrest|zalog)>/<category>'                          => 'lot/search',
-        '/<type:(bankrupt|arrest|zalog)>/<category>/<subcategory>'            => 'lot/search',
-        '/<type:(bankrupt|arrest|zalog)>/<category>/<subcategory>/<id:\d+>'   => 'lot/page',
-        '/<type:(bankrupt|arrest|zalog)>/<category>/<subcategory>/<region>'   => 'lot/search',
+        '/<type>'                                     => 'lot/index',
+        '/<type>/<category>'                          => 'lot/search',
+        '/<type>/<category>/<subcategory>'            => 'lot/search',
+        '/<type>/<category>/<subcategory>/<id:\d+>'   => 'lot/page',
+        '/<type>/<category>/<subcategory>/<region>'   => 'lot/search',
 
-        '/<category>'                           => 'lot/redirect',
-        '/<category>/<subcategory>'             => 'lot/redirect',
-        '/<category>/<subcategory>/<id:\d+>'    => 'lot/redirect',
-        '/<category>/<subcategory>/<region>'    => 'lot/redirect-region',
       ]
     ],
     'assetManager' => [

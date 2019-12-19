@@ -37,7 +37,7 @@ $this->title = Yii::$app->params['title'];
 
     <div class="clear mb-100"></div>
 
-    <div class="row cols-1 cols-sm-2 cols-lg-3 gap-2 mb-20">
+    <div class="row cols-1 cols-sm-2 cols-lg-4 gap-2 mb-20">
 
       <div class="col">
 
@@ -76,23 +76,23 @@ $this->title = Yii::$app->params['title'];
 
       </div>
 
-      <!-- <div class="col">
+      <div class="col">
 
-                <figure class="category__item" style="background-color:#2b8ac6;">
-                    <a href="/business">
-                        <div class="image">
-                            <img src="https://cdn-st4.rtr-vesti.ru/vh/pictures/bq/201/451/5.jpg"alt="image"/>
-                        </div>
-                        <figcaption class="content">
-                           <div class="content__wrapper">
-                            <h6>Имущество организаций</h6>
-                            <p ><?= $lotsBankruptCount ?> лотов</p>
-                          </div>
-                        </figcaption>
-                    </a>
-                </figure>
-                
-            </div> -->
+        <figure class="category__item" style="background-color:#2b8ac6;">
+            <a href="/zalog">
+                <div class="image">
+                    <img src="https://cdn-st4.rtr-vesti.ru/vh/pictures/bq/201/451/5.jpg"alt="image"/>
+                </div>
+                <figcaption class="content">
+                    <div class="content__wrapper">
+                    <h6>Имущество организаций</h6>
+                    <p ><?= $lotsZalogCount ?> лотов</p>
+                    </div>
+                </figcaption>
+            </a>
+        </figure>
+        
+    </div>
 
       <div class="col">
         <figure class="category__item" style="background-color: #555e63;">

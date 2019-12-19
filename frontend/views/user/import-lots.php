@@ -164,16 +164,15 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
             <? if (Yii::$app->params['exelParseResult']) { ?>
               <ul>
                 <?
-                  foreach (Yii::$app->params['exelParseResult'] as $key => $value) {
-                    if (!$value['status']) {
-                      ?>
+                foreach (Yii::$app->params['exelParseResult'] as $key => $value) {
+                  if (!$value['status']) {
+                ?>
                     <?= '<li> Поле: ' . $key . ' (' . $value['info'] . ')</li>' ?>
                 <? }
-                  } ?>
+                } ?>
 
               </ul>
             <? } ?>
-
 
           </div>
 
@@ -186,41 +185,3 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
   </div>
 
 </section>
-
-<script>
-  function uploadLotImage(lotId) {
-    var formData = new FormData(document.getElementById('lot-' + lotId + '-zalog-upload-images'));
-
-    // var ins = document.getElementById('images-'+lotId+'-upload').files.length;
-    // for (var x = 0; x < ins; x++) {
-    //     formData.append('images', document.getElementById('images-'+lotId+'-upload').files[x]);
-    // }
-
-    $.ajax({
-      type: 'POST',
-      contentType: false,
-      processData: false,
-      url: $('#lot-' + lotId + '-zalog-upload-images').attr('action'),
-      data: formData
-    }).done(function(data) {
-      if (data.status) {
-        var imagesTag = '';
-
-        data.src.map(function(src) {
-          imagesTag = imagesTag + `<img class="profile-pic d-block" src="` + src.min + `" alt="" />`;
-        });
-
-        $('.lot-' + lotId + '-upload-image-tag').html(imagesTag);
-        $('.lot-' + lotId + '-zalog-image-info').html('Успешно загружено');
-
-        toastr.success("Фотографии успешно загружены");
-      } else {
-        $('.lot-' + lotId + '-zalog-image-info').html('Ошибка загрузки');
-
-        toastr.warning("Не удалось загрузить фотографии");
-      }
-    }).fail(function() {
-      toastr.error("Ошибка при загрузки фотографии");
-    })
-  }
-</script>

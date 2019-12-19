@@ -14,6 +14,7 @@ use yii\widgets\Menu;
 
 use common\models\Query\Settings;
 use common\models\Query\LotsCategory;
+use common\models\Query\Zalog\OwnerProperty;
 
 use frontend\components\LoginWidget;
 use frontend\components\SignupWidget;
@@ -22,7 +23,13 @@ use frontend\components\ResetPasswordWidget;
 
 $setting = Settings::find()->orderBy('id ASC')->all();
 $lotsCategory = LotsCategory::find()->where(['!=', 'translit_name', 'lot-list'])->orderBy('id ASC')->all();
+$owners = OwnerProperty::find()->orderBy('name ASC')->all();
+
 $bankruptLotsCategoryMenu = $arrestLotsCategoryMenu = null;
+
+foreach ($owners as $owner) {
+  $ownersMenu[] = ['label' => $owner->name, 'url' => ['/'. $owner->linkForEi]];
+}
 
 foreach ($lotsCategory as $value) {
   if ($value->bankrupt_categorys != null) {
@@ -186,7 +193,7 @@ AppAsset::register($this);
                           ['label' => 'Торги', 'url' => ['/bankrupt'], 'items' => [
                             ['label' => 'Банкротное имущество', 'url' => ['/bankrupt'], 'items' => $bankruptLotsCategoryMenu],
                             ['label' => 'Арестованное имущество', 'url' => ['/arrest'], 'items' => $arrestLotsCategoryMenu],
-                            //['label' => 'Залоговое имущество', 'url' => 'javascript:void(0)', 'options' => ['class' => 'link-disabled']],
+                            ['label' => 'Залоговое имущество', 'url' => ['/zalog'], 'items' => $ownersMenu],
                           ]],
                           ['label' => 'О компании', 'url' => ['pages/about'], 'items' => [
                             ['label' => 'О нас', 'url' => ['pages/about']],

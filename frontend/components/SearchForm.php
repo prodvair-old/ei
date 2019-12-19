@@ -12,6 +12,8 @@ class SearchForm extends Widget
 {
     public $type;
     public $lotType = 'all';
+    public $btnColor;
+    public $color;
 
     public function run(){
 
@@ -27,8 +29,11 @@ class SearchForm extends Widget
                     $model = new SearchLot();
 
                     $type = $model->type = $this->type;
+                    
+                    $btnColor   = $this->btnColor;
+                    $color      = $this->color;
             
-                    return $this->render('smallSearch', compact('model', 'type'));
+                    return $this->render('smallSearch', compact('model', 'type', 'btnColor', 'color'));
                 break;
         }
         

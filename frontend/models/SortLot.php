@@ -29,7 +29,7 @@ class SortLot extends Model
      */
     public function sortBy($lots, $type = null)
     {
-        switch ($type) {
+        switch ($this->type) {
             case 'bankrupt':
                     switch ($this->sortBy) {
                         case 'nameASC':
@@ -78,6 +78,31 @@ class SortLot extends Model
                             break;
                         default:
                                 $sort .= '"torgs"."trgPublished" DESC';
+                            break;
+                    }
+                break;
+            case 'zalog':
+                    switch ($this->sortBy) {
+                        case 'nameASC':
+                                $sort .= '"title" ASC';
+                            break;
+                        case 'nameDESC':
+                                $sort .= '"title" DESC';
+                            break;
+                        case 'dateASC':
+                                $sort .= '"trgPpublicationDateublished" ASC';
+                            break;
+                        case 'dateDESC':
+                                $sort .= '"publicationDate" DESC';
+                            break;
+                        case 'priceASC':
+                                $sort .= '"startingPrice" ASC';
+                            break;
+                        case 'priceDESC':
+                                $sort .= '"startingPrice" DESC';
+                            break;
+                        default:
+                                $sort .= '"publicationDate" DESC';
                             break;
                     }
                 break;

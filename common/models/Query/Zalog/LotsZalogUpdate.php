@@ -4,13 +4,34 @@ namespace common\models\Query\Zalog;
 use Yii;
 use yii\db\ActiveRecord;
 
+use common\models\Query\LotsCategory;
 use common\models\Query\Zalog\lotCategorys;
 
 class LotsZalogUpdate extends ActiveRecord
 {
+    public $category;
+    public $image;
+
     public static function tableName()
     {
         return 'zlg."lots"';
+    }
+    public function getLotUrl() {
+        if (!$this->status) {
+            return 'javascript:void(0);';
+        }
+        if ($this->categorys) {
+            $items = LotsCategory::find()->all();
+            foreach ($items as $value) {
+                foreach ($this->categorys as $category) {
+                    if ($value->zalog_categorys[$category->categoryId]['translit'] !== null) {
+                        return 'zalog/'.$value->translit_name.'/'.$category->categoryTranslitName.'/'.$this->id;
+                    }
+                }
+            }
+        } else {
+            return 'javascript:void(0);';
+        }
     }
     // public function rules()
     // {
