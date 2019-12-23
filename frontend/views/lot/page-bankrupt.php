@@ -167,7 +167,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-basic-flag2"></i>
                                 </span>
-                                Окончание торгов<br /><strong><?= Yii::$app->formatter->asDate($lot->lotDateEnd, 'long')?></strong>
+                                Окончание торгов<br /><strong><?= ($lot->lotDateEnd !== '0001-01-01 00:00:00 BC' && $lot->lotDateEnd !== '0001-01-01 00:00:00')? Yii::$app->formatter->asDate($lot->lotDateEnd, 'long') : '(Нет даты)'?></strong>
                             </li>
                             <li>
                                 <span class="icon-font d-block">
@@ -183,6 +183,10 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         <a href="#desc" class="open-text-js">Подробнее</a>
                         
                     </div>
+
+                    <div class="sidebar-mobile mb-40">
+                        <?= LotDetailSidebar::widget(['lot' => $lot, 'type' => $type]) ?>
+                      </div>
                     
                     <!-- <div class="mb-50"></div>
                     
@@ -680,7 +684,9 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
             
             <div class="col-12 col-lg-4">
 
-                <?=LotDetailSidebar::widget(['lot'=>$lot, 'type' => $type])?>
+            <div class="sidebar-desktop">
+          <?= LotDetailSidebar::widget(['lot' => $lot, 'type' => $type]) ?>
+        </div>
                 
             </div>
             

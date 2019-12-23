@@ -61,9 +61,9 @@ AppAsset::register($this);
     
 	
     <!-- Fav and Touch Icons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="<?= Url::to('/img/favicon/apple-touch-icon.png', true)?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= Url::to('/img/favicon/logo_ei(orange).png', true)?>">
     <link rel="icon" type="image/png" sizes="32x32" href="">
-    <link rel="icon" type="image/png" sizes="16x16" href="<?= Url::to('/img/favicon/favicon-16x16.png', true)?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= Url::to('/img/favicon/favicon1.ico', true)?>">
     <link rel="manifest" href="<?= Url::to('/img/favicon/site.webmanifest', true)?>">
     <link rel="mask-icon" href="<?= Url::to('/img/favicon/safari-pinned-tab.svg', true)?>" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#ffffff">
@@ -153,9 +153,6 @@ AppAsset::register($this);
                         Войти / Зарегистрироваться
                       </a>
                     </li>
-                    <li>
-                      <button class="btn btn-toggle collapsed" data-toggle="collapse" data-target="#mobileMenu"></button>
-                    </li>
                   <? } else { ?>
                     <li class="d-block d-sm-block">
                       <a href="<?= Url::to(['user/wish_list']) ?>" class="vertival-center">
@@ -168,12 +165,15 @@ AppAsset::register($this);
                         </div>
                       </a>
                     </li>
-                    <li>
+                    <!-- <li>
                       <a href="<?= Url::to(['site/logout']) ?>">
                         <span class="icon-font ml-15"><i class="icon-logout"></i></span>
                       </a>
-                    </li>
+                    </!-->
                   <? } ?>
+                  <li>
+                    <button class="btn btn-toggle collapsed" data-toggle="collapse" data-target="#mobileMenu"></button>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -323,7 +323,7 @@ AppAsset::register($this);
                       <!--<span class="text-muted">Mon-Fri | 8.30am-6:30pm</span>--></a>
                   </li>
                   <li>
-                    <a href="mailto:support@ei.ru"><span class="icon-font text-primary inline-block-middle mr-5 font16"><i class="fa fa-envelope"></i></span> <span class="font700 text-black">support@ei.ru</span></a>
+                    <a href="mailto:help@ei.ru"><span class="icon-font text-primary inline-block-middle mr-5 font16"><i class="fa fa-envelope"></i></span> <span class="font700 text-black">help@ei.ru</span></a>
                   </li>
                 </ul>
               </div>

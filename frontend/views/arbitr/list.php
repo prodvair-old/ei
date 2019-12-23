@@ -106,7 +106,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         </div>
                         <div class="sort-box">
                             <div class="d-flex align-items-center sort-item">
-                                <label class="sort-label d-none d-sm-flex">Найдено Арбитражников: <?=$count?></label>
+                                <label class="sort-label d-none d-sm-flex">Найдено Арбитражных управляющих: <?=$count?></label>
                             </div>
                         </div>
                     </div>
@@ -125,7 +125,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                     <? if (count($arbitrs) > 0) {?>
                                         Выведено от <?= $offset+1 ?> до <?= $offset + count($arbitrs)?> АУ. Всего <?=$count?>.
                                     <? } else { ?>
-                                        Арбитражных управляющихъ не найдено
+                                        Арбитражных управляющих не найдено
                                     <? } ?>
                                 </div>
                                 

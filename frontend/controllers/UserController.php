@@ -99,34 +99,8 @@ class UserController extends Controller
           if($modelImport->fileImport && $modelImport->validate()){
             if ($modelImport->fileImport->getExtension() === 'xml') {
               $xml = simplexml_load_file($modelImport->fileImport->tempName);
-              var_dump($xml->offer);
-              
 
               $model = new LotsZalog();
-              // $model->lotId               = (string)$sheetData[$baseRow]['A'];
-              // $model->title               = mb_substr((string)$sheetData[$baseRow]['B'], 0, 150, 'UTF-8');
-              // $model->description         = (string)$sheetData[$baseRow]['C'];
-              // $model->publicationDate     = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['D']), 'php:Y-m-d H:i:s');
-              // $model->startingDate        = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['E']), 'php:Y-m-d H:i:s');
-              // $model->endingDate          = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['F']), 'php:Y-m-d H:i:s');
-              // $model->completionDate      = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['G']), 'php:Y-m-d H:i:s');
-              // $model->startingPrice       = floatval(str_replace(' ', '',$sheetData[$baseRow]['H']));
-              // $model->step                = floatval(str_replace(' ', '',$sheetData[$baseRow]['I']));
-              // $model->stepCount           = (int)$sheetData[$baseRow]['J'];
-              // $model->country             = (string)$sheetData[$baseRow]['K'];
-              // $model->city                = (string)$sheetData[$baseRow]['L'];
-              // $model->address             = (string)$sheetData[$baseRow]['M'];
-              // $model->tradeType           = (string)$sheetData[$baseRow]['N'];
-              // $model->tradeTipeId         = ((string)$sheetData[$baseRow]['N'] == 'Аукцион')? 0 : 1;
-              // $model->procedureDate       = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['O']), 'php:Y-m-d H:i:s');
-              // $model->conclusionDate      = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['P']), 'php:Y-m-d H:i:s');
-              // $model->viewInfo            = (string)$sheetData[$baseRow]['Q'];
-              // $model->collateralPrice     = floatval(str_replace(' ', '',$sheetData[$baseRow]['R']));
-              // $model->paymentDetails      = (string)$sheetData[$baseRow]['S'];
-              // $model->additionalConditions = (string)$sheetData[$baseRow]['T'];
-              // $model->currentPeriod       = (string)$sheetData[$baseRow]['U'];
-              // $model->contactPersonId     = Yii::$app->user->id;
-              // $model->ownerId             = Yii::$app->user->identity->ownerId;
 
               foreach ($xml as $key => $value) {
                   if ($key = 'generation-date') {
@@ -223,6 +197,8 @@ class UserController extends Controller
         $modelImport->addRule(['fileImport'],'required');
         $modelImport->addRule(['fileImport'],'file',['extensions'=>'xls,xlsx,xml'],['maxSize'=>1024*1024]);
 
+        $check = false;
+        $where = ['or'];
         if(Yii::$app->request->post()){
           $modelImport->fileImport = \yii\web\UploadedFile::getInstance($modelImport,'fileImport');
           if($modelImport->fileImport && $modelImport->validate()){
@@ -235,7 +211,7 @@ class UserController extends Controller
               $i = 0;
               foreach ($xml as $key => $value) {
                 if ($key == 'offer') {
-                  if (!LotsZalog::find()->where(['internalId'=>(string)$value['internal-id']])->one()) {
+                  if (!!$lot = LotsZalog::find()->where(['internalId'=>(string)$value['internal-id'], 'contactPersonId' => Yii::$app->user->id])->one()) {
                     $model->internalId          = (string)$value['internal-id'];
                     $images = [];
                     foreach ($value->image as $image) {
@@ -430,6 +406,8 @@ class UserController extends Controller
                     if (!Yii::$app->params['exelParseResult'][$baseRow]['status'] = $model->save()) {
                       Yii::$app->params['exelParseResult'][$baseRow]['info'] = $model->errors;
                     } else {
+                      $check = true;
+                      $where[] = ['id' => $model->id];
                       $i++;
                     }
                   }
@@ -445,7 +423,7 @@ class UserController extends Controller
               $baseRow = 3;
               $loadCount = 0;
               while(!empty($sheetData[$baseRow]['B'])){
-                if (!LotsZalog::find()->where(['lotId'=>(string)$sheetData[$baseRow]['A'], 'contactPersonId' => Yii::$app->user->id])->one()) {
+                if (!$lot = LotsZalog::find()->where(['lotId'=>(string)$sheetData[$baseRow]['A'], 'contactPersonId' => Yii::$app->user->id])->one()) {
                   $model = new LotsZalog();
                   $model->lotId               = (string)$sheetData[$baseRow]['A'];
                   $model->title               = mb_substr((string)$sheetData[$baseRow]['B'], 0, 150, 'UTF-8');
@@ -473,6 +451,8 @@ class UserController extends Controller
                   $model->ownerId             = Yii::$app->user->identity->ownerId;
 
                   if (Yii::$app->params['exelParseResult'][$baseRow]['status'] = $model->save()) {
+                      $check = true;
+                      $where[] = ['id' => $model->id];
                       $loadCount++;
                   } else {
                       Yii::$app->params['exelParseResult'][$baseRow]['info'] = $model->errors;
@@ -488,9 +468,21 @@ class UserController extends Controller
           }
         }
 
+        if ($check) {
+          $lotsQuery = LotsZalog::find()->where($where);
+    
+          $lotsCount = clone $lotsQuery;
+          $pages = new Pagination(['totalCount' => $lotsCount->count(), 'pageSize' => 20]);
+
+          $lots = $lotsQuery->offset($pages->offset)->limit($pages->limit)->all();
+        }
+
+
       return $this->render('import-lots', [
         'modelImport' => $modelImport,
-        'loadCount' => $loadCount
+        'loadCount' => $loadCount,
+        'pages' => $pages,
+        'lots' => $lots
       ]);
     } else {
       return $this->goHome();

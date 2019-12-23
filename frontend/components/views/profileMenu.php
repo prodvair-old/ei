@@ -6,7 +6,7 @@ use yii\helpers\Url;
 <nav class="menu-vertical-01 mt-20">
 
   <ul>
-    <li <?= ($page == 'profile') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/index']) ?>">Профиль</a></li>
+    <!-- <li <?= ($page == 'profile') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/index']) ?>">Профиль</a></li> -->
     <li <?= ($page == 'wishlist') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/wish_list']) ?>">Избранные</a></li>
     <? if (Yii::$app->user->identity->role == 'agent') { ?>
       <li <?= (strpos($page, 'lot') !== false) ? 'class="dropdown-btn active" ' : 'class="dropdown-btn"' ?>><a href="javascript:void(0);">Мои лоты</a></li>

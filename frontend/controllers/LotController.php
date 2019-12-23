@@ -428,7 +428,7 @@ class LotController extends Controller
                     (($lot->auctionstepunit == 'Percent')? $lot->stepprice.'% ('.Yii::$app->formatter->asCurrency((($lot->lotPrice / 100) * $lot->stepprice)).')' : Yii::$app->formatter->asCurrency($lot->stepprice)),
                     (($lot->advancestepunit == 'Percent')? $lot->advance.'% ('.Yii::$app->formatter->asCurrency((($lot->lotPrice / 100) * $lot->advance)).')' : Yii::$app->formatter->asCurrency($lot->advance)),
                     (($lot->torgy->pricetype == 'Public')? 'Открытая' : 'Закрытая'),
-                    Yii::$app->formatter->asDate($lot->torgy->timeend, 'long'),
+                    ($lot->torgy->timeend !== '0001-01-01 00:00:00 BC' && $lot->torgy->timeend !== '0001-01-01 00:00:00')? Yii::$app->formatter->asDate($lot->torgy->timeend, 'long') : '(Нет даты)',
                     Yii::$app->formatter->asDate($lot->torgy->timebegin, 'long')
                 ];
 

@@ -107,83 +107,15 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
 
           <div class="form-draft-payment">
 
-            <!-- <h3 class="heading-title"><span>Публикация <span class="font200"> лотов</span></span></h3>
-                        
-                        <div class="clear"></div>
+            <div class="">
+              <a class="btn btn-primary" href="<?= Url::to(['user/add-lot']) ?>"><i class="fa fa-plus"></i> Добавить лот</a>
+              <a class="btn btn-primary" href="<?= Url::to(['user/import-lots']) ?>"><i class="fa fa-list"></i> Импортировать лоты из XML/xls/xlsx</a>
+            </div>
 
-                        <p>
-                            Вам открыта возможность размещать лоты
-                            <br>Ваша организация: <strong>"<?=$owner->name?>"</strong>
-                            <br>Количество опубликованных лотов: <strong><?=LotsZalog::find()->where(['status'=>true, 'contactPersonId' => Yii::$app->user->id])->count()?></strong>
-                        </p>
-                        
-                        <hr>
+            <hr>
 
-                        <h4>Как загрузить лоты:</h4>
-                        <ul class="list-icon-absolute what-included-list mb-30">
-                            <li>
-                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                Скачайте <a href="<?= Url::to('files/Формат_добавления_лотов_в_залоговое_иммущество_ei.ru.xlsx') ?>" target="_blank" downloa>шаблон excel</a> файла;
-                            </li>
-                            <li>
-                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                Заполните файл в соответствии с  <a href="<?= Url::to('files/Формат_добавления_лотов_в_залоговое_иммущество_ei.ru.xlsx') ?>" target="_blank" downloa>требованиями</a>;
-                            </li>
-                            <li>
-                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                Загрузите заполненный вашими данными файл в соответствующую форму;
-                            </li>
-                            <li>
-                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                Лоты из файла появятся в профиле со статусом “Не опубликовано”;
-                            </li>
-                            <li>
-                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                Добавьте каждому лоту вручную фотографии (возможно выбрать несколько), добавьте <br>категорию и подкатегорию (возможно выбрать несколько);
-                            </li>
-                            <li>
-                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                Нажмите кнопку “Опубликовать”.
-                            </li>
-                        </ul> -->
-
-            <!-- <hr>
-
-            <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
-
-                            
-                            <div class="d-flex justify-content-between">
-                                <div class="form-group w-100">
-                                    <div class="custom-file custom-file-lg">
-                                    <?= $form->field($modelImport,'fileImport')->fileInput(['class'=> 'custom-file-input'])->label(false) ?>
-                                        <label class="custom-file-label">Загрузите файл с лотами</label>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <?= Html::submitButton('Импортировать лоты',['class'=>'btn btn-primary']);?>
-                            
-
-
-            <?php ActiveForm::end(); ?>
-
-            <? if (Yii::$app->params['exelParseResult']) { ?>
-              <ul>
-                <?
-                  foreach (Yii::$app->params['exelParseResult'] as $key => $value) {
-                    if (!$value['status']) {
-                      ?>
-                    <?= '<li> Поле: ' . $key . ' (' . $value['info'] . ')</li>' ?>
-                <? }
-                  } ?>
-
-              </ul>
-            <? } ?>
-
-            <hr> -->
-
-            <div class="pb-50">
-              <div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03">
+            <div>
+              <div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03 search-form-static">
                 <?= SearchForm::widget(['lotType' => 'zalog']) ?>
               </div>
             </div>
@@ -199,29 +131,27 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
                 echo "<div class='p-15 font-bold'>Пока что у вас нету лотов</div>";
               } ?>
 
-              <div class="pager-innner">
-                <div class="row align-items-center text-center text-lg-left">
+            <div class="pager-innner">
+              <div class="row align-items-center text-center text-lg-left">
 
-                  <div class="col-12 col-lg-5">
-                  </div>
-
-                  <div class="col-12 col-lg-7">
-
-                    <nav class="float-lg-right mt-10 mt-lg-0">
-                      <?= LinkPager::widget([
-                        'pagination' => $pages,
-                        'nextPageLabel' => "<span aria-hidden=\"true\">&raquo;</span></i>",
-                        'prevPageLabel' => "<span aria-hidden=\"true\">&laquo;</span>",
-                        'maxButtonCount' => 6,
-                        'options' => ['class' => 'pagination justify-content-center justify-content-lg-left'],
-                        'disabledPageCssClass' => false
-                      ]); ?>
-                    </nav>
-                  </div>
-
+                <div class="col-12 col-lg-5">
                 </div>
-              </div>
 
+                <div class="col-12 col-lg-7">
+
+                  <nav class="float-lg-right mt-10 mt-lg-0">
+                    <?= LinkPager::widget([
+                      'pagination' => $pages,
+                      'nextPageLabel' => "<span aria-hidden=\"true\">&raquo;</span></i>",
+                      'prevPageLabel' => "<span aria-hidden=\"true\">&laquo;</span>",
+                      'maxButtonCount' => 6,
+                      'options' => ['class' => 'pagination justify-content-center justify-content-lg-left'],
+                      'disabledPageCssClass' => false
+                    ]); ?>
+                  </nav>
+                </div>
+
+              </div>
             </div>
 
           </div>

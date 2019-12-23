@@ -149,8 +149,6 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
 
             <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-            <!-- <?= $form->field($modelImport, 'fileImport')->fileInput(['class' => 'input-file'])->label(false) ?> -->
-
             <div class="form-control-file">
               <label for="dynamicmodel-fileimport" class="form__load-file">
                 <?= $form->field($modelImport, 'fileImport')->fileInput(['class' => 'input-file'])->label(false) ?>
@@ -183,6 +181,39 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
 
               </ul>
             <? } ?>
+
+            <div class="row  equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list">
+              <? if ($lots) {
+                foreach ($lots as $lot) {
+                  echo LotBlockZalog::widget(['lot' => $lot, 'type' => 'long']);
+                } ?>
+              
+              <div class="pager-innner">
+                <div class="row align-items-center text-center text-lg-left">
+
+                  <div class="col-12 col-lg-5">
+                  </div>
+
+                  <div class="col-12 col-lg-7">
+
+                    <nav class="float-lg-right mt-10 mt-lg-0">
+                      <?= LinkPager::widget([
+                        'pagination' => $pages,
+                        'nextPageLabel' => "<span aria-hidden=\"true\">&raquo;</span></i>",
+                        'prevPageLabel' => "<span aria-hidden=\"true\">&laquo;</span>",
+                        'maxButtonCount' => 6,
+                        'options' => ['class' => 'pagination justify-content-center justify-content-lg-left'],
+                        'disabledPageCssClass' => false
+                      ]); ?>
+                    </nav>
+                  </div>
+
+                </div>
+              </div>
+
+              <? } ?>
+
+            </div>
 
           </div>
 

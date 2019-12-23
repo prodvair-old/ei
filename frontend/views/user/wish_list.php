@@ -121,8 +121,8 @@ $this->params['breadcrumbs'][] = [
                         <div class="wish__nav">
                             <ul class="row">
                                 <!-- <? if ($lotArrestIds) { echo '<li class="col-md-6 col-12"><a id="arrest-wish-btn" href="#arrest-wish" class="wish-tabs active">Аррестованное имущество</a></li>'; } ?>
-                                <? if ($lotBankruptIds) { echo '<li class="col-md-6 col-12"><a id="bankrupt-wish-btn"href="#bankrupt-wish" class="wish-tabs active">Банкротное иммущество</a></li>'; } ?> -->
-                                <li class="col-md-4 col-12"><a id="bankrupt-wish-btn"href="#bankrupt-wish" class="wish-tabs">Банкротное иммущество</a></li>
+                                <? if ($lotBankruptIds) { echo '<li class="col-md-6 col-12"><a id="bankrupt-wish-btn"href="#bankrupt-wish" class="wish-tabs active">Банкротное имущество</a></li>'; } ?> -->
+                                <li class="col-md-4 col-12"><a id="bankrupt-wish-btn"href="#bankrupt-wish" class="wish-tabs">Банкротное имущество</a></li>
                                 <li class="col-md-4 col-12"><a id="arrest-wish-btn" href="#arrest-wish" class="wish-tabs">Арестованное имущество</a></li>
                                 <li class="col-md-4 col-12"><a id="zalog-wish-btn" href="#zalog-wish" class="wish-tabs">Залоговое имущество</a></li>
                             </ul>

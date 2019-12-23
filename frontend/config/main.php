@@ -95,8 +95,8 @@ return [
         '/profile/lots'          => 'user/lots',
         '/profile/lots/<id:\d+>' => 'user/edit-lot',
 
-        '/profile/import-lots'   => 'user/import-lots',
-        '/profile/add'           => 'user/add-lot',
+        '/profile/lots/import'   => 'user/import-lots',
+        '/profile/lots/add'       => 'user/add-lot',
 
 
         '/profile/lot-images'    => 'user/lot-images',

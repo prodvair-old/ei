@@ -134,7 +134,9 @@ class Lots extends ActiveRecord
     public function getLot_archive()
     {
         $today = new \DateTime();
-        if (strtotime($this->torgy->timeend) <= strtotime($today->format('Y-m-d H:i:s'))) {
+        if ($this->torgy->timeend === '0001-01-01 00:00:00 BC' || $lot->torgy->timeend === '0001-01-01 00:00:00') {
+            return false;
+        } else if (strtotime($this->torgy->timeend) <= strtotime($today->format('Y-m-d H:i:s'))) {
             return true;
         } else {
             return false;

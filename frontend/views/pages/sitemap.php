@@ -3,14 +3,16 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Html;
+use frontend\components\sitemap\SitemapMain;
 
-$this->title = 'About';
+$this->title = 'Карта сайта';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-about">
+<div class="sitemap">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>This is the About page. You may modify the following file to customize its content:</p>
+    <?=SitemapMain::widget()?>
 
-    <code><?= __FILE__ ?></code>
+
+
 </div>

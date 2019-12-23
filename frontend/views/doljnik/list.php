@@ -70,7 +70,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <div class="col-inner">
                                     <?=$form->field($model, 'type')->dropDownList([
                                             'person' => 'Физические лица',
-                                            'company' => 'Юредические лица',
+                                            'company' => 'Юридические лица',
                                         ], [
                                             'class'=>'chosen-type-select form-control form-control-sm', 
                                             'data-placeholder'=>'Выберите тип должника', 
