@@ -13,7 +13,7 @@ use common\models\Query\Settings;
 $this->title = Yii::$app->params['title'];
 
 
-$title = 'Залоговое имущество <span class="font200 block">Банка Открытие</span>';
+$title = 'Имущество организации <span class="font200 block">Банка Открытие</span>';
 $description = ''; //'В нашей базе собрана исключительно актуальная информация об имущество банкротов и должников, выставленном и тендеры и торги на ЭТП и публичных аукционах.';
 
 ?>

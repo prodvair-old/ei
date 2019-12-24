@@ -116,7 +116,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
               </div>
               <div class="mr-15 text-muted">|</div>
               <div class="mr-15 rating-item rating-inline">
-                <p class="rating-text font400 text-muted font-12 letter-spacing-1"><?= $lot->id ?> </p>
+                <p class="rating-text font400 text-muted font-12 letter-spacing-1">торги №<?= $lot->id ?> </p>
               </div>
               <div class="mr-15 rating-item rating-inline">
                 <a <?= (Yii::$app->user->isGuest) ? 'href="#loginFormTabInModal-login" class="wish-star" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star" data-id="' . $lot->id . '" data-type="' . $type . '"' ?>>

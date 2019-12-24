@@ -129,7 +129,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             </div>
                             <div class="mr-10 text-muted">|</div>
                             <div class="mr-10 rating-item rating-inline">
-                                <p class="rating-text font400 text-muted font-12 letter-spacing-1"><?=$lot->id?> </p>
+                                <p class="rating-text font400 text-muted font-12 letter-spacing-1">торги №<?=$lot->id?> </p>
                             </div>
                             <div class="mr-10 text-muted">|</div>
                             <div class="mr-10 rating-item rating-inline">

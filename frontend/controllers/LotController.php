@@ -109,7 +109,7 @@ class LotController extends Controller
                 $lots = LotsZalog::find()->where(['status'=>true])->andWhere('"completionDate" >= NOW()')->limit(3)->orderBy('"publicationDate" DESC')->all();
                 $lotsFovarit = LotsZalog::find()->where(['status'=>true])->andWhere('"completionDate" >= NOW()')->limit(3)->orderBy('"publicationDate" DESC')->all();
 
-                $title = 'Залоговое имущество';
+                $title = 'Имущество организаций';
                 break;
             default:
                 $owner = OwnerProperty::find()->where(['linkForEi' => $type])->one();
@@ -219,7 +219,7 @@ class LotController extends Controller
                 $lotsPrice = LotsZalog::find()->joinWith('categorys');
 
                 $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
-                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Залоговое имущество';
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Имущество организаций';
 
                 if ($subcategory != null) {
                     foreach ($items->zalog_categorys_translit as $key => $value) {
@@ -562,7 +562,7 @@ class LotController extends Controller
                 $metaType = 'lot-zalog-page';
 
                 $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
-                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Залоговое имущество';
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Имущество организаций';
 
                 // Хлебные крошки Start->
                 Yii::$app->params['breadcrumbs'][] = [

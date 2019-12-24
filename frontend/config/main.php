@@ -63,7 +63,9 @@ return [
         '/service/agent'       => 'services/agent',
         '/service/ecp'         => 'services/ecp',
         '/service/specialist'  => 'services/specialist',
+        '/service/lot'         => 'services/lot',
 
+        
         '/login'      => 'site/login',
         '/logout'     => 'site/logout',
         '/signup'     => 'site/signup',

@@ -6,6 +6,7 @@ use yii\helpers\Html;
 use frontend\components\service\ServiceOur;
 use frontend\components\service\ServiceHelp;
 use frontend\components\service\ServiceDescription;
+use frontend\components\service\ServiceLot;
 use frontend\components\site\OurFeatures;
 use frontend\components\site\SiteFooterImage;
 
@@ -23,14 +24,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row equal-height cols-1 cols-sm-2 cols-xl-4 gap-30 mb-40">
             <?=ServiceOur::widget()?>
         </div>
-        
         <div class="mb-100"></div>
 
         <!-- <div class="row">
             <=ServiceDescription::widget()?>
-        </div> -->
+        </div>
 
-        <!-- <div class="mb-100"></div>
+        <div class="mb-100"></div>
 
         <=ServiceHelp::widget()?> -->
         

@@ -5,8 +5,6 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-use frontend\components\faq\FaqFormAskQuestion;
-
 $this->title = 'Консультация специалиста';
 $this->params['breadcrumbs'][] = $this->title;
 ?>

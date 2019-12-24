@@ -3,7 +3,6 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Html;
-use frontend\components\faq\FaqFormAskQuestion;
 
 $this->title = 'Как приобрести лот';
 $this->params['breadcrumbs'][] = $this->title;

@@ -205,212 +205,432 @@ class UserController extends Controller
             if ($modelImport->fileImport->getExtension() === 'xml') {
               $xml = (array)simplexml_load_file($modelImport->fileImport->tempName);
 
-              $model = new LotsZalogUpdate();
-              $model->contactPersonId     = Yii::$app->user->id;
-              $model->ownerId             = Yii::$app->user->identity->ownerId;
               $i = 0;
-              foreach ($xml as $key => $value) {
+              foreach ($xml as $key => $then) {
+                if ($key == 'generation-date') {
+                  $dateGenereate = $then;
+                }
                 if ($key == 'offer') {
-                  if (!!$lot = LotsZalog::find()->where(['internalId'=>(string)$value['internal-id'], 'contactPersonId' => Yii::$app->user->id])->one()) {
-                    $model->internalId          = (string)$value['internal-id'];
-                    $images = [];
-                    foreach ($value->image as $image) {
-                      $images[] = ['max' => (string)$image, 'min' => (string)$image];
+                  if ($then[0] != null) {
+                    foreach ($then as $value) {
+                    // var_dump($i . ' = '. (string)$value['internal-id']);
+                      $model = new LotsZalogUpdate();
+                      $model->contactPersonId     = Yii::$app->user->id;
+                      $model->ownerId             = Yii::$app->user->identity->ownerId;
+
+                      if (!$lot = LotsZalog::find()->where(['internalId'=>(string)$value['internal-id'], 'contactPersonId' => Yii::$app->user->id])->one()) {
+                        $model->internalId          = (string)$value['internal-id'];
+                        $images = [];
+                        if ($value->image) {
+                          foreach ($value->image as $image) {
+                            $images[] = ['max' => (string)$image, 'min' => (string)$image];
+                          }
+                        }
+                        $value = (array)$value;
+                        $info = [];
+                      
+                        switch ($value['category']) {
+                          case 'commercial':
+                              $info['category'] = 'Коммерческая';
+                              switch ($value['commercial-building-type']) {
+                                case 'business center':
+                                    $info['category-building-type'] = 'Бизнес-центр';
+                                  break;
+                                case 'detached building':
+                                    $info['category-building-type'] = 'Отдельно стоящее здание';
+                                  break;
+                                case 'residential building':
+                                    $info['category-building-type'] = 'Встроенное помещение';
+                                  break;
+                                case 'shopping center':
+                                    $info['category-building-type'] = 'Торговый центр';
+                                  break;
+                                case 'warehouse':
+                                    $info['category-building-type'] = 'Складской комплекс';
+                                  break;
+                              }
+                            break;
+                          case 'cottage':
+                              $info['category'] = 'Коттедж или дача';
+                            break;
+                          case 'house':
+                              $info['category'] = 'Дом';
+                            break;
+                          case 'house with lot':
+                              $info['category'] = 'Дом с участком';
+                            break;
+                          case 'lot':
+                              $info['category'] = 'Участок';
+                            break;
+                          case 'flat':
+                              $info['category'] = 'Квартира';
+                            break;
+                          case 'room':
+                              $info['category'] = 'Комната';
+                            break;
+                          case 'townhouse':
+                              $info['category'] = 'Таунхаус';
+                            break;
+                          case 'duplex':
+                              $info['category'] = 'Дуплекс';
+                            break;
+                          case 'garage':
+                              $info['category'] = 'Гараж';
+                              switch ($value['garage-type']) {
+                                case 'garage':
+                                    $info['category-type'] = 'Гараж';
+                                  break;
+                                case 'parking place':
+                                    $info['category-type'] = 'Машиноместо';
+                                  break;
+                                case 'box':
+                                    $info['category-type'] = 'Бокс';
+                                  break;
+                              }
+                            break;
+                          default:
+                              $info['category'] = 'Часть дома';
+                            break;
+                        }
+  
+                        foreach ($value as $type => $typeValue) {
+                          if ($type == 'commercial-type') {
+                            switch ($typeValue) {
+                              case 'auto repair':
+                                  $info['category-type'][] = 'Автосервис';
+                                break;
+                              case 'business':
+                                  $info['category-type'][] = 'Готовый бизнес';
+                                break;
+                              case 'free purpose':
+                                  $info['category-type'][] = 'Помещения свободного назначения';
+                                break;
+                              case 'hotel':
+                                  $info['category-type'][] = 'Гостиница';
+                                break;
+                              case 'land':
+                                  $info['category-type'][] = 'Земли коммерческого назначения';
+                                break;
+                              case 'legal address':
+                                  $info['category-type'][] = 'Юридический адрес';
+                                break;
+                              case 'manufacturing':
+                                  $info['category-type'][] = 'Производственное помещение';
+                                break;
+                              case 'office':
+                                  $info['category-type'][] = 'Офисные помещения';
+                                break;
+                              case 'public catering':
+                                  $info['category-type'][] = 'Общепит';
+                                break;
+                              case 'retail':
+                                  $info['category-type'][] = 'Торговые помещения';
+                                break;
+                              case 'warehouse':
+                                  $info['category-type'][] = 'Склад';
+                                break;
+                            }
+                          }
+                          if ($type == 'purpose') {
+                            switch ($typeValue) {
+                              case 'bank':
+                                $info['purpose'][] = 'Помещение для банка';
+                                break;
+                              case 'beauty shop':
+                                $info['purpose'][] = 'Салон красоты';
+                                break;
+                              case 'food store':
+                                $info['purpose'][] = 'Продуктовый магазин';
+                                break;
+                              case 'medical center':
+                                $info['purpose'][] = 'Медицинский центр';
+                                break;
+                              case 'show room':
+                                $info['purpose'][] = 'Шоу-рум';
+                                break;
+                              case 'touragency':
+                                $info['purpose'][] = 'Турагентство';
+                                break;
+                            }
+                          }
+                          if ($type == 'purpose-warehouse') {
+                            switch ($typeValue) {
+                              case 'alcohol':
+                                $info['purpose'][] = 'Алкогольный склад';
+                                break;
+                              case 'pharmaceutical storehouse':
+                                $info['purpose'][] = 'Фармацевтический склад';
+                                break;
+                              case 'vegetable storehouse':
+                                $info['purpose'][] = 'Овощехранилище';
+                                break;
+                            }
+                          }
+                        }
+                        
+                        $model->tradeType           = (string)$value['type'];
+                        $model->tradeTipeId         = ((string)$value['type'] == 'продажа')? 2 : 3;
+                        $model->lotId               = (string)$value['lot-number'];
+                        $info['url']                = (string)$value['url'];
+                        $info['cadastrNumber']      = (string)$value['cadastral-number'];
+                        $model->publicationDate     = (string)($value['creation-date'])? $value['creation-date'] : $dateGenereate ;
+                        $model->updatedAt           = (string)$value['last-update-date'];
+                        $model->startingPrice       = floatval($value['price']->value);
+  
+  
+                        $location   = (array)$value['location'];
+  
+                        $model->country             = (string)$location['country'];
+                        $model->region              = (string)$location['region'];
+                        $model->city                = (string)$location['locality-name'];
+                        $model->address             = (string)$location['address'];
+                        $info['district']           = (string)$location['district'];
+                        $info['sub-locality-name']  = (string)$location['sub-locality-name'];
+                        
+                        $info['sub-locality-name']  = (string)$location['sub-locality-name'];
+                        
+  
+                        $info['floor']              = (string)$value['floor'];
+                        $info['built-year']         = (string)$value['built-year'];
+                        $info['area']               = (string)$value['area']->value.' '.(string)$value['area']->unit;
+                        switch ($value['deal-status']) {
+                          case 'direct rent':
+                              $info['deal-status'] = 'Прямая аренда';
+                            break;
+                          case 'subrent':
+                              $info['deal-status'] = 'Субаренда';
+                            break;
+                          case 'sale of lease rights':
+                              $info['deal-status'] = 'Продажа права аренды';
+                            break;
+                          default:
+                              $info['deal-status'] = 'Продажа';
+                            break;
+                        }
+                        $model->info              = $info;
+                        $model->images            = $images;
+                        $model->description       = (string)$value['description'];
+                        $model->title             = (strlen((string)$value['description']) < 80)? (string)$value['description'] : mb_substr((string)$value['description'], 0, 80, 'UTF-8');
+                        
+                        if (!Yii::$app->params['exelParseResult'][$baseRow]['status'] = $model->save()) {
+                          Yii::$app->params['exelParseResult'][$baseRow]['info'] = $model->errors;
+                        } else {
+                          $check = true;
+                          $where[] = ['id' => $model->id];
+                          $i++;
+                        }
+                      }
                     }
-                    $value = (array)$value;
-                    $info = [];
-                  
-                    switch ($value['category']) {
-                      case 'commercial':
-                          $info['category'] = 'Коммерческая';
-                          switch ($value['commercial-building-type']) {
-                            case 'business center':
-                                $info['category-building-type'] = 'Бизнес-центр';
+                  } else {
+                    $value = $then;
+                    $model = new LotsZalogUpdate();
+                    $model->contactPersonId     = Yii::$app->user->id;
+                    $model->ownerId             = Yii::$app->user->identity->ownerId;
+
+                    if (!$lot = LotsZalog::find()->where(['internalId'=>(string)$value['internal-id'], 'contactPersonId' => Yii::$app->user->id])->one()) {
+                      $model->internalId          = (string)$value['internal-id'];
+                      $images = [];
+                      if ($value->image) {
+                        foreach ($value->image as $image) {
+                          $images[] = ['max' => (string)$image, 'min' => (string)$image];
+                        }
+                      }
+                      $value = (array)$value;
+                      $info = [];
+                    
+                      switch ($value['category']) {
+                        case 'commercial':
+                            $info['category'] = 'Коммерческая';
+                            switch ($value['commercial-building-type']) {
+                              case 'business center':
+                                  $info['category-building-type'] = 'Бизнес-центр';
+                                break;
+                              case 'detached building':
+                                  $info['category-building-type'] = 'Отдельно стоящее здание';
+                                break;
+                              case 'residential building':
+                                  $info['category-building-type'] = 'Встроенное помещение';
+                                break;
+                              case 'shopping center':
+                                  $info['category-building-type'] = 'Торговый центр';
+                                break;
+                              case 'warehouse':
+                                  $info['category-building-type'] = 'Складской комплекс';
+                                break;
+                            }
+                          break;
+                        case 'cottage':
+                            $info['category'] = 'Коттедж или дача';
+                          break;
+                        case 'house':
+                            $info['category'] = 'Дом';
+                          break;
+                        case 'house with lot':
+                            $info['category'] = 'Дом с участком';
+                          break;
+                        case 'lot':
+                            $info['category'] = 'Участок';
+                          break;
+                        case 'flat':
+                            $info['category'] = 'Квартира';
+                          break;
+                        case 'room':
+                            $info['category'] = 'Комната';
+                          break;
+                        case 'townhouse':
+                            $info['category'] = 'Таунхаус';
+                          break;
+                        case 'duplex':
+                            $info['category'] = 'Дуплекс';
+                          break;
+                        case 'garage':
+                            $info['category'] = 'Гараж';
+                            switch ($value['garage-type']) {
+                              case 'garage':
+                                  $info['category-type'] = 'Гараж';
+                                break;
+                              case 'parking place':
+                                  $info['category-type'] = 'Машиноместо';
+                                break;
+                              case 'box':
+                                  $info['category-type'] = 'Бокс';
+                                break;
+                            }
+                          break;
+                        default:
+                            $info['category'] = 'Часть дома';
+                          break;
+                      }
+
+                      foreach ($value as $type => $typeValue) {
+                        if ($type == 'commercial-type') {
+                          switch ($typeValue) {
+                            case 'auto repair':
+                                $info['category-type'][] = 'Автосервис';
                               break;
-                            case 'detached building':
-                                $info['category-building-type'] = 'Отдельно стоящее здание';
+                            case 'business':
+                                $info['category-type'][] = 'Готовый бизнес';
                               break;
-                            case 'residential building':
-                                $info['category-building-type'] = 'Встроенное помещение';
+                            case 'free purpose':
+                                $info['category-type'][] = 'Помещения свободного назначения';
                               break;
-                            case 'shopping center':
-                                $info['category-building-type'] = 'Торговый центр';
+                            case 'hotel':
+                                $info['category-type'][] = 'Гостиница';
+                              break;
+                            case 'land':
+                                $info['category-type'][] = 'Земли коммерческого назначения';
+                              break;
+                            case 'legal address':
+                                $info['category-type'][] = 'Юридический адрес';
+                              break;
+                            case 'manufacturing':
+                                $info['category-type'][] = 'Производственное помещение';
+                              break;
+                            case 'office':
+                                $info['category-type'][] = 'Офисные помещения';
+                              break;
+                            case 'public catering':
+                                $info['category-type'][] = 'Общепит';
+                              break;
+                            case 'retail':
+                                $info['category-type'][] = 'Торговые помещения';
                               break;
                             case 'warehouse':
-                                $info['category-building-type'] = 'Складской комплекс';
+                                $info['category-type'][] = 'Склад';
                               break;
                           }
-                        break;
-                      case 'cottage':
-                          $info['category'] = 'Коттедж или дача';
-                        break;
-                      case 'house':
-                          $info['category'] = 'Дом';
-                        break;
-                      case 'house with lot':
-                          $info['category'] = 'Дом с участком';
-                        break;
-                      case 'lot':
-                          $info['category'] = 'Участок';
-                        break;
-                      case 'flat':
-                          $info['category'] = 'Квартира';
-                        break;
-                      case 'room':
-                          $info['category'] = 'Комната';
-                        break;
-                      case 'townhouse':
-                          $info['category'] = 'Таунхаус';
-                        break;
-                      case 'duplex':
-                          $info['category'] = 'Дуплекс';
-                        break;
-                      case 'garage':
-                          $info['category'] = 'Гараж';
-                          switch ($value['garage-type']) {
-                            case 'garage':
-                                $info['category-type'] = 'Гараж';
+                        }
+                        if ($type == 'purpose') {
+                          switch ($typeValue) {
+                            case 'bank':
+                              $info['purpose'][] = 'Помещение для банка';
                               break;
-                            case 'parking place':
-                                $info['category-type'] = 'Машиноместо';
+                            case 'beauty shop':
+                              $info['purpose'][] = 'Салон красоты';
                               break;
-                            case 'box':
-                                $info['category-type'] = 'Бокс';
+                            case 'food store':
+                              $info['purpose'][] = 'Продуктовый магазин';
+                              break;
+                            case 'medical center':
+                              $info['purpose'][] = 'Медицинский центр';
+                              break;
+                            case 'show room':
+                              $info['purpose'][] = 'Шоу-рум';
+                              break;
+                            case 'touragency':
+                              $info['purpose'][] = 'Турагентство';
                               break;
                           }
-                        break;
-                      default:
-                          $info['category'] = 'Часть дома';
-                        break;
-                    }
-
-                    foreach ($value as $type => $typeValue) {
-                      if ($type == 'commercial-type') {
-                        switch ($typeValue) {
-                          case 'auto repair':
-                              $info['category-type'][] = 'Автосервис';
-                            break;
-                          case 'business':
-                              $info['category-type'][] = 'Готовый бизнес';
-                            break;
-                          case 'free purpose':
-                              $info['category-type'][] = 'Помещения свободного назначения';
-                            break;
-                          case 'hotel':
-                              $info['category-type'][] = 'Гостиница';
-                            break;
-                          case 'land':
-                              $info['category-type'][] = 'Земли коммерческого назначения';
-                            break;
-                          case 'legal address':
-                              $info['category-type'][] = 'Юридический адрес';
-                            break;
-                          case 'manufacturing':
-                              $info['category-type'][] = 'Производственное помещение';
-                            break;
-                          case 'office':
-                              $info['category-type'][] = 'Офисные помещения';
-                            break;
-                          case 'public catering':
-                              $info['category-type'][] = 'Общепит';
-                            break;
-                          case 'retail':
-                              $info['category-type'][] = 'Торговые помещения';
-                            break;
-                          case 'warehouse':
-                              $info['category-type'][] = 'Склад';
-                            break;
+                        }
+                        if ($type == 'purpose-warehouse') {
+                          switch ($typeValue) {
+                            case 'alcohol':
+                              $info['purpose'][] = 'Алкогольный склад';
+                              break;
+                            case 'pharmaceutical storehouse':
+                              $info['purpose'][] = 'Фармацевтический склад';
+                              break;
+                            case 'vegetable storehouse':
+                              $info['purpose'][] = 'Овощехранилище';
+                              break;
+                          }
                         }
                       }
-                      if ($type == 'purpose') {
-                        switch ($typeValue) {
-                          case 'bank':
-                            $info['purpose'][] = 'Помещение для банка';
-                            break;
-                          case 'beauty shop':
-                            $info['purpose'][] = 'Салон красоты';
-                            break;
-                          case 'food store':
-                            $info['purpose'][] = 'Продуктовый магазин';
-                            break;
-                          case 'medical center':
-                            $info['purpose'][] = 'Медицинский центр';
-                            break;
-                          case 'show room':
-                            $info['purpose'][] = 'Шоу-рум';
-                            break;
-                          case 'touragency':
-                            $info['purpose'][] = 'Турагентство';
-                            break;
-                        }
+                      
+                      $model->tradeType           = (string)$value['type'];
+                      $model->tradeTipeId         = ((string)$value['type'] == 'продажа')? 2 : 3;
+                      $model->lotId               = (string)$value['lot-number'];
+                      $info['url']                = (string)$value['url'];
+                      $info['cadastrNumber']      = (string)$value['cadastral-number'];
+                      $model->publicationDate     = (string)($value['creation-date'])? $value['creation-date'] : $dateGenereate ;
+                      $model->updatedAt           = (string)$value['last-update-date'];
+                      $model->startingPrice       = floatval($value['price']->value);
+
+
+                      $location   = (array)$value['location'];
+
+                      $model->country             = (string)$location['country'];
+                      $model->region              = (string)$location['region'];
+                      $model->city                = (string)$location['locality-name'];
+                      $model->address             = (string)$location['address'];
+                      $info['district']           = (string)$location['district'];
+                      $info['sub-locality-name']  = (string)$location['sub-locality-name'];
+                      
+                      $info['sub-locality-name']  = (string)$location['sub-locality-name'];
+                      
+
+                      $info['floor']              = (string)$value['floor'];
+                      $info['built-year']         = (string)$value['built-year'];
+                      $info['area']               = (string)$value['area']->value.' '.(string)$value['area']->unit;
+                      switch ($value['deal-status']) {
+                        case 'direct rent':
+                            $info['deal-status'] = 'Прямая аренда';
+                          break;
+                        case 'subrent':
+                            $info['deal-status'] = 'Субаренда';
+                          break;
+                        case 'sale of lease rights':
+                            $info['deal-status'] = 'Продажа права аренды';
+                          break;
+                        default:
+                            $info['deal-status'] = 'Продажа';
+                          break;
                       }
-                      if ($type == 'purpose-warehouse') {
-                        switch ($typeValue) {
-                          case 'alcohol':
-                            $info['purpose'][] = 'Алкогольный склад';
-                            break;
-                          case 'pharmaceutical storehouse':
-                            $info['purpose'][] = 'Фармацевтический склад';
-                            break;
-                          case 'vegetable storehouse':
-                            $info['purpose'][] = 'Овощехранилище';
-                            break;
-                        }
+                      $model->info              = $info;
+                      $model->images            = $images;
+                      $model->description       = (string)$value['description'];
+                      $model->title             = (strlen((string)$value['description']) < 80)? (string)$value['description'] : mb_substr((string)$value['description'], 0, 80, 'UTF-8');
+                      
+                      if (!Yii::$app->params['exelParseResult'][$baseRow]['status'] = $model->save()) {
+                        Yii::$app->params['exelParseResult'][$baseRow]['info'] = $model->errors;
+                      } else {
+                        $check = true;
+                        $where[] = ['id' => $model->id];
+                        $i++;
                       }
-                    }
-                    
-                    $model->tradeType           = (string)$value['type'];
-                    $model->tradeTipeId         = ((string)$value['type'] == 'продажа')? 2 : 3;
-                    $model->lotId               = (string)$value['lot-number'];
-                    $info['url']                = (string)$value['url'];
-                    $info['cadastrNumber']      = (string)$value['cadastral-number'];
-                    $model->publicationDate     = (string)$value['creation-date'];
-                    $model->updatedAt           = (string)$value['last-update-date'];
-                    $model->startingPrice       = floatval($value['price']->value);
-
-
-                    $location   = (array)$value['location'];
-
-                    $model->country             = (string)$location['country'];
-                    $model->region              = (string)$location['region'];
-                    $model->city                = (string)$location['locality-name'];
-                    $model->address             = (string)$location['address'];
-                    $info['district']           = (string)$location['district'];
-                    $info['sub-locality-name']  = (string)$location['sub-locality-name'];
-                    
-                    $info['sub-locality-name']  = (string)$location['sub-locality-name'];
-                    
-
-                    $info['floor']              = (string)$value['floor'];
-                    $info['built-year']         = (string)$value['built-year'];
-                    $info['area']               = (string)$value['area']->value.' '.(string)$value['area']->unit;
-                    switch ($value['deal-status']) {
-                      case 'direct rent':
-                          $info['deal-status'] = 'Прямая аренда';
-                        break;
-                      case 'subrent':
-                          $info['deal-status'] = 'Субаренда';
-                        break;
-                      case 'sale of lease rights':
-                          $info['deal-status'] = 'Продажа права аренды';
-                        break;
-                      default:
-                          $info['deal-status'] = 'Продажа';
-                        break;
-                    }
-                    $model->info              = $info;
-                    $model->images            = $images;
-                    $model->description       = (string)$value['description'];
-                    $model->title             = (strlen((string)$value['description']) < 80)? (string)$value['description'] : mb_substr((string)$value['description'], 0, 80, 'UTF-8');
-                    
-                    if (!Yii::$app->params['exelParseResult'][$baseRow]['status'] = $model->save()) {
-                      Yii::$app->params['exelParseResult'][$baseRow]['info'] = $model->errors;
-                    } else {
-                      $check = true;
-                      $where[] = ['id' => $model->id];
-                      $i++;
                     }
                   }
+                  
                 }
               }
               Yii::$app->params['exelParseResult'][$baseRow]['count'] = $i;

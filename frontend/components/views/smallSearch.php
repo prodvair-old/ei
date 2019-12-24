@@ -98,7 +98,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
           <?= $form->field($model, 'type')->dropDownList([
             'bankrupt' => 'Банкротное имущество',
             'arrest' => 'Арестованное имущество',
-            'zalog' => 'Залоговое имущество',
+            'zalog' => 'Имущество организаций',
           ], [
             'class' => 'chosen-type-select form-control form-control-sm',
             'data-placeholder' => 'Выберите тип лота',

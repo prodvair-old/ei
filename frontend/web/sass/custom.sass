@@ -789,8 +789,43 @@ body
   transform: scale(1)
 
 .sitemap
-  margin-top: 100px
-  &__nav 
-    margin-top: 200px
-  &__menu
-    
+  h1  
+    text-align: center
+    padding: 30px 0 50px 0
+  &__list
+    position: relative
+    transition: all .3s ease
+    &__item
+      display: none
+      position: absolute
+      background: #f5f5f5
+      box-shadow: 0px 3px 5px rgba(50, 50, 50, 0.3)
+      a 
+        padding: 5px 15px
+    &:hover &__item
+      position: absolute
+      top: 0
+      left: 195px
+      width: 280px
+      display: flex
+      flex-direction: column
+      z-index: 2
+  
+.service-lot
+  padding-top: 100px
+  h1 
+    text-align: center
+    padding-bottom: 40px
+  &__subheader
+    padding: 60px 0 5px 10px
+  &__subname
+    padding-top: 20px
+    margin-top: 0px
+    font-size: 28px
+    font-weight: normal
+  &__list
+    padding-bottom: 20px
+    li
+      list-style-type: disc!important
+      margin-left: 40px!important
+      font-weight: light

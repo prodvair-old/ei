@@ -17,7 +17,7 @@ if ($type == 'bankrupt') {
     $imgBG = 'img/01.jpg';
     $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : 'В нашей базе собрана исключительно актуальная информация об имущество банкротов и должников, выставленном и тендеры и торги на ЭТП и публичных аукционах.';
 } else if ($type == 'zalog') {
-    $title = 'Единая база торгов <span class="font200"><br>Залогового имущество</span>';
+    $title = 'Единая база торгов <span class="font200"><br>имущества организаций</span>';
     $imgBG = 'img/01.jpg';
     $description = Yii::$app->params['text'];
 }else if ($type == 'arrest') {

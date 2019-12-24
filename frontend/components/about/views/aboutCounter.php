@@ -39,7 +39,7 @@
                         <div class="counting-number">
                             <span class="counter fs-40" data-decimal-delimiter="," data-thousand-delimiter="," data-value="3" ></span>
                         </div>
-                        <span class="counting-label">Торговые секции: банкротное, арестованное, залоговое имущество</span>
+                        <span class="counting-label">Торговые секции: банкротное, арестованное, имущество организаций</span>
                     </div>
                 </div>
             

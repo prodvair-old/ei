@@ -8,11 +8,11 @@ use frontend\components\sitemap\SitemapMain;
 $this->title = 'Карта сайта';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="sitemap">
+<section class="sitemap">
+
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?=SitemapMain::widget()?>
-
-
-
-</div>
+    <div class="container">
+        <?=SitemapMain::widget()?>
+    </div>
+</section>

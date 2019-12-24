@@ -124,7 +124,7 @@ $this->params['breadcrumbs'][] = [
                                 <? if ($lotBankruptIds) { echo '<li class="col-md-6 col-12"><a id="bankrupt-wish-btn"href="#bankrupt-wish" class="wish-tabs active">Банкротное имущество</a></li>'; } ?> -->
                                 <li class="col-md-4 col-12"><a id="bankrupt-wish-btn"href="#bankrupt-wish" class="wish-tabs">Банкротное имущество</a></li>
                                 <li class="col-md-4 col-12"><a id="arrest-wish-btn" href="#arrest-wish" class="wish-tabs">Арестованное имущество</a></li>
-                                <li class="col-md-4 col-12"><a id="zalog-wish-btn" href="#zalog-wish" class="wish-tabs">Залоговое имущество</a></li>
+                                <li class="col-md-4 col-12"><a id="zalog-wish-btn" href="#zalog-wish" class="wish-tabs">Имущество организаций</a></li>
                             </ul>
                             <hr class="mt-10">
                         </div>
@@ -203,7 +203,7 @@ $this->params['breadcrumbs'][] = [
                             <? if ($lotZalogIds) {
                                 foreach ($lotZalogIds as $lot) { echo LotBlock::widget(['lot' => $lot]); }
                             } else {
-                                echo "<div class='p-15 font-bold'>Пока нет избранных лотов по залоговому имуществу</div>";
+                                echo "<div class='p-15 font-bold'>Пока нет избранных лотов по имуществу организаций</div>";
                             } ?>
                             <div class="pager-innner">
                         

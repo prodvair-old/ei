@@ -193,7 +193,7 @@ AppAsset::register($this);
                           ['label' => 'Торги', 'url' => ['/bankrupt'], 'items' => [
                             ['label' => 'Банкротное имущество', 'url' => ['/bankrupt'], 'items' => $bankruptLotsCategoryMenu],
                             ['label' => 'Арестованное имущество', 'url' => ['/arrest'], 'items' => $arrestLotsCategoryMenu],
-                            ['label' => 'Залоговое имущество', 'url' => ['/zalog'], 'items' => $ownersMenu],
+                            ['label' => 'Имущество организаций', 'url' => ['/zalog'], 'items' => $ownersMenu],
                           ]],
                           ['label' => 'О компании', 'url' => ['pages/about'], 'items' => [
                             ['label' => 'О нас', 'url' => ['pages/about']],
@@ -207,6 +207,7 @@ AppAsset::register($this);
                           ['label' => 'Услуги', 'url' => ['services/index'], 'items' => [
                             // ['label' => 'Консультация специалиста', 'url' => ['service/specialist']],
                             ['label' => 'Услуги агента', 'url' => ['service/agent']],
+                            ['label' => 'Оценка лота', 'url' => ['service/lot']],
                             ['label' => 'Как приобрести лот?', 'url' => ['service/ecp']]
                           ]],
                         ],
@@ -380,6 +381,7 @@ AppAsset::register($this);
                                             <li><a href="/dolzhniki">Должники</a></li>
                                             <li><a href="/service">Услуги</a></li>
                                             <li><a href="/contact">Контакты</a></li>
+                                            <li><a href="/sitemap">Карта сайта</a></li>
 
                                             <!-- <li><a href="/">Торги</a></li>
                                             <li><a href="/about">О компании</a></li>
