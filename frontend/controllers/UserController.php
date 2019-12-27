@@ -97,6 +97,8 @@ class UserController extends Controller
         if(Yii::$app->request->post()){
           $modelImport->fileImport = \yii\web\UploadedFile::getInstance($modelImport,'fileImport');
           if($modelImport->fileImport && $modelImport->validate()){
+            try {
+            
             if ($modelImport->fileImport->getExtension() === 'xml') {
               $xml = simplexml_load_file($modelImport->fileImport->tempName);
 
@@ -158,6 +160,11 @@ class UserController extends Controller
               }
               Yii::$app->getSession()->setFlash('success','Success');
             }
+
+            } catch (\Throwable $th) {
+              Yii::$app->getSession()->setFlash('error','Error');
+              Yii::$app->params['exelParseResult'][$baseRow]['info'] = 'не верный тип файла';
+            }
           } else {
               Yii::$app->getSession()->setFlash('error','Error');
           }
@@ -202,6 +209,8 @@ class UserController extends Controller
         if(Yii::$app->request->post()){
           $modelImport->fileImport = \yii\web\UploadedFile::getInstance($modelImport,'fileImport');
           if($modelImport->fileImport && $modelImport->validate()){
+            try {
+
             if ($modelImport->fileImport->getExtension() === 'xml') {
               $xml = (array)simplexml_load_file($modelImport->fileImport->tempName);
 
@@ -683,6 +692,10 @@ class UserController extends Controller
               }
               Yii::$app->getSession()->setFlash('success','Success');
             }
+          } catch (\Throwable $th) {
+            Yii::$app->getSession()->setFlash('error','Error');
+            Yii::$app->params['exelParseResult'][$baseRow]['info'] = 'не верный тип файла';
+          }
           } else {
               Yii::$app->getSession()->setFlash('error','Error');
           }

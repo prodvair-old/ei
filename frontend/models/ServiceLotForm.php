@@ -7,6 +7,7 @@ use common\models\User;
 
 use common\models\Query\Bankrupt\LotsBankrupt;
 use common\models\Query\Arrest\LotsArrest;
+use common\models\Query\Zalog\LotsZalog;
 
 /**
  * Service Lot form
@@ -58,12 +59,18 @@ class ServiceLotForm extends Model
             return null;
         }
 
+        $email = 'agent@ei.ru';
+
         switch ($this->lotType) {
             case 'arrest':
                     $this->lot = LotsArrest::findOne($this->lotId);
                 break;
             case 'bankrupt':
                     $this->lot = LotsBankrupt::findOne($this->lotId);
+                break;
+            case 'zalog':
+                    $this->lot = LotsZalog::findOne($this->lotId);
+                    $email = $this->lot->agent->info['contacts']['emails'][0];
                 break;
         }
 
@@ -91,7 +98,7 @@ class ServiceLotForm extends Model
         
         $user = Yii::$app->user->identity;
 
-        return $this->sendEmail($user, 'serviceBackLot-html', 'agent@ei.ru') && $this->sendEmail($user, 'serviceFrontLot-html', $user->info['contacts']['emails'][0]);
+        return $this->sendEmail($user, 'serviceBackLot-html', $email) && $this->sendEmail($user, 'serviceFrontLot-html', $user->info['contacts']['emails'][0]);
     }
 
     /**

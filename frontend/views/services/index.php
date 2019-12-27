@@ -33,22 +33,24 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="mb-100"></div>
 
         <=ServiceHelp::widget()?> -->
+
+        
         
     </div>
 
-    <!-- <div class="container">
+        <!-- <div class="container">
 
-        <div class="section-title text-center w-100">
-            <h2>Наши <span class="lowercase">преимущества</span></h2>
-            <p>Вот почему выбирают именно нас</p>
-        </div>
+            <div class="section-title text-center w-100">
+                <h2>Наши <span class="lowercase">преимущества</span></h2>
+                <p>Вот почему выбирают именно нас</p>
+            </div>
 
-        <div class="row cols-1 cols-sm-2 cols-lg-3 gap-20 gap-md-40">
-            <=OurFeatures::widget()?>
-        </div>
+            <div class="row cols-1 cols-sm-2 cols-lg-3 gap-20 gap-md-40">
+                <=OurFeatures::widget()?>
+            </div>
 
-        <div class="mb-100"></div>
+            <div class="mb-100"></div>
 
-        <=SiteFooterImage::widget()?>
-    </div> -->
+            <=SiteFooterImage::widget()?>
+        </div> -->
 </div>

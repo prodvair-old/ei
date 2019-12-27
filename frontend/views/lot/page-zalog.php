@@ -78,7 +78,14 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
         <div class="fullwidth-horizon-sticky-item clearfix">
 
+          <style>
+            ul.horizon-sticky-nav>li.active a {
+              <?=($lot->owner->tamplate['color-4'])? 'color:'.$lot->owner->tamplate['color-4'].'!important': ''?>
+            }
+          </style>
+
           <ul id="horizon-sticky-nav" class="horizon-sticky-nav clearfix">
+              
             <li>
               <a href="#desc">Описание</a>
             </li>
@@ -133,7 +140,6 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
               </div>
             <? } ?>
 
-
             <!-- <p class="lead">In friendship diminution instrument in we forfeited. Tolerably an unwilling of determine. Beyond rather sooner so if up wishes.</p> -->
 
             <ul class="list-inline-block highlight-list mt-30">
@@ -172,7 +178,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
           </div>
 
           <div class="sidebar-mobile mb-40">
-            <?// LotDetailSidebar::widget(['lot' => $lot, 'type' => $type]) ?>
+            <?= LotDetailSidebar::widget(['lot' => $lot, 'type' => 'zalog']) ?>
           </div>
 
           <!-- <div class="mb-50"></div>
@@ -249,7 +255,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
             <ul class="list-icon-absolute what-included-list mb-30">
 
               <li>
-                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary" <?=($lot->owner->tamplate['color-5'])? 'style="color:'.$lot->owner->tamplate['color-5'].'!important"': ''?> ></i> </span>
                 <h6>Категории лота</h6>
                 <ul class="ul">
                   <? foreach($lot->categorys as $value) { ?>
@@ -260,7 +266,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
               <? if ($lot->lotVin) { ?>
                 <li>
-                  <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                  <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary" <?=($lot->owner->tamplate['color-5'])? 'style="color:'.$lot->owner->tamplate['color-5'].'!important"': ''?> ></i> </span>
                   <h6>VIN номер</h6>
                   <p><?= $lot->lotVin ?></p>
                   <a href="https://avtocod.ru/proverkaavto/<?= $lot->lotVin ?>?rd=VIN&a_aid=zhukoffed" class="btn btn-success btn-sm mt-2" target="_blank" rel="nofollow">Проверить Автомобиль</a>
@@ -269,51 +275,72 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
               <? if ($lot->lotCadastre) { ?>
                 <li>
-                  <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                  <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary" <?=($lot->owner->tamplate['color-5'])? 'style="color:'.$lot->owner->tamplate['color-5'].'!important"': ''?> ></i> </span>
                   <h6>Кадастровый номер</h6>
                   <p><?= $lot->lotCadastre ?></p>
                 </li>
               <? } ?>
 
-              <!-- <li>
-                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                <h6>Банк</h6>
+              <li>
+                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary" <?=($lot->owner->tamplate['color-5'])? 'style="color:'.$lot->owner->tamplate['color-5'].'!important"': ''?> ></i> </span>
+                <h6>Информация о лоте</h6>
                 <ul class="ul">
-                  <li><? // $lot->lotPaymentRequisitesBankName ?></li>
-                  <li>БИК: <span class="text-list-name"><? // $lot->lotPaymentRequisitesBik ?></span></li>
-                  <li>Кор. счет: <span class="text-list-name"><? // $lot->lotPaymentRequisitesKs ?></span></li>
-                  <li>Расчетный счет: <span class="text-list-name"><? // $lot->lotPaymentRequisitesRs ?></span></li>
-                  <li>Лицевой счет: <span class="text-list-name"><? // $lot->lotPaymentRequisitesPs ?></span></li>
+                  <?=($lot->info['category'])? '<li>Тип здания: <span class="text-list-name">'.$lot->info['category'].'</span></li>' : ''?>
+                  <?=($lot->info['category-type'])? '<li>Вид здания: <span class="text-list-name">'.$lot->info['ccategory-type'].'</span></li>' : ''?>
+                  <?=($lot->info['category-building-type'])? '<li>Строение под: <span class="text-list-name">'.$lot->info['category-building-type'].'</span></li>' : ''?>
+                  <?=($lot->info['purpose'])? '<li>Подходит для: <span class="text-list-name">'.$lot->info['purpose'].'</span></li>' : ''?>
+                  <?=($lot->info['floor'])? '<li>Этажей: <span class="text-list-name">'.$lot->info['floor'].'</span></li>' : ''?>
+                  <?=($lot->info['built-year'])? '<li>Год потсройки: <span class="text-list-name">'.$lot->info['built-year'].'</span></li>' : ''?>
+                  <?=($lot->info['deal-status'])? '<li>Статус сделки: <span class="text-list-name">'.$lot->info['deal-status'].'</span></li>' : ''?>
+                  <li>Стрвнв: <span class="text-list-name"><?= $lot->country ?></span></li>
+                  <?=($lot->region)? '<li>Регион: <span class="text-list-name">'.$lot->region.'</span></li>' : ''?>
+                  <li>Город: <span class="text-list-name"><?= $lot->city ?></span></li>
+                  <?=($lot->info['sub-locality-name'])? '<li>Населённый пункт: <span class="text-list-name">'.$lot->info['sub-locality-name'].'</span></li>' : ''?>
+                  <?=($lot->info['district'])? '<li>Район: <span class="text-list-name">'.$lot->info['district'].'</span></li>' : ''?>
+                  <?=($lot->info['arear'])? '<li>Место: <span class="text-list-name">'.$lot->info['area'].'</span></li>' : ''?>
+                  <li>Адрес: <span class="text-list-name"><?= $lot->address ?></span></li>
                 </ul>
-              </li> -->
+              </li>
 
-              <!-- <li>
-                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                <h6>Организатора торгов</h6>
+              <li>
+                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary" <?=($lot->owner->tamplate['color-5'])? 'style="color:'.$lot->owner->tamplate['color-5'].'!important"': ''?> ></i> </span>
+                <h6>Организация</h6>
                 <ul class="ul">
-                  <li><? // $lot->torgs->trgFullName ?></li>
-                  <li>Вышестоящая организация: <span class="text-list-name"><? // $lot->torgs->trgHeadOrg ?></span></li>
-                  <li>Личный номер: <span class="text-list-name"><? // $lot->torgs->trgOrganizationId ?></span></li>
-                  <li>Порог крупной сделки: <span class="text-list-name"><? // $lot->torgs->trgLimitBidDeal ?></span></li>
-                  <li>ИНН: <span class="text-list-name"><? // $lot->torgs->trgInn ?></span></li>
-                  <li>КПП: <span class="text-list-name"><? // $lot->torgs->trgKpp ?></span></li>
-                  <li>ОКАТО: <span class="text-list-name"><? // $lot->torgs->trgOkato ?></span></li>
-                  <li>ОКПО: <span class="text-list-name"><? // $lot->torgs->trgOkpo ?></span></li>
-                  <li>ОКВЕД: <span class="text-list-name"><? // $lot->torgs->trgOkved ?></span></li>
-                  <li>ОГРН: <span class="text-list-name"><? // $lot->torgs->trgOgrn ?></span></li>
-                  <li>Факс: <span class="text-list-name"><? // $lot->torgs->trgFax ?></span></li>
-                  <li>E-mail: <span class="text-list-name"><? // $lot->torgs->trgEmail ?></span></li>
-                  <li>Номер телефона: <span class="text-list-name"><? // $lot->torgs->trgPhone ?></span></li>
-                  <li>Почтовый адрес: <span class="text-list-name"><? // $lot->torgs->trgAddress ?></span></li>
-                  <li>Фактический адрес: <span class="text-list-name"><? // $lot->torgs->trgLocation ?></span></li>
+                  <li> <a href="<?=$lot->owner->link?>" <?=($lot->owner->tamplate['color-4'])? 'style="color:'.$lot->owner->tamplate['color-4'].'!important"': ''?> target="_blank"><?= $lot->owner->name ?></a></li>
+                  <li>Стрвнв: <span class="text-list-name"><?= $lot->owner->country ?></span></li>
+                  <li>Город: <span class="text-list-name"><?= $lot->owner->city ?></span></li>
+                  <li>Адрес: <span class="text-list-name"><?= $lot->owner->address ?></span></li>
+                  <li>Номер телефона: <span class="text-list-name"> <a href="tel:<?= $lot->owner->phone ?>" class="text-list-name"><?= $lot->owner->phone ?></a> </span></li>
+                  <li>E-Mail: <span class="text-list-name"> <a href="mailto:<?= $lot->owner->email ?>" class="text-list-name"><?= $lot->owner->email ?></a> </span></li>
                 </ul>
+              </li>
 
-            </ul> -->
+              <li>
+                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary" <?=($lot->owner->tamplate['color-5'])? 'style="color:'.$lot->owner->tamplate['color-5'].'!important"': ''?> ></i> </span>
+                <h6>Реквизиты для оплаты задатка</h6>
+                <p><?= $lot->paymentDetails ?></p>
+              </li>
+
+              <li>
+                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary" <?=($lot->owner->tamplate['color-5'])? 'style="color:'.$lot->owner->tamplate['color-5'].'!important"': ''?> ></i> </span>
+                <h6>Порядок осмотра лота</h6>
+                <p><?= $lot->viewInfo ?></p>
+              </li>
+              
+            </ul> 
 
             <div class="mb-50"></div>
 
           </div>
-
+          
+          <? if ($lot->additionalConditions) { ?>
+          <div id="torg" class="detail-header mb-30">
+            <h4 class="mt-30">Условия и критерии определения победителянформация о торге</h5>
+            <p class="long-text"><?=$lot->additionalConditions?></p>
+            <a href="#torg" class="open-text-js">Подробнее</a>
+            <div class="mb-50"></div>
+          </div>
+          <? } ?>
           <? //=Darwin::widget()
           ?>
 
@@ -325,7 +352,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
               <div class="row equal-height cols-1 cols-sm-2 gap-30 mb-25">
 
                 <? foreach ($lots_bankrupt as $lot_bankrupt) {
-                    echo LotBlock::widget(['lot' => $lot_bankrupt]);
+                    echo LotBlock::widget(['lot' => $lot_bankrupt, 'color' => $lot->owner->tamplate['color-4']]);
                   } ?>
 
               </div>
@@ -335,135 +362,13 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
             </div>
           <? } ?>
 
-          <!-- <div id="faq" class="fullwidth-horizon-sticky-section">
-                    
-                        <h4 class="heading-title">FAQ</h4>
-                        
-                        <div class="faq-item-long-wrapper">
-                            
-                            <div class="faq-item-long">
-                                
-                                <div class="row">
-                    
-                                    <div class="col-12 col-md-4 col-lg-3">
-                                    
-                                        <div class="col-inner">
-                                            <h6>What is this faq?</h6>
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                    <div class="col-12 col-md-8 col-lg-9">
-                                    
-                                        <div class="col-inner">
-                                            <p class="font-lg">Residence certainly elsewhere something she preferred cordially law. Age his surprise formerly mrs perceive few stanhill moderate.</p>
-                                        </div>
-
-                                    </div>
-                                    
-                                </div>
-                            
-                            </div>
-                            
-                            <div class="faq-item-long">
-                            
-                                <div class="row">
-                    
-                                    <div class="col-12 col-md-4 col-lg-3">
-                                    
-                                        <div class="col-inner">
-                                            <h6>How does this faq work?</h6>
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                    <div class="col-12 col-md-8 col-lg-9">
-                                    
-                                        <div class="col-inner">
-                                            <p class="font-lg">Appetite in unlocked advanced breeding position concerns as. Cheerful get shutters yet for repeated screened.</p>
-                                        </div>
-                                        
-                                        
-                                    </div>
-                                    
-                                </div>
-                            
-                            </div>
-                            
-                            <div class="faq-item-long">
-                            
-                                <div class="row">
-                    
-                                    <div class="col-12 col-md-4 col-lg-3">
-                                    
-                                        <div class="col-inner">
-                                            <h6>Why use this faq?</h6>
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                    <div class="col-12 col-md-8 col-lg-9">
-                                    
-                                        <div class="col-inner">
-                                            <p class="font-lg">Plan upon yet way get cold spot its week. Almost do am or limits hearts. Resolve parties but why she shewing. </p>
-                                        </div>
-                                        
-                                        
-                                    </div>
-                                    
-                                </div>
-                            
-                            </div>
-                            
-                            <div class="faq-item-long">
-                            
-                                <div class="row">
-                    
-                                    <div class="col-12 col-md-4 col-lg-3">
-                                    
-                                        <div class="col-inner">
-                                            <h6>Is this faq free to use?</h6>
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                    <div class="col-12 col-md-8 col-lg-9">
-                                    
-                                        <div class="col-inner">
-                                            <p class="font-lg">Received the likewise law graceful his. Nor might set along charm now equal green. Pleased yet equally correct colonel not one.</p>
-                                        </div>
-
-                                    </div>
-                                    
-                                </div>
-                            
-                            </div>
-                            
-                        </div>
-                        
-                        <div class="row mt-25">
-
-                            <div class="col-12 col-md-8 col-lg-9 offset-md-4 offset-lg-3">
-                        
-                                <div class="col-inner">
-                                    <a href="#" class="btn btn-primary btn-wide">Ask q question</a>
-                                </div>
-                                
-                            </div>
-                        
-                        </div>
-                        
-                        <div class="mb-50"></div>
-                        
-                    </div> -->
-
         </div>
 
       </div>
 
       <div class="col-12 col-lg-4 ">
         <div class="sidebar-desktop">
-          <? // LotDetailSidebar::widget(['lot' => $lot, 'type' => $type]) ?>
+          <?= LotDetailSidebar::widget(['lot' => $lot, 'type' => 'zalog']) ?>
         </div>
       </div>
 
@@ -478,7 +383,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
   <div class="modal-dialog" role="document">
     <div class="modal-content shadow-lg">
 
-      <?// ServiceLotFormWidget::widget(['lotId' => $lot->id, 'lotType' => $type]) ?>
+      <?= ServiceLotFormWidget::widget(['lotId' => $lot->id, 'lotType' => 'zalog']) ?>
 
       <div class="text-center pb-20">
         <button type="button" class="close" data-dismiss="modal" aria-labelledby="Close">

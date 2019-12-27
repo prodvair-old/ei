@@ -439,4 +439,8 @@ $(document).ready(function () {
   
   // Загрузка фото для залогового <-End
 
+  $('.custom-file-input').on('change', function () {
+    $('.custom-file-label').html($(this).prop("files")['name'];);
+  });
+
 })

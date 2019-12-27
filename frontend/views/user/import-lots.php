@@ -149,10 +149,9 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
 
             <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-            <div class="form-control-file">
-              <label for="dynamicmodel-fileimport" class="form__load-file">
-                <?= $form->field($modelImport, 'fileImport')->fileInput(['class' => 'input-file'])->label(false) ?>
-              </label>
+            <div class="custom-file">
+                <?= $form->field($modelImport, 'fileImport',['template' => '<div class="custom-file">{label}{hint}{input}{error}</div>'])->fileInput(['class' => 'custom-file-input'])->label('Загрузить файл',['class'=>'custom-file-label']) ?>
+                
               <?= Html::submitButton('Импортировать лоты', ['class' => 'btn btn-primary']); ?>
             </div>
 

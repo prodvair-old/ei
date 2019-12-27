@@ -6,6 +6,7 @@ use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
+use common\models\Query\User;
 use common\models\Query\WishList;
 use common\models\Query\PageViews;
 use common\models\Query\LotsCategory;
@@ -198,6 +199,10 @@ class LotsZalog extends ActiveRecord
     public function getOwner()
     {
         return $this->hasOne(OwnerProperty::className(), ['id' => 'ownerId'])->alias('owner');
+    }
+    public function getAgent()
+    {
+        return $this->hasOne(User::className(), ['id' => 'contactPersonId'])->alias('agent');
     }
     public function getViews()
     {

@@ -25,6 +25,7 @@
 		"slick": "^1.12.2"
 	},
 	"dependencies": {
-		"@nuxtjs/toast": "^3.3.0"
+		"@nuxtjs/toast": "^3.3.0",
+		"gulp-sourcemaps": "^2.6.5"
 	}
 }

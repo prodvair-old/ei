@@ -5,8 +5,11 @@ use yii\bootstrap\ActiveForm;
 
 use common\models\Query\Bankrupt\LotsBankrupt;
 use common\models\Query\Arrest\LotsArrest;
+use common\models\Query\Zalog\LotsZalog;
 
 use frontend\components\LotBlock;
+
+$btnName = 'Участвовать через агента';
 
 switch ($lotType) {
     case 'arrest':
@@ -16,6 +19,13 @@ switch ($lotType) {
     case 'bankrupt':
             $lot = LotsBankrupt::findOne($lotId);
             $name = 'Банкротное имущество';
+        break;
+    case 'zalog':
+            $lot = LotsZalog::findOne($lotId);
+            $name = ($lot->owner->name)? $lot->owner->name : 'Имущество организации';
+            $btnName = 'Подать заявку';
+            $color4 = $lot->owner->tamplate['color-4'];
+            $color1 = $lot->owner->tamplate['color-1'];
         break;
 }
 
@@ -49,6 +59,7 @@ if ($lot->lotPrice < 500000) {
         <div class="form-header">
             <h4>Подать заявку на лот №<?=$lotId?>, <span class="font400"><?=$name?></span></h4>
             <p>Наши опытные специалисты быстро и грамотно подготовят документы для участия в торгах. По статистике мы выигрываем 76% торгов.</p>
+            <?=($lot->owner)? '<img src="http://n.ei.ru'.$lot->owner->logo.'" alt="">': '' ?>
         </div>
         
         <div class="form-body">
@@ -60,7 +71,7 @@ if ($lot->lotPrice < 500000) {
                 <div class="row">
 
                     <div class="col-lg-6 col-12">
-                        <?=LotBlock::widget(['lot' => $lot])?>
+                        <?=LotBlock::widget(['lot' => $lot, 'color' => $color4])?>
                     </div>
 									
                     <div class="col-lg-6 col-12">
@@ -69,7 +80,7 @@ if ($lot->lotPrice < 500000) {
                             Выкупите этот лот через агента!
                         </h6>
 
-                        <h4>Стоимость участия в торгах: <span class="text-primary"><?=$agentPrice?> руб.!</span></h4>
+                        <h4>Стоимость участия в торгах: <span class="text-primary" <?= ($color4)? 'style="color: '.$color4.'!important"' : '' ?>><?=$agentPrice?> руб.!</span></h4>
                         <?=$form->field($model, 'lotType')->hiddenInput(['value'=>$lotType])->label(false);?>
                         <?=$form->field($model, 'lotId')->hiddenInput(['value'=>$lotId])->label(false);?>
                         
@@ -80,7 +91,7 @@ if ($lot->lotPrice < 500000) {
                         </ul>
 
                         <div class=" mt-30">
-                            <?=Html::submitButton('Участвовать через агента', ['class' => 'btn btn-primary btn-wide', 'name' => 'signup-button'])?>
+                            <?=Html::submitButton($btnName, ['class' => 'btn btn-primary btn-wide', 'style' => 'background: '.$color1.';border-color:'.$color1, 'name' => 'signup-button'])?>
                         </div>
 
                         <div class="custom-checkbox mt-10">

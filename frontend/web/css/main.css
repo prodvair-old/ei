@@ -457,6 +457,7 @@ blockquote cite {
 
 hr {
   border: none;
+  display: none;
   border-top: 1px solid #E5E5E5;
   margin: 10px 0;
   width: 100%;
