@@ -9,6 +9,7 @@ use common\models\Query\Bankrupt\Persons;
 use common\models\Query\Bankrupt\Sro;
 use common\models\Query\Bankrupt\Links;
 use common\models\Query\Bankrupt\Cases;
+use common\models\Query\Bankrupt\LotsBankrupt;
 
 // Арбитражный управляющий
 class Arbitrs extends ActiveRecord
@@ -32,6 +33,13 @@ class Arbitrs extends ActiveRecord
             'arb_address'   => 'postaddress',
             'arb_arbcheck'  => 'arbcheck',
         ];
+    }
+    public function getCaseCount() {
+        return count($this->cases);
+    }
+    public function getLotsCount()
+    {
+        return LotsBankrupt::find()->joinWith('torgy.case.arbitr')->where(['arbitr.id'=>$this->id])->count();
     }
     public function getPerson()
     {

@@ -29,7 +29,7 @@ class LotsZalog extends ActiveRecord
                 'publicationDate', 'startingDate', 'endingDate', 'completionDate', 
                 'procedureDate', 'conclusionDate', 'viewInfo', 'collateralPrice',
                 'paymentDetails', 'additionalConditions', 'lotId', 'contactPersonId',
-                'ownerId'
+                'ownerId', 'categoryIds', 'subCategory',
             ], 'required'],
 
             [['description', 'address', 'paymentDetails', 'additionalConditions', 'lotId', 'currentPeriod'], 'string'],
@@ -40,36 +40,34 @@ class LotsZalog extends ActiveRecord
             [['startingPrice', 'step', 'stepCount', 'tradeTipeId', 'collateralPrice', 'contactPersonId', 'ownerId'], 'number'],
 
             [['publicationDate', 'startingDate', 'endingDate', 'completionDate', 'procedureDate', 'conclusionDate', 'viewInfo'], 'string'],
-
-            [['status', 'images', 'categoryIds'], 'exist']
         ];
     }
     public function attributeLabels()
     {
         return [
             'id'                => Yii::t('app', 'ID'),
-            'lotId'             => Yii::t('app', 'LotId'),
-            'categoryIds'       => Yii::t('app', 'CategoryIds'),
-            'description'       => Yii::t('app', 'Description'),
-            'address'           => Yii::t('app', 'Address'),
-            'title'             => Yii::t('app', 'Title'),
-            'country'           => Yii::t('app', 'Country'),
-            'city'              => Yii::t('app', 'City'),
-            'tradeType'         => Yii::t('app', 'TradeType'),
-            'tradeTipeId'       => Yii::t('app', 'TradeTipeId'),
-            'startingPrice'     => Yii::t('app', 'StartingPrice'),
-            'step'              => Yii::t('app', 'Step'),
-            'stepCount'         => Yii::t('app', 'StepCount'),
-            'publicationDate'   => Yii::t('app', 'PublicationDate'),
-            'startingDate'      => Yii::t('app', 'StartingDate'),
-            'endingDate'        => Yii::t('app', 'EndingDate'),
-            'completionDate'    => Yii::t('app', 'CompletionDate'),
+            'lotId'             => Yii::t('app', 'Лот id'),
+            'categoryIds'       => Yii::t('app', 'Категории'),
+            'description'       => Yii::t('app', 'Описание'),
+            'address'           => Yii::t('app', 'Адрес'),
+            'title'             => Yii::t('app', 'Заголовок'),
+            'country'           => Yii::t('app', 'Страна'),
+            'city'              => Yii::t('app', 'Город'),
+            'tradeType'         => Yii::t('app', 'Тип тогов'),
+            'tradeTipeId'       => Yii::t('app', 'Id типа торгов'),
+            'startingPrice'     => Yii::t('app', 'Начальная цена'),
+            'step'              => Yii::t('app', 'Шаг'),
+            'stepCount'         => Yii::t('app', 'Количество шагов'),
+            'publicationDate'   => Yii::t('app', 'Дата пуликации'),
+            'startingDate'      => Yii::t('app', 'Дата начала торгов'),
+            'endingDate'        => Yii::t('app', 'Дата окончания приёма заявок'),
+            'completionDate'    => Yii::t('app', 'Дата завершения торгов'),
             'procedureDate'     => Yii::t('app', 'ProcedureDate'),
             'conclusionDate'    => Yii::t('app', 'ConclusionDate'),
             'viewInfo'          => Yii::t('app', 'ViewInfo'),
             'collateralPrice'   => Yii::t('app', 'CollateralPrice'),
             'paymentDetails'    => Yii::t('app', 'PaymentDetails'),
-            'currentPeriod'    => Yii::t('app', 'CurrentPeriod'),
+            'currentPeriod'     => Yii::t('app', 'CurrentPeriod'),
             'additionalConditions'  => Yii::t('app', 'AdditionalConditions')
         ];
     }

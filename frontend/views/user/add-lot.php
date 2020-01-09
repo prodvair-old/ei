@@ -141,7 +141,7 @@ $this->registerJsVar('lotType', 'zalog', $position = yii\web\View::POS_HEAD);
                                         
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-group mb-0">
-                                                    <?= $form->field($model, 'lotId')->textInput(['class' => 'form-control', 'placeholder' => 'Ваш ID лота'])->label('ID лота') ?>
+                                                    <?= $form->field($model, 'lotId')->textInput(['class' => 'form-control', 'placeholder' => 'Ваш ID лота'])->label('ID лота *') ?>
                                                 </div>
                                             </div>
 
@@ -156,21 +156,21 @@ $this->registerJsVar('lotType', 'zalog', $position = yii\web\View::POS_HEAD);
                                                         'data-placeholder'=>'Тип торгов', 
                                                         'tabindex'=>'2',
                                                     ])
-                                                    ->label('Тип торгов');?>
-                                                    <?= $form->field($model, 'tradeTipeId')->hiddenInput(['class' => 'form-control'])->label(false) ?>
+                                                    ->label('Тип торгов *');?>
+                                                    <?// $form->field($model, 'tradeTipeId')->hiddenInput(['class' => 'form-control'])->label(false) ?>
                                                 </div>
                                             </div>
 
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-group mb-0">
-                                                    <?=$form->field($model, 'categorys')->dropDownList(
+                                                    <?=$form->field($model, 'categoryIds')->dropDownList(
                                                             ArrayHelper::map($lotsCategory, 'id', 'name'),
                                                         [
                                                             'class'=>'chosen-category-select form-control form-control-sm', 
                                                             'data-placeholder'=>'Все категории', 
                                                             'tabindex'=>'2'
                                                         ])
-                                                        ->label('Категория');?>
+                                                        ->label('Категория *');?>
                                                 </div>
                                             </div>
 
@@ -186,7 +186,7 @@ $this->registerJsVar('lotType', 'zalog', $position = yii\web\View::POS_HEAD);
                                                             'multiple' => true,
                                                             'tabindex'=>'2'
                                                         ])
-                                                        ->label('Подкатегория');?>
+                                                        ->label('Подкатегория *');?>
                                                 </div>
                                             </div>
 
@@ -194,31 +194,37 @@ $this->registerJsVar('lotType', 'zalog', $position = yii\web\View::POS_HEAD);
 
                                             <div class="col-12">
                                                 <div class="form-group mb-0">
-                                                    <?= $form->field($model, 'title')->textInput(['class' => 'form-control', 'placeholder' => 'Заголовок'])->label('Заголовок лота') ?>
+                                                    <?= $form->field($model, 'title')->textInput(['class' => 'form-control', 'placeholder' => 'Заголовок'])->label('Заголовок лота *') ?>
                                                 </div>
                                             </div>
 
-                                            <div class="col-12 col-sm-3">
-                                                <div class="form-group mb-0 chosen-bg-light">
-                                                    <?= $form->field($model, 'publicationDate')->textInput(['class' => 'form-control', 'placeholder' => 'Дата публикации', 'onClick' => 'xCal(this, {lang: \'ru\'})'])->label('Дата публикации') ?>
+                                            <div class="col-12">
+                                                <div class="form-group mb-0">
+                                                    <?= $form->field($model, 'description')->textarea(['class' => 'form-control', 'placeholder' => 'Описание'])->label('Описание лота *') ?>
                                                 </div>
                                             </div>
 
-                                            <div class="col-12 col-sm-3">
+                                            <div class="col-12 col-sm-6">
                                                 <div class="form-group mb-0 chosen-bg-light">
-                                                    <?= $form->field($model, 'startingDate')->textInput(['class' => 'form-control', 'placeholder' => 'Дата начала торгов', 'onClick' => 'xCal(this, {lang: \'ru\'})'])->label('Дата начала торгов') ?>
+                                                    <?= $form->field($model, 'publicationDate')->textInput(['class' => 'form-control datepicker-basic', 'placeholder' => 'Дата публикации'])->label('Дата публикации *') ?>
                                                 </div>
                                             </div>
 
-                                            <div class="col-12 col-sm-3">
+                                            <div class="col-12 col-sm-6">
                                                 <div class="form-group mb-0 chosen-bg-light">
-                                                    <?= $form->field($model, 'endingDate')->textInput(['class' => 'form-control', 'placeholder' => 'Дата окончания приёма заявок', 'onClick' => 'xCal(this, {lang: \'ru\'})'])->label('Дата окончания приёма заявок') ?>
+                                                    <?= $form->field($model, 'startingDate')->textInput(['class' => 'form-control datepicker-basic', 'placeholder' => 'Дата начала торгов'])->label('Дата начала торгов *') ?>
                                                 </div>
                                             </div>
 
-                                            <div class="col-12 col-sm-3">
+                                            <div class="col-12 col-sm-6">
                                                 <div class="form-group mb-0 chosen-bg-light">
-                                                    <?= $form->field($model, 'completionDate')->textInput(['class' => 'form-control', 'placeholder' => 'Дата завершения торгов', 'onClick' => 'xCal(this, {lang: \'ru\'})'])->label('Дата завершения торгов') ?>
+                                                    <?= $form->field($model, 'endingDate')->textInput(['class' => 'form-control datepicker-basic', 'placeholder' => 'Дата окончания приёма заявок'])->label('Дата окончания приёма заявок *') ?>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6">
+                                                <div class="form-group mb-0 chosen-bg-light">
+                                                    <?= $form->field($model, 'completionDate')->textInput(['class' => 'form-contro datepicker-basic', 'placeholder' => 'Дата завершения торгов'])->label('Дата завершения торгов *') ?>
                                                 </div>
                                             </div>
 
@@ -226,7 +232,7 @@ $this->registerJsVar('lotType', 'zalog', $position = yii\web\View::POS_HEAD);
 
                                             <div class="col-12 col-sm-4">
                                                 <div class="form-group mb-0">
-                                                    <?= $form->field($model, 'startingPrice')->textInput(['class' => 'form-control', 'placeholder' => 'Начальная цена лота'])->label('Начальная цена') ?>
+                                                    <?= $form->field($model, 'startingPrice')->textInput(['class' => 'form-control', 'placeholder' => 'Начальная цена лота'])->label('Начальная цена *') ?>
                                                 </div>
                                             </div>
                                             
@@ -246,19 +252,19 @@ $this->registerJsVar('lotType', 'zalog', $position = yii\web\View::POS_HEAD);
 
                                             <div class="col-12 col-sm-3">
                                                 <div class="form-group mb-0">
-                                                    <?= $form->field($model, 'country')->textInput(['class' => 'form-control', 'placeholder' => 'Страна'])->label('Страна') ?>
+                                                    <?= $form->field($model, 'country')->textInput(['class' => 'form-control', 'placeholder' => 'Страна'])->label('Страна *') ?>
                                                 </div>
                                             </div>
 
                                             <div class="col-12 col-sm-3">
                                                 <div class="form-group mb-0">
-                                                    <?= $form->field($model, 'city')->textInput(['class' => 'form-control', 'placeholder' => 'Город'])->label('Город') ?>
+                                                    <?= $form->field($model, 'city')->textInput(['class' => 'form-control', 'placeholder' => 'Город'])->label('Город *') ?>
                                                 </div>
                                             </div>
 
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-group mb-0">
-                                                    <?= $form->field($model, 'address')->textInput(['class' => 'form-control', 'placeholder' => 'Адрес лота'])->label('Адрес') ?>
+                                                    <?= $form->field($model, 'address')->textInput(['class' => 'form-control', 'placeholder' => 'Адрес лота'])->label('Адрес *') ?>
                                                 </div>
                                             </div>
                                             
@@ -266,13 +272,13 @@ $this->registerJsVar('lotType', 'zalog', $position = yii\web\View::POS_HEAD);
 
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-group mb-0">
-                                                    <?= $form->field($model, 'procedureDate')->textInput(['class' => 'form-control', 'placeholder' => 'Срок проведения процедуры', 'onClick' => 'xCal(this, {lang: \'ru\'})'])->label('Срок проведения процедуры') ?>
+                                                    <?= $form->field($model, 'procedureDate')->textInput(['class' => 'form-control datepicker-basic', 'placeholder' => 'Срок проведения процедуры', 'onClick' => 'xCal(this, {lang: \'ru\'})'])->label('Срок проведения процедуры') ?>
                                                 </div>
                                             </div>
 
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-group mb-0">
-                                                    <?= $form->field($model, 'conclusionDate')->textInput(['class' => 'form-control', 'placeholder' => 'Срок заключения Договора', 'onClick' => 'xCal(this, {lang: \'ru\'})'])->label('Срок заключения Договора') ?>
+                                                    <?= $form->field($model, 'conclusionDate')->textInput(['class' => 'form-control datepicker-basic', 'placeholder' => 'Срок заключения Договора', 'onClick' => 'xCal(this, {lang: \'ru\'})'])->label('Срок заключения Договора') ?>
                                                 </div>
                                             </div>
 
@@ -339,7 +345,17 @@ $this->registerJsVar('lotType', 'zalog', $position = yii\web\View::POS_HEAD);
 
 </section>
 
+<script>
+    $.datetimepicker.setLocale('ru');
+    $('.datepicker-basic').datetimepicker({
+        format: 'Y-m-d H:m:s',
+        inline: true,
+        lang: 'ru',
+    });                                                    
+</script>
+
 <?php
-$this->registerJsFile( '/js/cssworld.ru-xcal.js', $options = ['position' => yii\web\View::POS_HEAD], $key = 'date_picker' );
-$this->registerCssFile('/css/cssworld.ru-xcal.css');
+// $this->registerJsFile( 'https://code.jquery.com/jquery-3.4.1.min.js', $options = ['position' => yii\web\View::POS_END], $key = 'jq' );
+// $this->registerJsFile( '/js/data_picker.js', $options = ['position' => yii\web\View::POS_HEAD], $key = 'date_picker' );
+// $this->registerCssFile('/css/data_picker.css');
 ?>

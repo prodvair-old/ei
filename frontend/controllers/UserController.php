@@ -676,6 +676,12 @@ class UserController extends Controller
                   $model->paymentDetails      = (string)$sheetData[$baseRow]['S'];
                   $model->additionalConditions = (string)$sheetData[$baseRow]['T'];
                   $model->currentPeriod       = (string)$sheetData[$baseRow]['U'];
+                  
+                  $info = [
+                    'basisBidding' => (string)$sheetData[$baseRow]['v'],
+                    'dateAuction' => (string)$sheetData[$baseRow]['w'],
+                  ];
+                  $model->info = $info;
                   $model->contactPersonId     = Yii::$app->user->id;
                   $model->ownerId             = Yii::$app->user->identity->ownerId;
 
@@ -729,36 +735,132 @@ class UserController extends Controller
       $modelImages = new UploadZalogLotImage();
       $modelCategorys = new ZalogLotCategorySet();
 
-      if ($model->load(Yii::$app->request->post()) && $modelImport->validate()) {
+      if ($model->load(Yii::$app->request->post())) {
 
         $model->contactPersonId     = Yii::$app->user->id;
         $model->ownerId             = Yii::$app->user->identity->ownerId;
+        var_dump($model->categoryIds);
+        $modelCategorys->categorys    = $model->categoryIds;
+        $modelCategorys->subCategorys = $model->subCategory;
 
-        if ($model->save()) {
-
-          $files = UploadedFile::getInstances($model, 'images');
-
-          $modelImages->images = $files;
-          $modelImages->lotId  = $model->id;
-          
-          // $modelImages->uploadImages();
-        
-          $modelCategorys->categorys    = $model->categorys;
-          $modelCategorys->subCategorys = $model->subCategory;
-          $modelCategorys->lotId        = $model->id;
-
-          // $modelCategorys->setCategory();
-
-          if ($modelImages->uploadImages() && $modelCategorys->setCategory()) {
-            return $this->redirect(['user/edit-lot', 'id'=> $model->id]);
-          }
-
+        switch ($model->tradeType) {
+          case 'Аукцион':
+              $model->tradeTipeId = 0;
+            break;
+          case 'Публичное предложение':
+              $model->tradeTipeId = 1;
+            break;
+          case 'продажа':
+              $model->tradeTipeId = 2;
+            break;
+          default: 
+              $model->tradeTipeId = 3;
+            break;
         }
 
-        Yii::$app->getSession()->setFlash('success', 'Success');
+        if ($model->validate()) {
+
+          if ($model->save()) {
+
+            $files = UploadedFile::getInstances($model, 'images');
+
+            if ($files) {
+              $modelImages->images = $files;
+              $modelImages->lotId  = $model->id;
+
+              $modelImages->uploadImages();
+            }
+            // $modelImages->uploadImages();
+          
+            
+            $modelCategorys->lotId        = $model->id;
+
+            var_dump($modelCategorys->validate());
+            var_dump($modelCategorys->errors);
+
+            // $modelCategorys->setCategory();
+
+            if ($modelCategorys->setCategory()) {
+              return $this->redirect(['user/edit-lot', 'id'=> $model->id]);
+            }
+
+          }
+
+          Yii::$app->getSession()->setFlash('success', 'Success');
+        }
       }
 
       return $this->render('add-lot', [
+        'model' => $model,
+      ]);
+    } else {
+      return $this->goHome();
+    }
+  }
+
+  public function actionEditLot($id)
+  {
+    if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role == 'agent') {
+      $model = LotsZalog::findOne($id);
+      $modelImages = new UploadZalogLotImage();
+      $modelCategorys = new ZalogLotCategorySet();
+
+      if ($model->load(Yii::$app->request->post())) {
+
+        $model->contactPersonId     = Yii::$app->user->id;
+        $model->ownerId             = Yii::$app->user->identity->ownerId;
+        var_dump($model->categoryIds);
+        $modelCategorys->categorys    = $model->categoryIds;
+        $modelCategorys->subCategorys = $model->subCategory;
+
+        switch ($model->tradeType) {
+          case 'Аукцион':
+              $model->tradeTipeId = 0;
+            break;
+          case 'Публичное предложение':
+              $model->tradeTipeId = 1;
+            break;
+          case 'продажа':
+              $model->tradeTipeId = 2;
+            break;
+          default: 
+              $model->tradeTipeId = 3;
+            break;
+        }
+
+        if ($model->validate()) {
+
+          if ($model->update()) {
+
+            $files = UploadedFile::getInstances($model, 'images');
+
+            if ($files) {
+              $modelImages->images = $files;
+              $modelImages->lotId  = $model->id;
+
+              $modelImages->uploadImages();
+            }
+            // $modelImages->uploadImages();
+          
+            
+            $modelCategorys->lotId        = $model->id;
+
+            var_dump($modelCategorys->validate());
+            var_dump($modelCategorys->errors);
+
+            // $modelCategorys->setCategory();
+
+            if ($modelCategorys->setCategory()) {
+              return $this->redirect(['user/edit-lot', 'id'=> $model->id]);
+            }
+
+          }
+
+          Yii::$app->getSession()->setFlash('success', 'Success');
+        }
+      }
+
+      return $this->render('edit-lot', [
         'model' => $model,
       ]);
     } else {
@@ -846,6 +948,35 @@ class UserController extends Controller
           return $model->uploadImages();
         }
       }
+
+      return false;
+    } else {
+      return $this->goHome();
+    }
+  }
+  public function actionLotImagesDel()
+  {
+    if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role == 'agent') {
+
+      Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+      $data = Yii::$app->request->get();
+
+      $lot = LotsZalog::findOne($data['id']);
+
+      $images = [];
+
+      if ($lot->images) {
+        foreach ($lot->images as $image) {
+          if ($image['min'] != $data['image']['min'] || $image['max'] != $data['image']['max']) {
+            $images[] = $image;
+          }
+        }
+
+        $lot->images = $images;
+        return $lot->save();
+      }
+      
 
       return false;
     } else {

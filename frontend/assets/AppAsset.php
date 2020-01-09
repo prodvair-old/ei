@@ -15,16 +15,18 @@ class AppAsset extends AssetBundle
         // 'https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i|Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i&display=swap',
         
 
+        'css/data_picker.css',
         'css/custom.min.css',
         'https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css'
     ];
     public $js = [
         'js/jquery-2.2.4.min.js',
-        'js/scripts.min.js',
         'js/plugins.js',
         'js/costom-plugins/toast.js',
         'js/custom-core.js',
         'https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js',
+        'js/data_picker.js',
+        'js/scripts.min.js',
     ];
     public $depends = [
         // 'yii\web\YiiAsset',

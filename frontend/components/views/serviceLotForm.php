@@ -26,6 +26,7 @@ switch ($lotType) {
             $btnName = 'Подать заявку';
             $color4 = $lot->owner->tamplate['color-4'];
             $color1 = $lot->owner->tamplate['color-1'];
+            $logo = $lot->owner->logo;
         break;
 }
 
@@ -59,7 +60,7 @@ if ($lot->lotPrice < 500000) {
         <div class="form-header">
             <h4>Подать заявку на лот №<?=$lotId?>, <span class="font400"><?=$name?></span></h4>
             <p>Наши опытные специалисты быстро и грамотно подготовят документы для участия в торгах. По статистике мы выигрываем 76% торгов.</p>
-            <?=($lot->owner)? '<img src="http://n.ei.ru'.$lot->owner->logo.'" alt="">': '' ?>
+            <?=($logo)? '<img src="http://n.ei.ru'.$logo.'" alt="">': '' ?>
         </div>
         
         <div class="form-body">

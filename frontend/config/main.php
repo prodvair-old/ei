@@ -98,7 +98,8 @@ return [
         '/profile/lots/<id:\d+>' => 'user/edit-lot',
 
         '/profile/lots/import'   => 'user/import-lots',
-        '/profile/lots/add'       => 'user/add-lot',
+        '/profile/lots/zalog-image-del'   => 'user/lot-images-del',
+        '/profile/lots/add'      => 'user/add-lot',
 
 
         '/profile/lot-images'    => 'user/lot-images',
@@ -108,6 +109,7 @@ return [
 
 
         '/lots-arrest-<limit:\d+>.xlsx' => 'lots/arrest',
+        '/arbitrs-<limit:\d+>.xlsx' => 'lots/arbitrs',
 
 
         '/sitemap.xml'                      => 'sitemap/index',

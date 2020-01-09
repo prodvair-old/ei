@@ -11,6 +11,7 @@ use common\models\Query\Bankrupt\Cases;
 use common\models\Query\Bankrupt\Images;
 use common\models\Query\Bankrupt\Links;
 use common\models\Query\Bankrupt\Value;
+use common\models\Query\Bankrupt\Lots;
 
 class Auction extends ActiveRecord
 {
@@ -56,5 +57,9 @@ class Auction extends ActiveRecord
     public function getEtp()
     {
         return $this->hasOne(Etp::className(), ['idtradeplace' => 'idtradeplace'])->alias('etplink');
+    }
+    public function getLots()
+    {
+        return $this->hasMany(Lots::className(), ['auctionid' => 'id'])->alias('lots');
     }
 }

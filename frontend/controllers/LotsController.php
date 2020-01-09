@@ -6,6 +6,7 @@ use yii\web\Controller;
 use moonland\phpexcel\Excel;
 
 use common\models\Query\Arrest\LotsArrest;
+use common\models\Query\Bankrupt\Arbitrs;
 
 /**
  * Lots controller
@@ -19,10 +20,12 @@ class LotsController extends Controller
 
         if ($limit > 1000) {
             if ($limit % 1000 == 0) {
-                $limit = 1000;
                 $offset = $limit - 1000;
+                $limit = 1000;
             } else {
+                $limitThis = $limit;
                 $limit = $limit % 1000;
+                $offset = $limitThis - $limit;
             }
         } else {
             $limit = 1000;
@@ -86,6 +89,68 @@ class LotsController extends Controller
                 'lotVin' => 'VIN номер',
                 'lotKladrLocationName' => 'Адрес',
                 'lot_archive' => 'В архиве',
+            ],
+        ]);
+    }
+
+    public function actionArbitrs($limit = 20)
+    {
+        if ($limit > 20) {
+            if ($limit % 20 == 0) {
+                $offset = $limit - 20;
+                $limit = 20;
+            } else {
+                $limitThis = $limit;
+                $limit = $limit % 20;
+                $offset = $limitThis - $limit;
+            }
+        } else {
+            $limit = 20;
+        }
+
+        $arbitrs = Arbitrs::find()->limit($limit)->offset($offset)->orderBy('id ASC')->all();
+
+        header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+        Excel::export([
+            'models' => $arbitrs,
+            'columns' => [
+                'id:text',
+                [
+                    'attribute' => 'url',
+                    'header' => 'Ссылка на ei.ru',
+                    'format' => 'text',
+                    'value' => function($model) {
+                        return 'https://ei.ru/arbitrazhnye-upravlyayushchie/'.$model->id;
+                    },
+                ],
+                'person.lname:text',
+                'person.fname:text',
+                'person.mname:text',
+                'person.inn:integer',
+                'regnum:text',
+                'sro.title:text',
+                [
+                    'attribute' => 'urlSro',
+                    'header' => 'Ссылка на СРО ei.ru',
+                    'format' => 'text',
+                    'value' => function($model) {
+                        return 'https://ei.ru/sro/'.$model->sro->id;
+                    },
+                ],
+                'caseCount:text',
+                'lotsCount:text',
+            ],
+            'headers' => [
+                'id' => 'ID арбитражного управляющего',
+                'person.lname' => 'Фамилия',
+                'person.fname' => 'Имя',
+                'person.mname' => 'Отчество',
+                'person.inn' => 'ИНН',
+                'regnum' => 'Регистрационный номер',
+                'sro.title' => 'СРО',
+                'caseCount' => 'Количество дел',
+                'lotsCount' => 'Количество опубликованных лотов',
             ],
         ]);
     }
