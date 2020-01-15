@@ -5,11 +5,14 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
+
 use common\models\Query\Bankrupt\Persons;
 use common\models\Query\Bankrupt\Sro;
 use common\models\Query\Bankrupt\Links;
 use common\models\Query\Bankrupt\Cases;
 use common\models\Query\Bankrupt\LotsBankrupt;
+
+use common\models\Query\Lot\Parser;
 
 // Арбитражный управляющий
 class Arbitrs extends ActiveRecord
@@ -58,5 +61,11 @@ class Arbitrs extends ActiveRecord
             ->viaTable(Links::tableName(), ['lnkobjid' => 'id'], function ($query) {
                 $query->alias('arb_case')->onCondition(['arb_case.objtype' => 1044, 'arb_case.lnkobjtype' => 1047]);
         });
+    }
+
+    // Связь с таблицей парсинга
+    public function getParser()
+    {
+        return $this->hasMany(Parser::className(), ['tableIdFrom' => 'id'])->alias('parser')->onCondition(['parser.tableNameFrom'=>'uds.obj$arbitrs']);
     }
 }

@@ -6,6 +6,8 @@ use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
+use common\models\Query\Lot\Parser;
+
 class Sro extends ActiveRecord
 {
     public static function tableName()
@@ -27,5 +29,11 @@ class Sro extends ActiveRecord
             'sro_inn'       => 'inn',
             'sro_address'   => 'address',
         ];
+    }
+
+    // Связь с таблицей парсинга
+    public function getParser()
+    {
+        return $this->hasMany(Parser::className(), ['tableIdFrom' => 'id'])->alias('parser')->onCondition(['parser.tableNameFrom'=>'uds.obj$sro']);
     }
 }

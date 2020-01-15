@@ -28,6 +28,14 @@ class Bankrupts extends ActiveRecord
             'bankrupt_category' => 'bankruptcategory',
         ];
     }
+    public function getAddress()
+    {
+        if ($this->bankrupttype == 'Organization') {
+            return $this->company->postaddress;
+        } else {
+            return $this->person->address;
+        }
+    }
     public function getPerson()
     {
         return $this->hasOne(Persons::className(), ['id' => 'lnkobjid'])->alias('bnkr_prsn')
