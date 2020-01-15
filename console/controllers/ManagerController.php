@@ -36,7 +36,9 @@ class ManagerController extends Controller
                 echo "Данные взяты из быза. \n";
 
                 foreach ($arbitrs as $arbitr) {
-                    if (ArbitrsBankrupt::id($arbitr->id)) {
+                    $parsingArbitr = ArbitrsBankrupt::id($arbitr->id);
+
+                    if ($parsingArbitr && $parsingSro != 2) {
                         foreach ($arbitr->parser as $value) {
                             if ($value->checked) {
                                 $parser = Parser::findOne($value->id);

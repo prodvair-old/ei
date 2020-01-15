@@ -130,7 +130,7 @@ class ArbitrsBankrupt extends Module
                 $parser->save();
 
                 echo "Пустые данные в таблице Арбитражных Управляющих (Менеджеров) ID ".$arbitr->id.". \n";
-                return false;
+                return 2;
             }
         }
         return false;
