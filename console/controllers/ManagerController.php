@@ -18,13 +18,12 @@ class ManagerController extends Controller
 {
     // Арбитражный Управляющий (Менеджер) Банкротного имущества
     // php yii manager/bankrupt
-    public function actionBankrupt() 
+    public function actionBankrupt($limit = 100) 
     {
         echo 'Парсинг таблицы Арбитражных Управляющих (Менеджеров) (uds.obj$arbitrs)';
         $count = Arbitrs::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
         echo "\nКоличество записей осталось: $count. \n";
         
-        $limit = 100;
         $parserCount = 0;
 
         if ($count > 0) {
@@ -60,9 +59,10 @@ class ManagerController extends Controller
                 }
             }
 
-            echo "Завершение парсинга. \nЗагружено $parserCount записей. \n";
+            echo "Загружено $parserCount записей. \n";
         } else {
-            echo "Завершение парсинга. \nНовых данных нет. \n";
+            echo "Новых данных нет. \n";
         }
+        echo "Завершение парсинга. \n";
     }
 }  

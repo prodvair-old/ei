@@ -6,7 +6,7 @@ use \yii\base\Module;
 
 class GetInfoFor extends Module
 {
-    public function address($address, $cadastr = null)
+    public function address($addressStr, $cadastr = null)
     {
         $curl = curl_init();
 
@@ -22,7 +22,7 @@ class GetInfoFor extends Module
         ];
 
 
-        $address = trim($address);
+        $address = trim($addressStr);
         $address = str_replace($search, $replace, $address);
 
         curl_setopt_array($curl, [
@@ -34,7 +34,7 @@ class GetInfoFor extends Module
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS =>"{\n\t\"query\": \"".$address."\",\n\t\"count\": 10\n}",
+            CURLOPT_POSTFIELDS => "{\n\t\"query\": \"".$address."\",\n\t\"count\": 10\n}",
             CURLOPT_HTTPHEADER => [
                 "Authorization: Token 93f59f43648c75a49c3c7ce61f8cd3fb80ee6846",
                 "Content-Type: application/json"
@@ -44,6 +44,14 @@ class GetInfoFor extends Module
         $response = json_decode(curl_exec($curl));
 
         curl_close($curl);
+
+        if (empty($response->suggestions[0])) {
+            return [
+                'fullAddress' => $addressStr,
+                'regionId' => 0,
+                'address' => NULL
+            ];
+        }
 
         return [
             'fullAddress' => $response->suggestions[0]->unrestricted_value,
@@ -61,6 +69,34 @@ class GetInfoFor extends Module
                 'squareMeterPrice' => $response->suggestions[0]->data->square_meter_price,
             ]
         ];
+    }
+
+    public function cadastrAddress($cadastr)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL => "https://egrp365.ru/map_alpha/ajax/map.php?source=kadnum",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => ['kadnum' => $cadastr],
+        ]);
+
+        $response = json_decode(curl_exec($curl));
+
+        curl_close($curl);
+        
+        return [
+            'address'   => $response->address,
+            'flatFloor' => $response->flatFloor,
+            'flatName'  => $response->flatName,
+        ];
+
     }
 
     public function cadastr($str)

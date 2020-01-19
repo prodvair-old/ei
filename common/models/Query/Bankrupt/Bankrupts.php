@@ -9,6 +9,8 @@ use common\models\Query\Bankrupt\Persons;
 use common\models\Query\Bankrupt\Company;
 use common\models\Query\Bankrupt\Links;
 
+use common\models\Query\Lot\Parser;
+
 // Арбитражный управляющий
 class Bankrupts extends ActiveRecord
 {
@@ -49,5 +51,11 @@ class Bankrupts extends ActiveRecord
             ->viaTable(Links::tableName(), ['objid' => 'id'], function ($query) {
                 $query->alias('bnkr_cmpn_lnk')->onCondition(['bnkr_cmpn_lnk.objtype' => 1049, 'bnkr_cmpn_lnk.lnkobjtype' => 1043]);
         });
+    }
+
+    // Связь с таблицей парсинга
+    public function getParser()
+    {
+        return $this->hasMany(Parser::className(), ['tableIdFrom' => 'id'])->alias('parser')->onCondition(['parser.tableNameFrom'=>'uds.obj$bankrupts']);
     }
 }
