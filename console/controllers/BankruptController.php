@@ -18,7 +18,7 @@ class BankruptController extends Controller
 {
     // Должники Банкротного имущества
     // php yii bankrupt/bankrupt
-    public function actionBankrupt($limit = 100) 
+    public function actionBankrupt($limit = 100, $delay = 'y') 
     {
         echo 'Парсинг таблицы должника (uds.obj$bankrupts)';
         $count = Bankrupts::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
@@ -37,7 +37,7 @@ class BankruptController extends Controller
                 foreach ($bankrupts as $bankrupt) {
                     $parsingBankrupt = BankruptsBankrupt::id($bankrupt->id);
 
-                    if ($parsingBankrupt && $parsingSro != 2) {
+                    if ($parsingBankrupt && $parsingBankrupt !== 2) {
                         foreach ($bankrupt->parser as $value) {
                             if ($value->checked) {
                                 $parser = Parser::findOne($value->id);
@@ -51,11 +51,13 @@ class BankruptController extends Controller
                         $parserCount++;
                     }
 
-                    $sleep = rand(1, 3);
+                    if ($delay == 'y') {
+                        $sleep = rand(1, 3);
 
-                    echo "Задержка $sleep секунды. \n";
+                        echo "Задержка $sleep секунды. \n";
 
-                    sleep($sleep);
+                        sleep($sleep);
+                    }
                 }
             }
 

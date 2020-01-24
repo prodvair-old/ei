@@ -13,6 +13,8 @@ use common\models\Query\Bankrupt\Links;
 use common\models\Query\Bankrupt\Value;
 use common\models\Query\Bankrupt\Lots;
 
+use common\models\Query\Lot\Parser;
+
 class Auction extends ActiveRecord
 {
     public static function tableName()
@@ -61,5 +63,11 @@ class Auction extends ActiveRecord
     public function getLots()
     {
         return $this->hasMany(Lots::className(), ['auctionid' => 'id'])->alias('lots');
+    }
+
+    // Связь с таблицей парсинга
+    public function getParser()
+    {
+        return $this->hasMany(Parser::className(), ['tableIdFrom' => 'id'])->alias('parser')->onCondition(['parser.tableNameFrom'=>'uds.obj$auctions']);
     }
 }

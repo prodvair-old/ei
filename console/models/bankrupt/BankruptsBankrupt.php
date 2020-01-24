@@ -33,12 +33,9 @@ class BankruptsBankrupt extends Module
 
             return true;
         } else {
-            if ($bankrupt->bankrupttype != null && $bankrupt->bankruptcategory != null && $bankrupt->address != null && ($bankrupt->person->fullName != null && $bankrupt->person->inn != null) || ($bankrupt->company->inn != null && $bankrupt->company->shortname != null)) {
+            if ($bankrupt->bankrupttype != null && $bankrupt->bankruptcategory != null && ($bankrupt->person->fullName != null) || ($bankrupt->company->shortname != null)) {
                 $newBankrupt = new Bankrupts();
-        
-                $address = GetInfoFor::address($bankrupt->address);
-                
-        
+
                 if ($bankrupt->bankrupttype == 'Person') {
                     $newBankrupt->name  = GetInfoFor::mb_ucfirst($bankrupt->person->fullName);
                     $newBankrupt->inn   = $bankrupt->person->inn;
@@ -65,15 +62,20 @@ class BankruptsBankrupt extends Module
                     ];
                 }
 
-                $info['address'] = $address['address'];
+                if ($bankrupt->address) {
+                    $address = GetInfoFor::address($bankrupt->address);
+
+                    $info['address'] = $address['address'];
+                    
+                    $newBankrupt->address    = $address['fullAddress'];
+                    $newBankrupt->regionId   = $address['regionId'];
+                    $newBankrupt->city       = $address['address']['city'];
+                    $newBankrupt->district   = $address['address']['district'];
+                }
                 
                 $newBankrupt->type       = GetInfoFor::mb_lcfirst($bankrupt->bankrupttype);
                 $newBankrupt->category   = GetInfoFor::mb_lcfirst($bankrupt->bankruptcategory);
-                $newBankrupt->address    = $address['fullAddress'];
                 $newBankrupt->info       = $info;
-                $newBankrupt->regionId   = $address['regionId'];
-                $newBankrupt->city       = $address['address']['city'];
-                $newBankrupt->district   = $address['address']['district'];
                 $newBankrupt->oldId      = $bankrupt->id;
         
                 try {
@@ -83,7 +85,7 @@ class BankruptsBankrupt extends Module
                     $parser->tableNameFrom = 'uds.obj$bankrupts';
                     $parser->tableIdFrom = $bankrupt->id;
                     $parser->message = 'Успешно добавлена';
-                    $parser->statusId = 2;
+                    $parser->statusId = 1;
         
                     $parser->save();
 

@@ -60,7 +60,7 @@ class SroBankrupt extends Module
                     $parser->tableNameFrom = 'uds.obj$sro';
                     $parser->tableIdFrom = $sro->id;
                     $parser->message = 'Успешно добавлена';
-                    $parser->statusId = 2;
+                    $parser->statusId = 1;
         
                     $parser->save();
 

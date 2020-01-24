@@ -4,41 +4,41 @@ namespace console\controllers;
 use Yii;
 use yii\console\Controller;
 
-use console\models\managers\ArbitrsBankrupt;
+use console\models\etp\EtpBankrupt;
 
-use common\models\Query\Bankrupt\Arbitrs;
+use common\models\Query\Bankrupt\Etp;
 
 use common\models\Query\Lot\Parser;
 
 /**
- * Manager controller 
- * Парсинг таблицы Менеджеров
+ * Etp controller 
+ * Парсинг таблицы Торговой площадки
  */
-class ManagerController extends Controller
+class EtpController extends Controller
 {
-    // Арбитражный Управляющий (Менеджер) Банкротного имущества
-    // php yii manager/bankrupt
+    // Торговые площадки Банкротного имущества
+    // php yii etp/bankrupt
     public function actionBankrupt($limit = 100, $delay = 'y') 
     {
-        echo 'Парсинг таблицы Арбитражных Управляющих (Менеджеров) (uds.obj$arbitrs)';
-        $count = Arbitrs::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
+        echo 'Парсинг таблицы Торговой площадки (uds.tradeplace)';
+        $count = Etp::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
         echo "\nКоличество записей осталось: $count. \n";
         
         $parserCount = 0;
 
         if ($count > 0) {
-            $arbitrs = Arbitrs::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->limit($limit)->orderBy('id ASC')->all();
+            $etps = Etp::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->limit($limit)->orderBy('id ASC')->all();
 
             echo "Ограничения записей $limit. \n";
 
-            if ($arbitrs[0]) {
+            if ($etps[0]) {
                 echo "Данные взяты из быза. \n";
 
-                foreach ($arbitrs as $arbitr) {
-                    $parsingArbitr = ArbitrsBankrupt::id($arbitr->id);
+                foreach ($etps as $etp) {
+                    $parsingEtp = EtpBankrupt::id($etp->id);
 
-                    if ($parsingArbitr && $parsingArbitr !== 2) {
-                        foreach ($arbitr->parser as $value) {
+                    if ($parsingEtp && $parsingEtp !== 2) {
+                        foreach ($etp->parser as $value) {
                             if ($value->checked) {
                                 $parser = Parser::findOne($value->id);
 
@@ -58,6 +58,7 @@ class ManagerController extends Controller
 
                         sleep($sleep);
                     }
+                    
                 }
             }
 

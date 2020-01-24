@@ -6,7 +6,7 @@ use \yii\base\Module;
 
 class GetInfoFor extends Module
 {
-    public function address($addressStr, $cadastr = null)
+    public function address($addressStr)
     {
         $curl = curl_init();
 
@@ -71,7 +71,7 @@ class GetInfoFor extends Module
         ];
     }
 
-    public function cadastrAddress($cadastr)
+    public function cadastr_address($cadastr)
     {
         $curl = curl_init();
 
@@ -98,7 +98,19 @@ class GetInfoFor extends Module
         ];
 
     }
-
+    public function date_check($date, $days = false)
+    {
+        if ($date == '0001-01-01 00:00:00 BC' || $date == '0001-01-01 00:00:00') {
+            return null;
+        } else {
+            if ($days) {
+                $newDate = new \DateTime($date);
+                $newDate->modify("-$days day");
+                return $newDate->format('Y-m-d H:i:s');
+            }
+            return $date;
+        }
+    }
     public function cadastr($str)
     {
         $kadastr_check = preg_match("/[0-9]{2}:[0-9]{2}:[0-9]{6,7}:[0-9]{1,35}/", $str, $kadastr);
@@ -106,14 +118,14 @@ class GetInfoFor extends Module
     }
     public function vin($str)
     {
-        $vin_text = str_replace('VIN', '',$this->description);
+        $vin_text = str_replace('VIN', '',$str);
         $vin_check = preg_match("/[ABCDEFGHJKLMNPRSTUVWXYZ,0-9]{17}/", $vin_text, $vin_t);
         $vin_c = preg_match("/[\w\s\d]+/u", $vin_t[0], $vin);
         return ($vin_check)? $vin[0] : false;
     }
     public function title($str)
     {
-        if ($str < 145) {
+        if (strlen($str) < 145) {
             return $str;
         } else {
             return mb_substr($str, 0, 145, 'UTF-8').'...';

@@ -24,15 +24,13 @@ $parser = Parser::findOne($id);
         ========================
     </p>
 
-    <? if ($parser->messageJson) { ?>
     <br>
     <h4>JSON ошибки:</h4>
     ========================<br>
     <pre>
-        <?=$parser->messageJson?>
+        <?print_r($parser->messageJson);?>
     </pre>
     ========================
-    <? } ?>
 
     <p>© <?=Yii::$app->name?></p>
 </p>

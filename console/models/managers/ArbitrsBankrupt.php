@@ -44,7 +44,7 @@ class ArbitrsBankrupt extends Module
 
                     $parsingSro = SroBankrupt::id($arbitr->sro->id);
 
-                    if (!$parsingSro && $parsingSro != 2){
+                    if (!$parsingSro && $parsingSro !== 2){
                         $parser->tableNameTo = 'eiLot.managers';
                         $parser->tableNameFrom = 'uds.obj$arbitrs';
                         $parser->tableIdFrom = $arbitr->id;
@@ -96,7 +96,7 @@ class ArbitrsBankrupt extends Module
                     $parser->tableNameFrom = 'uds.obj$arbitrs';
                     $parser->tableIdFrom = $arbitr->id;
                     $parser->message = 'Успешно добавлена';
-                    $parser->statusId = 2;
+                    $parser->statusId = 1;
         
                     $parser->save();
         

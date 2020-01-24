@@ -4,41 +4,41 @@ namespace console\controllers;
 use Yii;
 use yii\console\Controller;
 
-use console\models\managers\ArbitrsBankrupt;
+use console\models\cases\CasesBankrupt;
 
-use common\models\Query\Bankrupt\Arbitrs;
+use common\models\Query\Bankrupt\Cases;
 
 use common\models\Query\Lot\Parser;
 
 /**
- * Manager controller 
- * Парсинг таблицы Менеджеров
+ * Cases controller 
+ * Парсинг таблицы Дел по лоту
  */
-class ManagerController extends Controller
+class CasesController extends Controller
 {
-    // Арбитражный Управляющий (Менеджер) Банкротного имущества
-    // php yii manager/bankrupt
+    // Дела по лоту Банкротного имущества
+    // php yii cases/bankrupt
     public function actionBankrupt($limit = 100, $delay = 'y') 
     {
-        echo 'Парсинг таблицы Арбитражных Управляющих (Менеджеров) (uds.obj$arbitrs)';
-        $count = Arbitrs::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
+        echo 'Парсинг таблицы дел по лоту (uds.obj$cases)';
+        $count = Cases::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
         echo "\nКоличество записей осталось: $count. \n";
         
         $parserCount = 0;
 
         if ($count > 0) {
-            $arbitrs = Arbitrs::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->limit($limit)->orderBy('id ASC')->all();
+            $cases = Cases::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->limit($limit)->orderBy('id ASC')->all();
 
             echo "Ограничения записей $limit. \n";
 
-            if ($arbitrs[0]) {
+            if ($cases[0]) {
                 echo "Данные взяты из быза. \n";
 
-                foreach ($arbitrs as $arbitr) {
-                    $parsingArbitr = ArbitrsBankrupt::id($arbitr->id);
+                foreach ($cases as $case) {
+                    $parsingCases = CasesBankrupt::id($case->id);
 
-                    if ($parsingArbitr && $parsingArbitr !== 2) {
-                        foreach ($arbitr->parser as $value) {
+                    if ($parsingCases && $parsingCases !== 2) {
+                        foreach ($case->parser as $value) {
                             if ($value->checked) {
                                 $parser = Parser::findOne($value->id);
 
@@ -58,6 +58,7 @@ class ManagerController extends Controller
 
                         sleep($sleep);
                     }
+                    
                 }
             }
 

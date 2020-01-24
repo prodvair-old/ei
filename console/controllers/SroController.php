@@ -16,7 +16,7 @@ class SroController extends Controller
 {
     // СРО Банкротного имущества
     // php yii sro/bankrupt
-    public function actionBankrupt($limit = 100) 
+    public function actionBankrupt($limit = 100, $delay = 'y') 
     {
         echo 'Парсинг таблицы СРО (uds.obj$sro)';
         $count = Sro::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
@@ -35,7 +35,7 @@ class SroController extends Controller
                 foreach ($sros as $sro) {
                     $parsingSro = SroBankrupt::id($sro->id);
 
-                    if ($parsingSro && $parsingSro != 2) {
+                    if ($parsingSro && $parsingSro !== 2) {
                         foreach ($sro->parser as $value) {
                             if ($value->checked) {
                                 $parser = Parser::findOne($value->id);
@@ -49,11 +49,13 @@ class SroController extends Controller
                         $parserCount++;
                     }
 
-                    $sleep = rand(1, 3);
+                    if ($delay == 'y') {
+                        $sleep = rand(1, 3);
 
-                    echo "Задержка $sleep секунды. \n";
+                        echo "Задержка $sleep секунды. \n";
 
-                    sleep($sleep);
+                        sleep($sleep);
+                    }
                 }
             }
 

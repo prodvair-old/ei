@@ -11,6 +11,8 @@ use common\models\Query\Bankrupt\Links;
 use common\models\Query\Bankrupt\Lots;
 use common\models\Query\Bankrupt\Auction;
 
+use common\models\Query\Lot\Parser;
+
 class Cases extends ActiveRecord 
 {
     public static function tableName()
@@ -24,13 +26,13 @@ class Cases extends ActiveRecord
     public function fields()
     {
         return [
-            'case_id'        => 'id',
-            'case_caseid'    => 'caseid',
-            'case_caseopen'  => 'caseopen',
-            'case_caseclose' => 'caseclose',
-            'case_regnum'    => 'regnum',
-            'case_regyear'   => 'regyear',
-            'case_regpostfix' => 'regpostfix',
+            'case_id'           => 'id',
+            'case_caseid'       => 'caseid',
+            'case_caseopen'     => 'caseopen',
+            'case_caseclose'    => 'caseclose',
+            'case_regnum'       => 'regnum',
+            'case_regyear'      => 'regyear',
+            'case_regpostfix'   => 'regpostfix',
         ];
     }
     public function getFiles()
@@ -59,6 +61,12 @@ class Cases extends ActiveRecord
             ->viaTable(Links::tableName(), ['objid' => 'id'], function ($query) {
                 $query->alias('case_lots')->onCondition(['case_lots.objtype' => 1044, 'case_lots.lnkobjtype' => 1047]);
         });
+    }
+
+    // Связь с таблицей парсинга
+    public function getParser()
+    {
+        return $this->hasMany(Parser::className(), ['tableIdFrom' => 'id'])->alias('parser')->onCondition(['parser.tableNameFrom'=>'uds.obj$cases']);
     }
 }
 

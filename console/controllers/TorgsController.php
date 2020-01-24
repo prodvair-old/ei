@@ -4,41 +4,41 @@ namespace console\controllers;
 use Yii;
 use yii\console\Controller;
 
-use console\models\managers\ArbitrsBankrupt;
+use console\models\torgs\TorgsBankrupt;
 
-use common\models\Query\Bankrupt\Arbitrs;
+use common\models\Query\Bankrupt\Auction;
 
 use common\models\Query\Lot\Parser;
 
 /**
- * Manager controller 
- * Парсинг таблицы Менеджеров
+ * Torgs controller 
+ * Парсинг таблицы Торгов
  */
-class ManagerController extends Controller
+class TorgsController extends Controller
 {
-    // Арбитражный Управляющий (Менеджер) Банкротного имущества
-    // php yii manager/bankrupt
+    // Торги Банкротного имущества
+    // php yii torgs/bankrupt
     public function actionBankrupt($limit = 100, $delay = 'y') 
     {
-        echo 'Парсинг таблицы Арбитражных Управляющих (Менеджеров) (uds.obj$arbitrs)';
-        $count = Arbitrs::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
+        echo 'Парсинг таблицы Торгов (uds.obj$auctions)';
+        $count = Auction::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
         echo "\nКоличество записей осталось: $count. \n";
         
         $parserCount = 0;
 
         if ($count > 0) {
-            $arbitrs = Arbitrs::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->limit($limit)->orderBy('id ASC')->all();
+            $torgs = Auction::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->limit($limit)->orderBy('id DESC')->all();
 
             echo "Ограничения записей $limit. \n";
 
-            if ($arbitrs[0]) {
+            if ($torgs[0]) {
                 echo "Данные взяты из быза. \n";
 
-                foreach ($arbitrs as $arbitr) {
-                    $parsingArbitr = ArbitrsBankrupt::id($arbitr->id);
+                foreach ($torgs as $torg) {
+                    $parsingTorg = TorgsBankrupt::id($torg->id);
 
-                    if ($parsingArbitr && $parsingArbitr !== 2) {
-                        foreach ($arbitr->parser as $value) {
+                    if ($parsingTorg && $parsingTorg !== 2) {
+                        foreach ($torg->parser as $value) {
                             if ($value->checked) {
                                 $parser = Parser::findOne($value->id);
 
@@ -58,6 +58,7 @@ class ManagerController extends Controller
 
                         sleep($sleep);
                     }
+                    
                 }
             }
 
