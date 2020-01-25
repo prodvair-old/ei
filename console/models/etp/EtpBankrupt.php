@@ -24,7 +24,7 @@ class EtpBankrupt extends Module
 
         $chekCase = Etp::find()->where(['oldId' => $etp->id])->all();
 
-        if ($chekCase[0]) {
+        if (!empty($chekCase[0])) {
             $parser->message = 'Был добавлен';
             $parser->statusId = 1;
 

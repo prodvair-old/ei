@@ -31,7 +31,7 @@ class CasesController extends Controller
 
             echo "Ограничения записей $limit. \n";
 
-            if ($cases[0]) {
+            if (!empty($cases[0])) {
                 echo "Данные взяты из быза. \n";
 
                 foreach ($cases as $case) {

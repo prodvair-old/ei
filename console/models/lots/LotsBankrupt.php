@@ -30,7 +30,7 @@ class LotsBankrupt extends Module
         $parser->tableIdFrom = $lot->id;
 
         $chekLot = Lots::find()->where(['oldId' => $lot->id])->all();
-        if ($chekLot[0]) {
+        if (!empty($chekLot[0])) {
 
             $parser->message = 'Был добавлена';
             $parser->statusId = 1;

@@ -20,7 +20,7 @@ class BankruptsBankrupt extends Module
 
         $chekBankrupt = Bankrupts::find()->where(['oldId' => $bankrupt->id])->all();
 
-        if ($chekBankrupt[0]) {
+        if (!empty($chekBankrupt[0])) {
             $parser->tableNameTo = 'eiLot.bankrupts';
             $parser->tableNameFrom = 'uds.obj$bankrupts';
             $parser->tableIdFrom = $bankrupt->id;

@@ -29,7 +29,7 @@ class DocumentsBankrupt extends Module
 
         $chekDoc = Documents::find()->where(['oldId' => $doc->id])->all();
 
-        if ($chekDoc[0]) {
+        if (!empty($chekDoc[0])) {
             $parser->message = 'Был добавлен';
             $parser->statusId = 1;
 

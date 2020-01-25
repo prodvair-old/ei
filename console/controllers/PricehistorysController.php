@@ -31,7 +31,7 @@ class PricehistorysController extends Controller
 
             echo "Ограничения записей $limit. \n";
 
-            if ($priceHistorys[0]) {
+            if (!empty($priceHistorys[0])) {
                 echo "Данные взяты из быза. \n";
 
                 foreach ($priceHistorys as $priceHistory) {

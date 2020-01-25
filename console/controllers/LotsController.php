@@ -34,7 +34,7 @@ class LotsController extends Controller
 
             echo "Ограничения записей $limit. \n";
 
-            if ($lots[0]) {
+            if (!empty($lots[0])) {
                 echo "Данные взяты из быза. \n";
 
                 foreach ($lots as $lot) {

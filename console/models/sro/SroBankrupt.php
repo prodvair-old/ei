@@ -20,7 +20,7 @@ class SroBankrupt extends Module
 
         $chekSro = Sro::find()->where(['oldId' => $sro->id])->all();
 
-        if ($chekSro[0]) {
+        if (!empty($chekSro[0])) {
             $parser->tableNameTo = 'eiLot.sro';
             $parser->tableNameFrom = 'uds.obj$sro';
             $parser->tableIdFrom = $sro->id;

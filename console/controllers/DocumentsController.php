@@ -31,7 +31,7 @@ class DocumentsController extends Controller
 
             echo "Ограничения записей $limit. \n";
 
-            if ($docs[0]) {
+            if (!empty($docs[0])) {
                 echo "Данные взяты из быза. \n";
 
                 foreach ($docs as $doc) {

@@ -31,7 +31,7 @@ class BankruptController extends Controller
 
             echo "Ограничения записей $limit. \n";
 
-            if ($bankrupts[0]) {
+            if (!empty($bankrupts[0])) {
                 echo "Данные взяты из быза. \n";
 
                 foreach ($bankrupts as $bankrupt) {

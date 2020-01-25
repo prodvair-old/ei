@@ -29,7 +29,7 @@ class PriceHistorysBankrupt extends Module
 
         $chekPriceHistory = LotPriceHistorys::find()->where(['oldId' => $priceHistory->ofrRdnId])->all();
 
-        if ($chekPriceHistory[0]) {
+        if (!empty($chekPriceHistory[0])) {
             $parser->message = 'Был добавлен';
             $parser->statusId = 1;
 

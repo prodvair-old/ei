@@ -29,7 +29,7 @@ class SroController extends Controller
 
             echo "Ограничения записей $limit. \n";
 
-            if ($sros[0]) {
+            if (!empty($sros[0])) {
                 echo "Данные взяты из быза. \n";
 
                 foreach ($sros as $sro) {

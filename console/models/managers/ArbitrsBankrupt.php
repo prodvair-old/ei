@@ -23,7 +23,7 @@ class ArbitrsBankrupt extends Module
         $parser = new Parser();
 
         $chekManager = Managers::find()->where(['oldId' => $arbitr->id, 'type' => 'arbitr'])->all();
-        if ($chekManager[0]) {
+        if (!empty($chekManager[0])) {
 
             $parser->tableNameTo = 'eiLot.managers';
             $parser->tableNameFrom = 'uds.obj$arbitrs';

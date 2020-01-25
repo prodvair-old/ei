@@ -31,7 +31,7 @@ class TorgsController extends Controller
 
             echo "Ограничения записей $limit. \n";
 
-            if ($torgs[0]) {
+            if (!empty($torgs[0])) {
                 echo "Данные взяты из быза. \n";
 
                 foreach ($torgs as $torg) {

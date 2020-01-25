@@ -31,7 +31,7 @@ class ManagerController extends Controller
 
             echo "Ограничения записей $limit. \n";
 
-            if ($arbitrs[0]) {
+            if (!empty($arbitrs[0])) {
                 echo "Данные взяты из быза. \n";
 
                 foreach ($arbitrs as $arbitr) {

@@ -31,7 +31,7 @@ class EtpController extends Controller
 
             echo "Ограничения записей $limit. \n";
 
-            if ($etps[0]) {
+            if (!empty($etps[0])) {
                 echo "Данные взяты из быза. \n";
 
                 foreach ($etps as $etp) {

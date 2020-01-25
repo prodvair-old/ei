@@ -24,7 +24,7 @@ class CasesBankrupt extends Module
 
         $chekCase = Cases::find()->where(['oldId' => $case->id])->all();
 
-        if ($chekCase[0]) {
+        if (!empty($chekCase[0])) {
             $parser->message = 'Был добавлен';
             $parser->statusId = 1;
 

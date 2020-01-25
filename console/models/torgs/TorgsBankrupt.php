@@ -35,7 +35,7 @@ class TorgsBankrupt extends Module
         $parser->tableIdFrom = $torg->id;
 
         $chekTorg = Torgs::find()->where(['oldId' => $torg->id, 'typeId' => 2])->all();
-        if ($chekTorg[0]) {
+        if (!empty($chekTorg[0])) {
 
             $parser->message = 'Был добавлена';
             $parser->statusId = 1;
