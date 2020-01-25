@@ -55,7 +55,7 @@ class GetInfoFor extends Module
 
         return [
             'fullAddress' => $response->suggestions[0]->unrestricted_value,
-            'regionId' => (int)(($cadastr)? substr($cadastr, 0, 2) : substr($response->suggestions[0]->data->region_kladr_id, 0, 2)),
+            'regionId' => (int)substr($response->suggestions[0]->data->region_kladr_id, 0, 2),
             'address' => [
                 'district'  => $response->suggestions[0]->data->federal_district,
                 'region'    => $response->suggestions[0]->data->region_with_type,
