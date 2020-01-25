@@ -92,7 +92,7 @@ class LotsBankrupt extends Module
         
                 $info['address']       = $address['address'];
 
-                if ($lot->purchaselots[0]) {
+                if (!empty($lot->purchaselots[0])) {
                     foreach ($lot->purchaselots as $key => $value) {
                         if ($value->pheLotNumber == $lot->lotid) {
                             $title  = $value->pheLotName;
@@ -103,11 +103,13 @@ class LotsBankrupt extends Module
                     }
                 }
 
-                foreach ($lot->images as $key => $image) {
-                    $images[] = [
-                        'max' => 'img/lot/bankrupt/'.$image->objid.'/'.$image->fileurl,
-                        'min' => 'img/lot/bankrupt/'.$image->objid.'/'.$image->fileurl,
-                    ];
+                if (!empty($lot->images[0])) {
+                    foreach ($lot->images as $key => $image) {
+                        $images[] = [
+                            'max' => 'img/lot/bankrupt/'.$image->objid.'/'.$image->fileurl,
+                            'min' => 'img/lot/bankrupt/'.$image->objid.'/'.$image->fileurl,
+                        ];
+                    }
                 }
         
                 $newLot->torgId         = $torg->id;
