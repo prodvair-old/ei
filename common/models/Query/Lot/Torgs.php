@@ -10,6 +10,7 @@ use common\models\Query\Lot\Etp;
 use common\models\Query\Lot\Bankrupts;
 use common\models\Query\Lot\Cases;
 use common\models\Query\Lot\Lots;
+use common\models\Query\Lot\Documents;
 
 use common\models\Query\User;
 
@@ -48,5 +49,9 @@ class Torgs extends ActiveRecord
     public function getLots()
     {
         return $this->hasMany(Lots::className(), ['torgId' => 'id'])->alias('lots'); // Лоты торга
+    }
+    public function getDocuments()
+    {
+        return $this->hasMany(Documents::className(), ['tableId' => 'id'])->alias('documents')->onCondition(['documents.tableTypeId'=>2]); // Файлы
     }
 }

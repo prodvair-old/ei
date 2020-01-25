@@ -131,6 +131,10 @@ class GetInfoFor extends Module
             return mb_substr($str, 0, 145, 'UTF-8').'...';
         }
     }
+    public function format($str)
+    {
+        return strtolower(@end(explode('.', $str)));
+    }
 
     public function mb_ucfirst($str, $encoding='UTF-8')
 	{

@@ -5,7 +5,7 @@ use yii\db\ActiveRecord;
 
 use Yii;
 use common\models\Query\Lot\LotCategorys;
-use common\models\Query\Lot\LotFiles;
+use common\models\Query\Lot\Documents;
 use common\models\Query\Lot\LotPriceHistorys;
 use common\models\Query\Lot\Participants;
 use common\models\Query\Lot\Torgs;
@@ -26,9 +26,9 @@ class Lots extends ActiveRecord
     {
         return $this->hasMany(LotCategorys::className(), ['lotId' => 'id'])->alias('categorys'); // Категории лота
     }
-    public function getFiles()
+    public function getDocuments()
     {
-        return $this->hasMany(LotFiles::className(), ['lotId' => 'id'])->alias('files'); // Файлы лота
+        return $this->hasMany(Documents::className(), ['tableId' => 'id'])->alias('documents')->onCondition(['documents.tableTypeId'=>1]); // Файлы лота
     }
     public function getPriceHistorys()
     {

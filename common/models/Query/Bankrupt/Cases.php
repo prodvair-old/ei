@@ -10,6 +10,7 @@ use common\models\Query\Bankrupt\Bankrupts;
 use common\models\Query\Bankrupt\Links;
 use common\models\Query\Bankrupt\Lots;
 use common\models\Query\Bankrupt\Auction;
+use common\models\Query\Bankrupt\Files;
 
 use common\models\Query\Lot\Parser;
 
@@ -67,27 +68,5 @@ class Cases extends ActiveRecord
     public function getParser()
     {
         return $this->hasMany(Parser::className(), ['tableIdFrom' => 'id'])->alias('parser')->onCondition(['parser.tableNameFrom'=>'uds.obj$cases']);
-    }
-}
-
-// Файлы лота
-class Files extends ActiveRecord 
-{
-    public function fields()
-    {
-        return [
-            'file_id'       => 'id',
-            'file_caseid'   => 'caseid',
-            'file_name'     => 'filename',
-            'file_url'      => 'fileurl',
-        ];
-    }
-    public static function tableName()
-    {
-        return 'uds.{{%casefiles}}';
-    }
-    public static function getDb()
-    {
-        return Yii::$app->get('db');
     }
 }

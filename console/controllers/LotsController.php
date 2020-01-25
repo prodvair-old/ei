@@ -21,7 +21,7 @@ class LotsController extends Controller
 {
     // Лоты Банкротного имущества
     // php yii lots/bankrupt
-    public function actionBankrupt($limit = 100, $delay = 'y') 
+    public function actionBankrupt($limit = 100, $delay = 'y', $sort = 'new') 
     {
         echo 'Парсинг таблицы Лотов (uds.tradeplace)';
         $count = Lots::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
@@ -30,7 +30,7 @@ class LotsController extends Controller
         $parserCount = 0;
 
         if ($count > 0) {
-            $lots = Lots::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->limit($limit)->orderBy('id ASC')->all();
+            $lots = Lots::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->limit($limit)->orderBy('id '.(($sort = 'new')? 'DESC' : 'ASC'))->all();
 
             echo "Ограничения записей $limit. \n";
 
