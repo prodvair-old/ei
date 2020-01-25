@@ -103,6 +103,8 @@ class LotsBankrupt extends Module
                     }
                 }
 
+                $images = null;
+
                 if (!empty($lot->images[0])) {
                     foreach ($lot->images as $key => $image) {
                         $images[] = [
