@@ -76,7 +76,6 @@ class LotsBankrupt extends Module
                 $info = [
                     'priceReduction'    => $lot->pricereduction,
                     'vin'               => GetInfoFor::vin($lot->description),
-                    'address'           => $address['address'],
                 ];
 
                 $cadastrNumber = GetInfoFor::cadastr($lot->description);
@@ -89,7 +88,7 @@ class LotsBankrupt extends Module
                     $info['flatName']       = $cadastr['flatName'];
                 }
 
-                $address = GetInfoFor::address(($cadastr['address'])? $cadastr['address'] : $lot->torgy->case->bnkr->address);
+                $address = GetInfoFor::address((!empty($cadastr['address']))? $cadastr['address'] : $lot->torgy->case->bnkr->address);
         
                 $info['address']       = $address['address'];
 
