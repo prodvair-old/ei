@@ -120,8 +120,11 @@ class GetInfoFor extends Module
     {
         $vin_text = str_replace('VIN', '',$str);
         $vin_check = preg_match("/[ABCDEFGHJKLMNPRSTUVWXYZ,0-9]{17}/", $vin_text, $vin_t);
-        $vin_c = preg_match("/[\w\s\d]+/u", $vin_t[0], $vin);
-        return ($vin_check)? $vin[0] : false;
+        if ($vin_check) {
+            $vin_c = preg_match("/[\w\s\d]+/u", $vin_t[0], $vin);
+            return ($vin_c)? $vin[0] : false;
+        }
+        return false;
     }
     public function title($str)
     {
