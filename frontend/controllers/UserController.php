@@ -653,7 +653,7 @@ class UserController extends Controller
               $loadCount = 0;
               while(!empty($sheetData[$baseRow]['B'])){
                 if (!$lot = LotsZalog::find()->where(['lotId'=>(string)$sheetData[$baseRow]['A'], 'contactPersonId' => Yii::$app->user->id])->one()) {
-                  $model = new LotsZalog();
+                  $model = new LotsZalogUpdate();
                   $model->lotId               = (string)$sheetData[$baseRow]['A'];
                   $model->title               = mb_substr((string)$sheetData[$baseRow]['B'], 0, 150, 'UTF-8');
                   $model->description         = (string)$sheetData[$baseRow]['C'];

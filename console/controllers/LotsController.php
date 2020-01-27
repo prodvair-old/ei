@@ -23,6 +23,8 @@ class LotsController extends Controller
     // php yii lots/bankrupt
     public function actionBankrupt($limit = 100, $delay = 'y', $sort = 'new') 
     {
+        error_reporting(0);
+        
         echo 'Парсинг таблицы Лотов (uds.tradeplace)';
         $count = Lots::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
         echo "\nКоличество записей осталось: $count. \n";
