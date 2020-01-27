@@ -20,6 +20,8 @@ class DocumentsController extends Controller
     // php yii documents/bankrupt
     public function actionBankrupt($limit = 100, $delay = 'y', $sort = 'new') 
     {
+        error_reporting(0);
+
         echo 'Парсинг таблицы Докуметов (uds.obj$casefiles)';
         $count = Files::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
         echo "\nКоличество записей осталось: $count. \n";

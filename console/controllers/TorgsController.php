@@ -20,6 +20,8 @@ class TorgsController extends Controller
     // php yii torgs/bankrupt
     public function actionBankrupt($limit = 100, $delay = 'y') 
     {
+        error_reporting(0);
+
         echo 'Парсинг таблицы Торгов (uds.obj$auctions)';
         $count = Auction::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
         echo "\nКоличество записей осталось: $count. \n";

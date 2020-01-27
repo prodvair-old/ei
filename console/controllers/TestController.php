@@ -20,6 +20,8 @@ class TestController extends Controller
 {
     public function actionIndex() 
     {
+        error_reporting(0);
+
         // $table = Lots::findOne($id);
 
         // var_dump($table);

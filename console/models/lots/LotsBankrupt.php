@@ -19,7 +19,7 @@ use common\models\Query\Lot\Parser;
 
 class LotsBankrupt extends Module
 {
-    public function id($id)
+    public function id($id, $sendEmpty = true)
     {
         $lot = \common\models\Query\Bankrupt\Lots::findOne($id);
         
@@ -208,7 +208,9 @@ class LotsBankrupt extends Module
         
                 $parser->save();
 
-                ErrorSend::parser($parser->id);
+                if ($sendEmpty) {
+                    ErrorSend::parser($parser->id);
+                }
 
                 echo "Пустые данные в таблице Лотов ID ".$lot->id.". \n";
                 return 2;

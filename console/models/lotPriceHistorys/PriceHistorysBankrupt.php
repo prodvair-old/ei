@@ -45,7 +45,7 @@ class PriceHistorysBankrupt extends Module
                 if (!$lot = Lots::find()->where(['oldId' => $priceHistory->lot->id])->one()) {
                     echo "Лот для связи отцуствует! \nПробуем спарсить данный Лота. \n";
 
-                    $parsingLot = LotsBankrupt::id($priceHistory->lot->id);
+                    $parsingLot = LotsBankrupt::id($priceHistory->lot->id, false);
 
                     if (!$parsingLot && $parsingLot !== 2){
                         
