@@ -7,6 +7,7 @@ use yii\console\Controller;
 use console\models\lots\LotsBankrupt;
 
 use common\models\Query\Bankrupt\Lots;
+use common\models\Query\Arrest\LotsArrest;
 
 use common\models\Query\LotsCategory;
 
@@ -25,7 +26,7 @@ class LotsController extends Controller
     {
         error_reporting(0);
         
-        echo 'Парсинг таблицы Лотов (uds.tradeplace)';
+        echo 'Парсинг таблицы Лотов (uds.obj$lots)';
         $count = Lots::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
         echo "\nКоличество записей осталось: $count. \n";
         
@@ -135,5 +136,60 @@ class LotsController extends Controller
         }
 
         echo "Завершение парсинга \n";
+    }
+
+    // Лоты Арестованного имущества
+    // php yii lots/arrest
+    public function actionArrest($limit = 100, $delay = 'y', $sort = 'new') 
+    {
+        error_reporting(0);
+        
+        echo 'Парсинг таблицы Лотов (bailiff.lots)';
+        $count = LotsArrest::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
+        echo "\nКоличество записей осталось: $count. \n";
+        
+        $parserCount = 0;
+
+        if ($count > 0) {
+            $lots = LotsArrest::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->limit($limit)->orderBy('lotId '.(($sort = 'new')? 'DESC' : 'ASC'))->all();
+
+            echo "Ограничения записей $limit. \n";
+
+            if (!empty($lots[0])) {
+                echo "Данные взяты из быза. \n";
+
+                foreach ($lots as $lot) {
+                    $parsingLot = \console\models\lots\LotsArrest::id($lot->lotId);
+
+                    if ($parsingLot && $parsingLot !== 2) {
+                        foreach ($lot->parser as $value) {
+                            if ($value->checked) {
+                                $parser = Parser::findOne($value->id);
+
+                                $parser->checked = false;
+
+                                $parser->update();
+                            }
+                        }
+
+                        $parserCount++;
+                    }
+
+                    if ($delay == 'y') {
+                        $sleep = rand(1, 3);
+
+                        echo "Задержка $sleep секунды. \n";
+
+                        sleep($sleep);
+                    }
+                    
+                }
+            }
+
+            echo "Загружено $parserCount записей. \n";
+        } else {
+            echo "Новых данных нет. \n";
+        }
+        echo "Завершение парсинга. \n";
     }
 }  

@@ -9,6 +9,7 @@ use common\models\Query\Bankrupt\Auction;
 use common\models\Query\Bankrupt\Arbitrs;
 use common\models\Query\Bankrupt\Offerreductions;
 use common\models\Query\Bankrupt\Lots;
+use common\models\Query\Arrest\LotDocuments;
 use console\models\torgs\TorgsBankrupt;
 use console\models\lots\LotsBankrupt;
 use console\models\managers\ArbitrsBankrupt;
@@ -28,9 +29,11 @@ class TestController extends Controller
 
         // $parsing = LotsBankrupt::id($id);
 
-        $offer = Offerreductions::findOne(1);
-        var_dump($offer->lot);
+        $doc = LotDocuments::findOne(63813);
 
+        var_dump($doc->ldocId);
+        var_dump($doc->lot);
+        
         // var_dump(Arbitrs::find()->where(['id' => 59878])->one());
         // echo "Yes, cron service is running.";
     }

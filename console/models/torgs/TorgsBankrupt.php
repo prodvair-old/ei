@@ -34,7 +34,7 @@ class TorgsBankrupt extends Module
         $parser->tableNameFrom = 'uds.obj$auctions';
         $parser->tableIdFrom = $torg->id;
 
-        $chekTorg = Torgs::find()->where(['oldId' => $torg->id, 'typeId' => 2])->all();
+        $chekTorg = Torgs::find()->where(['oldId' => $torg->id, 'typeId' => 1])->all();
         if (!empty($chekTorg[0])) {
 
             $parser->message = 'Был добавлена';

@@ -13,6 +13,8 @@ use common\models\Query\WishList;
 use common\models\Query\PageViews;
 use common\models\Query\LotsCategory;
 
+use common\models\Query\Lot\Parser;
+
 // Таблица лотов арестовки
 class LotsArrest extends ActiveRecord
 {
@@ -149,4 +151,10 @@ class LotsArrest extends ActiveRecord
     // {
     //     return parent::find()->select('count(wish.id)')->alias('lot')->joinWith(['torgs', 'wishlist'])->orderBy('torgs.trgPublished DESC'))['count'];
     // }
+
+    // Связь с таблицей парсинга
+    public function getParser()
+    {
+        return $this->hasMany(Parser::className(), ['tableIdFrom' => 'lotId'])->alias('parser')->onCondition(['parser.tableNameFrom'=>'bailiff.lots']);
+    }
 }

@@ -8,6 +8,7 @@ use common\models\Query\Lot\LotCategorys;
 use common\models\Query\Lot\Documents;
 use common\models\Query\Lot\LotPriceHistorys;
 use common\models\Query\Lot\Participants;
+use common\models\Query\Lot\Banks;
 use common\models\Query\Lot\Torgs;
 
 class Lots extends ActiveRecord
@@ -37,6 +38,10 @@ class Lots extends ActiveRecord
     public function getParticipants()
     {
         return $this->hasMany(Participants::className(), ['lotId' => 'id'])->alias('participants'); // Участники лота
+    }
+    public function getBank()
+    {
+        return $this->hasOne(Banks::className(), ['id' => 'bankId'])->alias('bank'); // Банк
     }
     public function getTorg()
     {
