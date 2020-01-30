@@ -4,6 +4,10 @@ namespace common\models\Query\Lot;
 use yii\db\ActiveRecord;
 
 use Yii;
+use common\models\Query\LotsCategory;
+use common\models\Query\WishList;
+use common\models\Query\PageViews;
+
 use common\models\Query\Lot\LotCategorys;
 use common\models\Query\Lot\Documents;
 use common\models\Query\Lot\LotPriceHistorys;
@@ -13,6 +17,9 @@ use common\models\Query\Lot\Torgs;
 
 class Lots extends ActiveRecord
 {
+    public $whishCount;
+    public $rank;
+
     public static function tableName()
     {
         return '"eiLot".{{lots}}';
@@ -22,7 +29,99 @@ class Lots extends ActiveRecord
         return Yii::$app->get('db');
     }
 
+    // Функции для вывода доп, инвормации
+    public function getUrl()
+    {
+        $items = LotsCategory::find()->all();
+        foreach ($items as $value) {
+            if ($value->bankrupt_categorys[$this->category->categoryId]['translit'] !== null) {
+                return 'bankrupt/'.$value->translit_name.'/'.$value->bankrupt_categorys[$this->category->categoryId]['translit'].'/'.$this->id;
+            }
+        }
+    }
+    public function getPrice() 
+    {
+        if ($this->torg->tradeTypeId == 2) {
+            return $this->startPrice;
+        } else {
+            if ($this->priceHistorys != null) {
+                $date = Yii::$app->formatter->asDatetime(new \DateTime(), "php:Y-m-d H:i:s");
+                foreach ($this->priceHistorys as $key => $value) {
+                    if (($key == 0 || $value->intervalBegin <= $date) && $value->intervalEnd >= $date) {
+                        return $value->price;
+                    }    
+                }
+            } else {
+                return $this->startPrice;
+            }
+        }
+    }
+    public function getOldPrice() 
+    {
+        if ($this->torg->tradeTypeId == 2) {
+            return false;
+        }if ($this->priceHistorys != null) {
+            $date = Yii::$app->formatter->asDatetime(new \DateTime(), "php:Y-m-d H:i:s");
+            foreach ($this->priceHistorys as $key => $value) {
+                if (($key == 0 || $value->intervalBegin <= $date) && $value->intervalEnd >= $date) {
+                    if ($value->price == $this->startPrice) {
+                        return false;
+                    } else {
+                        return ($this->priceHistorys[$key-1]->price)? $this->priceHistorys[$key-1]->price : $this->startPrice;
+                    }
+                }
+            }
+        } else {
+            return false;
+        }
+    }
+    public function getArchive()
+    {
+        $today = new \DateTime();
+        if (strtotime($this->torg->completeDate) <= strtotime($today->format('Y-m-d H:i:s'))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function getViewsCount() 
+    {
+        return count($this->views);
+    }
+    public function getLotWishId() 
+    {
+        try {
+            return $this->wishlist->id;
+        } catch (\Throwable $th) {
+            $result[] = null;
+        }
+    }
+
+    // Поиск, главные значения
+    public static function find()
+    {
+        return parent::find()->onCondition([
+            'published' => true
+        ]);
+    }
+
+    // Связь с таблицей статистики
+    public function getWishlist()
+    {
+        return $this->hasOne(WishList::className(), ['lotId' => 'id'])->alias('wish')->viaTable('torg', ['torg.type' => 'wish.type']);;
+    }
+    public function getViews()
+    {
+        return $this->hasMany(PageViews::className(), ['page_id' => 'oldId'])->alias('views')->onCondition([
+            'page_type' => 'lot_'.$this->torg->type
+        ]);
+    }
+
     // Связи с таблицами
+    public function getCategory()
+    {
+        return $this->hasOne(LotCategorys::className(), ['lotId' => 'id'])->alias('categorys'); // Категории лота
+    }
     public function getCategorys()
     {
         return $this->hasMany(LotCategorys::className(), ['lotId' => 'id'])->alias('categorys'); // Категории лота

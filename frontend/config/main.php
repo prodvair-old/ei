@@ -52,6 +52,8 @@ return [
 
         '' => 'site/index',
 
+        '/test'    => 'test/index',
+        
         '/about'    => 'pages/about',
         '/license'  => 'pages/license',
         '/policy'   => 'pages/policy',

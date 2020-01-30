@@ -6,7 +6,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
-use common\models\Query\Zalog\LotsZalog;
+use common\models\Query\Lot\Lots;
 
 use arogachev\excel\import\advanced\Importer;
 
@@ -70,10 +70,13 @@ class TestController extends Controller
      */
     public function actionIndex()
     {
-        $lots = LotsZalog::find()->all();
+        $lots = Lots::find()
+            ->select(['description', 'rank' => 'ts_rank(to_tsvector(description), plainto_tsquery(\'Самара\'))'])
+            ->where('to_tsvector(description) @@ plainto_tsquery(\'Самара\')')
+            ->asArray()
+            ->orderBy(`rank`)->limit(100)->all();
 
         var_dump($lots);
-
     }
 
 }

@@ -19,9 +19,7 @@ use frontend\models\ContactForm;
 
 // Запросы
 use common\models\Query\MetaDate;
-use common\models\Query\Bankrupt\LotsBankrupt;
-use common\models\Query\Arrest\LotsArrest;
-use common\models\Query\Zalog\LotsZalog;
+use common\models\Query\Lot\Lots;
 
 /**
  * Site controller
@@ -90,9 +88,9 @@ class SiteController extends Controller
         Yii::$app->params['title'] = $metaData->mdTitle;
         Yii::$app->params['h1'] = $metaData->mdH1;
 
-        $lotsBankruptCount = LotsBankrupt::find()->where('lot_timeend >= NOW()')->count();
-        $lotsArrestCount = LotsArrest::find()->joinWith('torgs')->where('torgs."trgExpireDate" >= NOW()')->count();
-        $lotsZalogCount = LotsZalog::find()->where(['status'=>true])->andWhere('"completionDate" >= NOW()')->count();
+        $lotsBankruptCount = Lots::find()->joinWith('torg')->where(['and', ['torg.typeId' => 1, 'published' => true], ['>=', 'torg.completeDate', 'NOW()']])->count();
+        $lotsArrestCount = Lots::find()->joinWith('torg')->where(['and', ['torg.typeId' => 2, 'published' => true], ['>=', 'torg.endDate', 'NOW()']])->count();
+        $lotsZalogCount = Lots::find()->joinWith('torg')->where(['and', ['torg.typeId' => 3, 'published' => true], ['>=', 'torg.completeDate', 'NOW()']])->count();
 
         return $this->render('index', [
             'lotsBankruptCount' => $lotsBankruptCount,

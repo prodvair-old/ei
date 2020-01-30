@@ -5,6 +5,7 @@ use Yii;
 use yii\db\ActiveRecord;
 use common\models\Query\Bankrupt\LotsBankrupt;
 use common\models\Query\Arrest\LotsArrest;
+use common\models\Query\Lot\Lots;
 
 class WishList extends ActiveRecord
 {
@@ -16,16 +17,9 @@ class WishList extends ActiveRecord
     {
         return Yii::$app->get('db');
     }
-    public function getLotsBankrupt()
+
+    public function getLots()
     {
-        return $this->hasOne(LotsBankrupt::className(), ['lot_id' => 'lotId'])->alias('lots_bankrupt')->onCondition([
-            'type' => 'bankrupt'
-        ]);
-    }
-    public function getLotsArrest()
-    {
-        return $this->hasOne(LotsArrest::className(), ['lotId' => 'lotId'])->alias('lots_arrest')->onCondition([
-            'type' => 'arrest'
-        ]);
+        return $this->hasOne(Lots::className(), ['id' => 'lotId'])->alias('lots');
     }
 }
