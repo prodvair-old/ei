@@ -93,18 +93,14 @@ class Lots extends ActiveRecord
     {
         $today = new \DateTime();
 
-        if ($this->torg->endDate === null || strtotime($this->torg->endDate) <= strtotime($today->format('Y-m-d H:i:s'))) {
-            $result = true;
+        if ($this->torg->endDate === null || $this->torg->completeDate === null ) {
+            return false;
         } else {
-            $result = false;
+            if (strtotime($this->torg->completeDate) <= strtotime($today->format('Y-m-d H:i:s')) || strtotime($this->torg->endDate) <= strtotime($today->format('Y-m-d H:i:s'))) {
+                return true;
+            }
         }
-        if ($this->torg->completeDate === null || strtotime($this->torg->completeDate) <= strtotime($today->format('Y-m-d H:i:s'))) {
-            $result = true;
-        } else {
-            $result = false;
-        }
-
-        return $result;
+        return false;
     }
     public function getViewsCount() 
     {

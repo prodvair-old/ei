@@ -12,6 +12,15 @@ try {
     $priceClass = 'text-primary';
 }
 
+if ($lot->torg->typeId == 1) {
+    $lotType = 'Банкртокое иммущество';
+} else if ($lot->torg->typeId == 2){
+    $lotType = 'Арестованное иммущество';
+} else if ($lot->torg->typeId == 3){
+    $lotType = 'Иммущество организации';
+    $lotOrganizatioun = $lot->torg->owner->title;
+}
+
 ?>
 <?=($type == 'grid')? '<div class="col">': ''?>
                 
@@ -34,6 +43,11 @@ try {
 
                 <?=($type == 'long')? '<div>' : ''?>
                     <figcaption class="content">
+                        <ul class="item-meta lot-block__info">
+                            <li><?= $lotType ?></li>
+                            <?= ($lotOrganizatioun)? "<li>$lotOrganizatioun</li>" : '' ?>
+                        </ul>
+                        <hr>
                         <h3 class="lot-block__title <?=(!empty($lot->archive))? ($lot->archive)? 'text-muted' : '' : ''?>"><?= $lot->title?> <?=(!empty($lot->archive))? ($lot->archive)? '<span class="text-primary">(Архив)</span>' : '' : ''?></h3>
                         <hr>
                         <ul class="item-meta lot-block__info">

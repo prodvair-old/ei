@@ -24,6 +24,7 @@ class SearchLot extends Model
     public $archivCheck;
     public $tradeType;
     public $search;
+    public $sortBy;
     
 
 
@@ -33,7 +34,7 @@ class SearchLot extends Model
     public function rules()
     {
         return [
-            [['type', 'category', 'search'], 'string'],
+            [['type', 'category', 'search', 'sortBy'], 'string'],
             [['subCategory', 'region', 'tradeType', 'etp'], 'default'],
             [['minPrice', 'maxPrice'], 'number'],
             [['imageCheck', 'archivCheck'], 'boolean'],
@@ -45,7 +46,7 @@ class SearchLot extends Model
      *
      * @return bool whether the creating new account was successful and email was sent
      */
-    public function search($lots, $url = null, $type = null)
+    public function search($lots, $url = null, $type = null, $sortBy = '')
     {
         $lotsPrice = Clone $lots;
 
@@ -60,13 +61,15 @@ class SearchLot extends Model
         $sort = '';
 
         if (!empty($this->type)) {
-            $where[] = ['torg.type' => $this->type];
+            if ($this->type !== 'all') {
+                $where[] = ['torg.type' => $this->type];
+            }
         }
 
         if (!empty($this->search)) {
             $lots->select(['*', 'rank' => 'ts_rank(to_tsvector(lot.description), plainto_tsquery(\''.$this->search.'\'))']);
             $where[] = 'to_tsvector(lot.description) @@ plainto_tsquery(\''.$this->search.'\')';
-            $sort = 'rank';
+            $sort = 'rank ASC,';
         }
 
 
@@ -81,6 +84,12 @@ class SearchLot extends Model
                 foreach ($category->bankrupt_categorys as $key => $value) {
                     $orWhere[] = ['categorys.categoryId'=>$key];
                 }
+                foreach ($category->arrest_categorys as $key => $value) {
+                    $orWhere[] = ['categorys.categoryId'=>$key];
+                }
+                foreach ($category->zalog_categorys as $key => $value) {
+                    $orWhere[] = ['categorys.categoryId'=>$key];
+                }
                 $where[] = $orWhere;
             } else if ($this->subCategory != '0'){
                 if (count($this->subCategory) == 1) {
@@ -91,10 +100,42 @@ class SearchLot extends Model
                             $checkUrl = true;
                         }
                     }
+                    foreach ($category->arrest_categorys as $key => $value) {
+                        if ($this->subCategory[0] == $key) {
+                            $where[] = ['categorys.categoryId'=>$key];
+                            $url .= '/'.$value['translit'];
+                            $checkUrl = true;
+                        }
+                    }
+                    foreach ($category->zalog_categorys as $key => $value) {
+                        if ($this->subCategory[0] == $key) {
+                            $where[] = ['categorys.categoryId'=>$key];
+                            $url .= '/'.$value['translit'];
+                            $checkUrl = true;
+                        }
+                    }
                 } else {
                     $orWhere = ['or'];
                     foreach ($this->subCategory as $keySubCategory => $subCategory) {
                         foreach ($category->bankrupt_categorys as $key => $value) {
+                            if ($subCategory == $key) {
+                                $orWhere[] = ['categorys.categoryId'=>$key];
+                                if ($keySubCategory == 0) {
+                                    $url .= '/'.$value['translit'];
+                                    $checkUrl = true;
+                                }
+                            }
+                        }
+                        foreach ($category->arrest_categorys as $key => $value) {
+                            if ($subCategory == $key) {
+                                $orWhere[] = ['categorys.categoryId'=>$key];
+                                if ($keySubCategory == 0) {
+                                    $url .= '/'.$value['translit'];
+                                    $checkUrl = true;
+                                }
+                            }
+                        }
+                        foreach ($category->zalog_categorys as $key => $value) {
                             if ($subCategory == $key) {
                                 $orWhere[] = ['categorys.categoryId'=>$key];
                                 if ($keySubCategory == 0) {
@@ -174,21 +215,27 @@ class SearchLot extends Model
         } else {
             $where[] = '(torg."endDate" >= NOW() OR torg."endDate" IS NULL) OR (torg."completeDate" >= NOW() OR torg."completeDate" IS NULL)';
         }
-        if (!empty($this->minPrice)) {
-            $whereAnd = 'CASE WHEN "thisPriceHistorys".price IS NOT NULL
-                    THEN "thisPriceHistorys".price >= '.$this->minPrice.'
-                    ELSE lot."startPrice" >= '.$this->minPrice.'
-                END';
-        }
-        if (!empty($this->maxPrice)) {
-            $whereAnd = 'CASE WHEN "thisPriceHistorys".price IS NOT NULL
-                    THEN "thisPriceHistorys".price <= '.$this->maxPrice.'
-                    ELSE lot."startPrice" <= '.$this->maxPrice.'
-                END';
-        }
         if (!empty($this->imageCheck)) {
             $where[] = ['not', ['images' => null]];
         }
+
+        $lots->where($where);
+        
+        if (!empty($this->minPrice)) {
+            $lots->andWhere('CASE WHEN "thisPriceHistorys".price IS NOT NULL
+                    THEN "thisPriceHistorys".price >= '.$this->minPrice.'
+                    ELSE lot."startPrice" >= '.$this->minPrice.'
+                END');
+        }
+        if (!empty($this->maxPrice)) {
+            $lots->andWhere('CASE WHEN "thisPriceHistorys".price IS NOT NULL
+                THEN "thisPriceHistorys".price <= '.$this->maxPrice.'
+                ELSE lot."startPrice" <= '.$this->maxPrice.'
+            END');
+        }
+        
+
+        
 
         // switch ($this->type) {
         //     case 'bankrupt':
@@ -611,6 +658,6 @@ class SearchLot extends Model
         //         break;
         // }
 
-        return ['lots'=>$lots->where($where)->andWhere($whereAnd)->orderBy($sort), 'lotsPrice'=>$lotsPrice->where($where), 'url'=>$url];
+        return ['lots'=>$lots->orderBy($sort.' '.$sortBy), 'lotsPrice'=>$lotsPrice->where($where), 'url'=>$url];
     }
 }

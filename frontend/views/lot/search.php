@@ -172,6 +172,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
               <div class="col-12">
                 <div class="col-inner">
                   <?= $form->field($model, 'type')->dropDownList([
+                    'all' => 'Все типы',
                     'bankrupt' => 'Банкротное имущество',
                     'arrest' => 'Арестованное имущество',
                     'zalog' => 'Имущество организаций',
@@ -180,8 +181,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                     'data-placeholder' => 'Выберите тип лота',
                     'tabindex' => '2',
                     'options' => [
-                      'zalog' => ['disabled' => true, 'title' => 'Скоро'],
-                      $type => ['Selected' => true]
+                      // 'zalog' => ['disabled' => true, 'title' => 'Скоро'],
                     ]
                   ])
                     ->label('Тип лота'); ?>
@@ -202,7 +202,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                 </div>
               </div>
 
-              <div class="col-12">
+              <!-- <div class="col-12">
                 <div class="col-inner">
                   <?= $form->field($model, 'subCategory')->dropDownList(
                     $lotsSubcategory,
@@ -216,7 +216,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                   )
                     ->label('Подкатегория'); ?>
                 </div>
-              </div>
+              </div> -->
 
               <div class="col-12">
                 <div class="col-inner">
@@ -252,8 +252,13 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
             </div>
 
             <div class="box-content">
-              <?= $form->field($model, 'minPrice')->textInput(['class' => 'lot__price-min'])->label(false); ?>
-              <?= $form->field($model, 'maxPrice')->textInput(['class' => 'lot__price-max'])->label(false); ?>
+              <div class="row">
+                <div class="col-6"><?= $form->field($model, 'minPrice')->textInput(['class' => 'lot__price-min form-control', 'placeholder' => 'Цена от'])->label(false); ?></div>
+                <div class="col-6"><?= $form->field($model, 'maxPrice')->textInput(['class' => 'lot__price-max form-control', 'placeholder' => 'Цена до'])->label(false); ?></div>
+              </div>
+              
+              <div class="mb-10"></div>
+
               <input id="price_range" data-min="<?= $price['min'] ?>" data-max="<?= $price['max'] ?>" />
             </div>
 
