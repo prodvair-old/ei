@@ -23,11 +23,11 @@ try {
         
                 <?=($type == 'long')? '<div>' : ''?>
                     <div class="image image-galery">
-                        <img src="<?=($lot->images)? $lot->images[0] : 'img/img.svg'?>" alt="" />
-                        <?= ($lot->images[1])? '<img src="'.$lot->images[1].'" alt="" />'  : ''?>
-                        <?= ($lot->images[2])? '<img src="'.$lot->images[2].'" alt="" />'  : ''?>
-                        <?= ($lot->images[3])? '<img src="'.$lot->images[3].'" alt="" />'  : ''?>
-                        <?= ($lot->images[4])? '<img src="'.$lot->images[4].'" alt="" />'  : ''?>
+                        <img src="<?=($lot->images)? $lot->images[0]['min'] : 'img/img.svg'?>" alt="" />
+                        <?= ($lot->images[1]['min'])? '<img src="'.$lot->images[1]['min'].'" alt="" />'  : ''?>
+                        <?= ($lot->images[2]['min'])? '<img src="'.$lot->images[2]['min'].'" alt="" />'  : ''?>
+                        <?= ($lot->images[3]['min'])? '<img src="'.$lot->images[3]['min'].'" alt="" />'  : ''?>
+                        <?= ($lot->images[4]['min'])? '<img src="'.$lot->images[4]['min'].'" alt="" />'  : ''?>
                         <div class="image-galery__control"></div>
                     </div>
                 <?=($type == 'long')? '</div>' : ''?>
