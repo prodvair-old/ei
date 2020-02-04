@@ -85,7 +85,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         <li>
                             <a href="#info">Информация о лоте</a>
                         </li>
-                        <?=($lot->torg->tradeTypeId == 1)? '<li><a href="#price-history">Этапы снижения цены</a></li>': ''?>
+                        <?=($lot->torg->publisherId == 1)? '<li><a href="#price-history">Этапы снижения цены</a></li>': ''?>
                         <li>
                             <a href="#docs">Документы</a>
                         </li>
@@ -161,13 +161,13 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-basic-flag1"></i>
                                 </span>
-                                Старт торгов<br /><strong><?= Yii::$app->formatter->asDate($lot->lotDateStart, 'long')?></strong>
+                                Старт торгов<br /><strong><?= Yii::$app->formatter->asDate($lot->startDate, 'long')?></strong>
                             </li>
                             <li>
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-basic-flag2"></i>
                                 </span>
-                                Окончание торгов<br /><strong><?= ($lot->lotDateEnd !== '0001-01-01 00:00:00 BC' && $lot->lotDateEnd !== '0001-01-01 00:00:00')? Yii::$app->formatter->asDate($lot->lotDateEnd, 'long') : '(Нет даты)'?></strong>
+                                Окончание торгов<br /><strong><?= ($lot->lotDateEnd !== '0001-01-01 00:00:00 BC' && $lot->endDate !== '0001-01-01 00:00:00')? Yii::$app->formatter->asDate($lot->endDate, 'long') : '(Нет даты)'?></strong>
                             </li>
                             <li>
                                 <span class="icon-font d-block">
@@ -293,9 +293,9 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
                                 <h6>Должник</h6>
                                 <ul class="ul">
-                                    <li><a href="<?=Url::to(['doljnik/list'])?>/<?=$lot->torgy->case->bnkr->id?>" target="_blank"><?=$lot->lotBnkrName?></a></li>
-                                    <li>ИНН: <span class="text-list-name"><?= ($lot->lotBnkrType == 'Person')? $lot->torgy->case->bnkr->person->inn : $lot->torgy->case->bnkr->company->inn;?></span></li>
-                                    <li>Адрес: <span class="text-list-name"><?= ($lot->lotBnkrType == 'Person')? $lot->torgy->case->bnkr->person->address : $lot->torgy->case->bnkr->company->legaladdress;?></span></li>
+                                    <li><a href="<?=Url::to(['doljnik/list'])?>/<?=$lot->torg->case->bnkr->id?>" target="_blank"><?=$lot->lotBnkrName?></a></li>
+                                    <li>ИНН: <span class="text-list-name"><?= ($lot->torg->type == 'Person')? $lot->torgy->case->bnkr->person->inn : $lot->torgy->case->bnkr->company->inn;?></span></li>
+                                    <li>Адрес: <span class="text-list-name"><?= ($lot->torg->type == 'Person')? $lot->torgy->case->bnkr->person->address : $lot->torgy->case->bnkr->company->legaladdress;?></span></li>
                                 </ul>
                             </li>
                             
@@ -326,7 +326,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         
                     </div>
                     
-                    <?php if($lot->torgy->tradetype == 'PublicOffer') { ?>
+                    <?php if($lot->torg->tradeType == 'PublicOffer') { ?>
 
                         <div id="price-history" class="fullwidth-horizon-sticky-section">
 
@@ -485,7 +485,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         <h4 class="heading-title">Документы</h4>
                         <ul class="list-icon-absolute what-included-list mb-30 long-text">
 
-                            <? foreach ($lot->torgy->case->files as $doc) { ?>
+                            <? foreach ($lot->torgs->case->files as $doc) { ?>
 
                                 <?
                                     $fileType = strtolower(preg_replace('/^.*\.(.*)$/s', '$1', $doc->filename));
@@ -545,14 +545,14 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
                     <div id="torg" class="detail-header mb-30">
                         <h4 class="mt-30">Информация о торге</h5>
-                        <p class="long-text"><?=$lot->torgy->description?></p>
+                        <p class="long-text"><?=$lot->torgs->description?></p>
                         <a href="#torg" class="open-text-js">Подробнее</a>
                         <div class="mb-50"></div>
                     </div>
 
                     <div id="roles" class="detail-header mb-30">
                         <h4 class="mt-30">Правила подачи заявок</h5>
-                        <p class="long-text"><?=$lot->torgy->rules?></p>
+                        <p class="long-text"><?=$lot->torgs->info['rules']?></p>
                         <a href="#roles" class="open-text-js">Подробнее</a>
                     </div>
 
