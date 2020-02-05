@@ -61,7 +61,7 @@ if ($type == 'bankrupt') {
             <h1><?=$title?></h1>
             <p class="font-lg spacing-1" <?=($owner->tamplate['color-5'])? 'style="color: '.$owner->tamplate['color-5'].'"': ''?>><?=$description?></p>
             
-            <?= SearchForm::widget(['type' => (($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog'), 'typeZalog' => ($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog')? $type : null, 'btnColor' => $owner->tamplate['color-1'], 'color' => $owner->tamplate['color-4']])?>
+            <?= SearchForm::widget(['type' => (($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog'), 'url' => (($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog'),'typeZalog' => ($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog')? $type : null, 'btnColor' => $owner->tamplate['color-1'], 'color' => $owner->tamplate['color-4']])?>
 
         </div>
         

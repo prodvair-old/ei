@@ -11,6 +11,7 @@ use frontend\models\zalog\FilterLots;
 class SearchForm extends Widget
 {
     public $type;
+    public $url;
     public $typeZalog;
     public $lotType = 'all';
     public $btnColor;
@@ -24,18 +25,23 @@ class SearchForm extends Widget
             
                     $model->load(Yii::$app->request->get());
 
-                    return $this->render('zalogSearch', compact('model'));
+                    $url = $this->url;
+
+                    return $this->render('zalogSearch', compact('model', 'url'));
                 break;
             default:
                     $model = new SearchLot();
 
-                    $type = $model->type = $this->type;
+                    $type = $this->type;
+                    $model->type = $url;
                     
                     $typeZalog  = $this->typeZalog;
                     $btnColor   = $this->btnColor;
                     $color      = $this->color;
+
+                    $url = $this->url;
             
-                    return $this->render('smallSearch', compact('model', 'type', 'typeZalog', 'btnColor', 'color'));
+                    return $this->render('smallSearch', compact('model', 'url', 'type', 'typeZalog', 'btnColor', 'color'));
                 break;
         }
         

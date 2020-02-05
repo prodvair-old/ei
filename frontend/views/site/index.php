@@ -22,7 +22,7 @@ $this->title = Yii::$app->params['title'];
     <div class="container">
 
       <h1><span class="font200"><span class="font700">Агрегатор</span> </span><span class="font200">торгов<span class="block"> <span class="font700">по</span> банкротству</span></span></h1>
-      <?= SearchForm::widget(['type' => 'bankrupt']) ?>
+      <?= SearchForm::widget(['type' => 'bankrupt', 'url' => 'all']) ?>
 
     </div>
 
