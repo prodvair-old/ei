@@ -4,25 +4,21 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
 
-use common\models\Query\Bankrupt\LotsBankrupt;
-use common\models\Query\Arrest\LotsArrest;
-use common\models\Query\Zalog\LotsZalog;
+use common\models\Query\Lot\Lots;
 
 use frontend\components\LotBlock;
 use frontend\components\ProfileMenu;
 
 foreach ($wishArrestList as $wishArrest) {
-    $lotArrestIds[] = LotsArrest::findOne($wishArrest->lotId);
+    $lotArrestIds[] = Lots::findOne($wishArrest->lotId);
 }
 
 foreach ($wishBankruptList as $wishBankrupt) {
-    $lotBankruptIds[] = LotsBankrupt::findOne($wishBankrupt->lotId);
+    $lotBankruptIds[] = Lots::findOne($wishBankrupt->lotId);
 }
 
 foreach ($wishZalogList as $wishZalog) {
-    if ($zalog = LotsZalog::find()->where(['id' => $wishZalog->lotId, 'status' => true])->one()) {
-        $lotZalogIds[] = $zalog;
-    }
+    $lotZalogIds[] = Lots::findOne($wishZalog->lotId)->one();
 }
 
 $name = (\Yii::$app->user->identity->info['firstname'] || \Yii::$app->user->identity->info['lastname'])? \Yii::$app->user->identity->info['firstname'].' '.\Yii::$app->user->identity->info['lastname'] : \Yii::$app->user->identity->info['contacts']['emails'][0];

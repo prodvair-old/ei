@@ -23,7 +23,7 @@ class AppAsset extends AssetBundle
         'js/jquery-2.2.4.min.js',
         'js/plugins.js',
         'js/costom-plugins/toast.js',
-        'js/custom-core.js',
+        'js/custom-core.js?v=1.02',
         'https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js',
         'js/data_picker.js',
         'js/scripts.min.js',

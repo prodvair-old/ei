@@ -53,7 +53,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
 <? } ?>
 
 
-<?php $form = ActiveForm::begin(['method' => 'get', 'action' => '/bankrupt/lot-list', 'options' => ['enctype' => 'multipart/form-data', 'class' => 'card-search-form']]) ?>
+<?php $form = ActiveForm::begin(['method' => 'get', 'action' => '/'.$url.'/lot-list', 'options' => ['enctype' => 'multipart/form-data', 'class' => 'card-search-form']]) ?>
 
 <div class="card card-search">
   <div class="card-body">
@@ -96,6 +96,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
       <div class="col">
         <div class="col-inner height-100">
           <?= $form->field($model, 'type')->dropDownList([
+            'all' => 'Все типы',
             'bankrupt' => 'Банкротное имущество',
             'arrest' => 'Арестованное имущество',
             'zalog' => 'Имущество организаций',
@@ -104,8 +105,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
             'data-placeholder' => 'Выберите тип лота',
             'tabindex' => '2',
             'options' => [
-              // 'zalog' => ['disabled' => true, 'title' => 'Скоро'],
-              $type => ['Selected' => true]
+              $url => ['Selected' => true]
             ]
           ])
             ->label('Тип лота'); ?>
