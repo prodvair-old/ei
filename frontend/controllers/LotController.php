@@ -180,7 +180,7 @@ class LotController extends Controller
         Yii::$app->params['title'] = ($metaData->mdTitle)? $metaData->mdTitle : $title;
         Yii::$app->params['h1'] = ($metaData->mdH1)? $metaData->mdH1 : $title;
         // Мета данные <-End 
-        var_dump('Время генерации: ' . ( microtime(true) - $start ) . ' сек.');
+        // var_dump('Время генерации: ' . ( microtime(true) - $start ) . ' сек.');
 
         return $this->render('index', compact('type', 'lots', 'lotsFovarit', 'owner'));
     }
@@ -420,7 +420,7 @@ class LotController extends Controller
             ->all();
 
         // Фильтрация лотов <-End 
-        var_dump('Время генерации: ' . ( microtime(true) - $start ) . ' сек.');
+        // var_dump('Время генерации: ' . ( microtime(true) - $start ) . ' сек.');
         // Хлебные крошки Start->
         Yii::$app->params['breadcrumbs'][] = [
             'label' => ' '.$titleType,

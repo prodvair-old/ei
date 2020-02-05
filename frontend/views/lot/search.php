@@ -257,9 +257,9 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                 <div class="col-6"><?= $form->field($model, 'maxPrice')->textInput(['class' => 'lot__price-max form-control', 'placeholder' => 'Цена до'])->label(false); ?></div>
               </div>
               
-              <div class="mb-10"></div>
+              <!-- <div class="mb-10"></div> -->
 
-              <input id="price_range" data-min="<?= $price['min'] ?>" data-max="<?= $price['max'] ?>" />
+              <!-- <input id="price_range" data-min="<?= $price['min'] ?>" data-max="<?= $price['max'] ?>" /> -->
             </div>
 
           </div>

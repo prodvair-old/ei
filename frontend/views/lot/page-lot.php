@@ -81,7 +81,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         <li>
                             <a href="#info">Информация о лоте</a>
                         </li>
-                        <?=($lot->torg->lotPriceHistorys == 1)? '<li><a href="#price-history">Этапы снижения цены</a></li>': ''?>
+                        <?=($lot->priceHistorys == 1)? '<li><a href="#price-history">Этапы снижения цены</a></li>': ''?>
                         <li>
                             <a href="#docs">Документы</a>
                         </li>
@@ -151,7 +151,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                     <i class="linea-icon-basic-chronometer"></i>
                                 </span>
                                 До подачи заявки<br /> 
-                                <strong><?=($dateSend > 0)? NumberWords::widget(['number' => $dateSend, 'words' => ['день', 'дня', 'дней']]) : 'Прошло'?></strong>
+                                <strong><?=($intervalBegin > 0)? NumberWords::widget(['number' => $intervalBegin, 'words' => ['день', 'дня', 'дней']]) : 'Прошло'?></strong>
                             </li>
                             <li>
                                 <span class="icon-font d-block">
