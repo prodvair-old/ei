@@ -106,13 +106,16 @@ class Lots extends ActiveRecord
     {
         return count($this->views);
     }
-    public function getLotWishId() 
+    public function getWishId($id = null) 
     {
-        try {
-            return $this->wishlist->id;
-        } catch (\Throwable $th) {
-            $result[] = null;
+        if ($this->wishlist[0]) {
+            foreach ($this->wishlist as $wish) {
+                if ($id == $wish->userId) {
+                    return $wish->id;
+                }
+            }
         }
+        return false;
     }
 
     // Поиск, главные значения
@@ -126,7 +129,7 @@ class Lots extends ActiveRecord
     // Связь с таблицей статистики
     public function getWishlist()
     {
-        return $this->hasOne(WishList::className(), ['lotId' => 'id'])->alias('wish')->viaTable('torg', ['torg.type' => 'wish.type']);;
+        return $this->hasMany(WishList::className(), ['lotId' => 'id'])->alias('wishList');
     }
     public function getViews()
     {

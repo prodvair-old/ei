@@ -61,8 +61,8 @@ if ($lot->torg->typeId == 1) {
                                 </div>
                             </li>
                             <li>
-                                <div <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="wish-star" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star" data-id="'.$lot->lotId.'" data-type="'.$lot->torg->type.'"'?>>
-                                    <img src="img/star<?=($lot->lotWishId)? '' : '-o' ?>.svg" alt="">
+                                <div <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="wish-star" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star" data-id="'.$lot->id.'" data-type="'.$lot->torg->type.'"'?>>
+                                    <img src="img/star<?=($lot->getWishId(Yii::$app->user->id))? '' : '-o' ?>.svg" alt="">
                                 </div>
                             </li>
                         </ul>

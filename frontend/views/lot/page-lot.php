@@ -16,10 +16,6 @@ use frontend\models\ViewPage;
 use common\models\Query\WishList;
 use common\models\Query\Lot\Lots;
 
-if (!Yii::$app->user->isGuest) {
-    $wishCheck = WishList::find()->where(['userId' => Yii::$app->user->id, 'lotId' => $lot->id, 'type' => $type])->one();
-}
-
 $view = new ViewPage();
 
 $view->page_type = "lot_".$lot->torg->type;
@@ -32,9 +28,9 @@ $endDate = strtotime($lot->torg->endDate);
 
 $dateSend = floor(($endDate - $now) / (60 * 60 * 24));
 
-$lots_bankrupt = Lots::find()->joinWith(['torg.bankrupt'])->alias('lot')->where(['bankrupt.id'=>$lot->torg->bankrupt->id])->andWhere(['!=', 'lot.id', $lot->id])->all();
+$otherLots = Lots::find()->joinWith(['torg.bankrupt'])->alias('lot')->where(['bankrupt.id'=>$lot->torg->bankrupt->id])->andWhere(['!=', 'lot.id', $lot->id])->all();
 
-$this->registerJsVar( 'lotType', 'bankrupt', $position = yii\web\View::POS_HEAD );
+$this->registerJsVar( 'lotType', $lot->torg->type, $position = yii\web\View::POS_HEAD );
 $this->title = $lot->title;
 $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
@@ -89,7 +85,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         <li>
                             <a href="#docs">Документы</a>
                         </li>
-                        <?=($lots_bankrupt[0] != null)? '<li><a href="#other-lot">Другие лоты</a></li>': ''?>
+                        <?=($otherLots[0] != null)? '<li><a href="#other-lot">Другие лоты</a></li>': ''?>
                         <li>
                             <a href="#torg">Информация о торге</a>
                         </li>
@@ -133,8 +129,8 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             </div>
                             <div class="mr-10 text-muted">|</div>
                             <div class="mr-10 rating-item rating-inline">
-                                <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="wish-star" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star" data-id="'.$lot->id.'" data-type="'.$type.'"'?>>
-                                    <img src="img/star<?=($wishCheck)? '' : '-o' ?>.svg" alt="">
+                                <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="wish-star" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star" data-id="'.$lot->id.'" data-type="'.$lot->torg->type.'"'?>>
+                                    <img src="img/star<?=($lot->getWishId(Yii::$app->user->id))? '' : '-o' ?>.svg" alt="">
                                 </a>
                             </div>
                         </div>
@@ -531,7 +527,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         
                         <div class="row equal-height cols-1 cols-sm-2 gap-30 mb-25">
             
-                            <?foreach ($lots_bankrupt as $lot_bankrupt) { echo LotBlock::widget(['lot' => $lot_bankrupt]); }?>
+                            <?foreach ($otherLots as $otherLot) { echo LotBlock::widget(['lot' => $otherLot]); }?>
                         
                         </div>
                         

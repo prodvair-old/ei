@@ -5,49 +5,48 @@ use yii\bootstrap\ActiveForm;
 
 use common\models\Query\Bankrupt\LotsBankrupt;
 use common\models\Query\Arrest\LotsArrest;
-use common\models\Query\Zalog\LotsZalog;
+use common\models\Query\Lot\Lots;
 
 use frontend\components\LotBlock;
 
 $btnName = 'Участвовать через агента';
 
+$lot = Lots::findOne($lotId);
+
 switch ($lotType) {
     case 'arrest':
-            $lot = LotsArrest::findOne($lotId);
             $name = 'Арестованное имущество';
         break;
     case 'bankrupt':
-            $lot = LotsBankrupt::findOne($lotId);
             $name = 'Банкротное имущество';
         break;
     case 'zalog':
-            $lot = LotsZalog::findOne($lotId);
-            $name = ($lot->owner->name)? $lot->owner->name : 'Имущество организации';
+            $name = ($lot->torg->owner->title)? $lot->owner->title : 'Имущество организации';
             $btnName = 'Подать заявку';
-            $color4 = $lot->owner->tamplate['color-4'];
-            $color1 = $lot->owner->tamplate['color-1'];
-            $logo = $lot->owner->logo;
+            $color4 = $lot->otorg->wner->tamplate['color-4'];
+            $color1 = $lot->torg->owner->tamplate['color-1'];
+            $logo = $lot->torg->owner->logo;
         break;
 }
 
 
-if ($lot->lotPrice < 500000) {
+if ($lot->price < 500000) {
     $agentPrice = 8000;
-} else if ($lot->lotPrice < 1000000) {
+} else if ($lot->price < 1000000) {
     $agentPrice = 12000;
-} else if ($lot->lotPrice < 2000000) {
+} else if ($lot->price < 2000000) {
     $agentPrice = 15000;
-} else if ($lot->lotPrice < 4000000) {
+} else if ($lot->price < 4000000) {
     $agentPrice = 20000;
-} else if ($lot->lotPrice < 6000000) {
+} else if ($lot->price < 6000000) {
     $agentPrice = 25000;
-} else if ($lot->lotPrice < 8000000) {
+} else if ($lot->price < 8000000) {
     $agentPrice = 30000;
-} else if ($lot->lotPrice < 10000000) {
+} else if ($lot->price < 10000000) {
     $agentPrice = 35000;
-} else if ($lot->lotPrice < 15000000) {
+} else if ($lot->price < 15000000) {
     $agentPrice = 40000;
-} else if ($lot->lotPrice < 30000000) {
+} else if ($lot->price < 30000000) {
     $agentPrice = 50000;
 } else {
     $agentPrice = 60000;
