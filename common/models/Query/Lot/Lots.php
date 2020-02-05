@@ -34,8 +34,22 @@ class Lots extends ActiveRecord
     {
         $items = LotsCategory::find()->all();
         foreach ($items as $value) {
-            if ($value->bankrupt_categorys[$this->category->categoryId]['translit'] !== null) {
-                return 'bankrupt/'.$value->translit_name.'/'.$value->bankrupt_categorys[$this->category->categoryId]['translit'].'/'.$this->id;
+            switch ($this->torg->type) {
+                case 'bankrupt':
+                        if ($value->bankrupt_categorys[$this->category->categoryId]['translit'] !== null) {
+                            return 'bankrupt/'.$value->translit_name.'/'.$value->bankrupt_categorys[$this->category->categoryId]['translit'].'/'.$this->id;
+                        }
+                    break;
+                case 'arrest':
+                        if ($value->arrest_categorys[$this->category->categoryId]['translit'] !== null) {
+                            return 'arrest/'.$value->translit_name.'/'.$value->arrest_categorys[$this->category->categoryId]['translit'].'/'.$this->id;
+                        }
+                    break;
+                case 'zalog':
+                        if ($value->zalog_categorys[$this->category->categoryId]['translit'] !== null) {
+                            return 'zalog/'.$value->translit_name.'/'.$value->zalog_categorys[$this->category->categoryId]['translit'].'/'.$this->id;
+                        }
+                    break;
             }
         }
     }
@@ -78,11 +92,15 @@ class Lots extends ActiveRecord
     public function getArchive()
     {
         $today = new \DateTime();
-        if (strtotime($this->torg->completeDate) <= strtotime($today->format('Y-m-d H:i:s'))) {
-            return true;
-        } else {
+
+        if ($this->torg->endDate === null || $this->torg->completeDate === null ) {
             return false;
+        } else {
+            if (strtotime($this->torg->completeDate) <= strtotime($today->format('Y-m-d H:i:s')) || strtotime($this->torg->endDate) <= strtotime($today->format('Y-m-d H:i:s'))) {
+                return true;
+            }
         }
+        return false;
     }
     public function getViewsCount() 
     {
@@ -133,6 +151,14 @@ class Lots extends ActiveRecord
     public function getPriceHistorys()
     {
         return $this->hasMany(LotPriceHistorys::className(), ['lotId' => 'id'])->alias('priceHistorys'); // История снижения цен лота
+    }
+    public function getThisPriceHistorys()
+    {
+        return $this->hasOne(LotPriceHistorys::className(), ['lotId' => 'id'])->alias('thisPriceHistorys')->onCondition([
+                'and',
+                ['<=', 'thisPriceHistorys.intervalBegin', 'NOW()'],
+                ['>=', 'thisPriceHistorys.intervalEnd', 'NOW()']
+            ]); // действующая История снижения цен лота
     }
     public function getParticipants()
     {

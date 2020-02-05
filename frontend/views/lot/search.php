@@ -172,6 +172,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
               <div class="col-12">
                 <div class="col-inner">
                   <?= $form->field($model, 'type')->dropDownList([
+                    'all' => 'Все типы',
                     'bankrupt' => 'Банкротное имущество',
                     'arrest' => 'Арестованное имущество',
                     'zalog' => 'Имущество организаций',
@@ -180,8 +181,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                     'data-placeholder' => 'Выберите тип лота',
                     'tabindex' => '2',
                     'options' => [
-                      'zalog' => ['disabled' => true, 'title' => 'Скоро'],
-                      $type => ['Selected' => true]
+                      // 'zalog' => ['disabled' => true, 'title' => 'Скоро'],
                     ]
                   ])
                     ->label('Тип лота'); ?>
@@ -202,7 +202,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                 </div>
               </div>
 
-              <div class="col-12">
+              <!-- <div class="col-12">
                 <div class="col-inner">
                   <?= $form->field($model, 'subCategory')->dropDownList(
                     $lotsSubcategory,
@@ -216,7 +216,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                   )
                     ->label('Подкатегория'); ?>
                 </div>
-              </div>
+              </div> -->
 
               <div class="col-12">
                 <div class="col-inner">
@@ -252,8 +252,13 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
             </div>
 
             <div class="box-content">
-              <?= $form->field($model, 'minPrice')->hiddenInput(['class' => 'lot__price-min'])->label(false); ?>
-              <?= $form->field($model, 'maxPrice')->hiddenInput(['class' => 'lot__price-max'])->label(false); ?>
+              <div class="row">
+                <div class="col-6"><?= $form->field($model, 'minPrice')->textInput(['class' => 'lot__price-min form-control', 'placeholder' => 'Цена от'])->label(false); ?></div>
+                <div class="col-6"><?= $form->field($model, 'maxPrice')->textInput(['class' => 'lot__price-max form-control', 'placeholder' => 'Цена до'])->label(false); ?></div>
+              </div>
+              
+              <div class="mb-10"></div>
+
               <input id="price_range" data-min="<?= $price['min'] ?>" data-max="<?= $price['max'] ?>" />
             </div>
 
@@ -276,6 +281,35 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                 ]
               )
                 ->label(false); ?>
+            </div>
+
+          </div>
+
+          <div class="sidebar-box">
+
+            <div class="box-title">
+              <h5>Тип торгов</h5>
+            </div>
+
+            <div class="box-content">
+
+              <div class="custom-control custom-checkbox">
+                <?= $form->field($model, 'tradeType')->checkbox([
+                  'class' => 'custom-control-input',
+                  'value' => '1',
+                  'id' => 'tradeType1',
+                  'template' => '{input}<label class="custom-control-label" for="tradeType1">Публичное предложение</label>'
+                ]) ?>
+              </div>
+              <div class="custom-control custom-checkbox">
+                <?= $form->field($model, 'tradeType')->checkbox([
+                  'class' => 'custom-control-input',
+                  'value' => '2',
+                  'id' => 'tradeType2',
+                  'template' => '{input}<label class="custom-control-label" for="tradeType2">Открытый аукцион</label>'
+                ]) ?>
+              </div>
+
             </div>
 
           </div>
@@ -356,7 +390,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
             </div>
             <div class="sort-box">
               <div class="d-flex align-items-center sort-item">
-                <label class="sort-label d-none d-sm-flex">Найдено лотов: <?= $count - 1 ?></label>
+                <label class="sort-label d-none d-sm-flex">Найдено лотов: <?= $count ?></label>
               </div>
             </div>
           </div>

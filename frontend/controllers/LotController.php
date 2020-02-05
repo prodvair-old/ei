@@ -209,15 +209,51 @@ class LotController extends Controller
             throw new \yii\web\NotFoundHttpException;
         }
 
-        $model->type = ($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog';
-        $modelSort->type = ($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog';
+        $model->type = ($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog' || $type == 'all')? $type : 'zalog';
         
-        switch ($type) {
-            case 'bankrupt':
-                $lotsQuery = LotsBankrupt::find()->joinWith('category');
-                $lotsPrice = LotsBankrupt::find()->joinWith('category');
+        $lotsQuery = Lots::find()->alias('lot')->joinWith(['categorys', 'torg', 'thisPriceHistorys']);
 
-                $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
+        $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
+
+        switch ($type) {
+            case 'all':
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Все виды иммущества`';
+
+                if ($subcategory != null) {
+                    foreach ($items->bankrupt_categorys_translit as $key => $value) {
+                        if ($key == $subcategory) {
+                            $querySubcategory = $value['id'];    
+                            $model->subCategory[0] = $value['id'];    
+                            $titleSubcategory = $value['name'];
+                            $title = $value['name'];
+                            $url = "$type/$category/$subcategory";
+                        }
+                    }
+                    foreach ($items->arrest_categorys_translit as $key => $value) {
+                        if ($key == $subcategory) {
+                            $querySubcategory = $value['id'];    
+                            $model->subCategory[0] = $value['id'];    
+                            $titleSubcategory = $value['name'];
+                            $title = $value['name'];
+                            $url = "$type/$category/$subcategory";
+                        }
+                    }
+                    foreach ($items->zalog_categorys_translit as $key => $value) {
+                        if ($key == $subcategory) {
+                            $querySubcategory = $value['id'];    
+                            $model->subCategory[0] = $value['id'];    
+                            $titleSubcategory = $value['name'];
+                            $title = $value['name'];
+                            $url = "$type/$category/$subcategory";
+                        }
+                    }
+                    if (empty($querySubcategory)) {
+                        Yii::$app->response->statusCode = 404;
+                        throw new \yii\web\NotFoundHttpException;
+                    }
+                }
+                break;
+            case 'bankrupt':
                 $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Банкротное имущество';
 
                 if ($subcategory != null) {
@@ -237,10 +273,6 @@ class LotController extends Controller
                 }
                 break;
             case 'arrest':
-                $lotsQuery = LotsArrest::find()->joinWith('torgs');
-                $lotsPrice = LotsArrest::find()->joinWith('torgs');
-
-                $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
                 $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Арестованное имущество';
 
                 if ($subcategory != null) {
@@ -260,10 +292,6 @@ class LotController extends Controller
                 }
                 break;
             case 'zalog':
-                $lotsQuery = LotsZalog::find()->joinWith('categorys');
-                $lotsPrice = LotsZalog::find()->joinWith('categorys');
-
-                $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
                 $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Имущество организаций';
 
                 if ($subcategory != null) {
@@ -339,13 +367,15 @@ class LotController extends Controller
         // Мета данные <-End 
             
         // Фильтрация лотов Start->
+        $modelSort->load(Yii::$app->request->get());
+        
         $model->load(Yii::$app->request->get());
-        $query = $model->search($lotsQuery, $url, (($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog')? $type : null));
+        $query = $model->search($lotsQuery, $url, (($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog' || $type == 'all')? $type : null), $modelSort->sortBy());
 
         /* http://dev.ei.ru/rosselkhozbank/lot-list */
         $urlArray = explode('/', $url);
 
-        if ($urlArray[0] != $model->type && ($urlArray[0] == 'bankrupt' || $urlArray[0] == 'arrest' || $urlArray[0] == 'zalog')) {
+        if ($urlArray[0] != $model->type && ($urlArray[0] == 'all' || $urlArray[0] == 'bankrupt' || $urlArray[0] == 'arrest' || $urlArray[0] == 'zalog')) {
             $urlArray[0] = $model->type;
             $url = implode('/',$urlArray);
             return $this->redirect([$url,Yii::$app->request->get()]);
@@ -357,38 +387,40 @@ class LotController extends Controller
         $lotsPrice = Clone $query['lotsPrice'];
         $lotsCount = Clone $lotsQuery;
 
-        if (!$price = Yii::$app->cache->get($lot_price_cache.'1')) {
-            switch ($type) {
-                case 'bankrupt':
-                        $price = $lotsPrice->select(['min(lot_startprice)','max(lot_startprice)'])->asArray()->one();
-                    break;
-                case 'arrest':
-                        $price = $lotsPrice->select(['min(lots."lotStartPrice")','max(lots."lotStartPrice")'])->asArray()->one();
-                    break;
-                default:
-                        $price = $lotsPrice->select(['min("startingPrice")','max("startingPrice")'])->asArray()->one();
-                    break;
-            }
-            Yii::$app->cache->set($lot_price_cache, $price, 3600*24);
-        }
-        $count = $lotsCount->count();
+        $price = $lotsPrice->select([
+                'intervalMax' => 'max("thisPriceHistorys".price)', 
+                'max' => 'max("startPrice")',
+                'intervalMin' => 'min("thisPriceHistorys".price)', 
+                'min' => 'min("startPrice")',
+            ])->asArray()->one();
 
-        $modelSort->load(Yii::$app->request->get());
-        $lotsQuery = $modelSort->sortBy($lotsQuery, $type);
+        // switch ($type) {
+        //     case 'bankrupt':
+        //             $price = $lotsPrice->select(['min(lot_startprice)','max(lot_startprice)'])->asArray()->one();
+        //         break;
+        //     case 'arrest':
+        //             $price = $lotsPrice->select(['min(lots."lotStartPrice")','max(lots."lotStartPrice")'])->asArray()->one();
+        //         break;
+        //     default:
+        //             $price = $lotsPrice->select(['min("startingPrice")','max("startingPrice")'])->asArray()->one();
+        //         break;
+        // }
+
+        $count = $lotsCount->count();
 
         $pages = new Pagination(['totalCount' => $count, 'pageSize'=> 10]);
 
+        // var_dump($lotsQuery
+        //     ->offset($pages->offset)
+        //     ->limit($pages->limit)->createCommand()->getRawSql()
+        // );
+        
+        $lots = $lotsQuery->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
 
-        if (!$lots = Yii::$app->cache->get($lot_list_cache.'1')) {
-
-            $lots = $lotsQuery->offset($pages->offset)
-                ->limit($pages->limit)
-                ->all();
-
-            Yii::$app->cache->set($lot_list_cache, $lots, 3600*24);
-        }
         // Фильтрация лотов <-End 
-        // var_dump('Время генерации: ' . ( microtime(true) - $start ) . ' сек.');
+        var_dump('Время генерации: ' . ( microtime(true) - $start ) . ' сек.');
         // Хлебные крошки Start->
         Yii::$app->params['breadcrumbs'][] = [
             'label' => ' '.$titleType,

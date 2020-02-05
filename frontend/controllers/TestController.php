@@ -70,11 +70,12 @@ class TestController extends Controller
      */
     public function actionIndex()
     {
-        $lots = Lots::find()
-            ->select(['description', 'rank' => 'ts_rank(to_tsvector(description), plainto_tsquery(\'Самара\'))'])
-            ->where('to_tsvector(description) @@ plainto_tsquery(\'Самара\')')
-            ->asArray()
-            ->orderBy(`rank`)->limit(100)->all();
+        $lots = Lots::find()->alias('lot')->joinWith('thisPriceHistorys')->select([
+            'intervalMax' => 'max("thisPriceHistorys".price)', 
+            'max' => 'max("startPrice")',
+            'intervalMin' => 'min("thisPriceHistorys".price)', 
+            'min' => 'min("startPrice")',
+        ])->asArray()->one();
 
         var_dump($lots);
     }

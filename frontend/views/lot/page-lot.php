@@ -14,7 +14,7 @@ use frontend\components\ServiceLotFormWidget;
 use frontend\models\ViewPage;
 
 use common\models\Query\WishList;
-use common\models\Query\Bankrupt\LotsBankrupt;
+use common\models\Query\Lot\Lots;
 
 if (!Yii::$app->user->isGuest) {
     $wishCheck = WishList::find()->where(['userId' => Yii::$app->user->id, 'lotId' => $lot->id, 'type' => $type])->one();
@@ -22,7 +22,7 @@ if (!Yii::$app->user->isGuest) {
 
 $view = new ViewPage();
 
-$view->page_type = "lot_$type";
+$view->page_type = "lot_".$lot->torg->type;
 $view->page_id = $lot->id;
 
 $viewCount = $view->check();
@@ -32,7 +32,7 @@ $endDate = strtotime($lot->torg->endDate);
 
 $dateSend = floor(($endDate - $now) / (60 * 60 * 24));
 
-// $lots_bankrupt = LotsBankrupt::find()->where(['bnkr__id'=>$lot->lotBnkrId])->andWhere(['!=', 'lot_id', $lot->id])->all();
+$lots_bankrupt = Lots::find()->joinWith(['torg.bankrupt'])->alias('lot')->where(['bankrupt.id'=>$lot->torg->bankrupt->id])->andWhere(['!=', 'lot.id', $lot->id])->all();
 
 $this->registerJsVar( 'lotType', 'bankrupt', $position = yii\web\View::POS_HEAD );
 $this->title = $lot->title;
@@ -85,7 +85,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         <li>
                             <a href="#info">Информация о лоте</a>
                         </li>
-                        <?=($lot->torg->publisherId == 1)? '<li><a href="#price-history">Этапы снижения цены</a></li>': ''?>
+                        <?=($lot->torg->lotPriceHistorys == 1)? '<li><a href="#price-history">Этапы снижения цены</a></li>': ''?>
                         <li>
                             <a href="#docs">Документы</a>
                         </li>
@@ -161,19 +161,19 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-basic-flag1"></i>
                                 </span>
-                                Старт торгов<br /><strong><?= Yii::$app->formatter->asDate($lot->startDate, 'long')?></strong>
+                                Старт торгов<br /><strong><?= Yii::$app->formatter->asDate($lot->torg->startDate, 'long')?></strong>
                             </li>
                             <li>
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-basic-flag2"></i>
                                 </span>
-                                Окончание торгов<br /><strong><?= ($lot->lotDateEnd !== '0001-01-01 00:00:00 BC' && $lot->endDate !== '0001-01-01 00:00:00')? Yii::$app->formatter->asDate($lot->endDate, 'long') : '(Нет даты)'?></strong>
+                                Окончание торгов<br /><strong><?= Yii::$app->formatter->asDate($lot->torg->endDate, 'long') ?></strong>
                             </li>
                             <li>
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-ecommerce-rublo"></i>
                                 </span>
-                                Сумма задатка<br /><strong><?=($lot->advancestepunit == 'Percent')? Yii::$app->formatter->asCurrency((($lot->lotPrice / 100) * $lot->advance)) : Yii::$app->formatter->asCurrency($lot->advance)?></strong>
+                                Сумма задатка<br /><strong><?=($lot->depositTypeId == 1)? Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->deposit)) : Yii::$app->formatter->asCurrency($lot->deposit)?></strong>
                             </li>
                         </ul>
                         
@@ -265,8 +265,8 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
                                 <h6>Категории лота</h6>
                                 <ul class="ul">
-                                    <?foreach ($lot->LotCategory as $category) { ?>
-                                        <li><?=$category?></li>
+                                    <?foreach ($lot->categorys as $category) { ?>
+                                        <li><?=$category->name?></li>
                                     <? }?>
                                 </ul>
                             </li>
@@ -293,9 +293,9 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
                                 <h6>Должник</h6>
                                 <ul class="ul">
-                                    <li><a href="<?=Url::to(['doljnik/list'])?>/<?=$lot->torg->case->bnkr->id?>" target="_blank"><?=$lot->lotBnkrName?></a></li>
-                                    <li>ИНН: <span class="text-list-name"><?= ($lot->torg->type == 'Person')? $lot->torgy->case->bnkr->person->inn : $lot->torgy->case->bnkr->company->inn;?></span></li>
-                                    <li>Адрес: <span class="text-list-name"><?= ($lot->torg->type == 'Person')? $lot->torgy->case->bnkr->person->address : $lot->torgy->case->bnkr->company->legaladdress;?></span></li>
+                                    <li><a href="<?=Url::to(['doljnik/list'])?>/<?=$lot->torg->bankrupt->oldId?>" target="_blank"><?=$lot->torg->bankrupt->name?></a></li>
+                                    <li>ИНН: <span class="text-list-name"><?= $lot->torg->bankrupt->inn?></span></li>
+                                    <li>Адрес: <span class="text-list-name"><?=  $lot->torg->bankrupt->address?></span></li>
                                 </ul>
                             </li>
                             
@@ -303,9 +303,9 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
                                 <h6>Сведения о деле</h6>
                                 <ul class="ul">
-                                    <li>Номер дела: <span class="text-list-name"><?= $lot->torgy->case->caseid ?></span></li>
-                                    <li>Арбитражный суд: <span class="text-list-name"><a href="<?=Url::to(['sro/list'])?>/<?=$lot->lotSro->id?>" target="_blank"><?= $lot->lotSro->title?></a></span></li>
-                                    <li>Адрес суда: <span class="text-list-name"><?= $lot->lotSro->address?></span></li>
+                                    <li>Номер дела: <span class="text-list-name"><?= $lot->torg->case->number ?></span></li>
+                                    <li>Арбитражный суд: <span class="text-list-name"><a href="<?=Url::to(['sro/list'])?>/<?=$lot->torg->publisher->sro->oldId?>" target="_blank"><?= $lot->torg->publisher->sro->title?></a></span></li>
+                                    <li>Адрес суда: <span class="text-list-name"><?= $lot->torg->publisher->sro->address?></span></li>
                                 </ul>
                             </li>
                             
@@ -313,10 +313,10 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
                                 <h6>Арбитражный управляющий</h6>
                                 <ul class="ul">
-                                    <li><a href="<?=Url::to(['arbitr/list'])?>/<?=$lot->torgy->case->arbitr->id?>" target="_blank"><?=$lot->lotArbtrName?></a></li>
-                                    <li>Рег. номер: <span class="text-list-name"><?= $lot->torgy->case->arbitr->regnum?></span></li>
-                                    <li>ИНН: <span class="text-list-name"><?= $lot->torgy->case->arbitr->person->inn?></span></li>
-                                    <!-- <li>ОГРН: <span class="text-list-name"><?= $lot->torgy->case->arbitr->ogrn?></span></li> -->
+                                    <li><a href="<?=Url::to(['arbitr/list'])?>/<?=$lot->torg->publisher->oldId?>" target="_blank"><?=$lot->torg->publisher->fullName?></a></li>
+                                    <li>Рег. номер: <span class="text-list-name"><?= $lot->torg->publisher->regnum?></span></li>
+                                    <li>ИНН: <span class="text-list-name"><?= $lot->torg->publisher->inn?></span></li>
+                                    <li>ОГРН: <span class="text-list-name"><?= $lot->torg->publisher->info['ogrn']?></span></li>
                                 </ul>
                             </li>
                             
@@ -485,12 +485,10 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         <h4 class="heading-title">Документы</h4>
                         <ul class="list-icon-absolute what-included-list mb-30 long-text">
 
-                            <? foreach ($lot->torgs->case->files as $doc) { ?>
+                            <? foreach ($lot->torg->case->documents as $document) { ?>
 
                                 <?
-                                    $fileType = strtolower(preg_replace('/^.*\.(.*)$/s', '$1', $doc->filename));
-
-                                    switch ($fileType) {
+                                    switch ($document->format) {
                                         case 'doc':
                                             $icon = '<i class="far fa-file-word"></i>';
                                             break;
@@ -516,7 +514,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 ?>
                                 <li>
                                     <span class="icon-font"><?=$icon?></span> 
-                                    <a href="<?=$doc->fileurl?>" target="_blank"><?=$doc->filename?></a>
+                                    <a href="<?=$document->url?>" target="_blank"><?=$document->name?></a>
                                 </li>
                             
                             <? } ?>
@@ -545,14 +543,14 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
                     <div id="torg" class="detail-header mb-30">
                         <h4 class="mt-30">Информация о торге</h5>
-                        <p class="long-text"><?=$lot->torgs->description?></p>
+                        <p class="long-text"><?=$lot->torg->description?></p>
                         <a href="#torg" class="open-text-js">Подробнее</a>
                         <div class="mb-50"></div>
                     </div>
 
                     <div id="roles" class="detail-header mb-30">
                         <h4 class="mt-30">Правила подачи заявок</h5>
-                        <p class="long-text"><?=$lot->torgs->info['rules']?></p>
+                        <p class="long-text"><?=$lot->torg->info['rules']?></p>
                         <a href="#roles" class="open-text-js">Подробнее</a>
                     </div>
 
@@ -717,5 +715,4 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
 <?php
 $this->registerJsFile( 'js/custom-multiply-sticky.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-sticky' );
-$this->registerJsFile( 'js/custom-core.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-core' );
-?>
+$this->registerJsFile( 'js/custom-core.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-core' );?>
