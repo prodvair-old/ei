@@ -369,18 +369,6 @@ $(document).ready(function () {
     let buttons;
     let position;
 
-    $(this).on('mousemove', function (e) {
-      const cursor = e.pageX
-      if (!position) position = cursor
-      if (cursor < position && position - cursor > stepLength / count) {
-        selectedImage(valide(activeEl - 1));
-        position = cursor;
-      } else if (cursor - position && cursor - position > stepLength / count) {
-        selectedImage(valide(activeEl + 1));
-        position = cursor;
-      }
-    });
-
     function valide(value) {
       if (value < 0) {
         return count - 1;
@@ -414,6 +402,9 @@ $(document).ready(function () {
         selectedImage(i);
       });
 
+      $(buttons[i]).on('mousemove', function (e) {
+        selectedImage(i);
+      });
     });
   });
 
