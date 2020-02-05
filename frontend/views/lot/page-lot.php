@@ -151,7 +151,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                     <i class="linea-icon-basic-chronometer"></i>
                                 </span>
                                 До подачи заявки<br /> 
-                                <strong><?=($intervalBegin > 0)? NumberWords::widget(['number' => $intervalBegin, 'words' => ['день', 'дня', 'дней']]) : 'Прошло'?></strong>
+                                <strong><?=($dateSend > 0)? NumberWords::widget(['number' => $dateSend, 'words' => ['день', 'дня', 'дней']]) : 'Прошло'?></strong>
                             </li>
                             <li>
                                 <span class="icon-font d-block">

@@ -9,7 +9,7 @@ use frontend\components\ProfileMenu;
 use common\models\Query\LotsCategory;
 
 $name = (\Yii::$app->user->identity->info['firstname'] || \Yii::$app->user->identity->info['lastname'])? \Yii::$app->user->identity->info['firstname'].' '.\Yii::$app->user->identity->info['lastname'] : \Yii::$app->user->identity->info['contacts']['emails'][0];
-$this->title = "Редактиовать лот – $name";
+$this->title = "Редактировать лот – $name";
 $this->params['breadcrumbs'][] = [
     'label' => 'Профиль',
     'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
