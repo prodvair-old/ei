@@ -81,7 +81,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         <li>
                             <a href="#info">Информация о лоте</a>
                         </li>
-                        <?=($lot->torg->publisherId == 1)? '<li><a href="#price-history">Этапы снижения цены</a></li>': ''?>
+                        <?=($lot->torg->lotPriceHistorys == 1)? '<li><a href="#price-history">Этапы снижения цены</a></li>': ''?>
                         <li>
                             <a href="#docs">Документы</a>
                         </li>
@@ -711,5 +711,4 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
 <?php
 $this->registerJsFile( 'js/custom-multiply-sticky.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-sticky' );
-$this->registerJsFile( 'js/custom-core.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-core' );
-?>
+$this->registerJsFile( 'js/custom-core.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-core' );?>
