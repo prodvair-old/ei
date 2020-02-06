@@ -1,6 +1,7 @@
 function uploadLotImage(lotId) {
   var formData = new FormData(document.getElementById('lot-' + lotId + '-zalog-upload-images'));
 
+  
   $.ajax({
     type: 'POST',
     contentType: false,
@@ -15,6 +16,7 @@ function uploadLotImage(lotId) {
       data.src.map(function (src) {
         imagesTag = imagesTag + `<img class="profile-pic d-block" src="` + src.min + `" alt="" />`;
       });
+
 
       $('.lot-' + lotId + '-upload-image-tag').html(imagesTag);
       $('.lot-' + lotId + '-zalog-image-info').html('Успешно загружено');
@@ -369,18 +371,6 @@ $(document).ready(function () {
     let buttons;
     let position;
 
-    $(this).on('mousemove', function (e) {
-      const cursor = e.pageX
-      if (!position) position = cursor
-      if (cursor < position && position - cursor > stepLength / count) {
-        selectedImage(valide(activeEl - 1));
-        position = cursor;
-      } else if (cursor - position && cursor - position > stepLength / count) {
-        selectedImage(valide(activeEl + 1));
-        position = cursor;
-      }
-    });
-
     function valide(value) {
       if (value < 0) {
         return count - 1;
@@ -414,6 +404,9 @@ $(document).ready(function () {
         selectedImage(i);
       });
 
+      $(buttons[i]).on('mousemove', function (e) {
+        selectedImage(i);
+      });
     });
   });
 

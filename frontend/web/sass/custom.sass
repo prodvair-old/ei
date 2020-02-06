@@ -139,6 +139,9 @@
 
 .sidebar
   &-desktop
+    position: sticky
+    top: 3rem
+    display: none
     @media (max-width: 991px)
       display: none
   &-mobile
@@ -704,6 +707,7 @@ body
   &:hover
     .image-galery__control
       opacity: 1
+     
   // img:nth-child(2n)
   //   transform: rotate(180deg)
   &__control
@@ -715,15 +719,26 @@ body
     padding: .5rem 
     opacity: 1
     z-index: 10
-    
+    height: 100%
 
     &__item
-      height: 5px
-      background: $accent
+      position: relative
+      height: 100%
+      // background: #ddd
       width: 100%
       margin: 0 .25rem
       border-radius: 3px
       opacity: .3
+      &:after
+        bottom: 0
+        left: 0
+        position: absolute
+        display: block
+        content: ""
+        height: 5px
+        background: $accent
+        width: 100%
+        border-radius: 3px
       &.active 
         opacity: 1
 
@@ -769,6 +784,7 @@ body
 
 .load-image-lot
   position: relative
+
   a
     display: none!important
     position: absolute

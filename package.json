@@ -4,7 +4,8 @@
 	"description": "Ei.ru",
 	"main": "index.js",
 	"scripts": {
-		"dev": "gulp"
+		"dev": "gulp",
+		"max": "gulp max"
 	},
 	"author": "Prodvair in zh-ar",
 	"license": "ISC",

@@ -36,6 +36,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
 ?>
 
+
 <section class="page-wrapper page-detail">
         
     <div class="page-title bg-light">
@@ -64,17 +65,16 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
         </div>
         
     </div>
+    <div class="fullwidth-horizon- none--hide">
     
-    <div class="fullwidth-horizon-sticky none-sticky-hide">
-    
-        <div class="fullwidth-horizon-sticky-inner">
+        <div class="fullwidth-horizon--inner">
         
             <div class="container">
            
                 
-                <div class="fullwidth-horizon-sticky-item clearfix">
+                <div class="fullwidth-horizon--item clearfix">
                         
-                    <ul id="horizon-sticky-nav" class="horizon-sticky-nav clearfix">
+                    <ul id="horizon--nav" class="horizon--nav clearfix">
                         <li>
                             <a href="#desc">Описание</a>
                         </li>
@@ -186,7 +186,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                     
                     <!-- <div class="mb-50"></div>
                     
-                    <div id="detail-content-sticky-nav-02" class="fullwidth-horizon-sticky-section">
+                    <div id="detail-content--nav-02" class="fullwidth-horizon--section">
                         
                         <h4 class="heading-title">Itinerary</h4>
                         
@@ -251,233 +251,11 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         
                     </div> -->
                     
-                    <div id="info" class="fullwidth-horizon-sticky-section">
                     
-                        <h4 class="heading-title">Информация о лоте</h4>
-                        
-                        <ul class="list-icon-absolute what-included-list mb-30">
-
-                            <li>
-                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
-                                <h6>Категории лота</h6>
-                                <ul class="ul">
-                                    <?foreach ($lot->categorys as $category) { ?>
-                                        <li><?=$category->name?></li>
-                                    <? }?>
-                                </ul>
-                            </li>
-                            
-                            <? if ($lot->info['vin']) { ?>
-                                <li>
-                                    <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
-                                    <h6>VIN номер</h6>
-                                    <p><?= $lot->info['vin'] ?></p>
-                                    <a href="https://avtocod.ru/proverkaavto/<?=$lot->info['vin']?>?rd=VIN&a_aid=zhukoffed"
-                                        class="btn btn-success btn-sm mt-2" target="_blank" rel="nofollow">Проверить Автомобиль</a>
-                                </li>    
-                            <? } ?>
-                            
-                            <? if ($lot->info['cadastreNumber']) { ?>
-                                <li>
-                                    <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
-                                    <h6>Кадастровый номер</h6>
-                                    <p><?= $lot->info['cadastreNumber'] ?></p>
-                                </li>    
-                            <? } ?>
-
-                            <li>
-                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
-                                <h6>Должник</h6>
-                                <ul class="ul">
-                                    <li><a href="<?=Url::to(['doljnik/list'])?>/<?=$lot->torg->bankrupt->oldId?>" target="_blank"><?=$lot->torg->bankrupt->name?></a></li>
-                                    <li>ИНН: <span class="text-list-name"><?= $lot->torg->bankrupt->inn?></span></li>
-                                    <li>Адрес: <span class="text-list-name"><?=  $lot->torg->bankrupt->address?></span></li>
-                                </ul>
-                            </li>
-                            
-                            <li>
-                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
-                                <h6>Сведения о деле</h6>
-                                <ul class="ul">
-                                    <li>Номер дела: <span class="text-list-name"><?= $lot->torg->case->number ?></span></li>
-                                    <li>Арбитражный суд: <span class="text-list-name"><a href="<?=Url::to(['sro/list'])?>/<?=$lot->torg->publisher->sro->oldId?>" target="_blank"><?= $lot->torg->publisher->sro->title?></a></span></li>
-                                    <li>Адрес суда: <span class="text-list-name"><?= $lot->torg->publisher->sro->address?></span></li>
-                                </ul>
-                            </li>
-                            
-                            <li>
-                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
-                                <h6>Арбитражный управляющий</h6>
-                                <ul class="ul">
-                                    <li><a href="<?=Url::to(['arbitr/list'])?>/<?=$lot->torg->publisher->oldId?>" target="_blank"><?=$lot->torg->publisher->fullName?></a></li>
-                                    <li>Рег. номер: <span class="text-list-name"><?= $lot->torg->publisher->regnum?></span></li>
-                                    <li>ИНН: <span class="text-list-name"><?= $lot->torg->publisher->inn?></span></li>
-                                    <li>ОГРН: <span class="text-list-name"><?= $lot->torg->publisher->info['ogrn']?></span></li>
-                                </ul>
-                            </li>
-                            
-                        </ul>
-                        
-                        <div class="mb-50"></div>
-                        
-                    </div>
-                    
-                    <?php if($lot->torg->tradeType == 'PublicOffer') { ?>
-
-                        <div id="price-history" class="fullwidth-horizon-sticky-section">
-
-                            <h4 class="heading-title">Этапы снижения цены</h4>
-                            
-                            <div class="mb-20"></div>
-                            
-                            <div class="item-text-long-wrapper">
-                            
-                                <div class="item-heading text-muted">
-                                
-                                    <div class="row d-none d-sm-flex">
-                                    
-                                        <div class="col-12 col-sm-6">
-                                        
-                                            <div class="col-inner">
-                                            
-                                                <div class="row gap-10">
-                                                
-                                                    <div class="col-5">
-                                                        Начало периода
-                                                    </div>
-                                                    
-                                                    <div class="col-2">
-                                                    
-                                                    </div>
-                                                    
-                                                    <div class="col-5">
-                                                        Окончание периода
-                                                    </div>
-                                                    
-                                                </div>
-                                            
-                                            </div>
-                                        
-                                        </div>
-                                        
-                                        <div class="col-12 col-sm-6">
-                                        
-                                            <div class="col-inner">
-                                            
-                                                <div class="row gap-10">
-                                                
-                                                    <div class="col-6 text-center">
-                                                        Текущая цена, руб.
-                                                    </div>
-                                                    
-                                                    <div class="col-6 text-right">
-                                                        Размер задатка, руб.
-                                                    </div>
-                                                    
-                                                </div>
-                                                
-                                            </div>
-                                            
-                                        </div>
-                                        
-                                        
-                                    </div>
-                                
-                                </div>
-                                
-                                <?php 
-                                    if ($lot->offer != null) { 
-                                        foreach ($lot->offer as $key => $value) { 
-                                        if ($value->ofrRdnLotNumber == $lot->lotid) {
-                                            $date = Yii::$app->formatter->asDatetime(new \DateTime(), "php:Y-m-d H:i:s");
-                                ?>
-                                    <div class="item-text-long <?=(($key == 0 || $value->ofrRdnDateTimeBeginInterval <= $date) && $value->ofrRdnDateTimeEndInterval >= $date)? '' : 'sold-out' ?>">
-                                    
-                                        <div class="row align-items-center">
-                                        
-                                            <div class="col-12 col-sm-6">
-                                            
-                                                <div class="col-inner mb-10 mb-sm-0">
-                                                
-                                                    <div class="row gap-10 align-items-center">
-                                                    
-                                                        <div class="col-6">
-                                                            <span class="font-sm">Начало</span>
-                                                            <strong class="d-block"><?=Yii::$app->formatter->asDate($value->ofrRdnDateTimeBeginInterval, 'long')?></strong>
-                                                        </div>
-                                                        
-                                                        <!-- <div class="col-2">
-                                                            <span class="day-count mt-3">3<br/>days</span>
-                                                        </div> -->
-                                                        
-                                                        <div class="col-6 text-right text-sm-left">
-                                                            <span class="font-sm">Конец</span>
-                                                            <strong class="d-block"><?=Yii::$app->formatter->asDate($value->ofrRdnDateTimeEndInterval, 'long')?></strong>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                
-                                                </div>
-                                            
-                                            </div>
-                                            
-                                            <div class="col-12 col-sm-6">
-                                            
-                                                <div class="col-inner">
-                                                
-                                                    <div class="row gap-10 align-items-center">
-                                                    
-                                                        <div class="col-6 text-left text-sm-center">
-                                                            <span class="font-sm">Цена </span>
-                                                            <strong class="d-block"><?=Yii::$app->formatter->asCurrency($value->ofrRdnPriceInInterval)?></strong>
-                                                        </div>
-                                                        
-                                                        <div class="col-6 text-left  text-sm-right">
-                                                            <span class="font-sm">Задаток</span>
-                                                            <strong class="d-block"><?=($lot->advancestepunit == 'Percent')? Yii::$app->formatter->asCurrency((($value->ofrRdnPriceInInterval / 100) * $lot->advance)) : Yii::$app->formatter->asCurrency($lot->advance)?></strong>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                    
-                                                </div>
-                                                
-                                            </div>
-                                            
-
-                                            
-                                            <!-- <div class="col-4 col-sm-2">
-                                                <a href="#" class="btn btn-primary btn-block btn-sm mt-3">Купить</a>
-                                            </div> -->
-                                            
-                                        </div>
-                                    
-                                    </div>
-                                <? } } }  else { ?>
-                                    <div class="item-text-long <?=(($key == 0 || $value->ofrRdnDateTimeBeginInterval <= $date) && $value->ofrRdnDateTimeEndInterval >= $date)? '' : 'sold-out' ?>">
-                                    
-                                        <div class="row align-items-center">
-                                        
-                                            <div class="col-7 col-sm-9">
-                                                <strong class="text-primary">Этапы снижения цены в данной момент находятся в обработке</strong>
-                                            </div>
-
-                                            <div class="col-5 col-sm-3">
-                                                <a href="#" class="btn btn-primary btn-block btn-sm mt-3">Задать вопрос</a>
-                                            </div>
-                                        </div>
-                                    
-                                    </div>
-                                <? } ?>
-                            </div>
-
-                            <div class="mb-50"></div>
-                            
-                        </div>
-
-                    <? } ?>
+           
 
                     <?//=Darwin::widget()?>
-                    <div id="docs" class="fullwidth-horizon-sticky-section">
+                    <div id="docs" class="fullwidth-horizon--section">
                         <h4 class="heading-title">Документы</h4>
                         <ul class="list-icon-absolute what-included-list mb-30 long-text">
 
@@ -521,7 +299,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                     </div>
 
                     <? if ($lots_bankrupt[0] != null) { ?>
-                    <div id="other-lot" class="fullwidth-horizon-sticky-section">
+                    <div id="other-lot" class="fullwidth-horizon--section">
 
                         <h4 class="heading-title">Другие лоты должника</h4>
                         
@@ -550,7 +328,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         <a href="#roles" class="open-text-js">Подробнее</a>
                     </div>
 
-                    <!-- <div id="faq" class="fullwidth-horizon-sticky-section">
+                    <!-- <div id="faq" class="fullwidth-horizon--section">
                     
                         <h4 class="heading-title">FAQ</h4>
                         
@@ -691,7 +469,6 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 </section>
 
 
-
 <!-- start lot form modal -->
 <div class="modal fade modal-with-tabs form-login-modal" id="lotFormTabInModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -710,5 +487,5 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 <!-- end lot form modal -->
 
 <?php
-$this->registerJsFile( 'js/custom-multiply-sticky.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-sticky' );
+$this->registerJsFile( 'js/custom-multiply-.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-' );
 $this->registerJsFile( 'js/custom-core.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-core' );?>
