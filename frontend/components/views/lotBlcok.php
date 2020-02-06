@@ -13,11 +13,14 @@ try {
 }
 
 if ($lot->torg->typeId == 1) {
-    $lotType = 'Банкртокое иммущество';
+    $lotType = 'Банкротное имущество';
+    $lotTypeClass = 'lot__bankrupt';
 } else if ($lot->torg->typeId == 2){
-    $lotType = 'Арестованное иммущество';
+    $lotType = 'Арестованное имущество';
+    $lotTypeClass = 'lot__arest';
 } else if ($lot->torg->typeId == 3){
-    $lotType = 'Иммущество организации';
+    $lotType = 'Имущество организации';
+    $lotTypeClass = 'lot__zalog';
     $lotOrganizatioun = $lot->torg->owner->title;
 }
 
@@ -28,7 +31,7 @@ if ($lot->torg->typeId == 1) {
 
         <a href="<?=$lot->url?>" target="_blank">
 
-            <?=($type == 'long')? '<div class="d-flex flex-column flex-sm-row align-items-xl-center">' : ''?>
+            <?=($type == 'long')? '<div class="d-flex flex-column flex-sm-row">' : ''?>
         
                 <?=($type == 'long')? '<div>' : ''?>
                     <div class="image image-galery">
@@ -81,7 +84,7 @@ if ($lot->torg->typeId == 1) {
                             </li>
                         </ul>
                         <hr>
-                        <p class="mt-3">Цена: <span class="h6 line-1 <?=$priceClass?> font16" <?=($color)? 'style="color: '.$color.'!important"': ''?>><?= Yii::$app->formatter->asCurrency($lot->price)?></span> <span class="text-muted mr-5"><?= ($lot->oldPrice)? Yii::$app->formatter->asCurrency($lot->oldPrice) : '' ?></span></p>
+                        <p class="mt-3"><span class="h6 line-1 <?=$priceClass?> font16" <?=($color)? 'style="color: '.$color.'!important"': ''?>><?= Yii::$app->formatter->asCurrency($lot->price)?></span> <span class="text-muted mr-5"><?= ($lot->oldPrice)? Yii::$app->formatter->asCurrency($lot->oldPrice) : '' ?></span></p>
                     </figcaption>
                 <?=($type == 'long')? '</div>' : ''?>
                 
