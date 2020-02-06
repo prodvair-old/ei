@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = [
             
             <div class="col-12 col-lg-3">
                 
-                <aside class="sticky-kit sidebar-wrapper profile-sidebar">
+                <aside class="-kit sidebar-wrapper profile-sidebar">
 
                     <div class="bashboard-nav-box">
                     

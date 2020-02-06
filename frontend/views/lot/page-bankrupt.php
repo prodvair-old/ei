@@ -69,16 +69,16 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
         
     </div>
     
-    <div class="fullwidth-horizon-sticky none-sticky-hide">
+    <div class="fullwidth-horizon- none--hide">
     
-        <div class="fullwidth-horizon-sticky-inner">
+        <div class="fullwidth-horizon--inner">
         
             <div class="container">
            
                 
-                <div class="fullwidth-horizon-sticky-item clearfix">
+                <div class="fullwidth-horizon--item clearfix">
                         
-                    <ul id="horizon-sticky-nav" class="horizon-sticky-nav clearfix">
+                    <ul id="horizon--nav" class="horizon--nav clearfix">
                         <li>
                             <a href="#desc">Описание</a>
                         </li>
@@ -190,7 +190,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                     
                     <!-- <div class="mb-50"></div>
                     
-                    <div id="detail-content-sticky-nav-02" class="fullwidth-horizon-sticky-section">
+                    <div id="detail-content--nav-02" class="fullwidth-horizon--section">
                         
                         <h4 class="heading-title">Itinerary</h4>
                         
@@ -255,7 +255,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         
                     </div> -->
                     
-                    <div id="info" class="fullwidth-horizon-sticky-section">
+                    <div id="info" class="fullwidth-horizon--section">
                     
                         <h4 class="heading-title">Информация о лоте</h4>
                         
@@ -328,7 +328,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                     
                     <?php if($lot->torgy->tradetype == 'PublicOffer') { ?>
 
-                        <div id="price-history" class="fullwidth-horizon-sticky-section">
+                        <div id="price-history" class="fullwidth-horizon--section">
 
                             <h4 class="heading-title">Этапы снижения цены</h4>
                             
@@ -481,7 +481,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                     <? } ?>
 
                     <?//=Darwin::widget()?>
-                    <div id="docs" class="fullwidth-horizon-sticky-section">
+                    <div id="docs" class="fullwidth-horizon--section">
                         <h4 class="heading-title">Документы</h4>
                         <ul class="list-icon-absolute what-included-list mb-30 long-text">
 
@@ -527,7 +527,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                     </div>
 
                     <? if ($lots_bankrupt[0] != null) { ?>
-                    <div id="other-lot" class="fullwidth-horizon-sticky-section">
+                    <div id="other-lot" class="fullwidth-horizon--section">
 
                         <h4 class="heading-title">Другие лоты должника</h4>
                         
@@ -556,7 +556,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         <a href="#roles" class="open-text-js">Подробнее</a>
                     </div>
 
-                    <!-- <div id="faq" class="fullwidth-horizon-sticky-section">
+                    <!-- <div id="faq" class="fullwidth-horizon--section">
                     
                         <h4 class="heading-title">FAQ</h4>
                         
@@ -716,6 +716,6 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 <!-- end lot form modal -->
 
 <?php
-$this->registerJsFile( 'js/custom-multiply-sticky.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-sticky' );
+$this->registerJsFile( 'js/custom-multiply-.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-' );
 $this->registerJsFile( 'js/custom-core.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-core' );
 ?>

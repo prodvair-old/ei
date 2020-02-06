@@ -1,6 +1,7 @@
 function uploadLotImage(lotId) {
   var formData = new FormData(document.getElementById('lot-' + lotId + '-zalog-upload-images'));
 
+  
   $.ajax({
     type: 'POST',
     contentType: false,
@@ -15,6 +16,7 @@ function uploadLotImage(lotId) {
       data.src.map(function (src) {
         imagesTag = imagesTag + `<img class="profile-pic d-block" src="` + src.min + `" alt="" />`;
       });
+
 
       $('.lot-' + lotId + '-upload-image-tag').html(imagesTag);
       $('.lot-' + lotId + '-zalog-image-info').html('Успешно загружено');

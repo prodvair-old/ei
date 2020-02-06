@@ -8,7 +8,7 @@ use frontend\components\NumberWords;
 //   }
 // }
 ?>
-<aside class="sticky-kit-02 sidebar-wrapper no-border mt-20 mt-lg-0">
+<aside class=" sidebar-wrapper no-border mt-20 mt-lg-0">
 
     <div class="booking-box">
     
