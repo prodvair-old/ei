@@ -69,7 +69,7 @@ if ($type == 'bankrupt') {
     
 </div>
 
-<section class="pt-70 pb-0">
+<section class="pt-0 pb-0">
 
     <div class="container">
 
