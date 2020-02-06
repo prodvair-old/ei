@@ -51,7 +51,7 @@ if ($lot->torg->typeId == 1) {
                             <?= ($lotOrganizatioun)? "<li>$lotOrganizatioun</li>" : '' ?>
                         </ul>
                         <hr>
-                        <h3 class="lot-block__title <?=(!empty($lot->archive))? ($lot->archive)? 'text-muted' : '' : ''?>"><?= $lot->title?> <?=(!empty($lot->archive))? ($lot->archive)? '<span class="text-primary">(Архив)</span>' : '' : ''?></h3>
+                        <h3 class="lot-block__title <?=(!empty($lot->archive))? ($lot->archive)? 'text-muted' : '' : ''?>"><?= $lot->title = \yii\helpers\StringHelper::truncate($model['title'], 50, '...');?> <?=(!empty($lot->archive))? ($lot->archive)? '<span class="text-primary">(Архив)</span>' : '' : ''?></h3>
                         <hr>
                         <ul class="item-meta lot-block__info">
                             <li><?= Yii::$app->formatter->asDate($lot->torg->publishedDate, 'long')?></li>
