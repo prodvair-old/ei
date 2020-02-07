@@ -103,14 +103,14 @@ AppAsset::register($this);
 	<![endif]-->
 </head>
 
-<body class="with-waypoint-sticky">
+<body class="with-waypoint-">
   <?php $this->beginBody() ?>
 
   <!-- start Body Inner -->
   <div class="body-inner">
 
     <!-- start Header -->
-    <header id="header-waypoint-sticky" class="header-main header-mobile-menu with-absolute-navbar">
+    <header id="header-waypoint-" class="header-main header-mobile-menu with-absolute-navbar">
 
       <div class="header-outer clearfix">
 

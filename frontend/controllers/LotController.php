@@ -422,6 +422,7 @@ class LotController extends Controller
         // Фильтрация лотов <-End 
         // var_dump('Время генерации: ' . ( microtime(true) - $start ) . ' сек.');
         // Хлебные крошки Start->
+
         Yii::$app->params['breadcrumbs'][] = [
             'label' => ' '.$titleType,
             'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',

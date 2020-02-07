@@ -47,7 +47,7 @@ if ($lot->torg->typeId == 1) {
                 <?=($type == 'long')? '<div>' : ''?>
                     <figcaption class="content">
                         <ul class="item-meta lot-block__info">
-                            <li><?= $lotType ?></li>
+                            <span class="<?= $lotTypeClass ?>"><li><?= $lotType ?></li></span>
                             <?= ($lotOrganizatioun)? "<li>$lotOrganizatioun</li>" : '' ?>
                         </ul>
                         <hr>

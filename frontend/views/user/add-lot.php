@@ -60,7 +60,7 @@ $this->registerJsVar('lotType', 'zalog', $position = yii\web\View::POS_HEAD);
             
             <div class="col-12 col-lg-3">
                 
-                <aside class="sticky-kit sidebar-wrapper">
+                <aside class="-kit sidebar-wrapper">
 
                     <div class="bashboard-nav-box">
                     
