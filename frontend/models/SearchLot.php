@@ -57,6 +57,7 @@ class SearchLot extends Model
         $checkUrl = false;
 
         $where = ['and'];
+        $where[] = ['published' => true];
         $having = '';
         $sort = '';
 

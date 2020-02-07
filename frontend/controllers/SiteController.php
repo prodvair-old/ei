@@ -88,9 +88,9 @@ class SiteController extends Controller
         Yii::$app->params['title'] = $metaData->mdTitle;
         Yii::$app->params['h1'] = $metaData->mdH1;
 
-        $lotsBankruptCount = Lots::find()->joinWith('torg')->where(['and', ['torg.typeId' => 1, 'published' => true], ['>=', 'torg.completeDate', 'NOW()']])->count();
-        $lotsArrestCount = Lots::find()->joinWith('torg')->where(['and', ['torg.typeId' => 2, 'published' => true], ['>=', 'torg.endDate', 'NOW()']])->count();
-        $lotsZalogCount = Lots::find()->joinWith('torg')->where(['and', ['torg.typeId' => 3, 'published' => true], ['>=', 'torg.completeDate', 'NOW()']])->count();
+        $lotsBankruptCount = Lots::find()->joinWith('torg')->where(['and', ['torg.typeId' => 1, 'published' => true], '(torg."endDate" >= NOW() OR torg."endDate" IS NULL) OR (torg."completeDate" >= NOW() OR torg."completeDate" IS NULL)'])->count();
+        $lotsArrestCount = Lots::find()->joinWith('torg')->where(['and', ['torg.typeId' => 2, 'published' => true], '(torg."endDate" >= NOW() OR torg."endDate" IS NULL) OR (torg."completeDate" >= NOW() OR torg."completeDate" IS NULL)'])->count();
+        $lotsZalogCount = Lots::find()->joinWith('torg')->where(['and', ['torg.typeId' => 3, 'published' => true], '(torg."endDate" >= NOW() OR torg."endDate" IS NULL) OR (torg."completeDate" >= NOW() OR torg."completeDate" IS NULL)'])->count();
 
         return $this->render('index', [
             'lotsBankruptCount' => $lotsBankruptCount,
