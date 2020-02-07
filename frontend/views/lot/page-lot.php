@@ -135,10 +135,10 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             </div>
                         </div>
                         
-                        <?if ($lot->images) { ?>
+                        <?if ($lot->images[0]) { ?>
                             <div class="fotorama mt-20 mb-40" data-allowfullscreen="true" data-nav="thumbs" data-arrows="always" data-click="true">
-                                <? foreach ($lot->images['max'] as $image) { ?>
-                                    <img href="<?=$image?>" alt="Images" />
+                                <? foreach ($lot->images as $image) { ?>
+                                    <img href="<?=$image['max']?>" alt="Images" />
                                 <? } ?>
                             </div>
                         <? } ?>
@@ -252,7 +252,6 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                     </div> -->
                     
                     
-<<<<<<< HEAD
                     <?php if($lot->torg->tradeTypeId == 1) { ?>
 
                         <div id="price-history" class="fullwidth-horizon-sticky-section">
@@ -405,9 +404,6 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         </div>
 
                     <? } ?>
-=======
-           
->>>>>>> 6beb81d9392e696b14a99b0bec736bd0e5fde112
 
                     <?//=Darwin::widget()?>
                     <div id="docs" class="fullwidth-horizon--section">

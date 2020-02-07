@@ -13,7 +13,7 @@ use yii\helpers\Url;
       <ul <?= (strpos($page, 'lot') !== false) ? 'class="dropdown-list open" ' : 'class="dropdown-list"' ?>>
         <li <?= ($page == 'lots') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/lots']) ?>">Все лоты</a></li>
         <li <?= ($page == 'importlots') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/import-lots']) ?>">Импортировать лоты</a></li>
-        <li <?= ($page == 'addlot') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/add-lot']) ?>">Добавить лот</a></li>
+        <!-- <li <?= ($page == 'addlot') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/add-lot']) ?>">Добавить лот</a></li> -->
       </ul>
 
     <? } ?>

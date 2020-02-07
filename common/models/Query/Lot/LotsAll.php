@@ -15,7 +15,7 @@ use common\models\Query\Lot\Participants;
 use common\models\Query\Lot\Banks;
 use common\models\Query\Lot\Torgs;
 
-class Lots extends ActiveRecord
+class LotsAll extends ActiveRecord
 {
     public $whishCount;
     public $rank;
@@ -52,7 +52,6 @@ class Lots extends ActiveRecord
                     break;
             }
         }
-        return false;
     }
     public function getPrice() 
     {
@@ -112,14 +111,6 @@ class Lots extends ActiveRecord
             }
         }
         return false;
-    }
-
-    // Поиск, главные значения
-    public static function find()
-    {
-        return parent::find()->onCondition([
-            'published' => true
-        ]);
     }
 
     // Связь с таблицей статистики

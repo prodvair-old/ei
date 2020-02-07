@@ -73,7 +73,7 @@ if ($lot->torg->typeId == 1) {
                         <hr>
                         <ul class="item-meta lot-block__info">
                             <li>
-                                Организация: <span class="<?=($lot->archive)? 'text-muted' : '' ?>"> <?= $lot->owner->name?></span>
+                                Организация: <span class="<?=($lot->archive)? 'text-muted' : '' ?>"> <?= $lot->torg->owner->title?></span>
                             </li>
                         </ul>
                         <? } ?>

@@ -4,8 +4,8 @@ namespace frontend\models;
 use Yii;
 use yii\base\Model;
 
-use common\models\Query\Zalog\lotCategorys;
 use common\models\Query\LotsCategory;
+use common\models\Query\Lot\LotCategorys;
 
 
 class ZalogLotCategorySet extends Model
@@ -33,7 +33,7 @@ class ZalogLotCategorySet extends Model
     public function setCategory()
     {
         if ($this->validate()) { 
-            foreach (lotCategorys::find()->where(['lotId'=>$this->lotId])->all() as $lotCategory) {
+            foreach (LotCategorys::find()->where(['lotId'=>$this->lotId])->all() as $lotCategory) {
                 $lotCategory->delete();
             }
 
@@ -43,12 +43,12 @@ class ZalogLotCategorySet extends Model
                 foreach ($this->subCategorys as $id) {
                     if ($key == $id) {
 
-                        $lotCategorys = new lotCategorys();
+                        $lotCategorys = new LotCategorys();
 
-                        $lotCategorys->lotId                = $this->lotId;
-                        $lotCategorys->categoryId           = $key;
-                        $lotCategorys->categoryName         = $value['name'];
-                        $lotCategorys->categoryTranslitName = $value['translit'];
+                        $lotCategorys->lotId         = $this->lotId;
+                        $lotCategorys->categoryId    = $key;
+                        $lotCategorys->name          = $value['name'];
+                        $lotCategorys->nameTranslit  = $value['translit'];
 
                         $lotCategorys->save();
 

@@ -9,9 +9,9 @@ use common\models\Query\LotsCategory;
 
 $priceClass = 'text-secondary';
 try {
-  if ($lot->torgy_tradetype == 'PublicOffer') {
+  if ($lot->torg->tradeTypeId == 1) {
     $priceClass = 'text-primary';
-  } else if ($lot->torgy_tradetype == 'OpenedAuction') {
+  } else {
     $priceClass = 'text-primary';
   }
 } catch (\Throwable $th) {
@@ -53,11 +53,11 @@ if (!$lotSubCategorySelect) {
 
       <div class="avatar-upload">
         <div class="image image-galery lot-<?= $lot->id ?>-upload-image-tag">
-          <img class="profile-pic d-block" src="<?= ($lot->lotImage) ? $lot->lotImage[0] : 'img/img.svg' ?>" alt="" />
-          <?= ($lot->lotImage[1]) ? '<img src="' . $lot->lotImage[1] . '" alt="" />'  : '' ?>
-          <?= ($lot->lotImage[2]) ? '<img src="' . $lot->lotImage[2] . '" alt="" />'  : '' ?>
-          <?= ($lot->lotImage[3]) ? '<img src="' . $lot->lotImage[3] . '" alt="" />'  : '' ?>
-          <?= ($lot->lotImage[4]) ? '<img src="' . $lot->lotImage[4] . '" alt="" />'  : '' ?>
+          <img class="profile-pic d-block" src="<?= ($lot->images[0])? $lot->images[0]['min'] : 'img/img.svg' ?>" alt="" />
+          <?= ($lot->images[1]['min']) ? '<img src="' . $lot->images[1]['min'] . '" alt="" />'  : '' ?>
+          <?= ($lot->images[2]['min']) ? '<img src="' . $lot->images[2]['min'] . '" alt="" />'  : '' ?>
+          <?= ($lot->images[3]['min']) ? '<img src="' . $lot->images[3]['min'] . '" alt="" />'  : '' ?>
+          <?= ($lot->images[4]['min']) ? '<img src="' . $lot->images[4]['min'] . '" alt="" />'  : '' ?>
           <div class="image-galery__control"></div>
         </div>
         <label for="images-<?= $lot->id ?>-upload">
@@ -80,21 +80,21 @@ if (!$lotSubCategorySelect) {
 
     <div>
       <figcaption class="content">
-        <a href="<?= ($lot->lotUrl) ? $lot->lotUrl : 'javascript:void(0);' ?>" target="_blank" class="lot-<?= $lot->id ?>-link">
-          <h3 class="lot-block__title <?= (!empty($lot->lot_archive)) ? ($lot->lot_archive) ? 'text-muted' : '' : '' ?>"><?= $lot->lotTitle ?> <?= (!empty($lot->lot_archive)) ? ($lot->lot_archive) ? '<span class="text-primary">(Архив)</span>' : '' : '' ?></h3>
+        <a href="<?= ($lot->url) ? $lot->url : 'javascript:void(0);' ?>" target="_blank" class="lot-<?= $lot->id ?>-link">
+          <h3 class="lot-block__title <?= (!empty($lot->archive)) ? ($lot->archive) ? 'text-muted' : '' : '' ?>"><?= $lot->title ?> <?= (!empty($lot->archive)) ? ($lot->archive) ? '<span class="text-primary">(Архив)</span>' : '' : '' ?></h3>
         </a>
 
         <hr>
         <ul class="item-meta lot-block__info">
-          <li><?= Yii::$app->formatter->asDate($lot->lot_timepublication, 'long') ?></li>
+          <li><?= Yii::$app->formatter->asDate($lot->torg->publishedDate, 'long') ?></li>
           <li>
             <div class="rating-item rating-sm rating-inline clearfix">
-              <p class="rating-text font600 text-muted font-12 letter-spacing-1"><?= NumberWords::widget(['number' => $lot->lotViews, 'words' => ['просмотр', 'просмотра', 'просмотров']]) ?></p>
+              <p class="rating-text font600 text-muted font-12 letter-spacing-1"><?= NumberWords::widget(['number' => $lot->viewsCount, 'words' => ['просмотр', 'просмотра', 'просмотров']]) ?></p>
             </div>
           </li>
           <li>
-            <div <?= (Yii::$app->user->isGuest) ? 'href="#loginFormTabInModal-login" class="wish-star" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star" data-id="' . $lot->id . '" data-type="' . $lot->lotType . '"' ?>>
-              <img src="img/star<?= ($lot->lotWishId) ? '' : '-o' ?>.svg" alt="">
+            <div <?= (Yii::$app->user->isGuest) ? 'href="#loginFormTabInModal-login" class="wish-star" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star" data-id="' . $lot->id . '" data-type="' . $lot->torg->type . '"' ?>>
+              <img src="img/star<?= ($lot->wishId) ? '' : '-o' ?>.svg" alt="">
             </div>
           </li>
         </ul>
@@ -139,11 +139,11 @@ if (!$lotSubCategorySelect) {
 
         <ul class="item-meta lot-block__info">
           <li><a href="<?= Url::to(['user/lot-remove']) ?>" data-lotid="<?= $lot->id ?>" class="remove-zalog-lot btn btn-primary text-white">Удалить</a></li>
-          <li><a href="<?= Url::to(['user/edit-lot', 'id'=> $lot->id]) ?>" class="btn btn-success text-white-50">Редактировать</a></li>
-          <li><a href="<?= Url::to(['user/lot-status']) ?>" data-lotid="<?= $lot->id ?>" class="status-zalog-lot btn btn-secondary <?= ($lot->status) ? 'text-white' : 'text-white-50' ?>"><?= ($lot->status) ? 'Снять с публикации' : 'Опубликовать' ?></a></li>
+          <li><a href="<?= '#'// Url::to(['user/edit-lot', 'id'=> $lot->id]) ?>" class="btn btn-success text-white-50">Редактировать</a></li>
+          <li><a href="<?= Url::to(['user/lot-status']) ?>" data-lotid="<?= $lot->id ?>" class="status-zalog-lot btn btn-secondary <?= ($lot->published) ? 'text-white' : 'text-white-50' ?>"><?= ($lot->published) ? 'Снять с публикации' : 'Опубликовать' ?></a></li>
         </ul>
 
-        <p class="mt-3">Цена: <span class="h6 line-1 <?= $priceClass ?> font16"><?= Yii::$app->formatter->asCurrency($lot->lotPrice) ?></span> <span class="text-muted mr-5"><?= ($lot->lotOldPrice) ? Yii::$app->formatter->asCurrency($lot->lotOldPrice) : '' ?></span></p>
+        <p class="mt-3">Цена: <span class="h6 line-1 <?= $priceClass ?> font16"><?= Yii::$app->formatter->asCurrency($lot->price) ?></span> <span class="text-muted mr-5"><?= ($lot->oldPrice) ? Yii::$app->formatter->asCurrency($lot->oldPrice) : '' ?></span></p>
       </figcaption>
     </div>
 

@@ -21,10 +21,10 @@ switch ($lotType) {
             $name = 'Банкротное имущество';
         break;
     case 'zalog':
-            $name = ($lot->torg->owner->title)? $lot->owner->title : 'Имущество организации';
+            $name = ($lot->torg->owner->title)? $lot->torg->owner->title : 'Имущество организации';
             $btnName = 'Подать заявку';
-            $color4 = $lot->otorg->wner->tamplate['color-4'];
-            $color1 = $lot->torg->owner->tamplate['color-1'];
+            $color4 = $lot->torg->owner->template['color-4'];
+            $color1 = $lot->torg->owner->template['color-1'];
             $logo = $lot->torg->owner->logo;
         break;
 }

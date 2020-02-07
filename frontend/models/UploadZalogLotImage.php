@@ -7,7 +7,7 @@ use yii\db\Query;
 use yii\web\UploadedFile;
 use yii\helpers\FileHelper;
 
-use common\models\Query\Zalog\LotsZalogUpdate;
+use common\models\Query\Lot\LotsAll;
 
 use yii\imagine\Image;
 use Imagine\Image\Box;
@@ -51,13 +51,12 @@ class UploadZalogLotImage extends Model
                 
             }
 
-            $lot = LotsZalogUpdate::findOne((int)$this->lotId);
+            $lot = LotsAll::findOne((int)$this->lotId);
 
             $lot->images = $images;
 
             return ['status' => $lot->update(), 'src' => $images];
         } else {
-            var_dump($this->errors);
             return ['status' => false];
         }
 
