@@ -322,7 +322,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         
                     </div>
                     
-                    <?php if($lot->torg->tradeType == 'PublicOffer') { ?>
+                    <?php if($lot->torg->tradeTypeId == 1) { ?>
 
                         <div id="price-history" class="fullwidth-horizon-sticky-section">
 
@@ -386,12 +386,11 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 </div>
                                 
                                 <?php 
-                                    if ($lot->offer != null) { 
-                                        foreach ($lot->offer as $key => $value) { 
-                                        if ($value->ofrRdnLotNumber == $lot->lotid) {
+                                    if ($lot->priceHistorys != null) { 
+                                        foreach ($lot->getPriceHistorys()->orderBy('price DESC')->all() as $key => $value) { 
                                             $date = Yii::$app->formatter->asDatetime(new \DateTime(), "php:Y-m-d H:i:s");
                                 ?>
-                                    <div class="item-text-long <?=(($key == 0 || $value->ofrRdnDateTimeBeginInterval <= $date) && $value->ofrRdnDateTimeEndInterval >= $date)? '' : 'sold-out' ?>">
+                                    <div class="item-text-long <?=(($value->intervalBegin <= $date) && $value->intervalEnd >= $date)? '' : 'sold-out' ?>">
                                     
                                         <div class="row align-items-center">
                                         
@@ -403,7 +402,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                                     
                                                         <div class="col-6">
                                                             <span class="font-sm">Начало</span>
-                                                            <strong class="d-block"><?=Yii::$app->formatter->asDate($value->ofrRdnDateTimeBeginInterval, 'long')?></strong>
+                                                            <strong class="d-block"><?=Yii::$app->formatter->asDate($value->intervalBegin, 'long')?></strong>
                                                         </div>
                                                         
                                                         <!-- <div class="col-2">
@@ -412,7 +411,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                                         
                                                         <div class="col-6 text-right text-sm-left">
                                                             <span class="font-sm">Конец</span>
-                                                            <strong class="d-block"><?=Yii::$app->formatter->asDate($value->ofrRdnDateTimeEndInterval, 'long')?></strong>
+                                                            <strong class="d-block"><?=Yii::$app->formatter->asDate($value->intervalEnd, 'long')?></strong>
                                                         </div>
                                                         
                                                     </div>
@@ -429,12 +428,12 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                                     
                                                         <div class="col-6 text-left text-sm-center">
                                                             <span class="font-sm">Цена </span>
-                                                            <strong class="d-block"><?=Yii::$app->formatter->asCurrency($value->ofrRdnPriceInInterval)?></strong>
+                                                            <strong class="d-block"><?=Yii::$app->formatter->asCurrency($value->price)?></strong>
                                                         </div>
                                                         
                                                         <div class="col-6 text-left  text-sm-right">
                                                             <span class="font-sm">Задаток</span>
-                                                            <strong class="d-block"><?=($lot->advancestepunit == 'Percent')? Yii::$app->formatter->asCurrency((($value->ofrRdnPriceInInterval / 100) * $lot->advance)) : Yii::$app->formatter->asCurrency($lot->advance)?></strong>
+                                                            <strong class="d-block"><?=($lot->depositTypeId == 1)? Yii::$app->formatter->asCurrency((($value->price / 100) * $lot->deposit)) : Yii::$app->formatter->asCurrency($lot->deposit)?></strong>
                                                         </div>
                                                         
                                                     </div>
@@ -452,8 +451,8 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                         </div>
                                     
                                     </div>
-                                <? } } }  else { ?>
-                                    <div class="item-text-long <?=(($key == 0 || $value->ofrRdnDateTimeBeginInterval <= $date) && $value->ofrRdnDateTimeEndInterval >= $date)? '' : 'sold-out' ?>">
+                                <? } }  else { ?>
+                                    <div class="item-text-long <?=(($key == 0 || $value->intervalBegin <= $date) && $value->intervalEnd >= $date)? '' : 'sold-out' ?>">
                                     
                                         <div class="row align-items-center">
                                         

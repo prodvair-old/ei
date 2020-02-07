@@ -70,14 +70,9 @@ class TestController extends Controller
      */
     public function actionIndex()
     {
-        $lots = Lots::find()->alias('lot')->joinWith('thisPriceHistorys')->select([
-            'intervalMax' => 'max("thisPriceHistorys".price)', 
-            'max' => 'max("startPrice")',
-            'intervalMin' => 'min("thisPriceHistorys".price)', 
-            'min' => 'min("startPrice")',
-        ])->asArray()->one();
+        $lots = Lots::findOne(31512);
 
-        var_dump($lots);
+        var_dump($lots->thisPriceHistorys);
     }
 
 }

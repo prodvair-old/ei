@@ -58,13 +58,8 @@ class Lots extends ActiveRecord
         if ($this->torg->tradeTypeId == 2) {
             return $this->startPrice;
         } else {
-            if ($this->priceHistorys != null) {
-                $date = Yii::$app->formatter->asDatetime(new \DateTime(), "php:Y-m-d H:i:s");
-                foreach ($this->priceHistorys as $key => $value) {
-                    if (($key == 0 || $value->intervalBegin <= $date) && $value->intervalEnd >= $date) {
-                        return $value->price;
-                    }    
-                }
+            if ($this->thisPriceHistorys != null) {
+                return $this->thisPriceHistorys->price;
             } else {
                 return $this->startPrice;
             }
