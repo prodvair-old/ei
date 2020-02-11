@@ -141,6 +141,18 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col">
+        <div class="category_links">
+          <a href="/all/transport-i-tehnika"><span class="category_links__item">Автомобили</span></a>
+          <a href="/all/nedvizhimost"><span class="category_links__item">Недвижимость</span></a>
+          <a href="/all/syre"><span class="category_links__item">Сырье</span></a>
+          <a href="/all/debitorskaya-zadolzhennost"><span class="category_links__item">Дебиторская задолженность</span></a>
+          <a href="/all/oborudovanie"><span class="category_links__item">Оборудование</span></a>
+          <a href="/all/prochee"><span class="category_links__item">Прочее</span></a>
+        </div>
+      </div>
+    </div>
 
     <?php ActiveForm::end() ?>
   </div>

@@ -30,12 +30,59 @@ $this->title = Yii::$app->params['title'];
 
 </div>
 
+<!-- <section>
+    <div class="container main-page">
+        <div class="row main-page__category">
+            <a href="#" class="col-lg-8 main-page__link-item">
+                <div class="main-page__category__block">
+                    <p>Автомобили</p>                
+                </div>
+            </a>
+            <a href="#" class="col-lg-4 main-page__link-item">
+                <div class="main-page__category__block">
+                    <p>Недвижимость</p>                
+                </div>
+            </a>
+        </div>
+
+        <div class="row main-page__category">
+            <a href="#" class="col-lg-4 main-page__link-item">
+                <div class="main-page__category__block">
+                    <p>Спецтехника</p>                
+                </div>
+            </a>
+            <a href="#" class="col-lg-4 main-page__link-item">
+                <div class="main-page__category__block">
+                    <p>Земельные участки</p>                
+                </div>
+            </a>
+            <a href="#" class="col-lg-4 main-page__link-item">
+                <div class="main-page__category__block">
+                    <p>Дебиторская задолженность</p>                
+                </div></a>
+        </div>
+    </div>
+</section> -->
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                
+            </div>
+
+            <div class="col-6">
+                
+            </div>
+        </div>
+    </div>
+</section>
 
 <section class="pt-0 pb-0">
 
   <div class="container">
 
-    <div class="clear mb-100"></div>
+    <div class="clear mb-50"></div>
 
     <div class="row cols-1 cols-sm-2 cols-lg-4 gap-2 mb-20">
 
