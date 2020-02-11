@@ -195,6 +195,8 @@
     background-color: $otkrytie
     color: #fff
     position: relative
+    border-radius: 3px
+    overflow: hidden
     &.color-1
       background-color: #020202
     &.color-2
@@ -205,6 +207,8 @@
       background-color: #a08661
     .image
       margin-left: 50%
+      border-radius: 3px
+      overflow: hidden
     .content
       display: flex
       text-align: center
@@ -258,6 +262,8 @@ body
         fill: #222222
 
 .hero-inner
+    padding-bottom: 0
+
     .main__title
         font-size: 50px
         line-height: 53px
@@ -900,19 +906,45 @@ body
   &__link-item
     padding: 0 5px
   &__category
-    width: 100%
-    margin: 10px 0
+    // width: 100%
+    margin: 30px -5px
     &__block
-      height: 200px
+      height: 100%
       padding: 30px
       width: auto    
-      background: #f5f5f5 
+      background: #f9f9f9 
       border-radius: 5px
-      transition: all .3s ease
+      // transition: all .3s ease
+      ul
+        margin: 0 -1rem
+      li
+        display: block
+        padding: 0 1rem !important
+        border-radius: 3px
+        a 
+          color: #000
+          display: flex
+          width: 100%
+          transition: all 0s ease
+          span 
+            margin-left: auto
+            color: #aaa
+        &:hover 
+          background-color: rgba($accent, .1)
+          a 
+            //color: #fff
+            span 
+              //color: #fff
+
       p 
         color: #000000
         text-transform: uppercase
         font-size: 18px
         font-weight: 300
-      &:hover
-        box-shadow: 0px 0px 13px rgba(100, 100, 100, 0.2)
+      // &:hover
+      //   box-shadow: 0px 0px 13px rgba(100, 100, 100, 0.2)
+.card-search
+  border: none
+@media (min-width: 576px)
+  .hero-banner.hero-banner-01.alt-option-03 .container
+      padding-bottom: 0

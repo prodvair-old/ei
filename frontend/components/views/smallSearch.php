@@ -57,7 +57,6 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
 
 <div class="card card-search">
   <div class="card-body">
-
     <div class="input-search">
       <?= $form->field($model, 'search')->textInput([
         'class' => 'form-control',
@@ -141,7 +140,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
         </div>
       </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col">
         <div class="category_links">
           <a href="/all/transport-i-tehnika"><span class="category_links__item">Автомобили</span></a>
@@ -152,7 +151,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
           <a href="/all/prochee"><span class="category_links__item">Прочее</span></a>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <?php ActiveForm::end() ?>
   </div>

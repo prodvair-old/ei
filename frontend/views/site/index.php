@@ -3,15 +3,23 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 use frontend\components\LotBlock;
 use frontend\components\SearchForm;
 use frontend\components\LotDetailSidebar;
+
 use common\models\Query\Settings;
+use common\models\Query\LotsCategory;
+use common\models\Query\Regions;
 
 
 
 $this->title = Yii::$app->params['title'];
+$regions = Regions::find()->orderBy('id ASC')->all();
+$lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
 ?>
+
+
 
 <div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03" style="background-image:url('img/01.jpg'); background-position: top  center;">
 
@@ -30,39 +38,62 @@ $this->title = Yii::$app->params['title'];
 
 </div>
 
-<!-- <section>
+<section class="pt-0 pb-0">
     <div class="container main-page">
         <div class="row main-page__category">
-            <a href="#" class="col-lg-8 main-page__link-item">
+            <div class="col-lg-4 main-page__link-item">
                 <div class="main-page__category__block">
-                    <p>Автомобили</p>                
+                    <p class="h4">Категории</p>
+                    <ul>
+                        <? foreach ($lotsCategory as $category) {
+                            echo '<li><a href="/all/'.$category['translit_name'].'">'.$category['name'].'   <span>1999</span></a></li>';
+                        } ?>
+                    </ul>
                 </div>
-            </a>
-            <a href="#" class="col-lg-4 main-page__link-item">
+            </div>
+            <div class="col-lg-4 main-page__link-item">
                 <div class="main-page__category__block">
-                    <p>Недвижимость</p>                
+                    <p class="h4">Регионы</p>
+                    <ul>
+                        <li><a href="/all"> Россия <span>1999</span></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=77"> Москва <span>1999</span></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=50"> Московская область <span>1999</span></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=78"> Санкт-Петербург <span>1999</span></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=47"> Ленинградская область <span>1999</span></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=23"> Краснодарский край <span>1999</span></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=66"> Свердловская область <span>1999</span></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=16"> Республика Татарстан <span>1999</span></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=52"> Нижегородская область <span>1999</span></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=61"> Ростовская область <span>1999</span></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=74"> Челябинская область <span>1999</span></a></li>
+                        <li><a href="/all"> Другие регионы <span>1999</span></a></li>
+                        <? //foreach ($regions as $region) {
+                           // echo '<li><a href="/all/lot-list?SearchLot%5Bregion%5D='.$region['id'].'"> '.$region['name'].' <span>1999</span></a></li>';
+                        //} ?>
+                    </ul>
                 </div>
-            </a>
-        </div>
+            </div>
+            <div class="col-lg-4 main-page__link-item">
+                <div class="main-page__category__block">
+                    <p class="h4">Секции иммущества</p>
+                    <ul>
+                        <li><a href="/all"> Все имущество <span>1999</span></a></li>
+                        <li><a href="/bankrupt"> Банкротное имущество <span>1999</span></a></li>
+                        <li><a href="/arrest"> Арестованное имущество <span>1999</span></a></li>
+                        <li><a href="/caterpillar">Caterpillar<span>1999</span></a></li>
+                        <li><a href="/portal-da">Portal Da<span>1999</span></a></li>
+                        <li><a href="/open-bank">Банк Открытие<span>1999</span></a></li>
+                        <li><a href="/gilfondrt">ГЖФ при Президенте РТ<span>1999</span></a></li>
+                        <li><a href="/greentau">Гринтау<span>1999</span></a></li>
+                        <li><a href="/rosselkhozbank">Россельхозбанк<span>1999</span></a></li>
+                        <li><a href="/sberbank">Сберабанк<span>1999</span></a></li>
+                    </ul>
+                </div>
+            </div>
 
-        <div class="row main-page__category">
-            <a href="#" class="col-lg-4 main-page__link-item">
-                <div class="main-page__category__block">
-                    <p>Спецтехника</p>                
-                </div>
-            </a>
-            <a href="#" class="col-lg-4 main-page__link-item">
-                <div class="main-page__category__block">
-                    <p>Земельные участки</p>                
-                </div>
-            </a>
-            <a href="#" class="col-lg-4 main-page__link-item">
-                <div class="main-page__category__block">
-                    <p>Дебиторская задолженность</p>                
-                </div></a>
         </div>
     </div>
-</section> -->
+</section>
 
 <section class="pt-0 pb-0">
 
@@ -70,7 +101,7 @@ $this->title = Yii::$app->params['title'];
 
     <div class="clear mb-50"></div>
 
-    <div class="row cols-1 cols-sm-2 cols-lg-4 gap-2 mb-20">
+    <div class="row cols-1 cols-sm-2 cols-lg-4 gap-10 mb-20">
 
       <div class="col">
 
@@ -137,9 +168,9 @@ $this->title = Yii::$app->params['title'];
               <div class="content__wrapper">
                 <h6>Реестры</h6>
                 <ul class="category__links">
-                  <li><a href="/arbitrazhnye-upravlyayushchie">Арбитражные управляющие</a></li>
-                  <li><a href="/dolzhniki">Должники</a></li>
-                  <li><a href="/sro">СРО</a></li>
+                  <li><a href="/arbitrazhnye-upravlyayushchie">Арбитражные управляющие<span>1999</span></a></li>
+                  <li><a href="/dolzhniki">Должники<span>1999</span></a></li>
+                  <li><a href="/sro">СРО<span>1999</span></a></li>
                 </ul>
               </div>
             </figcaption>
