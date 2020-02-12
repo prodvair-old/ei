@@ -100,16 +100,10 @@ class LotController extends Controller
                 ->alias('lot')
                 ->where([
                     'and',
-                    "
-                        lot.info->'address'->>'geo_lat' > '".$get['northWest']['lat']."' 
-                        AND 
-                        lot.info->'address'->>'geo_lat' < '".$get['southEast']['lat']."'
-                    ",
-                    "
-                        lot.info->'address'->>'geo_lon' < '".$get['northWest']['lng']."' 
-                        AND 
-                        lot.info->'address'->>'geo_lon' < '".$get['southEast']['lng']."'
-                    ",
+                    "lot.info->'address'->>'geo_lat' >= '".$get['northWest']['lat']."'",
+                    "lot.info->'address'->>'geo_lat' <= '".$get['southEast']['lat']."'",
+                    "lot.info->'address'->>'geo_lon' >= '".$get['northWest']['lng']."'",
+                    "lot.info->'address'->>'geo_lon' <= '".$get['southEast']['lng']."'",
                     '(torg."endDate" >= NOW() OR torg."endDate" IS NULL) OR (torg."completeDate" >= NOW() OR torg."completeDate" IS NULL)'
                 ])
                 ->all();
