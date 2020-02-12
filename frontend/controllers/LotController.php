@@ -95,13 +95,6 @@ class LotController extends Controller
         $get = Yii::$app->request->get();
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-        // $lotsSearch = Lots::find()
-        //         ->joinWith(['torg'])
-        //         ->alias('lot')
-        //         ->where("lot.info->'address'->>'geo_lat' >= '55.343208'")
-        //         ->limit(100)
-        //         ->all();
-
         $lotsSearch = Lots::find()
                 ->joinWith(['torg'])
                 ->alias('lot')
