@@ -112,7 +112,6 @@ class LotController extends Controller
                     ",
                     '(torg."endDate" >= NOW() OR torg."endDate" IS NULL) OR (torg."completeDate" >= NOW() OR torg."completeDate" IS NULL)'
                 ])
-                ->limit(100)
                 ->all();
 
         foreach ($lotsSearch as $key => $lotSearch) {
