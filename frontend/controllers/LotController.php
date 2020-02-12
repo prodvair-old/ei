@@ -89,6 +89,56 @@ class LotController extends Controller
      * @return mixed
      */
     // Главная страница лотов
+
+    public function actionMap()
+    {
+        $get = Yii::$app->request->get();
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        // $lotsSearch = Lots::find()
+        //         ->joinWith(['torg'])
+        //         ->alias('lot')
+        //         ->where("lot.info->'address'->>'geo_lat' >= '55.343208'")
+        //         ->limit(100)
+        //         ->all();
+
+        $lotsSearch = Lots::find()
+                ->joinWith(['torg'])
+                ->alias('lot')
+                ->where([
+                    'and',
+                    "
+                        lot.info->'address'->>'geo_lat' > '".$get['northWest']['lat']."' 
+                        AND 
+                        lot.info->'address'->>'geo_lat' < '".$get['southEast']['lat']."'
+                    ",
+                    "
+                        lot.info->'address'->>'geo_lon' < '".$get['northWest']['lng']."' 
+                        AND 
+                        lot.info->'address'->>'geo_lon' < '".$get['southEast']['lng']."'
+                    ",
+                    '(torg."endDate" >= NOW() OR torg."endDate" IS NULL) OR (torg."completeDate" >= NOW() OR torg."completeDate" IS NULL)'
+                ])
+                ->limit(100)
+                ->all();
+
+        foreach ($lotsSearch as $key => $lotSearch) {
+            $lots[] = [
+                'id'        => $lotSearch->id,
+                'title'     => $lotSearch->title,
+                'address'   => $lotSearch->info['address']['district'].', '.$lotSearch->info['address']['region'].', '.$lotSearch->info['address']['city'].', '.$lotSearch->info['address']['street'],
+                'price'     => $lotSearch->price,
+                'link'      => Yii::$app->request->hostInfo.'/'.$lotSearch->url,
+                'position'  => [
+                    'lat'  => $lotSearch->info['address']['geo_lat'],
+                    'lng'  => $lotSearch->info['address']['geo_lon'],
+                ]
+            ];
+        }
+
+        return $lots;
+    }
+
     public function actionIndex($type)
     {
         $start = microtime(true);

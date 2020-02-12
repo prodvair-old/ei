@@ -119,6 +119,7 @@ return [
         '/sitemap-<type>.xml'               => 'sitemap/pages',
 
 
+        '/map'              => 'lot/map',
         '/load-category'    => 'lot/load_category',
         '/wish-list-edit'   => 'lot/wish_list',
 
