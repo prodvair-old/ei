@@ -401,6 +401,8 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
             } ?>
           </div>
 
+          <button class="alert alert-info mt-30 text-center h5 w-100">Загрузить еще 10 лотов</button>
+
           <div class="pager-wrappper mt-40">
 
             <div class="pager-innner">
