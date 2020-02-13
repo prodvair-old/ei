@@ -8,11 +8,13 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\UploadedFile;
 use yii\data\Pagination;
+use moonland\phpexcel\Excel;
 
 use common\models\Query\Zalog\LotsZalog;
 use common\models\Query\Lot\Lots;
 use common\models\Query\Lot\LotsAll;
 use common\models\Query\Zalog\LotsZalogUpdate;
+use common\models\Query\Arrest\LotsArrest;
 
 use arogachev\excel\import\advanced\Importer;
 
@@ -21,6 +23,7 @@ use frontend\models\UploadZalogLotImage;
 use frontend\models\ZalogLotCategorySet;
 use frontend\models\ImportZalog;
 use frontend\models\zalog\FilterLots;
+use frontend\models\arrestBankrupt\importFIleForm;
 
 use common\models\Query\WishList;
 
@@ -111,6 +114,85 @@ class UserController extends Controller
         'lotsCount' => $lotsCount,
         'pages' => $pages,
       ]);
+    } else {
+      return $this->goHome();
+    }
+  }
+  public function actionGetArrestBankrupt()
+  {
+    if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role == 'agent') {
+      $modelImport = new importFIleForm();
+
+      if(Yii::$app->request->post()){
+        $modelImport->fileImport = \yii\web\UploadedFile::getInstance($modelImport,'fileImport');
+        
+        if($modelImport->fileImport && $modelImport->validate()){
+          $where = $modelImport->excel();
+
+          $lots = LotsArrest::find()->where($where)->all();
+
+          
+          header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+          Excel::export([
+              'models' => $lots,
+              'columns' => [
+                  'lotId:text',
+                  [
+                      'attribute' => 'lotUrl',
+                      'header' => 'Ссылка на лот',
+                      'format' => 'text',
+                      'value' => function($model) {
+                          return 'https://ei.ru/'.$model->lotUrl;
+                      },
+                  ],
+                  'torgs.trgNotificationUrl:text',
+                  'lotPropName:text',
+                  'lotTorgReason:text',
+                  'torgs.trgBidAuctionDate:datetime',
+                  'torgs.trgBidFormName:text',
+                  'torgs.trgPublished:datetime',
+                  'lotWinnerName:text',
+                  'lotContractPrice:text',
+                  'lotStartPrice:text',
+                  'lotCadastre:text',
+                  'lotVin:text',
+                  'lotKladrLocationName:text',
+                  [
+                      'attribute' => 'lotCategory',
+                      'header' => 'Категория лота',
+                      'format' => 'text',
+                      'value' => function($model) {
+                          return $model->lotCategory[0];
+                      },
+                  ],
+                  'lot_archive:boolean',
+              ],
+              'headers' => [
+                  'lotId' => 'ID лота',
+                  'torgs.trgNotificationUrl' => 'Ссылка на извещение',
+                  'lotPropName' => 'Описание',
+                  'lotTorgReason' => 'Основания реализации торгов',
+                  'torgs.trgBidAuctionDate' => 'Дата и время проведения торгов',
+                  'torgs.trgBidFormName' => 'Форма торгов',
+                  'torgs.trgPublished' => 'Дата публикации',
+                  'lotWinnerName' => 'Победитель',
+                  'lotContractPrice' => 'Цена предложенное победителем',
+                  'lotCadastre' => 'Кадастровый номер',
+                  'lotVin' => 'VIN номер',
+                  'lotKladrLocationName' => 'Адрес',
+                  'lot_archive' => 'В архиве',
+              ],
+          ]);
+        } else {
+          Yii::$app->getSession()->setFlash('error','Error');
+        }
+      }
+
+      return $this->render('get-arrest', [
+        'modelImport' => $modelImport,
+      ]);
+
     } else {
       return $this->goHome();
     }

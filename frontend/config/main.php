@@ -97,6 +97,7 @@ return [
         '/profile/favorite'      => 'user/wish_list',
 
         '/profile/lots'          => 'user/lots',
+        '/profile/get-arrest-bankrupt' => 'user/get-arrest-bankrupt',
         '/profile/lots/<id:\d+>' => 'user/edit-lot',
 
         '/profile/lots/import'   => 'user/import-lots',
@@ -118,6 +119,7 @@ return [
         '/sitemap-<type>-<limit:\d+>.xml'   => 'sitemap/pages',
         '/sitemap-<type>.xml'               => 'sitemap/pages',
 
+        '/get-arrest-bankrupt'  => 'lots/arrest-bankrupt',
 
         '/map'              => 'lot/map',
         '/load-category'    => 'lot/load_category',
