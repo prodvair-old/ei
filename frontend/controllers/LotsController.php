@@ -15,7 +15,7 @@ class LotsController extends Controller
 {
     public function actionArrestBankrupt()
     {
-        # code...
+        
     }
     // php yii lots/arrest
     public function actionArrest($limit = 1000)
