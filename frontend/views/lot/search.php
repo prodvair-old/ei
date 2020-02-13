@@ -126,7 +126,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
       .search-form-control {
 
-        border: 2px solid #F04E23;
+        border: 2px solid #077751;
 
       }
 
