@@ -3,6 +3,7 @@ namespace common\models;
 
 use Yii;
 use yii\base\Model;
+use yii\helpers\ArrayHelper;
 
 /**
  * Login form
@@ -29,6 +30,15 @@ class LoginForm extends Model
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
         ];
+    }
+
+    public function attributeLabels()
+    {
+    	return ArrayHelper::merge(parent::attributeLabels(),[
+                'username'      => 'E-mail',
+                'password'      => 'Пароль',
+                'rememberMe'    => 'Запомнить меня',
+        	]);
     }
 
     /**

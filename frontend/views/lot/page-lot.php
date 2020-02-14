@@ -198,7 +198,6 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             data-lat="<?=$lot[info][address][geo_lat];?>"
                             data-lng="<?=$lot[info][address][geo_lon];?>">
                         </div>
-                        <div id="player-panorama" class="player-panorama"></div>
                     <? endif; ?>
 
 

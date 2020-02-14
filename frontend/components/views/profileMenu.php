@@ -8,6 +8,9 @@ use yii\helpers\Url;
   <ul>
     <!-- <li <?= ($page == 'profile') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/index']) ?>">Профиль</a></li> -->
     <li <?= ($page == 'wishlist') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/wish_list']) ?>">Избранные</a></li>
+    <? if (Yii::$app->user->identity->role == 'agent' && Yii::$app->user->identity->ownerId == 2) { ?>
+      <li <?= ($page == 'getbankrupt') ? 'class="dropdown-btn active" ' : 'class="dropdown-btn"' ?>><a href="<?= Url::to(['user/get-arrest-bankrupt']) ?>">Расширенный поиск имущества</a></li>
+    <? } ?>
     <? if (Yii::$app->user->identity->role == 'agent') { ?>
       <li <?= (strpos($page, 'lot') !== false) ? 'class="dropdown-btn active" ' : 'class="dropdown-btn"' ?>><a href="<?= Url::to(['user/lots']) ?>">Мои лоты</a></li>
       <ul <?= (strpos($page, 'lot') !== false) ? 'class="dropdown-list open" ' : 'class="dropdown-list"' ?>>

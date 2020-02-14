@@ -11,6 +11,9 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
+    'language' => 'ru-RU',
+    'name' => 'Панель управления - Единый информатор',
+    'sourceLanguage' => 'ru-RU',
     'modules' => [],
     'components' => [
         'request' => [
@@ -37,14 +40,15 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                ''          => 'site/index',
+                '/login'    => 'site/login',
+                '/logout'   => 'site/logout',
             ],
         ],
-        */
     ],
     'params' => $params,
 ];
