@@ -10,15 +10,21 @@ use frontend\components\LotBlock;
 use frontend\components\ProfileMenu;
 
 foreach ($wishArrestList as $wishArrest) {
-    $lotArrestIds[] = Lots::findOne($wishArrest->lotId);
+    if ($lot = Lots::findOne(['id' => $wishArrest->lotId])) {
+        $lotArrestIds[] = $lot;
+    }
 }
 
 foreach ($wishBankruptList as $wishBankrupt) {
-    $lotBankruptIds[] = Lots::findOne($wishBankrupt->lotId);
+    if ($lot = Lots::findOne(['id' => $wishBankrupt->lotId])) {
+        $lotBankruptIds[] = $lot;
+    }
 }
 
 foreach ($wishZalogList as $wishZalog) {
-    $lotZalogIds[] = Lots::findOne($wishZalog->lotId)->one();
+    if ($lot = Lots::findOne(['id' => $wishZalog->lotId])) {
+        $lotZalogIds[] = $lot;
+    }
 }
 
 $name = (\Yii::$app->user->identity->info['firstname'] || \Yii::$app->user->identity->info['lastname'])? \Yii::$app->user->identity->info['firstname'].' '.\Yii::$app->user->identity->info['lastname'] : \Yii::$app->user->identity->info['contacts']['emails'][0];
