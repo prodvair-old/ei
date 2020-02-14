@@ -12,17 +12,23 @@ use frontend\components\ProfileMenu;
 foreach ($wishArrestList as $wishArrest) {
     if ($lot = Lots::findOne(['id' => $wishArrest->lotId])) {
         $lotArrestIds[] = $lot;
+    } else if ($lot = Lots::find()->where(['oldId' => $wishArrest->lotId])->one()) {
+        $lotArrestIds[] = $lot;
     }
 }
 
 foreach ($wishBankruptList as $wishBankrupt) {
     if ($lot = Lots::findOne(['id' => $wishBankrupt->lotId])) {
         $lotBankruptIds[] = $lot;
+    } else if ($lot = Lots::find()->where(['oldId' => $wishBankrupt->lotId])->one()) {
+        $lotBankruptIds[] = $lot;
     }
 }
 
 foreach ($wishZalogList as $wishZalog) {
     if ($lot = Lots::findOne(['id' => $wishZalog->lotId])) {
+        $lotZalogIds[] = $lot;
+    } else if ($lot = Lots::find()->where(['oldId' => $wishZalog->lotId])->one()) {
         $lotZalogIds[] = $lot;
     }
 }
