@@ -34,8 +34,15 @@ $this->registerJsVar( 'lotType', $lot->torg->type, $position = yii\web\View::POS
 $this->title = $lot->title;
 $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
+$isCategory = 
+    $lot->category->categoryId == '1061' ||
+    $lot->category->categoryId == '1063' ||
+    $lot->category->categoryId == '1064' ||
+    $lot->category->categoryId == '1068' ||
+    $lot->category->categoryId == '1083' ||
+    $lot->category->categoryId == '1102' ||
+    $lot->category->categoryId == '1102';
 ?>
-
 
 <section class="page-wrapper page-detail">
         
@@ -57,11 +64,11 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                         ]) ?>
                     </nav>
-                    
+
                 </div>
-                
+
             </div>
-    
+
         </div>
         
     </div>
@@ -192,7 +199,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         
                     </div>
 
-                    <? if($lot[info][address][geo_lat]): ?>
+                    <? if($lot[info][address][geo_lat] && $isCategory): ?>
                         <div 
                             id="map-lot" 
                             data-lat="<?=$lot[info][address][geo_lat];?>"
