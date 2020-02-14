@@ -127,7 +127,7 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
             <div class="mb-30"></div>
 
             <div class="import-info d-flex">
-              <img src="img/excel.png" alt="">
+              <a href="<?= Url::to('files/example.xlsx') ?>" target="_blank" download><img src="img/excel.png" alt=""></a>
               <p>
                 Скачайте и заполните файл примера своими данными. Загрузите в соответствующую форму.
                 <br>После загрузки файла, система начнет поиск по заданным параметрам

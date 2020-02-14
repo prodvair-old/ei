@@ -20,7 +20,7 @@ $dataProvider = new ActiveDataProvider([
 ]);
 
 if (UserAccess::forManager('add')) {
-    $title = '<a href="'.Url::to(['organization/add']).'" class="btn btn-success"><i class="fa fa-plus"></i> Добавить организацию</a>';
+    $title = '<a href="'.Url::to(['lots/add']).'" class="btn btn-success"><i class="fa fa-plus"></i> Добавить организацию</a>';
 } else {
     $title = 'Список лотов';
 }
@@ -28,7 +28,7 @@ if (UserAccess::forManager('add')) {
 ?>
 <div class="row">
     <div class="col-md-12">
-        <?php $box = Box::begin(['title'=>$title]); ?>
+        <?php $box = Box::begin(['title' => $title]); ?>
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'columns' => [

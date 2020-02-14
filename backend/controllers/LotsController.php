@@ -8,7 +8,8 @@ use yii\filters\AccessControl;
 use common\models\LoginForm;
 use yii\data\Pagination;
 
-use common\models\Query\Lot\Lots;
+use backend\models\UserAccess;
+use common\models\Query\Lot\LotsAll;
 
 /**
  * Lots controller
@@ -63,7 +64,7 @@ class LotsController extends Controller
             return $this->goHome();
         }
 
-        $lots = Lots::find()->joinWith('torg')->orderBy('torg."publishedDate" DESC');
+        $lots = LotsAll::find()->joinWith('torg')->orderBy('torg."publishedDate" DESC');
         
         return $this->render('index', ['lots' => $lots]);
     }
