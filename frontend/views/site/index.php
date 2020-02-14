@@ -38,17 +38,9 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
 
 </div>
 
-<div class="container">
-<div id="map"></div>
-</div>
-
-
-    <style> 
-        #map {
-            height: 500px;
-            width: 100%;
-        }
-</style>
+<!-- <div class="container">
+    <div id="map"></div>
+</div> -->
 
 <section class="pt-0 pb-0">
     <div class="container main-page">

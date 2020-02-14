@@ -29,7 +29,8 @@
         "scotthuangzl/yii2-export2excel": "dev-master",
         "moonlandsoft/yii2-phpexcel": "*",
         "gietos/dadata": "^1.1",
-        "andkon/yii2kladr": "^1.0"
+        "andkon/yii2kladr": "^1.0",
+        "yiimaker/yii2-social-share": "^2.3"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

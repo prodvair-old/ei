@@ -15,6 +15,28 @@ return [
   'sourceLanguage' => 'ru-RU',
   'controllerNamespace' => 'frontend\controllers',
   'components' => [
+    'socialShare' => [
+      'class' => \ymaker\social\share\configurators\Configurator::class,
+      'socialNetworks' => [
+          'vkontakte' => [
+              'class' => \ymaker\social\share\drivers\Vkontakte::class,
+          ],
+          'facebook' => [
+              'class' => \ymaker\social\share\drivers\Facebook::class,
+          ],
+          'odnoklasniki' => [
+              'class' => \ymaker\social\share\drivers\Odnoklassniki::class,
+          ],
+          'telegram' => [
+            'class' => \ymaker\social\share\drivers\Telegram::class,
+          ],
+      ],
+      'enableIcons' => true,
+      // 'icons' => [
+      //     \ymaker\social\share\drivers\Twitter::class => 'icon-twitter', // CSS class
+      //     \ymaker\social\share\drivers\Facebook::class => 'icon-facebook',  // CSS class
+      // ],
+    ],
     'formatter' => [
       'decimalSeparator' => '.',
       'thousandSeparator' => ' ',
