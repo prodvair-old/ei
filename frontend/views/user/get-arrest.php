@@ -134,14 +134,6 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
               </p>
             </div>
 
-            <style>
-              .import-info img {
-                width: 60px;
-                height: 55px;
-                margin-right: 1rem
-              }
-            </style>
-
             <?php ActiveForm::end(); ?>
 
             </div>
