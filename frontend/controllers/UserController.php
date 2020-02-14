@@ -131,59 +131,64 @@ class UserController extends Controller
 
           $lots = LotsArrest::find()->where($where)->all();
 
+          if ($lots[0] != null) {
           
-          header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
-          Excel::export([
-              'models' => $lots,
-              'columns' => [
-                  'lotId:text',
-                  [
-                      'attribute' => 'lotUrl',
-                      'header' => 'Ссылка на лот',
-                      'format' => 'text',
-                      'value' => function($model) {
-                          return 'https://ei.ru/'.$model->lotUrl;
-                      },
-                  ],
-                  'torgs.trgNotificationUrl:text',
-                  'lotPropName:text',
-                  'lotTorgReason:text',
-                  'torgs.trgBidAuctionDate:datetime',
-                  'torgs.trgBidFormName:text',
-                  'torgs.trgPublished:datetime',
-                  'lotWinnerName:text',
-                  'lotContractPrice:text',
-                  'lotStartPrice:text',
-                  'lotCadastre:text',
-                  'lotVin:text',
-                  'lotKladrLocationName:text',
-                  [
-                      'attribute' => 'lotCategory',
-                      'header' => 'Категория лота',
-                      'format' => 'text',
-                      'value' => function($model) {
-                          return $model->lotCategory[0];
-                      },
-                  ],
-                  'lot_archive:boolean',
-              ],
-              'headers' => [
-                  'lotId' => 'ID лота',
-                  'torgs.trgNotificationUrl' => 'Ссылка на извещение',
-                  'lotPropName' => 'Описание',
-                  'lotTorgReason' => 'Основания реализации торгов',
-                  'torgs.trgBidAuctionDate' => 'Дата и время проведения торгов',
-                  'torgs.trgBidFormName' => 'Форма торгов',
-                  'torgs.trgPublished' => 'Дата публикации',
-                  'lotWinnerName' => 'Победитель',
-                  'lotContractPrice' => 'Цена предложенное победителем',
-                  'lotCadastre' => 'Кадастровый номер',
-                  'lotVin' => 'VIN номер',
-                  'lotKladrLocationName' => 'Адрес',
-                  'lot_archive' => 'В архиве',
-              ],
-          ]);
+            Excel::export([
+                'models' => $lots,
+                'columns' => [
+                    'lotId:text',
+                    [
+                        'attribute' => 'lotUrl',
+                        'header' => 'Ссылка на лот',
+                        'format' => 'text',
+                        'value' => function($model) {
+                            return 'https://ei.ru/'.$model->lotUrl;
+                        },
+                    ],
+                    'torgs.trgNotificationUrl:text',
+                    'lotPropName:text',
+                    'lotTorgReason:text',
+                    'torgs.trgBidAuctionDate:datetime',
+                    'torgs.trgBidFormName:text',
+                    'torgs.trgPublished:datetime',
+                    'lotWinnerName:text',
+                    'lotContractPrice:text',
+                    'lotStartPrice:text',
+                    'lotCadastre:text',
+                    'lotVin:text',
+                    'lotKladrLocationName:text',
+                    [
+                        'attribute' => 'lotCategory',
+                        'header' => 'Категория лота',
+                        'format' => 'text',
+                        'value' => function($model) {
+                            return $model->lotCategory[0];
+                        },
+                    ],
+                    'lot_archive:boolean',
+                ],
+                'headers' => [
+                    'lotId' => 'ID лота',
+                    'torgs.trgNotificationUrl' => 'Ссылка на извещение',
+                    'lotPropName' => 'Описание',
+                    'lotTorgReason' => 'Основания реализации торгов',
+                    'torgs.trgBidAuctionDate' => 'Дата и время проведения торгов',
+                    'torgs.trgBidFormName' => 'Форма торгов',
+                    'torgs.trgPublished' => 'Дата публикации',
+                    'lotWinnerName' => 'Победитель',
+                    'lotContractPrice' => 'Цена предложенное победителем',
+                    'lotCadastre' => 'Кадастровый номер',
+                    'lotVin' => 'VIN номер',
+                    'lotKladrLocationName' => 'Адрес',
+                    'lot_archive' => 'В архиве',
+                ],
+            ]);
+          } else {
+            Yii::$app->params['exelParseResult']['status'] = 'Не удалось найти данные';
+          }
+
         } else {
           Yii::$app->getSession()->setFlash('error','Error');
         }

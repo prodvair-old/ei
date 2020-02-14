@@ -105,16 +105,42 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
 
           <div class="form-draft-payment">
 
-            <hr>
+            <h3 class="heading-title"><span>Расширенный <span class="font200"> поиск имущества</span></span></h3>
+                        
+            <div class="clear"></div>
 
             <?php $form = ActiveForm::begin([ 'options' => ['enctype' => 'multipart/form-data']]); ?>
 
-            <div class="custom-file">
-                <?= $form->field($modelImport, 'fileImport',['template' => '<div class="custom-file">{label}{hint}{input}{error}</div>'])->fileInput(['class' => 'custom-file-input'])->label('Загрузить файл',['class'=>'custom-file-label']) ?>
-                
-              <?= Html::submitButton('Импортировать лоты', ['class' => 'btn btn-primary']); ?>
+            <div class="row">
+              <div class="custom-file col-lg-10">
+                  <?= $form->field($modelImport, 'fileImport',['template' => '<div class="custom-file">{label}{hint}{input}{error}</div>'])->fileInput(['class' => 'custom-file-input'])->label('Загрузить файл',['class'=>'custom-file-label']) ?>
+              </div>
+
+              <div class="col-lg-2">
+                <?= Html::submitButton('Найти', ['class' => 'btn btn-primary']); ?>
+              </div>
             </div>
 
+            <script>
+              <?=(Yii::$app->params['exelParseResult']['status'])? 'toastr.warning("'.Yii::$app->params['exelParseResult']['status'].'");' : ''?>
+            </script>
+            <div class="mb-30"></div>
+
+            <div class="import-info d-flex">
+              <img src="img/excel.png" alt="">
+              <p>
+                Скачайте и заполните файл примера своими данными. Загрузите в соответствующую форму.
+                <br>После загрузки файла, система начнет поиск по заданным параметрам
+              </p>
+            </div>
+
+            <style>
+              .import-info img {
+                width: 60px;
+                height: 55px;
+                margin-right: 1rem
+              }
+            </style>
 
             <?php ActiveForm::end(); ?>
 

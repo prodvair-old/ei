@@ -34,32 +34,34 @@ class importFIleForm extends Model
         $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
         $objPHPExcel = $objReader->load($this->fileImport->tempName);
         $sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
-        $baseRow = 2;
 
-        $result = [];
+        $baseRow = 21;
 
-        $where = ['or'];
+        $result = ['or'];
 
         while(!empty($sheetData[$baseRow]['B'])){
+            $where = ['or'];
 
             $where[] = ['like', 'lotPropName', (string)$sheetData[$baseRow]['B']];
+            
+            
+            if (strpos(mb_strtolower((string)$sheetData[$baseRow]['C'],'UTF-8'), 'ип') !== false || strpos(mb_strtolower((string)$sheetData[$baseRow]['C'],'UTF-8'), 'ооо') !== false || strpos(mb_strtolower((string)$sheetData[$baseRow]['C'],'UTF-8'), 'оао') !== false) {
+                $where[] = ['like', 'lotPropName', (string)$sheetData[$baseRow]['C']];
+            } else {
+                $names = explode(' ', (string)$sheetData[$baseRow]['C']);
+                $where[] = ['like', 'lotPropName', $names[0]];
+                $where[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').'.'.mb_substr($names[2],0,1,'UTF-8').'.'];
+                $where[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').'. '.mb_substr($names[2],0,1,'UTF-8').'.'];
+                $where[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').' '.mb_substr($names[2],0,1,'UTF-8')];
+                $where[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').mb_substr($names[2],0,1,'UTF-8')];
+            }
 
-            // $names = explode(' ', (string)$sheetData[$baseRow]['C']);
-            // $where[] = ['like', 'lotPropName', $names[0]];
-            // //     foreach ($names as $name) {
-            // //     $where[] = ['like', 'lotPropName', $name];
-            // // }
+            $where[] = ['lotPropName' => str_replace("'", "/'", (string)$sheetData[$baseRow]['D'])];
 
-            $where[] = ['lotPropName' => (string)$sheetData[$baseRow]['D']];
-
-
-            // foreach ($lots as $lot) {
-            //     $result[] = $lot;
-            // }
-
+            $result[] = $where;
             $baseRow++;
         }
 
-        return $where;
+        return $result;
     }
 }
