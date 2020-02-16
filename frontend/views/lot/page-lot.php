@@ -34,8 +34,15 @@ $this->registerJsVar( 'lotType', $lot->torg->type, $position = yii\web\View::POS
 $this->title = $lot->title;
 $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
+$isCategory = 
+    $lot->category->categoryId == '1061' ||
+    $lot->category->categoryId == '1063' ||
+    $lot->category->categoryId == '1064' ||
+    $lot->category->categoryId == '1068' ||
+    $lot->category->categoryId == '1083' ||
+    $lot->category->categoryId == '1102' ||
+    $lot->category->categoryId == '1102';
 ?>
-
 
 <section class="page-wrapper page-detail">
         
@@ -57,11 +64,11 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                         ]) ?>
                     </nav>
-                    
+
                 </div>
-                
+
             </div>
-    
+
         </div>
         
     </div>
@@ -143,6 +150,10 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             </div>
                         <? } ?>
 
+                    
+
+                        
+
                         <!-- <p class="lead">In friendship diminution instrument in we forfeited. Tolerably an unwilling of determine. Beyond rather sooner so if up wishes.</p> -->
                         
                         <ul class="list-inline-block highlight-list mt-30">
@@ -173,12 +184,29 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             </li>
                         </ul>
                         
-                        <h5 class="mt-30">Описание</h5>
+                        <h5 class="mt-30">Описание</h5> 
+                        <!-- <pre>
+                            <? // print_r($lot[info][address][region])?>,
+                            <? // print_r($lot[info][address][city])?>, 
+                            <? // print_r($lot[info][address][district])?>, 
+                            <? // print_r($lot[info][address][street])?>,
+                            <? // print_r($lot[info])?>
+                        </pre> -->
+                        
 
                         <p class="long-text"><?=$lot->description?></p>
                         <a href="#desc" class="open-text-js">Подробнее</a>
                         
                     </div>
+
+                    <? if($lot[info][address][geo_lat] && $isCategory): ?>
+                        <div 
+                            id="map-lot" 
+                            data-lat="<?=$lot[info][address][geo_lat];?>"
+                            data-lng="<?=$lot[info][address][geo_lon];?>">
+                        </div>
+                    <? endif; ?>
+
 
                     <div class="sidebar-mobile mb-40">
                         <?= LotDetailSidebar::widget(['lot' => $lot, 'type' => $type]) ?>
@@ -607,9 +635,16 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
             
             <div class="col-12 col-lg-4">
 
-            <div class="sidebar-desktop">
-          <?= LotDetailSidebar::widget(['lot' => $lot, 'type' => $type]) ?>
-        </div>
+                <div class="sidebar-desktop">
+                    <?= \ymaker\social\share\widgets\SocialShare::widget([
+                        'configurator'  => 'socialShare',
+                        'url'           => Url::to(),
+                        'title'         => Yii::$app->params['h1'],
+                        'description'   => $lot->description,
+                        'imageUrl'      => \yii\helpers\Url::to($lot->images[0], true),
+                    ]); ?>    
+                    <?= LotDetailSidebar::widget(['lot' => $lot, 'type' => $type]) ?>
+                </div>
                 
             </div>
             

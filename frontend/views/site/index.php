@@ -32,7 +32,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
       <h1 style="line-height:30px;margin-bottom:0px;">
         <span class="font200">
         <!-- <span class="font700 main-page__title">Единый информатор<br><span class="main-page__subtitle">Полный каталог реализуемого имущества организаций, должников и банков России</span> </span></h1> -->
-            <span class="font700 main-page__title">Полный каталог<br><span class="main-page__subtitle">реализуемого имущества организаций, должников и банков России</span> </span></h1>
+            <span class="font700 main-page__title">Полный каталог<br><span class="font200 main-page__subtitle">реализуемого имущества организаций, должников и банков России</span> </span></h1>
         <!-- </span><span class="font200">торгов<span class="block"> <span class="font700">по</span> банкротству</span></span> -->
       <?= SearchForm::widget(['type' => 'bankrupt', 'url' => 'all']) ?>
 
@@ -41,18 +41,6 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
   </div>
 
 </div>
-
-<!-- <div class="container">
-<div id="map"></div>
-</div> -->
-
-<!-- 
-    <style> 
-        #map {
-            height: 500px;
-            width: 100%;
-        }
-</style> -->
 
 <section class="pt-0 pb-0">
     <div class="container main-page">
@@ -93,7 +81,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
             </div>
             <div class="col-lg-4 main-page__link-item">
                 <div class="main-page__category__block">
-                    <p class="h4">Секции иммущества</p>
+                    <p class="h4">Секции имущества</p>
                     <hr>
                     <ul>
                         <li><a href="/all"> Все имущество <span>1999</span></a></li>
@@ -164,7 +152,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
         <figure class="category__item" style="background-color:#2b8ac6;">
             <a href="/zalog">
                 <div class="image">
-                <img src="https://images.unsplash.com/photo-1523270918669-1fd17ac1742d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=375&q=80" style="width:115px;height:115px;" alt="image"/>
+                <img src="https://images.unsplash.com/photo-1513496335913-a9aab0fc1318?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="image"/>
                 </div>
                 <figcaption class="content">
                     <div class="content__wrapper">

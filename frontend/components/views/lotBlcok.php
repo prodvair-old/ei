@@ -25,22 +25,46 @@ if ($lot->torg->typeId == 1) {
 }
 
 ?>
+
+<?
+$isCategory = $lot->category->categoryId == '1061' ||
+$lot->category->categoryId == '1063' ||
+$lot->category->categoryId == '1064' ||
+$lot->category->categoryId == '1068' ||
+$lot->category->categoryId == '1083' ||
+$lot->category->categoryId == '1102' ||
+$lot->category->categoryId == '1102'; 
+?>
 <?=($type == 'grid')? '<div class="col">': ''?>
                 
     <figure class="tour-<?=$type?>-item-01">
-
         <a href="<?=$lot->url?>" target="_blank">
 
             <?=($type == 'long')? '<div class="d-flex flex-column flex-sm-row">' : ''?>
         
                 <?=($type == 'long')? '<div>' : ''?>
+               
                     <div class="image image-galery">
-                        <img src="<?=($lot->images)? $lot->images[0]['min'] : 'img/img.svg'?>" alt="" />
-                        <?= ($lot->images[1]['min'])? '<img src="'.$lot->images[1]['min'].'" alt="" />'  : ''?>
-                        <?= ($lot->images[2]['min'])? '<img src="'.$lot->images[2]['min'].'" alt="" />'  : ''?>
-                        <?= ($lot->images[3]['min'])? '<img src="'.$lot->images[3]['min'].'" alt="" />'  : ''?>
-                        <?= ($lot->images[4]['min'])? '<img src="'.$lot->images[4]['min'].'" alt="" />'  : ''?>
+
+                        <?if(
+                            !$lot[info][address][geo_lat] && 
+                            !$lot[info][address][geo_lon] &&
+                            !$lot->images[0]['min'] || (!$isCategory && !$lot->images[0]['min'])):
+                        ?>
+                            <img src="img/img.svg" alt="" />
+                        <?endif;?>
+
+                        <?= ($lot->images[0]['min'])? '<img src="'.$lot->images[0]['min'].'" alt="" />'  : '';?>    
+                        <?= ($lot->images[1]['min'])? '<img src="'.$lot->images[1]['min'].'" alt="" />'  : '';?>
+                        <?= ($lot->images[2]['min'])? '<img src="'.$lot->images[2]['min'].'" alt="" />'  : '';?>
+                        <?= ($lot->images[3]['min'])? '<img src="'.$lot->images[3]['min'].'" alt="" />'  : '';?>
+                        <?= ($lot->images[4]['min'])? '<img src="'.$lot->images[4]['min'].'" alt="" />'  : '';?>
+                        <?if($isCategory):?>
+                            <?= ($lot[info][address][geo_lat] && $lot[info][address][geo_lon])? '<img src="https://static-maps.yandex.ru/1.x/?ll='.$lot[info][address][geo_lon].','.$lot[info][address][geo_lat].'&size=300,250&z=16&l=sat&pt='.$lot[info][address][geo_lon].','.$lot[info][address][geo_lat].',pm2gnl" alt="" />'  : '';?>
+                            <?= ($lot[info][address][geo_lat] && $lot[info][address][geo_lon])? '<img src="https://static-maps.yandex.ru/1.x/?ll='.$lot[info][address][geo_lon].','.$lot[info][address][geo_lat].'&size=300,250&z=13&l=sat&pt='.$lot[info][address][geo_lon].','.$lot[info][address][geo_lat].',pm2gnl" alt="" />'  : '';?>
+                        <?endif;?>
                         <div class="image-galery__control"></div>
+
                     </div>
                 <?=($type == 'long')? '</div>' : ''?>
 
@@ -90,6 +114,8 @@ if ($lot->torg->typeId == 1) {
                 <?=($type == 'long')? '</div>' : ''?>
                 
             <?=($type == 'long')? '</div>' : ''?>
+
+            
 
         </a>
         
