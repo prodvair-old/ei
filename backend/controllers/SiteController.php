@@ -6,6 +6,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use backend\models\HistoryAdd;
 
 /**
  * Site controller
@@ -75,15 +76,23 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            $model->password = '';
+        if ($model->load(Yii::$app->request->post())) {
+            $login = $model->loginAdmin();
+            if ($login['status']) {
+                HistoryAdd::singIn(1, 'Вход в систему');
 
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+                return $this->goBack();
+            }
+
+            if ($login['user']) {
+                HistoryAdd::singIn(2, 'Не удачный вход в систему', $model->errors, $login['user']);
+            }
         }
+        $model->password = '';
+
+        return $this->render('login', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -93,6 +102,10 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
+        if (!Yii::$app->user->isGuest) {
+            HistoryAdd::singOut(1, 'Выход из систему');
+        }
+        
         Yii::$app->user->logout();
 
         return $this->goHome();

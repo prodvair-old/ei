@@ -20,7 +20,9 @@ class UserAccess extends Module
     }
     public function forAdmin($access = null)
     {
-        if (Yii::$app->user->identity->role == 'superAdmin' || Yii::$app->user->identity->role == 'admin') {
+        if (Yii::$app->user->identity->role == 'superAdmin') {
+            return true;
+        } else if (Yii::$app->user->identity->role == 'admin') {
 
             if ($access != null) {
                 return Yii::$app->user->identity->access[$access];
@@ -33,12 +35,17 @@ class UserAccess extends Module
         return false;
     }
     
-    public function forManager($access = null)
+    public function forManager($page = null, $access = null)
     {
-        if (Yii::$app->user->identity->role == 'superAdmin' || Yii::$app->user->identity->role == 'admin' || Yii::$app->user->identity->role == 'manager') {
+        if (Yii::$app->user->identity->role == 'superAdmin') {
+            return true;
+        } else if (Yii::$app->user->identity->role == 'admin' || Yii::$app->user->identity->role == 'manager') {
 
-            if ($access != null) {
-                return Yii::$app->user->identity->access[$access];
+            if ($page != null) {
+                if ($access != null) {
+                    return Yii::$app->user->identity->access[$page][$access];
+                }
+                return Yii::$app->user->identity->access[$page]['status'];
             } else {
                 return true;
             }
@@ -50,7 +57,9 @@ class UserAccess extends Module
     
     public function forAgent($access = null)
     {
-        if (Yii::$app->user->identity->role == 'superAdmin' || Yii::$app->user->identity->role == 'agent') {
+        if (Yii::$app->user->identity->role == 'superAdmin') {
+            return true;
+        } else if (Yii::$app->user->identity->role == 'agent') {
 
             if ($access != null) {
                 return Yii::$app->user->identity->access[$access];
@@ -65,7 +74,9 @@ class UserAccess extends Module
     
     public function forArbitr($access = null)
     {
-        if (Yii::$app->user->identity->role == 'superAdmin' || Yii::$app->user->identity->role == 'arbitr') {
+        if (Yii::$app->user->identity->role == 'superAdmin') {
+            return true;
+        } else if (Yii::$app->user->identity->role == 'arbitr') {
 
             if ($access != null) {
                 return Yii::$app->user->identity->access[$access];
@@ -80,7 +91,9 @@ class UserAccess extends Module
     
     public function forSro($access = null)
     {
-        if (Yii::$app->user->identity->role == 'superAdmin' || Yii::$app->user->identity->role == 'sro') {
+        if (Yii::$app->user->identity->role == 'superAdmin') {
+            return true;
+        } else if (Yii::$app->user->identity->role == 'sro') {
 
             if ($access != null) {
                 return Yii::$app->user->identity->access[$access];
@@ -95,7 +108,9 @@ class UserAccess extends Module
     
     public function forEtp($access = null)
     {
-        if (Yii::$app->user->identity->role == 'superAdmin' || Yii::$app->user->identity->role == 'etp') {
+        if (Yii::$app->user->identity->role == 'superAdmin') {
+            return true;
+        } else if (Yii::$app->user->identity->role == 'etp') {
 
             if ($access != null) {
                 return Yii::$app->user->identity->access[$access];

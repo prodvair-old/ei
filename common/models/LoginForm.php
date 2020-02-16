@@ -53,7 +53,7 @@ class LoginForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+                $this->addError($attribute, 'Не верный логин или пароль.');
             }
         }
     }
@@ -70,6 +70,15 @@ class LoginForm extends Model
         }
         
         return false;
+    }
+
+    public function loginAdmin()
+    {
+        if ($this->validate()) {
+            return ['status' => Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0)];
+        }
+        
+        return ['status' => false, 'user' => $this->getUser()];
     }
 
     /**

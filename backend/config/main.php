@@ -14,7 +14,11 @@ return [
     'language' => 'ru-RU',
     'name' => 'Панель управления - Единый информатор',
     'sourceLanguage' => 'ru-RU',
-    'modules' => [],
+    'modules' => [
+        'gridview' => [
+            'class' => 'kartik\grid\Module',
+        ]
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -47,6 +51,8 @@ return [
                 ''          => 'site/index',
                 '/login'    => 'site/login',
                 '/logout'   => 'site/logout',
+
+                '/lots'     => 'lots/index',
             ],
         ],
     ],

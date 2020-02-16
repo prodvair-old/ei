@@ -30,7 +30,8 @@
         "andkon/yii2kladr": "^1.0",
         "yiisoft/yii2-bootstrap4": "~2.0.6",
         "dmstr/yii2-adminlte-asset": "2.*",
-        "yiister/yii2-adminlte": "~1.0"
+        "yiister/yii2-adminlte": "~1.0",
+        "insolita/yii2-adminlte-widgets": "~3.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
