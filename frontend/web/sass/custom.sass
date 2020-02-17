@@ -1000,6 +1000,35 @@ body
     border-color: #dee2e6
     background-color: #e9ecef
 
+.sidebar-box 
+  border-top: 1px solid #eee
+  padding: 1rem 0
+  &__collaps
+    &.collaps
+      .box-content
+        display: none !important
+      .sidebar-box__label:after
+        content: '\f35f'
+  &__label
+    position: relative
+    &:after
+      font-family: 'Ionicons'
+      position: absolute
+      display: inline-block
+      content: '\f365'
+      right: .75rem
+      top: 0
+      color: #666
+      font-size: 1rem
+      
+
+     
+.sidebar-box+.sidebar-box
+  margin-top: 0
+   
+
+
 @media (min-width: 576px)
   .hero-banner.hero-banner-01.alt-option-03 .container
       padding-bottom: 0
+     

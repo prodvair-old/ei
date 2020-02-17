@@ -13,6 +13,7 @@ use yiister\adminlte\widgets\FlashAlert;
                 echo ($this->context->module->id !== \Yii::$app->id) ? '<small>Module</small>' : '';
             } ?>
         </h1>
+        <?=FlashAlert::widget()?>
         <?=
         Breadcrumbs::widget(
             [

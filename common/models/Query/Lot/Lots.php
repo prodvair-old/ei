@@ -73,7 +73,7 @@ class Lots extends ActiveRecord
         }if ($this->priceHistorys != null) {
             $date = Yii::$app->formatter->asDatetime(new \DateTime(), "php:Y-m-d H:i:s");
             foreach ($this->priceHistorys as $key => $value) {
-                if (($key == 0 || $value->intervalBegin <= $date) && $value->intervalEnd >= $date) {
+                if ($value->intervalBegin <= $date && $value->intervalEnd >= $date) {
                     if ($value->price == $this->startPrice) {
                         return false;
                     } else {

@@ -3,6 +3,9 @@
 namespace backend\models\Editors;
 
 use Yii;
+use yii\helpers\FileHelper;
+use yii\imagine\Image;
+use Imagine\Image\Box;
 
 /**
  * This is the model class for table "eiLot.lots".
@@ -34,6 +37,7 @@ use Yii;
  */
 class LotEditor extends \yii\db\ActiveRecord
 {
+    public $uploads;
     /**
      * {@inheritdoc}
      */
@@ -52,8 +56,8 @@ class LotEditor extends \yii\db\ActiveRecord
             [['torgId', 'lotNumber', 'stepTypeId', 'depositTypeId', 'regionId', 'oldId', 'bankId'], 'default', 'value' => null],
             [['torgId', 'lotNumber', 'stepTypeId', 'depositTypeId', 'regionId', 'oldId', 'bankId'], 'integer'],
             [['msgId', 'title', 'description', 'city', 'district'], 'string'],
-            [['createdAt', 'updatedAt', 'info'], 'safe'],
-            ['images', 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => 10],
+            [['createdAt', 'updatedAt', 'info', 'images'], 'safe'],
+            ['uploads', 'file', 'skipOnEmpty' => true, 'maxFiles' => 10],
             [['startPrice', 'step', 'deposit'], 'number'],
             [['published'], 'boolean'],
             [['stepType', 'depositType'], 'string', 'max' => 50],
@@ -87,6 +91,7 @@ class LotEditor extends \yii\db\ActiveRecord
             'status' => 'Стату лота на торгах.',
             'info' => 'Дополнительная информация о лота в виде json объектов',
             'images' => 'Загрузка картинкок',
+            'uploads' => 'Загрузка картинкок',
             'published' => 'Лот опубликован на сайте или нет',
             'regionId' => 'ID Региона где находится этот лот',
             'city' => 'City',
@@ -98,58 +103,52 @@ class LotEditor extends \yii\db\ActiveRecord
 
     public function uploadImages()
     {
-        $this->images = UploadedFile::getInstances($this, 'images');
+        $images = $this->images;
 
-        foreach ($this->lot_images as $file) {
+        foreach ($this->uploads as $id => $image) {
 
-            $check = Yii::$app->db->createCommand('select id from obj$images where fileurl = \'lot_photo_'.$maxid.'.'.$file->extension.'\'')->queryAll();
+            $pathImage = 'img/lot/'.$this->id.'/';
+            $format = $image->extension;
+            $thisId = (($this->images != null)? count($this->images) : $id);
 
-            if ($check[0] == null) {
+            $frontParth = Yii::getAlias('@frontendWeb').'/'.$pathImage;
 
-                $frontParth = Yii::getAlias('@frontendWeb').'/img/lot/'.$this->lot_id.'/';
+            FileHelper::createDirectory($frontParth);
 
-                FileHelper::createDirectory($frontParth);
+            $image->saveAs($frontParth.'lot_photo_'.$thisId.'.'.$format);
 
-                $file->saveAs($frontParth.'lot_photo_'.$maxid.'.'.$file->extension);
+            $image = Yii::getAlias($frontParth.'lot_photo_'.$thisId.'.'.$format);
+            $sizeText = getimagesize($image); // Определяем размер картинки
+            $imageWidth = $sizeText[0]; // Ширина картинки
 
-                $resizeImg = Yii::getAlias($frontParth.'lot_photo_'.$maxid.'.'.$file->extension);
-
-                Image::getImagine()->open($resizeImg)
-                    ->thumbnail(new Box(1280, 1280))
-                    ->save(Yii::getAlias($frontParth.'lot_photo_'.$maxid.'.'.$file->extension) , ['quality' => 90]);
-
-                $image = Yii::getAlias($frontParth.'lot_photo_'.$maxid.'.'.$file->extension);
-                $sizeText = getimagesize($image); // Определяем размер картинки
-                $imageWidth = $sizeText[0]; // Ширина картинки
-                if ($imageWidth < 400) {
-                    return false;
-                }
+            if ($imageWidth >= 400) {
                 $imageHeight = $sizeText[1]; // Высота картинки
                 $textPositionLeft = $imageWidth - 400; // Новая позиция watermark по оси X (горизонтально)
                 $textPositionTop = $imageHeight - 31;  // Новая позиция watermark по оси Y (вертикально)
                 $text = Yii::getAlias('@backendWeb').'/img/wathertext.jpg'; // 200x200
                 
                 Image::watermark($image, $text, [$textPositionLeft, $textPositionTop])
-                    ->save(Yii::getAlias($frontParth.'lot_photo_'.$maxid.'.'.$file->extension));
+                    ->save(Yii::getAlias($frontParth.'lot_photo_max_'.$thisId.'.'.$format));
 
-                // $imageWather = Yii::getAlias($frontParth.'lot_photo_'.$maxid.'.'.$file->extension);
-                // $sizeImg = getimagesize($imageWather); // Определяем размер картинки
-                // $imageWatherWidth = $sizeImg[0]; // Ширина картинки
-                // $imageWatherHeight = $sizeImg[1]; // Высота картинки
+                $resizeImg = Yii::getAlias($frontParth.'lot_photo_max_'.$thisId.'.'.$format);
 
-                // $watherImg = Yii::getAlias(Yii::getAlias('@backendWeb').'/img/watermark.png');
-                // $sizeWather = getimagesize($watherImg); // Определяем размер картинки
-                // $watherWidth = $sizeWather[0]; // Ширина картинки
-                // $watherHeight = $sizeWather[1]; // Высота картинки
+                Image::getImagine()->open($resizeImg)
+                    ->thumbnail(new Box(1280, 1280))
+                    ->save(Yii::getAlias($frontParth.'lot_photo_min_'.$thisId.'.'.$format) , ['quality' => 80]);
 
-                // $watermarkPositionLeft = ($imageWatherWidth * 0.5) - ($watherWidth * 0.5); // Новая позиция watermark по оси X (горизонтально)
-                // $watermarkPositionTop = ($imageWatherHeight * 0.5) - ($watherHeight * 0.5);  // Новая позиция watermark по оси Y (вертикально)
-                // $watermark = Yii::getAlias(Yii::getAlias('@backendWeb').'/img/watermark.png'); // 200x200
-                
-                // Image::watermark($imageWather, $watermark, [$watermarkPositionLeft, $watermarkPositionTop])
-                //     ->save(Yii::getAlias($frontParth.'lot_photo_'.$maxid.'.'.$file->extension));]
+                $images[$thisId] = [
+                    'max' => $pathImage.'lot_photo_max_'.$thisId.'.'.$format,
+                    'min' => $pathImage.'lot_photo_min_'.$thisId.'.'.$format,
+                ];
+
+            } else {
+                Yii::$app->session->setFlash('warning', "У картинки под №$id ширина меньше 400px. ПОжалуйста загрузите картинку по больше");
             }
         }
+
+        $this->images = $images;
+
+
         return true;
     }
 }
