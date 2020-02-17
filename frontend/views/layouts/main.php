@@ -343,6 +343,13 @@ AppAsset::register($this);
             <div class="container">
             
                 <div class="row gap-50">
+                  
+                  <!-- <a href="tel:88004441912" class="link-mobile"> 
+                    <span>
+                      8 (800) 444 19 12
+                    </span>
+                    <img src="img/telephone.svg" alt="icon_phone" class="link-mobile__icon">
+                  </a> -->
                 
                     <div class="col-lg-4">
                     

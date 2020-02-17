@@ -38,8 +38,8 @@ $description = ''; //'В нашей базе собрана исключител
 
                 </div>
             
-                <h1><?=$title?></h1>
-                <p class="font-lg spacing-1 "><?=$description?></p>
+                <h1 class="main-page__title"><?=$title?></h1>
+                <p class="font-lg spacing-1 main-page__subtitle"><?=$description?></p>
 
                 <?= SearchForm::widget(['type' => $type])?>
             

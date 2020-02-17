@@ -13,19 +13,19 @@ use common\models\Query\Zalog\OwnerProperty;
 $this->title = Yii::$app->params['title'];
 
 if ($type == 'bankrupt') {
-    $title = 'Единая база торгов <span class="font200 block">Имущество банкротов</span>';
+    $title = '<span class="font200 block">Имущество банкротов</span>';
     $imgBG = 'img/01.jpg';
     $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : 'В нашей базе собрана исключительно актуальная информация об имущество банкротов и должников, выставленном и тендеры и торги на ЭТП и публичных аукционах.';
 } else if ($type == 'zalog') {
-    $title = 'Единая база торгов <span class="font200"><br>имущества организаций</span>';
+    $title = '<span class="font200"><br>Имущество организаций</span>';
     $imgBG = 'img/01.jpg';
     $description = Yii::$app->params['text'];
 }else if ($type == 'arrest') {
-    $title = 'Единая база торгов <span class="font200"><br>Арестованное имущество</span>';
+    $title = '<span class="font200"><br>Арестованное имущество</span>';
     $imgBG = 'img/01.jpg';
     $description = Yii::$app->params['text'];
 } else {
-    $title = 'Единая база торгов <span class="font200"'.(($owner->tamplate['color-5'])? 'style="color: '.$owner->tamplate['color-5'].'"': '').'><br>'.$owner->name.'</span>';
+    $title = '<span class="font200"'.(($owner->tamplate['color-5'])? 'style="color: '.$owner->tamplate['color-5'].'"': '').'>'.$owner->name.'</span>';
     $imgBG = 'http://n.ei.ru'.$owner->tamplate['bg'];
     $description = $owner->description;
     
@@ -73,7 +73,7 @@ if ($type == 'bankrupt') {
 
     <div class="container">
 
-        <div class="clear mb-100"></div>
+        <div class="clear"></div>
 
         <div class="section-title-">
             <h2 class="h3 mb-20 font-weight-400">Популярные категории</h2>
