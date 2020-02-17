@@ -235,22 +235,22 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
 
 
-              <div class="col-12">
+              <!-- <div class="col-12">
                 <div class="col-inner  pv-15">
                   <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
                 </div>
-              </div>
+              </div> -->
 
             </div>
 
-          </div>
+          <!-- </div> -->
 
-          <div class="sidebar-box">
+          <div class="sidebar-box sidebar-box__collaps collaps">
 
-            <div class="box-title">
+            <!-- <div class="box-title">
               <h5>Цена</h5>
-            </div>
-
+            </div> -->
+            <label class="control-label sidebar-box__label" for="">Цена</label> 
             <div class="box-content">
               <div class="row">
                 <div class="col-6"><?= $form->field($model, 'minPrice')->textInput(['class' => 'lot__price-min form-control', 'placeholder' => 'Цена от'])->label(false); ?></div>
@@ -264,12 +264,12 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
           </div>
 
-          <div class="sidebar-box bankrupt-type">
+          <div class="sidebar-box bankrupt-type sidebar-box__collaps collaps">
 
-            <div class="box-title">
+            <!-- <div class="box-title">
               <h5><?= $traderLabel ?></h5>
-            </div>
-
+            </div> -->
+            <label class="control-label sidebar-box__label" ><?= $traderLabel ?></label>           
             <div class="box-content">
               <?= $form->field($model, 'etp')->dropDownList(
                 $traderList,
@@ -285,14 +285,14 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
           </div>
 
-          <div class="sidebar-box">
+          <div class="sidebar-box sidebar-box__collaps collaps">
 
-            <div class="box-title">
+            <!-- <div class="box-title">
               <h5>Тип торгов</h5>
-            </div>
-
+            </div> -->
+            <label class="control-label sidebar-box__label" >Тип торгов</label>      
             <div class="box-content">
-
+                 
               <div class="custom-control custom-checkbox">
                 <?= $form->field($model, 'tradeType')->checkbox([
                   'class' => 'custom-control-input',
@@ -316,12 +316,12 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
           <div class="sidebar-box">
 
-            <div class="box-title">
+            <!-- <div class="box-title">
               <h5>Другое</h5>
-            </div>
-
+            </div> -->
+            <!-- <label class="control-label  sidebar-box__label">Другое</label>         -->
             <div class="box-content">
-
+             
               <div class="custom-control custom-checkbox">
                 <?= $form->field($model, 'imageCheck')->checkbox([
                   'class' => 'custom-control-input',
@@ -343,14 +343,10 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
           </div>
 
-          <div class="sidebar-box">
+          <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>        
 
-            <?= Html::submitButton('фильтровать', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
-
-          </div>
-
-          <div class="sidebar-box">
-            <p><?= Yii::$app->params['text'] ?></p>
+         
+          <p><?= Yii::$app->params['text'] ?></p>
           </div>
           <?php ActiveForm::end(); ?>
         </aside>
