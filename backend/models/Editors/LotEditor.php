@@ -37,6 +37,7 @@ use Imagine\Image\Box;
  */
 class LotEditor extends \yii\db\ActiveRecord
 {
+    public $uploads;
     /**
      * {@inheritdoc}
      */
@@ -55,8 +56,8 @@ class LotEditor extends \yii\db\ActiveRecord
             [['torgId', 'lotNumber', 'stepTypeId', 'depositTypeId', 'regionId', 'oldId', 'bankId'], 'default', 'value' => null],
             [['torgId', 'lotNumber', 'stepTypeId', 'depositTypeId', 'regionId', 'oldId', 'bankId'], 'integer'],
             [['msgId', 'title', 'description', 'city', 'district'], 'string'],
-            [['createdAt', 'updatedAt', 'info'], 'safe'],
-            ['images', 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => 10],
+            [['createdAt', 'updatedAt', 'info', 'images'], 'safe'],
+            ['uploads', 'file', 'skipOnEmpty' => true, 'maxFiles' => 10],
             [['startPrice', 'step', 'deposit'], 'number'],
             [['published'], 'boolean'],
             [['stepType', 'depositType'], 'string', 'max' => 50],
@@ -90,6 +91,7 @@ class LotEditor extends \yii\db\ActiveRecord
             'status' => 'Стату лота на торгах.',
             'info' => 'Дополнительная информация о лота в виде json объектов',
             'images' => 'Загрузка картинкок',
+            'uploads' => 'Загрузка картинкок',
             'published' => 'Лот опубликован на сайте или нет',
             'regionId' => 'ID Региона где находится этот лот',
             'city' => 'City',
@@ -101,20 +103,21 @@ class LotEditor extends \yii\db\ActiveRecord
 
     public function uploadImages()
     {
-        $images = [];
+        $images = $this->images;
 
-        foreach ($this->images as $id => $image) {
+        foreach ($this->uploads as $id => $image) {
 
-            $pathImage = '/img/lot/'.$this->id.'/';
+            $pathImage = 'img/lot/'.$this->id.'/';
             $format = $image->extension;
+            $thisId = (($this->images != null)? count($this->images) : $id);
 
-            $frontParth = Yii::getAlias('@frontendWeb').$pathImage;
+            $frontParth = Yii::getAlias('@frontendWeb').'/'.$pathImage;
 
             FileHelper::createDirectory($frontParth);
 
-            $image->saveAs($frontParth.'lot_photo_'.$id.'.'.$format);
+            $image->saveAs($frontParth.'lot_photo_'.$thisId.'.'.$format);
 
-            $image = Yii::getAlias($frontParth.'lot_photo_'.$id.'.'.$format);
+            $image = Yii::getAlias($frontParth.'lot_photo_'.$thisId.'.'.$format);
             $sizeText = getimagesize($image); // Определяем размер картинки
             $imageWidth = $sizeText[0]; // Ширина картинки
 
@@ -125,24 +128,27 @@ class LotEditor extends \yii\db\ActiveRecord
                 $text = Yii::getAlias('@backendWeb').'/img/wathertext.jpg'; // 200x200
                 
                 Image::watermark($image, $text, [$textPositionLeft, $textPositionTop])
-                    ->save(Yii::getAlias($frontParth.'lot_photo_max_'.$id.'.'.$format));
+                    ->save(Yii::getAlias($frontParth.'lot_photo_max_'.$thisId.'.'.$format));
 
-                $resizeImg = Yii::getAlias($frontParth.'lot_photo_max_'.$id.'.'.$format);
+                $resizeImg = Yii::getAlias($frontParth.'lot_photo_max_'.$thisId.'.'.$format);
 
                 Image::getImagine()->open($resizeImg)
                     ->thumbnail(new Box(1280, 1280))
-                    ->save(Yii::getAlias($frontParth.'lot_photo_min_'.$id.'.'.$format) , ['quality' => 90]);
+                    ->save(Yii::getAlias($frontParth.'lot_photo_min_'.$thisId.'.'.$format) , ['quality' => 80]);
 
-                $images[] = [
-                    'max' => $pathImage.'lot_photo_max_'.$id.'.'.$format,
-                    'min' => $pathImage.'lot_photo_min_'.$id.'.'.$format,
+                $images[$thisId] = [
+                    'max' => $pathImage.'lot_photo_max_'.$thisId.'.'.$format,
+                    'min' => $pathImage.'lot_photo_min_'.$thisId.'.'.$format,
                 ];
+
             } else {
                 Yii::$app->session->setFlash('warning', "У картинки под №$id ширина меньше 400px. ПОжалуйста загрузите картинку по больше");
             }
         }
 
         $this->images = $images;
+
+
         return true;
     }
 }

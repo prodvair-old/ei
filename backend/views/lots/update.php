@@ -156,7 +156,7 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
             <? } ?>
             <div class="col-lg-12">
                 <br>
-                <?= $form->field($modelLot, 'images[]')->fileInput(['multiple' => true, 'accept' => 'image/jpeg,image/png,image/jpg']) ?>
+                <?= $form->field($modelLot, 'uploads[]')->fileInput(['multiple' => true, 'accept' => 'image/jpeg,image/png,image/jpg']) ?>
             </div>
         </div>
 

@@ -86,7 +86,7 @@ class LotsController extends Controller
 
         if ($modelLot->load(Yii::$app->request->post()) && $modelLot->validate()) {
 
-            if ($modelLot->images = UploadedFile::getInstances($modelLot, 'images')) {
+            if ($modelLot->uploads = UploadedFile::getInstances($modelLot, 'uploads')) {
                 $modelLot->uploadImages();
             }
 
