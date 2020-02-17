@@ -38,8 +38,8 @@ use backend\models\UserAccess;
                 'activeCssClass' => 'active menu-open',
                 'activateParents'=>true,
                 'items' => [
-                    ['label' => 'Меню', 'options' => ['class' => 'header'], 'template' => '{label}'],
-                    ['label' => 'Главная', 'url' => ['site/index'], 'icon' => 'home'],
+                    // ['label' => 'Меню', 'options' => ['class' => 'header'], 'template' => '{label}'],
+                    // ['label' => 'Главная', 'url' => ['site/index'], 'icon' => 'home'],
                     [
                         'label' => 'Лоты', 
                         'url' => ['lots/index'], 

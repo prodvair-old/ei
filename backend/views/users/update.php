@@ -39,7 +39,7 @@ $access = [
              'collapseRemember' => true,
              'collapseDefault' => false,
              'isSolid'=>true,
-             'boxTools'=>Html::a('Назад', Url::to(['users/index']),['class' => 'btn']).' '.((UserAccess::forSuperAdmin('users', 'delete'))? Html::a('Удаить', '/users/delete?id='.$model->id,['class' => 'btn btn-danger', 'title' => 'Удалить', 'aria-label' => 'Удалить', 'data-pjax' => 0, 'data-confirm' => 'Вы уверены, что хотите Удалить этоого пользователя?', 'data-method' => 'post']) : ''),
+             'boxTools'=>Html::a('Назад', Url::to(['users/index']),['class' => 'btn']).' '.((UserAccess::forSuperAdmin('users', 'delete'))? Html::a('Удалить', '/users/delete?id='.$model->id,['class' => 'btn btn-danger', 'title' => 'Удалить', 'aria-label' => 'Удалить', 'data-pjax' => 0, 'data-confirm' => 'Вы уверены, что хотите Удалить этоого пользователя?', 'data-method' => 'post']) : ''),
              'tooltip'=>'Данные полльзователя',
              'title'=>'Пользователь',
         ])?>

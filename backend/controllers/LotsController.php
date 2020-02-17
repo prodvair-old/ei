@@ -14,6 +14,7 @@ use backend\models\Editors\LotEditor;
 use backend\models\Editors\TorgEditor;
 
 use common\models\Query\Lot\LotsAll;
+use backend\models\HistoryAdd;
 
 /**
  * Lots controller
@@ -92,8 +93,10 @@ class LotsController extends Controller
 
             if ($modelLot->update()) {
                 Yii::$app->session->setFlash('success', "Изменения лота успешно применены");
+                HistoryAdd::edit(1, 'lots/update','Редактирование лота №'.$lot->id, ['lotId' => $lot->id], Yii::$app->user->identity);
             } else {
                 Yii::$app->session->setFlash('error', "Ошибка при сохранении новых данных лота");
+                HistoryAdd::edit(2, 'lots/update','Ошибка при редактирования лота №'.$lot->id, ['lotId' => $lot->id], Yii::$app->user->identity);
             }
 
             return $this->redirect(['lots/update', 'id' => $lot->id]);

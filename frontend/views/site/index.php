@@ -42,9 +42,27 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
 
 </div>
 
-<section class="pt-0 pb-0">
+<section class="pt-0 pb-0 p-20">
     <div class="container main-page">
         <div class="row main-page__category">
+        <div class="col-lg-4 main-page__link-item">
+                <div class="main-page__category__block">
+                    <p class="h4">Секции имущества</p>
+                    <hr>
+                    <ul>
+                        <li><a href="/all"> Все имущество <!--<span>1999</span>--></a></li>
+                        <li><a href="/bankrupt"> Банкротное имущество <!--<span>1999</span>--></a></li>
+                        <li><a href="/arrest"> Арестованное имущество <!--<span>1999</span>--></a></li>
+                        <li><a href="/caterpillar">Caterpillar<!--<span>1999</span>--></a></li>
+                        <li><a href="/portal-da">Portal Da<!--<span>1999</span>--></a></li>
+                        <li><a href="/open-bank">Банк Открытие<!--<span>1999</span>--></a></li>
+                        <li><a href="/gilfondrt">ГЖФ при Президенте РТ<!--<span>1999</span>--></a></li>
+                        <li><a href="/greentau">Гринтау<!--<span>1999</span>--></a></li>
+                        <li><a href="/rosselkhozbank">Россельхозбанк<!--<span>1999</span>--></a></li>
+                        <li><a href="/sberbank">Сберабанк<!--<span>1999</span>--></a></li>
+                    </ul>
+                </div>
+            </div>
             <div class="col-lg-4 main-page__link-item">
                 <div class="main-page__category__block">
                     <p class="h4">Категории</p>
@@ -79,24 +97,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-4 main-page__link-item">
-                <div class="main-page__category__block">
-                    <p class="h4">Секции имущества</p>
-                    <hr>
-                    <ul>
-                        <li><a href="/all"> Все имущество <!--<span>1999</span>--></a></li>
-                        <li><a href="/bankrupt"> Банкротное имущество <!--<span>1999</span>--></a></li>
-                        <li><a href="/arrest"> Арестованное имущество <!--<span>1999</span>--></a></li>
-                        <li><a href="/caterpillar">Caterpillar<!--<span>1999</span>--></a></li>
-                        <li><a href="/portal-da">Portal Da<!--<span>1999</span>--></a></li>
-                        <li><a href="/open-bank">Банк Открытие<!--<span>1999</span>--></a></li>
-                        <li><a href="/gilfondrt">ГЖФ при Президенте РТ<!--<span>1999</span>--></a></li>
-                        <li><a href="/greentau">Гринтау<!--<span>1999</span>--></a></li>
-                        <li><a href="/rosselkhozbank">Россельхозбанк<!--<span>1999</span>--></a></li>
-                        <li><a href="/sberbank">Сберабанк<!--<span>1999</span>--></a></li>
-                    </ul>
-                </div>
-            </div>
+            
 
         </div>
     </div>
