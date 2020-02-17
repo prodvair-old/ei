@@ -31,5 +31,5 @@ use yiister\adminlte\widgets\FlashAlert;
     <div class="pull-right hidden-xs">
         <b>Версия</b> 2.0
     </div>
-    <strong>Copyright &copy; 2019-2020 <a href="http://xii12.ru/">xii12 studio</a>.</strong> Все права защищены.
+    <strong>Copyright &copy; 2019-2020 <a href="http://ei.ru/">ei.ru</a>.</strong> Все права защищены.
 </footer>

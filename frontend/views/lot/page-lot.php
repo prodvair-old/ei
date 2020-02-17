@@ -8,7 +8,7 @@ use yii\helpers\Url;
 
 use frontend\components\NumberWords;
 use frontend\components\LotDetailSidebar;
-use frontend\components\LotBlock;
+use frontend\components\LotBlock; 
 use frontend\components\ServiceLotFormWidget;
 
 use frontend\models\ViewPage;

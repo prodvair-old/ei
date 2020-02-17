@@ -32,6 +32,4 @@ Redirect 301 /prochee                       https://ei.ru/bankrupt/prochee
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-php_value memory_limit 100M
-
 RewriteRule . index.php

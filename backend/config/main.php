@@ -48,11 +48,11 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                ''          => 'site/index',
+                ''          => 'lots/index',
                 '/login'    => 'site/login',
                 '/logout'   => 'site/logout',
 
-                '/lots'     => 'lots/index',
+                // '/lots'     => 'lots/index',
             ],
         ],
     ],
