@@ -3,6 +3,9 @@
 namespace backend\models\Editors;
 
 use Yii;
+use yii\helpers\FileHelper;
+use yii\imagine\Image;
+use Imagine\Image\Box;
 
 /**
  * This is the model class for table "eiLot.lots".
@@ -98,58 +101,48 @@ class LotEditor extends \yii\db\ActiveRecord
 
     public function uploadImages()
     {
-        $this->images = UploadedFile::getInstances($this, 'images');
+        $images = [];
 
-        foreach ($this->lot_images as $file) {
+        foreach ($this->images as $id => $image) {
 
-            $check = Yii::$app->db->createCommand('select id from obj$images where fileurl = \'lot_photo_'.$maxid.'.'.$file->extension.'\'')->queryAll();
+            $pathImage = '/img/lot/'.$this->id.'/';
+            $format = $image->extension;
 
-            if ($check[0] == null) {
+            $frontParth = Yii::getAlias('@frontendWeb').$pathImage;
 
-                $frontParth = Yii::getAlias('@frontendWeb').'/img/lot/'.$this->lot_id.'/';
+            FileHelper::createDirectory($frontParth);
 
-                FileHelper::createDirectory($frontParth);
+            $image->saveAs($frontParth.'lot_photo_'.$id.'.'.$format);
 
-                $file->saveAs($frontParth.'lot_photo_'.$maxid.'.'.$file->extension);
+            $image = Yii::getAlias($frontParth.'lot_photo_'.$id.'.'.$format);
+            $sizeText = getimagesize($image); // Определяем размер картинки
+            $imageWidth = $sizeText[0]; // Ширина картинки
 
-                $resizeImg = Yii::getAlias($frontParth.'lot_photo_'.$maxid.'.'.$file->extension);
-
-                Image::getImagine()->open($resizeImg)
-                    ->thumbnail(new Box(1280, 1280))
-                    ->save(Yii::getAlias($frontParth.'lot_photo_'.$maxid.'.'.$file->extension) , ['quality' => 90]);
-
-                $image = Yii::getAlias($frontParth.'lot_photo_'.$maxid.'.'.$file->extension);
-                $sizeText = getimagesize($image); // Определяем размер картинки
-                $imageWidth = $sizeText[0]; // Ширина картинки
-                if ($imageWidth < 400) {
-                    return false;
-                }
+            if ($imageWidth >= 400) {
                 $imageHeight = $sizeText[1]; // Высота картинки
                 $textPositionLeft = $imageWidth - 400; // Новая позиция watermark по оси X (горизонтально)
                 $textPositionTop = $imageHeight - 31;  // Новая позиция watermark по оси Y (вертикально)
                 $text = Yii::getAlias('@backendWeb').'/img/wathertext.jpg'; // 200x200
                 
                 Image::watermark($image, $text, [$textPositionLeft, $textPositionTop])
-                    ->save(Yii::getAlias($frontParth.'lot_photo_'.$maxid.'.'.$file->extension));
+                    ->save(Yii::getAlias($frontParth.'lot_photo_max_'.$id.'.'.$format));
 
-                // $imageWather = Yii::getAlias($frontParth.'lot_photo_'.$maxid.'.'.$file->extension);
-                // $sizeImg = getimagesize($imageWather); // Определяем размер картинки
-                // $imageWatherWidth = $sizeImg[0]; // Ширина картинки
-                // $imageWatherHeight = $sizeImg[1]; // Высота картинки
+                $resizeImg = Yii::getAlias($frontParth.'lot_photo_max_'.$id.'.'.$format);
 
-                // $watherImg = Yii::getAlias(Yii::getAlias('@backendWeb').'/img/watermark.png');
-                // $sizeWather = getimagesize($watherImg); // Определяем размер картинки
-                // $watherWidth = $sizeWather[0]; // Ширина картинки
-                // $watherHeight = $sizeWather[1]; // Высота картинки
+                Image::getImagine()->open($resizeImg)
+                    ->thumbnail(new Box(1280, 1280))
+                    ->save(Yii::getAlias($frontParth.'lot_photo_min_'.$id.'.'.$format) , ['quality' => 90]);
 
-                // $watermarkPositionLeft = ($imageWatherWidth * 0.5) - ($watherWidth * 0.5); // Новая позиция watermark по оси X (горизонтально)
-                // $watermarkPositionTop = ($imageWatherHeight * 0.5) - ($watherHeight * 0.5);  // Новая позиция watermark по оси Y (вертикально)
-                // $watermark = Yii::getAlias(Yii::getAlias('@backendWeb').'/img/watermark.png'); // 200x200
-                
-                // Image::watermark($imageWather, $watermark, [$watermarkPositionLeft, $watermarkPositionTop])
-                //     ->save(Yii::getAlias($frontParth.'lot_photo_'.$maxid.'.'.$file->extension));]
+                $images[] = [
+                    'max' => $pathImage.'lot_photo_max_'.$id.'.'.$format,
+                    'min' => $pathImage.'lot_photo_min_'.$id.'.'.$format,
+                ];
+            } else {
+                Yii::$app->session->setFlash('warning', "У картинки под №$id ширина меньше 400px. ПОжалуйста загрузите картинку по больше");
             }
         }
+
+        $this->images = $images;
         return true;
     }
 }
