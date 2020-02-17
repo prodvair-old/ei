@@ -140,9 +140,9 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
              'collapseRemember' => true,
              'collapseDefault' => false,
              'isSolid'=>true,
-             'boxTools'=>Html::a('Назад', Url::to(['lots/index']),['class' => 'btn']).' '.Html::a('Удаить', '/lots/delete?id='.$modelLot->id,['class' => 'btn btn-danger', 'title' => 'Удалить', 'aria-label' => 'Удалить', 'data-pjax' => 0, 'data-confirm' => 'Вы уверены, что хотите Удалить этот лот?', 'data-method' => 'post']).' '.Html::a((($modelLot->published)? 'Снять с публикации' : 'Опубликовать'), '/lots/published?id='.$modelLot->id,['class' => 'btn btn-primary', 'title' => (($modelLot->published)? 'Снять с публикации' : 'Опубликовать'), 'aria-label' => (($modelLot->published)? 'Снять с публикации' : 'Опубликовать'), 'data-pjax' => 0, 'data-confirm' => 'Вы уверены, что хотите '.(($modelLot->published)? 'Снять с публикации' : 'Опубликовать').' этот лот?', 'data-method' => 'post']).' '.Html::a('Страница лота', Yii::$app->params['frontLink'].'/'.$lot->url,['class' => 'btn btn-info', 'target' => '_blank']),
+             'boxTools'=>Html::a('Назад', Url::to(['lots/index']),['class' => 'btn']).' '.Html::a('Удалить', '/lots/delete?id='.$modelLot->id,['class' => 'btn btn-danger', 'title' => 'Удалить', 'aria-label' => 'Удалить', 'data-pjax' => 0, 'data-confirm' => 'Вы уверены, что хотите Удалить этот лот?', 'data-method' => 'post']).' '.Html::a((($modelLot->published)? 'Снять с публикации' : 'Опубликовать'), '/lots/published?id='.$modelLot->id,['class' => 'btn btn-primary', 'title' => (($modelLot->published)? 'Снять с публикации' : 'Опубликовать'), 'aria-label' => (($modelLot->published)? 'Снять с публикации' : 'Опубликовать'), 'data-pjax' => 0, 'data-confirm' => 'Вы уверены, что хотите '.(($modelLot->published)? 'Снять с публикации' : 'Опубликовать').' этот лот?', 'data-method' => 'post']).' '.Html::a('Страница лота', Yii::$app->params['frontLink'].'/'.$lot->url,['class' => 'btn', 'target' => '_blank']),
              'tooltip'=>'Данные лота',
-             'title'=>'Лот',
+             'title'=>'Главные характеристики лота',
         ])?>
         <div class="form-group">
             <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) ?>
@@ -208,12 +208,10 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
 <?php $form = ActiveForm::begin(); ?>
     <?php CollapseBox::begin([
              'type'=>LteConst::TYPE_DEFAULT,
-             'collapseRemember' => true,
-             'collapseDefault' => false,
              'isSolid'=>true,
              'boxTools'=>Html::a('Назад', Url::to(['lots/index']),['class' => 'btn']),
              'tooltip'=>'Данные торга',
-             'title'=>'Торг по лоту',
+             'title'=>'Информация по торгу',
         ])?>
 
         <div class="form-group">

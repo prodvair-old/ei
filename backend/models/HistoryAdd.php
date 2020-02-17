@@ -41,4 +41,19 @@ class HistoryAdd extends Module
 
         return $history->save();
     }
+
+    public function edit($status, $page, $message, $messageJson = null, $user = null)
+    {
+        $history = new HistoryAdmin();
+
+        $history->userId        = Yii::$app->user->id;
+        $history->userRole      = Yii::$app->user->identity->role;
+        $history->typeId        = 3;
+        $history->statusId      = $status;
+        $history->message       = $message;
+        $history->messageJson   = $messageJson;
+        $history->page          = $page;
+
+        return $history->save();
+    }
 }

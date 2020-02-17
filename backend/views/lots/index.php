@@ -28,22 +28,6 @@ $dataProvider = new ActiveDataProvider([
                     'dataProvider' => $dataProvider,
                     'columns' => [
                         [
-                            'class' => 'yii\grid\ActionColumn',
-                            'template' => ((UserAccess::forManager('lots', 'edit'))? '{update} ':'').'{link}'.((UserAccess::forManager('lots', 'delete'))? ' {delete}':''),
-                            'buttons' => [
-                                'link' => function ($url,$model) {
-                                    return Html::a(
-                                    '<span class="fa fa-'.(($model->published)? 'eye  text-success' : 'eye-slash  text-muted').'"></span>', 
-                                    Yii::$app->params['frontLink'].'/'.$model->url);
-                                },
-                                'delete' => function ($url,$model) {
-                                    return Html::a(
-                                    '<span class="fa fa-trash-o text-danger"></span>', 
-                                    $url, ['aria-label' => 'Удалить', 'title' => 'Удалить', 'data-pjax'=>'1', 'data-confirm' => 'Вы уверены, что хотите удалить этот лот?', 'data-method' => 'post']);
-                                },
-                            ]
-                        ],
-                        [
                             'attribute' => 'id',
                             'format' => 'ntext',
                             'label' => 'ID',
@@ -72,6 +56,14 @@ $dataProvider = new ActiveDataProvider([
                             'attribute' => 'price',
                             'format' => 'ntext',
                             'label' => 'Цена',
+                            'value' => function ($model) {
+                                return $model->price.' руб.';
+                            }
+                        ],
+                        [
+                            'attribute' => 'price',
+                            'format' => 'ntext',
+                            'label' => 'Цена',
                         ],
                         [
                             'class' => 'yii\grid\ActionColumn',
@@ -80,7 +72,7 @@ $dataProvider = new ActiveDataProvider([
                                 'link' => function ($url,$model) {
                                     return Html::a(
                                     '<span class="fa fa-eye text-success"></span>', 
-                                    Yii::$app->params['frontLink'].'/'.$model->url);
+                                    Yii::$app->params['frontLink'].'/'.$model->url, ['target' => '_blank']);
                                 },
                                 'delete' => function ($url,$model) {
                                     return Html::a(

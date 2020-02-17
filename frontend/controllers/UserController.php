@@ -258,7 +258,7 @@ class UserController extends Controller
 
         $model->contactPersonId     = Yii::$app->user->id;
         $model->ownerId             = Yii::$app->user->identity->ownerId;
-        var_dump($model->categoryIds);
+        
         $modelCategorys->categorys    = $model->categoryIds;
         $modelCategorys->subCategorys = $model->subCategory;
 
@@ -328,7 +328,7 @@ class UserController extends Controller
 
         $model->contactPersonId     = Yii::$app->user->id;
         $model->ownerId             = Yii::$app->user->identity->ownerId;
-        var_dump($model->categoryIds);
+        
         $modelCategorys->categorys    = $model->categoryIds;
         $modelCategorys->subCategorys = $model->subCategory;
 
@@ -363,9 +363,6 @@ class UserController extends Controller
           
             
             $modelCategorys->lotId        = $model->id;
-
-            var_dump($modelCategorys->validate());
-            var_dump($modelCategorys->errors);
 
             // $modelCategorys->setCategory();
 
