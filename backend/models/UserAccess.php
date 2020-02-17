@@ -18,14 +18,17 @@ class UserAccess extends Module
         
         return false;
     }
-    public function forAdmin($access = null)
+    public function forAdmin($page = null, $access = null)
     {
         if (Yii::$app->user->identity->role == 'superAdmin') {
             return true;
         } else if (Yii::$app->user->identity->role == 'admin') {
 
-            if ($access != null) {
-                return Yii::$app->user->identity->access[$access];
+            if ($page != null) {
+                if ($access != null) {
+                    return Yii::$app->user->identity->access[$page][$access];
+                }
+                return Yii::$app->user->identity->access[$page]['status'];
             } else {
                 return true;
             }
@@ -55,14 +58,17 @@ class UserAccess extends Module
         return false;
     }
     
-    public function forAgent($access = null)
+    public function forAgent($page = null, $access = null)
     {
         if (Yii::$app->user->identity->role == 'superAdmin') {
             return true;
         } else if (Yii::$app->user->identity->role == 'agent') {
 
-            if ($access != null) {
-                return Yii::$app->user->identity->access[$access];
+            if ($page != null) {
+                if ($access != null) {
+                    return Yii::$app->user->identity->access[$page][$access];
+                }
+                return Yii::$app->user->identity->access[$page]['status'];
             } else {
                 return true;
             }
@@ -72,14 +78,17 @@ class UserAccess extends Module
         return false;
     }
     
-    public function forArbitr($access = null)
+    public function forArbitr($page = null, $access = null)
     {
         if (Yii::$app->user->identity->role == 'superAdmin') {
             return true;
         } else if (Yii::$app->user->identity->role == 'arbitr') {
 
-            if ($access != null) {
-                return Yii::$app->user->identity->access[$access];
+            if ($page != null) {
+                if ($access != null) {
+                    return Yii::$app->user->identity->access[$page][$access];
+                }
+                return Yii::$app->user->identity->access[$page]['status'];
             } else {
                 return true;
             }
@@ -89,14 +98,17 @@ class UserAccess extends Module
         return false;
     }
     
-    public function forSro($access = null)
+    public function forSro($page = null, $access = null)
     {
         if (Yii::$app->user->identity->role == 'superAdmin') {
             return true;
         } else if (Yii::$app->user->identity->role == 'sro') {
 
-            if ($access != null) {
-                return Yii::$app->user->identity->access[$access];
+            if ($page != null) {
+                if ($access != null) {
+                    return Yii::$app->user->identity->access[$page][$access];
+                }
+                return Yii::$app->user->identity->access[$page]['status'];
             } else {
                 return true;
             }
@@ -106,14 +118,17 @@ class UserAccess extends Module
         return false;
     }
     
-    public function forEtp($access = null)
+    public function forEtp($page = null, $access = null)
     {
         if (Yii::$app->user->identity->role == 'superAdmin') {
             return true;
         } else if (Yii::$app->user->identity->role == 'etp') {
 
-            if ($access != null) {
-                return Yii::$app->user->identity->access[$access];
+            if ($page != null) {
+                if ($access != null) {
+                    return Yii::$app->user->identity->access[$page][$access];
+                }
+                return Yii::$app->user->identity->access[$page]['status'];
             } else {
                 return true;
             }

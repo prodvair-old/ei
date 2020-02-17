@@ -63,6 +63,13 @@ use backend\models\UserAccess;
 
                     ],
                     [
+                        'label' => 'Пользователи', 
+                        'url' => ['users/index'], 
+                        'icon' => 'users',
+                        'visible' => UserAccess::forAdmin('users'),
+
+                    ],
+                    [
                         'label' => 'Gii', //for basic
                         'url' => ['/gii'],
                         'icon' => 'file-code-o',
