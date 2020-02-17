@@ -8,7 +8,7 @@ use yii\helpers\Url;
 
 use frontend\components\NumberWords;
 use frontend\components\LotDetailSidebar;
-use frontend\components\LotBlock;
+use frontend\components\LotBlock; 
 use frontend\components\ServiceLotFormWidget;
 
 use frontend\models\ViewPage;
@@ -72,7 +72,7 @@ $isCategory =
         </div>
         
     </div>
-    <div class="fullwidth-horizon- none--hide">
+    <!-- <div class="fullwidth-horizon- none--hide">
     
         <div class="fullwidth-horizon--inner">
         
@@ -106,7 +106,7 @@ $isCategory =
                 
             </div>
         </div>
-    </div>
+    </div> -->
     
     <div class="container pt-30">
        

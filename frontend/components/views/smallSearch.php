@@ -91,7 +91,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
 
     </style>
 
-    <div class="row cols-1 cols-sm-3 gap-1">
+    <div class="row cols-1 cols-sm-3 gap-10">
       <div class="col">
         <div class="col-inner height-100">
           <?= $form->field($model, 'type')->dropDownList([
@@ -107,7 +107,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
               $url => ['Selected' => true]
             ]
           ])
-            ->label('Тип лота'); ?>
+            ->label(false); ?>
         </div>
       </div>
 
@@ -121,7 +121,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
               'tabindex' => '2'
             ]
           )
-            ->label('Категория'); ?>
+            ->label(false); ?>
         </div>
       </div>
 
@@ -136,7 +136,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
               'multiple' => false
             ]
           )
-            ->label('Регион'); ?>
+            ->label(false); ?>
         </div>
       </div>
     </div>
