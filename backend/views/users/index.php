@@ -25,17 +25,6 @@ $dataProvider = new ActiveDataProvider([
                     'dataProvider' => $dataProvider,
                     'columns' => [
                         [
-                            'class' => 'yii\grid\ActionColumn',
-                            'template' => ((UserAccess::forAdmin('users', 'edit'))? '{update} ':'').' '.((UserAccess::forSuperAdmin('users', 'delete'))? ' {delete}':''),
-                            'buttons' => [
-                                'delete' => function ($url,$model) {
-                                    return Html::a(
-                                    '<span class="fa fa-trash-o text-danger"></span>', 
-                                    $url, ['aria-label' => 'Удалить', 'title' => 'Удалить', 'data-pjax'=>'1', 'data-confirm' => 'Вы уверены, что хотите удалить этого пользователя?', 'data-method' => 'post']);
-                                },
-                            ]
-                        ],
-                        [
                             'attribute' => 'id',
                             'format' => 'ntext',
                             'label' => 'ID',
