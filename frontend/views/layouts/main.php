@@ -61,9 +61,9 @@ AppAsset::register($this);
     
 	
     <!-- Fav and Touch Icons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="<?= Url::to('/img/favicon/logo_ei(orange).png', true)?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= Url::to('/img/favicon/logo_ei(green).png', true)?>">
     <link rel="icon" type="image/png" sizes="32x32" href="">
-    <link rel="icon" type="image/png" sizes="16x16" href="<?= Url::to('/img/favicon/favicon1.ico', true)?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= Url::to('/img/favicon/favicon2.ico', true)?>">
     <link rel="manifest" href="<?= Url::to('/img/favicon/site.webmanifest', true)?>">
     <link rel="mask-icon" href="<?= Url::to('/img/favicon/safari-pinned-tab.svg', true)?>" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#ffffff">
