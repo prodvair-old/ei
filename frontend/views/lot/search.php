@@ -245,12 +245,12 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
           <!-- </div> -->
 
-          <div class="sidebar-box sidebar-box__collaps collaps">
+          <div class="sidebar-box sidebar-box__collaps <?=($model->minPrice || $model->maxPrice)? '' : 'collaps'?>" >
 
             <!-- <div class="box-title">
               <h5>Цена</h5>
             </div> -->
-            <label class="control-label sidebar-box__label" for="">Цена</label> 
+            <label class="control-label sidebar-box__label">Цена</label> 
             <div class="box-content">
               <div class="row">
                 <div class="col-6"><?= $form->field($model, 'minPrice')->textInput(['class' => 'lot__price-min form-control', 'placeholder' => 'Цена от'])->label(false); ?></div>
@@ -264,7 +264,8 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
           </div>
 
-          <div class="sidebar-box bankrupt-type sidebar-box__collaps collaps">
+
+          <div class="sidebar-box bankrupt-type sidebar-box__collaps <?=($model->etp)? '' : 'collaps'?>">
 
             <!-- <div class="box-title">
               <h5><?= $traderLabel ?></h5>
@@ -285,14 +286,14 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
           </div>
 
-          <div class="sidebar-box sidebar-box__collaps collaps">
+          <div class="sidebar-box sidebar-box__collaps <?=($model->tradeType != '0')? '' : 'collaps'?>">
 
             <!-- <div class="box-title">
               <h5>Тип торгов</h5>
             </div> -->
             <label class="control-label sidebar-box__label" >Тип торгов</label>      
             <div class="box-content">
-
+                 
               <?= $form->field($model, 'tradeType')->checkboxList([
                       '1' => 'Публичное предложение',
                       '2' => 'Открытый аукцион',
@@ -310,12 +311,12 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
           </div>
 
-          <div class="sidebar-box">
+          <div class="sidebar-box sidebar-box__collaps <?=($model->imageCheck != '0' || $model->archivCheck != '0')? '' : 'collaps'?>">
 
             <!-- <div class="box-title">
               <h5>Другое</h5>
             </div> -->
-            <!-- <label class="control-label  sidebar-box__label">Другое</label>         -->
+            <label class="control-label  sidebar-box__label">Другое</label>        
             <div class="box-content">
              
               <div class="custom-control custom-checkbox">
@@ -342,9 +343,11 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
           <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>        
 
          
-          <p><?= Yii::$app->params['text'] ?></p>
+          
+
           </div>
           <?php ActiveForm::end(); ?>
+          <div class= "sidebar-box__text"><?= Yii::$app->params['text'] ?></div>
         </aside>
       </aside>
 
