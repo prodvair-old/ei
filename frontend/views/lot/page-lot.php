@@ -9,6 +9,7 @@ use yii\helpers\Url;
 use frontend\components\NumberWords;
 use frontend\components\LotDetailSidebar;
 use frontend\components\LotBlock; 
+use frontend\components\Darwin; 
 use frontend\components\ServiceLotFormWidget;
 
 use frontend\models\ViewPage;
@@ -433,7 +434,7 @@ $isCategory =
 
                     <? } ?>
 
-                    <?//=Darwin::widget()?>
+                    <?= Darwin::widget()?>
                     <div id="docs" class="fullwidth-horizon--section">
                         <h5 class="heading-title">Документы</h5>
                         <ul class="list-icon-absolute what-included-list mb-30 long-text">
@@ -638,10 +639,10 @@ $isCategory =
                 <div class="sidebar-desktop">
                     <?= \ymaker\social\share\widgets\SocialShare::widget([
                         'configurator'  => 'socialShare',
-                        'url'           => Url::to(),
-                        'title'         => Yii::$app->params['h1'],
-                        'description'   => $lot->description,
-                        'imageUrl'      => Url::to($lot->images[0], true),
+                        'url'           => ('https://ei.ru' . Yii::$app->request->url),
+                        //'title'         => 'Посмотри лот на ei.ru: ' .Yii::$app->params['h1'],
+                        // 'description'   => $lot->description,
+                        'imageUrl'      => Url::to($lot->images[0]['max'], true),
                     ]); ?>    
                     <?= LotDetailSidebar::widget(['lot' => $lot, 'type' => $type]) ?>
                 </div>

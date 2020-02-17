@@ -82,30 +82,30 @@
     overflow: hidden
     &:hover, &:focus, &:active
       color: #fff
-    &:after,
-    &:before
-      content: ""
-      display: block
-      width: 50px
-      height: 300px
-      margin-left: 60px
-      background: #fff
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0.7) 100%)
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3ffffff', endColorstr='#b3ffffff',GradientType=0 )
-      position: absolute
-      left: -40px
-      top: -150px 
-      z-index: 1
-      opacity: .2
-      transform: rotate(45deg)
-      transition: all 0.1s
-      animation-name: slideme
-      animation-duration: 2s
-      animation-delay: 0.05s
-      animation-timing-function: ease
-      animation-iteration-count: infinite
-    &:before
-      width: 30px
+    // &:after,
+    // &:before
+    //   content: ""
+    //   display: block
+    //   width: 50px
+    //   height: 300px
+    //   margin-left: 60px
+    //   background: #fff
+    //   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0.7) 100%)
+    //   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3ffffff', endColorstr='#b3ffffff',GradientType=0 )
+    //   position: absolute
+    //   left: -40px
+    //   top: -150px 
+    //   z-index: 1
+    //   opacity: .2
+    //   transform: rotate(45deg)
+    //   transition: all 0.1s
+    //   animation-name: slideme
+    //   animation-duration: 2s
+    //   animation-delay: 0.05s
+    //   animation-timing-function: ease
+    //   animation-iteration-count: infinite
+    // &:before
+    //   width: 30px
 
 
     &__text
@@ -994,9 +994,10 @@ body
 
 .pagination>li>a, .pagination>li>span
     min-width: 24px
+    height: auto
     width: auto
-    padding-left: .5rem
-    padding-right: .5rem 
+    padding: .5rem 1rem 
+    font-size: 1rem
     border-color: #dee2e6
     background-color: #e9ecef
 
