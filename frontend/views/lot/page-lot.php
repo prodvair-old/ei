@@ -640,7 +640,7 @@ $isCategory =
                     <?= \ymaker\social\share\widgets\SocialShare::widget([
                         'configurator'  => 'socialShare',
                         'url'           => ('https://ei.ru' . Yii::$app->request->url),
-                        //'title'         => 'Посмотри лот на ei.ru: ' .Yii::$app->params['h1'],
+                        'title'         => 'Посмотри лот на ei.ru: ' .Yii::$app->params['h1'],
                         // 'description'   => $lot->description,
                         'imageUrl'      => Url::to($lot->images[0]['max'], true),
                     ]); ?>    
