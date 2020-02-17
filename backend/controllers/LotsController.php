@@ -3,6 +3,7 @@ namespace backend\controllers;
 
 use Yii;
 use yii\web\Controller;
+use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
@@ -29,7 +30,7 @@ class LotsController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['update', 'add', 'index'],
+                        'actions' => ['update', 'add', 'index', 'image-del'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -83,10 +84,54 @@ class LotsController extends Controller
         $modelLot = LotEditor::findOne($get['id']);
         $lot = LotsAll::findOne($get['id']);
 
+        if ($modelLot->load(Yii::$app->request->post()) && $modelLot->validate()) {
+
+            if ($modelLot->uploads = UploadedFile::getInstances($modelLot, 'uploads')) {
+                $modelLot->uploadImages();
+            }
+
+            if ($modelLot->update()) {
+                Yii::$app->session->setFlash('success', "Изменения лота успешно применены");
+            } else {
+                Yii::$app->session->setFlash('error', "Ошибка при сохранении новых данных лота");
+            }
+
+            return $this->redirect(['lots/update', 'id' => $lot->id]);
+        }
+
         if (UserAccess::forManager('torgs')) {
             $modelTorg = TorgEditor::findOne($modelLot->torgId);
         }
 
         return $this->render('update', ['modelLot' => $modelLot, 'modelTorg' => $modelTorg, 'lot' => $lot]);
+    }
+
+    public function actionImageDel()
+    {
+        if (!UserAccess::forManager('lots', 'edit')) {
+            return $this->goHome();
+        }
+
+        $get = Yii::$app->request->get();
+
+        $lot = LotsAll::findOne($get['lotId']);
+
+        $images = [];
+
+        foreach ($lot->images as $id => $image) {
+            if ($id != $get['id']) {
+                $images[$id] = $image;
+            }
+        }
+
+        $lot->images = $images;
+
+        if ($lot->update()) {
+            Yii::$app->session->setFlash('success', "Картинка успешно удалена");
+        } else {
+            Yii::$app->session->setFlash('error', "Ошибка при удалении картинки №".$get['id']);
+        }
+
+        return $this->redirect(['lots/update', 'id' => $lot->id]);
     }
 }
