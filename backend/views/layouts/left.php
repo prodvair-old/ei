@@ -33,8 +33,8 @@ use backend\models\UserAccess;
 
         <?=\yiister\adminlte\widgets\Menu::widget(
             [
-                // 'encodeLabels' => false,
-                // 'options' => ['class' => 'sidebar-menu', 'data-widget' => 'tree'],
+                'encodeLabels' => false,
+                'options' => ['class' => 'sidebar-menu', 'data-widget' => 'tree'],
                 'activeCssClass' => 'active menu-open',
                 'activateParents'=>true,
                 'items' => [
@@ -44,21 +44,29 @@ use backend\models\UserAccess;
                         'label' => 'Лоты', 
                         'url' => ['lots/index'], 
                         'icon' => 'table',
-                        'visible' => UserAccess::forManager('search'),
+                        'visible' => UserAccess::forManager('lots'),
+                        'options' => ['class' => 'treeview'],
                         'items' => [
                             [
-                                'label' => 'Список лотов', //for basic
+                                'label' => 'Список лотов',
                                 'url' => ['lots/index'],
                                 'icon' => 'list-ul',
-                                'visible' => UserAccess::forManager('search')
+                                'visible' => UserAccess::forManager('lots')
                             ],
                             [
-                                'label' => 'Добавить лот', //for basic
+                                'label' => 'Добавить лот',
                                 'url' => ['lots/add'],
                                 'icon' => 'plus',
-                                'visible' => UserAccess::forManager('add')
+                                'visible' => UserAccess::forManager('lots', 'add')
                             ],
                         ]
+
+                    ],
+                    [
+                        'label' => 'Пользователи', 
+                        'url' => ['users/index'], 
+                        'icon' => 'users',
+                        'visible' => UserAccess::forAdmin('users'),
 
                     ],
                     [
@@ -84,6 +92,7 @@ use backend\models\UserAccess;
                         'icon' => 'share',
                         'url' => '#',
                         'visible' => UserAccess::forSuperAdmin('debug'),
+                        'options' => ['class' => 'treeview'],
                         'items' => [
                             ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'],],
                             ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug'],],

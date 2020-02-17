@@ -9,15 +9,14 @@ use common\models\LoginForm;
 use yii\data\Pagination;
 
 use backend\models\UserAccess;
-use backend\models\Editors\LotEditor;
-use backend\models\Editors\TorgEditor;
+use backend\models\Editors\UsersEditor;
 
-use common\models\Query\Lot\LotsAll;
+use common\models\User;
 
 /**
- * Lots controller
+ * Users controller
  */
-class LotsController extends Controller
+class UsersController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -63,30 +62,29 @@ class LotsController extends Controller
      */
     public function actionIndex()
     {
-        if (!UserAccess::forManager('lots')) {
+        if (!UserAccess::forAdmin('users')) {
             return $this->goHome();
         }
 
-        $lots = LotsAll::find()->joinWith('torg')->orderBy('torg."publishedDate" DESC');
+        $users = User::find()->orderBy('created_at ASC');
+
+        if (!UserAccess::forSuperAdmin()) {
+            $users->where(['!=', 'role', 'superAdmin']);
+        }
         
-        return $this->render('index', ['lots' => $lots]);
+        return $this->render('index', ['users' => $users]);
     }
 
     public function actionUpdate()
     {
-        if (!UserAccess::forManager('lots', 'edit')) {
+        if (!UserAccess::forManager('users', 'edit')) {
             return $this->goHome();
         }
 
         $get = Yii::$app->request->get();
 
-        $modelLot = LotEditor::findOne($get['id']);
-        $lot = LotsAll::findOne($get['id']);
+        $model = UsersEditor::findOne($get['id']);
 
-        if (UserAccess::forManager('torgs')) {
-            $modelTorg = TorgEditor::findOne($modelLot->torgId);
-        }
-
-        return $this->render('update', ['modelLot' => $modelLot, 'modelTorg' => $modelTorg, 'lot' => $lot]);
+        return $this->render('update', ['model' => $model]);
     }
 }

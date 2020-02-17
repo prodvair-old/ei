@@ -1,13 +1,13 @@
 <?php
 use yii\widgets\Breadcrumbs;
-use dmstr\widgets\Alert;
+use yiister\adminlte\widgets\FlashAlert;
 ?>
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
             <?php
-            if ($this->title !== null) {
-                echo $this->title;
+            if ($this->params['h1'] !== null) {
+                echo $this->params['h1'];
             } else {
                 echo \yii\helpers\Inflector::camel2words(\yii\helpers\Inflector::id2camel($this->context->module->id));
                 echo ($this->context->module->id !== \Yii::$app->id) ? '<small>Module</small>' : '';
@@ -22,7 +22,6 @@ use dmstr\widgets\Alert;
     </section>
 
     <section class="content">
-        <?= Alert::widget() ?>
         <?= $content ?>
     </section>
 </div>

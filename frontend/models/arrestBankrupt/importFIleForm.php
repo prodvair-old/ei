@@ -39,7 +39,7 @@ class importFIleForm extends Model
 
         $result = ['or'];
 
-        while(!empty($sheetData[$baseRow]['B'])){
+        while(!empty($sheetData[$baseRow]['B']) || $sheetData[$baseRow]['B'] != ' '){
             $where = ['or'];
 
             $where[] = ['like', 'lotPropName', (string)$sheetData[$baseRow]['B']];
@@ -56,7 +56,7 @@ class importFIleForm extends Model
                 $where[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').mb_substr($names[2],0,1,'UTF-8')];
             }
 
-            $where[] = ['like', 'lotPropName', str_replace("'", "/'", (string)$sheetData[$baseRow]['D'])];
+            $where[] = 'to_tsvector("lotPropName") @@ plainto_tsquery(\''.(string)$sheetData[$baseRow]['D'].'\')';
 
             $result[] = $where;
             $baseRow++;
