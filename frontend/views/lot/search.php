@@ -286,7 +286,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
           </div>
 
-          <div class="sidebar-box sidebar-box__collaps <?=($model->tradeType != '0')? '' : 'collaps'?>">
+          <div class="sidebar-box sidebar-box__collaps <?=($model->tradeType)? '' : 'collaps'?>">
 
             <!-- <div class="box-title">
               <h5>Тип торгов</h5>
@@ -311,7 +311,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
           </div>
 
-          <div class="sidebar-box sidebar-box__collaps <?=($model->imageCheck != '0' || $model->archivCheck != '0')? '' : 'collaps'?>">
+          <div class="sidebar-box sidebar-box__collaps <?=($model->imageCheck || $model->archivCheck)? '' : 'collaps'?>">
 
             <!-- <div class="box-title">
               <h5>Другое</h5>
