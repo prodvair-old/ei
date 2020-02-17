@@ -460,10 +460,11 @@ AppAsset::register($this);
                     <!-- </div>
                     
                 </div> -->
-                <div class="row shrink-auto-md gap-10 gap-40-lg">
-                
+                <div class="row shrink-auto-md gap-10 gap-40-lg pb-4">
+                        
                     <div class="col-auto">
                         <div class="col-inner">
+                            <hr>
                             <p class="footer-copy-center">Обращаем ваше внимание на то, что данный Интернет-сайт носит исключительно информационный характер и ни при каких условиях не является публичной офертой, определяемой положениями Статьи 437 Гражданского кодекса Российской Федерации.</p>
                             <p class="footer-copy-center">
                             <a href="/policy">Политика конфиденциальности</a> и <a href="/license"> Лицензионное соглашение</a>  © 2019 ei.ru

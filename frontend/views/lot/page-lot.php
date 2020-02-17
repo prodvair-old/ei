@@ -119,7 +119,7 @@ $isCategory =
                 <div class="content-wrapper">
                      
                     <div id="desc" class="detail-header mb-30">
-                      <h1 class="h3"><?=Yii::$app->params['h1']?></h1>
+                      <h1 class="h4"><?=Yii::$app->params['h1']?></h1>
               
                         <div class="d-flex flex-row align-items-sm-center mb-20">
                             <div class="mr-10 font-lg text-muted">
@@ -216,7 +216,7 @@ $isCategory =
                     
                     <div id="detail-content--nav-02" class="fullwidth-horizon--section">
                         
-                        <h4 class="heading-title">Itinerary</h4>
+                        <h5 class="heading-title">Itinerary</h5>
                         
                         <h6>Introduction</h6>
                         
@@ -284,7 +284,7 @@ $isCategory =
 
                         <div id="price-history" class="fullwidth-horizon-sticky-section">
 
-                            <h4 class="heading-title">Этапы снижения цены</h4>
+                            <h5 class="heading-title">Этапы снижения цены</h5>
                             
                             <div class="mb-20"></div>
                             
@@ -435,7 +435,7 @@ $isCategory =
 
                     <?//=Darwin::widget()?>
                     <div id="docs" class="fullwidth-horizon--section">
-                        <h4 class="heading-title">Документы</h4>
+                        <h5 class="heading-title">Документы</h5>
                         <ul class="list-icon-absolute what-included-list mb-30 long-text">
 
                             <? foreach ($lot->torg->case->documents as $document) { ?>
@@ -480,7 +480,7 @@ $isCategory =
                     <? if ($lots_bankrupt[0] != null) { ?>
                     <div id="other-lot" class="fullwidth-horizon--section">
 
-                        <h4 class="heading-title">Другие лоты должника</h4>
+                        <h5 class="heading-title">Другие лоты должника</h5>
                         
                         <div class="row equal-height cols-1 cols-sm-2 gap-30 mb-25">
             
@@ -495,21 +495,21 @@ $isCategory =
                     
 
                     <div id="torg" class="detail-header mb-30">
-                        <h4 class="mt-30">Информация о торге</h5>
+                        <h5 class="mt-30">Информация о торге</h5>
                         <p class="long-text"><?=$lot->torg->description?></p>
                         <a href="#torg" class="open-text-js">Подробнее</a>
                         <div class="mb-50"></div>
                     </div>
 
                     <div id="roles" class="detail-header mb-30">
-                        <h4 class="mt-30">Правила подачи заявок</h5>
+                        <h5 class="mt-30">Правила подачи заявок</h5>
                         <p class="long-text"><?=$lot->torg->info['rules']?></p>
                         <a href="#roles" class="open-text-js">Подробнее</a>
                     </div>
 
                     <!-- <div id="faq" class="fullwidth-horizon--section">
                     
-                        <h4 class="heading-title">FAQ</h4>
+                        <h5 class="heading-title">FAQ</h5>
                         
                         <div class="faq-item-long-wrapper">
                             
@@ -641,7 +641,7 @@ $isCategory =
                         'url'           => Url::to(),
                         'title'         => Yii::$app->params['h1'],
                         'description'   => $lot->description,
-                        'imageUrl'      => \yii\helpers\Url::to($lot->images[0], true),
+                        'imageUrl'      => Url::to($lot->images[0], true),
                     ]); ?>    
                     <?= LotDetailSidebar::widget(['lot' => $lot, 'type' => $type]) ?>
                 </div>
