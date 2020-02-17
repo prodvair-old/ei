@@ -401,7 +401,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
             } ?>
           </div>
 
-          <button class="alert alert-info mt-30 text-center h5 w-100">Загрузить еще 10 лотов</button>
+          <button class="alert alert-primary mt-30 text-center h5 w-100">Загрузить еще 10 лотов</button>
 
           <div class="pager-wrappper mt-40">
 
@@ -421,11 +421,17 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                   <nav class="float-lg-right mt-10 mt-lg-0">
                     <?= LinkPager::widget([
                       'pagination' => $pages,
-                      'nextPageLabel' => "<span aria-hidden=\"true\">&raquo;</span></i>",
-                      'prevPageLabel' => "<span aria-hidden=\"true\">&laquo;</span>",
+                      'nextPageLabel' => "<span aria-hidden=\"true\">Далее</span></i>",
+                      'prevPageLabel' => "<span aria-hidden=\"true\">Назад</span>",
                       'maxButtonCount' => 6,
                       'options' => ['class' => 'pagination justify-content-center justify-content-lg-left'],
-                      'disabledPageCssClass' => false
+                      'linkOptions' => ['class' => 'page-link'],
+                      'linkContainerOptions' => ['class' => 'page-item'],
+                      // 'linkOptions'=> ['class' => 'page-link'],
+                      'disabledPageCssClass' => 'disabled',
+                      // 'pageCssClass' => 'page-item',
+                      //'linkContainerOptions' = ['class' = > [>'page-item']],
+                      // 'linkOptions' = ['class' = > [>'page-link']],
                     ]); ?>
                   </nav>
                 </div>

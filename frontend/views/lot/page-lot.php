@@ -641,7 +641,7 @@ $isCategory =
                         'url'           => Url::to(),
                         'title'         => Yii::$app->params['h1'],
                         'description'   => $lot->description,
-                        'imageUrl'      => \yii\helpers\Url::to($lot->images[0], true),
+                        'imageUrl'      => Url::to($lot->images[0], true),
                     ]); ?>    
                     <?= LotDetailSidebar::widget(['lot' => $lot, 'type' => $type]) ?>
                 </div>

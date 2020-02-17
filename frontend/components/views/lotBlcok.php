@@ -109,7 +109,7 @@ $lot->category->categoryId == '1102';
                             </li>
                         </ul>
                         <hr>
-                        <p class="mt-3"><span class="h6 line-1 <?=$priceClass?> font16" <?=($color)? 'style="color: '.$color.'!important"': ''?>><?= Yii::$app->formatter->asCurrency($lot->price)?></span> <span class="text-muted mr-5"><?= ($lot->oldPrice)? Yii::$app->formatter->asCurrency($lot->oldPrice) : '' ?></span></p>
+                        <p class="mt-3"><span class="h6 line-1 <?=$priceClass?> font16" <?=($color)? 'style="color: '.$color.'!important"': ''?>><?= Yii::$app->formatter->asCurrency($lot->price)?></span> <span class="text-muted mr-5"><s><?= ($lot->oldPrice)? Yii::$app->formatter->asCurrency($lot->oldPrice) : '' ?></s></span></p>
                     </figcaption>
                 <?=($type == 'long')? '</div>' : ''?>
                 
