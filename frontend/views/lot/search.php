@@ -393,7 +393,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
             } ?>
           </div>
 
-          <button class="alert alert-primary mt-30 text-center h5 w-100">Загрузить еще 10 лотов</button>
+          <!-- <button class="alert alert-primary mt-30 text-center h5 w-100">Загрузить еще 10 лотов</button> -->
 
           <div class="pager-wrappper mt-40">
 
@@ -419,11 +419,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                       'options' => ['class' => 'pagination justify-content-center justify-content-lg-left'],
                       'linkOptions' => ['class' => 'page-link'],
                       'linkContainerOptions' => ['class' => 'page-item'],
-                      // 'linkOptions'=> ['class' => 'page-link'],
                       'disabledPageCssClass' => 'disabled',
-                      // 'pageCssClass' => 'page-item',
-                      //'linkContainerOptions' = ['class' = > [>'page-item']],
-                      // 'linkOptions' = ['class' = > [>'page-link']],
                     ]); ?>
                   </nav>
                 </div>

@@ -12,7 +12,7 @@ use yii\helpers\Html;
                           <div class="darwin__row">
                             <ul class="darwin__list">
                               <li class="darwin__item">Без ЭЦП</li>
-                              <li class="darwin__item">Без агента</li>
+                              <li class="darwin__item">Без человеческого фактора</li>
                               <li class="darwin__item">Без регистрации</li>
                               <li class="darwin__item">Без комиссий</li>
                             </ul>
@@ -26,7 +26,7 @@ use yii\helpers\Html;
                                   <div class="darwin__button__size">1 мб</div>
                                 </div>
                               </a>
-                              <div class="darwin__text">Подача Заявки за 1 минуту!</div>
+                              <div class="darwin__text">Подача заявки за 1 минуту!</div>
                             </div>
                           </div>
                         </div>
