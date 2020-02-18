@@ -61,8 +61,6 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
       <?= $form->field($model, 'search')->textInput([
         'class' => 'form-control',
         'placeholder' => 'Поиск по лотам',
-        'tabindex' => '2',
-        "input-group" => true,
       ])->label(false); ?>
 
       <?= Html::submitButton('<i class="ion-android-search"></i>', ['class' => 'btn btn-primary btn-block btn-search', 'style' => $btnStyle, 'name' => 'login-button']) ?>

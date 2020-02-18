@@ -46,7 +46,7 @@ class SearchLot extends Model
      *
      * @return bool whether the creating new account was successful and email was sent
      */
-    public function search($lots, $url = null, $type = null, $sortBy = '')
+    public function searchBy($lots, $url = null, $type = null, $sortBy = '')
     {
         $lotsPrice = Clone $lots;
 
@@ -69,7 +69,11 @@ class SearchLot extends Model
 
         if (!empty($this->search)) {
             $lots->select(['*', 'rank' => 'ts_rank(to_tsvector(lot.description), plainto_tsquery(\''.$this->search.'\'))']);
-            $where[] = 'to_tsvector(lot.description) @@ plainto_tsquery(\''.$this->search.'\')';
+            $where[] = [
+                'or',
+                'to_tsvector(lot.description) @@ plainto_tsquery(\''.$this->search.'\')',
+                ['like', 'LOWER(lot.description)', mb_strtolower($this->search, 'UTF-8')],
+            ];
             $sort = 'rank ASC,';
         }
 

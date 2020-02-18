@@ -163,9 +163,8 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                   <?= $form->field($model, 'search')->textInput([
                     'class' => 'form-control search-form-control',
                     'placeholder' => 'Поиск: Машина, Квартира...',
-                    'tabindex' => '2',
-                  ])
-                    ->label('Поиск'); ?>
+                    // 'value' => 
+                  ])->label('Поиск'); ?>
                 </div>
               </div>
 
