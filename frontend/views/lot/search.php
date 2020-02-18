@@ -400,7 +400,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
             } ?>
           </div>
 
-          <a href="<?=$pages->links['next']?>" class="alert alert-primary mt-30 text-center h5 w-100">Далее</a>
+          <a href="<?=$pages->links['next']?>" class="alert alert-primary mt-30 text-center h5 d-block">Далее</a>
 
           <div class="pager-wrappper mt-40">
 
