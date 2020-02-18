@@ -22,7 +22,6 @@ $this->title = Yii::$app->params['title'];
 $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
 $lotsSubcategory[0] = 'Все подкатегории';
-$lotsCategory[0] = ['id' => 0, 'name' => 'Все категории'];
 $subcategoryCheck = true;
 
 $regionList[0] = 'Все регионы';
@@ -43,7 +42,13 @@ if ($type == 'bankrupt') {
   $traderList = ArrayHelper::map(OwnerProperty::find()->orderBy('name ASC')->all(), 'id', 'name');
 }
 
-$lotsCategory = LotsCategory::find()->where(['or', ['not', [$type . '_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
+$lotsCategoryQuery = LotsCategory::find()->where(['or', ['not', [$type . '_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
+
+$lotsCategorys[0] = 'Все категории';
+
+foreach ($lotsCategoryQuery as $category) {
+  $lotsCategorys[$category->id] = $category->name;
+}
 
 if ($queryCategory != '0') {
   switch ($type) {
@@ -191,11 +196,10 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
               <div class="col-12">
                 <div class="col-inner">
                   <?= $form->field($model, 'category')->dropDownList(
-                    ArrayHelper::map($lotsCategory, 'id', 'name'),
+                    $lotsCategorys,
                     [
                       'class' => 'chosen-category-select form-control form-control-sm',
                       'data-placeholder' => 'Все категории',
-                      'tabindex' => '2'
                     ]
                   )
                     ->label('Категория'); ?>
