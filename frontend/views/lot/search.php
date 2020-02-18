@@ -79,6 +79,7 @@ if ($queryCategory != '0') {
       break;
   }
 }
+
 $this->registerJsVar('lotType', $type, $position = yii\web\View::POS_HEAD);
 $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\View::POS_HEAD);
 ?>
