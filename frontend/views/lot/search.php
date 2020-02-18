@@ -79,6 +79,7 @@ if ($queryCategory != '0') {
       break;
   }
 }
+
 $this->registerJsVar('lotType', $type, $position = yii\web\View::POS_HEAD);
 $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\View::POS_HEAD);
 ?>
@@ -163,9 +164,8 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                   <?= $form->field($model, 'search')->textInput([
                     'class' => 'form-control search-form-control',
                     'placeholder' => 'Поиск: Машина, Квартира...',
-                    'tabindex' => '2',
-                  ])
-                    ->label('Поиск'); ?>
+                    // 'value' => 
+                  ])->label('Поиск'); ?>
                 </div>
               </div>
 
@@ -396,7 +396,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
             } ?>
           </div>
 
-          <!-- <button class="alert alert-primary mt-30 text-center h5 w-100">Загрузить еще 10 лотов</button> -->
+          <a href="<?=$pages->links['next']?>" class="alert alert-primary mt-30 text-center h5 w-100">Далее</a>
 
           <div class="pager-wrappper mt-40">
 
