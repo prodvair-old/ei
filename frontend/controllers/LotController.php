@@ -409,7 +409,7 @@ class LotController extends Controller
 
         // var_dump(($get['SearchLot'])? $get['SearchLot'] : $get[1]['SearchLot']);
         
-        $model->load((($get['SearchLot'])? $get : $get[1]));
+        $model->load($get);
         $query = $model->searchBy($lotsQuery, $url, (($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog' || $type == 'all')? $type : null), $modelSort->sortBy());
 
         /* http://dev.ei.ru/rosselkhozbank/lot-list */

@@ -68,13 +68,12 @@ class SearchLot extends Model
         }
 
         if (!empty($this->search)) {
-            $lots->select(['*', 'rank' => 'ts_rank(to_tsvector(lot.description), plainto_tsquery(\''.$this->search.'\'))']);
             $where[] = [
                 'or',
                 'to_tsvector(lot.description) @@ plainto_tsquery(\''.$this->search.'\')',
                 ['like', 'LOWER(lot.description)', mb_strtolower($this->search, 'UTF-8')],
             ];
-            $sort = 'rank ASC,';
+            $sort = 'ts_rank(to_tsvector(lot.description), plainto_tsquery(\''.$this->search.'\')) ASC,';
         }
 
 
@@ -158,34 +157,42 @@ class SearchLot extends Model
             $addresSearchCheck = true;
             if (is_array($this->region)) {
                 if (count($this->region) == 1) {
-                    $regionInfo = Regions::findOne($this->region[0]);
+                    if ($this->region[0] != 0) {
+                        $regionInfo = Regions::findOne($this->region[0]);
 
-                    if ($checkUrl) {
-                        $url .= '/'.$regionInfo->name_translit;
-                    }
-                    
-                    $where[] = ['regionId'=>$this->region[0]];
-                } else {
-                    $orWhere = ['or'];
-                    foreach ($this->region as $key => $value) {
-                        $regionInfo = Regions::findOne($value);
-
-                        if ($key == 0 && $checkUrl) {
+                        if ($checkUrl) {
                             $url .= '/'.$regionInfo->name_translit;
                         }
+                        
+                        $where[] = ['regionId'=>$this->region[0]];
+                    }
+                } else {
+                    $orWhere = ['or'];
+                    foreach ($this->region as $key => $region) {
+                        if ($region != 0) {
+                            $regionInfo = Regions::findOne($value);
 
-                        $orWhere[] = ['regionId'=>$this->region[0]];
+                            if ($key == 0 && $checkUrl) {
+                                $url .= '/'.$regionInfo->name_translit;
+                            }
+
+                            $orWhere[] = ['regionId'=>$region];
+                        }
                     }
                     $where[] = $orWhere;
                 }
             } else {
-                $regionInfo = Regions::findOne($this->region);
+                if ($this->region == 0) {
+                    $this->region = null;
+                } else {
+                    $regionInfo = Regions::findOne($this->region);
 
-                if ($checkUrl) {
-                    $url .= '/'.$regionInfo->name_translit;
+                    if ($checkUrl) {
+                        $url .= '/'.$regionInfo->name_translit;
+                    }
+
+                    $where[] = ['regionId'=>$this->region];
                 }
-
-                $where[] = ['regionId'=>$this->region];
             }
         }
         if (!empty($this->etp)) {
