@@ -81,11 +81,11 @@ use yii\helpers\Url;
 		Мы агрегируем все имущество! Мы не скрываем и не удаляем определенные лоты или категории лотов
 	</div>
 
-	<div class="col-lg-12 mt-50">
+	<!-- <div class="col-lg-12 mt-50">
 		<div class="text-center">
 			<a href="#loginFormTabInModal-register" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false" class="btn-link">
 				Регистрируйтесь на ei.ru
 			</a>
 		</div>
-	</div>
+	</div> -->
 </div>
