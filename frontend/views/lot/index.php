@@ -13,17 +13,17 @@ use common\models\Query\Zalog\OwnerProperty;
 $this->title = Yii::$app->params['title'];
 
 if ($type == 'bankrupt') {
-    $title = '<span class="font200 block">Имущество банкротов</span>';
+    $title = '<span class="main-page__title">Имущество банкротов</span>';
     $imgBG = 'img/01.jpg';
-    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : 'В нашей базе собрана исключительно актуальная информация об имущество банкротов и должников, выставленном и тендеры и торги на ЭТП и публичных аукционах.';
+    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана исключительно актуальная информация об имущество банкротов и должников, выставленном и тендеры и торги на ЭТП и публичных аукционах.</span>';
 } else if ($type == 'zalog') {
-    $title = '<span class="font200"><br>Имущество организаций</span>';
+    $title = '<span class="main-page__title">Имущество организаций</span>';
     $imgBG = 'img/01.jpg';
-    $description = Yii::$app->params['text'];
+    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана исключительно актуальная информация об имущество банкротов и должников, выставленном и тендеры и торги на ЭТП и публичных аукционах.</span>';
 }else if ($type == 'arrest') {
-    $title = '<span class="font200"><br>Арестованное имущество</span>';
+    $title = '<span class="main-page__title">Арестованное имущество</span>';
     $imgBG = 'img/01.jpg';
-    $description = Yii::$app->params['text'];
+    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана исключительно актуальная информация об имущество банкротов и должников, выставленном и тендеры и торги на ЭТП и публичных аукционах.</span>';
 } else {
     $title = '<span class="font200"'.(($owner->tamplate['color-5'])? 'style="color: '.$owner->tamplate['color-5'].'"': '').'>'.$owner->name.'</span>';
     $imgBG = 'http://n.ei.ru'.$owner->tamplate['bg'];
@@ -59,7 +59,7 @@ if ($type == 'bankrupt') {
     
         <div class="container">
             <h1><?=$title?></h1>
-            <p class="font-lg spacing-1" <?=($owner->tamplate['color-5'])? 'style="color: '.$owner->tamplate['color-5'].'"': ''?>><?=$description?></p>
+            <p class="font-lg spacing-1 main-page__subtitle" <?=($owner->tamplate['color-5'])? 'style="color: '.$owner->tamplate['color-5'].'"': ''?>><?=$description?></p>
             
             <?= SearchForm::widget(['type' => (($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog'), 'url' => (($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog'),'typeZalog' => ($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog')? $type : null, 'btnColor' => $owner->tamplate['color-1'], 'color' => $owner->tamplate['color-4']])?>
 

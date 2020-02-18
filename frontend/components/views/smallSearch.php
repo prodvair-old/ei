@@ -60,7 +60,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
     <div class="input-search">
       <?= $form->field($model, 'search')->textInput([
         'class' => 'form-control',
-        'placeholder' => 'Поиск: Машина, Квартира...',
+        'placeholder' => 'Поиск по лотам',
         'tabindex' => '2',
         "input-group" => true,
       ])->label(false); ?>

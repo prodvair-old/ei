@@ -140,7 +140,7 @@ AppAsset::register($this);
                 <ul class="nav-mini-right vertival-center">
                   <? if (Yii::$app->user->isGuest) { ?>
                     <li class="d-none d-sm-block">
-                      <a href="#loginFormTabInModal-register" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false">
+                      <a href="#loginFormTabInModal-register" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false" class="main-page__link">
                         <span class="icon-font"><i class="icon-user-follow"></i></span> Зарегистрироваться
                       </a>
                     </li>
@@ -344,12 +344,12 @@ AppAsset::register($this);
             
                 <div class="row gap-50">
                   
-                  <!-- <a href="tel:88004441912" class="link-mobile"> 
+                  <a href="tel:88006003305" class="link-mobile"> 
                     <span>
-                      8 (800) 444 19 12
+                      8 (800) 600-33-05
                     </span>
                     <img src="img/telephone.svg" alt="icon_phone" class="link-mobile__icon">
-                  </a> -->
+                  </a>
                 
                     <div class="col-lg-4">
                     

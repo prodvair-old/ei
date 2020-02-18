@@ -29,10 +29,12 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
 
     <div class="container pt5">
 
-      <h1 style="line-height:30px;margin-bottom:0px;">
-        <span class="font200">
-        <!-- <span class="font700 main-page__title">Единый информатор<br><span class="main-page__subtitle">Полный каталог реализуемого имущества организаций, должников и банков России</span> </span></h1> -->
-            <span class="font700 main-page__title">Имущество организаций России<br><span class="font200 main-page__subtitle">Агрегатор банкротных и арестованных торгов, имущество банков, лизинговых компаний, залоговое имущество</span> </span></h1>
+        <h1>
+            <!-- <span class="font700 main-page__title">Единый информатор<br><span class="main-page__subtitle">Полный каталог реализуемого имущества организаций, должников и банков России</span> </span></h1> -->
+            <span class="font700 main-page__title">Имущество организаций России<br></span>
+        </h1>
+            <p class="main-page__subtitle">Агрегатор банкротных и арестованных торгов, имущество банков, лизинговых компаний, залоговое имущество</p> 
+                
         <!-- </span><span class="font200">торгов<span class="block"> <span class="font700">по</span> банкротству</span></span> -->
       <?= SearchForm::widget(['type' => 'bankrupt', 'url' => 'all']) ?>
 
@@ -132,7 +134,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
       <div class="col">
 
 
-        <figure class="category__item" style="background-color: #5e100a;">
+        <figure class="category__item" style="background-color: #005639;">
           <a href="/arrest/lot-list">
             <div class="image">
               <img src="https://cdn-st4.rtr-vesti.ru/vh/pictures/bq/142/045/9.jpg" alt="image" />
