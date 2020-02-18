@@ -36,11 +36,20 @@ $this->params['breadcrumbs'][] = $this->title;
 	    </div>
         <?=OurFeatures::widget()?>
 
-        <div class="mt-10 mb-50 text-center">
+
+        <!-- Модальное окно выходит но без содержимого -->
+
+        <!-- <div class="mt-10 mb-50 text-center">
             <a href="#loginFormTabInModal-register" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false" class="btn-link">
                 Регистрируйтесь на ei.ru
             </a>
-        </div>
+        </div> -->
+
+
+
+
+
+        
 
         <!-- <div class="section-title text-center w-100">
 		    <h2>
