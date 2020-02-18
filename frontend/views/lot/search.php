@@ -396,7 +396,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
             } ?>
           </div>
 
-          <!-- <button class="alert alert-primary mt-30 text-center h5 w-100">Загрузить еще 10 лотов</button> -->
+          <a href="<?=$pages->links['next']?>" class="alert alert-primary mt-30 text-center h5 w-100">Далее</a>
 
           <div class="pager-wrappper mt-40">
 

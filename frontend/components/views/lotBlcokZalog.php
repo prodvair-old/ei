@@ -139,7 +139,7 @@ if (!$lotSubCategorySelect) {
 
         <ul class="item-meta lot-block__info">
           <li><a href="<?= Url::to(['user/lot-remove']) ?>" data-lotid="<?= $lot->id ?>" class="remove-zalog-lot btn btn-primary text-white">Удалить</a></li>
-          <li><a href="<?= '#'// Url::to(['user/edit-lot', 'id'=> $lot->id]) ?>" class="btn btn-success text-white-50">Редактировать</a></li>
+          <!-- <li><a href="<?= '#'// Url::to(['user/edit-lot', 'id'=> $lot->id]) ?>" class="btn btn-success text-white-50">Редактировать</a></li> -->
           <li><a href="<?= Url::to(['user/lot-status']) ?>" data-lotid="<?= $lot->id ?>" class="status-zalog-lot btn btn-secondary <?= ($lot->published) ? 'text-white' : 'text-white-50' ?>"><?= ($lot->published) ? 'Снять с публикации' : 'Опубликовать' ?></a></li>
         </ul>
 
