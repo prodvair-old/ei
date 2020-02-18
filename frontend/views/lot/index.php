@@ -148,30 +148,32 @@ if ($type == 'bankrupt') {
         </div>
     
         <div class="clear mb-100"></div>
+        <?if($lots):?>       
+            <div class="section-title-">
+                <h2 class="h3 mb-20">Горячие предложения дня</h2>
+            </div>
+            
+            <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
+
+                <?foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot, 'color' => $owner->tamplate['color-4']]); }?>
                 
-        <div class="section-title-">
-            <h2 class="h3 mb-20">Горячие предложения дня</h2>
-        </div>
-        
-        <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
+            </div>
 
-            <?foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot, 'color' => $owner->tamplate['color-4']]); }?>
+            <div class="clear mb-100"></div>
+        <?endif;?>
+        <?if($lotsFovarit):?>
+        
+            <div class="section-title-">
+                <h2 class="h3 mb-20">Популярные лоты</h2>
+            </div>
             
-        </div>
+            <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
+                <?foreach ($lotsFovarit as $lot) { echo LotBlock::widget(['lot' => $lot, 'color' => $owner->tamplate['color-4']]); }?>
+            </div>
 
-        <div class="clear mb-100"></div>
-        
-        <div class="section-title-">
-            <h2 class="h3 mb-20">Популярные лоты</h2>
-        </div>
-        
-        <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
+            <div class="clear mb-100"></div>
 
-            <?foreach ($lotsFovarit as $lot) { echo LotBlock::widget(['lot' => $lot, 'color' => $owner->tamplate['color-4']]); }?>
-            
-        </div>
-
-        <div class="clear mb-100"></div>
+        <?endif;?>
 
         
     </div>

@@ -1026,13 +1026,21 @@ body
     font-size: 14px
     color: $secondary
       
+.chosen-container-single .chosen-single,
+.chosen-container-multi .chosen-choices,
+.form-control
+  border-color: #c7c7c7
 
-     
 .sidebar-box+.sidebar-box
   margin-top: 0
+
+.chosen-container-single a:not([href]):not([tabindex]).chosen-single:not(.chosen-default),
+.chosen-container-single a:not([href]):not([tabindex]),
+    color: #444444!important
    
 
-
+.toast-success
+  background-color: $accent !important  
 @media (min-width: 576px)
   .hero-banner.hero-banner-01.alt-option-03 .container
       padding-bottom: 0

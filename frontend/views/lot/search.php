@@ -404,16 +404,16 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
               <div class="row align-items-center text-center text-lg-left">
 
-                <div class="col-12 col-lg-5">
+                <!-- <div class="col-12 col-lg-5">
                   <? if (count($lots) > 0) { ?>
                     Выведено от <?= $offset + 1 ?> до <?= $offset + count($lots) ?> лотов. Всего <?= $count ?>.
                   <? } else { ?>
                     Лотов не найдено
                   <? } ?>
-                </div>
+                </div> -->
 
-                <div class="col-12 col-lg-7">
-                  <nav class="float-lg-right mt-10 mt-lg-0">
+                <div class="col-12">
+                  <nav class="mt-10 mt-lg-0">
                     <?= LinkPager::widget([
                       'pagination' => $pages,
                       'nextPageLabel' => "<span aria-hidden=\"true\">Далее</span></i>",

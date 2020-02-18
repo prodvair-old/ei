@@ -27,7 +27,15 @@ if ($lot->torg->typeId == 1) {
 ?>
 
 <?
-$isCategory = $lot->category->categoryId == '1061' ||
+$isCategory = 
+$lot->category->categoryId == '2' ||
+$lot->category->categoryId == '3' ||
+$lot->category->categoryId == '23' ||
+$lot->category->categoryId == '25' ||
+$lot->category->categoryId == '29' ||
+$lot->category->categoryId == '30' ||
+$lot->category->categoryId == '31' ||
+$lot->category->categoryId == '1061' ||
 $lot->category->categoryId == '1063' ||
 $lot->category->categoryId == '1064' ||
 $lot->category->categoryId == '1068' ||
@@ -43,7 +51,7 @@ $lot->category->categoryId == '1102';
             <?=($type == 'long')? '<div class="d-flex flex-column flex-sm-row">' : ''?>
         
                 <?=($type == 'long')? '<div>' : ''?>
-               
+                    
                     <div class="image image-galery">
 
                         <?if(
