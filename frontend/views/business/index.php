@@ -20,7 +20,7 @@ $description = ''; //'В нашей базе собрана исключител
 
 <div class="otkrytie">
 
-<div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03" style="background-image:url(https://cdn.open.ru/storage/top_picture/39964/609796910__1__2bd3.png); background-position: top  center;" >
+<div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03 gradient-for-page">
         
     <div class="overlay-holder bottom"></div>	
     
@@ -38,7 +38,7 @@ $description = ''; //'В нашей базе собрана исключител
 
                 </div>
             
-                <!-- <h1><?=$title?></h1> -->
+                <h1><?=$title?></h1>
                 <p class="font-lg spacing-1 "><?=$description?></p>
 
                 <?= SearchForm::widget(['type' => $type])?>
