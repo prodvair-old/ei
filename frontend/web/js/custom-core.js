@@ -63,8 +63,6 @@ jQuery(function($) {
 	
 	$('[data-toggle="tooltip"]').tooltip()
 	
-	
-	
 	/**
 	 *  Tab in dropdown
 	 */

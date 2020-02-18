@@ -404,9 +404,13 @@ class LotController extends Controller
             
         // Фильтрация лотов Start->
         $modelSort->load(Yii::$app->request->get());
+
+        $get = Yii::$app->request->get();
+
+        // var_dump(($get['SearchLot'])? $get['SearchLot'] : $get[1]['SearchLot']);
         
-        $model->load(Yii::$app->request->get());
-        $query = $model->search($lotsQuery, $url, (($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog' || $type == 'all')? $type : null), $modelSort->sortBy());
+        $model->load((($get['SearchLot'])? $get : $get[1]));
+        $query = $model->searchBy($lotsQuery, $url, (($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog' || $type == 'all')? $type : null), $modelSort->sortBy());
 
         /* http://dev.ei.ru/rosselkhozbank/lot-list */
         $urlArray = explode('/', $url);
