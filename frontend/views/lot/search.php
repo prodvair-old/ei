@@ -15,7 +15,7 @@ use common\models\Query\Settings;
 use common\models\Query\LotsCategory;
 use common\models\Query\Regions;
 
-use common\models\Query\Bankrupt\TradePlace;
+use common\models\Query\Lot\Etp;
 use common\models\Query\Zalog\OwnerProperty;
 
 $this->title = Yii::$app->params['title'];
@@ -35,7 +35,7 @@ $traderList = [];
 if ($type == 'bankrupt') {
   $traderLabel = 'Торговые площадки';
   $traderPlaceholder = 'Все торговые площадки';
-  $traderList = ArrayHelper::map(TradePlace::find()->orderBy('tradename ASC')->all(), 'idtradeplace', 'tradename');
+  $traderList = ArrayHelper::map(Etp::find()->orderBy('title ASC')->all(), 'id', 'title');
 } else if ($type == 'zalog') {
   $traderLabel = 'Организации';
   $traderPlaceholder = 'Все организации';
