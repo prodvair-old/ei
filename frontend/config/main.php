@@ -71,7 +71,6 @@ return [
       'showScriptName' => false,
       //'suffix' => '.html',
       'rules' => [
-
         '' => 'site/index',
 
         '/test'    => 'test/index',

@@ -11,6 +11,7 @@ use yii\data\Pagination;
 use common\models\Query\MetaDate;
 use common\models\Query\Bankrupt\Arbitrs;
 use common\models\Query\Bankrupt\LotsBankrupt;
+use common\models\Query\Lot\Lots;
 use common\models\Query\Bankrupt\Cases;
 
 use frontend\models\ArbitrSearch;
@@ -125,7 +126,7 @@ class ArbitrController extends Controller
         $arbitr = Arbitrs::findOne($arb_id);
         $title = 'Арбитражный управляющий - '.$arbitr->person->lname.' '.$arbitr->person->fname.' '.$arbitr->person->mname;
 
-        $lots_bankrupt = LotsBankrupt::find()->joinWith('torgy.case.arbitr')->where(['arbitr.id'=>$arb_id])->andWhere('lot_timeend >= NOW()')->limit(20)->orderBy('lot_image DESC, lot_timepublication DESC')->all();
+        $lots_bankrupt = Lots::find()->joinWith('torg.publisher')->where(['publisher.oldId'=>$arb_id])->andWhere(['torg.typeId' => 1])->limit(20)->orderBy('images DESC, torg.publishedDate DESC')->all();
         $countCases = Cases::find()->joinWith('arbitr')->where(['arbitr.id'=>$arb_id])->count();
         // Сбор информации из бд <-End
 
