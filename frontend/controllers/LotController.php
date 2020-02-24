@@ -95,7 +95,7 @@ class LotController extends Controller
         $get = Yii::$app->request->get();
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-        $lotsSearch = Lots::find()
+        $lotsSearch = Lots::isActive()
                 ->joinWith(['torg'])
                 ->alias('lot')
                 ->where([
@@ -159,15 +159,15 @@ class LotController extends Controller
         }
 
         // Проверка ссылок ЧПУ и подставление типа лотов Strat->
-        $lots = Lots::find()
+        $lots = Lots::isActive()
                 ->joinWith(['torg'])
                 ->alias('lot')
-                ->where(['and', ['torg.type' => $queryType, 'published' => true], ['>=', 'torg.completeDate', 'NOW()']])
+                ->where(['torg.type' => $queryType])
                 ->orderBy('torg.publishedDate DESC')
                 ->limit(3)
                 ->all();
 
-        $lotsFovarit = Lots::find()
+        $lotsFovarit = Lots::isActive()
                 ->select([
                     '*',
                     'whishCount' => WishList::find()
@@ -178,7 +178,7 @@ class LotController extends Controller
                 ])
                 ->joinWith(['torg'])
                 ->alias('lot')
-                ->where(['and', ['torg.type' => $queryType, 'published' => true], ['>=', 'torg.completeDate', 'NOW()']])
+                ->where(['torg.type' => $queryType])
                 ->limit(3)
                 ->orderBy('whishCount DESC')
                 ->all();
@@ -247,8 +247,6 @@ class LotController extends Controller
 
         $model->type = ($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog' || $type == 'all')? $type : 'zalog';
         
-        $lotsQuery = Lots::find()->alias('lot')->joinWith(['categorys', 'torg', 'thisPriceHistorys']);
-
         $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
 
         switch ($type) {
@@ -410,7 +408,7 @@ class LotController extends Controller
         // var_dump(($get['SearchLot'])? $get['SearchLot'] : $get[1]['SearchLot']);
         
         $model->load((($get['SearchLot'])? $get : $get[1]));
-        $query = $model->searchBy($lotsQuery, $url, (($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog' || $type == 'all')? $type : null), $modelSort->sortBy());
+        $query = $model->searchBy($url, (($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog' || $type == 'all')? $type : null), $modelSort->sortBy());
 
         /* http://dev.ei.ru/rosselkhozbank/lot-list */
         $urlArray = explode('/', $url);

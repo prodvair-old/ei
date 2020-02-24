@@ -8,6 +8,7 @@ use common\models\Query\Arrest\LotsArrest;
 
 use common\models\Query\LotsCategory;
 use common\models\Query\Regions;
+use common\models\Query\Lot\Lots;
 /**
  * Search Lot
  */
@@ -46,8 +47,20 @@ class SearchLot extends Model
      *
      * @return bool whether the creating new account was successful and email was sent
      */
-    public function searchBy($lots, $url = null, $type = null, $sortBy = '')
+    public function searchBy($url = null, $type = null, $sortBy = '')
     {
+
+        if (!empty($this->archivCheck)) {
+            if (!$this->archivCheck) {
+                $lots = Lots::isActive();
+            }
+            $lots = Lots::isArchive();
+        } else {
+            $lots = Lots::isActive();
+        }
+
+        $lots->alias('lot')->joinWith(['categorys', 'torg', 'thisPriceHistorys']);
+        
         $lotsPrice = Clone $lots;
 
         if (!empty($category) && $category != 'all' && $category != 'lot-list' && empty($this->category) && $this->category != 0) {
@@ -219,13 +232,6 @@ class SearchLot extends Model
                     ['torg.tradeTypeId'=>$this->tradeType[1]]
                 ];
             }
-        }
-        if (!empty($this->archivCheck)) {
-            if (!$this->archivCheck) {
-                $where[] = '(torg."endDate" >= NOW() OR torg."endDate" IS NULL) OR (torg."completeDate" >= NOW() OR torg."completeDate" IS NULL)';
-            }
-        } else {
-            $where[] = '(torg."endDate" >= NOW() OR torg."endDate" IS NULL) OR (torg."completeDate" >= NOW() OR torg."completeDate" IS NULL)';
         }
         if (!empty($this->imageCheck)) {
             $where[] = ['not', ['images' => null]];
