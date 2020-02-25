@@ -33,7 +33,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
             <!-- <span class="font700 main-page__title">Единый информатор<br><span class="main-page__subtitle">Полный каталог реализуемого имущества организаций, должников и банков России</span> </span></h1> -->
             <span class="font700 main-page__title">Имущество организаций России<br></span>
         </h1>
-            <p class="main-page__subtitle">Агрегатор банкротных и арестованных торгов, имущество банков, лизинговых компаний, залоговое имущество</p> 
+            <p class="main-page__subtitle">Агрегатор банкротных и арестованных торгов, имущества банков, лизинговых компаний, залоговое имущество</p> 
                 
         <!-- </span><span class="font200">торгов<span class="block"> <span class="font700">по</span> банкротству</span></span> -->
       <?= SearchForm::widget(['type' => 'bankrupt', 'url' => 'all']) ?>

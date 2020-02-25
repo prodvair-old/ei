@@ -1085,9 +1085,6 @@ body
     font-size: 22px
     transition: all .1s linear
 
-    // font-weight: 400;
-    // transition-delay: .6s;
-
   &:hover span
     display: block
     z-index: 4
@@ -1108,10 +1105,19 @@ body
   display: none
 
 .toast-success
-  background-color: $accent !important  
+  background-color: $accent !important
+
+@media (max-width: 768px)
+  .hero-banner.hero-banner-01.alt-option-03 .container
+      padding-top: 140px!important
+
 @media (min-width: 576px)
   .hero-banner.hero-banner-01.alt-option-03 .container
       padding-bottom: 0
      
+@media (max-width: 576px)
+  .hero-banner.hero-banner-01.alt-option-03 .container
+      padding-bottom: 20px
+
 .gradient-for-page
   background: linear-gradient(to bottom, #d2d2d2, #ffffff)
