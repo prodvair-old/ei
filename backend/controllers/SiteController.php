@@ -7,6 +7,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
 use backend\models\HistoryAdd;
+use backend\models\UserAccess;
 
 /**
  * Site controller
@@ -76,8 +77,24 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
+        if (Yii::$app->request->isGet) {
+            if ($model->token = Yii::$app->request->get('token')) {
+                $login = $model->loginAdminToken();
+
+                if ($login['status']) {
+                    HistoryAdd::singIn(1, 'Вход в систему');
+
+                    return $this->goBack();
+                }
+
+                if ($login['user']) {
+                    HistoryAdd::singIn(2, 'Не удачный вход в систему', $model->errors, $login['user']);
+                }
+            }
+        }
         if ($model->load(Yii::$app->request->post())) {
             $login = $model->loginAdmin();
+            
             if ($login['status']) {
                 HistoryAdd::singIn(1, 'Вход в систему');
 

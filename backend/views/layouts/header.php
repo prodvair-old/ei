@@ -249,11 +249,11 @@ use yii\bootstrap\NavBar;
                         <!-- Menu Body -->
                         <li class="user-body">
                             <div class="col-xs-<?=(Yii::$app->user->identity->role == 'admin' || Yii::$app->user->identity->role == 'superAdmin')? '6' : '12'?> text-center">
-                                <a href="#">История</a>
+                                <a href="<?=Url::to(['historys/index'])?>">История</a>
                             </div>
                             <? if (Yii::$app->user->identity->role == 'admin' || Yii::$app->user->identity->role == 'superAdmin') { ?>
                             <div class="col-xs-4 text-center">
-                                <a href="#">Журнал</a>
+                                <a href="<?=Url::to(['historys/all'])?>">Журнал</a>
                             </div>
                             <? } ?>
                             <!-- <div class="col-xs-4 text-center">

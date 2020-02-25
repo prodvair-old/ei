@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+use backend\models\UserAccess;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -16,31 +17,9 @@ if (Yii::$app->controller->action->id === 'login') {
         app\assets\AppAsset::register($this);
     }
 
-    dmstr\web\AdminLteAsset::register($this);
+    Yii::$app->params['role'] = UserAccess::getRole();
 
-    switch (Yii::$app->user->identity->role) {
-        case 'agent':
-            Yii::$app->params['role'] = 'Агент';
-            break;
-        case 'arbitr':
-            Yii::$app->params['role'] = 'Арбитражный управляющи';
-            break;
-        case 'sro':
-            Yii::$app->params['role'] = 'СРО';
-            break;
-        case 'etp':
-            Yii::$app->params['role'] = 'Торговая площадка';
-            break;
-        case 'manager':
-            Yii::$app->params['role'] = 'Менеджер';
-            break;
-        case 'admin':
-            Yii::$app->params['role'] = 'Администратор';
-            break;
-        case 'superAdmin':
-            Yii::$app->params['role'] = 'Главный администратор';
-            break;
-    }
+    dmstr\web\AdminLteAsset::register($this);
 
     $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@bower/admin-lte/dist');
     ?>

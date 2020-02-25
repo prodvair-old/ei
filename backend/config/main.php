@@ -53,6 +53,9 @@ return [
                 '/logout'   => 'site/logout',
 
                 // '/lots'     => 'lots/index',
+
+                '/historys' => 'historys/index',
+                '/historys-all' => 'historys/all',
             ],
         ],
     ],

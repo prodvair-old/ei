@@ -195,6 +195,35 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
                 ]) ?></div>
         </div>
 
+        <hr>
+
+        <div class="row">
+            <? foreach ($modelLot->info as $key => $info): ?>
+                <?if (is_array($info)) { ?>
+                    <div class="col-lg-12">
+                        <hr>
+
+                        <h4><?= $key ?></h4>
+
+                        <div class="row">
+                            <? foreach ($info as $name => $value): ?>
+                                <div class="col-lg-6">
+                                    <?= $form->field($modelLot, "info[$key][$name]")->textInput(['value'=>$value])->label($name) ?>
+                                </div>
+                            <? endforeach ?>
+                        </div>
+
+                        <hr>
+                    </div>
+
+                <? } else { ?>
+                    <div class="col-lg-12">
+                        <?= $form->field($modelLot, "info[$key]")->textInput(['value'=>$info])->label($key) ?>
+                    </div>
+                <? } ?>
+            <? endforeach ?>
+        </div>
+
         <!-- <?= $form->field($modelLot, 'bankId') ?> -->
 
         <div class="form-group">
@@ -215,7 +244,7 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
         ])?>
 
         <div class="form-group">
-            <?= (UserAccess::forManager('torgs','edit'))? Html::submitButton('Редактировать', ['class' => 'btn btn-primary']) : 'У вас нет прав на редактирование' ?>
+            <?= (UserAccess::forManager('torgs','edit'))? Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) : 'У вас нет прав на редактирование' ?>
         </div>
 
         <?= $form->field($modelTorg, 'publisherId') ?>
@@ -236,10 +265,36 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
         <?= $form->field($modelTorg, 'endDate') ?>
         <?= $form->field($modelTorg, 'completeDate') ?>
         <?= $form->field($modelTorg, 'publishedDate') ?>
-        <?= $form->field($modelTorg, 'info') ?>
+        <hr>
+        <div class="row">
+            <? foreach ($modelTorg->info as $key => $info): ?>
+                <?if (is_array($info)) { ?>
+                    <div class="col-lg-12">
+                        <hr>
+
+                        <h4><?= $key ?></h4>
+
+                        <div class="row">
+                            <? foreach ($info as $name => $value): ?>
+                                <div class="col-lg-6">
+                                    <?= $form->field($modelTorg, "info[$key][$name]")->textInput(['value'=>$value])->label($name) ?>
+                                </div>
+                            <? endforeach ?>
+                        </div>
+
+                        <hr>
+                    </div>
+
+                <? } else { ?>
+                    <div class="col-lg-12">
+                        <?= $form->field($modelTorg, "info[$key]")->textInput(['value'=>$info])->label($key) ?>
+                    </div>
+                <? } ?>
+            <? endforeach ?>
+        </div>
     
         <div class="form-group">
-            <?= (UserAccess::forManager('torgs','edit'))? Html::submitButton('Редактировать', ['class' => 'btn btn-primary']) : 'У вас нет прав на редактирование' ?>
+            <?= (UserAccess::forManager('torgs','edit'))? Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) : 'У вас нет прав на редактирование' ?>
         </div>
 
     <?php CollapseBox::end()?>

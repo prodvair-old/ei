@@ -16,4 +16,15 @@ class HistoryAdmin extends ActiveRecord
     {
         return Yii::$app->get('db');
     }
+
+    public static function findByUserId($id)
+    {
+        return static::find()->where(['userId' => $id])->orderBy('"createdAt" ASC');
+    }
+
+    // Связи с таблицами
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'userId'])->alias('user'); // Пользователь
+    }
 }
