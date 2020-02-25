@@ -134,8 +134,38 @@ class Lots extends ActiveRecord
     // Поиск, главные значения
     public static function find()
     {
+        return parent::find();
+    }
+    public static function isArchive()
+    {
         return parent::find()->onCondition([
-            'published' => true
+            'and', 
+            [ 'published' => true ], 
+            [ 
+                'not',
+                ['torg.publishedDate' => null],
+            ],
+        ]);
+    }
+    public static function isActive()
+    {
+        return parent::find()->onCondition([
+            'and',
+            [ 'published' => true ], 
+            [ 
+                'not',
+                ['torg.publishedDate' => null],
+            ],
+            [
+                'or',
+                ['>=', 'torg.endDate', 'NOW()'],
+                ['torg.endDate' => null],
+            ],
+            [
+                'or',
+                ['>=', 'torg.completeDate', 'NOW()'],
+                ['torg.completeDate' => null],
+            ]
         ]);
     }
 

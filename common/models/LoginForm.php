@@ -14,6 +14,8 @@ class LoginForm extends Model
     public $password;
     public $rememberMe = true;
 
+    public $token;
+
     private $_user;
 
 
@@ -29,6 +31,8 @@ class LoginForm extends Model
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
+            // Token
+            ['token', 'string']
         ];
     }
 
@@ -75,9 +79,32 @@ class LoginForm extends Model
     public function loginAdmin()
     {
         if ($this->validate()) {
-            return ['status' => Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0)];
+            $this->getUser();
+
+            if ($this->_user->role !== 'user') {
+                return ['status' => Yii::$app->user->login($this->_user, $this->rememberMe ? 3600 * 24 * 30 : 0)];
+            } else {
+                $this->addError('username', 'У вас нет доступа в панель управления!');
+                return ['status' => false, 'user' => $this->getUser()];
+            }
         }
         
+        return ['status' => false, 'user' => $this->getUser()];
+    }
+    public function loginAdminToken()
+    {
+        if ($this->_user = User::findByToken($this->token)) {
+            $this->username = $user->username;
+
+            if ($this->_user->role !== 'user') {
+                return ['status' => Yii::$app->user->login($this->_user, $this->rememberMe ? 3600 * 24 * 30 : 0)];
+            } else {
+                $this->addError('username', 'У вас нет доступа в панель управления!');
+                return ['status' => false, 'user' => $this->getUser()];
+            }
+        }
+        
+        $this->addError('token', 'Не верный токен авторизации!');
         return ['status' => false, 'user' => $this->getUser()];
     }
 

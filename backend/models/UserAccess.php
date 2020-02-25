@@ -6,6 +6,36 @@ use \yii\base\Module;
 
 class UserAccess extends Module
 {
+    public function getRole($role = null)
+    {
+        if (!$role) {
+            $role = Yii::$app->user->identity->role;
+        }
+        
+        switch ($role) {
+            case 'agent':
+                return 'Агент';
+                break;
+            case 'arbitr':
+                return 'Арбитражный управляющи';
+                break;
+            case 'sro':
+                return 'СРО';
+                break;
+            case 'etp':
+                return 'Торговая площадка';
+                break;
+            case 'manager':
+                return 'Менеджер';
+                break;
+            case 'admin':
+                return 'Администратор';
+                break;
+            case 'superAdmin':
+                return 'Главный администратор';
+                break;
+        }
+    }
     public function forSuperAdmin($access = null)
     {
         if (Yii::$app->user->identity->role == 'superAdmin') {
