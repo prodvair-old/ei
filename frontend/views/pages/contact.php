@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="col-12 col-lg-6 ml-auto">
                             
                         <h4 class="heading-title"><span>Контактная <span class="font200">информация:</span></span></h4>
-                        <p class="post-heading mb-10">ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ "ЕДИНЫЙ ИНФОРМАТОР"</p>
+                        <p class="post-heading mb-10">Общество с ограниченной ответственносью "Единый информатор"</p>
                 
                         <?=ContactData::widget()?>
 
