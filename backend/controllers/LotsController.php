@@ -226,10 +226,10 @@ class LotsController extends Controller
 
             if ($modelTorg->save()) {
                 Yii::$app->session->setFlash('success', "Новый торг успешно добавлен");
-                HistoryAdd::edit(1, 'lots/create','Добавлен новый торг №'.$modelTorg->id, ['torgId' => $modelTorg->id], Yii::$app->user->identity);
+                HistoryAdd::add(1, 'lots/create','Добавлен новый торг №'.$modelTorg->id, ['torgId' => $modelTorg->id], Yii::$app->user->identity);
             } else {
                 Yii::$app->session->setFlash('error', "Ошибка при добавлении нового торга");
-                HistoryAdd::edit(2, 'lots/create','Ошибка при добавления торга №'.$modelTorg->id, ['torgId' => $modelTorg->id], Yii::$app->user->identity);
+                HistoryAdd::add(2, 'lots/create','Ошибка при добавления торга №'.$modelTorg->id, ['torgId' => $modelTorg->id], Yii::$app->user->identity);
             }
 
         }
@@ -245,14 +245,14 @@ class LotsController extends Controller
             if ($modelLot->save()) {
                 if ($modelLot->setCategorys($modelTorg->typeId)) {
                     Yii::$app->session->setFlash('success', "Изменения лота успешно применены");
-                    HistoryAdd::edit(1, 'lots/update','Редактирование лота №'.$lot->id, ['lotId' => $lot->id], Yii::$app->user->identity);
+                    HistoryAdd::add(1, 'lots/update','Редактирование лота №'.$lot->id, ['lotId' => $lot->id], Yii::$app->user->identity);
                 } else {
                     Yii::$app->session->setFlash('error', "Ошибка при добавлении категории");
-                    HistoryAdd::edit(2, 'lots/update','Ошибка при добавлении категории лота №'.$lot->id, ['lotId' => $lot->id], Yii::$app->user->identity);
+                    HistoryAdd::add(2, 'lots/update','Ошибка при добавлении категории лота №'.$lot->id, ['lotId' => $lot->id], Yii::$app->user->identity);
                 }
             } else {
                 Yii::$app->session->setFlash('error', "Ошибка при добавлении нового лота");
-                HistoryAdd::edit(2, 'lots/create','Ошибка при добавлении нового лота №'.$modelLot, ['lotId' => $modelLot->id], Yii::$app->user->identity);
+                HistoryAdd::add(2, 'lots/create','Ошибка при добавлении нового лота №'.$modelLot, ['lotId' => $modelLot->id], Yii::$app->user->identity);
             }
 
             return $this->redirect(['lots/update', 'id' => $modelLot->id]);
@@ -283,8 +283,10 @@ class LotsController extends Controller
 
         if ($lot->update()) {
             Yii::$app->session->setFlash('success', "Картинка успешно удалена");
+            HistoryAdd::remove(1, 'lots/image-del','Удаление картинки у лота №'.$lot->id, ['imgId'=> $get['id'], 'lotId' => $lot->id], Yii::$app->user->identity);
         } else {
             Yii::$app->session->setFlash('error', "Ошибка при удалении картинки №".$get['id']);
+            HistoryAdd::remove(2, 'lots/image-del','Ошибка при удалении картинки №'.$get['id'].', у лота №'.$lot->id, ['imgId'=> $get['id'], 'lotId' => $lot->id], Yii::$app->user->identity);
         }
 
         return $this->redirect(['lots/update', 'id' => $lot->id]);
@@ -303,8 +305,18 @@ class LotsController extends Controller
 
         if ($lot->update()) {
             Yii::$app->session->setFlash('success', "Лот успешно опубликован");
+            if ($lot->published) {
+                HistoryAdd::published(1, 'lots/published','Публикация лота №'.$lot->id, ['lotId' => $lot->id], Yii::$app->user->identity);
+            } else {
+                HistoryAdd::unPublished(1, 'lots/published','Снятие с публикации лота №'.$lot->id, ['lotId' => $lot->id], Yii::$app->user->identity);
+            }
         } else {
             Yii::$app->session->setFlash('error', "Ошибка при публикации лота №".$get['id']);
+            if ($lot->published) {
+                HistoryAdd::published(2, 'lots/published','Ошибка при публикация лота №'.$lot->id, ['lotId' => $lot->id], Yii::$app->user->identity);
+            } else {
+                HistoryAdd::unPublished(2, 'lots/published','Ошибка при снятий с публикации лота №'.$lot->id, ['lotId' => $lot->id], Yii::$app->user->identity);
+            }
         }
 
         return $this->redirect(['lots/update', 'id' => $lot->id]);
@@ -321,9 +333,11 @@ class LotsController extends Controller
 
         if ($lot->delete()) {
             Yii::$app->session->setFlash('success', "Лот успешно удалён");
+            HistoryAdd::remove(1, 'lots/delete','Удалён лот №'.$lot->id, ['lotId' => $lot->id], Yii::$app->user->identity);
             return $this->redirect(['lots/index']);
         } else {
             Yii::$app->session->setFlash('error', "Ошибка при удалении лота №".$get['id']);
+            HistoryAdd::remove(2, 'lots/delete','Удалён лот №'.$lot->id, ['lotId' => $lot->id], Yii::$app->user->identity);
             return $this->redirect(['lots/update', 'id' => $lot->id]);
         }
     }

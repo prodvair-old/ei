@@ -17,9 +17,6 @@ $this->title = 'Ваша история лог данных';
 
 $dataProvider = new ActiveDataProvider([
     'query' => HistoryAdmin::findByUserId(Yii::$app->user->id),
-    'sort' => [
-        'defaultOrder' => ['createdAt'=>SORT_DESC],
-    ],
     'Pagination' => [
         'pageSize' => 30
     ]

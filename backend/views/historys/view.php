@@ -38,6 +38,7 @@ $this->title = 'Лог - '.$history->user->username;
         Роль пользователя: <b><?=UserAccess::getRole($history->userRole)?></b><br>
         Статус: <b><?=$history->status?></b><br>
         Страница: <b><?=$history->page?></b><br>
+        Дата и время: <b><?=$history->createdAt?></b><br>
         Тип сообщения: <b><?=$history->type?></b><br>
         <hr>
         Сообщение:

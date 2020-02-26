@@ -23,9 +23,6 @@ if (!UserAccess::forSuperAdmin()) {
 
 $dataProvider = new ActiveDataProvider([
     'query' => $hisroys,
-    'sort' => [
-        'defaultOrder' => ['createdAt'=>SORT_DESC],
-    ],
     'Pagination' => [
         'pageSize' => 30
     ]
