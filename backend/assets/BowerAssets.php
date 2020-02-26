@@ -17,7 +17,7 @@ class BowerAssets extends AssetBundle
             // 'css/adminlte.css',
         ];
     public $js = [
-            'jquery/dist/jquery.min.js',
+            // 'jquery/dist/jquery.min.js',
             // 'fastclick/lib/fastclick.js',
             // 'jquery-sparkline/dist/jquery.sparkline.min.js',
             // 'jquery-slimscroll/jquery.slimscroll.min.js',

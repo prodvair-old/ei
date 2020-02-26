@@ -56,4 +56,60 @@ class HistoryAdd extends Module
 
         return $history->save();
     }
+    public function add($status, $page, $message, $messageJson = null, $user = null)
+    {
+        $history = new HistoryAdmin();
+
+        $history->userId        = Yii::$app->user->id;
+        $history->userRole      = Yii::$app->user->identity->role;
+        $history->typeId        = 4;
+        $history->statusId      = $status;
+        $history->message       = $message;
+        $history->messageJson   = $messageJson;
+        $history->page          = $page;
+
+        return $history->save();
+    }
+    public function remove($status, $page, $message, $messageJson = null, $user = null)
+    {
+        $history = new HistoryAdmin();
+
+        $history->userId        = Yii::$app->user->id;
+        $history->userRole      = Yii::$app->user->identity->role;
+        $history->typeId        = 5;
+        $history->statusId      = $status;
+        $history->message       = $message;
+        $history->messageJson   = $messageJson;
+        $history->page          = $page;
+
+        return $history->save();
+    }
+    public function published($status, $page, $message, $messageJson = null, $user = null)
+    {
+        $history = new HistoryAdmin();
+
+        $history->userId        = Yii::$app->user->id;
+        $history->userRole      = Yii::$app->user->identity->role;
+        $history->typeId        = 6;
+        $history->statusId      = $status;
+        $history->message       = $message;
+        $history->messageJson   = $messageJson;
+        $history->page          = $page;
+
+        return $history->save();
+    }
+    public function unPublished($status, $page, $message, $messageJson = null, $user = null)
+    {
+        $history = new HistoryAdmin();
+
+        $history->userId        = Yii::$app->user->id;
+        $history->userRole      = Yii::$app->user->identity->role;
+        $history->typeId        = 7;
+        $history->statusId      = $status;
+        $history->message       = $message;
+        $history->messageJson   = $messageJson;
+        $history->page          = $page;
+
+        return $history->save();
+    }
 }

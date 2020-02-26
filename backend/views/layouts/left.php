@@ -55,7 +55,7 @@ use backend\models\UserAccess;
                             ],
                             [
                                 'label' => 'Добавить лот',
-                                'url' => ['lots/add'],
+                                'url' => ['lots/create'],
                                 'icon' => 'plus',
                                 'visible' => UserAccess::forManager('lots', 'add')
                             ],

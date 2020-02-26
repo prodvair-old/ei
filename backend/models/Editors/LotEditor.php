@@ -7,6 +7,9 @@ use yii\helpers\FileHelper;
 use yii\imagine\Image;
 use Imagine\Image\Box;
 
+use common\models\Query\Lot\LotCategorys;
+use common\models\Query\LotsCategory;
+
 /**
  * This is the model class for table "eiLot.lots".
  *
@@ -38,6 +41,8 @@ use Imagine\Image\Box;
 class LotEditor extends \yii\db\ActiveRecord
 {
     public $uploads;
+    public $categorys;
+    public $subCategorys;
     /**
      * {@inheritdoc}
      */
@@ -52,7 +57,7 @@ class LotEditor extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['torgId', 'msgId', 'title', 'description', 'startPrice', 'status', 'info'], 'required'],
+            [['torgId', 'msgId', 'title', 'description', 'startPrice', 'status', 'categorys', 'subCategorys'], 'required'],
             [['torgId', 'lotNumber', 'stepTypeId', 'depositTypeId', 'regionId', 'oldId', 'bankId'], 'default', 'value' => null],
             [['torgId', 'lotNumber', 'stepTypeId', 'depositTypeId', 'regionId', 'oldId', 'bankId'], 'integer'],
             [['msgId', 'title', 'description', 'city', 'district'], 'string'],
@@ -74,6 +79,8 @@ class LotEditor extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID лота',
+            'categorys' => 'Категория лота',
+            'subCategorys' => 'Под категория лота',
             'torgId' => 'ID торга по лоту',
             'msgId' => 'Номер сообщения лота (Не изменять)',
             'lotNumber' => 'Номер лота в торге (Не изменять)',
@@ -99,6 +106,46 @@ class LotEditor extends \yii\db\ActiveRecord
             'oldId' => 'Old ID',
             'bankId' => 'Bank ID',
         ];
+    }
+
+    public function setCategorys($type)
+    {
+        if (!$type) {
+            return false;
+        }
+
+        LotCategorys::deleteAll(['lotId' => $this->id]);
+        
+        $categoryItem = LotsCategory::findOne(['id' => $this->categorys]);
+
+        switch ($type) {
+            case '1':
+                $subcategorys = $categoryItem->bankrupt_categorys;
+                break;
+            case '2':
+                $subcategorys = $categoryItem->arrest_categorys;
+                break;
+            case '3':
+                $subcategorys = $categoryItem->zalog_categorys;
+                break;
+        }
+
+        foreach ($subcategorys as $key => $subcategory) {
+            foreach ($this->subCategorys as $categoryId) {
+                if ($key == $categoryId) {
+                    $newCategory = new LotCategorys();
+
+                    $newCategory->lotId         = $this->id;
+                    $newCategory->categoryId    = $categoryId;
+                    $newCategory->name          = $subcategory['name'];
+                    $newCategory->nameTranslit  = $subcategory['translit'];
+
+                    $newCategory->save();
+                }
+            }
+        }
+        
+        return true;
     }
 
     public function uploadImages()

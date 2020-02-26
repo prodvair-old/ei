@@ -15,7 +15,7 @@ use common\models\Query\HistoryAdmin;
 $this->params['h1'] = 'Журнал панеля управления';
 $this->title = 'История лог данных панеля управления';
 
-$hisroys = HistoryAdmin::find()->joinWith(['user'])->orderBy('"createdAt" DESC');
+$hisroys = HistoryAdmin::find()->joinWith(['user']);
 
 if (!UserAccess::forSuperAdmin()) {
     $hisroys->where(['!=', 'userRole', 'superAdmin']);

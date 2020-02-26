@@ -21,7 +21,7 @@ $dataProvider = new ActiveDataProvider([
 ]);
 ?>
 <? if (UserAccess::forManager('lots', 'add')) { ?>
-    <div class="box-header"><a href="<?=Url::to(['lots/add'])?>" class="btn btn-success"><i class="fa fa-plus"></i> Добавить лот</a></div>
+    <div class="box-header"><a href="<?=Url::to(['lots/create'])?>" class="btn btn-success"><i class="fa fa-plus"></i> Добавить лот</a></div>
 <? } ?>
  <?php LteBox::begin(['type'=>LteConst::TYPE_DEFAULT]);?>
         <?= GridView::widget([
