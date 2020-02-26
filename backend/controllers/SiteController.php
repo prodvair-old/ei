@@ -132,7 +132,7 @@ class SiteController extends Controller
 
     public function actionAddField($type)
     {
-        if (!Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return $this->goHome();
         }
         

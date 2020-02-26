@@ -521,15 +521,21 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
 $script = <<< JS
 jQuery('#add-lot-field').on('submit',function(e){
     e.preventDefault();
+
     jQuery.post('/add-field-lot?name=' + jQuery('#add-lot-field-input').val(), function(data){
         jQuery('#ajax-content-lot').append(data);
     });
+
+    return false;
 });
 jQuery('#add-torg-field').on('submit',function(e){
     e.preventDefault();
+
     jQuery.post('/add-field-torg?name=' + jQuery('#add-torg-field-input').val(), function(data){
         jQuery('#ajax-content-torg').append(data);
     });
+
+    return false;
 });
 JS;
 $this->registerJs($script, View::POS_END);
