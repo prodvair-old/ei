@@ -8,6 +8,8 @@ use yii\filters\AccessControl;
 use common\models\LoginForm;
 use backend\models\HistoryAdd;
 use backend\models\UserAccess;
+use backend\models\Editors\LotEditor;
+use backend\models\Editors\TorgEditor;
 
 /**
  * Site controller
@@ -28,7 +30,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index', 'add-field'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -126,5 +128,26 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    public function actionAddField($type)
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+        
+        switch ($type) {
+            case 'lot':
+                $model  = new LotEditor();
+                break;
+            case 'torg':
+                $model  = new TorgEditor();
+                break;
+        }
+        $name   = Yii::$app->request->get('name');
+    
+        //other stuff
+    
+        return $this->renderAjax("_field",['model'=>$model, 'name' => $name]);
     }
 }

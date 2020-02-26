@@ -20,6 +20,13 @@ return [
         ]
     ],
     'components' => [
+        'assetManager' => [
+            'bundles' => [
+                'kartik\form\ActiveFormAsset' => [
+                    'bsDependencyEnabled' => false // do not load bootstrap assets for a specific asset bundle
+                ],
+            ],
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
@@ -52,6 +59,7 @@ return [
                 '/login'    => 'site/login',
                 '/logout'   => 'site/logout',
 
+                '/add-field-<type>' => 'site/add-field',
                 // '/lots'     => 'lots/index',
 
                 '/historys' => 'historys/index',

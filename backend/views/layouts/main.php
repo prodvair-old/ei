@@ -16,7 +16,6 @@ if (Yii::$app->controller->action->id === 'login') {
     } else {
         app\assets\AppAsset::register($this);
     }
-
     Yii::$app->params['role'] = UserAccess::getRole();
 
     dmstr\web\AdminLteAsset::register($this);
