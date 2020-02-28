@@ -20,7 +20,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
 <section class="page-wrapper page-result pb-0">
 			
-    <div class="page-title bg-light mb-0">
+    <div class="page-title bg-light d-none d-sm-block mb-0">
     
         <div class="container">
         
@@ -75,7 +75,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                             'class'=>'chosen-type-select form-control form-control-sm', 
                                             'data-placeholder'=>'Выберите тип должника', 
                                             'tabindex'=>'2',
-                                            'options'=>['company'=>['selected'=>true]]
+                                            
                                         ])
                                         ->label('Тип должника');?>
                                 </div>

@@ -15,7 +15,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
 <section class="page-wrapper page-detail">
 
-  <div class="page-title bg-light">
+  <div class="page-title bg-light d-none d-sm-block">
 
     <div class="container">
 

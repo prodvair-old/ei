@@ -64,7 +64,7 @@ $this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\Vi
 
 <section class="page-wrapper page-result pb-0">
 			
-    <div class="page-title bg-light mb-0">
+    <div class="page-title bg-light d-none d-sm-block mb-0">
     
         <div class="container">
         
