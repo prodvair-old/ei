@@ -15,15 +15,15 @@ $this->title = Yii::$app->params['title'];
 if ($type == 'bankrupt') {
     $title = '<span class="main-page__title">Имущество банкротов</span>';
     $imgBG = 'img/01.jpg';
-    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана исключительно актуальная информация об имуществе банкротов и должников, выставленных тендерах и торгах на ЭТП и публичных аукционах.</span>';
+    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана актуальная информация об имуществе банкротов и должников, выставленном на торгах на ЭТП, публичных аукционах, а также имущество ряда коммерческих организаций и муниципальных учреждений.</span>';
 } else if ($type == 'zalog') {
     $title = '<span class="main-page__title">Имущество организаций</span>';
     $imgBG = 'img/01.jpg';
-    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана исключительно актуальная информация об имуществе банкротов и должников, выставленных тендерах и торгах на ЭТП и публичных аукционах.</span>';
+    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана актуальная информация об имуществе банкротов и должников, выставленном на торгах на ЭТП, публичных аукционах, а также имущество ряда коммерческих организаций и муниципальных учреждений.</span>';
 }else if ($type == 'arrest') {
     $title = '<span class="main-page__title">Арестованное имущество</span>';
     $imgBG = 'img/01.jpg';
-    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана исключительно актуальная информация об имуществе банкротов и должников, выставленных тендерах и торгах на ЭТП и публичных аукционах.</span>';
+    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана актуальная информация об имуществе банкротов и должников, выставленном на торгах на ЭТП, публичных аукционах, а также имущество ряда коммерческих организаций и муниципальных учреждений.</span>';
 } else {
     $title = '<span class="font200"'.(($owner->template['color-5'])? 'style="color: '.$owner->template['color-5'].'"': '').'>'.$owner->title.'</span>';
     $imgBG = 'http://n.ei.ru'.$owner->template['bg'];

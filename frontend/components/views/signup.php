@@ -7,7 +7,7 @@ use yii\bootstrap\ActiveForm;
     <div class="form-login">
 
         <div class="form-header">
-            <h4>Регистрация на сайте Ei.ru</h4>
+            <h4>Регистрация на сайте ei.ru</h4>
             <p>Заполните все поля и подтвердите аккаунт через почту</p>
         </div>
         
