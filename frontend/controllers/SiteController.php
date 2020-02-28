@@ -180,7 +180,7 @@ class SiteController extends Controller
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             Yii::$app->session->setFlash('success', 'Спасибо за регистрацию. Пожалуйста перейдите на указанную почту, для подтверждения акаунта.');
-            return ['result'=>false, 'error'=>'Спасибо за регистрацию!'];
+            return ['result'=>true, 'error'=>'Спасибо за регистрацию! Подтвердите почту.'];
         }
         Yii::$app->session->setFlash('error', 'Такой пользователь уже существует');
         return ['result'=>false, 'error'=>'Такой пользователь уже существует'];

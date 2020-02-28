@@ -5,7 +5,7 @@ use yii\db\ActiveRecord;
 
 use Yii;
 use common\models\Query\Lot\Sro;
-use common\models\Query\Lot\Trogs;
+use common\models\Query\Lot\Torgs;
 
 class Managers extends ActiveRecord
 {
@@ -23,8 +23,8 @@ class Managers extends ActiveRecord
     {
         return $this->hasOne(Sro::className(), ['id' => 'sroId'])->alias('sro'); // СРО
     }
-    public function getTrogs()
+    public function getTorgs()
     {
-        return $this->hasMany(Trogs::className(), ['publisherId' => 'id'])->alias('trogs'); // Торги
+        return $this->hasMany(Torgs::className(), ['publisherId' => 'id'])->alias('torgs'); // Торги
     }
 }

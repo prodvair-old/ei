@@ -106,17 +106,17 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
                                     <li>
                                         <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
-                                        <h6><span class="font400">ИНН </span><?=$arbitr->person->inn?></h6>
+                                        <h6><span class="font400">ИНН </span><?=$arbitr->inn?></h6>
                                     </li>
 
                                     <li>
                                         <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
-                                        <h6><span class="font400">ОГРН </span><?=$arbitr->ogrn?></h6>
+                                        <h6><span class="font400">ОГРН </span><?=$arbitr->info['ogrn']?></h6>
                                     </li>
 
                                     <li>
                                         <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
-                                        <h6><span class="font400">Адрес </span><?=$arbitr->postaddress?></h6>
+                                        <h6><span class="font400">Адрес </span><?=$arbitr->address?></h6>
                                     </li>
 
                                     <li>

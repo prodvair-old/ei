@@ -110,7 +110,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
                                     <li>
                                         <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
-                                        <h6><span class="font400">ОГРН </span><?=$sro->ogrn?></h6>
+                                        <h6><span class="font400">ОГРН </span><?=$sro->info['ogrn']?></h6>
                                     </li>
 
                                     <li>

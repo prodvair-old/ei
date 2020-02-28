@@ -168,7 +168,7 @@ if ($type == 'bankrupt') {
             </div>
             
             <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
-                <?foreach ($lotsFovarit->all() as $lot) { echo LotBlock::widget(['lot' => $lot, 'color' => $owner->template['color-4']]); }?>
+                <?foreach ($lotsFovarit as $lot) { echo LotBlock::widget(['lot' => $lot, 'color' => $owner->template['color-4']]); }?>
             </div>
 
             <div class="clear mb-100"></div>

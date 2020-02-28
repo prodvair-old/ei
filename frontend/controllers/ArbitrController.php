@@ -12,7 +12,8 @@ use common\models\Query\MetaDate;
 use common\models\Query\Bankrupt\Arbitrs;
 use common\models\Query\Bankrupt\LotsBankrupt;
 use common\models\Query\Lot\Lots;
-use common\models\Query\Bankrupt\Cases;
+use common\models\Query\Lot\Managers;
+use common\models\Query\Lot\Cases;
 
 use frontend\models\ArbitrSearch;
 
@@ -82,7 +83,7 @@ class ArbitrController extends Controller
     {
         $title = 'Список арбитражных управляющих';
         $model = new ArbitrSearch();
-        $arbitrQuery = Arbitrs::find()->joinWith('person');
+        $arbitrQuery = Managers::find();
 
         // Мета данные Strat-> 
         $metaData = MetaDate::find()->where(['mdName' => 'arbitr-list'])->one();
@@ -102,7 +103,7 @@ class ArbitrController extends Controller
         $count = $arbitrCount->count();
         $pages = new Pagination(['totalCount' => $count, 'pageSize'=> 10]);
 
-        $arbitrs = $arbitrsQuery->orderBy('arb_prsn.lname ASC, arb_prsn.fname ASC, arb_prsn.mname ASC')
+        $arbitrs = $arbitrsQuery
             ->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
@@ -112,7 +113,7 @@ class ArbitrController extends Controller
         Yii::$app->params['breadcrumbs'][] = [
             'label' => ' '.$title,
             'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-            'url' => ['arbitr/list']
+            'url' => ['javascript:void(0);']
         ];
         // Хлебные крошки <-End
 
@@ -123,11 +124,15 @@ class ArbitrController extends Controller
     public function actionArbitr_page($arb_id)
     {
         // Сбор информации из бд Start->
-        $arbitr = Arbitrs::findOne($arb_id);
-        $title = 'Арбитражный управляющий - '.$arbitr->person->lname.' '.$arbitr->person->fname.' '.$arbitr->person->mname;
+        $arbitr = Managers::findOne($arb_id);
+        $title = 'Арбитражный управляющий - '.$arbitr->fullName;
+        $countCases = 0;
 
-        $lots_bankrupt = Lots::find()->joinWith('torg.publisher')->where(['publisher.oldId'=>$arb_id])->andWhere(['torg.typeId' => 1])->limit(20)->orderBy('images DESC, torg.publishedDate DESC')->all();
-        $countCases = Cases::find()->joinWith('arbitr')->where(['arbitr.id'=>$arb_id])->count();
+        $lots_bankrupt = Lots::find()->joinWith('torg')->where(['torg.publisherId'=>$arb_id])->andWhere(['torg.typeId' => 1])->limit(20)->orderBy('images DESC, torg.publishedDate DESC')->all();
+
+        foreach ($lots_bankrupt as $key => $lot) {
+            $countCases = $countCases + Cases::find()->where(['id'=>$lot->torg->case->id])->count();
+        }
         // Сбор информации из бд <-End
 
         // Мета данные Strat->
@@ -144,17 +149,17 @@ class ArbitrController extends Controller
             '${countLot}'
         ];
         $replace = [
-            $arbitr->person->lname.' '.$arbitr->person->fname.' '.$arbitr->person->mname,
-            $arbitr->postaddress,
+            $arbitr->fullName,
+            $arbitr->address,
             str_replace('"',"'",$arbitr->sro->title),
             $arbitr->regnum,
-            $arbitr->person->inn,
+            $arbitr->inn,
             $countCases,
             count($lots_bankrupt)
         ];
         Yii::$app->params['description'] = str_replace($search, $replace, $metaData->mdDescription);
         Yii::$app->params['title'] = str_replace($search, $replace, $metaData->mdTitle);
-        Yii::$app->params['h1'] = $arbitr->person->lname.' '.$arbitr->person->fname.' '.$arbitr->person->mname;
+        Yii::$app->params['h1'] = $arbitr->fullName;
         Yii::$app->params['text'] = $metaData->mdText;
         // Мета данные <-End
 
@@ -166,9 +171,9 @@ class ArbitrController extends Controller
         ];
         ;
         Yii::$app->params['breadcrumbs'][] = [
-            'label' => ' '.$arbitr->person->lname.' '.$arbitr->person->fname.' '.$arbitr->person->mname,
+            'label' => ' '.$arbitr->fullName,
             'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-            'url' => [Url::to(['arbitr/list'])."/$arb_id"]
+            'url' => ["javascript:void(0);"]
         ];
         // Хлебные крошки <-End
 

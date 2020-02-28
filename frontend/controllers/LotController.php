@@ -472,7 +472,7 @@ class LotController extends Controller
         Yii::$app->params['breadcrumbs'][] = [
             'label' => ' '.Yii::$app->params['h1'],
             'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-            'url' => [$url]
+            'url' => ["javascript:void(0);"]
         ];
         // Хлебные крошки <-End
         
@@ -548,12 +548,12 @@ class LotController extends Controller
             str_replace('"',"'",$lot->title),
             str_replace('"',"'",$lot->district.''.$lot->info['address']['region'].''.$lot->city.''.$lot->info['address']['street']),
             str_replace('"',"'",$lot->status),
-            str_replace('"',"'",$lot->torg->bankrupt->name),
+            str_replace('"',"'",(($lot->torg->bankrupt)? $lot->torg->bankrupt->name : '')),
             str_replace('"',"'",$lot->torg->publisher->fullName),
-            str_replace('"',"'",$lot->torg->publisher->sro->title),
-            str_replace('"',"'",$lot->torg->etp->title),
+            str_replace('"',"'",(($lot->torg->publisher->sro)? $lot->torg->publisher->sro->title : '')),
+            str_replace('"',"'",(($lot->torg->etp)? $lot->torg->etp->title : '')),
             (($lot->torg->tradeType == 0)? 'публичное предложение': 'открытый аукцион'),
-            $lot->torg->case->number, 
+            (($lot->torg->case)? $lot->torg->case->number : ''), 
             $titleCategory,
             $titleSubcategory,
             Yii::$app->formatter->asCurrency($lot->startPrice),
@@ -564,6 +564,7 @@ class LotController extends Controller
             Yii::$app->formatter->asDate($lot->torg->startDate, 'long'),
             Yii::$app->formatter->asDate($lot->torg->endDate, 'long')
         ];
+        
 
         switch ($type) {
             case 'bankrupt':
@@ -583,7 +584,7 @@ class LotController extends Controller
 
                 break;
             case 'arrest':
-                $metaType = 'lot-arrest-page';
+                $metaType = 'lot-page';
 
                 $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
                 $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Арестованное имущество';
@@ -597,7 +598,7 @@ class LotController extends Controller
                 // Хлебные крошки <-End
                 break;
             case 'zalog':
-                $metaType = 'lot-zalog-page';
+                $metaType = 'lot-page';
 
                 $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
                 $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Имущество организаций';
@@ -637,7 +638,7 @@ class LotController extends Controller
         Yii::$app->params['breadcrumbs'][] = [
             'label' => ' '.((Yii::$app->params['h1'])? Yii::$app->params['h1'] : $lot->title),
             'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-            'url' => ["$type/$category/$subcategory/$id"]
+            'url' => ["javascript:void(0);"]
         ];
         // Хлебные крошки <-End
 
