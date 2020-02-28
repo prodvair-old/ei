@@ -369,7 +369,8 @@ foreach ($lot->info as $key => $value) {
                                                     break;
                                             }
                                         ?>
-                                        <li><?=$title?>: <span class="text-list-name"><?= $value?></span></li>
+                                        <?if ?>
+                                        <li><?=$title?>: <?= (strlen($value) < 100)? "<span class=\"text-list-name\">$value</span>" : "<p>$value</p>" ?></li>
                                     <? } ?>
                                 </ul>
                             </li>
@@ -701,7 +702,7 @@ foreach ($lot->info as $key => $value) {
 
                     <div id="roles" class="detail-header mb-30">
                         <h5 class="mt-30">Правила подачи заявок</h5>
-                        <p class="long-text"><?=($lot->torg->typeId == 1)? $lot->torg->info['rules'] : $lot->torg->info['torgReason'] ?></p>
+                        <p class="long-text"><?=($lot->torg->typeId == 1)? $lot->torg->info['rules'] : $lot->info['torgReason'] ?></p>
                         <a href="#roles" class="open-text-js">Подробнее</a>
                     </div>
 
