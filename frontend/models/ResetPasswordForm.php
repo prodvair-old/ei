@@ -50,6 +50,13 @@ class ResetPasswordForm extends Model
             ['password', 'compare', 'compareAttribute' => 'confirm_password'],
         ];
     }
+    public function attributeLabels()
+    {
+        return [
+            'password' => 'Пароль',
+            'confirm_password' => 'Подтвердите пароль',
+        ];
+    }
 
     /**
      * Resets password.

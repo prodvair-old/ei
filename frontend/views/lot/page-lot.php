@@ -43,7 +43,15 @@ $isCategory =
     $lot->category->categoryId == '1083' ||
     $lot->category->categoryId == '1102' ||
     $lot->category->categoryId == '1102';
+
+foreach ($lot->info as $key => $value) { 
+    if ($key != 'address' && $key != 'vin' && $key != 'cadastreNumber' && $key != 'priceReduction' && $value != null) {
+        $otherInfo[$key] = $value;
+    } 
+}
 ?>
+
+
 
 <section class="page-wrapper page-detail">
         
@@ -279,6 +287,133 @@ $isCategory =
                         <div class="mb-50"></div>
                         
                     </div> -->
+
+                    <div id="info" class="fullwidth-horizon--section">
+                    
+                        <h4 class="heading-title">Информация о лоте</h4>
+                        
+                        <ul class="list-icon-absolute what-included-list mb-30">
+
+                            <li>
+                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
+                                <h6>Категории лота</h6>
+                                <ul class="ul">
+                                    <?foreach ($lot->categorys as $category) { ?>
+                                        <li><?=$category->name?></li>
+                                    <? }?>
+                                </ul>
+                            </li>
+                            
+                            <? if ($lot->info['vin']) { ?>
+                                <li>
+                                    <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
+                                    <h6>VIN номер</h6>
+                                    <p><?= $lot->info['vin'] ?></p>
+                                    <a href="https://avtocod.ru/proverkaavto/<?=$lot->info['vin']?>?rd=VIN&a_aid=zhukoffed"
+                                        class="btn btn-success btn-sm mt-2" target="_blank" rel="nofollow">Проверить Автомобиль</a>
+                                </li>    
+                            <? } ?>
+                            
+                            <? if ($lot->info['cadastreNumber']) { ?>
+                                <li>
+                                    <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
+                                    <h6>Кадастровый номер</h6>
+                                    <p><?= $lot->info['cadastreNumber'] ?></p>
+                                </li>    
+                            <? } ?>
+
+                            <? if ($lot->torg->bankrupt !== null) { ?>
+                            <li>
+                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
+                                <h6>Должник</h6>
+                                <ul class="ul">
+                                    <li><a href="<?=Url::to(['doljnik/list'])?>/<?=$lot->torg->bankrupt->oldId?>" target="_blank"><?=$lot->torg->bankrupt->name?></a></li>
+                                    <li>ИНН: <span class="text-list-name"><?= $lot->torg->bankrupt->inn?></span></li>
+                                    <li>Адрес: <span class="text-list-name"><?= $lot->torg->bankrupt->address;?></span></li>
+                                </ul>
+                            </li>
+                            <? } ?>
+                            
+                            <? if ($lot->torg->case !== null) { ?>
+                            <li>
+                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
+                                <h6>Сведения о деле</h6>
+                                <ul class="ul">
+                                    <li>Номер дела: <span class="text-list-name"><?= $lot->torg->case->number ?></span></li>
+                                    <li>Арбитражный суд: <span class="text-list-name"><a href="<?=Url::to(['sro/list'])?>/<?=$lot->torg->publisher->sro->id?>" target="_blank"><?= $lot->torg->publisher->sro->title?></a></span></li>
+                                    <li>Адрес суда: <span class="text-list-name"><?= $lot->torg->publisher->sro->address?></span></li>
+                                </ul>
+                            </li>
+                            <? } ?>
+                            
+                            <? if ($lot->torg->publisher !== null && $lot->torg->typeId == 1) { ?>
+                            <li>
+                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
+                                <h6>Арбитражный управляющий</h6>
+                                <ul class="ul">
+                                    <li><a href="<?=Url::to(['arbitr/list'])?>/<?=$lot->torg->publisher->oldId?>" target="_blank"><?=$lot->torg->publisher->fullName?></a></li>
+                                    <li>Рег. номер: <span class="text-list-name"><?= $lot->torg->publisher->regnum?></span></li>
+                                    <li>ИНН: <span class="text-list-name"><?= $lot->torg->publisher->inn?></span></li>
+                                    <!-- <li>ОГРН: <span class="text-list-name"><?= $lot->torg->publisher->info['ogrn']?></span></li> -->
+                                </ul>
+                            </li>
+                            <? } ?>
+
+                            <? if ($lot->torg->bank !== null) { ?>
+                            <li>
+                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                                <h6>Банк</h6>
+                                <ul class="ul">
+                                <li><?= $lot->torg->bank->name ?></li>
+                                <li>БИК: <span class="text-list-name"><?= $lot->torg->bank->bik ?></span></li>
+                                <!-- <li>Кор. счет: <span class="text-list-name"><?= $lot ?></span></li> -->
+                                <li>Расчетный счет: <span class="text-list-name"><?= $lot->torg->bank->payment ?></span></li>
+                                <li>Лицевой счет: <span class="text-list-name"><?= $lot->torg->bank->personal ?></span></li>
+                                </ul>
+                            </li>
+                            <? } ?>
+
+                            <? if ($lot->torg->publisher !== null && $lot->torg->typeId == 2) { ?>
+                            <li>
+                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                                <h6>Организатора торгов</h6>
+                                <ul class="ul">
+                                <li><?= $lot->torg->publisher->fullName ?></li>
+                                <li>Вышестоящая организация: <span class="text-list-name"><?= $lot->torg->publisher->info['headOrganization'] ?></span></li>
+                                <li>Личный номер: <span class="text-list-name"><?= $lot->torg->publisher->arbId ?></span></li>
+                                <li>Порог крупной сделки: <span class="text-list-name"><?= $lot->torg->publisher->info['limitBidDeal'] ?></span></li>
+                                <li>ИНН: <span class="text-list-name"><?= $lot->torg->publisher->inn ?></span></li>
+                                <li>КПП: <span class="text-list-name"><?= $lot->torg->publisher->info['kpp'] ?></span></li>
+                                <li>ОКАТО: <span class="text-list-name"><?= $lot->torg->publisher->info['okato'] ?></span></li>
+                                <li>ОКПО: <span class="text-list-name"><?= $lot->torg->publisher->info['okpo'] ?></span></li>
+                                <li>ОКВЕД: <span class="text-list-name"><?= $lot->torg->publisher->info['okved'] ?></span></li>
+                                <li>ОГРН: <span class="text-list-name"><?= $lot->torg->publisher->info['ogrn'] ?></span></li>
+                                <li>Факс: <span class="text-list-name"><?= $lot->torg->publisher->info['contacts']['fax'] ?></span></li>
+                                <li>E-mail: <span class="text-list-name"><?= $lot->torg->publisher->info['contacts']['email'] ?></span></li>
+                                <li>Номер телефона: <span class="text-list-name"><?= $lot->torg->publisher->info['contacts']['phone'] ?></span></li>
+                                <li>Почтовый адрес: <span class="text-list-name"><?= $lot->torg->publisher->info['contacts']['address'] ?></span></li>
+                                <li>Фактический адрес: <span class="text-list-name"><?= $lot->torg->publisher->info['contacts']['location'] ?></span></li>
+                                </ul>
+                            </li>
+                            <? } ?>
+
+                            <? if ($otherInfo) { ?>
+                            <li>
+                            <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
+                                <h6>Дополнительные данные</h6>
+                                <ul class="ul">
+                                    <? foreach ($otherInfo as $key => $value) { ?>
+                                        <li><?=$key?>: <span class="text-list-name"><?= $value?></span></li>
+                                    <? } ?>
+                                </ul>
+                            </li>
+                            <? } ?>
+                            
+                        </ul>
+                        
+                        <div class="mb-50"></div>
+                        
+                    </div>
                     
                     
                     <?php if($lot->torg->tradeTypeId == 1) { ?>
