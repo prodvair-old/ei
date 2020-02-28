@@ -152,8 +152,9 @@ class LotController extends Controller
             default:
                 $owner = Owners::find()->where(['linkEi' => $type])->one();
                 if (!empty($owner)) {
-                    $where = ['ownerId' => $owner->id];
+                    $where = ['torg.ownerId' => $owner->id];
 
+                    $queryType = 'zalog';
                     $title = $owner->title;
                 } else {
                     Yii::$app->response->statusCode = 404;
@@ -173,7 +174,7 @@ class LotController extends Controller
                     'whishCount' => WishList::find()
                         ->select(['COUNT(id)'])
                         ->alias('wl')
-                        ->where('wl."lotId" = lot.id OR wl."lotId" = lot."oldId"')
+                        ->where('wl."lotId" = lot.id')
                         ->andWhere(['type' => $queryType])
                 ])
                 ->joinWith(['torg'])
@@ -197,7 +198,6 @@ class LotController extends Controller
         Yii::$app->params['title'] = ($metaData->mdTitle)? $metaData->mdTitle : $title;
         Yii::$app->params['h1'] = ($metaData->mdH1)? $metaData->mdH1 : $title;
         // Мета данные <-End 
-        // var_dump('Время генерации: ' . ( microtime(true) - $start ) . ' сек.');
 
         return $this->render('index', compact('type', 'lots', 'lotsFovarit', 'owner'));
     }
@@ -328,16 +328,6 @@ class LotController extends Controller
             default:
                 $owner = Owners::find()->where(['linkEi' => $type])->one();
                 if (!empty($owner)) {
-                    $where = ['ownerId' => $owner->id];
-
-                    $title = $owner->title;
-                } else {
-                    Yii::$app->response->statusCode = 404;
-                    throw new \yii\web\NotFoundHttpException;
-                }
-                break;
-                $owner = OwnerProperty::find()->where(['linkForEi' => $type])->one();
-                if (!empty($owner)) {
 
                     $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
                     $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : $owner->title;
@@ -394,7 +384,6 @@ class LotController extends Controller
 
         $get = Yii::$app->request->get();
 
-        // var_dump(($get['SearchLot'])? $get['SearchLot'] : $get[1]['SearchLot']);
         
         $model->load((($get['SearchLot'])? $get : $get[1]));
         $query = $model->searchBy($url, (($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog' || $type == 'all')? $type : null), $modelSort->sortBy());
@@ -437,19 +426,14 @@ class LotController extends Controller
 
         $pages = new Pagination(['totalCount' => $count, 'pageSize'=> 10]);
 
-        // var_dump($lotsQuery
-        //     ->offset($pages->offset)
-        //     ->limit($pages->limit)->createCommand()->getRawSql()
-        // );
         
         $lots = $lotsQuery->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
 
-        // Фильтрация лотов <-End 
-        // var_dump('Время генерации: ' . ( microtime(true) - $start ) . ' сек.');
-        // Хлебные крошки Start->
+        // Фильтрация лотов <-End
 
+        // Хлебные крошки Start->
         Yii::$app->params['breadcrumbs'][] = [
             'label' => ' '.$titleType,
             'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
@@ -524,51 +508,50 @@ class LotController extends Controller
             }
         }
 
+        $search  = [
+            '${lotTitle}', 
+            '${lotAddress}', 
+            '${lotStatus}', 
+            '${bnkrName}',
+            '${arbitrName}',
+            '${sroName}',
+            '${etp}',
+            '${tradeType}',
+            '${caseId}', 
+            '${category}',
+            '${subCategory}',
+            '${startPrice}',
+            '${lotPrice}',
+            '${stepPrice}',
+            '${advance}',
+            '${priceType}',
+            '${timeEnd}',
+            '${timeBegin}'
+        ];
+        $replace = [
+            str_replace('"',"'",$lot->title),
+            str_replace('"',"'",$lot->district.''.$lot->info['address']['region'].''.$lot->city.''.$lot->info['address']['street']),
+            str_replace('"',"'",$lot->status),
+            str_replace('"',"'",(($lot->torg->bankrupt)? $lot->torg->bankrupt->name : '')),
+            str_replace('"',"'",$lot->torg->publisher->fullName),
+            str_replace('"',"'",(($lot->torg->publisher->sro)? $lot->torg->publisher->sro->title : '')),
+            str_replace('"',"'",(($lot->torg->etp)? $lot->torg->etp->title : '')),
+            (($lot->torg->tradeType == 0)? 'публичное предложение': 'открытый аукцион'),
+            (($lot->torg->case)? $lot->torg->case->number : ''), 
+            $titleCategory,
+            $titleSubcategory,
+            Yii::$app->formatter->asCurrency($lot->startPrice),
+            Yii::$app->formatter->asCurrency($lot->price),
+            (($lot->stepTypeId == 1)? $lot->step.'% ('.Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->step)).')' : Yii::$app->formatter->asCurrency($lot->step)),
+            (($lot->depositTypeId == 1)? $lot->deposit.'% ('.Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->deposit)).')' : Yii::$app->formatter->asCurrency($lot->deposit)),
+            (($lot->torg->info['priceType'] == 'Public')? 'Открытая' : 'Закрытая'),
+            Yii::$app->formatter->asDate($lot->torg->startDate, 'long'),
+            Yii::$app->formatter->asDate($lot->torg->endDate, 'long')
+        ];
         
 
         switch ($type) {
             case 'bankrupt':
-
-                $search  = [
-                    '${lotTitle}', 
-                    '${lotAddress}', 
-                    '${lotStatus}', 
-                    '${bnkrName}',
-                    '${arbitrName}',
-                    '${sroName}',
-                    '${etp}',
-                    '${tradeType}',
-                    '${caseId}', 
-                    '${category}',
-                    '${subCategory}',
-                    '${startPrice}',
-                    '${lotPrice}',
-                    '${stepPrice}',
-                    '${advance}',
-                    '${priceType}',
-                    '${timeEnd}',
-                    '${timeBegin}'
-                ];
-                $replace = [
-                    str_replace('"',"'",$lot->title),
-                    str_replace('"',"'",$lot->district.''.$lot->info['address']['region'].''.$lot->city.''.$lot->info['address']['street']),
-                    str_replace('"',"'",$lot->status),
-                    str_replace('"',"'",$lot->torg->bankrupt->name),
-                    str_replace('"',"'",$lot->torg->publisher->fullName),
-                    str_replace('"',"'",$lot->torg->publisher->sro->title),
-                    str_replace('"',"'",$lot->torg->etp->title),
-                    (($lot->torg->tradeType == 0)? 'публичное предложение': 'открытый аукцион'),
-                    $lot->torg->case->number, 
-                    $titleCategory,
-                    $titleSubcategory,
-                    Yii::$app->formatter->asCurrency($lot->startPrice),
-                    Yii::$app->formatter->asCurrency($lot->price),
-                    (($lot->stepTypeId == 1)? $lot->step.'% ('.Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->step)).')' : Yii::$app->formatter->asCurrency($lot->step)),
-                    (($lot->depositTypeId == 1)? $lot->deposit.'% ('.Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->deposit)).')' : Yii::$app->formatter->asCurrency($lot->deposit)),
-                    (($lot->torg->info['priceType'] == 'Public')? 'Открытая' : 'Закрытая'),
-                    Yii::$app->formatter->asDate($lot->torg->startDate, 'long'),
-                    Yii::$app->formatter->asDate($lot->torg->endDate, 'long')
-                ];
 
                 $metaType = 'lot-page';
 

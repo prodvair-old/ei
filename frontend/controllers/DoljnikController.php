@@ -10,8 +10,8 @@ use yii\helpers\Url;
 use yii\data\Pagination;
 
 use common\models\Query\MetaDate;
-use common\models\Query\Bankrupt\Bankrupts;
 use common\models\Query\Lot\Lots;
+use common\models\Query\Lot\Bankrupts;
 
 use frontend\models\BankruptSearch;
 
@@ -109,7 +109,7 @@ class DoljnikController extends Controller
     Yii::$app->params['breadcrumbs'][] = [
       'label' => ' ' . $title,
       'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-      'url' => ['doljnik/list']
+      'url' => "javascript:void(0);"
     ];
     // Хлебные крошки <-End
 
@@ -121,22 +121,22 @@ class DoljnikController extends Controller
   {
     // Сбор информации из бд Start->
     $bankrupt = Bankrupts::findOne($bnkr_id);
-    $title = 'Должник - ' . (($bankrupt->bankrupttype == 'Organization') ? $bankrupt->company->shortname : $bankrupt->person->lname . ' ' . $bankrupt->person->fname . ' ' . $bankrupt->person->mname);
+    $title = 'Должник - ' . $bankrupt->name;
 
-    switch ($bankrupt->bankrupttype) {
-      case 'Organization':
-        $name = $bankrupt->company->shortname;
-        $address = $bankrupt->company->legaladdress;
-        $inn = $bankrupt->company->inn;
+    switch ($bankrupt->typeId) {
+      case 1:
+        $name = $bankrupt->name;
+        $address = $bankrupt->address;
+        $inn = $bankrupt->inn;
         break;
-      case 'Person':
-        $name = $bankrupt->person->lname . ' ' . $bankrupt->person->fname . ' ' . $bankrupt->person->mname;
-        $address = $bankrupt->person->address;
-        $inn = $bankrupt->person->inn;
+      case 2:
+        $name = $bankrupt->name;
+        $address = $bankrupt->address;
+        $inn = $bankrupt->inn;
         break;
     }
 
-    $lots_bankrupt = Lots::find()->joinWith('torg.bankrupt')->where(['bankrupt.oldId'=>$bnkr_id])->andWhere(['torg.typeId' => 1])->limit(20)->orderBy('images DESC, torg.publishedDate DESC')->all();
+    $lots_bankrupt = Lots::find()->joinWith('torg')->where(['torg.bankruptId'=>$bnkr_id])->andWhere(['torg.typeId' => 1])->limit(20)->orderBy('images DESC, torg.publishedDate DESC')->all();
     // $lots_bankrupt = LotsBankrupt::find()->where(['bankrupt.oldId' => $bnkr_id])->orderBy('lot_image DESC, lot_timepublication DESC')->all();
     // Сбор информации из бд <-End
     // $lots_bankrupt = Lots::find()->joinWith('torgy.case.bnkr')->where(['bnkr.id' => $bnkr_id])->orderBy('lotid DESC')->limit(5)->all();
@@ -158,7 +158,7 @@ class DoljnikController extends Controller
     Yii::$app->params['description'] = str_replace($search, $replace, $metaData->mdDescription);
     Yii::$app->params['text'] = $metaData->mdText;
     Yii::$app->params['title'] = str_replace($search, $replace, $metaData->mdTitle);
-    Yii::$app->params['h1'] = $bankrupt->person->lname . ' ' . $bankrupt->person->fname . ' ' . $bankrupt->person->mname;
+    Yii::$app->params['h1'] = $bankrupt->name;
     // Мета данные <-End
 
     // Хлебные крошки Start->
@@ -170,7 +170,7 @@ class DoljnikController extends Controller
     Yii::$app->params['breadcrumbs'][] = [
       'label' => ' ' . $title,
       'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-      'url' => [Url::to(['doljnik/list']) . "/$bnkr_id"]
+      'url' => "javascript:void(0);"
     ];
     // Хлебные крошки <-End
 

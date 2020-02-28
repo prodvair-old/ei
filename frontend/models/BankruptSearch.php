@@ -37,42 +37,28 @@ class BankruptSearch extends Model
         if (!empty($this->type)) {
             switch ($this->type) {
                 case 'company':
-                        $bankrupt->joinWith('company')->orderBy('bnkr_cmpn.shortname ASC, bnkr_cmpn.inn ASC');
-                        $whereAnd = ['bankrupttype' => 'Organization'];
+                        $whereAnd = ['typeId' => 1];
                     break;
                 case 'person':
-                        $bankrupt->joinWith('person')->orderBy('bnkr_prsn.lname ASC, bnkr_prsn.fname ASC, bnkr_prsn.mname ASC, bnkr_prsn.inn ASC');
-                        $whereAnd = ['bankrupttype' => 'Person'];
+                        $whereAnd = ['typeId' => 2];
                     break;
             }
         }
 
+        $where[] = 'name is not null and name != \'-\'';
+
         if (!empty($this->search)) {
-            $search = explode(' ',$this->search);
-            $whereSearch = ['or'];
-            if (!empty($this->type)) {
-                switch ($this->type) {
-                    case 'company':
-                            foreach ($search as $value) {
-                                $whereSearch[] = ['like', 'LOWER("bnkr_cmpn"."shortname")', mb_strtolower($value, 'UTF-8')];
-                                $whereSearch[] = ['like', 'LOWER("bnkr_cmpn"."fullname")', mb_strtolower($value, 'UTF-8')];
-                                $whereSearch[] = ['like', 'LOWER("bnkr_cmpn"."inn")', mb_strtolower($value, 'UTF-8')];
-                            }
-                        break;
-                    case 'person':
-                            foreach ($search as $value) {
-                                $whereSearch[] = ['like', 'LOWER("bnkr_prsn"."lname")', mb_strtolower($value, 'UTF-8')];
-                                $whereSearch[] = ['like', 'LOWER("bnkr_prsn"."fname")', mb_strtolower($value, 'UTF-8')];
-                                $whereSearch[] = ['like', 'LOWER("bnkr_prsn"."mname")', mb_strtolower($value, 'UTF-8')];
-                                $whereSearch[] = ['like', 'LOWER("bnkr_prsn"."inn")', mb_strtolower($value, 'UTF-8')];
-                            }
-                        break;
-                }
-            }
-            $where[] = $whereSearch;
+            $where[] = [
+                'or',
+                'to_tsvector("name") @@ plainto_tsquery(\''.$this->search.'\')',
+                ['like', 'LOWER("inn")', mb_strtolower($this->search, 'UTF-8')],
+            ];
+            $sort = 'ts_rank(to_tsvector("name"), plainto_tsquery(\''.$this->search.'\')) ASC,';
+        } else {
+            $sort = 'name ASC';
         }
 
-        return $bankrupt->where($where)->andWhere($whereAnd);
+        return $bankrupt->where($where)->andWhere($whereAnd)->orderBy($sort);
     }
 }
  

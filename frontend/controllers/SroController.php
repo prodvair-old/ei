@@ -9,10 +9,11 @@ use yii\helpers\Url;
 use yii\data\Pagination;
 
 use common\models\Query\MetaDate;
-use common\models\Query\Bankrupt\Sro;
 use common\models\Query\Bankrupt\Arbitrs;
 use common\models\Query\Lot\Lots;
-use common\models\Query\Bankrupt\Cases;
+use common\models\Query\Lot\Sro;
+use common\models\Query\Lot\Managers;
+use common\models\Query\Lot\Cases;
 
 use frontend\models\SroSearch;
 
@@ -96,7 +97,7 @@ class SroController extends Controller
         $count = $sroCount->count();
         $pages = new Pagination(['totalCount' => $count, 'pageSize'=> 10]);
 
-        $sros = $srosQuery->orderBy('title ASC')
+        $sros = $srosQuery
             ->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
@@ -106,7 +107,7 @@ class SroController extends Controller
         Yii::$app->params['breadcrumbs'][] = [
             'label' => ' '.$title,
             'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-            'url' => ['sro/list']
+            'url' => "javascript:void(0);"
         ];
         // Хлебные крошки <-End
 
@@ -114,15 +115,24 @@ class SroController extends Controller
         $limit = $pages->limit;
         return $this->render('list', compact('model', 'pages', 'sros', 'offset', 'count'));
     }
-    public function actionSro_page($sro_id)
+    public function actionSroPage($sro_id)
     {
         // Сбор информации из бд Start->
         $sro = Sro::findOne($sro_id);
         $title = 'СРО — '.$sro->title;
         
-        $arbitrs = Arbitrs::find()->joinWith(['sro','person'])->where(['sro.id'=>$sro_id])->orderBy('arb_prsn.lname ASC, arb_prsn.fname ASC, arb_prsn.mname ASC')->all();
-        $countCases = Cases::find()->joinWith('arbitr.sro')->where(['sro.id'=>$sro_id])->count();
-        $lotsBankruptCount = Lots::find()->joinWith('torg.publisher.sro')->where(['sro.oldId'=>$sro_id])->andWhere(['torg.typeId' => 1])->limit(20)->orderBy('images DESC, torg.publishedDate DESC')->count();
+        $arbitrs = Managers::find()->where(['sroId'=>$sro_id])->orderBy('"fullName" ASC')->all();
+
+        $countCases = 0;
+        $lotsBankruptCount = 0;
+
+        foreach ($arbitrs as $arbitr) {
+            foreach ($arbitr->torgs as $torg) {
+                $countCases = $countCases + Cases::find()->where(['id'=>$torg->caseId])->count();
+                $lotsBankruptCount = $lotsBankruptCount + Lots::find()->joinWith('torg')->where(['torg.id'=>$torg->id])->andWhere(['torg.typeId' => 1])->count();
+            }
+
+        }
         // Сбор информации из бд <-End
 
         // Мета данные Strat-> 
@@ -141,7 +151,7 @@ class SroController extends Controller
             $sro->address,
             $sro->regnum,
             $sro->inn,
-            $sro->ogrn,
+            $sro->info['ogrn'],
             count($arbitrs)
         ];
         Yii::$app->params['description'] = str_replace($search, $replace, $metaData->mdDescription);
@@ -160,7 +170,7 @@ class SroController extends Controller
         Yii::$app->params['breadcrumbs'][] = [
             'label' => ' '.$sro->title,
             'template' => '<li class="breadcrumb-item" aria-current="page">{link}</li>',
-            'url' => [Url::to(['sro/list'])."/$sro_id"]
+            'url' => "javascript:void(0);"
         ];
         // Хлебные крошки <-End
 

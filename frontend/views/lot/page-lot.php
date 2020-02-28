@@ -45,7 +45,19 @@ $isCategory =
     $lot->category->categoryId == '1102';
 
 foreach ($lot->info as $key => $value) { 
-    if ($key != 'address' && $key != 'vin' && $key != 'cadastreNumber' && $key != 'priceReduction' && $value != null) {
+    if (
+            $value != null && 
+            $key != 'address' && 
+            $key != 'vin' && 
+            $key != 'cadastreNumber' && 
+            $key != 'priceReduction' && 
+            $key != 'isBurdened' && 
+            $key != 'sellType' &&
+            $key != 'sellTypeId' &&
+            $key != 'minPrice' &&
+            $key != 'torgReason' &&
+            $key != 'currency'
+        ) {
         $otherInfo[$key] = $value;
     } 
 }
@@ -301,6 +313,19 @@ foreach ($lot->info as $key => $value) {
                                 </ul>
                             </li>
                             <? } ?>
+                            <? if ($lot->torg->owner !== null) { ?>
+                            <li>
+                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                                <h6>Банк</h6>
+                                <ul class="ul">
+                                <li><a href="/<?=$lot->torg->owner->linkEi?>"><?= $lot->torg->owner->title ?></a></li>
+                                <li>E-mail: <span class="text-list-name"><?= $lot->torg->owner->email ?></span></li>
+                                <!-- <li>Кор. счет: <span class="text-list-name"><? $lot ?></span></li> -->
+                                <li>ИНН: <span class="text-list-name"><?= $lot->torg->owner->inn ?></span></li>
+                                <li>Адрес: <span class="text-list-name"><?= $lot->torg->owner->city.', '.$lot->torg->owner->address ?></span></li>
+                                </ul>
+                            </li>
+                            <? } ?>
 
                             <? if ($lot->torg->publisher !== null && $lot->torg->typeId == 2) { ?>
                             <li>
@@ -332,7 +357,39 @@ foreach ($lot->info as $key => $value) {
                                 <h6>Дополнительные данные</h6>
                                 <ul class="ul">
                                     <? foreach ($otherInfo as $key => $value) { ?>
-                                        <li><?=$key?>: <span class="text-list-name"><?= $value?></span></li>
+                                        <?
+                                            switch ($key) {
+                                                case 'flatName':
+                                                    $title = 'Квартира';
+                                                    break;
+                                                case 'flatFloor':
+                                                    $title = 'Этаж';
+                                                    break;
+                                                case 'depositDesc':
+                                                    $title = 'Описание депозита';
+                                                    break;
+                                                case 'burdenDesc':
+                                                    $title = 'Классификация';
+                                                    break;
+                                                case 'contractDesc':
+                                                    $title = 'Контракт';
+                                                    break;
+                                                case 'contractTerm':
+                                                    $title = 'Срок действия контракта';
+                                                    break;
+                                                default:
+                                                    $title = $key;
+                                                    break;
+                                            }
+                                        ?>
+                                        <?if (strlen($value) < 100) {?>
+                                            <li><?=$title?>: <span class="text-list-name"><?= $value ?></span></li>
+                                        <? } else { ?>
+                                            <li>
+                                                <h6><?=$title?></h6>
+                                                <p><?=$value?></p>
+                                            </li>
+                                        <? } ?>
                                     <? } ?>
                                 </ul>
                             </li>
@@ -664,132 +721,10 @@ foreach ($lot->info as $key => $value) {
 
                     <div id="roles" class="detail-header mb-30">
                         <h5 class="mt-30">Правила подачи заявок</h5>
-                        <p class="long-text"><?=$lot->torg->info['rules']?></p>
+                        <p class="long-text"><?=($lot->torg->typeId == 1)? $lot->torg->info['rules'] : $lot->info['torgReason'] ?></p>
                         <a href="#roles" class="open-text-js">Подробнее</a>
                     </div>
 
-                    <!-- <div id="faq" class="fullwidth-horizon--section">
-                    
-                        <h5 class="heading-title">FAQ</h5>
-                        
-                        <div class="faq-item-long-wrapper">
-                            
-                            <div class="faq-item-long">
-                                
-                                <div class="row">
-                    
-                                    <div class="col-12 col-md-4 col-lg-3">
-                                    
-                                        <div class="col-inner">
-                                            <h6>What is this faq?</h6>
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                    <div class="col-12 col-md-8 col-lg-9">
-                                    
-                                        <div class="col-inner">
-                                            <p class="font-lg">Residence certainly elsewhere something she preferred cordially law. Age his surprise formerly mrs perceive few stanhill moderate.</p>
-                                        </div>
-
-                                    </div>
-                                    
-                                </div>
-                            
-                            </div>
-                            
-                            <div class="faq-item-long">
-                            
-                                <div class="row">
-                    
-                                    <div class="col-12 col-md-4 col-lg-3">
-                                    
-                                        <div class="col-inner">
-                                            <h6>How does this faq work?</h6>
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                    <div class="col-12 col-md-8 col-lg-9">
-                                    
-                                        <div class="col-inner">
-                                            <p class="font-lg">Appetite in unlocked advanced breeding position concerns as. Cheerful get shutters yet for repeated screened.</p>
-                                        </div>
-                                        
-                                        
-                                    </div>
-                                    
-                                </div>
-                            
-                            </div>
-                            
-                            <div class="faq-item-long">
-                            
-                                <div class="row">
-                    
-                                    <div class="col-12 col-md-4 col-lg-3">
-                                    
-                                        <div class="col-inner">
-                                            <h6>Why use this faq?</h6>
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                    <div class="col-12 col-md-8 col-lg-9">
-                                    
-                                        <div class="col-inner">
-                                            <p class="font-lg">Plan upon yet way get cold spot its week. Almost do am or limits hearts. Resolve parties but why she shewing. </p>
-                                        </div>
-                                        
-                                        
-                                    </div>
-                                    
-                                </div>
-                            
-                            </div>
-                            
-                            <div class="faq-item-long">
-                            
-                                <div class="row">
-                    
-                                    <div class="col-12 col-md-4 col-lg-3">
-                                    
-                                        <div class="col-inner">
-                                            <h6>Is this faq free to use?</h6>
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                    <div class="col-12 col-md-8 col-lg-9">
-                                    
-                                        <div class="col-inner">
-                                            <p class="font-lg">Received the likewise law graceful his. Nor might set along charm now equal green. Pleased yet equally correct colonel not one.</p>
-                                        </div>
-
-                                    </div>
-                                    
-                                </div>
-                            
-                            </div>
-                            
-                        </div>
-                        
-                        <div class="row mt-25">
-
-                            <div class="col-12 col-md-8 col-lg-9 offset-md-4 offset-lg-3">
-                        
-                                <div class="col-inner">
-                                    <a href="#" class="btn btn-primary btn-wide">Ask q question</a>
-                                </div>
-                                
-                            </div>
-                        
-                        </div>
-                        
-                        <div class="mb-50"></div>
-                        
-                    </div> -->
-                    
                 </div>
                 
             </div>

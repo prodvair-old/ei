@@ -83,7 +83,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
               </div>
               <div class="mr-15 text-muted">|</div>
               <div class="mr-15 rating-item rating-inline">
-                <p class="rating-text font400 text-muted font-12 letter-spacing-1"><?= ($bankrupt->bankrupttype == 'Organization') ? 'Юр. лицо' : 'Физ. лицо' ?> </p>
+                <p class="rating-text font400 text-muted font-12 letter-spacing-1"><?= ($bankrupt->typeId == 1) ? 'Юр. лицо' : 'Физ. лицо' ?> </p>
               </div>
             </div>
 
@@ -100,23 +100,35 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
                   <li>
                     <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                    <h6><span class="font400">ИНН </span><?= ($bankrupt->bankrupttype == 'Organization') ? $bankrupt->company->inn : $bankrupt->person->inn ?></h6>
+                    <h6><span class="font400">ИНН </span><?= $bankrupt->inn ?></h6>
                   </li>
 
-                  <? if ($bankrupt->bankrupttype == 'Person') { ?>
+                  <? if ($bankrupt->typeId == 2) { ?>
                     <li>
                       <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                      <h6><span class="font400">СНИЛС </span><?= $bankrupt->person->snils ?></h6>
+                      <h6><span class="font400">СНИЛС </span><?= $bankrupt->info['snils'] ?></h6>
                     </li>
                     <li>
                       <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                      <h6><span class="font400">Дата рождения </span><?= Yii::$app->formatter->asDate($bankrupt->person->birthday, 'long') ?></h6>
+                      <h6><span class="font400">Дата рождения </span><?= Yii::$app->formatter->asDate($bankrupt->info['birthday'], 'long') ?></h6>
+                    </li>
+                  <? } else { ?>
+                    <li>
+                      <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                      <h6><span class="font400">ОГРН </span><?= $bankrupt->info['ogrn'] ?></h6>
+                    </li>
+                    <li>
+                      <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                      <h6><span class="font400">ОКПО </span><?= $bankrupt->info['okpo'] ?></h6>
+                    </li>
+                    <li>
+                      <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                      <h6><span class="font400">Фактический адрес </span><?= $bankrupt->info['legalAddress'] ?></h6>
                     </li>
                   <? } ?>
-
                   <li>
                     <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                    <h6><span class="font400">Адрес </span><?= ($bankrupt->bankrupttype == 'Organization') ? $bankrupt->company->legaladdress : $bankrupt->person->address ?></h6>
+                    <h6><span class="font400">Адрес </span><?= $bankrupt->address ?></h6>
                   </li>
 
                 </ul>

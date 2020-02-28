@@ -150,9 +150,8 @@ AppAsset::register($this);
                       </a>
                     </li>
                     <li class="d-block d-sm-none">
-                      <a href="#loginFormTabInModal-register" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false" style="
-white-space: pre;">
-                        <span class="icon-font"><i class="icon-user-follow"></i></span> Зарегистрироваться
+                      <a href="#loginFormTabInModal-login" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false" style="white-space: pre;">
+                        <span class="icon-font"><i class="icon-user-follow"></i></span> Войти
                       </a>
                     </li>
                   <? } else { ?>
@@ -212,10 +211,10 @@ white-space: pre;">
                             ['label' => 'Оценка лота', 'url' => ['service/lot']],
                             ['label' => 'Как приобрести лот?', 'url' => ['service/ecp']]
                           ]],
-                          ['label' => 'Войти', 'url' => ['services/index'],
-                          'options'=>['data-toggle'=>'modal','data-target'=>'#loginFormTabInModal', 'data-target'=>'#loginFormTabInModal']
+                          // ['label' => 'Войти', 'url' => ['services/index'],
+                          // 'options'=>['data-toggle'=>'modal','data-target'=>'#loginFormTabInModal', 'data-target'=>'#loginFormTabInModal']
                         
-                          ],
+                          // ],
                           // 'options'=>['data-toggle'=>'modal', 'data-target'=>'#loginFormTabInModal', 'data-backdrop'=>'static', 'data-keyboard'='false'
 
                           
@@ -329,7 +328,7 @@ white-space: pre;">
               <div class="col-inner">
                 <ul class="footer-contact-list">
                   <li>
-                    <a href="tel:<?= $setting[8]->value ?>"><span class="icon-font text-primary inline-block-middle mr-5 font16"><i class="fa fa-phone"></i></span> <span class="font700 text-black"><?= $setting[8]->value ?></span>
+                    <a href="tel:<?= $setting[8]->value ?>"><span class="icon-font text-primary inline-block-middle mr-5 font16"><i class="fa fa-phone"></i></span> <span class="font700 text-black">Техническая поддержка пользователей: <?= $setting[8]->value ?></span>
                       <!--<span class="text-muted">Mon-Fri | 8.30am-6:30pm</span>--></a>
                   </li>
                   <li>
