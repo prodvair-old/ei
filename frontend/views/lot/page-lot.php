@@ -369,7 +369,6 @@ foreach ($lot->info as $key => $value) {
                                                     break;
                                             }
                                         ?>
-                                        <?if ?>
                                         <li><?=$title?>: <?= (strlen($value) < 100)? "<span class=\"text-list-name\">$value</span>" : "<p>$value</p>" ?></li>
                                     <? } ?>
                                 </ul>
