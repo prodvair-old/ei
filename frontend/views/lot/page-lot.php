@@ -359,16 +359,16 @@ foreach ($lot->info as $key => $value) {
                             </li>
                             <? } ?>
 
-                            <? if ($lot->torg->bank !== null) { ?>
+                            <? if ($lot->bank !== null) { ?>
                             <li>
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
                                 <h6>Банк</h6>
                                 <ul class="ul">
-                                <li><?= $lot->torg->bank->name ?></li>
-                                <li>БИК: <span class="text-list-name"><?= $lot->torg->bank->bik ?></span></li>
+                                <li><?= $lot->bank->name ?></li>
+                                <li>БИК: <span class="text-list-name"><?= $lot->bank->bik ?></span></li>
                                 <!-- <li>Кор. счет: <span class="text-list-name"><?= $lot ?></span></li> -->
-                                <li>Расчетный счет: <span class="text-list-name"><?= $lot->torg->bank->payment ?></span></li>
-                                <li>Лицевой счет: <span class="text-list-name"><?= $lot->torg->bank->personal ?></span></li>
+                                <li>Расчетный счет: <span class="text-list-name"><?= $lot->bank->payment ?></span></li>
+                                <li>Лицевой счет: <span class="text-list-name"><?= $lot->bank->personal ?></span></li>
                                 </ul>
                             </li>
                             <? } ?>
