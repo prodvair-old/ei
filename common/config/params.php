@@ -7,4 +7,6 @@ return [
     'user.passwordResetTokenExpire' => 3600,
 
     'developmenEmail' => 'prodvair.almaz@yandex.ru',
+    'frontLink' => 'https://ei.ru',
+    'backLink' => 'http://admin.ei.ru',
 ];

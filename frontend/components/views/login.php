@@ -53,7 +53,7 @@ use yii\bootstrap\ActiveForm;
         </div>
         
         <div class="form-footer">
-            <p>У Вас нет аккаунта? <a href="#loginFormTabInModal-register" class="tab-external-link font600">Зарегистрироваться</a></p>
+            <p>У Вас нет аккаунта? <a href="#loginFormTabInModal-register" class="tab-external-link font600 ">Зарегистрироваться</a></p>
         </div>
         
     </div>

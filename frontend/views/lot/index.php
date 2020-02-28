@@ -13,19 +13,19 @@ use common\models\Query\Zalog\OwnerProperty;
 $this->title = Yii::$app->params['title'];
 
 if ($type == 'bankrupt') {
-    $title = 'Единая база торгов <span class="font200 block">Имущество банкротов</span>';
+    $title = '<span class="main-page__title">Имущество банкротов</span>';
     $imgBG = 'img/01.jpg';
-    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : 'В нашей базе собрана исключительно актуальная информация об имущество банкротов и должников, выставленном и тендеры и торги на ЭТП и публичных аукционах.';
+    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана исключительно актуальная информация об имуществе банкротов и должников, выставленных тендерах и торгах на ЭТП и публичных аукционах.</span>';
 } else if ($type == 'zalog') {
-    $title = 'Единая база торгов <span class="font200"><br>имущества организаций</span>';
+    $title = '<span class="main-page__title">Имущество организаций</span>';
     $imgBG = 'img/01.jpg';
-    $description = Yii::$app->params['text'];
+    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана исключительно актуальная информация об имуществе банкротов и должников, выставленных тендерах и торгах на ЭТП и публичных аукционах.</span>';
 }else if ($type == 'arrest') {
-    $title = 'Единая база торгов <span class="font200"><br>Арестованное имущество</span>';
+    $title = '<span class="main-page__title">Арестованное имущество</span>';
     $imgBG = 'img/01.jpg';
-    $description = Yii::$app->params['text'];
+    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана исключительно актуальная информация об имуществе банкротов и должников, выставленных тендерах и торгах на ЭТП и публичных аукционах.</span>';
 } else {
-    $title = 'Единая база торгов <span class="font200"'.(($owner->tamplate['color-5'])? 'style="color: '.$owner->tamplate['color-5'].'"': '').'><br>'.$owner->name.'</span>';
+    $title = '<span class="font200"'.(($owner->tamplate['color-5'])? 'style="color: '.$owner->tamplate['color-5'].'"': '').'>'.$owner->name.'</span>';
     $imgBG = 'http://n.ei.ru'.$owner->tamplate['bg'];
     $description = $owner->description;
     
@@ -59,9 +59,9 @@ if ($type == 'bankrupt') {
     
         <div class="container">
             <h1><?=$title?></h1>
-            <p class="font-lg spacing-1" <?=($owner->tamplate['color-5'])? 'style="color: '.$owner->tamplate['color-5'].'"': ''?>><?=$description?></p>
+            <p class="font-lg spacing-1 main-page__subtitle" <?=($owner->tamplate['color-5'])? 'style="color: '.$owner->tamplate['color-5'].'"': ''?>><?=$description?></p>
             
-            <?= SearchForm::widget(['type' => (($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog'), 'typeZalog' => ($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog')? $type : null, 'btnColor' => $owner->tamplate['color-1'], 'color' => $owner->tamplate['color-4']])?>
+            <?= SearchForm::widget(['type' => (($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog'), 'url' => (($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog'),'typeZalog' => ($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog')? $type : null, 'btnColor' => $owner->tamplate['color-1'], 'color' => $owner->tamplate['color-4']])?>
 
         </div>
         
@@ -69,11 +69,11 @@ if ($type == 'bankrupt') {
     
 </div>
 
-<section class="pt-70 pb-0">
+<section class="pt-0 pb-0">
 
     <div class="container">
 
-        <div class="clear mb-100"></div>
+        <div class="clear"></div>
 
         <div class="section-title-">
             <h2 class="h3 mb-20 font-weight-400">Популярные категории</h2>
@@ -148,30 +148,32 @@ if ($type == 'bankrupt') {
         </div>
     
         <div class="clear mb-100"></div>
+        <?if($lots):?>       
+            <div class="section-title-">
+                <h2 class="h3 mb-20">Горячие предложения дня</h2>
+            </div>
+            
+            <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
+
+                <?foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot, 'color' => $owner->tamplate['color-4']]); }?>
                 
-        <div class="section-title-">
-            <h2 class="h3 mb-20">Горячие предложения дня</h2>
-        </div>
-        
-        <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
+            </div>
 
-            <?foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot, 'color' => $owner->tamplate['color-4']]); }?>
+            <div class="clear mb-100"></div>
+        <?endif;?>
+        <?if($lotsFovarit):?>
+        
+            <div class="section-title-">
+                <h2 class="h3 mb-20">Популярные лоты</h2>
+            </div>
             
-        </div>
+            <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
+                <?foreach ($lotsFovarit as $lot) { echo LotBlock::widget(['lot' => $lot, 'color' => $owner->tamplate['color-4']]); }?>
+            </div>
 
-        <div class="clear mb-100"></div>
-        
-        <div class="section-title-">
-            <h2 class="h3 mb-20">Популярные лоты</h2>
-        </div>
-        
-        <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
+            <div class="clear mb-100"></div>
 
-            <?foreach ($lotsFovarit as $lot) { echo LotBlock::widget(['lot' => $lot, 'color' => $owner->tamplate['color-4']]); }?>
-            
-        </div>
-
-        <div class="clear mb-100"></div>
+        <?endif;?>
 
         
     </div>

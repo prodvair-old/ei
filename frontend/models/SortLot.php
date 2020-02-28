@@ -7,7 +7,6 @@ use yii\base\Model;
  */
 class SortLot extends Model
 {
-    public $type;
     public $sortBy;
     
 
@@ -17,7 +16,6 @@ class SortLot extends Model
     public function rules()
     {
         return [
-            ['type', 'string'],
             ['sortBy', 'string'],
         ];
     }
@@ -27,90 +25,31 @@ class SortLot extends Model
      *
      * @return bool whether the creating new account was successful and email was sent
      */
-    public function sortBy($lots, $type = null)
+    public function sortBy()
     {
-        switch ($this->type) {
-            case 'bankrupt':
-                    switch ($this->sortBy) {
-                        case 'nameASC':
-                                $sort .= 'lot_description ASC';
-                            break;
-                        case 'nameDESC':
-                                $sort .= 'lot_description DESC';
-                            break;
-                        case 'dateASC':
-                                $sort .= 'lot_timepublication ASC';
-                            break;
-                        case 'dateDESC':
-                                $sort .= 'lot_timepublication DESC';
-                            break;
-                        case 'priceASC':
-                                $sort .= 'lot_startprice ASC';
-                            break;
-                        case 'priceDESC':
-                                $sort .= 'lot_startprice DESC';
-                            break;
-                        default:
-                                $sort .= 'lot_image DESC, lot_timepublication DESC';
-                            break;
-                    }
+        switch ($this->sortBy) {
+            case 'nameASC':
+                    return 'lot.title ASC';
                 break;
-            case 'arrest':
-                    // $sort .= 'lot_image DESC, ';
-                    switch ($this->sortBy) {
-                        case 'nameASC':
-                                $sort .= '"lots"."lotPropName" ASC';
-                            break;
-                        case 'nameDESC':
-                                $sort .= '"lots"."lotPropName" DESC';
-                            break;
-                        case 'dateASC':
-                                $sort .= '"torgs"."trgPublished" ASC';
-                            break;
-                        case 'dateDESC':
-                                $sort .= '"torgs"."trgPublished" DESC';
-                            break;
-                        case 'priceASC':
-                                $sort .= '"lots"."lotStartPrice" ASC';
-                            break;
-                        case 'priceDESC':
-                                $sort .= '"lots"."lotStartPrice" DESC';
-                            break;
-                        default:
-                                $sort .= '"torgs"."trgPublished" DESC';
-                            break;
-                    }
+            case 'nameDESC':
+                    return 'lot.title DESC';
                 break;
-            case 'zalog':
-                    switch ($this->sortBy) {
-                        case 'nameASC':
-                                $sort .= '"title" ASC';
-                            break;
-                        case 'nameDESC':
-                                $sort .= '"title" DESC';
-                            break;
-                        case 'dateASC':
-                                $sort .= '"trgPpublicationDateublished" ASC';
-                            break;
-                        case 'dateDESC':
-                                $sort .= '"publicationDate" DESC';
-                            break;
-                        case 'priceASC':
-                                $sort .= '"startingPrice" ASC';
-                            break;
-                        case 'priceDESC':
-                                $sort .= '"startingPrice" DESC';
-                            break;
-                        default:
-                                $sort .= '"publicationDate" DESC';
-                            break;
-                    }
+            case 'dateASC':
+                    return 'torg."publishedDate" ASC';
+                break;
+            case 'dateDESC':
+                    return 'torg."publishedDate" DESC';
+                break;
+            case 'priceASC':
+                    return 'lot.startPrice ASC';
+                break;
+            case 'priceDESC':
+                    return 'lot.startPrice DESC';
                 break;
             default:
-                return ['error' => 'Что то пошло не так :('];
+                    return 'lot.images DESC, torg."publishedDate" DESC';
                 break;
         }
-        return $lots->orderBy($sort);
     }
 }
  

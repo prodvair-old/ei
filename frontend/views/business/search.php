@@ -196,7 +196,7 @@ $this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\Vi
                         <div class="box-content">
                             <?=$form->field($model, 'minPrice')->hiddenInput(['class'=>'lot__price-min'])->label(false);?>
                             <?=$form->field($model, 'maxPrice')->hiddenInput(['class'=>'lot__price-max'])->label(false);?>
-                            <input id="price_range" data-min="<?=$price['min']?>"  data-max="<?=$price['max']?>"/>
+                            <!-- <input id="price_range" data-min="<?=$price['min']?>"  data-max="<?=$price['max']?>"/> -->
                         </div>
                         
                     </div>

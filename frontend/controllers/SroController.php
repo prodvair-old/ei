@@ -11,7 +11,7 @@ use yii\data\Pagination;
 use common\models\Query\MetaDate;
 use common\models\Query\Bankrupt\Sro;
 use common\models\Query\Bankrupt\Arbitrs;
-use common\models\Query\Bankrupt\LotsBankrupt;
+use common\models\Query\Lot\Lots;
 use common\models\Query\Bankrupt\Cases;
 
 use frontend\models\SroSearch;
@@ -122,7 +122,7 @@ class SroController extends Controller
         
         $arbitrs = Arbitrs::find()->joinWith(['sro','person'])->where(['sro.id'=>$sro_id])->orderBy('arb_prsn.lname ASC, arb_prsn.fname ASC, arb_prsn.mname ASC')->all();
         $countCases = Cases::find()->joinWith('arbitr.sro')->where(['sro.id'=>$sro_id])->count();
-        $lotsBankruptCount = LotsBankrupt::find()->joinWith('torgy.case.arbitr.sro')->where(['sro.id'=>$sro_id])->andWhere('lot_timeend >= NOW()')->count();
+        $lotsBankruptCount = Lots::find()->joinWith('torg.publisher.sro')->where(['sro.oldId'=>$sro_id])->andWhere(['torg.typeId' => 1])->limit(20)->orderBy('images DESC, torg.publishedDate DESC')->count();
         // Сбор информации из бд <-End
 
         // Мета данные Strat-> 

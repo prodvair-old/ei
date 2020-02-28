@@ -11,8 +11,22 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'language' => 'ru-RU',
+    'name' => 'Панель управления - Единый информатор',
+    'sourceLanguage' => 'ru-RU',
+    'modules' => [
+        'gridview' => [
+            'class' => 'kartik\grid\Module',
+        ]
+    ],
     'components' => [
+        'assetManager' => [
+            'bundles' => [
+                'kartik\form\ActiveFormAsset' => [
+                    'bsDependencyEnabled' => false // do not load bootstrap assets for a specific asset bundle
+                ],
+            ],
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
@@ -37,14 +51,21 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                ''          => 'lots/index',
+                '/login'    => 'site/login',
+                '/logout'   => 'site/logout',
+
+                '/add-field-<type>' => 'site/add-field',
+                // '/lots'     => 'lots/index',
+
+                '/historys' => 'historys/index',
+                '/historys-all' => 'historys/all',
             ],
         ],
-        */
     ],
     'params' => $params,
 ];

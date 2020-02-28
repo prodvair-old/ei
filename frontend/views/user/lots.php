@@ -67,7 +67,7 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
 
       <div class="col-12 col-lg-3">
 
-        <aside class="sticky-kit sidebar-wrapper">
+        <aside class="-kit sidebar-wrapper">
 
           <div class="bashboard-nav-box">
 
@@ -108,7 +108,7 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
           <div class="form-draft-payment">
 
             <div class="">
-              <a class="btn btn-primary" href="<?= Url::to(['user/add-lot']) ?>"><i class="fa fa-plus"></i> Добавить лот</a>
+              <!-- <a class="btn btn-primary" href="<?= Url::to(['user/add-lot']) ?>"><i class="fa fa-plus"></i> Добавить лот</a> -->
               <a class="btn btn-primary" href="<?= Url::to(['user/import-lots']) ?>"><i class="fa fa-list"></i> Импортировать лоты из XML/xls/xlsx</a>
             </div>
 

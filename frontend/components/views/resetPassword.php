@@ -19,7 +19,7 @@ use yii\bootstrap\ActiveForm;
         
         <div class="form-body">
             <?php $form = ActiveForm::begin(['action'=>'/request-password-reset', 'id' => 'password-reset-form']); ?>
-                <p class="line-145">Для восстановления пароли введите Ваш E-mail. Туда придёт сообщение ссылкой для восстановления.</p>
+                <p class="line-145">Для восстановления пароля введите Ваш e-mail. На почту придёт сообщение c ссылкой для восстановления.</p>
                 <span class="password-reset-form-error tab-external-link block mt-25 text-danger"></span>
                 <div class="row">
                     <div class="col-12 col-md-10 col-lg-8">
@@ -28,7 +28,7 @@ use yii\bootstrap\ActiveForm;
                         </div>
                     </div>
                 </div>
-                <?= Html::submitButton('Восстановленить пароль', ['class' => 'btn btn-primary mt-5']) ?>
+                <?= Html::submitButton('Восстановить пароль', ['class' => 'btn btn-primary mt-5']) ?>
             <?php ActiveForm::end(); ?>
         </div>
         

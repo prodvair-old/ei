@@ -20,7 +20,7 @@ $description = ''; //'В нашей базе собрана исключител
 
 <div class="otkrytie">
 
-<div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03" style="background-image:url(https://cdn.open.ru/storage/top_picture/39964/609796910__1__2bd3.png); background-position: top  center;" >
+<div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03 gradient-for-page">
         
     <div class="overlay-holder bottom"></div>	
     
@@ -39,7 +39,7 @@ $description = ''; //'В нашей базе собрана исключител
                 </div>
             
                 <h1><?=$title?></h1>
-                <p class="font-lg spacing-1 "><?=$description?></p>
+                <p class="font-lg spacing-1 main-page__subtitle"><?=$description?></p>
 
                 <?= SearchForm::widget(['type' => $type])?>
             
@@ -51,7 +51,7 @@ $description = ''; //'В нашей базе собрана исключител
     
 </div>
 
-<section class="pt-70 pb-0">
+<section class="pt-0 pb-0">
 
     <div class="container">
 
@@ -138,17 +138,17 @@ $description = ''; //'В нашей базе собрана исключител
         </div>
 
         <div class="clear mb-100"></div> -->
-                
-        <div class="section-title">
-            <h2><span><span>Интересные</span> предложения дня</span></h2>
-        </div>
-        
-        <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
-
-            <?foreach ($lotsFovarit as $lotFovarit) { echo LotBlock::widget(['lot' => $lotFovarit]); }?>
+       
+            <div class="section-title">
+                <h2><span><span>Интересные</span> предложения дня</span></h2>
+            </div>
             
-        </div>
-        <div class="clear mb-100"></div>
+            <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
+
+                <?foreach ($lotsFovarit as $lotFovarit) { echo LotBlock::widget(['lot' => $lotFovarit]); }?>
+                
+            </div>
+            <div class="clear mb-100"></div>
         
     </div>
     

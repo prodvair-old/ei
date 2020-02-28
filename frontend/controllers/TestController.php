@@ -70,13 +70,9 @@ class TestController extends Controller
      */
     public function actionIndex()
     {
-        $lots = Lots::find()
-            ->select(['description', 'rank' => 'ts_rank(to_tsvector(description), plainto_tsquery(\'Самара\'))'])
-            ->where('to_tsvector(description) @@ plainto_tsquery(\'Самара\')')
-            ->asArray()
-            ->orderBy(`rank`)->limit(100)->all();
+        $lots = Lots::findOne(31512);
 
-        var_dump($lots);
+        var_dump($lots->thisPriceHistorys);
     }
 
 }

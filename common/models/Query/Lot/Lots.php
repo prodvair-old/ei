@@ -32,11 +32,43 @@ class Lots extends ActiveRecord
     // Функции для вывода доп, инвормации
     public function getUrl()
     {
-        $items = LotsCategory::find()->all();
+
+        $items = LotsCategory::find()->orderBy('id DESC')->all();
         foreach ($items as $value) {
-            if ($value->bankrupt_categorys[$this->category->categoryId]['translit'] !== null) {
-                return 'bankrupt/'.$value->translit_name.'/'.$value->bankrupt_categorys[$this->category->categoryId]['translit'].'/'.$this->id;
+            switch ($this->torg->type) {
+                case 'bankrupt':
+                        foreach ($this->categorys as $category) {
+                            if ($value->bankrupt_categorys[$category->categoryId]['translit'] !== null) {
+                                return 'bankrupt/'.$value->translit_name.'/'.$value->bankrupt_categorys[$category->categoryId]['translit'].'/'.$this->id;
+                            }
+                        }
+                    break;
+                case 'arrest':
+                        foreach ($this->categorys as $category) {
+                            if ($value->arrest_categorys[$category->categoryId]['translit'] !== null) {
+                                return 'arrest/'.$value->translit_name.'/'.$value->arrest_categorys[$category->categoryId]['translit'].'/'.$this->id;
+                            }
+                        }
+                    break;
+                case 'zalog':
+                        foreach ($this->categorys as $category) {
+                            if ($value->zalog_categorys[$category->categoryId]['translit'] !== null) {
+                                return 'zalog/'.$value->translit_name.'/'.$value->zalog_categorys[$category->categoryId]['translit'].'/'.$this->id;
+                            }
+                        }
+                    break;
             }
+        }
+        switch ($this->torg->type) {
+            case 'bankrupt':
+                    return $this->torg->type.'/'.$items[0]->translit_name.'/'.$items[0]->bankrupt_categorys[1063]['translit'].'/'.$this->id;
+                break;
+            case 'arrest':
+                    return $this->torg->type.'/'.$items[0]->translit_name.'/'.$items[0]->arrest_categorys[4]['translit'].'/'.$this->id;
+                break;
+            case 'zalog':
+                    return $this->torg->type.'/'.$items[0]->translit_name.'/'.$items[0]->zalog_categorys[1101]['translit'].'/'.$this->id;
+                break;
         }
     }
     public function getPrice() 
@@ -44,13 +76,8 @@ class Lots extends ActiveRecord
         if ($this->torg->tradeTypeId == 2) {
             return $this->startPrice;
         } else {
-            if ($this->priceHistorys != null) {
-                $date = Yii::$app->formatter->asDatetime(new \DateTime(), "php:Y-m-d H:i:s");
-                foreach ($this->priceHistorys as $key => $value) {
-                    if (($key == 0 || $value->intervalBegin <= $date) && $value->intervalEnd >= $date) {
-                        return $value->price;
-                    }    
-                }
+            if ($this->thisPriceHistorys != null) {
+                return $this->thisPriceHistorys->price;
             } else {
                 return $this->startPrice;
             }
@@ -63,7 +90,7 @@ class Lots extends ActiveRecord
         }if ($this->priceHistorys != null) {
             $date = Yii::$app->formatter->asDatetime(new \DateTime(), "php:Y-m-d H:i:s");
             foreach ($this->priceHistorys as $key => $value) {
-                if (($key == 0 || $value->intervalBegin <= $date) && $value->intervalEnd >= $date) {
+                if ($value->intervalBegin <= $date && $value->intervalEnd >= $date) {
                     if ($value->price == $this->startPrice) {
                         return false;
                     } else {
@@ -78,37 +105,74 @@ class Lots extends ActiveRecord
     public function getArchive()
     {
         $today = new \DateTime();
-        if (strtotime($this->torg->completeDate) <= strtotime($today->format('Y-m-d H:i:s'))) {
-            return true;
-        } else {
+
+        if ($this->torg->endDate === null || $this->torg->completeDate === null ) {
             return false;
+        } else {
+            if (strtotime($this->torg->completeDate) <= strtotime($today->format('Y-m-d H:i:s')) || strtotime($this->torg->endDate) <= strtotime($today->format('Y-m-d H:i:s'))) {
+                return true;
+            }
         }
+        return false;
     }
     public function getViewsCount() 
     {
         return count($this->views);
     }
-    public function getLotWishId() 
+    public function getWishId($id = null) 
     {
-        try {
-            return $this->wishlist->id;
-        } catch (\Throwable $th) {
-            $result[] = null;
+        if ($this->wishlist[0]) {
+            foreach ($this->wishlist as $wish) {
+                if ($id == $wish->userId) {
+                    return $wish->id;
+                }
+            }
         }
+        return false;
     }
 
     // Поиск, главные значения
     public static function find()
     {
+        return parent::find();
+    }
+    public static function isArchive()
+    {
         return parent::find()->onCondition([
-            'published' => true
+            'and', 
+            [ 'published' => true ], 
+            [ 
+                'not',
+                ['torg.publishedDate' => null],
+            ],
+        ]);
+    }
+    public static function isActive()
+    {
+        return parent::find()->onCondition([
+            'and',
+            [ 'published' => true ], 
+            [ 
+                'not',
+                ['torg.publishedDate' => null],
+            ],
+            [
+                'or',
+                ['>=', 'torg.endDate', 'NOW()'],
+                ['torg.endDate' => null],
+            ],
+            [
+                'or',
+                ['>=', 'torg.completeDate', 'NOW()'],
+                ['torg.completeDate' => null],
+            ]
         ]);
     }
 
     // Связь с таблицей статистики
     public function getWishlist()
     {
-        return $this->hasOne(WishList::className(), ['lotId' => 'id'])->alias('wish')->viaTable('torg', ['torg.type' => 'wish.type']);;
+        return $this->hasMany(WishList::className(), ['lotId' => 'id'])->alias('wishList');
     }
     public function getViews()
     {
@@ -120,7 +184,7 @@ class Lots extends ActiveRecord
     // Связи с таблицами
     public function getCategory()
     {
-        return $this->hasOne(LotCategorys::className(), ['lotId' => 'id'])->alias('categorys'); // Категории лота
+        return $this->hasOne(LotCategorys::className(), ['lotId' => 'id'])->alias('category'); // Категории лота
     }
     public function getCategorys()
     {
@@ -133,6 +197,14 @@ class Lots extends ActiveRecord
     public function getPriceHistorys()
     {
         return $this->hasMany(LotPriceHistorys::className(), ['lotId' => 'id'])->alias('priceHistorys'); // История снижения цен лота
+    }
+    public function getThisPriceHistorys()
+    {
+        return $this->hasOne(LotPriceHistorys::className(), ['lotId' => 'id'])->alias('thisPriceHistorys')->onCondition([
+                'and',
+                ['<=', 'thisPriceHistorys.intervalBegin', 'NOW()'],
+                ['>=', 'thisPriceHistorys.intervalEnd', 'NOW()']
+            ]); // действующая История снижения цен лота
     }
     public function getParticipants()
     {

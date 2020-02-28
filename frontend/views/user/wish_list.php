@@ -4,24 +4,32 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
 
-use common\models\Query\Bankrupt\LotsBankrupt;
-use common\models\Query\Arrest\LotsArrest;
-use common\models\Query\Zalog\LotsZalog;
+use common\models\Query\Lot\Lots;
 
 use frontend\components\LotBlock;
 use frontend\components\ProfileMenu;
 
 foreach ($wishArrestList as $wishArrest) {
-    $lotArrestIds[] = LotsArrest::findOne($wishArrest->lotId);
+    if ($lot = Lots::findOne(['id' => $wishArrest->lotId])) {
+        $lotArrestIds[] = $lot;
+    } else if ($lot = Lots::find()->where(['oldId' => $wishArrest->lotId])->one()) {
+        $lotArrestIds[] = $lot;
+    }
 }
 
 foreach ($wishBankruptList as $wishBankrupt) {
-    $lotBankruptIds[] = LotsBankrupt::findOne($wishBankrupt->lotId);
+    if ($lot = Lots::findOne(['id' => $wishBankrupt->lotId])) {
+        $lotBankruptIds[] = $lot;
+    } else if ($lot = Lots::find()->where(['oldId' => $wishBankrupt->lotId])->one()) {
+        $lotBankruptIds[] = $lot;
+    }
 }
 
 foreach ($wishZalogList as $wishZalog) {
-    if ($zalog = LotsZalog::find()->where(['id' => $wishZalog->lotId, 'status' => true])->one()) {
-        $lotZalogIds[] = $zalog;
+    if ($lot = Lots::findOne(['id' => $wishZalog->lotId])) {
+        $lotZalogIds[] = $lot;
+    } else if ($lot = Lots::find()->where(['oldId' => $wishZalog->lotId])->one()) {
+        $lotZalogIds[] = $lot;
     }
 }
 
@@ -76,7 +84,7 @@ $this->params['breadcrumbs'][] = [
             
             <div class="col-12 col-lg-3">
                 
-                <aside class="sticky-kit sidebar-wrapper profile-sidebar">
+                <aside class="-kit sidebar-wrapper profile-sidebar">
 
                     <div class="bashboard-nav-box">
                     
@@ -118,53 +126,21 @@ $this->params['breadcrumbs'][] = [
                         
                         <div class="clear"></div>
 
-                        <div class="wish__nav">
+                        <!-- <div class="wish__nav">
                             <ul class="row">
-                                <!-- <? if ($lotArrestIds) { echo '<li class="col-md-6 col-12"><a id="arrest-wish-btn" href="#arrest-wish" class="wish-tabs active">Аррестованное имущество</a></li>'; } ?>
-                                <? if ($lotBankruptIds) { echo '<li class="col-md-6 col-12"><a id="bankrupt-wish-btn"href="#bankrupt-wish" class="wish-tabs active">Банкротное имущество</a></li>'; } ?> -->
+                               
                                 <li class="col-md-4 col-12"><a id="bankrupt-wish-btn"href="#bankrupt-wish" class="wish-tabs">Банкротное имущество</a></li>
                                 <li class="col-md-4 col-12"><a id="arrest-wish-btn" href="#arrest-wish" class="wish-tabs">Арестованное имущество</a></li>
                                 <li class="col-md-4 col-12"><a id="zalog-wish-btn" href="#zalog-wish" class="wish-tabs">Имущество организаций</a></li>
                             </ul>
                             <hr class="mt-10">
-                        </div>
+                        </div> -->
 
                         <div class="mb-50"></div>
 
 
 
 
-                        <div data-count="<?= ($lotBankruptIds)? count($lotBankruptIds) : 0?>" class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list" id="bankrupt-wish">
-                            <? if ($lotBankruptIds) {
-                                foreach ($lotBankruptIds as $lot) { echo LotBlock::widget(['lot' => $lot]); }
-                            } else {
-                                echo "<div class='p-15 font-bold'>Пока нет избранных лотов по банкротным торгам</div>";
-                            } ?>
-                            <div class="pager-innner">
-                        
-                                <div class="row align-items-center text-center text-lg-left">
-                                
-                                    <div class="col-12 col-lg-5">
-                                    </div>
-                                    
-                                    <div class="col-12 col-lg-7">
-                                        
-                                        <nav class="float-lg-right mt-10 mt-lg-0">
-                                            <?= LinkPager::widget([
-                                                'pagination' => $pagesBankrupt,
-                                                'nextPageLabel' => "<span aria-hidden=\"true\">&raquo;</span></i>",
-                                                'prevPageLabel' => "<span aria-hidden=\"true\">&laquo;</span>",
-                                                'maxButtonCount' => 6,
-                                                'options' => ['class' => 'pagination justify-content-center justify-content-lg-left'],
-                                                'disabledPageCssClass' => false
-                                            ]); ?>
-                                        </nav>
-                                    </div>
-                                    
-                                </div>
-                            
-                            </div>
-                        </div>
 
                         <div data-count="<?= ($lotArrestIds)? count($lotArrestIds) : 0?>" class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list" id="arrest-wish">
                             <? if ($lotArrestIds) {
@@ -185,8 +161,8 @@ $this->params['breadcrumbs'][] = [
                                         <nav class="float-lg-right mt-10 mt-lg-0">
                                             <?= LinkPager::widget([
                                                 'pagination' => $pagesArrest,
-                                                'nextPageLabel' => "<span aria-hidden=\"true\">&raquo;</span></i>",
-                                                'prevPageLabel' => "<span aria-hidden=\"true\">&laquo;</span>",
+                                                'nextPageLabel' => "<span aria-hidden=\"true\">Далее</span></i>",
+                                                'prevPageLabel' => "<span aria-hidden=\"true\">Назад</span>",
                                                 'maxButtonCount' => 6,
                                                 'options' => ['class' => 'pagination justify-content-center justify-content-lg-left'],
                                                 'disabledPageCssClass' => false

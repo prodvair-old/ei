@@ -4,12 +4,13 @@
 	"description": "Ei.ru",
 	"main": "index.js",
 	"scripts": {
-		"dev": "gulp"
+		"dev": "gulp",
+		"max": "gulp max"
 	},
 	"author": "Prodvair in zh-ar",
 	"license": "ISC",
 	"devDependencies": {
-		"bootstrap": "^4.3.1",
+		"bootstrap": "^4.4.1",
 		"browser-sync": "^2.26.7",
 		"del": "^5.0.0",
 		"gulp": "^4.0.2",

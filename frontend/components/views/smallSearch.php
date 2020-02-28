@@ -53,17 +53,14 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
 <? } ?>
 
 
-<?php $form = ActiveForm::begin(['method' => 'get', 'action' => '/bankrupt/lot-list', 'options' => ['enctype' => 'multipart/form-data', 'class' => 'card-search-form']]) ?>
+<?php $form = ActiveForm::begin(['method' => 'get', 'action' => '/'.$url.'/lot-list', 'options' => ['enctype' => 'multipart/form-data', 'class' => 'card-search-form']]) ?>
 
-<div class="card card-search">
+<div class="card card-search" style="margin-top:25px;">
   <div class="card-body">
-
     <div class="input-search">
       <?= $form->field($model, 'search')->textInput([
         'class' => 'form-control',
-        'placeholder' => 'Поиск: Машина, Квартира...',
-        'tabindex' => '2',
-        "input-group" => true,
+        'placeholder' => 'Поиск по лотам',
       ])->label(false); ?>
 
       <?= Html::submitButton('<i class="ion-android-search"></i>', ['class' => 'btn btn-primary btn-block btn-search', 'style' => $btnStyle, 'name' => 'login-button']) ?>
@@ -79,7 +76,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
       }
 
       .input-search .form-control {
-        border: 3px solid <?= ($btnColor)? $btnColor : '#F04E23'?>
+        border: 3px solid <?= ($btnColor)? $btnColor : '#077751'?>
       }
 
       .btn-search {
@@ -87,15 +84,16 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
         top: 0;
         right: 0;
         width: 5rem;
-        border: 3px solid <?= ($btnColor)? $btnColor : '#F04E23'?>
+        border: 3px solid <?= ($btnColor)? $btnColor : '#077751'?>
       }
 
     </style>
 
-    <div class="row cols-1 cols-sm-3 gap-1">
+    <div class="row cols-1 cols-sm-3 gap-10">
       <div class="col">
         <div class="col-inner height-100">
           <?= $form->field($model, 'type')->dropDownList([
+            'all' => 'Все типы',
             'bankrupt' => 'Банкротное имущество',
             'arrest' => 'Арестованное имущество',
             'zalog' => 'Имущество организаций',
@@ -104,11 +102,10 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
             'data-placeholder' => 'Выберите тип лота',
             'tabindex' => '2',
             'options' => [
-              // 'zalog' => ['disabled' => true, 'title' => 'Скоро'],
-              $type => ['Selected' => true]
+              $url => ['Selected' => true]
             ]
           ])
-            ->label('Тип лота'); ?>
+            ->label(false); ?>
         </div>
       </div>
 
@@ -122,7 +119,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
               'tabindex' => '2'
             ]
           )
-            ->label('Категория'); ?>
+            ->label(false); ?>
         </div>
       </div>
 
@@ -137,10 +134,22 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
               'multiple' => false
             ]
           )
-            ->label('Регион'); ?>
+            ->label(false); ?>
         </div>
       </div>
     </div>
+    <!-- <div class="row">
+      <div class="col">
+        <div class="category_links">
+          <a href="/all/transport-i-tehnika"><span class="category_links__item">Автомобили</span></a>
+          <a href="/all/nedvizhimost"><span class="category_links__item">Недвижимость</span></a>
+          <a href="/all/syre"><span class="category_links__item">Сырье</span></a>
+          <a href="/all/debitorskaya-zadolzhennost"><span class="category_links__item">Дебиторская задолженность</span></a>
+          <a href="/all/oborudovanie"><span class="category_links__item">Оборудование</span></a>
+          <a href="/all/prochee"><span class="category_links__item">Прочее</span></a>
+        </div>
+      </div>
+    </div> -->
 
     <?php ActiveForm::end() ?>
   </div>

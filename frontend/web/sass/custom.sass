@@ -1,13 +1,14 @@
+@import 'vars.sass'
 @import 'https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i|Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i&display=swap'
 @import 'https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i,900,900i&display=swap&subset=cyrillic'
-@import '../bootstrap/css/bootstrap.min.css'
+@import 'scss/bootstrap.scss'
 @import '../font-faces/metropolis/metropolis.css'
 @import '../css/costom-plugins/toast.css'
-@import 'vars.sass'
+
 @import 'main.scss'
 @import 'font-icons.scss'
 @import 'animate.scss'
-@import 'plugin.scss'
+@import 'plugin.scss' 
 @import 'style.scss'
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6, label
@@ -81,30 +82,30 @@
     overflow: hidden
     &:hover, &:focus, &:active
       color: #fff
-    &:after,
-    &:before
-      content: ""
-      display: block
-      width: 50px
-      height: 300px
-      margin-left: 60px
-      background: #fff
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0.7) 100%)
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3ffffff', endColorstr='#b3ffffff',GradientType=0 )
-      position: absolute
-      left: -40px
-      top: -150px 
-      z-index: 1
-      opacity: .2
-      transform: rotate(45deg)
-      transition: all 0.1s
-      animation-name: slideme
-      animation-duration: 2s
-      animation-delay: 0.05s
-      animation-timing-function: ease
-      animation-iteration-count: infinite
-    &:before
-      width: 30px
+    // &:after,
+    // &:before
+    //   content: ""
+    //   display: block
+    //   width: 50px
+    //   height: 300px
+    //   margin-left: 60px
+    //   background: #fff
+    //   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0.7) 100%)
+    //   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3ffffff', endColorstr='#b3ffffff',GradientType=0 )
+    //   position: absolute
+    //   left: -40px
+    //   top: -150px 
+    //   z-index: 1
+    //   opacity: .2
+    //   transform: rotate(45deg)
+    //   transition: all 0.1s
+    //   animation-name: slideme
+    //   animation-duration: 2s
+    //   animation-delay: 0.05s
+    //   animation-timing-function: ease
+    //   animation-iteration-count: infinite
+    // &:before
+    //   width: 30px
 
 
     &__text
@@ -134,11 +135,14 @@
         height: 1rem
         margin-right: .75rem
         background-size: contain
-        background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQoNCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMjBtbSIgaGVpZ2h0PSIyMG1tIiB2ZXJzaW9uPSIxLjEiIHN0eWxlPSJzaGFwZS1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyB0ZXh0LXJlbmRlcmluZzpnZW9tZXRyaWNQcmVjaXNpb247IGltYWdlLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGZpbGwtcnVsZTpldmVub2RkOyBjbGlwLXJ1bGU6ZXZlbm9kZCINCnZpZXdCb3g9IjAgMCAyMDAwIDIwMDAiDQogeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPg0KIDxkZWZzPg0KICA8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KICAgPCFbQ0RBVEFbDQogICAgLmZpbDAge2ZpbGw6d2hpdGV9DQogICBdXT4NCiAgPC9zdHlsZT4NCiA8L2RlZnM+DQogPGcgaWQ9ItCh0LvQvtC5X3gwMDIwXzEiPg0KICA8bWV0YWRhdGEgaWQ9IkNvcmVsQ29ycElEXzBDb3JlbC1MYXllciIvPg0KICA8cGF0aCBjbGFzcz0iZmlsMCIgZD0iTTU5OC41NSA4MDkuMzJsLTAuMSAwLjFjLTE3LjUsLTE3LjQ5IC00MS42NywtMjguMzEgLTY4LjMzLC0yOC4zMSAtNTMuMzYsMCAtOTYuNjQsNDMuMjcgLTk2LjY0LDk2LjYzIDAsMjYuNjYgMTAuODcsNTAuNzggMjguMzIsNjguMjhsLTAuMTEgMC4xIDQzOS44MSA0MzkuNzYgOTc3LjMgLTk3Ny4yOSAtMC4wNSAtMC4wNmMxNy40OSwtMTcuNDkgMjguMzEsLTQxLjY2IDI4LjMxLC02OC4zMiAwLC01My4zNyAtNDMuMjcsLTk2LjY0IC05Ni42NCwtOTYuNjQgLTI2LjY1LDAgLTUwLjgzLDEwLjgyIC02OC4zMiwyOC4zMmwtMC4xMSAtMC4xMSAtODQwLjQ5IDg0MC40OSAtMzAyLjk1IC0zMDIuOTV6bTExODEuODUgMTkwLjY4YzAsLTUuMDcgMC4zNiwtMTAuMDkgMS4xNCwtMTQuOTZsMC4wNSAtMC4wNSAwLjA1IC0wLjY3YzUuMzQsLTQ5LjAyIDQ2Ljc0LC04Ny4wNiA5Ny4xNiwtODcuMDYgNTAuOTMsMCA5Mi42NSwzOC45NyA5Ny4yNiw4OC42NiAwLjYyLDQuNjEgMS4wMyw5LjI3IDEuMDMsMTQuMDggMCwyNjkuNjggLTEwOS4zNyw1MTMuOTkgLTI4Ni4xOCw2OTAuOGwtNS43IDUuMjNjLTE3Ni4zNSwxNzMuNzEgLTQxOC4zOCwyODAuOTYgLTY4NS4yLDI4MC45NiAtMjY5LjUyLDAgLTUxMy43MywtMTA5LjQzIC02OTAuNTQsLTI4Ni4xOSAtMTc3LjE4LC0xNzYuODEgLTI4Ni41NSwtNDIxLjEyIC0yODYuNTUsLTY5MC44IDAsLTI2OS42NyAxMDkuMzcsLTUxMy45OCAyODYuMTgsLTY5MC43OWw1LjcgLTUuMjNjMTc2LjM1LC0xNzMuNzEgNDE4LjM4LC0yODAuOTYgNjg1LjIxLC0yODAuOTYgNTYuNjIsMCAxMTMuNCw1LjA3IDE2OS40NiwxNC45MSA1NS4xOCw5LjY4IDExMC4zNSwyNC41MyAxNjQuNTUsNDQuMjUgNTAuODgsMTguNDMgNzcuMTcsNzQuNzUgNTguNzUsMTI1LjYzIC0xOC40Myw1MC44OCAtNzQuNzUsNzcuMTcgLTEyNS42Myw1OC43NCAtNDIuMDgsLTE1LjMyIC04Ni4yMywtMjcuMDcgLTEzMS41MiwtMzUuMDQgLTQ0LjMxLC03Ljc2IC04OS44MSwtMTEuOCAtMTM1LjYxLC0xMS44IC0yMTMuMzYsMCAtNDA2LjY5LDg1LjQ2IC01NDcuNDgsMjIzLjgxbC00LjQgNC43MWMtMTQxLjE1LDE0MS4xNiAtMjI4LjUyLDMzNi4yOSAtMjI4LjUyLDU1MS43NyAwLDIxNS40OCA4Ny4zNyw0MTAuNjIgMjI4LjUyLDU1MS43NyAxNDEsMTQxLjIxIDMzNi4yNCwyMjguNTMgNTUxLjg4LDIyOC41MyAyMTMuMzUsMCA0MDYuNjgsLTg1LjQ2IDU0Ny40NywtMjIzLjgybDQuNCAtNC43MWMxNDEuMTUsLTE0MS4xNSAyMjguNTIsLTMzNi4yOSAyMjguNTIsLTU1MS43N3oiLz4NCiA8L2c+DQo8L3N2Zz4NCg==")
+        background-image: url("data:image/svg+xmlbase64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQoNCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMjBtbSIgaGVpZ2h0PSIyMG1tIiB2ZXJzaW9uPSIxLjEiIHN0eWxlPSJzaGFwZS1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyB0ZXh0LXJlbmRlcmluZzpnZW9tZXRyaWNQcmVjaXNpb247IGltYWdlLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGZpbGwtcnVsZTpldmVub2RkOyBjbGlwLXJ1bGU6ZXZlbm9kZCINCnZpZXdCb3g9IjAgMCAyMDAwIDIwMDAiDQogeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPg0KIDxkZWZzPg0KICA8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KICAgPCFbQ0RBVEFbDQogICAgLmZpbDAge2ZpbGw6d2hpdGV9DQogICBdXT4NCiAgPC9zdHlsZT4NCiA8L2RlZnM+DQogPGcgaWQ9ItCh0LvQvtC5X3gwMDIwXzEiPg0KICA8bWV0YWRhdGEgaWQ9IkNvcmVsQ29ycElEXzBDb3JlbC1MYXllciIvPg0KICA8cGF0aCBjbGFzcz0iZmlsMCIgZD0iTTU5OC41NSA4MDkuMzJsLTAuMSAwLjFjLTE3LjUsLTE3LjQ5IC00MS42NywtMjguMzEgLTY4LjMzLC0yOC4zMSAtNTMuMzYsMCAtOTYuNjQsNDMuMjcgLTk2LjY0LDk2LjYzIDAsMjYuNjYgMTAuODcsNTAuNzggMjguMzIsNjguMjhsLTAuMTEgMC4xIDQzOS44MSA0MzkuNzYgOTc3LjMgLTk3Ny4yOSAtMC4wNSAtMC4wNmMxNy40OSwtMTcuNDkgMjguMzEsLTQxLjY2IDI4LjMxLC02OC4zMiAwLC01My4zNyAtNDMuMjcsLTk2LjY0IC05Ni42NCwtOTYuNjQgLTI2LjY1LDAgLTUwLjgzLDEwLjgyIC02OC4zMiwyOC4zMmwtMC4xMSAtMC4xMSAtODQwLjQ5IDg0MC40OSAtMzAyLjk1IC0zMDIuOTV6bTExODEuODUgMTkwLjY4YzAsLTUuMDcgMC4zNiwtMTAuMDkgMS4xNCwtMTQuOTZsMC4wNSAtMC4wNSAwLjA1IC0wLjY3YzUuMzQsLTQ5LjAyIDQ2Ljc0LC04Ny4wNiA5Ny4xNiwtODcuMDYgNTAuOTMsMCA5Mi42NSwzOC45NyA5Ny4yNiw4OC42NiAwLjYyLDQuNjEgMS4wMyw5LjI3IDEuMDMsMTQuMDggMCwyNjkuNjggLTEwOS4zNyw1MTMuOTkgLTI4Ni4xOCw2OTAuOGwtNS43IDUuMjNjLTE3Ni4zNSwxNzMuNzEgLTQxOC4zOCwyODAuOTYgLTY4NS4yLDI4MC45NiAtMjY5LjUyLDAgLTUxMy43MywtMTA5LjQzIC02OTAuNTQsLTI4Ni4xOSAtMTc3LjE4LC0xNzYuODEgLTI4Ni41NSwtNDIxLjEyIC0yODYuNTUsLTY5MC44IDAsLTI2OS42NyAxMDkuMzcsLTUxMy45OCAyODYuMTgsLTY5MC43OWw1LjcgLTUuMjNjMTc2LjM1LC0xNzMuNzEgNDE4LjM4LC0yODAuOTYgNjg1LjIxLC0yODAuOTYgNTYuNjIsMCAxMTMuNCw1LjA3IDE2OS40NiwxNC45MSA1NS4xOCw5LjY4IDExMC4zNSwyNC41MyAxNjQuNTUsNDQuMjUgNTAuODgsMTguNDMgNzcuMTcsNzQuNzUgNTguNzUsMTI1LjYzIC0xOC40Myw1MC44OCAtNzQuNzUsNzcuMTcgLTEyNS42Myw1OC43NCAtNDIuMDgsLTE1LjMyIC04Ni4yMywtMjcuMDcgLTEzMS41MiwtMzUuMDQgLTQ0LjMxLC03Ljc2IC04OS44MSwtMTEuOCAtMTM1LjYxLC0xMS44IC0yMTMuMzYsMCAtNDA2LjY5LDg1LjQ2IC01NDcuNDgsMjIzLjgxbC00LjQgNC43MWMtMTQxLjE1LDE0MS4xNiAtMjI4LjUyLDMzNi4yOSAtMjI4LjUyLDU1MS43NyAwLDIxNS40OCA4Ny4zNyw0MTAuNjIgMjI4LjUyLDU1MS43NyAxNDEsMTQxLjIxIDMzNi4yNCwyMjguNTMgNTUxLjg4LDIyOC41MyAyMTMuMzUsMCA0MDYuNjgsLTg1LjQ2IDU0Ny40NywtMjIzLjgybDQuNCAtNC43MWMxNDEuMTUsLTE0MS4xNSAyMjguNTIsLTMzNi4yOSAyMjguNTIsLTU1MS43N3oiLz4NCiA8L2c+DQo8L3N2Zz4NCg==")
 
 
 .sidebar
   &-desktop
+    position: sticky
+    top: 3rem
+    display: none
     @media (max-width: 991px)
       display: none
   &-mobile
@@ -160,7 +164,7 @@
         color: #FFF
         font-size: 38px
         @media (min-width: 768px)
-          font-size: 4rem
+          font-size: 4rem 
 
 .hero-header
     display: flex
@@ -192,6 +196,8 @@
     background-color: $otkrytie
     color: #fff
     position: relative
+    border-radius: 3px
+    overflow: hidden
     &.color-1
       background-color: #020202
     &.color-2
@@ -202,6 +208,8 @@
       background-color: #a08661
     .image
       margin-left: 50%
+      border-radius: 3px
+      overflow: hidden
     .content
       display: flex
       text-align: center
@@ -240,7 +248,8 @@ body
             text-transform: uppercase
             font-weight:  bold
             letter-spacing: 1px
-            font-size: 15px
+            font-size: 14px
+            font-family: Roboto, sans-serif
 
 .row.gap-50
     margin-right: 0
@@ -255,6 +264,8 @@ body
         fill: #222222
 
 .hero-inner
+    padding-bottom: 0
+
     .main__title
         font-size: 50px
         line-height: 53px
@@ -266,7 +277,7 @@ body
     position: relative
     border-radius: 3px
     // border: 1px solid $secondary
-    object-fit: cover
+    // object-fit: cover
     object-position: center
     img
       width: 100%
@@ -493,7 +504,11 @@ body
     left: 185px
 
 .footer-copy-center
-    text-align: center
+    //text-align: center
+    color: #999
+    max-width: 920px
+    // margin-left: auto
+    margin-right: auto
 
 .fs-40
     font-size: 40px
@@ -534,19 +549,23 @@ body
     &__info
         display: flex
         align-items: center
-        color: $secondary
+        color: #373739
+        // color: $secondary
         margin-bottom: 0
     &__title
       display: block
-      margin-top: 1rem !important
+      margin-top: 0.5rem !important
       font-size: 1rem
-      font-weight: normal
       line-height: 1.25
-      margin-bottom: 0
+      margin-bottom: .5rem
       font-weight: 500
+      max-height: 3.9rem
+      overflow: hidden
+      text-overflow: ellipsis
             
 .form-group label.custom-control-label
-  color: $secondary
+  // color: $secondary
+  color: #373739
 .wish-star
     img
         height: 1.1rem
@@ -653,7 +672,8 @@ body
 
 .sort-box 
   font-size: 14px
-  color: $secondary !important
+  // color: $secondary !important
+  color: #373739!important
   .sort-label
     color: $secondary
   .sort-item
@@ -687,20 +707,23 @@ body
 
 .footer-wrapper.light
     background-color: #f6f7f7
-
+.bottom-footer
+  background-color: #f6f7f7
 .footer-wrapper.light .bottom-footer
-    background-color: #ecefef
-    padding-top: 35px
+    background-color: #f6f7f7
+    padding-top: 0
     padding-bottom: 19px
-    margin-top: 40px
+    margin-top: 0
     font-size: 14px
     line-height: 1.25
-
+.footer-wrapper ul.footer-menu-list li::before
+  color: $accent
 .image-galery
   position: relative
   &:hover
     .image-galery__control
       opacity: 1
+     
   // img:nth-child(2n)
   //   transform: rotate(180deg)
   &__control
@@ -712,15 +735,26 @@ body
     padding: .5rem 
     opacity: 1
     z-index: 10
-    
+    height: 100%
 
     &__item
-      height: 5px
-      background: $accent
+      position: relative
+      height: 100%
+      // background: #ddd
       width: 100%
       margin: 0 .25rem
       border-radius: 3px
       opacity: .3
+      &:after
+        bottom: 0
+        left: 0
+        position: absolute
+        display: block
+        content: ""
+        height: 5px
+        background: $accent
+        width: 100%
+        border-radius: 3px
       &.active 
         opacity: 1
 
@@ -766,6 +800,7 @@ body
 
 .load-image-lot
   position: relative
+
   a
     display: none!important
     position: absolute
@@ -829,3 +864,260 @@ body
       list-style-type: disc!important
       margin-left: 40px!important
       font-weight: light
+.lot__bankrupt
+  font-size: 12px
+  color: #696969
+  background: #d2deef
+  padding: 3px 10px!important
+  border-radius: 5px
+.lot__arest
+  font-size: 12px
+  color: #696969
+  // background: #5e100a
+  background: #ffe9d0
+  padding: 3px 10px!important
+  border-radius: 5px
+.lot__zalog
+  font-size: 12px
+  color: #696969
+  background: #d9efd8
+  padding: 3px 10px!important
+  border-radius: 5px
+
+.category_links
+  display: inline-block
+  a 
+    color: #000000
+    width: 100%
+    margin: 10px
+    &:hover
+      color: #077751
+  // &__item 
+  //   padding: 5px 10px
+  //   border-radius: 3px
+  //   background: #90aad0
+  //   color: #ffffff
+  //   transition: all .3s ease
+  //   &:hover
+  //     background: #9fb2ce
+
+.main-page
+  &__item
+    width: 100%
+  &__link 
+    width: 100%
+    padding: 20px 30px 
+    background: rgba(0, 0, 0, 0.1)
+    color: #000000
+    font-size: 20px
+    text-transform: uppercase
+  &__link-item
+    padding: 0 5px
+  &__title
+    font-size: 40px!important
+    line-height: 20px!important
+    letter-spacing: -1px!important
+  &__subtitle
+    font-size: 18px!important
+    letter-spacing: -1px!important
+    font-weight: 400
+  &__category
+    // width: 100%
+    margin: 0 1rem
+    &__block
+      height: 100%
+      padding: 30px
+      width: auto    
+      background: #f9f9f9 
+      border-radius: 5px
+      // transition: all .3s ease
+      ul
+        margin: 0 -1rem
+      li
+        display: block
+        padding: 0 1rem !important
+        border-radius: 3px
+        a 
+          color: #000
+          display: flex
+          width: 100%
+          transition: all 0s ease
+          span 
+            margin-left: auto
+            color: #aaa
+        &:hover
+          background-color: rgba($accent, .1)
+          a 
+            //color: #fff
+            span 
+              //color: #fff
+      p 
+        color: $accent
+        text-transform: uppercase
+        font-size: 18px
+        font-weight: 500
+      // &:hover
+      //   box-shadow: 0px 0px 13px rgba(100, 100, 100, 0.2)
+  &__link
+    padding: 10px 20px
+    border: 1px solid #077751
+    color: #077751
+    background: inherit
+    transition: all .3s ease
+    &:hover
+      background: #077751
+      color: #ffffff!important
+
+.card-search
+  border: none
+.social-share
+  display: flex
+  margin-bottom: 1rem
+  a 
+    color: #000000
+    border: 1px solid #000000
+    margin-right: .5rem
+    padding: .25rem .5rem
+    border-radius: 3px
+
+#map-lot,
+.player-panorama
+  width: 100%
+  height: 500px
+  margin-bottom: 2rem
+
+#map
+  width: 100%
+  height: 500px
+  
+   
+   
+.text-logo
+.pt5
+  padding-top: 225px!important
+
+.import-info
+  img
+    width: 60px
+    height: 55px
+    margin-right: 1rem
+
+
+
+.pagination>li>a, .pagination>li>span
+    min-width: 24px
+    height: auto
+    width: auto
+    padding: .20rem .5rem 
+    font-size: 1rem
+    border-color: #dee2e6
+    background-color: #e9ecef
+
+.sidebar-box 
+  border-top: 1px solid #eee
+  padding: 1rem 0
+  &__collaps
+    &.collaps
+      .box-content
+        display: none !important
+      .sidebar-box__label:after
+        content: '\f35f'
+  &__label
+    position: relative
+    &:after
+      font-family: 'Ionicons'
+      position: absolute
+      display: inline-block
+      content: '\f365'
+      right: .75rem
+      top: 0
+      color: #666
+      font-size: 1rem
+  &__text 
+    line-height: 1.25
+    font-size: 14px
+    color: $secondary
+      
+.chosen-container-single .chosen-single,
+.chosen-container-multi .chosen-choices,
+.form-control
+  border-color: #c7c7c7
+
+.sidebar-box+.sidebar-box
+  margin-top: 0
+
+.chosen-container-single a:not([href]):not([tabindex]).chosen-single:not(.chosen-default),
+.chosen-container-single a:not([href]):not([tabindex]),
+    color: #444444!important
+   
+
+// Номер телефона
+.link-mobile
+  width: 50px
+  height: 50px
+  box-shadow: 0 0 5px rgba(50, 50, 50, 0.7)
+  border-radius: 30px
+  background: #077751
+  bottom: 30px
+  right: 20px
+  z-index: 10000000
+  position: fixed
+  transition: all .2s linear
+  display: flex
+  justify-content: center
+  align-items: center
+  overflow: hidden
+  cursor: pointer
+
+  &:hover
+    background: #077751
+    height: 50px
+    width: 290px
+    border-radius: 30px
+    transition-delay: .2s
+
+  span
+    display: block
+    transform: scaleY(0)
+    transform-origin: left
+    color: #077751
+    z-index: 4
+    font-size: 22px
+    transition: all .1s linear
+
+  &:hover span
+    display: block
+    z-index: 4
+    color: #fff
+    font-size: 20px
+    transform: scaleY(1)
+    transition-delay: .4s
+
+.link-mobile__icon
+  width: 20px
+  height: auto
+  margin-right: 50px
+  transition-delay: .3s
+  transition: all 0.5s ease
+
+.link-mobile:hover .link-mobile__icon
+  transition-delay: .3s
+  display: none
+
+.toast-success
+  background-color: $accent !important
+
+@media (max-width: 768px)
+  .hero-banner.hero-banner-01.alt-option-03 .container
+      padding-top: 140px!important
+
+@media (min-width: 576px)
+  .hero-banner.hero-banner-01.alt-option-03 .container
+      padding-bottom: 0
+     
+@media (max-width: 576px)
+  .hero-banner.hero-banner-01.alt-option-03 .container
+      padding-bottom: 20px
+
+.gradient-for-page
+  background: linear-gradient(to bottom, #d2d2d2, #ffffff)

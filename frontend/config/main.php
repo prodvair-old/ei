@@ -15,6 +15,28 @@ return [
   'sourceLanguage' => 'ru-RU',
   'controllerNamespace' => 'frontend\controllers',
   'components' => [
+    'socialShare' => [
+      'class' => \ymaker\social\share\configurators\Configurator::class,
+      'socialNetworks' => [
+          'vkontakte' => [
+              'class' => \ymaker\social\share\drivers\Vkontakte::class,
+          ],
+          'facebook' => [
+              'class' => \ymaker\social\share\drivers\Facebook::class,
+          ],
+          'odnoklasniki' => [
+              'class' => \ymaker\social\share\drivers\Odnoklassniki::class,
+          ],
+          'telegram' => [
+            'class' => \ymaker\social\share\drivers\Telegram::class,
+          ],
+      ],
+      'enableIcons' => true,
+      // 'icons' => [
+      //     \ymaker\social\share\drivers\Twitter::class => 'icon-twitter', // CSS class
+      //     \ymaker\social\share\drivers\Facebook::class => 'icon-facebook',  // CSS class
+      // ],
+    ],
     'formatter' => [
       'decimalSeparator' => '.',
       'thousandSeparator' => ' ',
@@ -49,7 +71,6 @@ return [
       'showScriptName' => false,
       //'suffix' => '.html',
       'rules' => [
-
         '' => 'site/index',
 
         '/test'    => 'test/index',
@@ -97,6 +118,7 @@ return [
         '/profile/favorite'      => 'user/wish_list',
 
         '/profile/lots'          => 'user/lots',
+        '/profile/get-arrest-bankrupt' => 'user/get-arrest-bankrupt',
         '/profile/lots/<id:\d+>' => 'user/edit-lot',
 
         '/profile/lots/import'   => 'user/import-lots',
@@ -118,7 +140,9 @@ return [
         '/sitemap-<type>-<limit:\d+>.xml'   => 'sitemap/pages',
         '/sitemap-<type>.xml'               => 'sitemap/pages',
 
+        '/get-arrest-bankrupt'  => 'lots/arrest-bankrupt',
 
+        '/map'              => 'lot/map',
         '/load-category'    => 'lot/load_category',
         '/wish-list-edit'   => 'lot/wish_list',
 

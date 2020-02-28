@@ -89,6 +89,42 @@ class LotController extends Controller
      * @return mixed
      */
     // Главная страница лотов
+
+    public function actionMap()
+    {
+        $get = Yii::$app->request->get();
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $lotsSearch = Lots::isActive()
+                ->joinWith(['torg'])
+                ->alias('lot')
+                ->where([
+                    'and',
+                    "lot.info->'address'->>'geo_lat' >= '".$get['northWest']['lat']."'",
+                    "lot.info->'address'->>'geo_lat' <= '".$get['southEast']['lat']."'",
+                    "lot.info->'address'->>'geo_lon' >= '".$get['northWest']['lng']."'",
+                    "lot.info->'address'->>'geo_lon' <= '".$get['southEast']['lng']."'",
+                    '(torg."endDate" >= NOW() OR torg."endDate" IS NULL) OR (torg."completeDate" >= NOW() OR torg."completeDate" IS NULL)'
+                ])
+                ->all();
+
+        foreach ($lotsSearch as $key => $lotSearch) {
+            $lots[] = [
+                'id'        => $lotSearch->id,
+                'title'     => $lotSearch->title,
+                'address'   => $lotSearch->info['address']['district'].', '.$lotSearch->info['address']['region'].', '.$lotSearch->info['address']['city'].', '.$lotSearch->info['address']['street'],
+                'price'     => $lotSearch->price,
+                'link'      => Yii::$app->request->hostInfo.'/'.$lotSearch->url,
+                'position'  => [
+                    'lat'  => $lotSearch->info['address']['geo_lat'],
+                    'lng'  => $lotSearch->info['address']['geo_lon'],
+                ]
+            ];
+        }
+
+        return $lots;
+    }
+
     public function actionIndex($type)
     {
         $start = microtime(true);
@@ -123,15 +159,15 @@ class LotController extends Controller
         }
 
         // Проверка ссылок ЧПУ и подставление типа лотов Strat->
-        $lots = Lots::find()
+        $lots = Lots::isActive()
                 ->joinWith(['torg'])
                 ->alias('lot')
-                ->where(['and', ['torg.type' => $queryType, 'published' => true], ['>=', 'torg.completeDate', 'NOW()']])
+                ->where(['torg.type' => $queryType])
                 ->orderBy('torg.publishedDate DESC')
                 ->limit(3)
                 ->all();
 
-        $lotsFovarit = Lots::find()
+        $lotsFovarit = Lots::isActive()
                 ->select([
                     '*',
                     'whishCount' => WishList::find()
@@ -142,7 +178,7 @@ class LotController extends Controller
                 ])
                 ->joinWith(['torg'])
                 ->alias('lot')
-                ->where(['and', ['torg.type' => $queryType, 'published' => true], ['>=', 'torg.completeDate', 'NOW()']])
+                ->where(['torg.type' => $queryType])
                 ->limit(3)
                 ->orderBy('whishCount DESC')
                 ->all();
@@ -180,7 +216,7 @@ class LotController extends Controller
         Yii::$app->params['title'] = ($metaData->mdTitle)? $metaData->mdTitle : $title;
         Yii::$app->params['h1'] = ($metaData->mdH1)? $metaData->mdH1 : $title;
         // Мета данные <-End 
-        var_dump('Время генерации: ' . ( microtime(true) - $start ) . ' сек.');
+        // var_dump('Время генерации: ' . ( microtime(true) - $start ) . ' сек.');
 
         return $this->render('index', compact('type', 'lots', 'lotsFovarit', 'owner'));
     }
@@ -209,15 +245,49 @@ class LotController extends Controller
             throw new \yii\web\NotFoundHttpException;
         }
 
-        $model->type = ($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog';
-        $modelSort->type = ($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog';
+        $model->type = ($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog' || $type == 'all')? $type : 'zalog';
         
-        switch ($type) {
-            case 'bankrupt':
-                $lotsQuery = LotsBankrupt::find()->joinWith('category');
-                $lotsPrice = LotsBankrupt::find()->joinWith('category');
+        $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
 
-                $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
+        switch ($type) {
+            case 'all':
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Все виды иммущества`';
+
+                if ($subcategory != null) {
+                    foreach ($items->bankrupt_categorys_translit as $key => $value) {
+                        if ($key == $subcategory) {
+                            $querySubcategory = $value['id'];    
+                            $model->subCategory[0] = $value['id'];    
+                            $titleSubcategory = $value['name'];
+                            $title = $value['name'];
+                            $url = "$type/$category/$subcategory";
+                        }
+                    }
+                    foreach ($items->arrest_categorys_translit as $key => $value) {
+                        if ($key == $subcategory) {
+                            $querySubcategory = $value['id'];    
+                            $model->subCategory[0] = $value['id'];    
+                            $titleSubcategory = $value['name'];
+                            $title = $value['name'];
+                            $url = "$type/$category/$subcategory";
+                        }
+                    }
+                    foreach ($items->zalog_categorys_translit as $key => $value) {
+                        if ($key == $subcategory) {
+                            $querySubcategory = $value['id'];    
+                            $model->subCategory[0] = $value['id'];    
+                            $titleSubcategory = $value['name'];
+                            $title = $value['name'];
+                            $url = "$type/$category/$subcategory";
+                        }
+                    }
+                    if (empty($querySubcategory)) {
+                        Yii::$app->response->statusCode = 404;
+                        throw new \yii\web\NotFoundHttpException;
+                    }
+                }
+                break;
+            case 'bankrupt':
                 $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Банкротное имущество';
 
                 if ($subcategory != null) {
@@ -237,10 +307,6 @@ class LotController extends Controller
                 }
                 break;
             case 'arrest':
-                $lotsQuery = LotsArrest::find()->joinWith('torgs');
-                $lotsPrice = LotsArrest::find()->joinWith('torgs');
-
-                $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
                 $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Арестованное имущество';
 
                 if ($subcategory != null) {
@@ -260,10 +326,6 @@ class LotController extends Controller
                 }
                 break;
             case 'zalog':
-                $lotsQuery = LotsZalog::find()->joinWith('categorys');
-                $lotsPrice = LotsZalog::find()->joinWith('categorys');
-
-                $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
                 $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Имущество организаций';
 
                 if ($subcategory != null) {
@@ -339,13 +401,19 @@ class LotController extends Controller
         // Мета данные <-End 
             
         // Фильтрация лотов Start->
-        $model->load(Yii::$app->request->get());
-        $query = $model->search($lotsQuery, $url, (($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog')? $type : null));
+        $modelSort->load(Yii::$app->request->get());
+
+        $get = Yii::$app->request->get();
+
+        // var_dump(($get['SearchLot'])? $get['SearchLot'] : $get[1]['SearchLot']);
+        
+        $model->load((($get['SearchLot'])? $get : $get[1]));
+        $query = $model->searchBy($url, (($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog' || $type == 'all')? $type : null), $modelSort->sortBy());
 
         /* http://dev.ei.ru/rosselkhozbank/lot-list */
         $urlArray = explode('/', $url);
 
-        if ($urlArray[0] != $model->type && ($urlArray[0] == 'bankrupt' || $urlArray[0] == 'arrest' || $urlArray[0] == 'zalog')) {
+        if ($urlArray[0] != $model->type && ($urlArray[0] == 'all' || $urlArray[0] == 'bankrupt' || $urlArray[0] == 'arrest' || $urlArray[0] == 'zalog')) {
             $urlArray[0] = $model->type;
             $url = implode('/',$urlArray);
             return $this->redirect([$url,Yii::$app->request->get()]);
@@ -357,39 +425,42 @@ class LotController extends Controller
         $lotsPrice = Clone $query['lotsPrice'];
         $lotsCount = Clone $lotsQuery;
 
-        if (!$price = Yii::$app->cache->get($lot_price_cache.'1')) {
-            switch ($type) {
-                case 'bankrupt':
-                        $price = $lotsPrice->select(['min(lot_startprice)','max(lot_startprice)'])->asArray()->one();
-                    break;
-                case 'arrest':
-                        $price = $lotsPrice->select(['min(lots."lotStartPrice")','max(lots."lotStartPrice")'])->asArray()->one();
-                    break;
-                default:
-                        $price = $lotsPrice->select(['min("startingPrice")','max("startingPrice")'])->asArray()->one();
-                    break;
-            }
-            Yii::$app->cache->set($lot_price_cache, $price, 3600*24);
-        }
-        $count = $lotsCount->count();
+        $price = $lotsPrice->select([
+                'intervalMax' => 'max("thisPriceHistorys".price)', 
+                'max' => 'max("startPrice")',
+                'intervalMin' => 'min("thisPriceHistorys".price)', 
+                'min' => 'min("startPrice")',
+            ])->asArray()->one();
 
-        $modelSort->load(Yii::$app->request->get());
-        $lotsQuery = $modelSort->sortBy($lotsQuery, $type);
+        // switch ($type) {
+        //     case 'bankrupt':
+        //             $price = $lotsPrice->select(['min(lot_startprice)','max(lot_startprice)'])->asArray()->one();
+        //         break;
+        //     case 'arrest':
+        //             $price = $lotsPrice->select(['min(lots."lotStartPrice")','max(lots."lotStartPrice")'])->asArray()->one();
+        //         break;
+        //     default:
+        //             $price = $lotsPrice->select(['min("startingPrice")','max("startingPrice")'])->asArray()->one();
+        //         break;
+        // }
+
+        $count = $lotsCount->count();
 
         $pages = new Pagination(['totalCount' => $count, 'pageSize'=> 10]);
 
+        // var_dump($lotsQuery
+        //     ->offset($pages->offset)
+        //     ->limit($pages->limit)->createCommand()->getRawSql()
+        // );
+        
+        $lots = $lotsQuery->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
 
-        if (!$lots = Yii::$app->cache->get($lot_list_cache.'1')) {
-
-            $lots = $lotsQuery->offset($pages->offset)
-                ->limit($pages->limit)
-                ->all();
-
-            Yii::$app->cache->set($lot_list_cache, $lots, 3600*24);
-        }
         // Фильтрация лотов <-End 
         // var_dump('Время генерации: ' . ( microtime(true) - $start ) . ' сек.');
         // Хлебные крошки Start->
+
         Yii::$app->params['breadcrumbs'][] = [
             'label' => ' '.$titleType,
             'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
@@ -434,8 +505,25 @@ class LotController extends Controller
 
         $lot = Lots::findOne($id);
 
+        if (!$lot) {
+            Yii::$app->response->statusCode = 404;
+            throw new \yii\web\NotFoundHttpException;
+        }
+
         if ($subcategory != null) {
             foreach ($items->bankrupt_categorys_translit as $key => $value) {
+                if ($key == $subcategory) {
+                    $querySubcategory = $value['id'];
+                    $titleSubcategory = $value['name'];
+                }
+            }
+            foreach ($items->arrest_categorys_translit as $key => $value) {
+                if ($key == $subcategory) {
+                    $querySubcategory = $value['id'];
+                    $titleSubcategory = $value['name'];
+                }
+            }
+            foreach ($items->zalog_categorys_translit as $key => $value) {
                 if ($key == $subcategory) {
                     $querySubcategory = $value['id'];
                     $titleSubcategory = $value['name'];
@@ -447,275 +535,104 @@ class LotController extends Controller
             }
         }
 
-        // switch ($type) {
-        //     case 'bankrupt':
-                
-        //         $search  = [
-        //             '${lotTitle}', 
-        //             '${lotAddress}', 
-        //             '${lotStatus}', 
-        //             '${bnkrName}',
-        //             '${arbitrName}',
-        //             '${sroName}',
-        //             '${etp}',
-        //             '${tradeType}',
-        //             '${caseId}', 
-        //             '${category}',
-        //             '${subCategory}',
-        //             '${startPrice}',
-        //             '${lotPrice}',
-        //             '${stepPrice}',
-        //             '${advance}',
-        //             '${priceType}',
-        //             '${timeEnd}',
-        //             '${timeBegin}'
-        //         ];
-        //         $replace = [
-        //             str_replace('"',"'",$lot->lotTitle),
-        //             str_replace('"',"'",$lot->lotAddress),
-        //             str_replace('"',"'",$lot->lotStatus),
-        //             str_replace('"',"'",$lot->lotBnkrName),
-        //             str_replace('"',"'",$lot->lotArbtrName),
-        //             str_replace('"',"'",$lot->lotSroTitle),
-        //             str_replace('"',"'",$lot->lotEtp),
-        //             (($lot->lotTradeType != 'PublicOffer')? 'публичное предложение': 'открытый аукцион'),
-        //             $lot->torgy->case->caseid, 
-        //             $category_title,
-        //             $subCategory,
-        //             Yii::$app->formatter->asCurrency($lot->startprice),
-        //             Yii::$app->formatter->asCurrency($lot->lotPrice),
-        //             (($lot->auctionstepunit == 'Percent')? $lot->stepprice.'% ('.Yii::$app->formatter->asCurrency((($lot->lotPrice / 100) * $lot->stepprice)).')' : Yii::$app->formatter->asCurrency($lot->stepprice)),
-        //             (($lot->advancestepunit == 'Percent')? $lot->advance.'% ('.Yii::$app->formatter->asCurrency((($lot->lotPrice / 100) * $lot->advance)).')' : Yii::$app->formatter->asCurrency($lot->advance)),
-        //             (($lot->torgy->pricetype == 'Public')? 'Открытая' : 'Закрытая'),
-        //             ($lot->torgy->timeend !== '0001-01-01 00:00:00 BC' && $lot->torgy->timeend !== '0001-01-01 00:00:00')? Yii::$app->formatter->asDate($lot->torgy->timeend, 'long') : '(Нет даты)',
-        //             Yii::$app->formatter->asDate($lot->torgy->timebegin, 'long')
-        //         ];
+        $search  = [
+            '${lotTitle}', 
+            '${lotAddress}', 
+            '${lotStatus}', 
+            '${bnkrName}',
+            '${arbitrName}',
+            '${sroName}',
+            '${etp}',
+            '${tradeType}',
+            '${caseId}', 
+            '${category}',
+            '${subCategory}',
+            '${startPrice}',
+            '${lotPrice}',
+            '${stepPrice}',
+            '${advance}',
+            '${priceType}',
+            '${timeEnd}',
+            '${timeBegin}'
+        ];
+        $replace = [
+            str_replace('"',"'",$lot->title),
+            str_replace('"',"'",$lot->district.''.$lot->info['address']['region'].''.$lot->city.''.$lot->info['address']['street']),
+            str_replace('"',"'",$lot->status),
+            str_replace('"',"'",$lot->torg->bankrupt->name),
+            str_replace('"',"'",$lot->torg->publisher->fullName),
+            str_replace('"',"'",$lot->torg->publisher->sro->title),
+            str_replace('"',"'",$lot->torg->etp->title),
+            (($lot->torg->tradeType == 0)? 'публичное предложение': 'открытый аукцион'),
+            $lot->torg->case->number, 
+            $titleCategory,
+            $titleSubcategory,
+            Yii::$app->formatter->asCurrency($lot->startPrice),
+            Yii::$app->formatter->asCurrency($lot->price),
+            (($lot->stepTypeId == 1)? $lot->step.'% ('.Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->step)).')' : Yii::$app->formatter->asCurrency($lot->step)),
+            (($lot->depositTypeId == 1)? $lot->deposit.'% ('.Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->deposit)).')' : Yii::$app->formatter->asCurrency($lot->deposit)),
+            (($lot->torg->info['priceType'] == 'Public')? 'Открытая' : 'Закрытая'),
+            Yii::$app->formatter->asDate($lot->torg->startDate, 'long'),
+            Yii::$app->formatter->asDate($lot->torg->endDate, 'long')
+        ];
 
-        //         $metaType = 'lot-page';
+        switch ($type) {
+            case 'bankrupt':
 
-        //         $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
-        //         $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Банкротное имущество';
+                $metaType = 'lot-page';
 
-        //         // Хлебные крошки Start->
-        //         Yii::$app->params['breadcrumbs'][] = [
-        //             'label' => ' '.$titleType,
-        //             'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-        //             'url' => ["/$type"]
-        //         ];
-        //         // Хлебные крошки <-End
+                $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Банкротное имущество';
 
-        //         if ($subcategory != null) {
-        //             foreach ($items->bankrupt_categorys_translit as $key => $value) {
-        //                 if ($key == $subcategory) {
-        //                     $querySubcategory = $value['id'];    
-        //                     $titleSubcategory = $value['name'];
-        //                 }
-        //             }
-        //             if (empty($querySubcategory)) {
-        //                 Yii::$app->response->statusCode = 404;
-        //                 throw new \yii\web\NotFoundHttpException;
-        //             }
-        //         }
-        //         break;
-        //     case 'arrest':
-        //         $lot = LotsArrest::findOne($id);
+                // Хлебные крошки Start->
+                Yii::$app->params['breadcrumbs'][] = [
+                    'label' => ' '.$titleType,
+                    'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
+                    'url' => ["/$type"]
+                ];
+                // Хлебные крошки <-End
 
-        //         if ($lot->lotCancelReason != null) {
-        //             $lotStatus = $lot->lotCancelReason;
-        //         } else if ($lot->lotSuspendReason != null) {
-        //             $lotStatus = $lot->lotSuspendReason;
-        //         } else {
-        //             $lotStatus = $lot->lotBidStatusName;
-        //         }
+                break;
+            case 'arrest':
+                $metaType = 'lot-arrest-page';
 
-        //         $search = [
-        //             '${lotTitle}', 
-        //             '${lotAddress}', 
-        //             '${lotStatus}', 
-        //             '${trgFullName}',
-        //             '${trgHeadOrg}',
-        //             '${trgEtpName}',
-        //             '${trgBidFormName}',
-        //             '${trgLotCount}', 
-        //             '${lotCategory}',
-        //             '${lotStartPrice}',
-        //             '${lotPriceStep}',
-        //             '${lotMinPrice}',
-        //             '${lotDepositSize}',
-        //             '${trgPublished}',
-        //             '${trgExpireDate}',
-        //             '${trgStartDateRequest}',
-        //             '${trgOpeningDate}'
-        //         ];
+                $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Арестованное имущество';
 
-        //         $replace = [
-        //             str_replace('"',"'",$lot->lotTitle),
-        //             str_replace('"',"'",$lot->lotKladrLocationName),
-        //             str_replace('"',"'",$lotStatus),
-        //             str_replace('"',"'",$lot->torgs->trgFullName),
-        //             str_replace('"',"'",$lot->torgs->trgHeadOrg),
-        //             str_replace('"',"'",$lot->torgs->trgEtpName),
-        //             $lot->torgs->trgBidFormName,
-        //             $lot->torgs->trgLotCount, 
-        //             $lot->lotPropKindName,
-        //             Yii::$app->formatter->asCurrency($lot->lotStartPrice),
-        //             Yii::$app->formatter->asCurrency($lot->lotPriceStep),
-        //             Yii::$app->formatter->asCurrency($lot->lotMinPrice),
-        //             Yii::$app->formatter->asCurrency($lot->lotDepositSize),
-        //             Yii::$app->formatter->asDate($lot->torgs->trgPublished, 'long'),
-        //             Yii::$app->formatter->asDate($lot->torgs->trgExpireDate, 'long'),
-        //             Yii::$app->formatter->asDate($lot->torgs->trgStartDateRequest, 'long'),
-        //             Yii::$app->formatter->asDate($lot->torgs->trgOpeningDate, 'long')
-        //         ];
+                // Хлебные крошки Start->
+                Yii::$app->params['breadcrumbs'][] = [
+                    'label' => ' '.$titleType,
+                    'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
+                    'url' => ["/$type"]
+                ];
+                // Хлебные крошки <-End
+                break;
+            case 'zalog':
+                $metaType = 'lot-zalog-page';
 
-        //         $metaType = 'lot-arrest-page';
+                $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Имущество организаций';
 
-        //         $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
-        //         $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Арестованное имущество';
-
-        //         // Хлебные крошки Start->
-        //         Yii::$app->params['breadcrumbs'][] = [
-        //             'label' => ' '.$titleType,
-        //             'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-        //             'url' => ["/$type"]
-        //         ];
-        //         // Хлебные крошки <-End
-
-        //         if ($subcategory != null) {
-        //             foreach ($items->arrest_categorys_translit as $key => $value) {
-        //                 if ($key == $subcategory) {
-        //                     $querySubcategory = $value['id'];
-        //                     $titleSubcategory = $value['name'];
-        //                 }
-        //             }
-        //             if (empty($querySubcategory)) {
-        //                 Yii::$app->response->statusCode = 404;
-        //                 throw new \yii\web\NotFoundHttpException;
-        //             }
-        //         }
-        //         break;
-        //     case 'zalog':
-        //         $lot = LotsZalog::findOne($id);
-
-        //         if (!$lot->status) {
-        //             Yii::$app->response->statusCode = 404;
-        //             throw new \yii\web\NotFoundHttpException;
-        //         }
-
-        //         $search = [
-        //             '${lotTitle}', 
-        //             '${lotAddress}', 
-        //             '${lotCountry}',
-        //             '${lotCity}',
-        //             '${lotStartPrice}',
-        //         ];
-
-        //         $replace = [
-        //             str_replace('"',"'",$lot->title),
-        //             str_replace('"',"'",$lot->address),
-        //             str_replace('"',"'",$lot->country),
-        //             str_replace('"',"'",$lot->city),
-        //             Yii::$app->formatter->asCurrency($lot->startingPrice),
-        //         ];
-
-        //         $metaType = 'lot-zalog-page';
-
-        //         $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
-        //         $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Имущество организаций';
-
-        //         // Хлебные крошки Start->
-        //         Yii::$app->params['breadcrumbs'][] = [
-        //             'label' => ' '.$titleType,
-        //             'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-        //             'url' => ["/$type"]
-        //         ];
-        //         // Хлебные крошки <-End
-
-        //         if ($subcategory != null) {
-        //             foreach ($items->zalog_categorys_translit as $key => $value) {
-        //                 if ($key == $subcategory) {
-        //                     $querySubcategory = $value['id'];
-        //                     $titleSubcategory = $value['name'];
-        //                 }
-        //             }
-        //             if (empty($querySubcategory)) {
-        //                 Yii::$app->response->statusCode = 404;
-        //                 throw new \yii\web\NotFoundHttpException;
-        //             }
-        //         }
-        //         break;
-        //     default:
-        //         $owner = OwnerProperty::find()->where(['linkForEi' => $type])->one();
-        //         if (!empty($owner)) {
-        //             $lot = LotsZalog::findOne($id);
-
-        //             if (!$lot->status) {
-        //                 Yii::$app->response->statusCode = 404;
-        //                 throw new \yii\web\NotFoundHttpException;
-        //             }
-
-        //             $search = [
-        //                 '${lotTitle}', 
-        //                 '${lotAddress}', 
-        //                 '${lotCountry}',
-        //                 '${lotCity}',
-        //                 '${lotStartPrice}',
-        //             ];
-
-        //             $replace = [
-        //                 str_replace('"',"'",$lot->title),
-        //                 str_replace('"',"'",$lot->address),
-        //                 str_replace('"',"'",$lot->country),
-        //                 str_replace('"',"'",$lot->city),
-        //                 Yii::$app->formatter->asCurrency($lot->startingPrice),
-        //             ];
-
-        //             $metaType = 'lot-zalog-page';
-
-        //             $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
-        //             $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : $owner->name;
-
-        //             // Хлебные крошки Start->
-        //             Yii::$app->params['breadcrumbs'][] = [
-        //                 'label' => ' '.$titleType,
-        //                 'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-        //                 'url' => ["/$type"]
-        //             ];
-        //             // Хлебные крошки <-End
-
-        //             $type = 'zalog';
-
-        //             if ($subcategory != null) {
-        //                 foreach ($items->zalog_categorys_translit as $key => $value) {
-        //                     if ($key == $subcategory) {
-        //                         $querySubcategory = $value['id'];
-        //                         $titleSubcategory = $value['name'];
-        //                     }
-        //                 }
-        //                 if (empty($querySubcategory)) {
-        //                     Yii::$app->response->statusCode = 404;
-        //                     throw new \yii\web\NotFoundHttpException;
-        //                 }
-        //             }
-        //         } else {
-        //             Yii::$app->response->statusCode = 404;
-        //             throw new \yii\web\NotFoundHttpException;
-        //         }
-        // }
+                // Хлебные крошки Start->
+                Yii::$app->params['breadcrumbs'][] = [
+                    'label' => ' '.$titleType,
+                    'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
+                    'url' => ["/$type"]
+                ];
+                // Хлебные крошки <-End
+                break;
+        }
         // Проверка ссылок ЧПУ и подставление типа лотов <-End 
 
-        if (!$lot) {
-            Yii::$app->response->statusCode = 404;
-            throw new \yii\web\NotFoundHttpException;
-        }
-        // // Мета данные Strat-> 
-        // $metaData = MetaDate::find()->where(['mdName' => $metaType])->one();
         
-        // Yii::$app->params['description'] = str_replace($search, $replace, $metaData->mdDescription);
-        // Yii::$app->params['title'] = str_replace($search, $replace, $metaData->mdTitle);
-        // Yii::$app->params['h1'] = str_replace($search, $replace, $metaData->mdH1);
-        // Yii::$app->params['text'] = $metaData->mdText;
-        // // Мета данные <-End 
+        // Мета данные Strat-> 
+        $metaData = MetaDate::find()->where(['mdName' => $metaType])->one();
+        
+        Yii::$app->params['description'] = str_replace($search, $replace, $metaData->mdDescription);
+        Yii::$app->params['title'] = str_replace($search, $replace, $metaData->mdTitle);
+        Yii::$app->params['h1'] = str_replace($search, $replace, $metaData->mdH1);
+        Yii::$app->params['text'] = $metaData->mdText;
+        // Мета данные <-End 
 
         // Хлебные крошки Start->
         Yii::$app->params['breadcrumbs'][] = [

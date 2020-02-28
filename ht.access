@@ -1,0 +1,20 @@
+<IfModule mod_rewrite.c>
+    Options +FollowSymlinks
+    RewriteEngine On
+</IfModule>
+ 
+<IfModule mod_rewrite.c>
+    RewriteCond %{REQUEST_URI} ^/(assets|css|js|images)
+    RewriteRule ^assets/(.*)$ backend/web/assets/$1 [L]
+    RewriteRule ^css/(.*)$ backend/web/css/$1 [L]
+    RewriteRule ^js/(.*)$ backend/web/js/$1 [L]
+    RewriteRule ^img/(.*)$ backend/web/img/$1 [L]
+    RewriteRule ^fonts/(.*)$ backend/web/fonts/$1 [L]
+    RewriteRule ^files/(.*)$ backend/web/files/$1 [L]
+    RewriteRule ^(.*)$ backend/web/$1 [L]
+    RewriteCond %{REQUEST_URI} !^/(backend|backend)/web/(assets|css|js)/
+    RewriteCond %{REQUEST_URI} !index.php
+    RewriteCond %{REQUEST_FILENAME} !-f [OR]
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^.*$ backend/web/index.php
+</IfModule>

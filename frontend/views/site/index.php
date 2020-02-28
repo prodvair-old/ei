@@ -3,15 +3,23 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 use frontend\components\LotBlock;
 use frontend\components\SearchForm;
 use frontend\components\LotDetailSidebar;
+
 use common\models\Query\Settings;
+use common\models\Query\LotsCategory;
+use common\models\Query\Regions;
 
 
 
 $this->title = Yii::$app->params['title'];
+$regions = Regions::find()->orderBy('id ASC')->all();
+$lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
 ?>
+
+
 
 <div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03" style="background-image:url('img/01.jpg'); background-position: top  center;">
 
@@ -19,10 +27,16 @@ $this->title = Yii::$app->params['title'];
 
   <div class="hero-inner">
 
-    <div class="container">
+    <div class="container pt5">
 
-      <h1><span class="font200"><span class="font700">Агрегатор</span> </span><span class="font200">торгов<span class="block"> <span class="font700">по</span> банкротству</span></span></h1>
-      <?= SearchForm::widget(['type' => 'bankrupt']) ?>
+        <h1>
+            <!-- <span class="font700 main-page__title">Единый информатор<br><span class="main-page__subtitle">Полный каталог реализуемого имущества организаций, должников и банков России</span> </span></h1> -->
+            <span class="font700 main-page__title">Имущество организаций России<br></span>
+        </h1>
+            <p class="main-page__subtitle">Агрегатор банкротных и арестованных торгов, имущества банков, лизинговых компаний, залоговое имущество</p> 
+                
+        <!-- </span><span class="font200">торгов<span class="block"> <span class="font700">по</span> банкротству</span></span> -->
+      <?= SearchForm::widget(['type' => 'bankrupt', 'url' => 'all']) ?>
 
     </div>
 
@@ -30,14 +44,74 @@ $this->title = Yii::$app->params['title'];
 
 </div>
 
+<section class="pt-0 pb-0 p-20">
+    <div class="container main-page">
+        <div class="row main-page__category">
+        <div class="col-lg-4 main-page__link-item">
+                <div class="main-page__category__block">
+                    <p class="h4">Секции имущества</p>
+                    <hr>
+                    <ul>
+                        <li><a href="/all"> Все имущество <!--<span>1999</span>--></a></li>
+                        <li><a href="/bankrupt"> Банкротное имущество <!--<span>1999</span>--></a></li>
+                        <li><a href="/arrest"> Арестованное имущество <!--<span>1999</span>--></a></li>
+                        <li><a href="/caterpillar">Caterpillar<!--<span>1999</span>--></a></li>
+                        <li><a href="/portal-da">Portal Da<!--<span>1999</span>--></a></li>
+                        <li><a href="/open-bank">Банк Открытие<!--<span>1999</span>--></a></li>
+                        <li><a href="/gilfondrt">ГЖФ при Президенте РТ<!--<span>1999</span>--></a></li>
+                        <li><a href="/greentau">Гринтау<!--<span>1999</span>--></a></li>
+                        <li><a href="/rosselkhozbank">Россельхозбанк<!--<span>1999</span>--></a></li>
+                        <li><a href="/sberbank">Сберабанк<!--<span>1999</span>--></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 main-page__link-item">
+                <div class="main-page__category__block">
+                    <p class="h4">Категории</p>
+                    <hr>
+                    <ul>
+                        <? foreach ($lotsCategory as $category) {
+                            echo '<li><a href="/all/'.$category['translit_name'].'">'.$category['name'].'   <!--<span>1999</span>--></a></li>';
+                        } ?>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 main-page__link-item">
+                <div class="main-page__category__block">
+                    <p class="h4">Регионы</p>
+                    <hr>
+                    <ul>
+                        <li><a href="/all"> Россия <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=77"> Москва <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=50"> Московская область <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=78"> Санкт-Петербург <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=47"> Ленинградская область <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=23"> Краснодарский край <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=66"> Свердловская область <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=16"> Республика Татарстан <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=52"> Нижегородская область <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=61"> Ростовская область <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=74"> Челябинская область <!--<span>1999</span>--></a></li>
+                        <li><a href="/all"> Другие регионы <!--<span>1999</span>--></a></li>
+                        <? //foreach ($regions as $region) {
+                           // echo '<li><a href="/all/lot-list?SearchLot%5Bregion%5D='.$region['id'].'"> '.$region['name'].' <!--<span>1999</span>--></a></li>';
+                        //} ?>
+                    </ul>
+                </div>
+            </div>
+            
 
-<section class="pt-70 pb-0">
+        </div>
+    </div>
+</section>
+
+<section class="pt-0 pb-0">
 
   <div class="container">
 
-    <div class="clear mb-100"></div>
+    <div class="clear mb-50"></div>
 
-    <div class="row cols-1 cols-sm-2 cols-lg-4 gap-2 mb-20">
+    <div class="row cols-1 cols-sm-2 cols-lg-4 gap-10 mb-20">
 
       <div class="col">
 
@@ -60,7 +134,7 @@ $this->title = Yii::$app->params['title'];
       <div class="col">
 
 
-        <figure class="category__item" style="background-color: #5e100a;">
+        <figure class="category__item" style="background-color: #005639;">
           <a href="/arrest/lot-list">
             <div class="image">
               <img src="https://cdn-st4.rtr-vesti.ru/vh/pictures/bq/142/045/9.jpg" alt="image" />
@@ -81,7 +155,7 @@ $this->title = Yii::$app->params['title'];
         <figure class="category__item" style="background-color:#2b8ac6;">
             <a href="/zalog">
                 <div class="image">
-                    <img src="https://cdn-st4.rtr-vesti.ru/vh/pictures/bq/201/451/5.jpg"alt="image"/>
+                <img src="https://images.unsplash.com/photo-1513496335913-a9aab0fc1318?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="image"/>
                 </div>
                 <figcaption class="content">
                     <div class="content__wrapper">
@@ -104,9 +178,9 @@ $this->title = Yii::$app->params['title'];
               <div class="content__wrapper">
                 <h6>Реестры</h6>
                 <ul class="category__links">
-                  <li><a href="/arbitrazhnye-upravlyayushchie">Арбитражные управляющие</a></li>
-                  <li><a href="/dolzhniki">Должники</a></li>
-                  <li><a href="/sro">СРО</a></li>
+                  <li><a href="/arbitrazhnye-upravlyayushchie">Арбитражные управляющие<!--<span>1999</span>--></a></li>
+                  <li><a href="/dolzhniki">Должники<!--<span>1999</span>--></a></li>
+                  <li><a href="/sro">СРО<!--<span>1999</span>--></a></li>
                 </ul>
               </div>
             </figcaption>

@@ -6,6 +6,10 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use backend\models\HistoryAdd;
+use backend\models\UserAccess;
+use backend\models\Editors\LotEditor;
+use backend\models\Editors\TorgEditor;
 
 /**
  * Site controller
@@ -26,7 +30,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index', 'add-field'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -75,15 +79,39 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            $model->password = '';
+        if (Yii::$app->request->isGet) {
+            if ($model->token = Yii::$app->request->get('token')) {
+                $login = $model->loginAdminToken();
 
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+                if ($login['status']) {
+                    HistoryAdd::singIn(1, 'Вход в систему');
+
+                    return $this->goBack();
+                }
+
+                if ($login['user']) {
+                    HistoryAdd::singIn(2, 'Не удачный вход в систему', $model->errors, $login['user']);
+                }
+            }
         }
+        if ($model->load(Yii::$app->request->post())) {
+            $login = $model->loginAdmin();
+            
+            if ($login['status']) {
+                HistoryAdd::singIn(1, 'Вход в систему');
+
+                return $this->goBack();
+            }
+
+            if ($login['user']) {
+                HistoryAdd::singIn(2, 'Не удачный вход в систему', $model->errors, $login['user']);
+            }
+        }
+        $model->password = '';
+
+        return $this->render('login', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -93,8 +121,33 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
+        if (!Yii::$app->user->isGuest) {
+            HistoryAdd::singOut(1, 'Выход из систему');
+        }
+        
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    public function actionAddField($type)
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+        
+        switch ($type) {
+            case 'lot':
+                $model  = new LotEditor();
+                break;
+            case 'torg':
+                $model  = new TorgEditor();
+                break;
+        }
+        $name   = Yii::$app->request->get('name');
+    
+        //other stuff
+    
+        return $this->renderAjax("_field",['model'=>$model, 'name' => $name]);
     }
 }

@@ -65,7 +65,7 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
 
       <div class="col-12 col-lg-3">
 
-        <aside class="sticky-kit sidebar-wrapper">
+        <aside class="-kit sidebar-wrapper">
 
           <div class="bashboard-nav-box">
 
@@ -121,11 +121,11 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
             <ul class="list-icon-absolute what-included-list mb-30">
               <li>
                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                Скачайте <a href="<?= Url::to('files/Формат_добавления_лотов_в_залоговое_иммущество_ei.ru.xlsx') ?>" target="_blank" downloa>шаблон excel</a> файла;
+                Скачайте <a href="<?= Url::to('files/Формат_добавления_лотов_в_залоговое_иммущество_ei.ru.xlsx') ?>" target="_blank" download>шаблон excel</a> файла;
               </li>
               <li>
                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                Заполните файл в соответствии с <a href="<?= Url::to('files/Формат_добавления_лотов_в_залоговое_иммущество_ei.ru.xlsx') ?>" target="_blank" downloa>требованиями</a>;
+                Заполните файл в соответствии с <a href="<?= Url::to('files/Формат_добавления_лотов_в_залоговое_иммущество_ei.ru.xlsx') ?>" target="_blank" download>требованиями</a>;
               </li>
               <li>
                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>

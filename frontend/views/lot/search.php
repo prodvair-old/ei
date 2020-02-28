@@ -15,14 +15,13 @@ use common\models\Query\Settings;
 use common\models\Query\LotsCategory;
 use common\models\Query\Regions;
 
-use common\models\Query\Bankrupt\TradePlace;
+use common\models\Query\Lot\Etp;
 use common\models\Query\Zalog\OwnerProperty;
 
 $this->title = Yii::$app->params['title'];
 $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
 $lotsSubcategory[0] = 'Все подкатегории';
-$lotsCategory[0] = ['id' => 0, 'name' => 'Все категории'];
 $subcategoryCheck = true;
 
 $regionList[0] = 'Все регионы';
@@ -36,14 +35,20 @@ $traderList = [];
 if ($type == 'bankrupt') {
   $traderLabel = 'Торговые площадки';
   $traderPlaceholder = 'Все торговые площадки';
-  $traderList = ArrayHelper::map(TradePlace::find()->orderBy('tradename ASC')->all(), 'idtradeplace', 'tradename');
+  $traderList = ArrayHelper::map(Etp::find()->orderBy('title ASC')->all(), 'id', 'title');
 } else if ($type == 'zalog') {
   $traderLabel = 'Организации';
   $traderPlaceholder = 'Все организации';
   $traderList = ArrayHelper::map(OwnerProperty::find()->orderBy('name ASC')->all(), 'id', 'name');
 }
 
-$lotsCategory = LotsCategory::find()->where(['or', ['not', [$type . '_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
+$lotsCategoryQuery = LotsCategory::find()->where(['or', ['not', [$type . '_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
+
+$lotsCategorys[0] = 'Все категории';
+
+foreach ($lotsCategoryQuery as $category) {
+  $lotsCategorys[$category->id] = $category->name;
+}
 
 if ($queryCategory != '0') {
   switch ($type) {
@@ -79,6 +84,7 @@ if ($queryCategory != '0') {
       break;
   }
 }
+
 $this->registerJsVar('lotType', $type, $position = yii\web\View::POS_HEAD);
 $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\View::POS_HEAD);
 ?>
@@ -126,7 +132,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
       .search-form-control {
 
-        border: 2px solid #F04E23;
+        border: 2px solid #077751;
 
       }
 
@@ -163,15 +169,15 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                   <?= $form->field($model, 'search')->textInput([
                     'class' => 'form-control search-form-control',
                     'placeholder' => 'Поиск: Машина, Квартира...',
-                    'tabindex' => '2',
-                  ])
-                    ->label('Поиск'); ?>
+                    // 'value' => 
+                  ])->label('Поиск'); ?>
                 </div>
               </div>
 
               <div class="col-12">
                 <div class="col-inner">
                   <?= $form->field($model, 'type')->dropDownList([
+                    'all' => 'Все типы',
                     'bankrupt' => 'Банкротное имущество',
                     'arrest' => 'Арестованное имущество',
                     'zalog' => 'Имущество организаций',
@@ -180,8 +186,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                     'data-placeholder' => 'Выберите тип лота',
                     'tabindex' => '2',
                     'options' => [
-                      'zalog' => ['disabled' => true, 'title' => 'Скоро'],
-                      $type => ['Selected' => true]
+                      // 'zalog' => ['disabled' => true, 'title' => 'Скоро'],
                     ]
                   ])
                     ->label('Тип лота'); ?>
@@ -191,18 +196,17 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
               <div class="col-12">
                 <div class="col-inner">
                   <?= $form->field($model, 'category')->dropDownList(
-                    ArrayHelper::map($lotsCategory, 'id', 'name'),
+                    $lotsCategorys,
                     [
                       'class' => 'chosen-category-select form-control form-control-sm',
                       'data-placeholder' => 'Все категории',
-                      'tabindex' => '2'
                     ]
                   )
                     ->label('Категория'); ?>
                 </div>
               </div>
 
-              <div class="col-12">
+              <!-- <div class="col-12">
                 <div class="col-inner">
                   <?= $form->field($model, 'subCategory')->dropDownList(
                     $lotsSubcategory,
@@ -216,7 +220,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                   )
                     ->label('Подкатегория'); ?>
                 </div>
-              </div>
+              </div> -->
 
               <div class="col-12">
                 <div class="col-inner">
@@ -235,36 +239,42 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
 
 
-              <div class="col-12">
+              <!-- <div class="col-12">
                 <div class="col-inner  pv-15">
                   <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
                 </div>
-              </div>
+              </div> -->
 
             </div>
 
-          </div>
+          <!-- </div> -->
 
-          <div class="sidebar-box">
+          <div class="sidebar-box sidebar-box__collaps <?=($model->minPrice || $model->maxPrice)? '' : 'collaps'?>" >
 
-            <div class="box-title">
+            <!-- <div class="box-title">
               <h5>Цена</h5>
-            </div>
-
+            </div> -->
+            <label class="control-label sidebar-box__label">Цена</label> 
             <div class="box-content">
-              <?= $form->field($model, 'minPrice')->hiddenInput(['class' => 'lot__price-min'])->label(false); ?>
-              <?= $form->field($model, 'maxPrice')->hiddenInput(['class' => 'lot__price-max'])->label(false); ?>
-              <input id="price_range" data-min="<?= $price['min'] ?>" data-max="<?= $price['max'] ?>" />
+              <div class="row">
+                <div class="col-6"><?= $form->field($model, 'minPrice')->textInput(['class' => 'lot__price-min form-control', 'placeholder' => 'Цена от'])->label(false); ?></div>
+                <div class="col-6"><?= $form->field($model, 'maxPrice')->textInput(['class' => 'lot__price-max form-control', 'placeholder' => 'Цена до'])->label(false); ?></div>
+              </div>
+              
+              <!-- <div class="mb-10"></div> -->
+
+              <!-- <input id="price_range" data-min="<?= $price['min'] ?>" data-max="<?= $price['max'] ?>" /> -->
             </div>
 
           </div>
 
-          <div class="sidebar-box bankrupt-type">
 
-            <div class="box-title">
+          <div class="sidebar-box bankrupt-type sidebar-box__collaps <?=($model->etp)? '' : 'collaps'?>">
+
+            <!-- <div class="box-title">
               <h5><?= $traderLabel ?></h5>
-            </div>
-
+            </div> -->
+            <label class="control-label sidebar-box__label" ><?= $traderLabel ?></label>           
             <div class="box-content">
               <?= $form->field($model, 'etp')->dropDownList(
                 $traderList,
@@ -280,14 +290,39 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
           </div>
 
-          <div class="sidebar-box">
+          <div class="sidebar-box sidebar-box__collaps <?=($model->tradeType)? '' : 'collaps'?>">
 
-            <div class="box-title">
-              <h5>Другое</h5>
+            <!-- <div class="box-title">
+              <h5>Тип торгов</h5>
+            </div> -->
+            <label class="control-label sidebar-box__label" >Тип торгов</label>      
+            <div class="box-content">
+                 
+              <?= $form->field($model, 'tradeType')->checkboxList([
+                      '1' => 'Публичное предложение',
+                      '2' => 'Открытый аукцион',
+                  ], [
+                    'class' => 'custom-control custom-checkbox',
+                    'item'=>function ($index, $label, $name, $checked, $value) {
+                      $inputId = 'tradetype'.$index;
+
+                      return "<div><input type=\"checkbox\" name=\"$name\" value=\"$value\" id=\"$inputId\" ".(($checked)? 'checked': '')." class=\"custom-control-input\">"
+                        . "<label for=\"$inputId\" class=\"custom-control-label\">$label</label></div>";
+                    }
+                  ])->label(false); ?>
+
             </div>
 
-            <div class="box-content">
+          </div>
 
+          <div class="sidebar-box sidebar-box__collaps <?=($model->imageCheck || $model->archivCheck)? '' : 'collaps'?>">
+
+            <!-- <div class="box-title">
+              <h5>Другое</h5>
+            </div> -->
+            <label class="control-label  sidebar-box__label">Другое</label>        
+            <div class="box-content">
+             
               <div class="custom-control custom-checkbox">
                 <?= $form->field($model, 'imageCheck')->checkbox([
                   'class' => 'custom-control-input',
@@ -309,16 +344,14 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
           </div>
 
-          <div class="sidebar-box">
+          <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>        
 
-            <?= Html::submitButton('фильтровать', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
+         
+          
 
-          </div>
-
-          <div class="sidebar-box">
-            <p><?= Yii::$app->params['text'] ?></p>
           </div>
           <?php ActiveForm::end(); ?>
+          <div class= "sidebar-box__text"><?= Yii::$app->params['text'] ?></div>
         </aside>
       </aside>
 
@@ -356,7 +389,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
             </div>
             <div class="sort-box">
               <div class="d-flex align-items-center sort-item">
-                <label class="sort-label d-none d-sm-flex">Найдено лотов: <?= $count - 1 ?></label>
+                <label class="sort-label d-none d-sm-flex">Найдено лотов: <?= $count ?></label>
               </div>
             </div>
           </div>
@@ -367,29 +400,35 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
             } ?>
           </div>
 
+          <? if ($pages->links['next']) { ?>
+            <a href="<?=$pages->links['next']?>" class="alert alert-primary mt-30 text-center h5 d-block">Далее</a>
+          <? } ?>
+
           <div class="pager-wrappper mt-40">
 
             <div class="pager-innner">
 
               <div class="row align-items-center text-center text-lg-left">
 
-                <div class="col-12 col-lg-5">
+                <!-- <div class="col-12 col-lg-5">
                   <? if (count($lots) > 0) { ?>
                     Выведено от <?= $offset + 1 ?> до <?= $offset + count($lots) ?> лотов. Всего <?= $count ?>.
                   <? } else { ?>
                     Лотов не найдено
                   <? } ?>
-                </div>
+                </div> -->
 
-                <div class="col-12 col-lg-7">
-                  <nav class="float-lg-right mt-10 mt-lg-0">
+                <div class="col-12">
+                  <nav class="mt-10 mt-lg-0">
                     <?= LinkPager::widget([
                       'pagination' => $pages,
-                      'nextPageLabel' => "<span aria-hidden=\"true\">&raquo;</span></i>",
-                      'prevPageLabel' => "<span aria-hidden=\"true\">&laquo;</span>",
+                      'nextPageLabel' => "<span aria-hidden=\"true\">Далее</span></i>",
+                      'prevPageLabel' => "<span aria-hidden=\"true\">Назад</span>",
                       'maxButtonCount' => 6,
                       'options' => ['class' => 'pagination justify-content-center justify-content-lg-left'],
-                      'disabledPageCssClass' => false
+                      'linkOptions' => ['class' => 'page-link'],
+                      'linkContainerOptions' => ['class' => 'page-item'],
+                      'disabledPageCssClass' => 'disabled',
                     ]); ?>
                   </nav>
                 </div>

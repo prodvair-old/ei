@@ -88,9 +88,9 @@ class SiteController extends Controller
         Yii::$app->params['title'] = $metaData->mdTitle;
         Yii::$app->params['h1'] = $metaData->mdH1;
 
-        $lotsBankruptCount = Lots::find()->joinWith('torg')->where(['and', ['torg.typeId' => 1, 'published' => true], ['>=', 'torg.completeDate', 'NOW()']])->count();
-        $lotsArrestCount = Lots::find()->joinWith('torg')->where(['and', ['torg.typeId' => 2, 'published' => true], ['>=', 'torg.endDate', 'NOW()']])->count();
-        $lotsZalogCount = Lots::find()->joinWith('torg')->where(['and', ['torg.typeId' => 3, 'published' => true], ['>=', 'torg.completeDate', 'NOW()']])->count();
+        $lotsBankruptCount = Lots::isActive()->joinWith(['categorys', 'torg', 'thisPriceHistorys'])->where(['torg.typeId' => 1])->count();
+        $lotsArrestCount = Lots::isActive()->joinWith(['categorys', 'torg', 'thisPriceHistorys'])->where(['torg.typeId' => 2])->count();
+        $lotsZalogCount = Lots::isActive()->joinWith(['categorys', 'torg', 'thisPriceHistorys'])->where(['torg.typeId' => 3])->count();
 
         return $this->render('index', [
             'lotsBankruptCount' => $lotsBankruptCount,
@@ -179,7 +179,7 @@ class SiteController extends Controller
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            Yii::$app->session->setFlash('success', 'Спасибо за регистрацию. Пожайлуйста зайдите на почту для подтверждения акаунта.');
+            Yii::$app->session->setFlash('success', 'Спасибо за регистрацию. Пожалуйста перейдите на указанную почту, для подтверждения акаунта.');
             return ['result'=>false, 'error'=>'Спасибо за регистрацию!'];
         }
         Yii::$app->session->setFlash('error', 'Такой пользователь уже существует');
@@ -200,11 +200,11 @@ class SiteController extends Controller
                 Yii::$app->session->setFlash('success', 'Вам на почту отправлена ссылка для восстановления!');
                 return ['result'=>true, 'error'=>'Вам на почту отправлена ссылка для восстановления!'];
             } else {
-                Yii::$app->session->setFlash('error', 'Извините, мы не можем восстановить пароль. Такого E-mail не существует.');
-                return ['result'=>false, 'error'=>'Извините, мы не можем восстановить пароль. Такого E-mail не существует.'];
+                Yii::$app->session->setFlash('error', 'Извините, мы не можем восстановить пароль. Такого e-mail не существует.');
+                return ['result'=>false, 'error'=>'Извините, мы не можем восстановить пароль. Такого e-mail не существует.'];
             }
         }
-        return ['result'=>false, 'error'=>'Заполшните поля'];
+        return ['result'=>false, 'error'=>'Заполните поля'];
     }
 
     /**

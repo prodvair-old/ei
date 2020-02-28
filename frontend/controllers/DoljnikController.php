@@ -11,8 +11,7 @@ use yii\data\Pagination;
 
 use common\models\Query\MetaDate;
 use common\models\Query\Bankrupt\Bankrupts;
-use common\models\Query\Bankrupt\LotsBankrupt;
-use common\models\Query\Bankrupt\Lots;
+use common\models\Query\Lot\Lots;
 
 use frontend\models\BankruptSearch;
 
@@ -137,7 +136,8 @@ class DoljnikController extends Controller
         break;
     }
 
-    $lots_bankrupt = LotsBankrupt::find()->where(['bnkr__id' => $bnkr_id])->orderBy('lot_image DESC, lot_timepublication DESC')->all();
+    $lots_bankrupt = Lots::find()->joinWith('torg.bankrupt')->where(['bankrupt.oldId'=>$bnkr_id])->andWhere(['torg.typeId' => 1])->limit(20)->orderBy('images DESC, torg.publishedDate DESC')->all();
+    // $lots_bankrupt = LotsBankrupt::find()->where(['bankrupt.oldId' => $bnkr_id])->orderBy('lot_image DESC, lot_timepublication DESC')->all();
     // Сбор информации из бд <-End
     // $lots_bankrupt = Lots::find()->joinWith('torgy.case.bnkr')->where(['bnkr.id' => $bnkr_id])->orderBy('lotid DESC')->limit(5)->all();
     // ->andWhere('lot_timeend >= NOW()')

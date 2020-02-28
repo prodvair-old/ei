@@ -25,7 +25,7 @@ use yii\helpers\Url;
 
 	<div class="col-lg-6 mt-40">
 		<div class="featured-image-item-08">
-			<a href="services/agent" class="image-inner">
+			<a href="service/agent" class="image-inner">
 				<img src="\img\services\2.svg" class="service-img__item"/>
 			</a>
 		</div>
@@ -43,7 +43,7 @@ use yii\helpers\Url;
 	<div class="col-lg-6 mt-40">
 		<div class="featured-image-item-08">
 			<div class="image">
-				<a href="services/ecp" class="image-inner">
+				<a href="service/ecp" class="image-inner">
 					<img src="\img\services\3.svg" class="service-img__item"/>
 				</a>
 			</div>
@@ -81,11 +81,11 @@ use yii\helpers\Url;
 		Мы агрегируем все имущество! Мы не скрываем и не удаляем определенные лоты или категории лотов
 	</div>
 
-	<div class="col-lg-12 mt-50">
+	<!-- <div class="col-lg-12 mt-50">
 		<div class="text-center">
 			<a href="#loginFormTabInModal-register" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false" class="btn-link">
 				Регистрируйтесь на ei.ru
 			</a>
 		</div>
-	</div>
+	</div> -->
 </div>

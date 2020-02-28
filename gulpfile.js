@@ -37,7 +37,7 @@ gulp.task("browser-sync-server", function() {
       port: 3002
     },
     baseDir: "frontend/web/",
-    proxy: "http://ei.front",
+    proxy: "http://dev-ei.test",
     port: 3005,
     ghostMode: {
       codeSync: false,
@@ -56,7 +56,7 @@ gulp.task("browser-sync-max", function() {
       port: 3002
     },
     baseDir: "frontend/web/",
-    proxy: "http://ei.front:8080/",
+    proxy: "http://ei/",
     port: 3005,
     ghostMode: {
       codeSync: false,
@@ -108,6 +108,7 @@ gulp.task("scripts", function() {
   return (
     gulp
       .src([
+        "frontend/web/js/_map.js",  
         "frontend/web/js/_custom.js" // Custom scripts. Always at the end
       ])
       .pipe(concat("scripts.min.js"))
@@ -132,7 +133,7 @@ gulp.task("code", function() {
 
 gulp.task("watch", function() {
   gulp.watch("frontend/web/sass/**/*.sass", gulp.parallel("styles"));
-  gulp.watch("frontend/web/js/_custom.js", gulp.parallel("scripts"));
+  gulp.watch(["frontend/web/js/_custom.js", "frontend/web/js/_map.js"], gulp.parallel("scripts"));
   gulp.watch(["frontend/views/**/*.php"], gulp.parallel("code"));
   // gulp.watch('frontend/web/img/**/*', gulp.parallel('img'));
 });

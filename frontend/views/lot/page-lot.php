@@ -8,21 +8,18 @@ use yii\helpers\Url;
 
 use frontend\components\NumberWords;
 use frontend\components\LotDetailSidebar;
-use frontend\components\LotBlock;
+use frontend\components\LotBlock; 
+use frontend\components\Darwin; 
 use frontend\components\ServiceLotFormWidget;
 
 use frontend\models\ViewPage;
 
 use common\models\Query\WishList;
-use common\models\Query\Bankrupt\LotsBankrupt;
-
-if (!Yii::$app->user->isGuest) {
-    $wishCheck = WishList::find()->where(['userId' => Yii::$app->user->id, 'lotId' => $lot->id, 'type' => $type])->one();
-}
+use common\models\Query\Lot\Lots;
 
 $view = new ViewPage();
 
-$view->page_type = "lot_$type";
+$view->page_type = "lot_".$lot->torg->type;
 $view->page_id = $lot->id;
 
 $viewCount = $view->check();
@@ -32,12 +29,20 @@ $endDate = strtotime($lot->torg->endDate);
 
 $dateSend = floor(($endDate - $now) / (60 * 60 * 24));
 
-// $lots_bankrupt = LotsBankrupt::find()->where(['bnkr__id'=>$lot->lotBnkrId])->andWhere(['!=', 'lot_id', $lot->id])->all();
+$otherLots = Lots::find()->joinWith(['torg.bankrupt'])->alias('lot')->where(['bankrupt.id'=>$lot->torg->bankrupt->id])->andWhere(['!=', 'lot.id', $lot->id])->all();
 
-$this->registerJsVar( 'lotType', 'bankrupt', $position = yii\web\View::POS_HEAD );
+$this->registerJsVar( 'lotType', $lot->torg->type, $position = yii\web\View::POS_HEAD );
 $this->title = $lot->title;
 $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
+$isCategory = 
+    $lot->category->categoryId == '1061' ||
+    $lot->category->categoryId == '1063' ||
+    $lot->category->categoryId == '1064' ||
+    $lot->category->categoryId == '1068' ||
+    $lot->category->categoryId == '1083' ||
+    $lot->category->categoryId == '1102' ||
+    $lot->category->categoryId == '1102';
 ?>
 
 <section class="page-wrapper page-detail">
@@ -60,36 +65,35 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                         ]) ?>
                     </nav>
-                    
+
                 </div>
-                
+
             </div>
-    
+
         </div>
         
     </div>
+    <!-- <div class="fullwidth-horizon- none--hide">
     
-    <div class="fullwidth-horizon-sticky none-sticky-hide">
-    
-        <div class="fullwidth-horizon-sticky-inner">
+        <div class="fullwidth-horizon--inner">
         
             <div class="container">
            
                 
-                <div class="fullwidth-horizon-sticky-item clearfix">
+                <div class="fullwidth-horizon--item clearfix">
                         
-                    <ul id="horizon-sticky-nav" class="horizon-sticky-nav clearfix">
+                    <ul id="horizon--nav" class="horizon--nav clearfix">
                         <li>
                             <a href="#desc">Описание</a>
                         </li>
                         <li>
                             <a href="#info">Информация о лоте</a>
                         </li>
-                        <?=($lot->torg->tradeTypeId == 1)? '<li><a href="#price-history">Этапы снижения цены</a></li>': ''?>
+                        <?=($lot->priceHistorys == 1)? '<li><a href="#price-history">Этапы снижения цены</a></li>': ''?>
                         <li>
                             <a href="#docs">Документы</a>
                         </li>
-                        <?=($lots_bankrupt[0] != null)? '<li><a href="#other-lot">Другие лоты</a></li>': ''?>
+                        <?=($otherLots[0] != null)? '<li><a href="#other-lot">Другие лоты</a></li>': ''?>
                         <li>
                             <a href="#torg">Информация о торге</a>
                         </li>
@@ -103,7 +107,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                 
             </div>
         </div>
-    </div>
+    </div> -->
     
     <div class="container pt-30">
        
@@ -116,7 +120,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                 <div class="content-wrapper">
                      
                     <div id="desc" class="detail-header mb-30">
-                      <h1 class="h3"><?=Yii::$app->params['h1']?></h1>
+                      <h1 class="h4"><?=Yii::$app->params['h1']?></h1>
               
                         <div class="d-flex flex-row align-items-sm-center mb-20">
                             <div class="mr-10 font-lg text-muted">
@@ -133,19 +137,23 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             </div>
                             <div class="mr-10 text-muted">|</div>
                             <div class="mr-10 rating-item rating-inline">
-                                <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="wish-star" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star" data-id="'.$lot->id.'" data-type="'.$type.'"'?>>
-                                    <img src="img/star<?=($wishCheck)? '' : '-o' ?>.svg" alt="">
+                                <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="wish-star" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star" data-id="'.$lot->id.'" data-type="'.$lot->torg->type.'"'?>>
+                                    <img src="img/star<?=($lot->getWishId(Yii::$app->user->id))? '' : '-o' ?>.svg" alt="">
                                 </a>
                             </div>
                         </div>
                         
-                        <?if ($lot->images) { ?>
+                        <?if ($lot->images[0]) { ?>
                             <div class="fotorama mt-20 mb-40" data-allowfullscreen="true" data-nav="thumbs" data-arrows="always" data-click="true">
-                                <? foreach ($lot->images['max'] as $image) { ?>
-                                    <img href="<?=$image?>" alt="Images" />
+                                <? foreach ($lot->images as $image) { ?>
+                                    <img href="<?=$image['max']?>" alt="Images" />
                                 <? } ?>
                             </div>
                         <? } ?>
+
+                    
+
+                        
 
                         <!-- <p class="lead">In friendship diminution instrument in we forfeited. Tolerably an unwilling of determine. Beyond rather sooner so if up wishes.</p> -->
                         
@@ -161,28 +169,45 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-basic-flag1"></i>
                                 </span>
-                                Старт торгов<br /><strong><?= Yii::$app->formatter->asDate($lot->lotDateStart, 'long')?></strong>
+                                Старт торгов<br /><strong><?= Yii::$app->formatter->asDate($lot->torg->startDate, 'long')?></strong>
                             </li>
                             <li>
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-basic-flag2"></i>
                                 </span>
-                                Окончание торгов<br /><strong><?= ($lot->lotDateEnd !== '0001-01-01 00:00:00 BC' && $lot->lotDateEnd !== '0001-01-01 00:00:00')? Yii::$app->formatter->asDate($lot->lotDateEnd, 'long') : '(Нет даты)'?></strong>
+                                Окончание торгов<br /><strong><?= Yii::$app->formatter->asDate($lot->torg->endDate, 'long') ?></strong>
                             </li>
                             <li>
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-ecommerce-rublo"></i>
                                 </span>
-                                Сумма задатка<br /><strong><?=($lot->advancestepunit == 'Percent')? Yii::$app->formatter->asCurrency((($lot->lotPrice / 100) * $lot->advance)) : Yii::$app->formatter->asCurrency($lot->advance)?></strong>
+                                Сумма задатка<br /><strong><?=($lot->depositTypeId == 1)? Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->deposit)) : Yii::$app->formatter->asCurrency($lot->deposit)?></strong>
                             </li>
                         </ul>
                         
-                        <h5 class="mt-30">Описание</h5>
+                        <h5 class="mt-30">Описание</h5> 
+                        <!-- <pre>
+                            <? // print_r($lot[info][address][region])?>,
+                            <? // print_r($lot[info][address][city])?>, 
+                            <? // print_r($lot[info][address][district])?>, 
+                            <? // print_r($lot[info][address][street])?>,
+                            <? // print_r($lot[info])?>
+                        </pre> -->
+                        
 
                         <p class="long-text"><?=$lot->description?></p>
                         <a href="#desc" class="open-text-js">Подробнее</a>
                         
                     </div>
+
+                    <? if($lot[info][address][geo_lat] && $isCategory): ?>
+                        <div 
+                            id="map-lot" 
+                            data-lat="<?=$lot[info][address][geo_lat];?>"
+                            data-lng="<?=$lot[info][address][geo_lon];?>">
+                        </div>
+                    <? endif; ?>
+
 
                     <div class="sidebar-mobile mb-40">
                         <?= LotDetailSidebar::widget(['lot' => $lot, 'type' => $type]) ?>
@@ -190,9 +215,9 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                     
                     <!-- <div class="mb-50"></div>
                     
-                    <div id="detail-content-sticky-nav-02" class="fullwidth-horizon-sticky-section">
+                    <div id="detail-content--nav-02" class="fullwidth-horizon--section">
                         
-                        <h4 class="heading-title">Itinerary</h4>
+                        <h5 class="heading-title">Itinerary</h5>
                         
                         <h6>Introduction</h6>
                         
@@ -255,82 +280,12 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         
                     </div> -->
                     
-                    <div id="info" class="fullwidth-horizon-sticky-section">
                     
-                        <h4 class="heading-title">Информация о лоте</h4>
-                        
-                        <ul class="list-icon-absolute what-included-list mb-30">
-
-                            <li>
-                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
-                                <h6>Категории лота</h6>
-                                <ul class="ul">
-                                    <?foreach ($lot->LotCategory as $category) { ?>
-                                        <li><?=$category?></li>
-                                    <? }?>
-                                </ul>
-                            </li>
-                            
-                            <? if ($lot->info['vin']) { ?>
-                                <li>
-                                    <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
-                                    <h6>VIN номер</h6>
-                                    <p><?= $lot->info['vin'] ?></p>
-                                    <a href="https://avtocod.ru/proverkaavto/<?=$lot->info['vin']?>?rd=VIN&a_aid=zhukoffed"
-                                        class="btn btn-success btn-sm mt-2" target="_blank" rel="nofollow">Проверить Автомобиль</a>
-                                </li>    
-                            <? } ?>
-                            
-                            <? if ($lot->info['cadastreNumber']) { ?>
-                                <li>
-                                    <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
-                                    <h6>Кадастровый номер</h6>
-                                    <p><?= $lot->info['cadastreNumber'] ?></p>
-                                </li>    
-                            <? } ?>
-
-                            <li>
-                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
-                                <h6>Должник</h6>
-                                <ul class="ul">
-                                    <li><a href="<?=Url::to(['doljnik/list'])?>/<?=$lot->torgy->case->bnkr->id?>" target="_blank"><?=$lot->lotBnkrName?></a></li>
-                                    <li>ИНН: <span class="text-list-name"><?= ($lot->lotBnkrType == 'Person')? $lot->torgy->case->bnkr->person->inn : $lot->torgy->case->bnkr->company->inn;?></span></li>
-                                    <li>Адрес: <span class="text-list-name"><?= ($lot->lotBnkrType == 'Person')? $lot->torgy->case->bnkr->person->address : $lot->torgy->case->bnkr->company->legaladdress;?></span></li>
-                                </ul>
-                            </li>
-                            
-                            <li>
-                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
-                                <h6>Сведения о деле</h6>
-                                <ul class="ul">
-                                    <li>Номер дела: <span class="text-list-name"><?= $lot->torgy->case->caseid ?></span></li>
-                                    <li>Арбитражный суд: <span class="text-list-name"><a href="<?=Url::to(['sro/list'])?>/<?=$lot->lotSro->id?>" target="_blank"><?= $lot->lotSro->title?></a></span></li>
-                                    <li>Адрес суда: <span class="text-list-name"><?= $lot->lotSro->address?></span></li>
-                                </ul>
-                            </li>
-                            
-                            <li>
-                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
-                                <h6>Арбитражный управляющий</h6>
-                                <ul class="ul">
-                                    <li><a href="<?=Url::to(['arbitr/list'])?>/<?=$lot->torgy->case->arbitr->id?>" target="_blank"><?=$lot->lotArbtrName?></a></li>
-                                    <li>Рег. номер: <span class="text-list-name"><?= $lot->torgy->case->arbitr->regnum?></span></li>
-                                    <li>ИНН: <span class="text-list-name"><?= $lot->torgy->case->arbitr->person->inn?></span></li>
-                                    <!-- <li>ОГРН: <span class="text-list-name"><?= $lot->torgy->case->arbitr->ogrn?></span></li> -->
-                                </ul>
-                            </li>
-                            
-                        </ul>
-                        
-                        <div class="mb-50"></div>
-                        
-                    </div>
-                    
-                    <?php if($lot->torgy->tradetype == 'PublicOffer') { ?>
+                    <?php if($lot->torg->tradeTypeId == 1) { ?>
 
                         <div id="price-history" class="fullwidth-horizon-sticky-section">
 
-                            <h4 class="heading-title">Этапы снижения цены</h4>
+                            <h5 class="heading-title">Этапы снижения цены</h5>
                             
                             <div class="mb-20"></div>
                             
@@ -390,12 +345,11 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 </div>
                                 
                                 <?php 
-                                    if ($lot->offer != null) { 
-                                        foreach ($lot->offer as $key => $value) { 
-                                        if ($value->ofrRdnLotNumber == $lot->lotid) {
+                                    if ($lot->priceHistorys != null) { 
+                                        foreach ($lot->getPriceHistorys()->orderBy('price DESC')->all() as $key => $value) { 
                                             $date = Yii::$app->formatter->asDatetime(new \DateTime(), "php:Y-m-d H:i:s");
                                 ?>
-                                    <div class="item-text-long <?=(($key == 0 || $value->ofrRdnDateTimeBeginInterval <= $date) && $value->ofrRdnDateTimeEndInterval >= $date)? '' : 'sold-out' ?>">
+                                    <div class="item-text-long <?=(($value->intervalBegin <= $date) && $value->intervalEnd >= $date)? '' : 'sold-out' ?>">
                                     
                                         <div class="row align-items-center">
                                         
@@ -407,7 +361,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                                     
                                                         <div class="col-6">
                                                             <span class="font-sm">Начало</span>
-                                                            <strong class="d-block"><?=Yii::$app->formatter->asDate($value->ofrRdnDateTimeBeginInterval, 'long')?></strong>
+                                                            <strong class="d-block"><?=Yii::$app->formatter->asDate($value->intervalBegin, 'long')?></strong>
                                                         </div>
                                                         
                                                         <!-- <div class="col-2">
@@ -416,7 +370,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                                         
                                                         <div class="col-6 text-right text-sm-left">
                                                             <span class="font-sm">Конец</span>
-                                                            <strong class="d-block"><?=Yii::$app->formatter->asDate($value->ofrRdnDateTimeEndInterval, 'long')?></strong>
+                                                            <strong class="d-block"><?=Yii::$app->formatter->asDate($value->intervalEnd, 'long')?></strong>
                                                         </div>
                                                         
                                                     </div>
@@ -433,12 +387,12 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                                     
                                                         <div class="col-6 text-left text-sm-center">
                                                             <span class="font-sm">Цена </span>
-                                                            <strong class="d-block"><?=Yii::$app->formatter->asCurrency($value->ofrRdnPriceInInterval)?></strong>
+                                                            <strong class="d-block"><?=Yii::$app->formatter->asCurrency($value->price)?></strong>
                                                         </div>
                                                         
                                                         <div class="col-6 text-left  text-sm-right">
                                                             <span class="font-sm">Задаток</span>
-                                                            <strong class="d-block"><?=($lot->advancestepunit == 'Percent')? Yii::$app->formatter->asCurrency((($value->ofrRdnPriceInInterval / 100) * $lot->advance)) : Yii::$app->formatter->asCurrency($lot->advance)?></strong>
+                                                            <strong class="d-block"><?=($lot->depositTypeId == 1)? Yii::$app->formatter->asCurrency((($value->price / 100) * $lot->deposit)) : Yii::$app->formatter->asCurrency($lot->deposit)?></strong>
                                                         </div>
                                                         
                                                     </div>
@@ -456,8 +410,8 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                         </div>
                                     
                                     </div>
-                                <? } } }  else { ?>
-                                    <div class="item-text-long <?=(($key == 0 || $value->ofrRdnDateTimeBeginInterval <= $date) && $value->ofrRdnDateTimeEndInterval >= $date)? '' : 'sold-out' ?>">
+                                <? } }  else { ?>
+                                    <div class="item-text-long <?=(($key == 0 || $value->intervalBegin <= $date) && $value->intervalEnd >= $date)? '' : 'sold-out' ?>">
                                     
                                         <div class="row align-items-center">
                                         
@@ -480,17 +434,15 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
                     <? } ?>
 
-                    <?//=Darwin::widget()?>
-                    <div id="docs" class="fullwidth-horizon-sticky-section">
-                        <h4 class="heading-title">Документы</h4>
+                    <?= Darwin::widget()?>
+                    <div id="docs" class="fullwidth-horizon--section">
+                        <h5 class="heading-title">Документы</h5>
                         <ul class="list-icon-absolute what-included-list mb-30 long-text">
 
-                            <? foreach ($lot->torgy->case->files as $doc) { ?>
+                            <? foreach ($lot->torg->case->documents as $document) { ?>
 
                                 <?
-                                    $fileType = strtolower(preg_replace('/^.*\.(.*)$/s', '$1', $doc->filename));
-
-                                    switch ($fileType) {
+                                    switch ($document->format) {
                                         case 'doc':
                                             $icon = '<i class="far fa-file-word"></i>';
                                             break;
@@ -516,7 +468,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                 ?>
                                 <li>
                                     <span class="icon-font"><?=$icon?></span> 
-                                    <a href="<?=$doc->fileurl?>" target="_blank"><?=$doc->filename?></a>
+                                    <a href="<?=$document->url?>" target="_blank"><?=$document->name?></a>
                                 </li>
                             
                             <? } ?>
@@ -527,13 +479,13 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                     </div>
 
                     <? if ($lots_bankrupt[0] != null) { ?>
-                    <div id="other-lot" class="fullwidth-horizon-sticky-section">
+                    <div id="other-lot" class="fullwidth-horizon--section">
 
-                        <h4 class="heading-title">Другие лоты должника</h4>
+                        <h5 class="heading-title">Другие лоты должника</h5>
                         
                         <div class="row equal-height cols-1 cols-sm-2 gap-30 mb-25">
             
-                            <?foreach ($lots_bankrupt as $lot_bankrupt) { echo LotBlock::widget(['lot' => $lot_bankrupt]); }?>
+                            <?foreach ($otherLots as $otherLot) { echo LotBlock::widget(['lot' => $otherLot]); }?>
                         
                         </div>
                         
@@ -544,21 +496,21 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                     
 
                     <div id="torg" class="detail-header mb-30">
-                        <h4 class="mt-30">Информация о торге</h5>
-                        <p class="long-text"><?=$lot->torgy->description?></p>
+                        <h5 class="mt-30">Информация о торге</h5>
+                        <p class="long-text"><?=$lot->torg->description?></p>
                         <a href="#torg" class="open-text-js">Подробнее</a>
                         <div class="mb-50"></div>
                     </div>
 
                     <div id="roles" class="detail-header mb-30">
-                        <h4 class="mt-30">Правила подачи заявок</h5>
-                        <p class="long-text"><?=$lot->torgy->rules?></p>
+                        <h5 class="mt-30">Правила подачи заявок</h5>
+                        <p class="long-text"><?=$lot->torg->info['rules']?></p>
                         <a href="#roles" class="open-text-js">Подробнее</a>
                     </div>
 
-                    <!-- <div id="faq" class="fullwidth-horizon-sticky-section">
+                    <!-- <div id="faq" class="fullwidth-horizon--section">
                     
-                        <h4 class="heading-title">FAQ</h4>
+                        <h5 class="heading-title">FAQ</h5>
                         
                         <div class="faq-item-long-wrapper">
                             
@@ -684,9 +636,16 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
             
             <div class="col-12 col-lg-4">
 
-            <div class="sidebar-desktop">
-          <?= LotDetailSidebar::widget(['lot' => $lot, 'type' => $type]) ?>
-        </div>
+                <div class="sidebar-desktop">
+                    <?= \ymaker\social\share\widgets\SocialShare::widget([
+                        'configurator'  => 'socialShare',
+                        'url'           => ('https://ei.ru' . Yii::$app->request->url),
+                        'title'         => 'Посмотри лот на ei.ru: ' .Yii::$app->params['h1'],
+                        // 'description'   => $lot->description,
+                        'imageUrl'      => Url::to($lot->images[0]['max'], true),
+                    ]); ?>    
+                    <?= LotDetailSidebar::widget(['lot' => $lot, 'type' => $type]) ?>
+                </div>
                 
             </div>
             
@@ -695,7 +654,6 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
     </div>
 
 </section>
-
 
 
 <!-- start lot form modal -->
@@ -716,6 +674,5 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 <!-- end lot form modal -->
 
 <?php
-$this->registerJsFile( 'js/custom-multiply-sticky.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-sticky' );
-$this->registerJsFile( 'js/custom-core.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-core' );
-?>
+$this->registerJsFile( 'js/custom-multiply-.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-' );
+$this->registerJsFile( 'js/custom-core.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-core' );?>

@@ -61,9 +61,9 @@ AppAsset::register($this);
     
 	
     <!-- Fav and Touch Icons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="<?= Url::to('/img/favicon/logo_ei(orange).png', true)?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= Url::to('/img/favicon/logo_ei(green).png', true)?>">
     <link rel="icon" type="image/png" sizes="32x32" href="">
-    <link rel="icon" type="image/png" sizes="16x16" href="<?= Url::to('/img/favicon/favicon1.ico', true)?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= Url::to('/img/favicon/favicon2.ico', true)?>">
     <link rel="manifest" href="<?= Url::to('/img/favicon/site.webmanifest', true)?>">
     <link rel="mask-icon" href="<?= Url::to('/img/favicon/safari-pinned-tab.svg', true)?>" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#ffffff">
@@ -103,14 +103,14 @@ AppAsset::register($this);
 	<![endif]-->
 </head>
 
-<body class="with-waypoint-sticky">
+<body class="with-waypoint-">
   <?php $this->beginBody() ?>
 
   <!-- start Body Inner -->
   <div class="body-inner">
 
     <!-- start Header -->
-    <header id="header-waypoint-sticky" class="header-main header-mobile-menu with-absolute-navbar">
+    <header id="header-waypoint-" class="header-main header-mobile-menu with-absolute-navbar">
 
       <div class="header-outer clearfix">
 
@@ -122,14 +122,14 @@ AppAsset::register($this);
               <div class="col-inner">
                 <div class="main-logo">
                   <a href="<?= Url::to(['site/index']) ?>" class="main-logo__link">
-                  <!-- <img src="/img/logo_ei(orange).png" alt="" class="logo"> -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="logo" width="168" height="150" viewBox="0 0 1680 1500" shape-rendering="geometricPrecision">
+                    <img src="/img/logo-ei(green).svg" alt="" class="logo">
+                    <!-- <svg xmlns="http://www.w3.org/2000/svg" class="logo" width="168" height="150" viewBox="0 0 1680 1500" shape-rendering="geometricPrecision">
                       <path class="logo-icon" d="M753.7 88.8c350.6 0 637.5 272.7 660.2 617.6h-132.7c-22.4-271.7-250-485.3-527.5-485.3-292.4 0-529.4 237-529.4 529.4 0 291 234.8 527.1 525.3 529.3 1.3.1 2.7.2 4.1.2 24.4 0 44.1-19.8 44.1-44.2 0-24.3-19.7-44.1-44.1-44.1v-.1c-243.6 0-441.1-197.5-441.1-441.1 0-243.7 197.5-441.2 441.1-441.2 228.8 0 416.8 174.2 438.9 397.1h-133.2C1038 556.8 909.3 441.7 753.7 441.7c-170.5 0-308.8 138.2-308.8 308.8 0 169.2 136.1 306.6 304.8 308.7 2.6.2 5.1.2 7.6 0 14.3-.1 28.5-1.3 42.6-3.4 23.4-1.1 42-20.4 42-44.1 0-24.3-19.7-44.1-44.1-44.1-1.9 0-3.9.1-5.8.4-12.6 2.2-25.5 3.2-38.3 3.2-121.8 0-220.6-98.8-220.6-220.6S631.9 530 753.7 530c106.7 0 195.7 75.8 216.1 176.4H753.7c-24.3 0-44.1 19.9-44.1 44.1 0 24.3 19.8 44.2 44.1 44.2h705.8c24.3 0 44.1-19.9 44.1-44.2C1503.6 336.3 1167.9.6 753.7.6S3.8 336.3 3.8 750.5c0 414.1 335.7 749.9 749.9 749.9 30.2 0 60.4-1.8 90.4-5.5 23.3-1.1 41.9-20.4 41.9-44 0-24.4-19.7-44.1-44.1-44.1-2.6 0-5.1.2-7.5.6-26.8 3.3-53.7 4.8-80.7 4.8-365.4 0-661.7-296.3-661.7-661.7C92 385 388.3 88.8 753.7 88.8z" />
                       <path class="logo-icon" d="M753.7 88.8c350.6 0 637.5 272.7 660.2 617.6h-132.7c-22.4-271.7-250-485.3-527.5-485.3-292.4 0-529.4 237-529.4 529.4 0 291 234.8 527.1 525.3 529.3 1.3.1 2.7.2 4.1.2 24.4 0 44.1-19.8 44.1-44.2 0-24.3-19.7-44.1-44.1-44.1v-.1c-243.6 0-441.1-197.5-441.1-441.1 0-243.7 197.5-441.2 441.1-441.2 228.8 0 416.8 174.2 438.9 397.1h-133.2C1038 556.8 909.3 441.7 753.7 441.7c-170.5 0-308.8 138.2-308.8 308.8 0 169.2 136.1 306.6 304.8 308.7 2.6.2 5.1.2 7.6 0 14.3-.1 28.5-1.3 42.6-3.4 23.4-1.1 42-20.4 42-44.1 0-24.3-19.7-44.1-44.1-44.1-1.9 0-3.9.1-5.8.4-12.6 2.2-25.5 3.2-38.3 3.2-121.8 0-220.6-98.8-220.6-220.6S631.9 530 753.7 530c106.7 0 195.7 75.8 216.1 176.4H753.7c-24.3 0-44.1 19.9-44.1 44.1 0 24.3 19.8 44.2 44.1 44.2h705.8c24.3 0 44.1-19.9 44.1-44.2C1503.6 336.3 1167.9.6 753.7.6S3.8 336.3 3.8 750.5c0 414.1 335.7 749.9 749.9 749.9 30.2 0 60.4-1.8 90.4-5.5 23.3-1.1 41.9-20.4 41.9-44 0-24.4-19.7-44.1-44.1-44.1-2.6 0-5.1.2-7.5.6-26.8 3.3-53.7 4.8-80.7 4.8-365.4 0-661.7-296.3-661.7-661.7C92 385 388.3 88.8 753.7 88.8z" />
                       <path class="logo-acronym" d="M1636 883c24.2 0 44.1 19.8 44.1 44.1v529.3c0 24.3-19.9 44.1-44.1 44.1-24.3 0-44.2-19.8-44.2-44.1V927.1c0-24.3 19.9-44.1 44.2-44.1zm-215.5 542c10.3-8 17-20.6 17-34.7 0-24.4-19.8-44.2-44.2-44.2-11.4 0-21.9 4.4-29.8 11.6l-.1-.1c-49 35.6-108 54.7-168.6 54.7v88.3c81.1 0 160-26.3 224.9-75l.8-.6zm83.1-233.2c0-170.6-138.2-308.8-308.8-308.8-170.5 0-308.8 138.2-308.8 308.8 0 170.5 138.3 308.8 308.8 308.8v-88.3c-106.7 0-195.7-75.7-216.1-176.4h480.8c24.3 0 44.1-19.9 44.1-44.1zm-524.9-44.1c20.4-100.7 109.4-176.5 216.1-176.5 106.7 0 195.7 75.8 216.2 176.5H978.7zM1636 707.1c24.3 0 44.1 19.7 44.1 44.1 0 24.3-19.8 44.1-44.1 44.1-24.4 0-44.2-19.8-44.2-44.1 0-24.4 19.8-44.1 44.2-44.1z" />
                       <path class="logo-acronym" d="M1636 883c24.2 0 44.1 19.8 44.1 44.1v529.3c0 24.3-19.9 44.1-44.1 44.1-24.3 0-44.2-19.8-44.2-44.1V927.1c0-24.3 19.9-44.1 44.2-44.1zm-215.5 542c10.3-8 17-20.6 17-34.7 0-24.4-19.8-44.2-44.2-44.2-11.4 0-21.9 4.4-29.8 11.6l-.1-.1c-49 35.6-108 54.7-168.6 54.7v88.3c81.1 0 160-26.3 224.9-75l.8-.6zm83.1-233.2c0-170.6-138.2-308.8-308.8-308.8-170.5 0-308.8 138.2-308.8 308.8 0 170.5 138.3 308.8 308.8 308.8v-88.3c-106.7 0-195.7-75.7-216.1-176.4h480.8c24.3 0 44.1-19.9 44.1-44.1zm-524.9-44.1c20.4-100.7 109.4-176.5 216.1-176.5 106.7 0 195.7 75.8 216.2 176.5H978.7zM1636 707.1c24.3 0 44.1 19.7 44.1 44.1 0 24.3-19.8 44.1-44.1 44.1-24.4 0-44.2-19.8-44.2-44.1 0-24.4 19.8-44.1 44.2-44.1z" />
-                    </svg>
-                    <span class="d-none d-sm-inline">Единый <br> информатор</span>
+                    </svg> -->
+                    <span class="d-none d-sm-inline text-logo">Единый <br> информатор</span>
                   </a>
                 </div>
               </div>
@@ -140,7 +140,7 @@ AppAsset::register($this);
                 <ul class="nav-mini-right vertival-center">
                   <? if (Yii::$app->user->isGuest) { ?>
                     <li class="d-none d-sm-block">
-                      <a href="#loginFormTabInModal-register" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false">
+                      <a href="#loginFormTabInModal-register" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false" class="main-page__link">
                         <span class="icon-font"><i class="icon-user-follow"></i></span> Зарегистрироваться
                       </a>
                     </li>
@@ -343,6 +343,13 @@ AppAsset::register($this);
             <div class="container">
             
                 <div class="row gap-50">
+                  
+                  <a href="tel:88006003305" class="link-mobile"> 
+                    <span>
+                      8 (800) 600-33-05
+                    </span>
+                    <img src="img/telephone.svg" alt="icon_phone" class="link-mobile__icon">
+                  </a>
                 
                     <div class="col-lg-4">
                     
@@ -460,10 +467,11 @@ AppAsset::register($this);
                     <!-- </div>
                     
                 </div> -->
-                <div class="row shrink-auto-md gap-10 gap-40-lg">
-                
+                <div class="row shrink-auto-md gap-10 gap-40-lg pb-4">
+                        
                     <div class="col-auto">
                         <div class="col-inner">
+                            <hr>
                             <p class="footer-copy-center">Обращаем ваше внимание на то, что данный Интернет-сайт носит исключительно информационный характер и ни при каких условиях не является публичной офертой, определяемой положениями Статьи 437 Гражданского кодекса Российской Федерации.</p>
                             <p class="footer-copy-center">
                             <a href="/policy">Политика конфиденциальности</a> и <a href="/license"> Лицензионное соглашение</a>  © 2019 ei.ru
