@@ -414,6 +414,9 @@ AppAsset::register($this);
                                         <ul class="footer-menu-list set-width">
                                             <li><a href="/bankrupt">Банкротное имущество</a></li>
                                             <li><a href="/arrest">Арестованное имущество</a></li>
+                                            <!-- <li><a href="#buyLotModal" class="font-sm" data-toggle="modal" data-target="#buyLotModal" data-backdrop="static" data-keyboard="false">buyLotModal</a></li> -->
+
+                                            
                                             <!-- <li><a href="/business">Залоговое имущество</a></li> -->
                                             
                                         </ul>
@@ -528,6 +531,33 @@ AppAsset::register($this);
 
           <?= ResetPasswordWidget::widget() ?>
 
+        </div>
+
+        <div class="text-center pb-20">
+          <button type="button" class="close" data-dismiss="modal" aria-labelledby="Close">
+            <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end Login modal -->
+
+
+    <!-- start Login modal -->
+  <div class="modal fade modal-with-tabs form-login-modal" id="buyLotModal" aria-labelledby="modalWIthTabsLabel" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 500px">
+      <div id="help-steps" class="modal-content shadow-lg help-steps p-3">
+
+        <div class="help-step" v-for="(item, index) in steps" v-if="index === step - 1">
+          
+          <img v-if="(steps.length > step)" :src="'/help/' + (index + 1) + '.svg'" alt="w-100">
+          <div class="help-step__text py-4"><strong  v-html="item.text"></strong></div>
+        </div>
+
+        <div class="d-flex ">
+          <button v-if="step != 1" class="btn btn-outline-primary w-25" @click="prevStep"><i class="fas fa-chevron-left"></i></button>
+          <button v-if="steps.length > step"  class="btn btn-outline-primary ml-auto w-25" @click="nextStep"><i class="fas fa-chevron-right"></i></button>
         </div>
 
         <div class="text-center pb-20">
