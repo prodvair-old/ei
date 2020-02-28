@@ -150,9 +150,8 @@ AppAsset::register($this);
                       </a>
                     </li>
                     <li class="d-block d-sm-none">
-                      <a href="#loginFormTabInModal-register" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false" style="
-white-space: pre;">
-                        <span class="icon-font"><i class="icon-user-follow"></i></span> Зарегистрироваться
+                      <a href="#loginFormTabInModal-login" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false" style="white-space: pre;">
+                        <span class="icon-font"><i class="icon-user-follow"></i></span> Войти
                       </a>
                     </li>
                   <? } else { ?>
