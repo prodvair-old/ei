@@ -414,7 +414,7 @@ AppAsset::register($this);
                                         <ul class="footer-menu-list set-width">
                                             <li><a href="/bankrupt">Банкротное имущество</a></li>
                                             <li><a href="/arrest">Арестованное имущество</a></li>
-                                            <!-- <li><a href="#buyLotModal" data-toggle="modal" data-target="#buyLotModal" data-backdrop="static" data-keyboard="false">buyLotModal</a></li> -->
+                                            <!-- <li><a href="#buyLotModal" class="font-sm" data-toggle="modal" data-target="#buyLotModal" data-backdrop="static" data-keyboard="false">buyLotModal</a></li> -->
 
                                             
                                             <!-- <li><a href="/business">Залоговое имущество</a></li> -->
