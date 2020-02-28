@@ -152,8 +152,9 @@ class LotController extends Controller
             default:
                 $owner = Owners::find()->where(['linkEi' => $type])->one();
                 if (!empty($owner)) {
-                    $where = ['ownerId' => $owner->id];
+                    $where = ['torg.ownerId' => $owner->id];
 
+                    $queryType = 'zalog';
                     $title = $owner->title;
                 } else {
                     Yii::$app->response->statusCode = 404;
@@ -173,7 +174,7 @@ class LotController extends Controller
                     'whishCount' => WishList::find()
                         ->select(['COUNT(id)'])
                         ->alias('wl')
-                        ->where('wl."lotId" = lot.id OR wl."lotId" = lot."oldId"')
+                        ->where('wl."lotId" = lot.id')
                         ->andWhere(['type' => $queryType])
                 ])
                 ->joinWith(['torg'])
@@ -327,16 +328,6 @@ class LotController extends Controller
                 break;
             default:
                 $owner = Owners::find()->where(['linkEi' => $type])->one();
-                if (!empty($owner)) {
-                    $where = ['ownerId' => $owner->id];
-
-                    $title = $owner->title;
-                } else {
-                    Yii::$app->response->statusCode = 404;
-                    throw new \yii\web\NotFoundHttpException;
-                }
-                break;
-                $owner = OwnerProperty::find()->where(['linkForEi' => $type])->one();
                 if (!empty($owner)) {
 
                     $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
