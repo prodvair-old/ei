@@ -313,6 +313,19 @@ foreach ($lot->info as $key => $value) {
                                 </ul>
                             </li>
                             <? } ?>
+                            <? if ($lot->torg->owner !== null) { ?>
+                            <li>
+                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                                <h6>Банк</h6>
+                                <ul class="ul">
+                                <li><a href="/<?=$lot->torg->owner->linkEi?>"><?= $lot->torg->owner->title ?></a></li>
+                                <li>E-mail: <span class="text-list-name"><?= $lot->torg->owner->email ?></span></li>
+                                <!-- <li>Кор. счет: <span class="text-list-name"><? $lot ?></span></li> -->
+                                <li>ИНН: <span class="text-list-name"><?= $lot->torg->owner->inn ?></span></li>
+                                <li>Адрес: <span class="text-list-name"><?= $lot->torg->owner->address ?></span></li>
+                                </ul>
+                            </li>
+                            <? } ?>
 
                             <? if ($lot->torg->publisher !== null && $lot->torg->typeId == 2) { ?>
                             <li>
