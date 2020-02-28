@@ -15,15 +15,15 @@ $this->title = Yii::$app->params['title'];
 if ($type == 'bankrupt') {
     $title = '<span class="main-page__title">Имущество банкротов</span>';
     $imgBG = 'img/01.jpg';
-    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана исключительно актуальная информация об имущество банкротов и должников, выставленном и тендеры и торги на ЭТП и публичных аукционах.</span>';
+    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана исключительно актуальная информация об имуществе банкротов и должников, выставленных тендерах и торгах на ЭТП и публичных аукционах.</span>';
 } else if ($type == 'zalog') {
     $title = '<span class="main-page__title">Имущество организаций</span>';
     $imgBG = 'img/01.jpg';
-    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана исключительно актуальная информация об имущество банкротов и должников, выставленном и тендеры и торги на ЭТП и публичных аукционах.</span>';
+    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана исключительно актуальная информация об имуществе банкротов и должников, выставленных тендерах и торгах на ЭТП и публичных аукционах.</span>';
 }else if ($type == 'arrest') {
     $title = '<span class="main-page__title">Арестованное имущество</span>';
     $imgBG = 'img/01.jpg';
-    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана исключительно актуальная информация об имущество банкротов и должников, выставленном и тендеры и торги на ЭТП и публичных аукционах.</span>';
+    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана исключительно актуальная информация об имуществе банкротов и должников, выставленных тендерах и торгах на ЭТП и публичных аукционах.</span>';
 } else {
     $title = '<span class="font200"'.(($owner->tamplate['color-5'])? 'style="color: '.$owner->tamplate['color-5'].'"': '').'>'.$owner->name.'</span>';
     $imgBG = 'http://n.ei.ru'.$owner->tamplate['bg'];

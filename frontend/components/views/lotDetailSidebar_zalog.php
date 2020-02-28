@@ -40,7 +40,7 @@ use frontend\components\NumberWords;
         </div>
         
         <div class="box-bottom bg-light">
-            <h6 class="font-sm">Консультация по лоту</h6>
+            <h6 class="font-sm">Техническая поддержка пользователей</h6>
             <p class="font-sm">Мы ответим на все вопросы по данному лоту: <br><a href="tel:8(800)600-33-05" class="text-primary" <?=($lot->torg->owner->template['color-4'])? 'style="color:'.$lot->torg->owner->template['color-4'].'!important"': ''?> >8-800-600-33-05</a>.</p>
         </div>
         
