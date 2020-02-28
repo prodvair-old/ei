@@ -322,7 +322,7 @@ foreach ($lot->info as $key => $value) {
                                 <li>E-mail: <span class="text-list-name"><?= $lot->torg->owner->email ?></span></li>
                                 <!-- <li>Кор. счет: <span class="text-list-name"><? $lot ?></span></li> -->
                                 <li>ИНН: <span class="text-list-name"><?= $lot->torg->owner->inn ?></span></li>
-                                <li>Адрес: <span class="text-list-name"><?= $lot->torg->owner->address ?></span></li>
+                                <li>Адрес: <span class="text-list-name"><?= $lot->torg->owner->city.', '.$lot->torg->owner->address ?></span></li>
                                 </ul>
                             </li>
                             <? } ?>

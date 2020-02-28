@@ -198,7 +198,6 @@ class LotController extends Controller
         Yii::$app->params['title'] = ($metaData->mdTitle)? $metaData->mdTitle : $title;
         Yii::$app->params['h1'] = ($metaData->mdH1)? $metaData->mdH1 : $title;
         // Мета данные <-End 
-        // var_dump('Время генерации: ' . ( microtime(true) - $start ) . ' сек.');
 
         return $this->render('index', compact('type', 'lots', 'lotsFovarit', 'owner'));
     }
@@ -385,7 +384,6 @@ class LotController extends Controller
 
         $get = Yii::$app->request->get();
 
-        // var_dump(($get['SearchLot'])? $get['SearchLot'] : $get[1]['SearchLot']);
         
         $model->load((($get['SearchLot'])? $get : $get[1]));
         $query = $model->searchBy($url, (($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog' || $type == 'all')? $type : null), $modelSort->sortBy());
@@ -428,19 +426,14 @@ class LotController extends Controller
 
         $pages = new Pagination(['totalCount' => $count, 'pageSize'=> 10]);
 
-        // var_dump($lotsQuery
-        //     ->offset($pages->offset)
-        //     ->limit($pages->limit)->createCommand()->getRawSql()
-        // );
         
         $lots = $lotsQuery->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
 
-        // Фильтрация лотов <-End 
-        // var_dump('Время генерации: ' . ( microtime(true) - $start ) . ' сек.');
-        // Хлебные крошки Start->
+        // Фильтрация лотов <-End
 
+        // Хлебные крошки Start->
         Yii::$app->params['breadcrumbs'][] = [
             'label' => ' '.$titleType,
             'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
