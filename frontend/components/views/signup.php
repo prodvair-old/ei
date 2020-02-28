@@ -46,17 +46,19 @@ use yii\bootstrap\ActiveForm;
                 
                 </div>
             
-                <div class="d-flex flex-column flex-md-row mt-30 mt-lg-10">
-                    <div class="flex-shrink-0">
-                        <?=Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-primary btn-wide', 'name' => 'signup-button'])?>
-                    </div>
-                    <div class="pt-1 ml-0 ml-md-15 mt-15 mt-md-0">
-                        <div class="custom-control custom-checkbox">
+                <div class="d-flex flex-column flex-md-row mt-30 mt-lg-10 ">
+                   
+                        
+                    <div class="pt-1 ml-0 mt-15 mt-md-0">
+                        <div class="custom-control custom-checkbox pl-0">
                             <?= $form->field($model, 'checkPolicy',[
                                 'template' => "{input}{label}"
                                 ])->checkbox(['labelOption' => ['class'=>'line-145']])->label('Я принимаю <a href="/policy" target="_blank">соглашения!</a>') ?>
                         </div>
+                        <?=Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-primary btn-wide', 'name' => 'signup-button'])?>
                     </div>
+                   
+                    
                 </div>
             
             <?php ActiveForm::end(); ?>
