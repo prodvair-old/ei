@@ -326,13 +326,21 @@ class LotController extends Controller
                 }
                 break;
             default:
+                $owner = Owners::find()->where(['linkEi' => $type])->one();
+                if (!empty($owner)) {
+                    $where = ['ownerId' => $owner->id];
+
+                    $title = $owner->title;
+                } else {
+                    Yii::$app->response->statusCode = 404;
+                    throw new \yii\web\NotFoundHttpException;
+                }
+                break;
                 $owner = OwnerProperty::find()->where(['linkForEi' => $type])->one();
                 if (!empty($owner)) {
-                    $lotsQuery = LotsZalog::find()->joinWith('categorys');
-                    $lotsPrice = LotsZalog::find()->joinWith('categorys');
 
                     $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
-                    $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : $owner->name;
+                    $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : $owner->title;
 
                     $model->etp[0] = $owner->id; 
 
