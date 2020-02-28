@@ -55,6 +55,7 @@ foreach ($lot->info as $key => $value) {
             $key != 'sellType' &&
             $key != 'sellTypeId' &&
             $key != 'minPrice' &&
+            $key != 'torgReason' &&
             $key != 'currency'
         ) {
         $otherInfo[$key] = $value;
@@ -700,7 +701,7 @@ foreach ($lot->info as $key => $value) {
 
                     <div id="roles" class="detail-header mb-30">
                         <h5 class="mt-30">Правила подачи заявок</h5>
-                        <p class="long-text"><?=($lot->torg->info['rules'])? $lot->torg->info['rules'] : $lot->torg->info['torgReason'] ?></p>
+                        <p class="long-text"><?=($lot->torg->info['rules'] != null)? $lot->torg->info['rules'] : $lot->torg->info['torgReason'] ?></p>
                         <a href="#roles" class="open-text-js">Подробнее</a>
                     </div>
 
