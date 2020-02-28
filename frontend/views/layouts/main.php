@@ -211,10 +211,10 @@ AppAsset::register($this);
                             ['label' => 'Оценка лота', 'url' => ['service/lot']],
                             ['label' => 'Как приобрести лот?', 'url' => ['service/ecp']]
                           ]],
-                          ['label' => 'Войти', 'url' => ['services/index'],
-                          'options'=>['data-toggle'=>'modal','data-target'=>'#loginFormTabInModal', 'data-target'=>'#loginFormTabInModal']
+                          // ['label' => 'Войти', 'url' => ['services/index'],
+                          // 'options'=>['data-toggle'=>'modal','data-target'=>'#loginFormTabInModal', 'data-target'=>'#loginFormTabInModal']
                         
-                          ],
+                          // ],
                           // 'options'=>['data-toggle'=>'modal', 'data-target'=>'#loginFormTabInModal', 'data-backdrop'=>'static', 'data-keyboard'='false'
 
                           
