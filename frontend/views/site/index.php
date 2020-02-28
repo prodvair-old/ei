@@ -153,7 +153,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
       <div class="col">
 
         <figure class="category__item" style="background-color:#2b8ac6;">
-            <a href="/zalog">
+            <a href="/zalog/lot-list">
                 <div class="image">
                 <img src="https://images.unsplash.com/photo-1513496335913-a9aab0fc1318?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="image"/>
                 </div>
