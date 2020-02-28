@@ -25,12 +25,12 @@ if ($type == 'bankrupt') {
     $imgBG = 'img/01.jpg';
     $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана исключительно актуальная информация об имуществе банкротов и должников, выставленных тендерах и торгах на ЭТП и публичных аукционах.</span>';
 } else {
-    $title = '<span class="font200"'.(($owner->tamplate['color-5'])? 'style="color: '.$owner->tamplate['color-5'].'"': '').'>'.$owner->name.'</span>';
-    $imgBG = 'http://n.ei.ru'.$owner->tamplate['bg'];
+    $title = '<span class="font200"'.(($owner->template['color-5'])? 'style="color: '.$owner->template['color-5'].'"': '').'>'.$owner->title.'</span>';
+    $imgBG = 'http://n.ei.ru'.$owner->template['bg'];
     $description = $owner->description;
     
     // ID организации: $owner->id
-    // Название: $owner->name
+    // Название: $owner->title
     // Логотип: $owner->logo
     // Ссылка: $owner->link
     // Описание: $owner->description
@@ -40,13 +40,13 @@ if ($type == 'bankrupt') {
     // Город: $owner->city
     // Адрес: $owner->address
     // Ссылка на нашем сайте: $owner->linkForEi
-    // Фоновая картинка: $owner->tamplate['bg']
-    // Цвет 1: $owner->tamplate['color-1']
-    // Цвет 2: $owner->tamplate['color-2']
-    // Цвет 3: $owner->tamplate['color-3']
-    // Цвет 4: $owner->tamplate['color-4']
-    // Цвет 5: $owner->tamplate['color-5']
-    // Цвет 6: $owner->tamplate['color-6']
+    // Фоновая картинка: $owner->template['bg']
+    // Цвет 1: $owner->template['color-1']
+    // Цвет 2: $owner->template['color-2']
+    // Цвет 3: $owner->template['color-3']
+    // Цвет 4: $owner->template['color-4']
+    // Цвет 5: $owner->template['color-5']
+    // Цвет 6: $owner->template['color-6']
     // Дата добавления: $owner->createdAt
 }
 ?>
@@ -59,9 +59,9 @@ if ($type == 'bankrupt') {
     
         <div class="container">
             <h1><?=$title?></h1>
-            <p class="font-lg spacing-1 main-page__subtitle" <?=($owner->tamplate['color-5'])? 'style="color: '.$owner->tamplate['color-5'].'"': ''?>><?=$description?></p>
+            <p class="font-lg spacing-1 main-page__subtitle" <?=($owner->template['color-5'])? 'style="color: '.$owner->template['color-5'].'"': ''?>><?=$description?></p>
             
-            <?= SearchForm::widget(['type' => (($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog'), 'url' => (($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog'),'typeZalog' => ($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog')? $type : null, 'btnColor' => $owner->tamplate['color-1'], 'color' => $owner->tamplate['color-4']])?>
+            <?= SearchForm::widget(['type' => (($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog'), 'url' => (($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog'),'typeZalog' => ($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog')? $type : null, 'btnColor' => $owner->template['color-1'], 'color' => $owner->template['color-4']])?>
 
         </div>
         
@@ -83,7 +83,7 @@ if ($type == 'bankrupt') {
         
         <div class="col">
             
-            <figure class="category__item color-1" <?=($owner->tamplate['color-2'])? 'style="background-color: '.$owner->tamplate['color-2'].'"': ''?>>
+            <figure class="category__item color-1" <?=($owner->template['color-2'])? 'style="background-color: '.$owner->template['color-2'].'"': ''?>>
                 <a href="<?=$type?>/transport-i-tehnika">
                     <div class="image">
                         <img src="https://yt3.ggpht.com/a/AGF-l7-EVhBEj7aPvzyeC9QuZqwSPa8SgyuT-Ixttg=s800-mo-c-c0xffffffff-rj-k-no"alt="image"/>
@@ -99,7 +99,7 @@ if ($type == 'bankrupt') {
         
         <div class="col">
         
-            <figure class="category__item color-2" <?=($owner->tamplate['color-3'])? 'style="background-color: '.$owner->tamplate['color-3'].'"': ''?>>
+            <figure class="category__item color-2" <?=($owner->template['color-3'])? 'style="background-color: '.$owner->template['color-3'].'"': ''?>>
                 <a href="/<?=$type?>/nedvizhimost">
                     <div class="image">
                         <img src="https://i.diymall.co/diygoods/1281/plitka_dekorativnaya_london_brik_tsvet_multikolor_116_m2_1.jpg"alt="image"/>
@@ -115,7 +115,7 @@ if ($type == 'bankrupt') {
         
         <div class="col">
         
-            <figure class="category__item color-3" <?=($owner->tamplate['color-1'])? 'style="background-color: '.$owner->tamplate['color-1'].'"': ''?>>
+            <figure class="category__item color-3" <?=($owner->template['color-1'])? 'style="background-color: '.$owner->template['color-1'].'"': ''?>>
                 <a href="/<?=$type?>/oborudovanie">
                     <div class="image">
                         <img src="https://www.talenthero.de/wp-content/uploads/Metall-Glockengießer-2-800x800.jpg"alt="image"/>
@@ -131,7 +131,7 @@ if ($type == 'bankrupt') {
         
         <div class="col">
         
-            <figure class="category__item color-4" <?=($owner->tamplate['color-4'])? 'style="background-color: '.$owner->tamplate['color-4'].'"': ''?>>
+            <figure class="category__item color-4" <?=($owner->template['color-4'])? 'style="background-color: '.$owner->template['color-4'].'"': ''?>>
                 <a href="/<?=$type?>/debitorskaya-zadolzhennost">
                     <div class="image">
                         <img src="https://ae01.alicdn.com/kf/HTB15d0Gq1SSBuNjy0Flq6zBpVXad/-.jpg"alt="image"/>
@@ -155,7 +155,7 @@ if ($type == 'bankrupt') {
             
             <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
 
-                <?foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot, 'color' => $owner->tamplate['color-4']]); }?>
+                <?foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot, 'color' => $owner->template['color-4']]); }?>
                 
             </div>
 
@@ -168,7 +168,7 @@ if ($type == 'bankrupt') {
             </div>
             
             <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
-                <?foreach ($lotsFovarit as $lot) { echo LotBlock::widget(['lot' => $lot, 'color' => $owner->tamplate['color-4']]); }?>
+                <?foreach ($lotsFovarit->all() as $lot) { echo LotBlock::widget(['lot' => $lot, 'color' => $owner->template['color-4']]); }?>
             </div>
 
             <div class="clear mb-100"></div>

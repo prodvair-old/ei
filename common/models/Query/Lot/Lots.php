@@ -121,10 +121,12 @@ class Lots extends ActiveRecord
     }
     public function getWishId($id = null) 
     {
-        if ($this->wishlist[0]) {
-            foreach ($this->wishlist as $wish) {
-                if ($id == $wish->userId) {
-                    return $wish->id;
+        if ($id != null) {
+            if ($this->wishlist[0]) {
+                foreach ($this->wishlist as $wish) {
+                    if ($id == $wish->userId) {
+                        return $wish->id;
+                    }
                 }
             }
         }

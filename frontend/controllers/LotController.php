@@ -14,6 +14,7 @@ use common\models\Query\Arrest\LotsArrest;
 use common\models\Query\Zalog\LotsZalog;
 use common\models\Query\Zalog\OwnerProperty;
 use common\models\Query\Lot\Lots;
+use common\models\Query\Lot\Owners;
 use common\models\Query\WishList;
 
 use frontend\models\WishListEdit;
@@ -130,6 +131,10 @@ class LotController extends Controller
         $start = microtime(true);
 
         $owner = null;
+        $lotsQuery = Lots::isActive();
+        $lotsFovaritQuery = Lots::isActive();
+
+        $where = null;
 
         switch ($type) {
             case 'bankrupt':
@@ -145,12 +150,11 @@ class LotController extends Controller
                 $queryType = $type;
                 break;
             default:
-                $owner = OwnerProperty::find()->where(['linkForEi' => $type])->one();
+                $owner = Owners::find()->where(['linkEi' => $type])->one();
                 if (!empty($owner)) {
-                    $lots = LotsZalog::find()->where(['status'=>true, 'ownerId' => $owner->id])->limit(3)->orderBy('"publicationDate" DESC')->all();
-                    $lotsFovarit = LotsZalog::find()->where(['status'=>true, 'ownerId' => $owner->id])->andWhere('"completionDate" >= NOW()')->limit(3)->orderBy('"publicationDate" DESC')->all();
+                    $where = ['ownerId' => $owner->id];
 
-                    $title = $owner->name;
+                    $title = $owner->title;
                 } else {
                     Yii::$app->response->statusCode = 404;
                     throw new \yii\web\NotFoundHttpException;
@@ -159,16 +163,12 @@ class LotController extends Controller
         }
 
         // Проверка ссылок ЧПУ и подставление типа лотов Strat->
-        $lots = Lots::isActive()
-                ->joinWith(['torg'])
+        $lotsQuery->joinWith(['torg'])
                 ->alias('lot')
                 ->where(['torg.type' => $queryType])
-                ->orderBy('torg.publishedDate DESC')
-                ->limit(3)
-                ->all();
+                ;
 
-        $lotsFovarit = Lots::isActive()
-                ->select([
+        $lotsFovaritQuery->select([
                     '*',
                     'whishCount' => WishList::find()
                         ->select(['COUNT(id)'])
@@ -178,34 +178,15 @@ class LotController extends Controller
                 ])
                 ->joinWith(['torg'])
                 ->alias('lot')
-                ->where(['torg.type' => $queryType])
-                ->limit(3)
-                ->orderBy('whishCount DESC')
-                ->all();
+                ->where(['torg.type' => $queryType]);
 
-        switch ($type) {
-            case 'bankrupt':
-                $title = 'Банкротное имущество';
-                break;
-            case 'arrest':
-                $title = 'Арестованное имущество';
-                break;
-            case 'zalog':
-                $title = 'Имущество организаций';
-                break;
-            default:
-                $owner = OwnerProperty::find()->where(['linkForEi' => $type])->one();
-                if (!empty($owner)) {
-                    $lots = LotsZalog::find()->where(['status'=>true, 'ownerId' => $owner->id])->limit(3)->orderBy('"publicationDate" DESC')->all();
-                    $lotsFovarit = LotsZalog::find()->where(['status'=>true, 'ownerId' => $owner->id])->andWhere('"completionDate" >= NOW()')->limit(3)->orderBy('"publicationDate" DESC')->all();
-
-                    $title = $owner->name;
-                } else {
-                    Yii::$app->response->statusCode = 404;
-                    throw new \yii\web\NotFoundHttpException;
-                }
-                break;
+        if ($where !== null) {
+            $lotsQuery->andWhere($where);
+            $lotsFovaritQuery->andWhere($where);
         }
+
+        $lots = $lotsQuery->orderBy('torg.publishedDate DESC')->limit(3)->all();
+        $lotsFovarit = $lotsFovaritQuery->orderBy('whishCount DESC')->limit(3)->all();
         // Проверка ссылок ЧПУ и подставление типа лотов <-End 
 
         // Мета данные Strat-> 
