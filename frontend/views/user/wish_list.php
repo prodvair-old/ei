@@ -8,15 +8,17 @@ use common\models\Query\Lot\Lots;
 
 use frontend\components\LotBlock;
 use frontend\components\ProfileMenu;
-
+$lotArrestIds = [];
 foreach ($wishArrestList as $wishArrest) {
     if ($lot = Lots::findOne(['id' => $wishArrest->lotId])) {
         $lotArrestIds[] = $lot;
     } else if ($lot = Lots::find()->where(['oldId' => $wishArrest->lotId])->one()) {
         $lotArrestIds[] = $lot;
+    } else {
+        ;
     }
 }
-
+$lotBankruptIds = [];
 foreach ($wishBankruptList as $wishBankrupt) {
     if ($lot = Lots::findOne(['id' => $wishBankrupt->lotId])) {
         $lotBankruptIds[] = $lot;
@@ -24,14 +26,17 @@ foreach ($wishBankruptList as $wishBankrupt) {
         $lotBankruptIds[] = $lot;
     }
 }
-
+$lotZalogIds = [];
 foreach ($wishZalogList as $wishZalog) {
+    
     if ($lot = Lots::findOne(['id' => $wishZalog->lotId])) {
         $lotZalogIds[] = $lot;
     } else if ($lot = Lots::find()->where(['oldId' => $wishZalog->lotId])->one()) {
         $lotZalogIds[] = $lot;
     }
 }
+
+$allLots = $lotBankruptIds; //
 
 $name = (\Yii::$app->user->identity->info['firstname'] || \Yii::$app->user->identity->info['lastname'])? \Yii::$app->user->identity->info['firstname'].' '.\Yii::$app->user->identity->info['lastname'] : \Yii::$app->user->identity->info['contacts']['emails'][0];
 
@@ -142,9 +147,9 @@ $this->params['breadcrumbs'][] = [
 
 
 
-                        <div data-count="<?= ($lotArrestIds)? count($lotArrestIds) : 0?>" class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list" id="arrest-wish">
-                            <? if ($lotArrestIds) {
-                                foreach ($lotArrestIds as $lot) { echo LotBlock::widget(['lot' => $lot]); } 
+                        <div data-count="<?= ($allLots)? count($allLots) : 0?>" class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list" id="arrest-wish">
+                           <? if ($allLots) {
+                                foreach ($allLots as $lot) { echo LotBlock::widget(['lot' => $lot]); } 
                             } else {
                                 echo "<div class='p-15 font-bold'>Пока нет избранных лотов по арестованному имуществу</div>";
                             } ?>
@@ -177,7 +182,10 @@ $this->params['breadcrumbs'][] = [
 
                         <div data-count="<?= ($lotZalogIds)? count($lotZalogIds) : 0?>" class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list" id="zalog-wish">
                             <? if ($lotZalogIds) {
+                                foreach ($lotBankruptIds as $lot) { echo LotBlock::widget(['lot' => $lot]); }
+                                foreach ($lotArrestIds as $lot) { echo LotBlock::widget(['lot' => $lot]); }
                                 foreach ($lotZalogIds as $lot) { echo LotBlock::widget(['lot' => $lot]); }
+                               
                             } else {
                                 echo "<div class='p-15 font-bold'>Пока нет избранных лотов по имуществу организаций</div>";
                             } ?>
