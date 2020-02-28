@@ -295,7 +295,7 @@ foreach ($lot->info as $key => $value) {
                                 <ul class="ul">
                                 <li><?= $lot->bank->name ?></li>
                                 <li>БИК: <span class="text-list-name"><?= $lot->bank->bik ?></span></li>
-                                <!-- <li>Кор. счет: <span class="text-list-name"><?= $lot ?></span></li> -->
+                                <!-- <li>Кор. счет: <span class="text-list-name"><? $lot ?></span></li> -->
                                 <li>Расчетный счет: <span class="text-list-name"><?= $lot->bank->payment ?></span></li>
                                 <li>Лицевой счет: <span class="text-list-name"><?= $lot->bank->personal ?></span></li>
                                 </ul>
@@ -499,48 +499,144 @@ foreach ($lot->info as $key => $value) {
                     <? } ?>
 
                     <?= Darwin::widget()?>
+
+                    <? if ($lot->torg->case) {?>
+                    <? if ($lot->torg->case->documents) { ?>
+
                     <div id="docs" class="fullwidth-horizon--section">
-                        <h5 class="heading-title">Документы</h5>
+                        <h5 class="heading-title">Документы по делу должника</h5>
                         <ul class="list-icon-absolute what-included-list mb-30 long-text">
+                        <? foreach ($lot->torg->case->documents as $document) { ?>
 
-                            <? foreach ($lot->torg->case->documents as $document) { ?>
-
-                                <?
-                                    switch ($document->format) {
-                                        case 'doc':
-                                            $icon = '<i class="far fa-file-word"></i>';
-                                            break;
-                                        case 'docs':
-                                            $icon = '<i class="far fa-file-word"></i>';
-                                            break;
-                                        case 'xls':
-                                            $icon = '<i class="far fa-file-excel"></i>';
-                                            break;
-                                        case 'xlsx':
-                                            $icon = '<i class="far fa-file-excel"></i>';
-                                            break;
-                                        case 'pdf':
-                                            $icon = '<i class="far fa-file-pdf"></i>';
-                                            break;
-                                        case 'zip':
-                                            $icon = '<i class="far fa-file-archive"></i>';
-                                            break;
-                                        default:
-                                            $icon = '<i class="far fa-file"></i>';
-                                            break;
-                                    }
-                                ?>
-                                <li>
-                                    <span class="icon-font"><?=$icon?></span> 
-                                    <a href="<?=$document->url?>" target="_blank"><?=$document->name?></a>
-                                </li>
-                            
-                            <? } ?>
-                            
+                            <?
+                                switch ($document->format) {
+                                    case 'doc':
+                                        $icon = '<i class="far fa-file-word"></i>';
+                                        break;
+                                    case 'docs':
+                                        $icon = '<i class="far fa-file-word"></i>';
+                                        break;
+                                    case 'xls':
+                                        $icon = '<i class="far fa-file-excel"></i>';
+                                        break;
+                                    case 'xlsx':
+                                        $icon = '<i class="far fa-file-excel"></i>';
+                                        break;
+                                    case 'pdf':
+                                        $icon = '<i class="far fa-file-pdf"></i>';
+                                        break;
+                                    case 'zip':
+                                        $icon = '<i class="far fa-file-archive"></i>';
+                                        break;
+                                    default:
+                                        $icon = '<i class="far fa-file"></i>';
+                                        break;
+                                }
+                            ?>
+                            <li>
+                                <span class="icon-font"><?=$icon?></span> 
+                                <a href="<?=$document->url?>" target="_blank"><?=$document->name?></a>
+                            </li>
+                        
+                        <? } ?>
                         </ul>
+                            
                         <a href="#docs" class="open-text-js">Все документы</a>
                         <div class="mb-50"></div>
                     </div>
+
+                    <? } ?>
+                    <? } ?>
+
+                    <? if ($lot->torg->documents) {?>
+                    <div id="docs" class="fullwidth-horizon--section">
+                        <h5 class="heading-title">Документы по торгу</h5>
+                        
+                        <ul class="list-icon-absolute what-included-list mb-30 long-text">
+                        <? foreach ($lot->torg->documents as $document) { ?>
+
+                            <?
+                                switch ($document->format) {
+                                    case 'doc':
+                                        $icon = '<i class="far fa-file-word"></i>';
+                                        break;
+                                    case 'docs':
+                                        $icon = '<i class="far fa-file-word"></i>';
+                                        break;
+                                    case 'xls':
+                                        $icon = '<i class="far fa-file-excel"></i>';
+                                        break;
+                                    case 'xlsx':
+                                        $icon = '<i class="far fa-file-excel"></i>';
+                                        break;
+                                    case 'pdf':
+                                        $icon = '<i class="far fa-file-pdf"></i>';
+                                        break;
+                                    case 'zip':
+                                        $icon = '<i class="far fa-file-archive"></i>';
+                                        break;
+                                    default:
+                                        $icon = '<i class="far fa-file"></i>';
+                                        break;
+                                }
+                            ?>
+                            <li>
+                                <span class="icon-font"><?=$icon?></span> 
+                                <a href="<?=$document->url?>" target="_blank"><?=$document->name?></a>
+                            </li>
+                        
+                        <? } ?>
+                        </ul>
+                            
+                        <a href="#docs" class="open-text-js">Все документы</a>
+                        <div class="mb-50"></div>
+                    </div>
+                    <? } ?>
+
+                    <? if ($lot->documents) {?>
+                    <div id="docs" class="fullwidth-horizon--section">
+                        <h5 class="heading-title">Документы по лоту</h5>
+                        
+                        <ul class="list-icon-absolute what-included-list mb-30 long-text">
+                        <? foreach ($lot->documents as $document) { ?>
+
+                            <?
+                                switch ($document->format) {
+                                    case 'doc':
+                                        $icon = '<i class="far fa-file-word"></i>';
+                                        break;
+                                    case 'docs':
+                                        $icon = '<i class="far fa-file-word"></i>';
+                                        break;
+                                    case 'xls':
+                                        $icon = '<i class="far fa-file-excel"></i>';
+                                        break;
+                                    case 'xlsx':
+                                        $icon = '<i class="far fa-file-excel"></i>';
+                                        break;
+                                    case 'pdf':
+                                        $icon = '<i class="far fa-file-pdf"></i>';
+                                        break;
+                                    case 'zip':
+                                        $icon = '<i class="far fa-file-archive"></i>';
+                                        break;
+                                    default:
+                                        $icon = '<i class="far fa-file"></i>';
+                                        break;
+                                }
+                            ?>
+                            <li>
+                                <span class="icon-font"><?=$icon?></span> 
+                                <a href="<?=$document->url?>" target="_blank"><?=$document->name?></a>
+                            </li>
+                        
+                        <? } ?>
+                        </ul>
+                            
+                        <a href="#docs" class="open-text-js">Все документы</a>
+                        <div class="mb-50"></div>
+                    </div>
+                    <? } ?>
 
                     <? if ($lots_bankrupt[0] != null) { ?>
                     <div id="other-lot" class="fullwidth-horizon--section">

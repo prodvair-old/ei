@@ -524,49 +524,51 @@ class LotController extends Controller
             }
         }
 
-        $search  = [
-            '${lotTitle}', 
-            '${lotAddress}', 
-            '${lotStatus}', 
-            '${bnkrName}',
-            '${arbitrName}',
-            '${sroName}',
-            '${etp}',
-            '${tradeType}',
-            '${caseId}', 
-            '${category}',
-            '${subCategory}',
-            '${startPrice}',
-            '${lotPrice}',
-            '${stepPrice}',
-            '${advance}',
-            '${priceType}',
-            '${timeEnd}',
-            '${timeBegin}'
-        ];
-        $replace = [
-            str_replace('"',"'",$lot->title),
-            str_replace('"',"'",$lot->district.''.$lot->info['address']['region'].''.$lot->city.''.$lot->info['address']['street']),
-            str_replace('"',"'",$lot->status),
-            str_replace('"',"'",$lot->torg->bankrupt->name),
-            str_replace('"',"'",$lot->torg->publisher->fullName),
-            str_replace('"',"'",$lot->torg->publisher->sro->title),
-            str_replace('"',"'",$lot->torg->etp->title),
-            (($lot->torg->tradeType == 0)? 'публичное предложение': 'открытый аукцион'),
-            $lot->torg->case->number, 
-            $titleCategory,
-            $titleSubcategory,
-            Yii::$app->formatter->asCurrency($lot->startPrice),
-            Yii::$app->formatter->asCurrency($lot->price),
-            (($lot->stepTypeId == 1)? $lot->step.'% ('.Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->step)).')' : Yii::$app->formatter->asCurrency($lot->step)),
-            (($lot->depositTypeId == 1)? $lot->deposit.'% ('.Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->deposit)).')' : Yii::$app->formatter->asCurrency($lot->deposit)),
-            (($lot->torg->info['priceType'] == 'Public')? 'Открытая' : 'Закрытая'),
-            Yii::$app->formatter->asDate($lot->torg->startDate, 'long'),
-            Yii::$app->formatter->asDate($lot->torg->endDate, 'long')
-        ];
+        
 
         switch ($type) {
             case 'bankrupt':
+
+                $search  = [
+                    '${lotTitle}', 
+                    '${lotAddress}', 
+                    '${lotStatus}', 
+                    '${bnkrName}',
+                    '${arbitrName}',
+                    '${sroName}',
+                    '${etp}',
+                    '${tradeType}',
+                    '${caseId}', 
+                    '${category}',
+                    '${subCategory}',
+                    '${startPrice}',
+                    '${lotPrice}',
+                    '${stepPrice}',
+                    '${advance}',
+                    '${priceType}',
+                    '${timeEnd}',
+                    '${timeBegin}'
+                ];
+                $replace = [
+                    str_replace('"',"'",$lot->title),
+                    str_replace('"',"'",$lot->district.''.$lot->info['address']['region'].''.$lot->city.''.$lot->info['address']['street']),
+                    str_replace('"',"'",$lot->status),
+                    str_replace('"',"'",$lot->torg->bankrupt->name),
+                    str_replace('"',"'",$lot->torg->publisher->fullName),
+                    str_replace('"',"'",$lot->torg->publisher->sro->title),
+                    str_replace('"',"'",$lot->torg->etp->title),
+                    (($lot->torg->tradeType == 0)? 'публичное предложение': 'открытый аукцион'),
+                    $lot->torg->case->number, 
+                    $titleCategory,
+                    $titleSubcategory,
+                    Yii::$app->formatter->asCurrency($lot->startPrice),
+                    Yii::$app->formatter->asCurrency($lot->price),
+                    (($lot->stepTypeId == 1)? $lot->step.'% ('.Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->step)).')' : Yii::$app->formatter->asCurrency($lot->step)),
+                    (($lot->depositTypeId == 1)? $lot->deposit.'% ('.Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->deposit)).')' : Yii::$app->formatter->asCurrency($lot->deposit)),
+                    (($lot->torg->info['priceType'] == 'Public')? 'Открытая' : 'Закрытая'),
+                    Yii::$app->formatter->asDate($lot->torg->startDate, 'long'),
+                    Yii::$app->formatter->asDate($lot->torg->endDate, 'long')
+                ];
 
                 $metaType = 'lot-page';
 
