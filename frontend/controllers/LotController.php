@@ -472,7 +472,7 @@ class LotController extends Controller
         Yii::$app->params['breadcrumbs'][] = [
             'label' => ' '.Yii::$app->params['h1'],
             'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-            'url' => [$url]
+            'url' => ["javascript:void(0);"]
         ];
         // Хлебные крошки <-End
         
@@ -583,7 +583,7 @@ class LotController extends Controller
 
                 break;
             case 'arrest':
-                $metaType = 'lot-arrest-page';
+                $metaType = 'lot-page';
 
                 $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
                 $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Арестованное имущество';
@@ -597,7 +597,7 @@ class LotController extends Controller
                 // Хлебные крошки <-End
                 break;
             case 'zalog':
-                $metaType = 'lot-zalog-page';
+                $metaType = 'lot-page';
 
                 $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
                 $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Имущество организаций';
@@ -637,7 +637,7 @@ class LotController extends Controller
         Yii::$app->params['breadcrumbs'][] = [
             'label' => ' '.((Yii::$app->params['h1'])? Yii::$app->params['h1'] : $lot->title),
             'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-            'url' => ["$type/$category/$subcategory/$id"]
+            'url' => ["javascript:void(0);"]
         ];
         // Хлебные крошки <-End
 
