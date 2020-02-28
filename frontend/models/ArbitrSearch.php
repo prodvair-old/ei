@@ -36,6 +36,8 @@ class ArbitrSearch extends Model
 
         $where[] = ['typeId' => 1];
 
+        $where[] = '"fullName" is not null and "fullName" != \'-\'';
+
         if (!empty($this->search)) {
             $where[] = [
                 'or',
@@ -44,11 +46,11 @@ class ArbitrSearch extends Model
             ];
             $sort = 'ts_rank(to_tsvector("fullName"), plainto_tsquery(\''.$this->search.'\')) ASC,';
         } else {
-            $sort = 'fullName';
+            $sort = 'fullName ASC';
         }
         
 
-        return $arbitrs->where($where)->orderBy('fullName ASC');
+        return $arbitrs->where($where)->orderBy($sort);
     }
 }
  

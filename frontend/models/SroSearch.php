@@ -34,16 +34,17 @@ class SroSearch extends Model
         $whereAnd = ['and'];
 
         if (!empty($this->search)) {
-            $search = explode(' ',$this->search);
-            $whereSearch = ['or'];
-            foreach ($search as $value) {
-                $whereSearch[] = ['like', 'LOWER("title")', mb_strtolower($value, 'UTF-8')];
-                $whereSearch[] = ['like', 'LOWER("inn")', mb_strtolower($value, 'UTF-8')];
-            }
-            $where[] = $whereSearch;
+            $where[] = [
+                'or',
+                'to_tsvector("title") @@ plainto_tsquery(\''.$this->search.'\')',
+                ['like', 'LOWER("inn")', mb_strtolower($this->search, 'UTF-8')],
+            ];
+            $sort = 'ts_rank(to_tsvector("title"), plainto_tsquery(\''.$this->search.'\')) ASC,';
+        } else {
+            $sort = 'title ASC';
         }
 
-        return $sro->andWhere($where);
+        return $sro->andWhere($where)->orderBy($sort);
     }
 }
  
