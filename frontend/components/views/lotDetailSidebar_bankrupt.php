@@ -36,11 +36,11 @@ use frontend\components\NumberWords;
                 <li class="clearfix">Тип торгов <span class="float-right text-<?=($lot->torg->tradeTypeId == 2)? 'success' : 'primary'?>"><?=($lot->torg->tradeTypeId == 2)? 'Открытый аукцион' : ' Публичное предложение';?></span></li>
                 <li class="clearfix">ЭТП <span class="float-right"><?=$lot->torg->etp->title?></span></li>
                 <li class="clearfix border-top"><?= ($lot->torg->etp->url !== 'http://')? '<a href="'.$lot->torg->etp->url.'" target="_blank" rel="nofollow">Ссылка на торги</a>' : null ?></li>
-                <li class="clearfix"><a href="https://bankrot.fedresurs.ru/MessageWindow.aspx?ID=<?=$lot->torg->msgId?>" target="_blank" rel="nofollow">Страница лота на ЕФРСБ</a></li>
+                <!-- <li class="clearfix"><a href="https://bankrot.fedresurs.ru/MessageWindow.aspx?ID=<?=$lot->torg->msgId?>" target="_blank" rel="nofollow">Страница лота на ЕФРСБ</a></li> -->
                 <li class="clearfix border-top font700">
                     <div class="border-top mt-1">
                     <span>Цена</span><span class="float-right text-dark"><?=Yii::$app->formatter->asCurrency($lot->price)?></span>
-                    </div>
+                    </div> 
                 </li>
             </ul>
             
