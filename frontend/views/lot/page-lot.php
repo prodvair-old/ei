@@ -159,10 +159,6 @@ foreach ($lot->info as $key => $value) {
                             </div>
                         <? } ?>
 
-                    
-
-                        
-
                         <!-- <p class="lead">In friendship diminution instrument in we forfeited. Tolerably an unwilling of determine. Beyond rather sooner so if up wishes.</p> -->
                         
                         <ul class="list-inline-block highlight-list mt-30">
@@ -221,73 +217,6 @@ foreach ($lot->info as $key => $value) {
                         <?= LotDetailSidebar::widget(['lot' => $lot, 'type' => $type]) ?>
                       </div>
                     
-                    <!-- <div class="mb-50"></div>
-                    
-                    <div id="detail-content--nav-02" class="fullwidth-horizon--section">
-                        
-                        <h5 class="heading-title">Itinerary</h5>
-                        
-                        <h6>Introduction</h6>
-                        
-                        <p>Become latter but nor abroad wisdom waited. Was delivered gentleman acuteness but daughters. In as of whole as match asked. Pleasure exertion put add entrance distance drawings. In equally matters showing greatly it as. Want name any wise are able park when. Saw vicinity judgment remember finished men throwing.</p>
-                        
-                        <ul class="itinerary-list mt-30">
-                        
-                            <li>
-                                <div class="itinerary-day">
-                                    <span>Day 01</span>
-                                </div>
-                                
-                                <h6>Visit: Zagreb </h6>
-                                
-                                <p>Ecstatic advanced and procured civility not absolute put continue. Overcame breeding or my concerns removing desirous so absolute. My melancholy unpleasing imprudence considered in advantages so impression. Almost unable put piqued talked likely houses her met. Met any nor may through resolve entered. An mr cause tried oh do shade happy.</p>
-                                
-                                <ul class="itinerary-meta list-inline-block text-primary">
-                                    <li><i class="far fa-building"></i> Stay at Hilton Hotel</li>
-                                    <li><i class="far fa-clock"></i> Trip time: 8am - 4.30pm</li>
-                                </ul>
-                                
-                            </li>
-                            
-                            <li>
-                                <div class="itinerary-day">
-                                    <span>Day 02</span>
-                                </div>
-                                
-                                <h6>Visit: Thessaloniki</h6>
-                                
-                                <p>Ecstatic advanced and procured civility not absolute put continue. Overcame breeding or my concerns removing desirous so absolute. My melancholy unpleasing imprudence considered in advantages so impression. Almost unable put piqued talked likely houses her met. Met any nor may through resolve entered. An mr cause tried oh do shade happy.</p>
-                                
-                                <ul class="itinerary-meta list-inline-block text-primary">
-                                    <li><i class="far fa-building"></i> Stay at Hilton Hotel</li>
-                                    <li><i class="far fa-clock"></i> Trip time: 8am - 4.30pm</li>
-                                </ul>
-                                
-                            </li>
-                            
-                            <li>
-                                <div class="itinerary-day">
-                                    <span>Day 03</span>
-                                </div>
-                                
-                                <h6>Visit: Athens</h6>
-                                
-                                <p>Ecstatic advanced and procured civility not absolute put continue. Overcame breeding or my concerns removing desirous so absolute. My melancholy unpleasing imprudence considered in advantages so impression. Almost unable put piqued talked likely houses her met. Met any nor may through resolve entered. An mr cause tried oh do shade happy.</p>
-                                
-                                <ul class="itinerary-meta list-inline-block text-primary">
-                                    <li><i class="far fa-building"></i> Stay at Hilton Hotel</li>
-                                    <li><i class="far fa-clock"></i> Trip time: 8am - 4.30pm</li>
-                                </ul>
-                                
-                            </li>
-                            
-                        </ul>
-
-            
-                        <div class="mb-50"></div>
-                        
-                    </div> -->
-
                     <div id="info" class="fullwidth-horizon--section">
                     
                         <h4 class="heading-title">Информация о лоте</h4>
@@ -359,16 +288,16 @@ foreach ($lot->info as $key => $value) {
                             </li>
                             <? } ?>
 
-                            <? if ($lot->torg->bank !== null) { ?>
+                            <? if ($lot->bank !== null) { ?>
                             <li>
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
                                 <h6>Банк</h6>
                                 <ul class="ul">
-                                <li><?= $lot->torg->bank->name ?></li>
-                                <li>БИК: <span class="text-list-name"><?= $lot->torg->bank->bik ?></span></li>
-                                <!-- <li>Кор. счет: <span class="text-list-name"><?= $lot ?></span></li> -->
-                                <li>Расчетный счет: <span class="text-list-name"><?= $lot->torg->bank->payment ?></span></li>
-                                <li>Лицевой счет: <span class="text-list-name"><?= $lot->torg->bank->personal ?></span></li>
+                                <li><?= $lot->bank->name ?></li>
+                                <li>БИК: <span class="text-list-name"><?= $lot->bank->bik ?></span></li>
+                                <!-- <li>Кор. счет: <span class="text-list-name"><? $lot ?></span></li> -->
+                                <li>Расчетный счет: <span class="text-list-name"><?= $lot->bank->payment ?></span></li>
+                                <li>Лицевой счет: <span class="text-list-name"><?= $lot->bank->personal ?></span></li>
                                 </ul>
                             </li>
                             <? } ?>
@@ -570,48 +499,144 @@ foreach ($lot->info as $key => $value) {
                     <? } ?>
 
                     <?= Darwin::widget()?>
+
+                    <? if ($lot->torg->case) {?>
+                    <? if ($lot->torg->case->documents) { ?>
+
                     <div id="docs" class="fullwidth-horizon--section">
-                        <h5 class="heading-title">Документы</h5>
+                        <h5 class="heading-title">Документы по делу должника</h5>
                         <ul class="list-icon-absolute what-included-list mb-30 long-text">
+                        <? foreach ($lot->torg->case->documents as $document) { ?>
 
-                            <? foreach ($lot->torg->case->documents as $document) { ?>
-
-                                <?
-                                    switch ($document->format) {
-                                        case 'doc':
-                                            $icon = '<i class="far fa-file-word"></i>';
-                                            break;
-                                        case 'docs':
-                                            $icon = '<i class="far fa-file-word"></i>';
-                                            break;
-                                        case 'xls':
-                                            $icon = '<i class="far fa-file-excel"></i>';
-                                            break;
-                                        case 'xlsx':
-                                            $icon = '<i class="far fa-file-excel"></i>';
-                                            break;
-                                        case 'pdf':
-                                            $icon = '<i class="far fa-file-pdf"></i>';
-                                            break;
-                                        case 'zip':
-                                            $icon = '<i class="far fa-file-archive"></i>';
-                                            break;
-                                        default:
-                                            $icon = '<i class="far fa-file"></i>';
-                                            break;
-                                    }
-                                ?>
-                                <li>
-                                    <span class="icon-font"><?=$icon?></span> 
-                                    <a href="<?=$document->url?>" target="_blank"><?=$document->name?></a>
-                                </li>
-                            
-                            <? } ?>
-                            
+                            <?
+                                switch ($document->format) {
+                                    case 'doc':
+                                        $icon = '<i class="far fa-file-word"></i>';
+                                        break;
+                                    case 'docs':
+                                        $icon = '<i class="far fa-file-word"></i>';
+                                        break;
+                                    case 'xls':
+                                        $icon = '<i class="far fa-file-excel"></i>';
+                                        break;
+                                    case 'xlsx':
+                                        $icon = '<i class="far fa-file-excel"></i>';
+                                        break;
+                                    case 'pdf':
+                                        $icon = '<i class="far fa-file-pdf"></i>';
+                                        break;
+                                    case 'zip':
+                                        $icon = '<i class="far fa-file-archive"></i>';
+                                        break;
+                                    default:
+                                        $icon = '<i class="far fa-file"></i>';
+                                        break;
+                                }
+                            ?>
+                            <li>
+                                <span class="icon-font"><?=$icon?></span> 
+                                <a href="<?=$document->url?>" target="_blank"><?=$document->name?></a>
+                            </li>
+                        
+                        <? } ?>
                         </ul>
+                            
                         <a href="#docs" class="open-text-js">Все документы</a>
                         <div class="mb-50"></div>
                     </div>
+
+                    <? } ?>
+                    <? } ?>
+
+                    <? if ($lot->torg->documents) {?>
+                    <div id="docs" class="fullwidth-horizon--section">
+                        <h5 class="heading-title">Документы по торгу</h5>
+                        
+                        <ul class="list-icon-absolute what-included-list mb-30 long-text">
+                        <? foreach ($lot->torg->documents as $document) { ?>
+
+                            <?
+                                switch ($document->format) {
+                                    case 'doc':
+                                        $icon = '<i class="far fa-file-word"></i>';
+                                        break;
+                                    case 'docs':
+                                        $icon = '<i class="far fa-file-word"></i>';
+                                        break;
+                                    case 'xls':
+                                        $icon = '<i class="far fa-file-excel"></i>';
+                                        break;
+                                    case 'xlsx':
+                                        $icon = '<i class="far fa-file-excel"></i>';
+                                        break;
+                                    case 'pdf':
+                                        $icon = '<i class="far fa-file-pdf"></i>';
+                                        break;
+                                    case 'zip':
+                                        $icon = '<i class="far fa-file-archive"></i>';
+                                        break;
+                                    default:
+                                        $icon = '<i class="far fa-file"></i>';
+                                        break;
+                                }
+                            ?>
+                            <li>
+                                <span class="icon-font"><?=$icon?></span> 
+                                <a href="<?=$document->url?>" target="_blank"><?=$document->name?></a>
+                            </li>
+                        
+                        <? } ?>
+                        </ul>
+                            
+                        <a href="#docs" class="open-text-js">Все документы</a>
+                        <div class="mb-50"></div>
+                    </div>
+                    <? } ?>
+
+                    <? if ($lot->documents) {?>
+                    <div id="docs" class="fullwidth-horizon--section">
+                        <h5 class="heading-title">Документы по лоту</h5>
+                        
+                        <ul class="list-icon-absolute what-included-list mb-30 long-text">
+                        <? foreach ($lot->documents as $document) { ?>
+
+                            <?
+                                switch ($document->format) {
+                                    case 'doc':
+                                        $icon = '<i class="far fa-file-word"></i>';
+                                        break;
+                                    case 'docs':
+                                        $icon = '<i class="far fa-file-word"></i>';
+                                        break;
+                                    case 'xls':
+                                        $icon = '<i class="far fa-file-excel"></i>';
+                                        break;
+                                    case 'xlsx':
+                                        $icon = '<i class="far fa-file-excel"></i>';
+                                        break;
+                                    case 'pdf':
+                                        $icon = '<i class="far fa-file-pdf"></i>';
+                                        break;
+                                    case 'zip':
+                                        $icon = '<i class="far fa-file-archive"></i>';
+                                        break;
+                                    default:
+                                        $icon = '<i class="far fa-file"></i>';
+                                        break;
+                                }
+                            ?>
+                            <li>
+                                <span class="icon-font"><?=$icon?></span> 
+                                <a href="<?=$document->url?>" target="_blank"><?=$document->name?></a>
+                            </li>
+                        
+                        <? } ?>
+                        </ul>
+                            
+                        <a href="#docs" class="open-text-js">Все документы</a>
+                        <div class="mb-50"></div>
+                    </div>
+                    <? } ?>
 
                     <? if ($lots_bankrupt[0] != null) { ?>
                     <div id="other-lot" class="fullwidth-horizon--section">
