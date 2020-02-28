@@ -79,7 +79,7 @@ class DoljnikController extends Controller
   {
     $title = 'Список должников';
     $model = new BankruptSearch();
-    $model->type = 'person';
+    $model->type = 'company';
     $bankruptQuery = Bankrupts::find();
 
     // Мета данные Strat-> 
