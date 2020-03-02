@@ -39,7 +39,7 @@ use backend\models\UserAccess;
                 'activateParents'=>true,
                 'items' => [
                     // ['label' => 'Меню', 'options' => ['class' => 'header'], 'template' => '{label}'],
-                    // ['label' => 'Главная', 'url' => ['site/index'], 'icon' => 'home'],
+                    ['label' => 'Главная', 'url' => ['site/index'], 'icon' => 'home'],
                     [
                         'label' => 'Лоты', 
                         'url' => ['lots/index'], 
@@ -56,6 +56,28 @@ use backend\models\UserAccess;
                             [
                                 'label' => 'Добавить лот',
                                 'url' => ['lots/create'],
+                                'icon' => 'plus',
+                                'visible' => UserAccess::forManager('lots', 'add')
+                            ],
+                        ]
+
+                    ],
+                    [
+                        'label' => 'Организации', 
+                        'url' => ['owners/index'], 
+                        'icon' => 'table',
+                        'visible' => UserAccess::forManager('lots'),
+                        'options' => ['class' => 'treeview'],
+                        'items' => [
+                            [
+                                'label' => 'Список организации',
+                                'url' => ['owners/index'],
+                                'icon' => 'list-ul',
+                                'visible' => UserAccess::forManager('lots')
+                            ],
+                            [
+                                'label' => 'Добавить организацию',
+                                'url' => ['owners/create'],
                                 'icon' => 'plus',
                                 'visible' => UserAccess::forManager('lots', 'add')
                             ],

@@ -3,6 +3,7 @@
 namespace backend\models\Editors;
 
 use Yii;
+use yii\helpers\FileHelper;
 
 /**
  * This is the model class for table "eiLot.owners".
@@ -30,6 +31,8 @@ use Yii;
  */
 class OwnerrEditor extends \yii\db\ActiveRecord
 {
+    public $bg;
+    public $upload;
     /**
      * {@inheritdoc}
      */
@@ -45,11 +48,13 @@ class OwnerrEditor extends \yii\db\ActiveRecord
     {
         return [
             [['createdAt', 'updatedAt', 'info', 'template'], 'safe'],
-            [['type', 'typeId', 'title', 'url', 'logo', 'description', 'email', 'phone', 'linkEi', 'address', 'checked'], 'required'],
-            [['typeId', 'checked', 'regionId'], 'default', 'value' => null],
+            [['title', 'url', 'description', 'email', 'phone', 'linkEi', 'address'], 'required'],
+            [['regionId'], 'default', 'value' => null],
+            [['typeId', 'checked'], 'default', 'value' => 1],
             [['typeId', 'checked', 'regionId'], 'integer'],
             [['title', 'url', 'logo', 'description', 'email', 'phone', 'linkEi', 'address', 'inn', 'city', 'district'], 'string'],
             [['type'], 'string', 'max' => 50],
+            [['upload','bg'], 'file', 'skipOnEmpty' => true],
         ];
     }
 
@@ -59,21 +64,20 @@ class OwnerrEditor extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID владельца или организации
-',
+            'id' => 'ID владельца или организации',
             'createdAt' => 'Дата и время добавления записи ',
             'updatedAt' => 'Дата и время последнего изменения записи ',
-            'type' => 'Тип владельца. Вид организации.',
+            'type' => 'Тип владельца.',
             'typeId' => 'ID типа владельца',
-            'title' => 'Название организации владельца',
-            'url' => 'URL на сайт владельца',
-            'logo' => 'Ссылка на логотип',
-            'description' => 'Описание владельца',
-            'email' => 'E-Mail адрес владельца',
-            'phone' => 'Номер телефона владельца',
-            'linkEi' => 'Ссылка транслит для сайта ei.ru',
-            'address' => 'Полный адрес владельца',
-            'inn' => 'ИНН владельца',
+            'title' => 'Название организации',
+            'url' => 'URL на сайт',
+            'logo' => 'Логотип',
+            'description' => 'Описание',
+            'email' => 'E-Mail',
+            'phone' => 'Номер телефона',
+            'linkEi' => 'Ссылка для сайта ei.ru',
+            'address' => 'Полный адрес',
+            'inn' => 'ИНН',
             'info' => 'Дополнительная информация о владельце',
             'checked' => 'Проверен ли владелец',
             'regionId' => 'Регион владельца',
@@ -81,5 +85,28 @@ class OwnerrEditor extends \yii\db\ActiveRecord
             'city' => 'City',
             'district' => 'District',
         ];
+    }
+
+    public function uploadBg()
+    {
+        $pathImage = Yii::getAlias('@frontendWeb').'/img/owner/'.$this->id.'/';
+
+        FileHelper::createDirectory($pathImage);
+
+        $this->bg->saveAs($pathImage.'bg-fon.'.$this->bg->getExtension());
+
+        $template = $this->template;
+        $template['bg'] = '/img/owner/'.$this->id.'/bg-fon.'.$this->bg->getExtension();
+        $this->template = $template;
+    }
+    public function uploadLogo()
+    {
+        $pathImage = Yii::getAlias('@frontendWeb').'/img/owner/'.$this->id.'/';
+
+        FileHelper::createDirectory($pathImage);
+
+        $this->upload->saveAs($pathImage.'logo.'.$this->upload->getExtension());
+
+        $this->logo = '/img/owner/'.$this->id.'/logo.'.$this->upload->getExtension();
     }
 }

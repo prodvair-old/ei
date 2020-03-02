@@ -55,15 +55,16 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                ''          => 'lots/index',
+                ''          => 'site/index',
                 '/login'    => 'site/login',
                 '/logout'   => 'site/logout',
 
                 '/add-field-<type>' => 'site/add-field',
-                // '/lots'     => 'lots/index',
 
                 '/historys' => 'historys/index',
                 '/historys-all' => 'historys/all',
+
+                '/<controller:\w+>' => '<controller>/index',
             ],
         ],
     ],

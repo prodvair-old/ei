@@ -10,6 +10,7 @@ use backend\models\HistoryAdd;
 use backend\models\UserAccess;
 use backend\models\Editors\LotEditor;
 use backend\models\Editors\TorgEditor;
+use backend\models\Editors\OwnerrEditor;
 
 /**
  * Site controller
@@ -142,6 +143,9 @@ class SiteController extends Controller
                 break;
             case 'torg':
                 $model  = new TorgEditor();
+                break;
+            case 'owner':
+                $model  = new OwnerrEditor();
                 break;
         }
         $name   = Yii::$app->request->get('name');

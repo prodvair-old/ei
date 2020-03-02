@@ -20,7 +20,7 @@ $dataProvider = new ActiveDataProvider([
     ]
 ]);
 ?>
- <?php LteBox::begin(['type'=>LteConst::TYPE_DEFAULT]);?>
+<?php LteBox::begin(['type'=>LteConst::TYPE_DEFAULT]);?>
         <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'columns' => [

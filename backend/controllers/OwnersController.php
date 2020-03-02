@@ -10,8 +10,7 @@ use common\models\LoginForm;
 use yii\data\Pagination;
 
 use backend\models\UserAccess;
-use backend\models\Editors\LotEditor;
-use backend\models\Editors\TorgEditor;
+use backend\models\Editors\OwnerrEditor;
 
 use common\models\Query\Lot\Owners;
 use backend\models\HistoryAdd;
@@ -31,7 +30,7 @@ class OwnersController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['list', 'update', 'create', 'index', 'image-del'],
+                        'actions' => ['list', 'update', 'create', 'index', 'delete'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -111,98 +110,85 @@ class OwnersController extends Controller
     }
     public function actionIndex()
     {
-        if (!UserAccess::forManager('lots')) {
+        if (!UserAccess::forManager('owners')) {
             return $this->goHome();
         }
 
-        $lots = LotsAll::find()->joinWith('torg')->orderBy('torg."publishedDate" DESC');
+        $owners = Owners::find();
         
-        return $this->render('index', ['lots' => $lots]);
+        return $this->render('index', ['owners' => $owners]);
     }
 
     public function actionUpdate()
     {
-        if (!UserAccess::forManager('lots', 'edit')) {
+        if (!UserAccess::forManager('owners', 'edit')) {
             return $this->goHome();
         }
 
         $get = Yii::$app->request->get();
 
-        $modelLot = LotEditor::findOne($get['id']);
-        $lot = LotsAll::findOne($get['id']);
+        $model = OwnerrEditor::findOne($get['id']);
 
-        if ($modelLot->load(Yii::$app->request->post()) && $modelLot->validate()) {
-
-            if ($modelLot->uploads = UploadedFile::getInstances($modelLot, 'uploads')) {
-                $modelLot->uploadImages();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->bg = UploadedFile::getInstance($model, 'bg')) {
+                $model->uploadBg();
             }
 
-            if ($modelLot->update()) {
-                Yii::$app->session->setFlash('success', "Изменения лота успешно применены");
-                HistoryAdd::edit(1, 'lots/update','Редактирование лота №'.$lot->id, ['lotId' => $lot->id], Yii::$app->user->identity);
+            if ($model->upload = UploadedFile::getInstance($model, 'upload')) {
+                $model->uploadLogo();
+            }
+
+            if ($model->update()) {
+                Yii::$app->session->setFlash('success', "Изменения организации успешно применены");
+                HistoryAdd::edit(1, 'owners/update','Редактирование организации №'.$model->id, ['ownerId' => $model->id], Yii::$app->user->identity);
             } else {
-                Yii::$app->session->setFlash('error', "Ошибка при сохранении новых данных лота");
-                HistoryAdd::edit(2, 'lots/update','Ошибка при редактирования лота №'.$lot->id, ['lotId' => $lot->id], Yii::$app->user->identity);
+                Yii::$app->session->setFlash('error', "Ошибка при сохранении новых данных организации");
+                HistoryAdd::edit(2, 'owners/update','Ошибка при редактирования организации №'.$model->id, ['ownerId' => $model->id], Yii::$app->user->identity);
             }
 
-            return $this->redirect(['lots/update', 'id' => $lot->id]);
+            return $this->redirect(['owners/update', 'id' => $model->id]);
         }
 
-        if (UserAccess::forManager('torgs')) {
-            $modelTorg = TorgEditor::findOne($modelLot->torgId);
-        }
-
-        return $this->render('update', ['modelLot' => $modelLot, 'modelTorg' => $modelTorg, 'lot' => $lot]);
+        return $this->render('update', ['model' => $model]);
     }
     public function actionCreate()
     {
-        if (!UserAccess::forManager('lots', 'add')) {
+        if (!UserAccess::forManager('owners', 'add')) {
             return $this->goHome();
         }
-
-        // $get = Yii::$app->request->get();
-
-        $modelLot = new LotEditor();
-
-        $modelTorg = new TorgEditor();
-
-        if ($modelTorg->load(Yii::$app->request->post()) && $modelTorg->validate()) {
-
-            if ($modelTorg->save()) {
-                Yii::$app->session->setFlash('success', "Новый торг успешно добавлен");
-                HistoryAdd::edit(1, 'lots/create','Добавлен новый торг №'.$modelTorg->id, ['torgId' => $modelTorg->id], Yii::$app->user->identity);
-
-                $modelLot->torgId = $modelTorg->id;
-
-                if ($modelLot->load(Yii::$app->request->post()) && $modelLot->validate()) {
-
-                    if ($modelLot->uploads = UploadedFile::getInstances($modelLot, 'uploads')) {
-                        $modelLot->uploadImages();
-                    }
         
-                    if ($modelLot->save()) {
-                        Yii::$app->session->setFlash('success', "Новый лот успешно добавлен");
-                        HistoryAdd::edit(1, 'lots/create','Добавлен новый лот №'.$modelLot->id, ['lotId' => $modelLot->id], Yii::$app->user->identity);
-                    } else {
-                        Yii::$app->session->setFlash('error', "Ошибка при добавлении нового лота");
-                        HistoryAdd::edit(2, 'lots/create','Ошибка при добавлении нового лота №'.$modelLot, ['lotId' => $modelLot->id], Yii::$app->user->identity);
-                    }
-        
-                    return $this->redirect(['lots/update', 'id' => $modelLot->id]);
+        $model = new OwnerrEditor();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+            if ($model->save()) {
+
+                if ($model->bg = UploadedFile::getInstance($model, 'bg')) {
+                    $model->uploadBg();
+                    $model->update();
                 }
-            } else {
-                Yii::$app->session->setFlash('error', "Ошибка при добавлении нового торга");
-                HistoryAdd::edit(2, 'lots/create','Ошибка при редактирования торга №'.$modelTorg->id, ['torgId' => $modelTorg->id], Yii::$app->user->identity);
-            }
+    
+                if ($model->upload = UploadedFile::getInstance($model, 'upload')) {
+                    $model->uploadLogo();
+                    $model->update();
+                }
 
+                Yii::$app->session->setFlash('success', "Новая организация успешно добавлена");
+                HistoryAdd::edit(1, 'owners/update','Добавлена новая организация №'.$model->id, ['ownerId' => $model->id], Yii::$app->user->identity);
+
+                return $this->redirect(['owners/update', 'id' => $model->id]);
+            } else {
+                Yii::$app->session->setFlash('error', "Ошибка при добавлении организации");
+                HistoryAdd::edit(2, 'owners/update','Ошибка при добавлении организации', null, Yii::$app->user->identity);
+            }
         }
 
-        return $this->render('create', ['modelLot' => $modelLot, 'modelTorg' => $modelTorg]);
+        return $this->render('create', ['model' => $model]);
     }
 
     public function actionImageDel()
     {
-        if (!UserAccess::forManager('lots', 'edit')) {
+        if (!UserAccess::forManager('owners', 'edit')) {
             return $this->goHome();
         }
 
@@ -227,5 +213,25 @@ class OwnersController extends Controller
         }
 
         return $this->redirect(['lots/update', 'id' => $lot->id]);
+    }
+    public function actionDelete()
+    {
+        if (!UserAccess::forManager('owners', 'delete')) {
+            return $this->goHome();
+        }
+
+        $get = Yii::$app->request->get();
+
+        $owner = OwnerrEditor::findOne($get['id']);
+
+        if ($owner->delete()) {
+            Yii::$app->session->setFlash('success', "Организация успешно удалёно");
+            HistoryAdd::remove(1, 'owners/delete','Удалёна организация №'.$get['id'], ['ownerId' => $get['id']], Yii::$app->user->identity);
+            return $this->redirect(['owners/index']);
+        } else {
+            Yii::$app->session->setFlash('error', "Ошибка при удалении организации №".$get['id']);
+            HistoryAdd::remove(2, 'owners/delete','Ошибка удаления организации №'.$get['id'], ['ownerId' => $get['id']], Yii::$app->user->identity);
+            return $this->redirect(['owners/update', 'id' => $get['id']]);
+        }
     }
 }
