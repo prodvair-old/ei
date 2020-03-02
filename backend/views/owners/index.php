@@ -35,10 +35,11 @@ $dataProvider = new ActiveDataProvider([
                         [
                             'attribute' => 'logo',
                             'label' => 'Логотип',
-                            'format' => 'image',
+                            'format' => 'html',    
                             'value' => function ($model) {
-                                    return Yii::$app->params['frontLink'].$model->logo;
-                            }
+                                return Html::img(Yii::$app->params['frontLink'].$model->logo,
+                                    ['width' => '70px']);
+                            },
                         ],
                         [
                             'attribute' => 'title',
