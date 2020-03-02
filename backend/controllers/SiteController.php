@@ -76,7 +76,11 @@ class SiteController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            if ($link = Yii::$app->request->get('link')) {
+                return $this->redirect([$link['to'].'/'.$link['page'], 'id' => $link['id']]);
+            } else {
+                return $this->goHome();
+            }
         }
 
         $model = new LoginForm();
@@ -87,7 +91,11 @@ class SiteController extends Controller
                 if ($login['status']) {
                     HistoryAdd::singIn(1, 'Вход в систему');
 
-                    return $this->goBack();
+                    if ($link = Yii::$app->request->get('link')) {
+                        return $this->redirect([$link['to'].'/'.$link['page'], 'id' => $link['id']]);
+                    } else {
+                        return $this->goBack();
+                    }
                 }
 
                 if ($login['user']) {

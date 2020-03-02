@@ -12,10 +12,12 @@ use frontend\components\LotBlock;
 use frontend\components\Darwin; 
 use frontend\components\ServiceLotFormWidget;
 
+use frontend\models\UserAccess;
 use frontend\models\ViewPage;
 
 use common\models\Query\WishList;
 use common\models\Query\Lot\Lots;
+
 
 $view = new ViewPage();
 
@@ -161,6 +163,18 @@ foreach ($lot->info as $key => $value) {
                                     <img src="img/star<?=($lot->getWishId(Yii::$app->user->id))? '' : '-o' ?>.svg" alt="">
                                 </a>
                             </div>
+                            <? 
+                                if (!Yii::$app->user->isGuest) {
+                                    if (Yii::$app->user->identity->role !== 'user' && UserAccess::forManager('lots', 'edit')) {
+                            ?>
+                                <div class="mr-10 text-muted">|</div>
+                                <div class="mr-10 rating-item rating-inline">
+                                    <a href="<?= Yii::$app->params['backLink'].'/login?token='.Yii::$app->user->identity->auth_key.'&link[to]=lots&link[page]=update&link[id]='.$lot->id ?>" target="_blank">
+                                        Редактировать
+                                    </a>
+                                </div>
+                            <? } }?>
+                            
                         </div>
                         
                         <?if ($lot->images[0]) { ?>
