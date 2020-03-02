@@ -26,7 +26,7 @@ if ($type == 'bankrupt') {
     $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана актуальная информация об имуществе банкротов и должников, выставленном на торгах на ЭТП, публичных аукционах, а также имущество ряда коммерческих организаций и муниципальных учреждений.</span>';
 } else {
     $title = '<span class="font200"'.(($owner->template['color-5'])? 'style="color: '.$owner->template['color-5'].'"': '').'>'.$owner->title.'</span>';
-    $imgBG = 'http://n.ei.ru'.$owner->template['bg'];
+    $imgBG = $owner->template['bg'];
     $description = $owner->description;
     
     // ID организации: $owner->id

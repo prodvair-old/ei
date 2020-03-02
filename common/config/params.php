@@ -8,5 +8,5 @@ return [
 
     'developmenEmail' => 'prodvair.almaz@yandex.ru',
     'frontLink' => 'https://ei.ru',
-    'backLink' => 'http://admin.ei.ru',
+    'backLink' => 'http://panel.ei.ru',
 ];
