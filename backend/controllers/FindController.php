@@ -73,6 +73,7 @@ class FindController extends Controller
         $modelImport = new ImportFIleForm();
 
         if(Yii::$app->request->post()){
+            ini_set('memory_limit', '1024M');
             $modelImport->fileImport = \yii\web\UploadedFile::getInstance($modelImport,'fileImport');
             
             if($modelImport->fileImport && $modelImport->validate()){
