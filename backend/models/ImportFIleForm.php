@@ -39,7 +39,7 @@ class ImportFIleForm extends Model
 
         $result = ['or'];
 
-        while(!empty($sheetData[$baseRow]['B']) || $sheetData[$baseRow]['B'] != ' '){
+        while (!empty($sheetData[$baseRow]['B'])) {
             $where = ['or'];
 
             $where[] = ['like', 'lotPropName', (string)$sheetData[$baseRow]['B']];
