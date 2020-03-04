@@ -35,7 +35,7 @@ class ImportFIleForm extends Model
         $objPHPExcel = $objReader->load($this->fileImport->tempName);
         $sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
 
-        $baseRow = 21;
+        $baseRow = 2;
 
         $result = ['or'];
 
@@ -45,16 +45,16 @@ class ImportFIleForm extends Model
             $where[] = ['like', 'lotPropName', (string)$sheetData[$baseRow]['B']];
             
             
-            // if (strpos(mb_strtolower((string)$sheetData[$baseRow]['C'],'UTF-8'), 'ип') !== false || strpos(mb_strtolower((string)$sheetData[$baseRow]['C'],'UTF-8'), 'ооо') !== false || strpos(mb_strtolower((string)$sheetData[$baseRow]['C'],'UTF-8'), 'оао') !== false) {
-            //     $where[] = ['like', 'lotPropName', (string)$sheetData[$baseRow]['C']];
-            // } else {
-            //     $names = explode(' ', (string)$sheetData[$baseRow]['C']);
-            //     $where[] = ['like', 'lotPropName', $names[0]];
-            //     // $where[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').'.'.mb_substr($names[2],0,1,'UTF-8').'.'];
-            //     // $where[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').'. '.mb_substr($names[2],0,1,'UTF-8').'.'];
-            //     // $where[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').' '.mb_substr($names[2],0,1,'UTF-8')];
-            //     // $where[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').mb_substr($names[2],0,1,'UTF-8')];
-            // }
+            if (strpos(mb_strtolower((string)$sheetData[$baseRow]['C'],'UTF-8'), 'ип') !== false || strpos(mb_strtolower((string)$sheetData[$baseRow]['C'],'UTF-8'), 'ооо') !== false || strpos(mb_strtolower((string)$sheetData[$baseRow]['C'],'UTF-8'), 'оао') !== false) {
+                $where[] = ['like', 'lotPropName', (string)$sheetData[$baseRow]['C']];
+            } else {
+                $names = explode(' ', (string)$sheetData[$baseRow]['C']);
+                $where[] = ['like', 'lotPropName', $names[0]];
+                $where[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').'.'.mb_substr($names[2],0,1,'UTF-8').'.'];
+                $where[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').'. '.mb_substr($names[2],0,1,'UTF-8').'.'];
+                $where[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').' '.mb_substr($names[2],0,1,'UTF-8')];
+                $where[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').mb_substr($names[2],0,1,'UTF-8')];
+            }
 
             $where[] = 'to_tsvector("lotPropName") @@ plainto_tsquery(\''.(string)$sheetData[$baseRow]['D'].'\')';
 
