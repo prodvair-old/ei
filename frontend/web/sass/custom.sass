@@ -904,6 +904,7 @@ body
 .main-page
   &__item
     width: 100%
+
   &__link 
     width: 100%
     padding: 20px 30px 
@@ -923,15 +924,17 @@ body
     letter-spacing: -1px!important
     font-weight: 400
   &__category
-    // width: 100%
     margin: 0 1rem
+    @media (max-width: 576px)
+      margin: 0
     &__block
       height: 100%
       padding: 30px
       width: auto    
       background: #f9f9f9 
       border-radius: 5px
-      // transition: all .3s ease
+      @media (max-width: 576px)
+        padding: 20px
       ul
         margin: 0 -1rem
       li
