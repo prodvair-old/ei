@@ -37,7 +37,7 @@ gulp.task("browser-sync-server", function() {
       port: 3002
     },
     baseDir: "frontend/web/",
-    proxy: "http://dev-ei.new",
+    proxy: "http://dev-ei.test",
     port: 3005,
     ghostMode: {
       codeSync: false,

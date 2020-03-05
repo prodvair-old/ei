@@ -374,7 +374,7 @@ AppAsset::register($this);
                             </svg>
                         </div>
                         
-                        <p class="mt-20">Единый информатор собирает, обрабатывает, дополняет информацию со всех торговых площадок России.</p>
+                        <p class="mt-20">Единый информатор собирает, обрабатывает, дополняет информацию с торговых площадок России.</p>
                         
                         <!-- <a href="<?=Url::to(['pages/about'])?>" class="text-capitalize font14 h6 line-1 mb-0 font500 mt-30">Узнать больше <i class="elegent-icon-arrow_right font18 inline-block-middle"></i></a> -->
                         
