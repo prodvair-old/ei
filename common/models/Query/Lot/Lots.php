@@ -158,7 +158,16 @@ class Lots extends ActiveRecord
         return parent::find()->onCondition([
             'and',
             [ 'published' => true ],
-            ['!=', 'status', 'Окончен'],
+            ['not like', 'lower(status)', mb_strtolower('Окончен', 'UTF-8')],
+            ['not like', 'lower(status)', mb_strtolower('Несостоявшиеся', 'UTF-8')],
+            ['not like', 'lower(status)', mb_strtolower('Не состоялся', 'UTF-8')],
+            ['not like', 'lower(status)', mb_strtolower('Отменен/аннулирован', 'UTF-8')],
+            ['not like', 'lower(status)', mb_strtolower('Отменён организатором', 'UTF-8')],
+            ['not like', 'lower(status)', mb_strtolower('Торги завершены', 'UTF-8')],
+            ['not like', 'lower(status)', mb_strtolower('Торги отменены', 'UTF-8')],
+            ['not like', 'lower(status)', mb_strtolower('Торги не состоялись', 'UTF-8')],
+            ['not like', 'lower(status)', mb_strtolower('Торги по лоту отменены', 'UTF-8')],
+            ['not like', 'lower(status)', mb_strtolower('Торги по лоту не состоялись', 'UTF-8')],
             [ 
                 'not',
                 ['torg.publishedDate' => null],
