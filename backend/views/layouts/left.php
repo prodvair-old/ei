@@ -94,7 +94,7 @@ use backend\models\UserAccess;
                         'label' => 'Расширенный поиск', 
                         'url' => ['find/arrest'], 
                         'icon' => 'filter',
-                        'visible' => UserAccess::forAgent(),
+                        'visible' => UserAccess::forAgent('find', 'arrest'),
 
                     ],
                     [

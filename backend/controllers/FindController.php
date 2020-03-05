@@ -67,7 +67,7 @@ class FindController extends Controller
      */
     public function actionArrest()
     {
-        if (!UserAccess::forAgent()) {
+        if (!UserAccess::forAgent('find', 'arrest')) {
             return $this->goHome();
         }
         $modelImport = new ImportFIleForm();

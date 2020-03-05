@@ -336,7 +336,7 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
             <div class="col-lg-4">
                 <?= $form->field($modelTorg, 'msgId') ?>
             </div>
-            <? if (!UserAccess::forAgent('lots') && UserAccess::forSuperAdmin()) { ?>
+            <? if (!UserAccess::forAgent('lots') || UserAccess::forSuperAdmin()) { ?>
                 <div class="col-lg-4">
                     <?= $form->field($modelTorg, 'typeId')->dropDownList([
                             1 => 'Банкротное имущество',
