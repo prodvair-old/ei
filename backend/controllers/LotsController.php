@@ -129,7 +129,7 @@ class LotsController extends Controller
             return $this->goHome();
         }
 
-        if (UserAccess::forAgent('lots')) {
+        if (UserAccess::forAgent('lots') && !UserAccess::forSuperAdmin()) {
             $lots = LotsAll::find()->joinWith(['torg'])->where([
                 'torg.typeId' => 3,
                 'torg.publisherId' => Yii::$app->user->id
