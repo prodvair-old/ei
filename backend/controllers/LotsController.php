@@ -176,17 +176,13 @@ class LotsController extends Controller
           }
         }
 
-        if ($result['check']) {
-          $lots = LotsAll::find()->where($result['where']);
-        }
 
-
-      return $this->render('import', [
-        'modelImport' => $modelImport,
-        'loadCount' => $result['loadCount'],
-        'pages' => $pages,
-        'lots' => $lots
-      ]);
+        return $this->render('import', [
+            'modelImport' => $modelImport,
+            'loadCount' => $result['loadCount'],
+            'pages' => $pages,
+            'where' => $result['where']
+        ]);
     }
     public function actionUpdate()
     {
