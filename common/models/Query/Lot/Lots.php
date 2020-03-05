@@ -106,6 +106,10 @@ class Lots extends ActiveRecord
     {
         $today = new \DateTime();
 
+        if ($this->status == 'Окончен') {
+            return true;
+        }
+
         if ($this->torg->endDate === null || $this->torg->completeDate === null ) {
             return false;
         } else {
@@ -153,7 +157,8 @@ class Lots extends ActiveRecord
     {
         return parent::find()->onCondition([
             'and',
-            [ 'published' => true ], 
+            [ 'published' => true ],
+            ['!=', 'status', 'Окончен'],
             [ 
                 'not',
                 ['torg.publishedDate' => null],
