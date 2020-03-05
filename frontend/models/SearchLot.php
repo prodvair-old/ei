@@ -47,7 +47,7 @@ class SearchLot extends Model
      *
      * @return bool whether the creating new account was successful and email was sent
      */
-    public function searchBy($url = null, $type = null, $sortBy = '')
+    public function searchBy($url = null, $type = null, $sortBy = null)
     {
 
         if (!empty($this->archivCheck)) {
@@ -72,7 +72,13 @@ class SearchLot extends Model
         $where = ['and'];
         $where[] = ['published' => true];
         $having = '';
-        $sort = '';
+        $sort = [];
+
+        if ($sortBy) {
+            foreach ($sortBy as $key => $value) {
+                $sort[$key] = $value;
+            }
+        }
 
         if (!empty($this->type)) {
             if ($this->type !== 'all') {
@@ -83,10 +89,10 @@ class SearchLot extends Model
         if (!empty($this->search)) {
             $where[] = [
                 'or',
-                'to_tsvector(lot.description) @@ plainto_tsquery(\''.$this->search.'\')',
-                ['like', 'LOWER(lot.description)', mb_strtolower($this->search, 'UTF-8')],
+                'to_tsvector(lot.description) @@ plainto_tsquery(\''.pg_escape_string($this->search).'\')',
+                ['like', 'LOWER(lot.description)',pg_escape_string(mb_strtolower($this->search, 'UTF-8'))],
             ];
-            $sort = 'ts_rank(to_tsvector(lot.description), plainto_tsquery(\''.$this->search.'\')) ASC,';
+            $sort['ts_rank(to_tsvector(lot.description), plainto_tsquery(\''.pg_escape_string($this->search).'\'))'] = SORT_ASC;
         }
 
 
@@ -676,6 +682,6 @@ class SearchLot extends Model
         //         break;
         // }
 
-        return ['lots'=>$lots->orderBy($sort.' '.$sortBy), 'lotsPrice'=>$lotsPrice->where($where), 'url'=>$url];
+        return ['lots'=>$lots->orderBy($sort), 'lotsPrice'=>$lotsPrice->where($where), 'url'=>$url];
     }
 }

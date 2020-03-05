@@ -179,7 +179,7 @@ AppAsset::register($this);
               </div>
             </div>
 
-            <div class="col-12 col-auto">
+            <div class="col-12 col-auto ml-auto">
 
               <div class="navbar-wrapper">
 

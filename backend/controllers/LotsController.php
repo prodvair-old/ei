@@ -12,6 +12,7 @@ use yii\data\Pagination;
 use backend\models\UserAccess;
 use backend\models\Editors\LotEditor;
 use backend\models\Editors\TorgEditor;
+use backend\models\ImportZalog;
 
 use common\models\Query\Lot\LotsAll;
 use common\models\Query\Lot\LotCategorys;
@@ -33,7 +34,7 @@ class LotsController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['update', 'create', 'index', 'image-del', 'published', 'category-list', 'delete'],
+                        'actions' => ['update', 'create', 'index', 'import', 'image-del', 'published', 'category-list', 'delete'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -124,18 +125,68 @@ class LotsController extends Controller
     }
     public function actionIndex()
     {
-        if (!UserAccess::forManager('lots')) {
+        if (!UserAccess::forManager('lots') && !UserAccess::forAgent('lots')) {
             return $this->goHome();
         }
 
-        $lots = LotsAll::find()->joinWith('torg')->orderBy('torg."publishedDate" DESC');
+        if (UserAccess::forAgent('lots') && !UserAccess::forSuperAdmin()) {
+            $lots = LotsAll::find()->joinWith(['torg'])->where([
+                'torg.typeId' => 3,
+                'torg.publisherId' => Yii::$app->user->id
+            ])->orderBy('torg."publishedDate" DESC');
+        } else {
+            $lots = LotsAll::find()->joinWith('torg')->where([
+                '!=', 'torg.typeId', 3
+            ])->orderBy('torg."publishedDate" DESC');
+        }
         
         return $this->render('index', ['lots' => $lots]);
     }
+    public function actionImport()
+    {
+        if (!UserAccess::forAgent('lots', 'import')) {
+            return $this->goHome();
+        }
+        $modelImport = new ImportZalog();
 
+        if(Yii::$app->request->post()){
+          $modelImport->fileImport = \yii\web\UploadedFile::getInstance($modelImport,'fileImport');
+          if($modelImport->fileImport && $modelImport->validate()){
+            // try {
+                if ($modelImport->fileImport->getExtension() === 'xml') {
+                    $result = $modelImport->xml();
+                } else {
+                    $result = $modelImport->excel();
+                    
+                }
+                $modelImport->fileImport=null;
+                if ($result['check']) {
+                    Yii::$app->getSession()->setFlash('success','Импортирование прошло удачно!');
+                    HistoryAdd::import(1, 'lots/import','Импортирование лотов прошло удачно. Кол-во:'.$result['loadCount'], ['lots' => $result['where'], 'parser' =>Yii::$app->params['exelParseResult']], Yii::$app->user->identity);
+                } else {
+                    HistoryAdd::import(2, 'lots/import','Ошибка при иморте лотов. Кол-во:'.$result['loadCount'], Yii::$app->params['exelParseResult'], Yii::$app->user->identity);
+                    Yii::$app->getSession()->setFlash('error',"Ошибка при иморте лотов!");
+                }
+            // } catch (\Throwable $th) {
+            //   var_dump()
+            //   Yii::$app->getSession()->setFlash('error','Error');
+            // }
+          } else {
+            Yii::$app->getSession()->setFlash('error','Ошибка загрузки файла');
+          }
+        }
+
+
+        return $this->render('import', [
+            'modelImport' => $modelImport,
+            'loadCount' => $result['loadCount'],
+            'pages' => $pages,
+            'where' => $result['where']
+        ]);
+    }
     public function actionUpdate()
     {
-        if (!UserAccess::forManager('lots', 'edit')) {
+        if (!UserAccess::forManager('lots', 'edit') && !UserAccess::forAgent('lots', 'edit')) {
             return $this->goHome();
         }
 
@@ -143,6 +194,12 @@ class LotsController extends Controller
 
         $modelLot = LotEditor::findOne($get['id']);
         $lot = LotsAll::findOne($get['id']);
+
+        if (!UserAccess::forSuperAdmin()) {
+            if ((UserAccess::forAgent() && $lot->torg->typeId !== 3) || (UserAccess::forManager() && $lot->torg->typeId === 3)) {
+                return $this->goHome();
+            }
+        }
 
         $modelTorg = TorgEditor::findOne($modelLot->torgId);
 
@@ -212,7 +269,7 @@ class LotsController extends Controller
     }
     public function actionCreate()
     {
-        if (!UserAccess::forManager('lots', 'add')) {
+        if (!UserAccess::forManager('lots', 'add') && !UserAccess::forAgent('lots', 'add')) {
             return $this->goHome();
         }
 
@@ -263,7 +320,7 @@ class LotsController extends Controller
 
     public function actionImageDel()
     {
-        if (!UserAccess::forManager('lots', 'edit')) {
+        if (!UserAccess::forManager('lots', 'edit') && !UserAccess::forAgent('lots', 'edit')) {
             return $this->goHome();
         }
 
@@ -293,7 +350,7 @@ class LotsController extends Controller
     }
     public function actionPublished()
     {
-        if (!UserAccess::forManager('lots', 'edit')) {
+        if (!UserAccess::forManager('lots', 'edit') && !UserAccess::forAgent('lots', 'edit')) {
             return $this->goHome();
         }
 
@@ -323,7 +380,7 @@ class LotsController extends Controller
     }
     public function actionDelete()
     {
-        if (!UserAccess::forManager('lots', 'delete')) {
+        if (!UserAccess::forManager('lots', 'delete') && !UserAccess::forAgent('lots', 'delete')) {
             return $this->goHome();
         }
 

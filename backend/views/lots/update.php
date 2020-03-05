@@ -168,7 +168,11 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
             'collapseRemember' => true,
             'collapseDefault' => false,
             'isSolid'=>true,
-            'boxTools'=>Html::a('Назад', Url::to(['lots/index']),['class' => 'btn']).' '.Html::a('Удалить', '/lots/delete?id='.$modelLot->id,['class' => 'btn btn-danger', 'title' => 'Удалить', 'aria-label' => 'Удалить', 'data-pjax' => 0, 'data-confirm' => 'Вы уверены, что хотите Удалить этот лот?', 'data-method' => 'post']).' '.Html::a((($modelLot->published)? 'Снять с публикации' : 'Опубликовать'), '/lots/published?id='.$modelLot->id,['class' => 'btn btn-primary', 'title' => (($modelLot->published)? 'Снять с публикации' : 'Опубликовать'), 'aria-label' => (($modelLot->published)? 'Снять с публикации' : 'Опубликовать'), 'data-pjax' => 0, 'data-confirm' => 'Вы уверены, что хотите '.(($modelLot->published)? 'Снять с публикации' : 'Опубликовать').' этот лот?', 'data-method' => 'post']).' '.Html::a('Страница лота', Yii::$app->params['frontLink'].'/'.$lot->url,['class' => 'btn', 'target' => '_blank']),
+            'boxTools'=>
+                Html::a('Назад', Url::to(['lots/index']),['class' => 'btn']).' '.
+                ((UserAccess::forManager('lots', 'delete') || UserAccess::forAgent('lots', 'delete'))? Html::a('Удалить', '/lots/delete?id='.$modelLot->id,['class' => 'btn btn-danger', 'title' => 'Удалить', 'aria-label' => 'Удалить', 'data-pjax' => 0, 'data-confirm' => 'Вы уверены, что хотите Удалить этот лот?', 'data-method' => 'post']):'').' '.
+                Html::a((($modelLot->published)? 'Снять с публикации' : 'Опубликовать'), '/lots/published?id='.$modelLot->id,['class' => 'btn btn-primary', 'title' => (($modelLot->published)? 'Снять с публикации' : 'Опубликовать'), 'aria-label' => (($modelLot->published)? 'Снять с публикации' : 'Опубликовать'), 'data-pjax' => 0, 'data-confirm' => 'Вы уверены, что хотите '.(($modelLot->published)? 'Снять с публикации' : 'Опубликовать').' этот лот?', 'data-method' => 'post']).' '.
+                Html::a('Страница лота', Yii::$app->params['frontLink'].'/'.$lot->url,['class' => 'btn', 'target' => '_blank']),
             'tooltip'=>'Данные лота',
             'title'=>'Главные характеристики лота',
     ])?>
@@ -319,20 +323,28 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
         ])?>
 
         <div class="form-group">
-            <?= (UserAccess::forManager('torgs','edit'))? Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) : 'У вас нет прав на редактирование' ?>
+            <?= (UserAccess::forManager('torgs','edit') || UserAccess::forAgent('torgs', 'edit'))? Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) : 'У вас нет прав на редактирование' ?>
         </div>
+
+        <? if (UserAccess::forAgent('lots') && !UserAccess::forSuperAdmin()) { ?>
+            <?= $form->field($modelTorg, 'typeId')->hiddenInput(['value'=>3])->label(false) ?>
+            <?= $form->field($modelTorg, 'publisherId')->hiddenInput(['value'=>Yii::$app->user->id])->label(false) ?>
+            <?= $form->field($modelTorg, 'ownerId')->hiddenInput(['value'=>Yii::$app->user->identity->ownerId])->label(false) ?>
+        <? } ?>
 
         <div class="row">
             <div class="col-lg-4">
                 <?= $form->field($modelTorg, 'msgId') ?>
             </div>
-            <div class="col-lg-4">
-                <?= $form->field($modelTorg, 'typeId')->dropDownList([
-                        1 => 'Банкротное имущество',
-                        2 => 'Арестованное имущество',
-                        3 => 'Залоговое имущество',
-                ], ['id' => 'type-select']) ?>
-            </div>
+            <? if (!UserAccess::forAgent('lots') || UserAccess::forSuperAdmin()) { ?>
+                <div class="col-lg-4">
+                    <?= $form->field($modelTorg, 'typeId')->dropDownList([
+                            1 => 'Банкротное имущество',
+                            2 => 'Арестованное имущество',
+                            3 => 'Залоговое имущество',
+                        ], ['id' => 'type-select']) ?>
+                </div>
+            <? } ?>
             <div class="col-lg-4">
                 <?= $form->field($modelTorg, 'tradeTypeId')->dropDownList([
                         1 => 'Публичное предложение',
@@ -341,105 +353,107 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
             </div>
         </div>
 
-        <hr>
+        <? if (UserAccess::forManager('lots')) { ?>
+            <hr>
 
-        <div class="row">
-            <div class="col-lg-6">
-                <?=$form->field($modelTorg, 'publisherId')->widget(Select2::classname(), [
-                        'options' => ['placeholder' => 'Найти менеджера'],
-                        'pluginOptions' => [
-                            'allowClear' => true,
-                            'language' => [
-                                'errorLoading' => new JsExpression("function () { return 'Ошибка поиск результатов ...'; }"),
+            <div class="row">
+                <div class="col-lg-6">
+                    <?=$form->field($modelTorg, 'publisherId')->widget(Select2::classname(), [
+                            'options' => ['placeholder' => 'Найти менеджера'],
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                                'language' => [
+                                    'errorLoading' => new JsExpression("function () { return 'Ошибка поиск результатов ...'; }"),
+                                ],
+                                'ajax' => [
+                                    'url' => Url::to(['managers/list']),
+                                    'dataType' => 'json',
+                                    'data' => new JsExpression('function(params) { return {q:params.term}; }')
+                                ],
+                                'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                                'templateResult' => new JsExpression('function(data) { return data.text; }'),
+                                'templateSelection' => new JsExpression('function (data) { return data.text; }'),
                             ],
-                            'ajax' => [
-                                'url' => Url::to(['managers/list']),
-                                'dataType' => 'json',
-                                'data' => new JsExpression('function(params) { return {q:params.term}; }')
+                        ]);?>
+                </div>
+                <div class="col-lg-6">
+                    <?=$form->field($modelTorg, 'ownerId')->widget(Select2::classname(), [
+                            'options' => ['placeholder' => 'Найти владельца торга'],
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                                'language' => [
+                                    'errorLoading' => new JsExpression("function () { return 'Ошибка поиск результатов ...'; }"),
+                                ],
+                                'ajax' => [
+                                    'url' => Url::to(['owners/list']),
+                                    'dataType' => 'json',
+                                    'data' => new JsExpression('function(params) { return {q:params.term}; }')
+                                ],
+                                'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                                'templateResult' => new JsExpression('function(data) { return data.text; }'),
+                                'templateSelection' => new JsExpression('function (data) { return data.text; }'),
                             ],
-                            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-                            'templateResult' => new JsExpression('function(data) { return data.text; }'),
-                            'templateSelection' => new JsExpression('function (data) { return data.text; }'),
-                        ],
-                    ]);?>
+                        ]);?>
+                </div>
+                <div class="col-lg-6">
+                    <?=$form->field($modelTorg, 'etpId')->widget(Select2::classname(), [
+                            'options' => ['placeholder' => 'Найти торговую площадку'],
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                                'language' => [
+                                    'errorLoading' => new JsExpression("function () { return 'Ошибка поиск результатов ...'; }"),
+                                ],
+                                'ajax' => [
+                                    'url' => Url::to(['etp/list']),
+                                    'dataType' => 'json',
+                                    'data' => new JsExpression('function(params) { return {q:params.term}; }')
+                                ],
+                                'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                                'templateResult' => new JsExpression('function(data) { return data.text; }'),
+                                'templateSelection' => new JsExpression('function (data) { return data.text; }'),
+                            ],
+                        ]);?>
+                </div>
+                <div class="col-lg-6">
+                    <?=$form->field($modelTorg, 'bankruptId')->widget(Select2::classname(), [
+                            'options' => ['placeholder' => 'Найти должника'],
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                                'language' => [
+                                    'errorLoading' => new JsExpression("function () { return 'Ошибка поиск результатов ...'; }"),
+                                ],
+                                'ajax' => [
+                                    'url' => Url::to(['bankrupts/list']),
+                                    'dataType' => 'json',
+                                    'data' => new JsExpression('function(params) { return {q:params.term}; }')
+                                ],
+                                'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                                'templateResult' => new JsExpression('function(data) { return data.text; }'),
+                                'templateSelection' => new JsExpression('function (data) { return data.text; }'),
+                            ],
+                        ]);?>
+                </div>
+                <div class="col-lg-6">
+                    <?=$form->field($modelTorg, 'caseId')->widget(Select2::classname(), [
+                            'options' => ['placeholder' => 'Найти дело по торгу'],
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                                'language' => [
+                                    'errorLoading' => new JsExpression("function () { return 'Ошибка поиск результатов ...'; }"),
+                                ],
+                                'ajax' => [
+                                    'url' => Url::to(['cases/list']),
+                                    'dataType' => 'json',
+                                    'data' => new JsExpression('function(params) { return {q:params.term}; }')
+                                ],
+                                'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                                'templateResult' => new JsExpression('function(data) { return data.text; }'),
+                                'templateSelection' => new JsExpression('function (data) { return data.text; }'),
+                            ],
+                        ]);?>
+                </div>
             </div>
-            <div class="col-lg-6">
-                <?=$form->field($modelTorg, 'ownerId')->widget(Select2::classname(), [
-                        'options' => ['placeholder' => 'Найти владельца торга'],
-                        'pluginOptions' => [
-                            'allowClear' => true,
-                            'language' => [
-                                'errorLoading' => new JsExpression("function () { return 'Ошибка поиск результатов ...'; }"),
-                            ],
-                            'ajax' => [
-                                'url' => Url::to(['owners/list']),
-                                'dataType' => 'json',
-                                'data' => new JsExpression('function(params) { return {q:params.term}; }')
-                            ],
-                            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-                            'templateResult' => new JsExpression('function(data) { return data.text; }'),
-                            'templateSelection' => new JsExpression('function (data) { return data.text; }'),
-                        ],
-                    ]);?>
-            </div>
-            <div class="col-lg-6">
-                <?=$form->field($modelTorg, 'etpId')->widget(Select2::classname(), [
-                        'options' => ['placeholder' => 'Найти торговую площадку'],
-                        'pluginOptions' => [
-                            'allowClear' => true,
-                            'language' => [
-                                'errorLoading' => new JsExpression("function () { return 'Ошибка поиск результатов ...'; }"),
-                            ],
-                            'ajax' => [
-                                'url' => Url::to(['etp/list']),
-                                'dataType' => 'json',
-                                'data' => new JsExpression('function(params) { return {q:params.term}; }')
-                            ],
-                            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-                            'templateResult' => new JsExpression('function(data) { return data.text; }'),
-                            'templateSelection' => new JsExpression('function (data) { return data.text; }'),
-                        ],
-                    ]);?>
-            </div>
-            <div class="col-lg-6">
-                <?=$form->field($modelTorg, 'bankruptId')->widget(Select2::classname(), [
-                        'options' => ['placeholder' => 'Найти должника'],
-                        'pluginOptions' => [
-                            'allowClear' => true,
-                            'language' => [
-                                'errorLoading' => new JsExpression("function () { return 'Ошибка поиск результатов ...'; }"),
-                            ],
-                            'ajax' => [
-                                'url' => Url::to(['bankrupts/list']),
-                                'dataType' => 'json',
-                                'data' => new JsExpression('function(params) { return {q:params.term}; }')
-                            ],
-                            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-                            'templateResult' => new JsExpression('function(data) { return data.text; }'),
-                            'templateSelection' => new JsExpression('function (data) { return data.text; }'),
-                        ],
-                    ]);?>
-            </div>
-            <div class="col-lg-6">
-                <?=$form->field($modelTorg, 'caseId')->widget(Select2::classname(), [
-                        'options' => ['placeholder' => 'Найти дело по торгу'],
-                        'pluginOptions' => [
-                            'allowClear' => true,
-                            'language' => [
-                                'errorLoading' => new JsExpression("function () { return 'Ошибка поиск результатов ...'; }"),
-                            ],
-                            'ajax' => [
-                                'url' => Url::to(['cases/list']),
-                                'dataType' => 'json',
-                                'data' => new JsExpression('function(params) { return {q:params.term}; }')
-                            ],
-                            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-                            'templateResult' => new JsExpression('function(data) { return data.text; }'),
-                            'templateSelection' => new JsExpression('function (data) { return data.text; }'),
-                        ],
-                    ]);?>
-            </div>
-        </div>
+        <? } ?>
 
         <hr>
 
@@ -509,8 +523,8 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
         <div id="ajax-content-torg" class="row"></div>
     
         <div class="form-group">
-            <?= (UserAccess::forManager('torgs','add'))? Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) : 'У вас нет прав на редактирование' ?>
-            <?= (UserAccess::forManager('torgs','add'))? Html::a('Добавить поле', 'javascript:void(0);', ['class' => 'btn btn-success', 'data' => ['toggle' => 'modal', 'target' => '#modal-torg']]) : '' ?>
+            <?= (UserAccess::forManager('torgs','edit') || UserAccess::forAgent('torgs', 'edit'))? Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) : 'У вас нет прав на редактирование' ?>
+            <?= (UserAccess::forManager('torgs','edit') || UserAccess::forAgent('torgs', 'edit'))? Html::a('Добавить поле', 'javascript:void(0);', ['class' => 'btn btn-success', 'data' => ['toggle' => 'modal', 'target' => '#modal-torg']]) : '' ?>
         </div>
 
     <?php CollapseBox::end()?>

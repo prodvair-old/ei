@@ -7,23 +7,65 @@ use kartik\grid\GridView;
 use insolita\wgadminlte\LteBox;
 use insolita\wgadminlte\LteConst;
 use yii\data\ActiveDataProvider;
+use common\models\Query\Lot\Lots;
 
 use backend\models\UserAccess;
 
-$this->params['h1'] = 'Список лотов';
-$this->title = 'Список лотов';
-
-$dataProvider = new ActiveDataProvider([
-    'query' => $lots,
-    'Pagination' => [
-        'pageSize' => 15
-    ]
-]);
+$this->params['h1'] = 'Импортирование лотов';
+$this->title = 'Импортирование лотов';
 ?>
-<? if (UserAccess::forManager('lots', 'add') || UserAccess::forAgent('lots', 'add')) { ?>
-    <div class="box-header"><a href="<?=Url::to(['lots/create'])?>" class="btn btn-success"><i class="fa fa-plus"></i> Добавить лот</a></div>
-<? } ?>
- <?php LteBox::begin(['type'=>LteConst::TYPE_DEFAULT]);?>
+
+<h4>Как загрузить лоты:</h4>
+<ul class="list-icon-absolute what-included-list mb-30">
+    <li>
+    <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+    Скачайте <a href="<?= Url::to('files/Формат_добавления_лотов_в_залоговое_иммущество_ei.ru.xlsx') ?>" target="_blank" download>шаблон excel</a> файла;
+    </li>
+    <li>
+    <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+    Заполните файл в соответствии с <a href="<?= Url::to('files/Формат_добавления_лотов_в_залоговое_иммущество_ei.ru.xlsx') ?>" target="_blank" download>требованиями</a>;
+    </li>
+    <li>
+    <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+    Загрузите заполненный вашими данными файл в соответствующую форму;
+    </li>
+    <li>
+    <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+    Лоты из файла появятся в профиле со статусом “Не опубликовано”;
+    </li>
+    <li>
+    <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+    Добавьте каждому лоту вручную фотографии (возможно выбрать несколько), добавьте <br>категорию и подкатегорию (возможно выбрать несколько);
+    </li>
+    <li>
+    <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+    Нажмите кнопку “Опубликовать”.
+    </li>
+</ul>
+
+<hr>
+
+<?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+
+    <div class="custom-file">
+        <?= $form->field($modelImport, 'fileImport',['template' => '<div class="custom-file">{label}{hint}{input}{error}</div>'])->fileInput(['class' => 'custom-file-input'])->label('Загрузить файл',['class'=>'custom-file-label']) ?>
+        
+        <?= Html::submitButton('Импортировать лоты', ['class' => 'btn btn-primary']); ?>
+    </div>
+
+
+    <?php ActiveForm::end(); ?>
+
+<?
+if ($where != null) {
+    $dataProvider = new ActiveDataProvider([
+        'query' => Lots::find()->where($where),
+        'Pagination' => [
+            'pageSize' => 15
+        ]
+    ]);
+?>
+    <?php LteBox::begin(['type'=>LteConst::TYPE_DEFAULT]);?>
         <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'columns' => [
@@ -83,4 +125,5 @@ $dataProvider = new ActiveDataProvider([
                         ],
                     ],
                 ]); ?>
-<?php LteBox::end()?>
+    <?php LteBox::end()?>
+<? } ?>

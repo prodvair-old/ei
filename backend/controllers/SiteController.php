@@ -76,10 +76,36 @@ class SiteController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            if ($link = Yii::$app->request->get('link')) {
-                return $this->redirect([$link['to'].'/'.$link['page'], 'id' => $link['id']]);
+            if (Yii::$app->user->identity->auth_key !== Yii::$app->request->get('token')) {
+                HistoryAdd::singOut(1, 'Выход из системы');
+
+                Yii::$app->user->logout();
+
+                $model = new LoginForm();
+
+                if ($model->token = Yii::$app->request->get('token')) {
+                    $login = $model->loginAdminToken();
+    
+                    if ($login['status']) {
+                        HistoryAdd::singIn(1, 'Вход в систему');
+    
+                        if ($link = Yii::$app->request->get('link')) {
+                            return $this->redirect([$link['to'].'/'.$link['page'], 'id' => $link['id']]);
+                        } else {
+                            return $this->goHome();
+                        }
+                    }
+    
+                    if ($login['user']) {
+                        HistoryAdd::singIn(2, 'Не удачный вход в систему', $model->errors, $login['user']);
+                    }
+                }
             } else {
-                return $this->goHome();
+                if ($link = Yii::$app->request->get('link')) {
+                    return $this->redirect([$link['to'].'/'.$link['page'], 'id' => $link['id']]);
+                } else {
+                    return $this->goHome();
+                }
             }
         }
 
@@ -92,7 +118,12 @@ class SiteController extends Controller
                     HistoryAdd::singIn(1, 'Вход в систему');
 
                     if ($link = Yii::$app->request->get('link')) {
-                        return $this->redirect([$link['to'].'/'.$link['page'], 'id' => $link['id']]);
+                        if ($link['id']) {
+                            $url = [$link['to'].'/'.$link['page'], 'id' => $link['id']];
+                        } else {
+                            $url = [$link['to'].'/'.$link['page']];
+                        }
+                        return $this->redirect($url);
                     } else {
                         return $this->goBack();
                     }
@@ -131,7 +162,7 @@ class SiteController extends Controller
     public function actionLogout()
     {
         if (!Yii::$app->user->isGuest) {
-            HistoryAdd::singOut(1, 'Выход из систему');
+            HistoryAdd::singOut(1, 'Выход из системы');
         }
         
         Yii::$app->user->logout();

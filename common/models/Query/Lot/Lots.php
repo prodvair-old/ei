@@ -106,6 +106,10 @@ class Lots extends ActiveRecord
     {
         $today = new \DateTime();
 
+        if ($this->status == 'Окончен') {
+            return true;
+        }
+
         if ($this->torg->endDate === null || $this->torg->completeDate === null ) {
             return false;
         } else {
@@ -117,7 +121,7 @@ class Lots extends ActiveRecord
     }
     public function getViewsCount() 
     {
-        return count($this->views);
+        return PageViews::find()->where(['page_type'=> 'lot_'.$this->torg->type, 'page_id' => $this->id])->count();
     }
     public function getWishId($id = null) 
     {
@@ -153,7 +157,17 @@ class Lots extends ActiveRecord
     {
         return parent::find()->onCondition([
             'and',
-            [ 'published' => true ], 
+            [ 'published' => true ],
+            ['not like', 'lower(status)', mb_strtolower('Окончен', 'UTF-8')],
+            ['not like', 'lower(status)', mb_strtolower('Несостоявшиеся', 'UTF-8')],
+            ['not like', 'lower(status)', mb_strtolower('Не состоялся', 'UTF-8')],
+            ['not like', 'lower(status)', mb_strtolower('Отменен/аннулирован', 'UTF-8')],
+            ['not like', 'lower(status)', mb_strtolower('Отменён организатором', 'UTF-8')],
+            ['not like', 'lower(status)', mb_strtolower('Торги завершены', 'UTF-8')],
+            ['not like', 'lower(status)', mb_strtolower('Торги отменены', 'UTF-8')],
+            ['not like', 'lower(status)', mb_strtolower('Торги не состоялись', 'UTF-8')],
+            ['not like', 'lower(status)', mb_strtolower('Торги по лоту отменены', 'UTF-8')],
+            ['not like', 'lower(status)', mb_strtolower('Торги по лоту не состоялись', 'UTF-8')],
             [ 
                 'not',
                 ['torg.publishedDate' => null],

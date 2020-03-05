@@ -44,20 +44,26 @@ use backend\models\UserAccess;
                         'label' => 'Лоты', 
                         'url' => ['lots/index'], 
                         'icon' => 'table',
-                        'visible' => UserAccess::forManager('lots'),
+                        'visible' => ((UserAccess::forManager('lots') || UserAccess::forAgent('lots'))? true : false),
                         'options' => ['class' => 'treeview'],
                         'items' => [
                             [
                                 'label' => 'Список лотов',
                                 'url' => ['lots/index'],
                                 'icon' => 'list-ul',
-                                'visible' => UserAccess::forManager('lots')
+                                'visible' => ((UserAccess::forManager('lots') || UserAccess::forAgent('lots'))? true : false)
+                            ],
+                            [
+                                'label' => 'Импортировать лот',
+                                'url' => ['lots/import'],
+                                'icon' => 'download',
+                                'visible' => ((UserAccess::forAgent('lots', 'import'))? true : false)
                             ],
                             [
                                 'label' => 'Добавить лот',
                                 'url' => ['lots/create'],
                                 'icon' => 'plus',
-                                'visible' => UserAccess::forManager('lots', 'add')
+                                'visible' => ((UserAccess::forManager('lots', 'add') || UserAccess::forAgent('lots', 'add'))? true : false)
                             ],
                         ]
 
@@ -66,22 +72,29 @@ use backend\models\UserAccess;
                         'label' => 'Организации', 
                         'url' => ['owners/index'], 
                         'icon' => 'table',
-                        'visible' => UserAccess::forManager('lots'),
+                        'visible' => UserAccess::forManager('owners'),
                         'options' => ['class' => 'treeview'],
                         'items' => [
                             [
                                 'label' => 'Список организации',
                                 'url' => ['owners/index'],
                                 'icon' => 'list-ul',
-                                'visible' => UserAccess::forManager('lots')
+                                'visible' => UserAccess::forManager('owners')
                             ],
                             [
                                 'label' => 'Добавить организацию',
                                 'url' => ['owners/create'],
                                 'icon' => 'plus',
-                                'visible' => UserAccess::forManager('lots', 'add')
+                                'visible' => UserAccess::forManager('owners', 'add')
                             ],
                         ]
+
+                    ],
+                    [
+                        'label' => 'Расширенный поиск', 
+                        'url' => ['find/arrest'], 
+                        'icon' => 'filter',
+                        'visible' => UserAccess::forAgent('find', 'arrest'),
 
                     ],
                     [

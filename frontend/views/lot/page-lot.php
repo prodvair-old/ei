@@ -24,7 +24,7 @@ $view = new ViewPage();
 $view->page_type = "lot_".$lot->torg->type;
 $view->page_id = $lot->id;
 
-$viewCount = $view->check();
+$view->check();
 
 $now = time();
 $endDate = strtotime($lot->torg->endDate);
@@ -147,7 +147,6 @@ foreach ($lot->info as $key => $value) {
                         <div class="d-flex flex-row align-items-sm-center mb-20">
                             <div class="mr-10 font-lg text-muted">
                               <?=$lot->viewsCount?> <i class="far fa-eye fa-sm"></i>
-                                <!-- <?=NumberWords::widget(['number' => $lot->viewsCount, 'words' => ['просмотр', 'просмотра', 'просмотров']]) ?> -->
                             </div>
                             <div class="mr-10 text-muted">|</div>
                             <div class="mr-10 rating-item rating-inline">

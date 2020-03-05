@@ -29,25 +29,25 @@ class SortLot extends Model
     {
         switch ($this->sortBy) {
             case 'nameASC':
-                    return 'lot.title ASC';
+                    return ['lot.title' => SORT_ASC];
                 break;
             case 'nameDESC':
-                    return 'lot.title DESC';
+                    return ['lot.title' => SORT_DESC];
                 break;
             case 'dateASC':
-                    return 'torg."publishedDate" ASC';
+                    return ['torg.publishedDate' => SORT_ASC];
                 break;
             case 'dateDESC':
-                    return 'torg."publishedDate" DESC';
+                    return ['torg.publishedDate' => SORT_DESC];
                 break;
             case 'priceASC':
-                    return 'lot.startPrice ASC';
+                    return ['lot.startPrice' => SORT_ASC];
                 break;
             case 'priceDESC':
-                    return 'lot.startPrice DESC';
+                    return ['lot.startPrice' => SORT_DESC];
                 break;
             default:
-                    return 'lot.images DESC, torg."publishedDate" DESC';
+                    return ['lot.images' => SORT_DESC, 'torg.publishedDate' => SORT_DESC];
                 break;
         }
     }
