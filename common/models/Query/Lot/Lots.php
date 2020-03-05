@@ -117,7 +117,7 @@ class Lots extends ActiveRecord
     }
     public function getViewsCount() 
     {
-        return count($this->views);
+        return PageViews::find()->where(['page_type'=> 'lot_'.$this->torg->type, 'page_id' => $this->id])->count();
     }
     public function getWishId($id = null) 
     {

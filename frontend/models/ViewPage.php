@@ -42,18 +42,13 @@ class ViewPage extends Model
         if (!Yii::$app->user->isGuest) {
             $viewer->user_id = Yii::$app->user->id;
             $viewer->ip_address = $this->getIp();
-            $checkView = PageViews::find()->where(['user_id'=> Yii::$app->user->id, 'page_type'=> $this->page_type, 'page_id' => $this->page_id])->one();
+            $viewer->save();
         } else {
             $viewer->ip_address = $this->getIp();
-            $checkView = PageViews::find()->where(['user_id'=> null, 'ip_address'=> $this->getIp(), 'page_type'=> $this->page_type, 'page_id' => $this->page_id])->one();
-        }
-        // var_dump($checkView);
-        if ($checkView == null) {
             $viewer->save();
-            return PageViews::find()->where(['page_type'=> $this->page_type, 'page_id' => $this->page_id])->count();
-        } else {
-            return PageViews::find()->where(['page_type'=> $this->page_type, 'page_id' => $this->page_id])->count();
         }
+
+        return PageViews::find()->where(['page_type'=> $this->page_type, 'page_id' => $this->page_id])->count();
         
     }
     public function getIp() {

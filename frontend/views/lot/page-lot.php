@@ -24,7 +24,7 @@ $view = new ViewPage();
 $view->page_type = "lot_".$lot->torg->type;
 $view->page_id = $lot->id;
 
-$viewCount = $view->check();
+$view->check();
 
 $now = time();
 $endDate = strtotime($lot->torg->endDate);
