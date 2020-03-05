@@ -199,8 +199,10 @@ class LotsController extends Controller
         $modelLot = LotEditor::findOne($get['id']);
         $lot = LotsAll::findOne($get['id']);
 
-        if ((UserAccess::forAgent() && $lot->torg->typeId !== 3) || (UserAccess::forManager() && $lot->torg->typeId === 3)) {
-            return $this->goHome();
+        if (!UserAccess::forSuperAdmin()) {
+            if ((UserAccess::forAgent() && $lot->torg->typeId !== 3) || (UserAccess::forManager() && $lot->torg->typeId === 3)) {
+                return $this->goHome();
+            }
         }
 
         $modelTorg = TorgEditor::findOne($modelLot->torgId);
