@@ -36,10 +36,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     </div>
             
-                    <div class="col-12 col-lg-6 ml-auto">
+                    <div class="col-12 col-lg-6 ml-auto" itemscope itemtype="http://schema.org/Organization">
                             
                         <h4 class="heading-title"><span>Контактная <span class="font200">информация:</span></span></h4>
-                        <p class="post-heading mb-10">Общество с ограниченной ответственностью "Единый информатор"</p>
+                        <p class="post-heading mb-10" itemprop="name">Общество с ограниченной ответственностью "Единый информатор"</p>
                 
                         <?=ContactData::widget()?>
 
