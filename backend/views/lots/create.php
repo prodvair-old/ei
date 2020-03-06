@@ -75,7 +75,7 @@ $this->title = 'Новый лота';
         <!-- <div class="form-group">
             <?= (UserAccess::forManager('torgs','edit'))? Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) : 'У вас нет прав на редактирование' ?>
         </div> -->
-        <? if (UserAccess::forAgent('lots')) { ?>
+        <? if (UserAccess::forAgent('lots') && !UserAccess::forSuperAdmin()) { ?>
             <?= $form->field($modelTorg, 'typeId')->hiddenInput(['value'=>3])->label(false) ?>
             <?= $form->field($modelTorg, 'publisherId')->hiddenInput(['value'=>Yii::$app->user->id])->label(false) ?>
             <?= $form->field($modelTorg, 'ownerId')->hiddenInput(['value'=>Yii::$app->user->identity->ownerId])->label(false) ?>
@@ -85,7 +85,7 @@ $this->title = 'Новый лота';
             <div class="col-lg-4">
                 <?= $form->field($modelTorg, 'msgId') ?>
             </div>
-            <? if (!UserAccess::forAgent('lots')) { ?>
+            <? if (!UserAccess::forAgent('lots') && UserAccess::forSuperAdmin()) { ?>
                 <div class="col-lg-4">
                     <?= $form->field($modelTorg, 'typeId')->dropDownList([
                             1 => 'Банкротное имущество',

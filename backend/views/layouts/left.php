@@ -94,7 +94,7 @@ use backend\models\UserAccess;
                         'label' => 'Расширенный поиск', 
                         'url' => ['find/arrest'], 
                         'icon' => 'filter',
-                        'visible' => ((UserAccess::forAgent() && Yii::$app->user->identity->ownerId == 2)? true : false),
+                        'visible' => UserAccess::forAgent('find', 'arrest'),
 
                     ],
                     [

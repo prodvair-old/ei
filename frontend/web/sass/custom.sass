@@ -1114,6 +1114,11 @@ body
 .toast-success
   background-color: $accent !important
 
+@media (max-width: 992px)
+  .main-page
+    &__link-item
+      margin-top: 15px 
+
 @media (max-width: 768px)
   .hero-banner.hero-banner-01.alt-option-03 .container
       padding-top: 140px!important
@@ -1125,6 +1130,11 @@ body
 @media (max-width: 576px)
   .hero-banner.hero-banner-01.alt-option-03 .container
       padding-bottom: 20px
+  .main-page
+    &__category
+      margin: 0
+      &__block
+        padding: 15px
 
 .gradient-for-page
   background: linear-gradient(to bottom, #d2d2d2, #ffffff)
@@ -1136,6 +1146,7 @@ body
 .form-login
   padding: 3rem
 
+  
 @keyframes rotating 
   from
     transform: rotate(0deg);
@@ -1144,4 +1155,4 @@ body
 .rotating
   &:before
     animation: rotating .5s linear infinite;
-    
+

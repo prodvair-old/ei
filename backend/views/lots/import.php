@@ -7,6 +7,7 @@ use kartik\grid\GridView;
 use insolita\wgadminlte\LteBox;
 use insolita\wgadminlte\LteConst;
 use yii\data\ActiveDataProvider;
+use common\models\Query\Lot\Lots;
 
 use backend\models\UserAccess;
 
@@ -56,9 +57,9 @@ $this->title = 'Импортирование лотов';
     <?php ActiveForm::end(); ?>
 
 <?
-if ($lots[0] != null) {
+if ($where != null) {
     $dataProvider = new ActiveDataProvider([
-        'query' => $lots,
+        'query' => Lots::find()->where($where),
         'Pagination' => [
             'pageSize' => 15
         ]

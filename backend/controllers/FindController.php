@@ -67,7 +67,7 @@ class FindController extends Controller
      */
     public function actionArrest()
     {
-        if (!UserAccess::forAgent() && Yii::$app->user->identity->ownerId != 2) {
+        if (!UserAccess::forAgent('find', 'arrest')) {
             return $this->goHome();
         }
         $modelImport = new ImportFIleForm();

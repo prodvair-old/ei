@@ -129,7 +129,7 @@ class LotsController extends Controller
             return $this->goHome();
         }
 
-        if (UserAccess::forAgent('lots')) {
+        if (UserAccess::forAgent('lots') && !UserAccess::forSuperAdmin()) {
             $lots = LotsAll::find()->joinWith(['torg'])->where([
                 'torg.typeId' => 3,
                 'torg.publisherId' => Yii::$app->user->id
@@ -176,17 +176,13 @@ class LotsController extends Controller
           }
         }
 
-        if ($result['check']) {
-          $lots = LotsAll::find()->where($result['where']);
-        }
 
-
-      return $this->render('import', [
-        'modelImport' => $modelImport,
-        'loadCount' => $result['loadCount'],
-        'pages' => $pages,
-        'lots' => $lots
-      ]);
+        return $this->render('import', [
+            'modelImport' => $modelImport,
+            'loadCount' => $result['loadCount'],
+            'pages' => $pages,
+            'where' => $result['where']
+        ]);
     }
     public function actionUpdate()
     {
@@ -199,8 +195,10 @@ class LotsController extends Controller
         $modelLot = LotEditor::findOne($get['id']);
         $lot = LotsAll::findOne($get['id']);
 
-        if ((!UserAccess::forAgent('lots', 'edit') && !$lot->torg->typeId !== 3) || (!UserAccess::forManager('lots', 'edit') && !$lot->torg->typeId === 3)) {
-            return $this->goHome();
+        if (!UserAccess::forSuperAdmin()) {
+            if ((UserAccess::forAgent() && $lot->torg->typeId !== 3) || (UserAccess::forManager() && $lot->torg->typeId === 3)) {
+                return $this->goHome();
+            }
         }
 
         $modelTorg = TorgEditor::findOne($modelLot->torgId);
