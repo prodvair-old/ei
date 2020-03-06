@@ -8,7 +8,7 @@ use frontend\components\NumberWords;
 //   }
 // }
 ?>
-<aside class=" sidebar-wrapper no-border mt-20 mt-lg-0">
+<aside class=" sidebar-wrapper no-border mt-20 mt-lg-0" itemscope itemtype="">
 
     <div class="booking-box">
     
@@ -39,7 +39,7 @@ use frontend\components\NumberWords;
                 <!-- <li class="clearfix"><a href="https://bankrot.fedresurs.ru/MessageWindow.aspx?ID=<?=$lot->torg->msgId?>" target="_blank" rel="nofollow">Страница лота на ЕФРСБ</a></li> -->
                 <li class="clearfix border-top font700">
                     <div class="border-top mt-1">
-                    <span>Цена</span><span class="float-right text-dark"><?=Yii::$app->formatter->asCurrency($lot->price)?></span>
+                    <span>Цена</span><span class="float-right text-dark" itemprop="https://schema.org/price"><?=Yii::$app->formatter->asCurrency($lot->price)?></span>
                     </div> 
                 </li>
             </ul>

@@ -15,7 +15,7 @@ $this->title = Yii::$app->params['title'];
 if ($type == 'bankrupt') {
     $title = '<span class="main-page__title">Имущество банкротов</span>';
     $imgBG = 'img/01.jpg';
-    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle">В нашей базе собрана актуальная информация об имуществе банкротов и должников, выставленном на торгах на ЭТП, публичных аукционах, а также имущество ряда коммерческих организаций и муниципальных учреждений.</span>';
+    $description = (Yii::$app->params['text'])? Yii::$app->params['text'] : '<span class="main-page__subtitle"></span>';
 } else if ($type == 'zalog') {
     $title = '<span class="main-page__title">Имущество организаций</span>';
     $imgBG = 'img/01.jpg';

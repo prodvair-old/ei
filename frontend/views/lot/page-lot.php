@@ -135,14 +135,14 @@ foreach ($lot->info as $key => $value) {
        
         <?=(!empty($lot->archive))? ($lot->archive)? '<span class="h3 text-primary">Архив</span><hr>' : '' : ''?>                 
 
-        <div class="row gap-20 gap-lg-40">
+        <div class="row gap-20 gap-lg-40" itemscope itemtype="http://schema.org/Product">
             
             <div class="col-12 col-lg-8">
                 
                 <div class="content-wrapper">
                      
                     <div id="desc" class="detail-header mb-30">
-                      <h1 class="h4"><?=Yii::$app->params['h1']?></h1>
+                      <h1 class="h4" itemprop="name"><?=Yii::$app->params['h1']?></h1>
               
                         <div class="d-flex flex-row align-items-sm-center mb-20">
                             <div class="mr-10 font-lg text-muted">
@@ -224,7 +224,7 @@ foreach ($lot->info as $key => $value) {
                         </pre> -->
                         
 
-                        <p class="long-text"><?=$lot->description?></p>
+                        <p class="long-text" itemprop="description"><?=$lot->description?></p>
                         <a href="#desc" class="open-text-js">Подробнее</a>
                         
                     </div>
@@ -253,7 +253,7 @@ foreach ($lot->info as $key => $value) {
                                 <h6>Категории лота</h6>
                                 <ul class="ul">
                                     <?foreach ($lot->categorys as $category) { ?>
-                                        <li><?=$category->name?></li>
+                                        <li itemprop="category"><?=$category->name?></li>
                                     <? }?>
                                 </ul>
                             </li>
@@ -262,7 +262,7 @@ foreach ($lot->info as $key => $value) {
                                 <li>
                                     <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
                                     <h6>VIN номер</h6>
-                                    <p><?= $lot->info['vin'] ?></p>
+                                    <p itemprop="mpn"><?= $lot->info['vin'] ?></p>
                                     <a href="https://avtocod.ru/proverkaavto/<?=$lot->info['vin']?>?rd=VIN&a_aid=zhukoffed"
                                         class="btn btn-success btn-sm mt-2" target="_blank" rel="nofollow">Проверить Автомобиль</a>
                                 </li>    
@@ -281,7 +281,7 @@ foreach ($lot->info as $key => $value) {
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
                                 <h6>Должник</h6>
                                 <ul class="ul">
-                                    <li><a href="<?=Url::to(['doljnik/list'])?>/<?=$lot->torg->bankrupt->oldId?>" target="_blank"><?=$lot->torg->bankrupt->name?></a></li>
+                                    <li><a href="<?=Url::to(['doljnik/list'])?>/<?=$lot->torg->bankrupt->oldId?>" target="_blank" itemprop="brand"><?=$lot->torg->bankrupt->name?></a></li>
                                     <li>ИНН: <span class="text-list-name"><?= $lot->torg->bankrupt->inn?></span></li>
                                     <li>Адрес: <span class="text-list-name"><?= $lot->torg->bankrupt->address;?></span></li>
                                 </ul>

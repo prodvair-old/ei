@@ -46,22 +46,23 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
 
 <section class="pt-0 pb-0 p-20">
     <div class="container main-page">
-        <div class="row main-page__category">
-        <div class="col-lg-4 main-page__link-item">
+        <div class="row main-page__category" itemscope itemtype="https://schema.org/AggregateOffer">
+
+            <div class="col-lg-4 main-page__link-item">
                 <div class="main-page__category__block">
                     <p class="h4">Секции имущества</p>
                     <hr>
                     <ul>
                         <li><a href="/all"> Все имущество <!--<span>1999</span>--></a></li>
-                        <li><a href="/bankrupt"> Банкротное имущество <!--<span>1999</span>--></a></li>
-                        <li><a href="/arrest"> Арестованное имущество <!--<span>1999</span>--></a></li>
-                        <li><a href="/caterpillar">Caterpillar<!--<span>1999</span>--></a></li>
+                        <li><a href="/bankrupt" itemprop="https://schema.org/itemOffered"> Банкротное имущество <!--<span>1999</span>--></a></li>
+                        <li><a href="/arrest" itemprop="https://schema.org/itemOffered"> Арестованное имущество <!--<span>1999</span>--></a></li>
+                        <li><a href="/caterpillar" itemprop="https://schema.org/itemOffered">Caterpillar<!--<span>1999</span>--></a></li>
                         <!-- <li><a href="/portal-da">Portal Da</a></li> -->
-                        <li><a href="/open-bank">Банк Открытие<!--<span>1999</span>--></a></li>
-                        <li><a href="/gilfondrt">ГЖФ при Президенте РТ<!--<span>1999</span>--></a></li>
-                        <li><a href="/greentau">Гринтау<!--<span>1999</span>--></a></li>
-                        <li><a href="/rosselkhozbank">Россельхозбанк<!--<span>1999</span>--></a></li>
-                        <li><a href="/sberbank">Сберабанк<!--<span>1999</span>--></a></li>
+                        <li><a href="/open-bank" itemprop="https://schema.org/itemOffered">Банк Открытие<!--<span>1999</span>--></a></li>
+                        <li><a href="/gilfondrt" itemprop="https://schema.org/itemOffered">ГЖФ при Президенте РТ<!--<span>1999</span>--></a></li>
+                        <li><a href="/greentau" itemprop="https://schema.org/itemOffered">Гринтау<!--<span>1999</span>--></a></li>
+                        <li><a href="/rosselkhozbank" itemprop="https://schema.org/itemOffered">Россельхозбанк<!--<span>1999</span>--></a></li>
+                        <li><a href="/sberbank" itemprop="https://schema.org/itemOffered">Сберабанк<!--<span>1999</span>--></a></li>
                     </ul>
                 </div>
             </div>
@@ -71,7 +72,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     <hr>
                     <ul>
                         <? foreach ($lotsCategory as $category) {
-                            echo '<li><a href="/all/'.$category['translit_name'].'">'.$category['name'].'   <!--<span>1999</span>--></a></li>';
+                            echo '<li><a href="/all/'.$category['translit_name'].'" itemprop="category">'.$category['name'].'   <!--<span>1999</span>--></a></li>';
                         } ?>
                     </ul>
                 </div>
@@ -99,7 +100,6 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     </ul>
                 </div>
             </div>
-            
 
         </div>
     </div>
