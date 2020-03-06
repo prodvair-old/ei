@@ -53,7 +53,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
 <? } ?>
 
 
-<?php $form = ActiveForm::begin(['method' => 'get', 'action' => '/'.$url.'/lot-list', 'options' => ['enctype' => 'multipart/form-data', 'class' => 'card-search-form']]) ?>
+<?php $form = ActiveForm::begin(['method' => 'get', 'action' => '/'.$url.'/lot-list', 'options' => ['enctype' => 'multipart/form-data', 'class' => 'card-search-form', 'id'=> 'mainSearchForm']]) ?>
 
 <div class="card card-search" style="margin-top:25px;">
   <div class="card-body">
@@ -63,7 +63,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
         'placeholder' => 'Поиск по лотам',
       ])->label(false); ?>
 
-      <?= Html::submitButton('<i class="ion-android-search"></i>', ['class' => 'btn btn-primary btn-block btn-search', 'style' => $btnStyle, 'name' => 'login-button']) ?>
+      <?= Html::submitButton('<i class="ion-android-search"></i>', ['class' => 'btn btn-primary btn-block btn-search', 'style' => $btnStyle, 'name' => 'login-button', 'id' => 'buttonSearch' ]) ?>
     </div>
     <style>
       .card-search {

@@ -1,3 +1,5 @@
+
+
 function uploadLotImage(lotId) {
   var formData = new FormData(document.getElementById('lot-' + lotId + '-zalog-upload-images'));
 
@@ -63,7 +65,9 @@ $(document).ready(function () {
     }).done(function (data) {
       if (data.result) {
         toastr.success("Вы успешно зарегистрировались");
-        location.reload();
+        $('#register-form').hide()
+        $('#alert-email-confirm').show()
+        
         $('.signup-form-error').html('');
       } else {
         toastr.warning("Не удалось зарегистрироваться");
@@ -410,9 +414,17 @@ $(document).ready(function () {
     });
   });
 
+
+  $('#mainSearchForm').on('beforeSubmit', function() {
+    $('#mainSearchForm i')
+      .removeClass('ion-android-search')
+      .addClass('ion-loop rotating')
+  });
+
+
   // Уведомления <-End
-  
   // Загрузка фото для залогового Start->
+
 
   $('#lot-upload').on('change', function () {
     var input = $(this)
