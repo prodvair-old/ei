@@ -7,7 +7,8 @@ var gulp = require("gulp"),
   autoprefixer = require("gulp-autoprefixer"),
   rsync = require("gulp-rsync"),
   newer = require("gulp-newer"),
-  rename = require("gulp-rename");
+  rename = require("gulp-rename"),
+ sourcemaps = require('gulp-sourcemaps');
 // responsive   = require('gulp-responsive'),
 // del          = require('del');
 
@@ -78,6 +79,7 @@ function bsReload(done) {
 gulp.task("styles", function() {
   return gulp
     .src("frontend/web/sass/**/*.sass")
+    .pipe(sourcemaps.init())
     .pipe(
       sass({
         outputStyle: "expanded"
@@ -99,9 +101,11 @@ gulp.task("styles", function() {
         }
       })
     ) // Optional. Comment out when debugging
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest("frontend/web/css"))
     .pipe(browserSync.stream());
 });
+
 
 // Scripts & JS Libraries
 gulp.task("scripts", function() {

@@ -1142,3 +1142,17 @@ body
 .help-step__text
   font-size: 1.125rem
   line-height: 1.25
+
+.form-login
+  padding: 3rem
+
+  
+@keyframes rotating 
+  from
+    transform: rotate(0deg);
+  to 
+    transform: rotate(360deg);
+.rotating
+  &:before
+    animation: rotating .5s linear infinite;
+

@@ -5,7 +5,12 @@ use yii\bootstrap\ActiveForm;
 <div role="tabpanel" class="tab-pane fade in" id="loginFormTabInModal-register">
     
     <div class="form-login">
+        <div id="alert-email-confirm" class="alert alert-success" style="display: none;">
+            <h4 class="pb-1">Спасибо за регистрацию!</h4>
+            <p>Для подтверждения регистрации вам необходимо пройти по ссылке отправленной на ваш электронный адрес</p> 
+        </div> 
 
+        <div id="register-form">
         <div class="form-header">
             <h4>Регистрация на сайте ei.ru</h4>
             <p>Заполните все поля и подтвердите аккаунт через почту</p>
@@ -68,7 +73,7 @@ use yii\bootstrap\ActiveForm;
         <div class="form-footer">
             <p>У меня есть аккаунт. <a href="#loginFormTabInModal-login" class="tab-external-link font600">Войти</a></p>
         </div>
-        
+        </div>
     </div>
     
 </div>
