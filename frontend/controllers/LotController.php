@@ -232,7 +232,7 @@ class LotController extends Controller
 
         switch ($type) {
             case 'all':
-                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Все виды иммущества`';
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Все виды имущества';
 
                 if ($subcategory != null) {
                     foreach ($items->bankrupt_categorys_translit as $key => $value) {

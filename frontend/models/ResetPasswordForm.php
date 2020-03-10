@@ -29,7 +29,7 @@ class ResetPasswordForm extends Model
     public function __construct($token, $config = [])
     {
         if (empty($token) || !is_string($token)) {
-            throw new InvalidArgumentException('Нету токена для восстановления пароля.');
+            throw new InvalidArgumentException('Нет токена для восстановления пароля.');
         }
         $this->_user = User::findByPasswordResetToken($token);
         if (!$this->_user) {
