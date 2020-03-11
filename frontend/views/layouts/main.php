@@ -432,7 +432,7 @@ AppAsset::register($this);
                                         <div class="footer-socials mt-20">
                                             <!-- <a href="#"><i class="fab fa-telegram" target="_blank"></i></a> -->
                                             <!-- <a href="https://vk.com/eiru_torgi"><i class="fab fa-vk" target="_blank"></i></a> -->
-                                            <a href="https://www.instagram.com/ei.ru_life" target="_blank"><i class="fab fa-instagram"></i></a>
+                                            <a href="https://www.instagram.com/ei.ru_torgi" target="_blank"><i class="fab fa-instagram"></i></a>
                                             <a href="https://www.facebook.com/ei.ru.life" target="_blank"><i class="fab fa-facebook" target="_blank"></i></a>
                                         </div>
                                     </div>
@@ -514,12 +514,18 @@ AppAsset::register($this);
   <div class="modal fade modal-with-tabs form-login-modal" id="loginFormTabInModal" aria-labelledby="modalWIthTabsLabel" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content shadow-lg">
+        <div class="pt-4 pr-4 ml-auto">
+          <button type="button" class="close" data-dismiss="modal" aria-labelledby="Close">
+            <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
+          </button>
+        </div>
 
         <nav class="d-none">
           <ul class="nav external-link-navs clearfix">
             <li><a class="active" data-toggle="tab" href="#loginFormTabInModal-login">Sign-in</a></li>
             <li><a data-toggle="tab" href="#loginFormTabInModal-register">Register </a></li>
             <li><a data-toggle="tab" href="#loginFormTabInModal-forgot-pass">Forgot Password </a></li>
+            <li><a data-toggle="tab" href="#loginFormTabInModal-thank">Thank</a></li>
           </ul>
         </nav>
 
@@ -532,23 +538,23 @@ AppAsset::register($this);
           <?= ResetPasswordWidget::widget() ?>
 
         </div>
-
-        <div class="text-center pb-20">
-          <button type="button" class="close" data-dismiss="modal" aria-labelledby="Close">
-            <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
-          </button>
-        </div>
+       
       </div>
     </div>
   </div>
   <!-- end Login modal -->
 
 
-    <!-- start Login modal -->
+  <!-- start Login modal -->
   <div class="modal fade modal-with-tabs form-login-modal" id="buyLotModal" aria-labelledby="modalWIthTabsLabel" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document" style="max-width: 500px">
       <div id="help-steps" class="modal-content shadow-lg help-steps p-3">
 
+        <div class="pt-4 pr-4 ml-auto">
+          <button type="button" class="close" data-dismiss="modal" aria-labelledby="Close">
+            <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
+          </button>
+        </div>
         <div class="help-step" v-for="(item, index) in steps" v-if="index === step - 1">
           
           <img v-if="(steps.length > step)" :src="'/help/' + (index + 1) + '.svg'" alt="w-100">
@@ -560,15 +566,13 @@ AppAsset::register($this);
           <button v-if="steps.length > step"  class="btn btn-outline-primary ml-auto w-25" @click="nextStep"><i class="fas fa-chevron-right"></i></button>
         </div>
 
-        <div class="text-center pb-20">
-          <button type="button" class="close" data-dismiss="modal" aria-labelledby="Close">
-            <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
-          </button>
-        </div>
       </div>
     </div>
   </div>
   <!-- end Login modal -->
+
+
+
 
 
 

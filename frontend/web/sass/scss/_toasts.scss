@@ -3,7 +3,7 @@
   overflow: hidden; // cheap rounded corners on nested items
   @include font-size($toast-font-size);
   color: $toast-color;
-  background-color: $toast-background-color;
+  //background-color: $toast-background-color;
   background-clip: padding-box;
   border: $toast-border-width solid $toast-border-color;
   box-shadow: $toast-box-shadow;

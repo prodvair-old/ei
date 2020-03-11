@@ -45,7 +45,7 @@ $lot->category->categoryId == '1102';
 ?>
 <?=($type == 'grid')? '<div class="col">': ''?>
                 
-    <figure class="tour-<?=$type?>-item-01">
+    <figure class="tour-<?=$type?>-item-01" itemscope itemtype="http://schema.org/Product">
         <a href="<?=$lot->url?>" target="_blank">
 
             <?=($type == 'long')? '<div class="d-flex flex-column flex-sm-row">' : ''?>
@@ -83,7 +83,7 @@ $lot->category->categoryId == '1102';
                             <?= ($lotOrganizatioun)? "<li>$lotOrganizatioun</li>" : '' ?>
                         </ul>
                         <hr>
-                        <h3 class="lot-block__title <?=(!empty($lot->archive))? ($lot->archive)? 'text-muted' : '' : ''?>"><?= $lot->title?> <?=(!empty($lot->archive))? ($lot->archive)? '<span class="text-primary">(Архив)</span>' : '' : ''?></h3>
+                        <h3 class="lot-block__title <?=(!empty($lot->archive))? ($lot->archive)? 'text-muted' : '' : ''?>"itemprop="name"><?= $lot->title?> <?=(!empty($lot->archive))? ($lot->archive)? '<span class="text-primary">(Архив)</span>' : '' : ''?></h3>
                         
                         <hr>
                         <ul class="item-meta lot-block__info">
@@ -113,11 +113,11 @@ $lot->category->categoryId == '1102';
                         <hr>
                         <ul class="item-meta lot-block__info">
                             <li>
-                                Категория: <span class="<?=($lot->archive)? 'text-muted' : '' ?>"> <?= $lot->category->name?></span>
+                                Категория: <span class="<?=($lot->archive)? 'text-muted' : '' ?>" itemprop="category"> <?= $lot->category->name?></span>
                             </li>
                         </ul>
                         <hr>
-                        <p class="mt-3"><span class="h6 line-1 <?=$priceClass?> font16" <?=($color)? 'style="color: '.$color.'!important"': ''?>><?= Yii::$app->formatter->asCurrency($lot->price)?></span> <span class="text-muted mr-5"><s><?= ($lot->oldPrice)? Yii::$app->formatter->asCurrency($lot->oldPrice) : '' ?></s></span></p>
+                        <p class="mt-3"><span class="h6 line-1 <?=$priceClass?> font16" <?=($color)? 'style="color: '.$color.'!important"': ''?> itemprop="price"><?= Yii::$app->formatter->asCurrency($lot->price)?></span> <span class="text-muted mr-5"><s><?= ($lot->oldPrice)? Yii::$app->formatter->asCurrency($lot->oldPrice) : '' ?></s></span></p>
                     </figcaption>
                 <?=($type == 'long')? '</div>' : ''?>
                 

@@ -53,6 +53,11 @@
                     <div class="sitemap__list__item">
                         <a href="/open-bank">Банк Открытие</a>
                         <a href="/rosselkhozbank">Россельхозбанк</a>
+                        <a href="/caterpillar">Caterpillar</a>
+                        <a href="/gilfondrt">ГЖФ при Президенте РТ</a>
+                        <a href="/greentau">Гринтау</a>
+                        <a href="/rosselkhozbank">Россельхозбанк</a>
+                        <a href="/sberbank">Сберабанк</a>
                     </div>
                 </li>
             </ul>
