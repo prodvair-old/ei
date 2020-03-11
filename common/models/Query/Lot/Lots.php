@@ -32,43 +32,34 @@ class Lots extends ActiveRecord
     // Функции для вывода доп, инвормации
     public function getUrl()
     {
-
         $items = LotsCategory::find()->orderBy('id DESC')->all();
-        foreach ($items as $value) {
-            switch ($this->torg->type) {
-                case 'bankrupt':
-                        foreach ($this->categorys as $category) {
-                            if ($value->bankrupt_categorys[$category->categoryId]['translit'] !== null) {
-                                return 'bankrupt/'.$value->translit_name.'/'.$value->bankrupt_categorys[$category->categoryId]['translit'].'/'.$this->id;
+
+        foreach ($items as $category) {
+            foreach ($category->subCategorys as $key => $subCategory) {
+                switch ($this->torg->type) {
+                    case 'bankrupt':
+                            foreach ($subCategory->bankruptCategorys as $id) {
+                                if ($this->category->categoryId == $id) {
+                                    return $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
+                                }
                             }
-                        }
-                    break;
-                case 'arrest':
-                        foreach ($this->categorys as $category) {
-                            if ($value->arrest_categorys[$category->categoryId]['translit'] !== null) {
-                                return 'arrest/'.$value->translit_name.'/'.$value->arrest_categorys[$category->categoryId]['translit'].'/'.$this->id;
+                        break;
+                    case 'arrest':
+                            foreach ($subCategory->arrestCategorys as $id) {
+                                if ($this->category->categoryId == $id) {
+                                    return $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
+                                }
                             }
-                        }
-                    break;
-                case 'zalog':
-                        foreach ($this->categorys as $category) {
-                            if ($value->zalog_categorys[$category->categoryId]['translit'] !== null) {
-                                return 'zalog/'.$value->translit_name.'/'.$value->zalog_categorys[$category->categoryId]['translit'].'/'.$this->id;
+                        break;
+                    case 'zalog':
+                            foreach ($subCategory->bankruptCategorys as $id) {
+                                if ($this->category->categoryId == $id) {
+                                    return $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
+                                }
                             }
-                        }
-                    break;
+                        break;
+                }
             }
-        }
-        switch ($this->torg->type) {
-            case 'bankrupt':
-                    return $this->torg->type.'/'.$items[0]->translit_name.'/'.$items[0]->bankrupt_categorys[1063]['translit'].'/'.$this->id;
-                break;
-            case 'arrest':
-                    return $this->torg->type.'/'.$items[0]->translit_name.'/'.$items[0]->arrest_categorys[4]['translit'].'/'.$this->id;
-                break;
-            case 'zalog':
-                    return $this->torg->type.'/'.$items[0]->translit_name.'/'.$items[0]->zalog_categorys[1101]['translit'].'/'.$this->id;
-                break;
         }
     }
     public function getPrice() 

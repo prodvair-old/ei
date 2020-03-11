@@ -32,24 +32,33 @@ class LotsAll extends ActiveRecord
     // Функции для вывода доп, инвормации
     public function getUrl()
     {
-        $items = LotsCategory::find()->all();
-        foreach ($items as $value) {
-            switch ($this->torg->type) {
-                case 'bankrupt':
-                        if ($value->bankrupt_categorys[$this->category->categoryId]['translit'] !== null) {
-                            return 'bankrupt/'.$value->translit_name.'/'.$value->bankrupt_categorys[$this->category->categoryId]['translit'].'/'.$this->id;
-                        }
-                    break;
-                case 'arrest':
-                        if ($value->arrest_categorys[$this->category->categoryId]['translit'] !== null) {
-                            return 'arrest/'.$value->translit_name.'/'.$value->arrest_categorys[$this->category->categoryId]['translit'].'/'.$this->id;
-                        }
-                    break;
-                case 'zalog':
-                        if ($value->zalog_categorys[$this->category->categoryId]['translit'] !== null) {
-                            return 'zalog/'.$value->translit_name.'/'.$value->zalog_categorys[$this->category->categoryId]['translit'].'/'.$this->id;
-                        }
-                    break;
+        $items = LotsCategory::find()->orderBy('id DESC')->all();
+
+        foreach ($items as $category) {
+            foreach ($category->subCategorys as $key => $subCategory) {
+                switch ($this->torg->type) {
+                    case 'bankrupt':
+                            foreach ($subCategory->bankruptCategorys as $id) {
+                                if ($this->category->categoryId == $id) {
+                                    return $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
+                                }
+                            }
+                        break;
+                    case 'arrest':
+                            foreach ($subCategory->arrestCategorys as $id) {
+                                if ($this->category->categoryId == $id) {
+                                    return $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
+                                }
+                            }
+                        break;
+                    case 'zalog':
+                            foreach ($subCategory->bankruptCategorys as $id) {
+                                if ($this->category->categoryId == $id) {
+                                    return $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
+                                }
+                            }
+                        break;
+                }
             }
         }
     }

@@ -7,6 +7,7 @@ use common\models\Query\Bankrupt\LotsBankrupt;
 use common\models\Query\Arrest\LotsArrest;
 
 use common\models\Query\LotsCategory;
+use common\models\Query\LotsSubCategory;
 use common\models\Query\Regions;
 use common\models\Query\Lot\Lots;
 /**
@@ -98,78 +99,39 @@ class SearchLot extends Model
 
         if ($this->category == '0') {
             $url = $this->type.'/lot-list';
-        } else if (!empty($this->category) && $this->category != 'all') {
+        } else if (!empty($this->category) && $this->category != 'all' && $this->category != '0') {
             $category = LotsCategory::findOne($this->category);
             $url = $this->type.'/'.$category->translit_name;
 
             if (empty($this->subCategory) || $this->subCategory == 'all' || $this->subCategory == '0') {
                 $orWhere = ['or'];
-                foreach ($category->bankrupt_categorys as $key => $value) {
-                    $orWhere[] = ['categorys.categoryId'=>$key];
-                }
-                foreach ($category->arrest_categorys as $key => $value) {
-                    $orWhere[] = ['categorys.categoryId'=>$key];
-                }
-                foreach ($category->zalog_categorys as $key => $value) {
-                    $orWhere[] = ['categorys.categoryId'=>$key];
+                foreach (LotsSubCategory::find()->where(['categoryId' => $this->category])->all() as $key => $subCategory) {
+                    foreach ($subCategory->bankruptCategorys as $value) {
+                        $orWhere[] = ['categorys.categoryId'=>$value];
+                    }
+                    foreach ($subCategory->arrestCategorys as $value) {
+                        $orWhere[] = ['categorys.categoryId'=>$value];
+                    }
                 }
                 $where[] = $orWhere;
             } else if ($this->subCategory != '0'){
-                if (count($this->subCategory) == 1) {
-                    foreach ($category->bankrupt_categorys as $key => $value) {
-                        if ($this->subCategory[0] == $key) {
-                            $where[] = ['categorys.categoryId'=>$key];
-                            $url .= '/'.$value['translit'];
-                            $checkUrl = true;
-                        }
+                $orWhere = ['or'];
+                foreach ($this->subCategory as $keySubCategory => $subCategoryId) {
+                    $subCategory = LotsSubCategory::findOne(['id' => $subCategoryId]);
+
+                    if ($keySubCategory == 0) {
+                        $url .= '/'.$subCategory->nameTranslit;
+                        $checkUrl = true;
                     }
-                    foreach ($category->arrest_categorys as $key => $value) {
-                        if ($this->subCategory[0] == $key) {
-                            $where[] = ['categorys.categoryId'=>$key];
-                            $url .= '/'.$value['translit'];
-                            $checkUrl = true;
-                        }
+
+                    foreach ($subCategory->bankruptCategorys as $value) {
+                        $orWhere[] = ['categorys.categoryId'=>$value];
                     }
-                    foreach ($category->zalog_categorys as $key => $value) {
-                        if ($this->subCategory[0] == $key) {
-                            $where[] = ['categorys.categoryId'=>$key];
-                            $url .= '/'.$value['translit'];
-                            $checkUrl = true;
-                        }
+                    foreach ($subCategory->arrestCategorys as $value) {
+                        $orWhere[] = ['categorys.categoryId'=>$value];
                     }
-                } else {
-                    $orWhere = ['or'];
-                    foreach ($this->subCategory as $keySubCategory => $subCategory) {
-                        foreach ($category->bankrupt_categorys as $key => $value) {
-                            if ($subCategory == $key) {
-                                $orWhere[] = ['categorys.categoryId'=>$key];
-                                if ($keySubCategory == 0) {
-                                    $url .= '/'.$value['translit'];
-                                    $checkUrl = true;
-                                }
-                            }
-                        }
-                        foreach ($category->arrest_categorys as $key => $value) {
-                            if ($subCategory == $key) {
-                                $orWhere[] = ['categorys.categoryId'=>$key];
-                                if ($keySubCategory == 0) {
-                                    $url .= '/'.$value['translit'];
-                                    $checkUrl = true;
-                                }
-                            }
-                        }
-                        foreach ($category->zalog_categorys as $key => $value) {
-                            if ($subCategory == $key) {
-                                $orWhere[] = ['categorys.categoryId'=>$key];
-                                if ($keySubCategory == 0) {
-                                    $url .= '/'.$value['translit'];
-                                    $checkUrl = true;
-                                }
-                            }
-                        }
-                    }
-                    $where[] = $orWhere;
                 }
+                $where[] = $orWhere;
             }
         }
         if (!empty($this->region)) {

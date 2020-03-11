@@ -12,4 +12,10 @@ class LotsCategory extends ActiveRecord
     {
         return 'site.{{lotsCategory}}';
     }
+
+    // Связи с таблицами
+    public function getSubCategorys()
+    {
+        return $this->hasMany(LotsSubCategory::className(), ['categoryId' => 'id'])->alias('subCategorys'); // Подкатегории
+    }
 }

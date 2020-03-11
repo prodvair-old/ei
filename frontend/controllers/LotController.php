@@ -20,6 +20,7 @@ use common\models\Query\WishList;
 use frontend\models\WishListEdit;
 
 use common\models\Query\LotsCategory;
+use common\models\Query\LotsSubCategory;
 use common\models\Query\Regions;
 
 use frontend\models\SearchLot;
@@ -226,136 +227,19 @@ class LotController extends Controller
             throw new \yii\web\NotFoundHttpException;
         }
 
-        $model->type = ($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog' || $type == 'all')? $type : 'zalog';
-        
-        $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
-
-        switch ($type) {
-            case 'all':
-                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Все виды иммущества`';
-
-                if ($subcategory != null) {
-                    foreach ($items->bankrupt_categorys_translit as $key => $value) {
-                        if ($key == $subcategory) {
-                            $querySubcategory = $value['id'];    
-                            $model->subCategory[0] = $value['id'];    
-                            $titleSubcategory = $value['name'];
-                            $title = $value['name'];
-                            $url = "$type/$category/$subcategory";
-                        }
-                    }
-                    foreach ($items->arrest_categorys_translit as $key => $value) {
-                        if ($key == $subcategory) {
-                            $querySubcategory = $value['id'];    
-                            $model->subCategory[0] = $value['id'];    
-                            $titleSubcategory = $value['name'];
-                            $title = $value['name'];
-                            $url = "$type/$category/$subcategory";
-                        }
-                    }
-                    foreach ($items->zalog_categorys_translit as $key => $value) {
-                        if ($key == $subcategory) {
-                            $querySubcategory = $value['id'];    
-                            $model->subCategory[0] = $value['id'];    
-                            $titleSubcategory = $value['name'];
-                            $title = $value['name'];
-                            $url = "$type/$category/$subcategory";
-                        }
-                    }
-                    if (empty($querySubcategory)) {
-                        Yii::$app->response->statusCode = 404;
-                        throw new \yii\web\NotFoundHttpException;
-                    }
-                }
-                break;
-            case 'bankrupt':
-                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Банкротное имущество';
-
-                if ($subcategory != null) {
-                    foreach ($items->bankrupt_categorys_translit as $key => $value) {
-                        if ($key == $subcategory) {
-                            $querySubcategory = $value['id'];    
-                            $model->subCategory[0] = $value['id'];    
-                            $titleSubcategory = $value['name'];
-                            $title = $value['name'];
-                            $url = "$type/$category/$subcategory";
-                        }
-                    }
-                    if (empty($querySubcategory)) {
-                        Yii::$app->response->statusCode = 404;
-                        throw new \yii\web\NotFoundHttpException;
-                    }
-                }
-                break;
-            case 'arrest':
-                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Арестованное имущество';
-
-                if ($subcategory != null) {
-                    foreach ($items->arrest_categorys_translit as $key => $value) {
-                        if ($key == $subcategory) {
-                            $querySubcategory = $value['id'];        
-                            $model->subCategory[0] = $value['id']; 
-                            $titleSubcategory = $value['name'];
-                            $title = $value['name'];
-                            $url = "$type/$category/$subcategory";
-                        }
-                    }
-                    if (empty($querySubcategory)) {
-                        Yii::$app->response->statusCode = 404;
-                        throw new \yii\web\NotFoundHttpException;
-                    }
-                }
-                break;
-            case 'zalog':
-                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Имущество организаций';
-
-                if ($subcategory != null) {
-                    foreach ($items->zalog_categorys_translit as $key => $value) {
-                        if ($key == $subcategory) {
-                            $querySubcategory = $value['id'];        
-                            $model->subCategory[0] = $value['id']; 
-                            $titleSubcategory = $value['name'];
-                            $title = $value['name'];
-                            $url = "$type/$category/$subcategory";
-                        }
-                    }
-                    if (empty($querySubcategory)) {
-                        Yii::$app->response->statusCode = 404;
-                        throw new \yii\web\NotFoundHttpException;
-                    }
-                }
-                break;
-            default:
-                $owner = Owners::find()->where(['linkEi' => $type])->one();
-                if (!empty($owner)) {
-
-                    $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
-                    $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : $owner->title;
-
-                    $model->etp[0] = $owner->id; 
-
-                    if ($subcategory != null) {
-                        foreach ($items->zalog_categorys_translit as $key => $value) {
-                            if ($key == $subcategory) {
-                                $querySubcategory = $value['id'];        
-                                $model->subCategory[0] = $value['id']; 
-                                $titleSubcategory = $value['name'];
-                                $title = $value['name'];
-                                $url = "$type/$category/$subcategory";
-                            }
-                        }
-                        if (empty($querySubcategory)) {
-                            Yii::$app->response->statusCode = 404;
-                            throw new \yii\web\NotFoundHttpException;
-                        }
-                    }
-                } else {
-                    Yii::$app->response->statusCode = 404;
-                    throw new \yii\web\NotFoundHttpException;
-                }
-                break;
+        if ($subcategory !== null) {
+            if (!empty($items = LotsSubCategory::find()->where(['nameTranslit'=>$subcategory])->one())) {
+                $querySubcategory = $items->id;    
+                $model->subCategory[0] = $items->id;    
+                $titleSubcategory = $items->name;
+                $title = $items->name;
+                $url = "$type/$category/$subcategory";
+            } else {
+                Yii::$app->response->statusCode = 404;
+                throw new \yii\web\NotFoundHttpException;
+            }
         }
-        
+
         if ($region != null) {
             try {
                 $regionItem = Regions::findOne(['name_translit' => $region]);
@@ -367,6 +251,39 @@ class LotController extends Controller
                 Yii::$app->response->statusCode = 404;
                 throw new \yii\web\NotFoundHttpException;
             }
+        }
+
+        $model->type = ($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog' || $type == 'all')? $type : 'zalog';
+        
+        $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
+
+        switch ($type) {
+            case 'all':
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Все виды иммущества';
+                break;
+            case 'bankrupt':
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Банкротное имущество';
+                break;
+            case 'arrest':
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Арестованное имущество';
+                break;
+            case 'zalog':
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Имущество организаций';
+                break;
+            default:
+                $owner = Owners::find()->where(['linkEi' => $type])->one();
+                if (!empty($owner)) {
+
+                    $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
+                    $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : $owner->title;
+
+                    $model->etp[0] = $owner->id; 
+
+                } else {
+                    Yii::$app->response->statusCode = 404;
+                    throw new \yii\web\NotFoundHttpException;
+                }
+                break;
         }
         // Проверка ссылок ЧПУ и подставление типа лотов <-End 
 
@@ -484,25 +401,10 @@ class LotController extends Controller
         }
 
         if ($subcategory != null) {
-            foreach ($items->bankrupt_categorys_translit as $key => $value) {
-                if ($key == $subcategory) {
-                    $querySubcategory = $value['id'];
-                    $titleSubcategory = $value['name'];
-                }
-            }
-            foreach ($items->arrest_categorys_translit as $key => $value) {
-                if ($key == $subcategory) {
-                    $querySubcategory = $value['id'];
-                    $titleSubcategory = $value['name'];
-                }
-            }
-            foreach ($items->zalog_categorys_translit as $key => $value) {
-                if ($key == $subcategory) {
-                    $querySubcategory = $value['id'];
-                    $titleSubcategory = $value['name'];
-                }
-            }
-            if (empty($querySubcategory)) {
+            if (!empty($items = LotsSubCategory::find()->where(['nameTranslit'=>$subcategory])->one())) {
+                $querySubcategory = $items->id;
+                $titleSubcategory = $items->name;
+            } else {
                 Yii::$app->response->statusCode = 404;
                 throw new \yii\web\NotFoundHttpException;
             }
@@ -632,68 +534,23 @@ class LotController extends Controller
     {
         $post = Yii::$app->request->post();
         
-        switch ($post['type']) {
-            case 'bankrupt':
-                    if ($post['get'] == 'category') {
-                        $lotsCategory = LotsCategory::find()->where(['not', ['bankrupt_categorys' => null]])->orderBy('id ASC')->all();
-                        $categorys = '<option value="0">Все категории</option>';
-                        foreach ($lotsCategory as $key => $value) {
-                            $categorys .= '<option value="'.$key.'">'.$value['name'].'</option>';
-                        }
-                        return $categorys;
-                    } else {
-                        $lotsCategory = LotsCategory::findOne($post['id']);
-                        $lotsSubcategory = '<option value="0">Все подкатегории</option>';
-                        if ($lotsCategory->bankrupt_categorys != null) {
-                            foreach ($lotsCategory->bankrupt_categorys as $key => $value) {
-                                $lotsSubcategory .= '<option value="'.$key.'">'.$value['name'].'</option>';
-                            }
-                        }
-                    }
-                break;
-            case 'arrest':
-                    if ($post['get'] == 'category') {
-                        $lotsCategory = LotsCategory::find()->where(['not', ['arrest_categorys' => null]])->orderBy('id ASC')->all();
-                        $categorys = '<option value="0">Все категории</option>';
-                        foreach ($lotsCategory as $key => $value) {
-                            $categorys .= '<option value="'.$key.'">'.$value['name'].'</option>';
-                        }
-                        return $categorys;
-                    } else {
-                        $lotsCategory = LotsCategory::findOne($post['id']);
-                        $lotsSubcategory = '<option value="0">Все подкатегории</option>';
-                        if ($lotsCategory->arrest_categorys != null) {
-                            foreach ($lotsCategory->arrest_categorys as $key => $value) {
-                                $lotsSubcategory .= '<option value="'.$key.'">'.$value['name'].'</option>';
-                            }
-                        }
-                    }
-                break;
-            case 'zalog':
-                if ($post['get'] == 'category') {
-                    $lotsCategory = LotsCategory::find()->where(['not', ['zalog_categorys' => null]])->orderBy('id ASC')->all();
-                    $categorys = '<option value="0">Все категории</option>';
-                    foreach ($lotsCategory as $key => $value) {
-                        $categorys .= '<option value="'.$key.'">'.$value['name'].'</option>';
-                    }
-                    return $categorys;
-                } else {
-                    $lotsCategory = LotsCategory::findOne($post['id']);
-                    $lotsSubcategory = '<option value="0">Все подкатегории</option>';
-                    if ($lotsCategory->zalog_categorys != null) {
-                        foreach ($lotsCategory->zalog_categorys as $key => $value) {
-                            $lotsSubcategory .= '<option value="'.$key.'">'.$value['name'].'</option>';
-                        }
-                    }
+        if ($post['get'] == 'category') {
+            $lotsCategory = LotsCategory::find()->orderBy('id ASC')->all();
+            $result = '<option value="0">Все категории</option>';
+            foreach ($lotsCategory as $value) {
+                $result .= '<option value="'.$value->id.'">'.$value->name.'</option>';
+            }
+        } else {
+            $lotsCategory = LotsCategory::findOne($post['id']);
+            $result = '<option value="0">Все подкатегории</option>';
+            if ($lotsCategory->subCategorys != null) {
+                foreach ($lotsCategory->subCategorys as $value) {
+                    $result .= '<option value="'.$value->id.'">'.$value->name.'</option>';
                 }
-                break;
-            default:
-                    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-                    return ['error'=>'не задан параметр type'];
-                break;
+            }
         }
         
-        return $lotsSubcategory;
+        return $result;
     }
 
     public function actionWish_list()

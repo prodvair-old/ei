@@ -74,6 +74,7 @@ return [
         '' => 'site/index',
 
         '/test'    => 'test/index',
+        '/test/str'    => 'test/str',
         
         '/about'    => 'pages/about',
         '/license'  => 'pages/license',

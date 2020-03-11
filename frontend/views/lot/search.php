@@ -13,6 +13,7 @@ use frontend\components\LotBlock;
 
 use common\models\Query\Settings;
 use common\models\Query\LotsCategory;
+use common\models\Query\LotsSubCategory;
 use common\models\Query\Regions;
 
 use common\models\Query\Lot\Etp;
@@ -42,7 +43,7 @@ if ($type == 'bankrupt') {
   $traderList = ArrayHelper::map(OwnerProperty::find()->orderBy('name ASC')->all(), 'id', 'name');
 }
 
-$lotsCategoryQuery = LotsCategory::find()->where(['or', ['not', [$type . '_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
+$lotsCategoryQuery = LotsCategory::find()->orderBy('id ASC')->all();
 
 $lotsCategorys[0] = 'Все категории';
 
@@ -50,38 +51,10 @@ foreach ($lotsCategoryQuery as $category) {
   $lotsCategorys[$category->id] = $category->name;
 }
 
-if ($queryCategory != '0') {
-  switch ($type) {
-    case 'bankrupt':
-      $lotsCategory = LotsCategory::find()->where(['not', ['bankrupt_categorys' => null]])->orderBy('id ASC')->all();
-      $category = LotsCategory::findOne($queryCategory);
-      if ($category->bankrupt_categorys != null) {
-        $subcategoryCheck = false;
-        foreach ($category->bankrupt_categorys as $key => $value) {
-          $lotsSubcategory[$key] = $value['name'];
-        }
-      }
-      break;
-    case 'arrest':
-      $lotsCategory = LotsCategory::find()->where(['not', ['arrest_categorys' => null]])->orderBy('id ASC')->all();
-      $category = LotsCategory::findOne($queryCategory);
-      if ($category->arrest_categorys != null) {
-        $subcategoryCheck = false;
-        foreach ($category->arrest_categorys as $key => $value) {
-          $lotsSubcategory[$key] = $value['name'];
-        }
-      }
-      break;
-    case 'zalog':
-      $lotsCategory = LotsCategory::find()->where(['not', ['zalog_categorys' => null]])->orderBy('id ASC')->all();
-      $category = LotsCategory::findOne($queryCategory);
-      if ($category->zalog_categorys != null) {
-        $subcategoryCheck = false;
-        foreach ($category->zalog_categorys as $key => $value) {
-          $lotsSubcategory[$key] = $value['name'];
-        }
-      }
-      break;
+if ($model->category != '0') {
+  $subcategoryCheck = false;
+  foreach ($lotsCategoryQuery[$model->category]->subCategorys as $subCategory) {
+    $lotsSubcategory[$subCategory->id] = $subCategory->name;
   }
 }
 
@@ -206,7 +179,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                 </div>
               </div>
 
-              <!-- <div class="col-12">
+              <div class="col-12">
                 <div class="col-inner">
                   <?= $form->field($model, 'subCategory')->dropDownList(
                     $lotsSubcategory,
@@ -220,7 +193,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                   )
                     ->label('Подкатегория'); ?>
                 </div>
-              </div> -->
+              </div>
 
               <div class="col-12">
                 <div class="col-inner">

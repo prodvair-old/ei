@@ -111,23 +111,11 @@ jQuery(function($) {
 		lotType = type.selected;
 
 		$('.card-search-form').attr('action', '/'+lotType+'/lot-list');
-		console.log(lotType);
 
 		if (lotType == 'arrest') {
 			$('.bankrupt-type').hide();
 		} else {
 			$('.bankrupt-type').show();
-		}
-		$("#searchlot-category").load("/load-category", {'get': 'category', 'type': lotType}, function(){
-			$("#searchlot-category").trigger("chosen:updated");
-		});
-		if (categorySelected == 0) {
-			$('#searchlot-subcategory').prop('disabled', true).trigger("chosen:updated");
-		} else {
-			console.log({'id': categorySelected, 'type': lotType});
-			$("#searchlot-subcategory").load("/load-category", {'id': categorySelected, 'type': lotType}, function(){
-				$("#searchlot-subcategory").prop('disabled', false).trigger("chosen:updated");
-			});
 		}
     });
 	
@@ -135,7 +123,7 @@ jQuery(function($) {
 		if (id.selected == 0) {
 			$('#searchlot-subcategory').prop('disabled', true).trigger("chosen:updated");
 		} else {
-			$("#searchlot-subcategory").load("/load-category", {'id': id.selected, 'type': lotType}, function(data){
+			$("#searchlot-subcategory").load("/load-category", {'id': id.selected}, function(data){
 				if (data == '<option value="0">Все подкатегории</option>') {
 					$("#searchlot-subcategory").prop('disabled', true).trigger("chosen:updated");	
 				} else {
