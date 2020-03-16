@@ -71,7 +71,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     <p class="h4">Категории</p>
                     <hr>
                     <ul>
-                        <? foreach ($lotsCategory as $category) {
+                        <?php foreach ($lotsCategory as $category) {
                             echo '<li><a href="/all/'.$category['translit_name'].'" itemprop="category">'.$category['name'].'   <!--<span>1999</span>--></a></li>';
                         } ?>
                     </ul>
@@ -82,19 +82,19 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     <p class="h4">Регионы</p>
                     <hr>
                     <ul>
-                        <li><a href="/all"> Россия <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=77"> Москва <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=50"> Московская область <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=78"> Санкт-Петербург <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=47"> Ленинградская область <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=23"> Краснодарский край <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=66"> Свердловская область <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=16"> Республика Татарстан <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=52"> Нижегородская область <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=61"> Ростовская область <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=74"> Челябинская область <!--<span>1999</span>--></a></li>
-                        <li><a href="/all"> Другие регионы <!--<span>1999</span>--></a></li>
-                        <? //foreach ($regions as $region) {
+                        <li><a href="all"> Россия <!--<span>1999</span>--></a></li>
+                        <li><a href="all/lot-list?SearchLot%5Bregion%5D=77"> Москва <!--<span>1999</span>--></a></li>
+                        <li><a href="all/lot-list?SearchLot%5Bregion%5D=50"> Московская область <!--<span>1999</span>--></a></li>
+                        <li><a href="all/lot-list?SearchLot%5Bregion%5D=78"> Санкт-Петербург <!--<span>1999</span>--></a></li>
+                        <li><a href="all/lot-list?SearchLot%5Bregion%5D=47"> Ленинградская область <!--<span>1999</span>--></a></li>
+                        <li><a href="all/lot-list?SearchLot%5Bregion%5D=23"> Краснодарский край <!--<span>1999</span>--></a></li>
+                        <li><a href="all/lot-list?SearchLot%5Bregion%5D=66"> Свердловская область <!--<span>1999</span>--></a></li>
+                        <li><a href="all/lot-list?SearchLot%5Bregion%5D=16"> Республика Татарстан <!--<span>1999</span>--></a></li>
+                        <li><a href="all/lot-list?SearchLot%5Bregion%5D=52"> Нижегородская область <!--<span>1999</span>--></a></li>
+                        <li><a href="all/lot-list?SearchLot%5Bregion%5D=61"> Ростовская область <!--<span>1999</span>--></a></li>
+                        <li><a href="all/lot-list?SearchLot%5Bregion%5D=74"> Челябинская область <!--<span>1999</span>--></a></li>
+                        <li><a href="all"> Другие регионы <!--<span>1999</span>--></a></li>
+                        <?php //foreach ($regions as $region) {
                            // echo '<li><a href="/all/lot-list?SearchLot%5Bregion%5D='.$region['id'].'"> '.$region['name'].' <!--<span>1999</span>--></a></li>';
                         //} ?>
                     </ul>
