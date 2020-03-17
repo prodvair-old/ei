@@ -287,7 +287,7 @@ class ImportZalog extends Model
         $baseRow = 3;
         $loadCount = 0;
         while(!empty($sheetData[$baseRow]['B'])){
-            if (!LotsAll::find()->alias('lot')->joinWith('torg')->where(['lot.lotNumber'=>(int)$sheetData[$baseRow]['A'], 'torg.publisherId' => Yii::$app->user->id, 'torg.typeId' => 3])->one()) {
+            if (!LotsAll::find()->alias('lot')->joinWith('torg')->where(['lot.msgId'=>(int)$sheetData[$baseRow]['A'], 'torg.publisherId' => Yii::$app->user->id, 'torg.typeId' => 3])->one()) {
                 $lot = new Lots();
                 $torg = new Torgs();
 
