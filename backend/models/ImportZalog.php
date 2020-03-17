@@ -287,16 +287,17 @@ class ImportZalog extends Model
         $baseRow = 3;
         $loadCount = 0;
         while(!empty($sheetData[$baseRow]['B'])){
-            if (!LotsAll::find()->joinWith('torg')->where(['lotNumber'=>(int)$sheetData[$baseRow]['A'], 'torg.publisherId' => Yii::$app->user->id])->one()) {
+            if (!LotsAll::find()->alias('lot')->joinWith('torg')->where(['lot.lotNumber'=>(int)$sheetData[$baseRow]['A'], 'torg.publisherId' => Yii::$app->user->id, 'torg.typeId' => 3])->one()) {
                 $lot = new Lots();
                 $torg = new Torgs();
+
                 $torg->typeId     = 3;
                 $lot->msgId         = (string)$sheetData[$baseRow]['A'];
                 $torg->msgId        = (string)$sheetData[$baseRow]['A'];
                 $info = [];
 
                 $lot->status              = 'Опубликован';
-                $lot->lotNumber           = (int)$sheetData[$baseRow]['A'];
+                $lot->lotNumber           = (string)$sheetData[$baseRow]['A'];
                 $lot->title               = GetInfoFor::mb_ucfirst(GetInfoFor::title((string)$sheetData[$baseRow]['B']));
                 $lot->description         = (string)$sheetData[$baseRow]['C'];
                 $torg->publishedDate      = Yii::$app->formatter->asDate(str_replace('/', '-',(string)$sheetData[$baseRow]['D']), 'php:Y-m-d H:i:s');
@@ -338,7 +339,8 @@ class ImportZalog extends Model
                 } else {
                     Yii::$app->params['exelParseResult'][$baseRow]['info'] = $lot->errors;
                 }
-                
+            } else {
+                Yii::$app->params['exelParseResult'][$baseRow]['data'] = $sheetData[$baseRow];
             }
             $baseRow++;
         }

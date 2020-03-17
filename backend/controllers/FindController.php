@@ -78,6 +78,7 @@ class FindController extends Controller
             
             if($modelImport->load(Yii::$app->request->post()) && $modelImport->validate()){
                 $result = $modelImport->excelArrest();
+                // var_dump($result);
 
                 if ($result[0] != null) {
                     HistoryAdd::export(1, 'find/arrest', 'Иммущество успешно экспортировано', null, Yii::$app->user->identity);
@@ -87,8 +88,8 @@ class FindController extends Controller
                     Excel::export([
                         'models' => $result,
                         'columns' => [
-                            'id:text',
-                            'inn:text',
+                            'id',
+                            'inn',
                             'name:text',
                             'title:text',
                             'torg:text',
@@ -101,18 +102,17 @@ class FindController extends Controller
                             'url:text',
                         ],
                         'headers' => [
-                            'id' => 'ID лота',
                             'inn' => 'ИНН',
-                            'name' => 'Должник',
+                            'name' => 'Наименование/ФИО',
                             'title' => 'Наименование имущества',
-                            'torg' => 'Источник',
+                            'torg' => 'Источник: torgi.gov.ru/bankrot.fedresurs.ru',
                             'publication' => 'Дата публикации',
-                            'auction' => 'Дата торга',
-                            'form' => 'Форма торгов',
+                            'auction' => 'Дата торгов',
+                            'form' => 'Способ реализации',
                             'repeat' => 'Повторные',
                             'winner' => 'Победитель',
                             'price' => 'Цена',
-                            'url' => 'Ссылка на торги',
+                            'url' => 'Ссылка на торг',
                         ],
                     ]);
                 } else {

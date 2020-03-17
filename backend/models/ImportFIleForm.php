@@ -52,9 +52,19 @@ class ImportFIleForm extends Model
                     $where[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').mb_substr($names[2],0,1,'UTF-8')];
                 }
 
-                $where[] = ['like', 'lotPropName', (string)$value[3]];
+                foreach (explode(',',(string)$value[3]) as $cad_vin) {
+                    $where[] = ['like', 'lotPropName', $cad_vin];
+                }
 
                 $lots = LotsArrest::find()->joinWith('torgs')->where($where)->orderBy('trgPublished ASC')->all();
+
+                // echo "<pre>";
+                // var_dump($where);
+                // echo "</pre><br>";
+                // echo "<pre>";
+                // var_dump($lots);
+                // echo "</pre><br>";
+                // die();
                 
                 foreach ($lots as $key => $lot) {
                     $result[] = [
