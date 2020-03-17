@@ -52,10 +52,8 @@ class LotsAll extends ActiveRecord
                             }
                         break;
                     case 'zalog':
-                            foreach ($subCategory->bankruptCategorys as $id) {
-                                if ($this->category->categoryId == $id) {
-                                    return $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
-                                }
+                            if ($this->category->categoryId == $subCategory->id) {
+                                return $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
                             }
                         break;
                 }
