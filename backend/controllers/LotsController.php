@@ -18,6 +18,7 @@ use common\models\Query\Lot\LotsAll;
 use common\models\Query\Lot\LotCategorys;
 use common\models\Query\LotsCategory;
 use backend\models\HistoryAdd;
+use backend\models\SearchLot;
 
 /**
  * Lots controller
@@ -143,19 +144,29 @@ class LotsController extends Controller
         if (!UserAccess::forManager('lots') && !UserAccess::forAgent('lots')) {
             return $this->goHome();
         }
-
+        
         if (UserAccess::forAgent('lots') && !UserAccess::forSuperAdmin()) {
-            $lots = LotsAll::find()->joinWith(['torg'])->where([
+            $lots = LotsAll::find()->alias('lot')->joinWith(['torg'])->where([
                 'torg.typeId' => 3,
                 'torg.publisherId' => Yii::$app->user->id
-            ])->orderBy('torg."publishedDate" DESC');
+            ]);
         } else {
-            $lots = LotsAll::find()->joinWith('torg')->where([
+            $lots = LotsAll::find()->alias('lot')->joinWith('torg')->where([
                 '!=', 'torg.typeId', 3
-            ])->orderBy('torg."publishedDate" DESC');
+            ]);
+        }
+
+        $model = new SearchLot();
+
+        if ($model->load(Yii::$app->request->get()) && $model->validate()) {
+            $lots
+                ->andWhere('to_tsvector(lot.description) @@ plainto_tsquery(\''.pg_escape_string($model->search).'\')')
+                ->orderBy('ts_rank(to_tsvector(lot.description), plainto_tsquery(\''.pg_escape_string($model->search).'\')) ASC');
+        } else {
+            $lots->orderBy('torg."publishedDate" DESC');
         }
         
-        return $this->render('index', ['lots' => $lots]);
+        return $this->render('index', ['lots' => $lots, 'model' => $model]);
     }
     public function actionImport()
     {

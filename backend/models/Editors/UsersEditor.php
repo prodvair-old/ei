@@ -25,15 +25,6 @@ use Yii;
  */
 class UsersEditor extends \yii\db\ActiveRecord
 {
-    public $lotAccess;
-    public $etpAccess;
-    public $sroAccess;
-    public $torgAccess;
-    public $usersAccess;
-    public $arbitrAccess;
-    public $bankruptAccess;
-    public $organizationAccess;
-
     /**
      * {@inheritdoc}
      */
@@ -48,14 +39,42 @@ class UsersEditor extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'password', 'info'], 'required'],
+            [['username', 'password'], 'required'],
             [['username', 'password', 'role', 'auth_key', 'password_reset_token', 'email_hash', 'verification_token', 'avatar'], 'string'],
-            [['info', 'created_at', 'updated_at', 'access'], 'safe'],
-            [[
-                'lotAccess', 'etpAccess', 'sroAccess', 'torgAccess', 'usersAccess', 'arbitrAccess', 'bankruptAccess', 'organizationAccess'
-            ], 'safe'],
+            [['created_at', 'updated_at', 'access'], 'safe'],
             [['status'], 'boolean'],
             [['ownerId'], 'default', 'value' => null],
+            [['access'], 'default', 'value' => [
+                "lots" => [
+                    "add" => false,
+                    "edit" => false,
+                    "delete" => false,
+                    "import" => false,
+                    "status" => false
+                ],
+                "find"  => [
+                    "arrest" => false
+                ],
+                "torgs" => [
+                    "add" => false,
+                    "edit" => false,
+                    "delete" => false,
+                    "status" => false
+                ],
+                "users" => [
+                    "add" => false,
+                    "edit" => false,
+                    "delete" => false,
+                    "status" => false
+                ],
+                "owners" => [
+                    "add" => false,
+                    "edit" => false,
+                    "delete" => false,
+                    "status" => false
+                ],
+                "debug" => false
+            ]],
             [['ownerId'], 'integer'],
             [['username'], 'unique'],
         ];
@@ -77,14 +96,7 @@ class UsersEditor extends \yii\db\ActiveRecord
             'status' => 'Статус',
             'avatar' => 'Аватарка',
             'ownerId' => 'Организация',
-            'lotAccess'         => 'Доступ к Лотам',
-            'etpAccess'         => 'Доступ к Торговым площадкам',
-            'sroAccess'         => 'Доступ к СРО',
-            'torgAccess'        => 'Доступ к Торгам',
-            'usersAccess'       => 'Доступ к Пользователям',
-            'arbitrAccess'      => 'Доступ к Арбитражным управляющим',
-            'bankruptAccess'    => 'Доступ к Должникам',
-            'organizationAccess'=> 'Доступ к Организациям',
+            'access'         => '',
         ];
     }
 }
