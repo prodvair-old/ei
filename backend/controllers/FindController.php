@@ -88,8 +88,7 @@ class FindController extends Controller
                     Excel::export([
                         'models' => $result,
                         'columns' => [
-                            'id',
-                            'inn',
+                            'inn:text',
                             'name:text',
                             'title:text',
                             'torg:text',

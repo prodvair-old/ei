@@ -41,16 +41,18 @@ class ImportFIleForm extends Model
 
                 $where[] = ['like', 'lotPropName', (string)$value[1]];
                 
+                $orWhere = ['or'];
                 if (strpos(mb_strtolower((string)$value[2],'UTF-8'), 'ип') !== false || strpos(mb_strtolower((string)$value[2],'UTF-8'), 'ооо') !== false || strpos(mb_strtolower((string)$value[2],'UTF-8'), 'оао') !== false) {
-                    $where[] = ['like', 'lotPropName', (string)$value[2]];
+                    $orWhere[] = ['like', 'lotPropName', (string)$value[2]];
                 } else {
                     $names = explode(' ', (string)$value[2]);
-                    $where[] = ['like', 'lotPropName', $names[0]];
-                    $where[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').'.'.mb_substr($names[2],0,1,'UTF-8').'.'];
-                    $where[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').'. '.mb_substr($names[2],0,1,'UTF-8').'.'];
-                    $where[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').' '.mb_substr($names[2],0,1,'UTF-8')];
-                    $where[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').mb_substr($names[2],0,1,'UTF-8')];
+                    $orWhere[] = ['like', 'lotPropName', $names[0]];
+                    $orWhere[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').'.'.mb_substr($names[2],0,1,'UTF-8').'.'];
+                    $orWhere[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').'. '.mb_substr($names[2],0,1,'UTF-8').'.'];
+                    $orWhere[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').' '.mb_substr($names[2],0,1,'UTF-8')];
+                    $orWhere[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').mb_substr($names[2],0,1,'UTF-8')];
                 }
+                $where[] = $orWhere;
 
                 foreach (explode(',',(string)$value[3]) as $cad_vin) {
                     $where[] = ['like', 'lotPropName', $cad_vin];

@@ -112,6 +112,7 @@ class SearchLot extends Model
                     foreach ($subCategory->arrestCategorys as $value) {
                         $orWhere[] = ['categorys.categoryId'=>$value];
                     }
+                    $orWhere[] = ['categorys.categoryId'=>$subCategory->id];
                 }
                 $where[] = $orWhere;
             } else if ($this->subCategory != '0'){
@@ -130,6 +131,8 @@ class SearchLot extends Model
                     foreach ($subCategory->arrestCategorys as $value) {
                         $orWhere[] = ['categorys.categoryId'=>$value];
                     }
+                    $orWhere[] = ['categorys.categoryId'=>$subCategory->id];
+
                 }
                 $where[] = $orWhere;
             }
