@@ -11,6 +11,7 @@ use yii\data\Pagination;
 use backend\models\UserAccess;
 use backend\models\Editors\UsersEditor;
 use backend\models\HistoryAdd;
+use backend\models\Search;
 
 use common\models\User;
 
@@ -71,6 +72,12 @@ class UsersController extends Controller
 
         if (!UserAccess::forSuperAdmin()) {
             $users->where(['!=', 'role', 'superAdmin']);
+        }
+
+        $model = new Search();
+
+        if ($model->load(Yii::$app->request->get()) && $model->validate()) {
+            $users->andWhere('to_tsvector(username) @@ plainto_tsquery(\''.pg_escape_string($model->search).'\')');
         }
         
         return $this->render('index', ['users' => $users]);
