@@ -59,6 +59,7 @@ class Lots extends ActiveRecord
                 }
             }
         }
+        return $this->torg->type.'/prochee/prochee/'.$this->id;
     }
     public function getPrice() 
     {
