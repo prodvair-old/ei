@@ -57,11 +57,11 @@ foreach ($lot->info as $key => $value) {
             $key != 'sellType' &&
             $key != 'sellTypeId' &&
             $key != 'minPrice' &&
-            // $key != 'torgReason' &&
-            // $key != 'stepCount' &&
-            // $key != 'dateAuction' &&
-            // $key != 'procedureDate' &&
-            // $key != 'conclusionDate' &&
+            $key != 'torgReason' &&
+            $key != 'stepCount' &&
+            $key != 'dateAuction' &&
+            $key != 'procedureDate' &&
+            $key != 'conclusionDate' &&
             $key != 'currency'
         ) {
         $otherInfo[$key] = $value;
@@ -387,6 +387,33 @@ foreach ($lot->info as $key => $value) {
                                                     break;
                                                 case 'additionalConditions':
                                                     $title = 'Дополнительные условия и критерии определения победителя';
+                                                    break;
+                                                case 'category-building-type':
+                                                    $title = 'Тип строения';
+                                                    break;
+                                                case 'category':
+                                                    $title = 'Категория';
+                                                    break;
+                                                case 'category-type':
+                                                    $title = 'Объект';
+                                                    break;
+                                                case 'purpose':
+                                                    $title = 'Цель использования';
+                                                    break;
+                                                case 'cadastreNumber':
+                                                    $title = 'Кадастровый номер';
+                                                    break;
+                                                case 'address':
+                                                    $title = 'Адрес';
+                                                    break;
+                                                case 'floor':
+                                                    $title = 'Этаж';
+                                                    break;
+                                                case 'built-year':
+                                                    $title = 'Год строительства';
+                                                    break;
+                                                case 'area':
+                                                    $title = 'Местоположение';
                                                     break;
                                                 case 'flatName':
                                                     $title = 'Квартира';
