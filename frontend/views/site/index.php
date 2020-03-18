@@ -83,7 +83,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     <p class="h4">Регионы</p>
                     <hr>
                     <ul>
-                        <li><a href="/all"> Россия <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list"> Россия <!--<span>1999</span>--></a></li>
                         <li><a href="/all/lot-list?SearchLot%5Bregion%5D=77"> Москва <!--<span>1999</span>--></a></li>
                         <li><a href="/all/lot-list?SearchLot%5Bregion%5D=50"> Московская область <!--<span>1999</span>--></a></li>
                         <li><a href="/all/lot-list?SearchLot%5Bregion%5D=78"> Санкт-Петербург <!--<span>1999</span>--></a></li>
@@ -94,7 +94,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                         <li><a href="/all/lot-list?SearchLot%5Bregion%5D=52"> Нижегородская область <!--<span>1999</span>--></a></li>
                         <li><a href="/all/lot-list?SearchLot%5Bregion%5D=61"> Ростовская область <!--<span>1999</span>--></a></li>
                         <li><a href="/all/lot-list?SearchLot%5Bregion%5D=74"> Челябинская область <!--<span>1999</span>--></a></li>
-                        <li><a href="/all"> Другие регионы <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list"> Другие регионы <!--<span>1999</span>--></a></li>
                         <? //foreach ($regions as $region) {
                            // echo '<li><a href="/all/lot-list?SearchLot%5Bregion%5D='.$region['id'].'"> '.$region['name'].' <!--<span>1999</span>--></a></li>';
                         //} ?>
