@@ -53,7 +53,7 @@ foreach ($lotsCategoryQuery as $category) {
 
 if ($model->category != '0') {
   $subcategoryCheck = false;
-  foreach ($lotsCategoryQuery[$model->category]->subCategorys as $subCategory) {
+  foreach ($lotsCategorys[$model->category]->subCategorys as $subCategory) {
     $lotsSubcategory[$subCategory->id] = $subCategory->name;
   }
 }
