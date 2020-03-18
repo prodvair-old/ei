@@ -18,7 +18,7 @@ use common\models\Query\Lot\LotsAll;
 use common\models\Query\Lot\LotCategorys;
 use common\models\Query\LotsCategory;
 use backend\models\HistoryAdd;
-use backend\models\SearchLot;
+use backend\models\Search;
 
 /**
  * Lots controller
@@ -156,7 +156,7 @@ class LotsController extends Controller
             ]);
         }
 
-        $model = new SearchLot();
+        $model = new Search();
 
         if ($model->load(Yii::$app->request->get()) && $model->validate()) {
             $lots

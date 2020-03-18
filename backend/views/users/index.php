@@ -20,6 +20,12 @@ $dataProvider = new ActiveDataProvider([
     ]
 ]);
 ?>
+<div class="box-header">
+    <?php $form = ActiveForm::begin(['method' => 'GET']); ?>
+        <?= $form->field($model, 'search')?>
+        <?= Html::submitButton('Найти', ['class' => 'btn btn-primary']) ?>
+    <?php ActiveForm::end(); ?>
+</div>
 <?php LteBox::begin(['type'=>LteConst::TYPE_DEFAULT]);?>
         <?= GridView::widget([
                     'dataProvider' => $dataProvider,
