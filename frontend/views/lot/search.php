@@ -53,10 +53,11 @@ foreach ($lotsCategoryQuery as $category) {
 
 if ($model->category != '0') {
   $subcategoryCheck = false;
-  foreach ($lotsCategoryQuery[$model->category]->subCategorys as $subCategory) {
+  foreach ($lotsCategorys[$model->category]->subCategorys as $subCategory) {
     $lotsSubcategory[$subCategory->id] = $subCategory->name;
   }
 }
+var_dump($model->tradeType);
 
 $this->registerJsVar('lotType', $type, $position = yii\web\View::POS_HEAD);
 $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\View::POS_HEAD);

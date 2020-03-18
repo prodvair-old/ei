@@ -57,8 +57,11 @@ foreach ($lot->info as $key => $value) {
             $key != 'sellType' &&
             $key != 'sellTypeId' &&
             $key != 'minPrice' &&
-            $key != 'torgReason' &&
-            $key != 'stepCount' &&
+            // $key != 'torgReason' &&
+            // $key != 'stepCount' &&
+            // $key != 'dateAuction' &&
+            // $key != 'procedureDate' &&
+            // $key != 'conclusionDate' &&
             $key != 'currency'
         ) {
         $otherInfo[$key] = $value;
@@ -376,8 +379,14 @@ foreach ($lot->info as $key => $value) {
                                                 case 'viewInfo':
                                                     $title = 'Дата, время и порядок осмотра лота';
                                                     break;
-                                                case 'viewInfo':
-                                                    $title = 'Дата, время и порядок осмотра лота';
+                                                case 'basisBidding':
+                                                    $title = 'Тип сделки';
+                                                    break;
+                                                case 'paymentDetails':
+                                                    $title = 'Описание лота';
+                                                    break;
+                                                case 'additionalConditions':
+                                                    $title = 'Дополнительные условия и критерии определения победителя';
                                                     break;
                                                 case 'flatName':
                                                     $title = 'Квартира';
