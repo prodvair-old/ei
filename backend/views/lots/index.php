@@ -20,9 +20,21 @@ $dataProvider = new ActiveDataProvider([
     ]
 ]);
 ?>
-<? if (UserAccess::forManager('lots', 'add') || UserAccess::forAgent('lots', 'add')) { ?>
-    <div class="box-header"><a href="<?=Url::to(['lots/create'])?>" class="btn btn-success"><i class="fa fa-plus"></i> Добавить лот</a></div>
-<? } ?>
+<div class="box-header">
+    <div class="row">
+        <? if (UserAccess::forManager('lots', 'add') || UserAccess::forAgent('lots', 'add')) { ?>
+            <div class="col-lg-3">
+                <a href="<?=Url::to(['lots/create'])?>" class="btn btn-success"><i class="fa fa-plus"></i> Добавить лот</a>
+            </div>
+        <? } ?>
+        <div class="col-lg-9">
+            <?php $form = ActiveForm::begin(['method' => 'GET']); ?>
+                <?= $form->field($model, 'search')?>
+                <?= Html::submitButton('Найти', ['class' => 'btn btn-primary']) ?>
+            <?php ActiveForm::end(); ?>
+        </div>
+    </div>
+</div>
  <?php LteBox::begin(['type'=>LteConst::TYPE_DEFAULT]);?>
         <?= GridView::widget([
                     'dataProvider' => $dataProvider,
@@ -59,11 +71,6 @@ $dataProvider = new ActiveDataProvider([
                             'value' => function ($model) {
                                 return $model->price.' руб.';
                             }
-                        ],
-                        [
-                            'attribute' => 'price',
-                            'format' => 'ntext',
-                            'label' => 'Цена',
                         ],
                         [
                             'class' => 'yii\grid\ActionColumn',
