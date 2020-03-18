@@ -67,7 +67,7 @@ class UsersController extends Controller
             return $this->goHome();
         }
 
-        $users = User::find()->orderBy('created_at ASC');
+        $users = User::find();
 
         if (!UserAccess::forSuperAdmin()) {
             $users->where(['!=', 'role', 'superAdmin']);
