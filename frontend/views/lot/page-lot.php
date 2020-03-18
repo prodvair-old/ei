@@ -58,6 +58,7 @@ foreach ($lot->info as $key => $value) {
             $key != 'sellTypeId' &&
             $key != 'minPrice' &&
             $key != 'torgReason' &&
+            $key != 'stepCount' &&
             $key != 'currency'
         ) {
         $otherInfo[$key] = $value;
@@ -372,6 +373,12 @@ foreach ($lot->info as $key => $value) {
                                     <? foreach ($otherInfo as $key => $value) { ?>
                                         <?
                                             switch ($key) {
+                                                case 'viewInfo':
+                                                    $title = 'Дата, время и порядок осмотра лота';
+                                                    break;
+                                                case 'viewInfo':
+                                                    $title = 'Дата, время и порядок осмотра лота';
+                                                    break;
                                                 case 'flatName':
                                                     $title = 'Квартира';
                                                     break;
