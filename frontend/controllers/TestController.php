@@ -501,7 +501,11 @@ class TestController extends Controller
 
     public function actionStr()
     {
-        return ltrim(substr("0201", 0, 2),'0');
+        foreach (LotsSubCategory::find()->all() as $category) {
+            if ($subcategory = LotsSubCategory::find()->where(['name' => $category->name])->andWhere(['!=', 'id', $category->id])->one()) {
+                $subcategory->delete();
+            }
+        }
     }
 
 }

@@ -65,6 +65,7 @@ if ($where != null) {
         ]
     ]);
 ?>
+<hr>
     <?php LteBox::begin(['type'=>LteConst::TYPE_DEFAULT]);?>
         <?= GridView::widget([
                     'dataProvider' => $dataProvider,
@@ -101,11 +102,6 @@ if ($where != null) {
                             'value' => function ($model) {
                                 return $model->price.' руб.';
                             }
-                        ],
-                        [
-                            'attribute' => 'price',
-                            'format' => 'ntext',
-                            'label' => 'Цена',
                         ],
                         [
                             'class' => 'yii\grid\ActionColumn',

@@ -53,16 +53,17 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     <p class="h4">Секции имущества</p>
                     <hr>
                     <ul>
-                        <li><a href="/all"> Все имущество <!--<span>1999</span>--></a></li>
-                        <li><a href="/bankrupt" itemprop="https://schema.org/itemOffered"> Банкротное имущество <!--<span>1999</span>--></a></li>
-                        <li><a href="/arrest" itemprop="https://schema.org/itemOffered"> Арестованное имущество <!--<span>1999</span>--></a></li>
-                        <li><a href="/caterpillar" itemprop="https://schema.org/itemOffered">Caterpillar<!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list"> Все имущество <!--<span>1999</span>--></a></li>
+                        <li><a href="/bankrupt/lot-list" itemprop="https://schema.org/itemOffered"> Банкротное имущество <!--<span>1999</span>--></a></li>
+                        <li><a href="/arrest/lot-list" itemprop="https://schema.org/itemOffered"> Арестованное имущество <!--<span>1999</span>--></a></li>
+                        <li><a href="/caterpillar/lot-list" itemprop="https://schema.org/itemOffered">Caterpillar<!--<span>1999</span>--></a></li>
                         <!-- <li><a href="/portal-da">Portal Da</a></li> -->
-                        <li><a href="/open-bank" itemprop="https://schema.org/itemOffered">Банк Открытие<!--<span>1999</span>--></a></li>
-                        <li><a href="/gilfondrt" itemprop="https://schema.org/itemOffered">ГЖФ при Президенте РТ<!--<span>1999</span>--></a></li>
-                        <li><a href="/greentau" itemprop="https://schema.org/itemOffered">Гринтау<!--<span>1999</span>--></a></li>
-                        <li><a href="/rosselkhozbank" itemprop="https://schema.org/itemOffered">Россельхозбанк<!--<span>1999</span>--></a></li>
-                        <li><a href="/sberbank" itemprop="https://schema.org/itemOffered">Сберабанк<!--<span>1999</span>--></a></li>
+                        <li><a href="/open-bank/lot-list" itemprop="https://schema.org/itemOffered">Банк Открытие<!--<span>1999</span>--></a></li>
+                        <li><a href="/gilfondrt/lot-list" itemprop="https://schema.org/itemOffered">ГЖФ при Президенте РТ<!--<span>1999</span>--></a></li>
+                        <li><a href="/greentau/lot-list" itemprop="https://schema.org/itemOffered">Гринтау<!--<span>1999</span>--></a></li>
+                        <li><a href="/rosselkhozbank/lot-list" itemprop="https://schema.org/itemOffered">Россельхозбанк<!--<span>1999</span>--></a></li>
+                        <li><a href="/sberbank/lot-list" itemprop="https://schema.org/itemOffered">Сберабанк<!--<span>1999</span>--></a></li>
+                        <li><a href="/cdtrf/lot-list" itemprop="https://schema.org/itemOffered">Центр дистанционных торгов<!--<span>1999</span>--></a></li>
                     </ul>
                 </div>
             </div>
@@ -82,7 +83,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     <p class="h4">Регионы</p>
                     <hr>
                     <ul>
-                        <li><a href="/all"> Россия <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list"> Россия <!--<span>1999</span>--></a></li>
                         <li><a href="/all/lot-list?SearchLot%5Bregion%5D=77"> Москва <!--<span>1999</span>--></a></li>
                         <li><a href="/all/lot-list?SearchLot%5Bregion%5D=50"> Московская область <!--<span>1999</span>--></a></li>
                         <li><a href="/all/lot-list?SearchLot%5Bregion%5D=78"> Санкт-Петербург <!--<span>1999</span>--></a></li>
@@ -93,7 +94,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                         <li><a href="/all/lot-list?SearchLot%5Bregion%5D=52"> Нижегородская область <!--<span>1999</span>--></a></li>
                         <li><a href="/all/lot-list?SearchLot%5Bregion%5D=61"> Ростовская область <!--<span>1999</span>--></a></li>
                         <li><a href="/all/lot-list?SearchLot%5Bregion%5D=74"> Челябинская область <!--<span>1999</span>--></a></li>
-                        <li><a href="/all"> Другие регионы <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list"> Другие регионы <!--<span>1999</span>--></a></li>
                         <? //foreach ($regions as $region) {
                            // echo '<li><a href="/all/lot-list?SearchLot%5Bregion%5D='.$region['id'].'"> '.$region['name'].' <!--<span>1999</span>--></a></li>';
                         //} ?>
@@ -123,7 +124,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
             <figcaption class="content">
               <div class="content__wrapper">
                 <h6>Банкротное<br>имущество</h6>
-                <p><?= $lotsBankruptCount ?> лотов</p>
+                <!-- <p><? //$lotsBankruptCount ?> лотов</p> -->
               </div>
             </figcaption>
           </a>
@@ -142,7 +143,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
             <figcaption class="content">
               <div class="content__wrapper">
                 <h6>Арестованное <br>имущество</h6>
-                <p><?= $lotsArrestCount ?> лотов</p>
+                <!-- <p><? //$lotsArrestCount ?> лотов</p> -->
                 <div>
             </figcaption>
           </a>
@@ -160,7 +161,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                 <figcaption class="content">
                     <div class="content__wrapper">
                     <h6>Имущество организаций</h6>
-                    <p ><?= $lotsZalogCount ?> лотов</p>
+                    <!-- <p ><?// $lotsZalogCount ?> лотов</p> -->
                     </div>
                 </figcaption>
             </a>

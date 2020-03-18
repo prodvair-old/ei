@@ -57,6 +57,7 @@ if ($model->category != '0') {
     $lotsSubcategory[$subCategory->id] = $subCategory->name;
   }
 }
+var_dump($model->tradeType);
 
 $this->registerJsVar('lotType', $type, $position = yii\web\View::POS_HEAD);
 $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\View::POS_HEAD);
