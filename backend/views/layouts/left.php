@@ -13,7 +13,7 @@ use backend\models\UserAccess;
                 <img src="https://ei.ru<?= Yii::$app->user->identity->avatar ?>" class="img-circle" alt="User Image"/>
             </div>
             <div class="pull-left info">
-                <p><?=(Yii::$app->user->identity->info['firstname'])? Yii::$app->user->identity->info['firstname'].' '.Yii::$app->user->identity->info['lastname'] : Yii::$app->user->identity->username?></p>
+                <p><?= Yii::$app->user->identity->getFullName() ?></p>
 
                 <a href="#"><?= Yii::$app->params['role'] ?></a>
             </div>

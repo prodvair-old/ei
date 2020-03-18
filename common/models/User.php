@@ -38,20 +38,15 @@ class User extends ActiveRecord implements IdentityInterface
         return 'site.user';
     }
 
-    public function getNameForUser()
-    {
-        return $this->info['firstname'].' '.$this->info['lastname'];
-    }
-
     /**
      * {@inheritdoc}
      */
-    // public function behaviors()
-    // {
-    //     return [
-    //         TimestampBehavior::className(),
-    //     ];
-    // }
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
+    }
 
     /**
      * {@inheritdoc}
@@ -155,6 +150,24 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->info;
     }
+
+    /**
+     * Get full name or username
+     * 
+     * @return string
+     */
+    public function getFullName()
+    {
+        return (isset($this->info['firstname']) && isset($this->info['lastname'])) 
+            ? $this->info['firstname'] . ' ' . $this->info['lastname']
+            : $this->username;
+    }
+
+    public function getNameForUser()
+    {
+        return $this->info['firstname'].' '.$this->info['lastname'];
+    }
+
     public function getOwnerId()
     {
         return $this->ownerId;

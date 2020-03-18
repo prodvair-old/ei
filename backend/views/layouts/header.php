@@ -235,14 +235,14 @@ use yii\bootstrap\NavBar;
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="https://ei.ru<?= Yii::$app->user->identity->avatar ?>" class="user-image" alt="User Image"/>
-                        <span class="hidden-xs"><?=(Yii::$app->user->identity->info['firstname'])? Yii::$app->user->identity->info['firstname'].' '.Yii::$app->user->identity->info['lastname'] : Yii::$app->user->identity->username?></span>
+                        <span class="hidden-xs"><?= Yii::$app->user->identity->getFullName() ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
                             <img src="https://ei.ru<?= Yii::$app->user->identity->avatar ?>" class="img-circle" alt="User Image"/>
                             <p>
-                                <?=(Yii::$app->user->identity->info['firstname'])? Yii::$app->user->identity->info['firstname'].' '.Yii::$app->user->identity->info['lastname'] : Yii::$app->user->identity->username?>
+                                <?= Yii::$app->user->identity->getFullName() ?>
                                 <small><?= Yii::$app->params['role'] ?></small>
                             </p>
                         </li>
