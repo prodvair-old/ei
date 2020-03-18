@@ -191,12 +191,9 @@ class SearchLot extends Model
             }
         }
         if (!empty($this->tradeType)) {
-            if (!empty($this->tradeType[0]) && empty($this->tradeType[1])) {
+            if (count($this->tradeType) == 1) {
                 $where[] = ['torg.tradeTypeId'=>$this->tradeType[0]];
-            }
-            if (!empty($this->tradeType[1]) && empty($this->tradeType[0])) {
-                $where[] = ['torg.tradeTypeId'=>$this->tradeType[1]];
-            } else if (!empty($this->tradeType[1]) && !empty($this->tradeType[0])) {
+            } else {
                 $where = [
                     'or',
                     ['torg.tradeTypeId'=>$this->tradeType[0]],
