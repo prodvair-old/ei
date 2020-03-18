@@ -30,7 +30,7 @@ class UsersController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['update', 'add', 'index'],
+                        'actions' => ['update', 'delete', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -77,10 +77,10 @@ class UsersController extends Controller
         $model = new Search();
 
         if ($model->load(Yii::$app->request->get()) && $model->validate()) {
-            $users->andWhere('to_tsvector(username) @@ plainto_tsquery(\''.pg_escape_string($model->search).'\')');
+            $users->andWhere(['like', 'username', pg_escape_string($model->search)]);
         }
         
-        return $this->render('index', ['users' => $users]);
+        return $this->render('index', ['users' => $users, 'model' => $model]);
     }
 
     public function actionUpdate()

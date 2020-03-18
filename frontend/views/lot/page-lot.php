@@ -18,6 +18,7 @@ use frontend\models\ViewPage;
 use common\models\Query\WishList;
 use common\models\Query\Lot\Lots;
 
+$start = microtime(true);
 
 $view = new ViewPage();
 
@@ -31,7 +32,26 @@ $endDate = strtotime($lot->torg->endDate);
 
 $dateSend = floor(($endDate - $now) / (60 * 60 * 24));
 
-$otherLots = Lots::find()->joinWith(['torg.bankrupt'])->alias('lot')->where(['bankrupt.id'=>$lot->torg->bankrupt->id])->andWhere(['!=', 'lot.id', $lot->id])->all();
+// switch ($lot->torg->type) {
+//     case 'bankrupt':
+//         $otherJoin = ['torg.bankrupt'];
+//         $otherWhere = ['bankrupt.id'=>$lot->torg->bankrupt->id];
+//         break;
+//     case 'arrest':
+//         $otherJoin = ['torg'];
+//         $otherWhere = ['torg.id'=>$lot->torg->id];
+//         break;
+//     case 'zalog':
+//         $otherJoin = ['torg.owner'];
+//         $otherWhere = ['owner.id'=>$lot->torg->owner->id];
+//         break;
+// }
+
+// $otherLots = Lots::find()->joinWith($otherJoin)->alias('lot')->where($otherWhere)->andWhere(['!=', 'lot.id', $lot->id])->all();
+$otherLots = null;
+
+echo '<center><span style="font-size:12px;">', date('s', microtime(true) - $start), ' сек.</span></center>';
+die();
 
 $this->registerJsVar( 'lotType', $lot->torg->type, $position = yii\web\View::POS_HEAD );
 $this->title = $lot->title;

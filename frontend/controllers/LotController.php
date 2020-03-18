@@ -206,7 +206,6 @@ class LotController extends Controller
     // Ссылка на категории лотов
     public function actionSearch($type, $category, $subcategory = null, $region = null)
     {
-        $start = microtime(true);
         $model = new SearchLot();
         $modelSort = new SortLot();
         $urlParamServer = $_SERVER['REQUEST_URI'];
@@ -384,6 +383,7 @@ class LotController extends Controller
     }
     public function actionPage($type, $category, $subcategory, $id)
     {
+
         // Проверка ссылок ЧПУ и подставление типа лотов Strat->
         if (!empty($items = LotsCategory::find()->where(['translit_name'=>$category])->one())) {
             $queryCategory = $items->id;
@@ -526,6 +526,7 @@ class LotController extends Controller
             'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
             'url' => ["javascript:void(0);"]
         ];
+        
         // Хлебные крошки <-End
 
         return $this->render("page-lot", ['lot'=>$lot, 'type'=>$type]);
