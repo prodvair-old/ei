@@ -74,11 +74,9 @@ class FindController extends Controller
 
         if(Yii::$app->request->post()){
             ini_set('memory_limit', '1024M');
-            // $modelImport->fileImport = \yii\web\UploadedFile::getInstance($modelImport,'fileImport');
             
             if($modelImport->load(Yii::$app->request->post()) && $modelImport->validate()){
                 $result = $modelImport->excelArrest();
-                // var_dump($result);
 
                 if ($result[0] != null) {
                     HistoryAdd::export(1, 'find/arrest', 'Иммущество успешно экспортировано', null, Yii::$app->user->identity);
