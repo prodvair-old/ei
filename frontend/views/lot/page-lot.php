@@ -18,8 +18,6 @@ use frontend\models\ViewPage;
 use common\models\Query\WishList;
 use common\models\Query\Lot\Lots;
 
-$start = microtime(true);
-
 $view = new ViewPage();
 
 $view->page_type = "lot_".$lot->torg->type;
@@ -50,9 +48,6 @@ $dateSend = floor(($endDate - $now) / (60 * 60 * 24));
 // $otherLots = Lots::find()->joinWith($otherJoin)->alias('lot')->where($otherWhere)->andWhere(['!=', 'lot.id', $lot->id])->all();
 $otherLots = null;
 
-echo '<center><span style="font-size:12px;">', date('s', microtime(true) - $start), ' сек.</span></center>';
-die();
-
 $this->registerJsVar( 'lotType', $lot->torg->type, $position = yii\web\View::POS_HEAD );
 $this->title = $lot->title;
 $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
@@ -77,11 +72,11 @@ foreach ($lot->info as $key => $value) {
             $key != 'sellType' &&
             $key != 'sellTypeId' &&
             $key != 'minPrice' &&
-            // $key != 'torgReason' &&
-            // $key != 'stepCount' &&
-            // $key != 'dateAuction' &&
-            // $key != 'procedureDate' &&
-            // $key != 'conclusionDate' &&
+            $key != 'torgReason' &&
+            $key != 'stepCount' &&
+            $key != 'dateAuction' &&
+            $key != 'procedureDate' &&
+            $key != 'conclusionDate' &&
             $key != 'currency'
         ) {
         $otherInfo[$key] = $value;
@@ -253,11 +248,11 @@ foreach ($lot->info as $key => $value) {
                         
                     </div>
 
-                    <? if($lot[info][address][geo_lat] && $isCategory): ?>
+                    <? if($lot['info']['address']['geo_lat'] && $isCategory): ?>
                         <div 
                             id="map-lot" 
-                            data-lat="<?=$lot[info][address][geo_lat];?>"
-                            data-lng="<?=$lot[info][address][geo_lon];?>">
+                            data-lat="<?=$lot['info']['address']['geo_lat'];?>"
+                            data-lng="<?=$lot['info']['address']['geo_lon'];?>">
                         </div>
                     <? endif; ?>
 
@@ -407,6 +402,33 @@ foreach ($lot->info as $key => $value) {
                                                     break;
                                                 case 'additionalConditions':
                                                     $title = 'Дополнительные условия и критерии определения победителя';
+                                                    break;
+                                                case 'category-building-type':
+                                                    $title = 'Тип строения';
+                                                    break;
+                                                case 'category':
+                                                    $title = 'Категория';
+                                                    break;
+                                                case 'category-type':
+                                                    $title = 'Объект';
+                                                    break;
+                                                case 'purpose':
+                                                    $title = 'Цель использования';
+                                                    break;
+                                                case 'cadastreNumber':
+                                                    $title = 'Кадастровый номер';
+                                                    break;
+                                                case 'address':
+                                                    $title = 'Адрес';
+                                                    break;
+                                                case 'floor':
+                                                    $title = 'Этаж';
+                                                    break;
+                                                case 'built-year':
+                                                    $title = 'Год строительства';
+                                                    break;
+                                                case 'area':
+                                                    $title = 'Местоположение';
                                                     break;
                                                 case 'flatName':
                                                     $title = 'Квартира';
@@ -761,18 +783,22 @@ foreach ($lot->info as $key => $value) {
                     <? } ?>
                     
 
-                    <div id="torg" class="detail-header mb-30">
-                        <h5 class="mt-30">Информация о торге</h5>
-                        <p class="long-text"><?=$lot->torg->description?></p>
-                        <a href="#torg" class="open-text-js">Подробнее</a>
-                        <div class="mb-50"></div>
-                    </div>
+                    <? if ($lot->torg->description) { ?>
+                        <div id="torg" class="detail-header mb-30">
+                            <h5 class="mt-30">Информация о торге</h5>
+                            <p class="long-text"><?=$lot->torg->description?></p>
+                            <a href="#torg" class="open-text-js">Подробнее</a>
+                            <div class="mb-50"></div>
+                        </div>
+                    <? } ?>
 
-                    <div id="roles" class="detail-header mb-30">
-                        <h5 class="mt-30">Правила подачи заявок</h5>
-                        <p class="long-text"><?=($lot->torg->typeId == 1)? $lot->torg->info['rules'] : $lot->info['torgReason'] ?></p>
-                        <a href="#roles" class="open-text-js">Подробнее</a>
-                    </div>
+                    <? if ($lot->info['torgReason'] || $lot->torg->info['rules']) { ?>
+                        <div id="roles" class="detail-header mb-30">
+                            <h5 class="mt-30">Правила подачи заявок</h5>
+                            <p class="long-text"><?=($lot->torg->typeId == 1)? $lot->torg->info['rules'] : $lot->info['torgReason'] ?></p>
+                            <a href="#roles" class="open-text-js">Подробнее</a>
+                        </div>
+                    <? } ?>
 
                 </div>
                 
