@@ -1,16 +1,14 @@
 <?php
 use yii\helpers\Url;
 
-use common\models\Query\Arrest\LotsArrest;
-use common\models\Query\Bankrupt\Lots;
-use common\models\Query\Bankrupt\Bankrupts;
-use common\models\Query\Bankrupt\Arbitrs;
-use common\models\Query\Bankrupt\Sro;
+use common\models\Query\Lot\Lots;
+use common\models\Query\Lot\Bankrupts;
+use common\models\Query\Lot\Managers;
+use common\models\Query\Lot\Sro;
 
-$lotsArrestCount    = LotsArrest::find()->joinWith('torgs')->where('torgs."trgExpireDate" >= NOW()')->count();
-$lotsBankruptCount  = Lots::find()->joinWith('torgy')->where('torgy.timeend >= NOW()')->count();
+$lotsCount          = Lots::find()->count();
 $doljnikCount       = Bankrupts::find()->count();
-$arbitrsCount       = Arbitrs::find()->count();
+$arbitrsCount       = Managers::find()->where(['typeId' => 1])->count();
 $sroCount           = Sro::find()->count();
 
 ?>
@@ -22,38 +20,28 @@ $sroCount           = Sro::find()->count();
         <loc><?= $host.Url::to('/sitemap-service.xml') ?></loc>
     </sitemap>
     <sitemap>
-        <loc><?= $host.Url::to('/sitemap-lots_filter.xml') ?></loc>
+        <loc><?= $host.Url::to('/sitemap-lots_filter_bunkrupt.xml') ?></loc>
+    </sitemap>
+    <sitemap>
+        <loc><?= $host.Url::to('/sitemap-lots_filter_arrest.xml') ?></loc>
+    </sitemap>
+    <sitemap>
+        <loc><?= $host.Url::to('/sitemap-lots_filter_zalog.xml') ?></loc>
     </sitemap>
     <?php
-        // Лоты банкротки
+        // Лоты
         $limit = 0;
-        $count = $lotsBankruptCount;
+        $count = $lotsCount;
         while ($count > 0) {
             $count = $count - 1000;
             if ($count > 0) {
                 $limit = $limit + 1000;
             } else {
-                $limit = $lotsBankruptCount;
+                $limit = $lotsCount;
             }
     ?>
     <sitemap>
-        <loc><?= $host.'/sitemap-lots_bankrupt-'.$limit.'.xml' ?></loc>
-    </sitemap>
-    <? } ?>
-    <?php
-        // Лоты аррестовки
-        $limit = 0;
-        $count = $lotsArrestCount;
-        while ($count > 0) {
-            $count = $count - 1000;
-            if ($count > 0) {
-                $limit = $limit + 1000;
-            } else {
-                $limit = $lotsArrestCount;
-            }
-    ?>
-    <sitemap>
-        <loc><?= $host.'/sitemap-lots_arrest-'.$limit.'.xml' ?></loc>
+        <loc><?= $host.'/sitemap-lots-'.$limit.'.xml' ?></loc>
     </sitemap>
     <? } ?>
     <?php

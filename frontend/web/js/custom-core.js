@@ -117,7 +117,6 @@ jQuery(function($) {
 	});
 	
 	function filterParams() {
-		console.log(lotType, lotType == 'all');
 		if (lotType == 'arrest') {
 			$('.bankrupt-type').hide();
 			$('.zalog-type').hide();

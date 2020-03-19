@@ -6,11 +6,10 @@ use yii\base\Model;
 use yii\helpers\Url;
 use app\models\Func;
 
-use common\models\Query\Bankrupt\Lots;
-use common\models\Query\Bankrupt\Bankrupts;
-use common\models\Query\Bankrupt\Arbitrs;
-use common\models\Query\Bankrupt\Sro;
-use common\models\Query\Arrest\LotsArrest;
+use common\models\Query\Lot\Lots;
+use common\models\Query\Lot\Bankrupts;
+use common\models\Query\Lot\Managers;
+use common\models\Query\Lot\Sro;
 
 use common\models\Query\LotsCategory;
 use common\models\Query\Regions;
@@ -159,7 +158,7 @@ class SiteMapCreater extends Model
                         ];
                     }
                 break;
-            case 'lots_filter':
+            case 'lots_filter_bunkrupt':
 
                 $metaData = MetaDate::find()->where(['mdName' => 'bankrupt'])->one();
                 $urls[] = [
@@ -169,14 +168,6 @@ class SiteMapCreater extends Model
                     'type' => 'lots-type'
                 ];
                 
-                $metaData = MetaDate::find()->where(['mdName' => 'arrest'])->one();
-                $urls[] = [
-                    Yii::$app->urlManager->createUrl('arrest'), 
-                    'weekly', 
-                    'title' => ($metaData->mdTitle)? $metaData->mdTitle : 'Арестованное имущество',
-                    'type' => 'lots-type'
-                ];
-
                 // Категории лотов
                 $lotsCategory = LotsCategory::find()->all();
                 $regions = Regions::find()->all();
@@ -194,23 +185,23 @@ class SiteMapCreater extends Model
                     ];
 
                     // Подкатегории банкротки
-                    if (!empty($category->bankrupt_categorys_translit)) {
-                        foreach ($category->bankrupt_categorys_translit as $key => $value) {
-                            $metaData = MetaDate::find()->where(['mdName' => 'bankrupt/'.$category->translit_name.'/'.$key])->one();
+                    if (!empty($category->subCategorys)) {
+                        foreach ($category->subCategorys as $subCategory) {
+                            $metaData = MetaDate::find()->where(['mdName' => 'bankrupt/'.$category->translit_name.'/'.$subCategory->nameTranslit])->one();
 
                             $urls[] = [
-                                Yii::$app->urlManager->createUrl('bankrupt/'.$category->translit_name.'/'.$key), 
+                                Yii::$app->urlManager->createUrl('bankrupt/'.$category->translit_name.'/'.$subCategory->nameTranslit), 
                                 'weekly', 
-                                'title' => ($metaData->mdTitle)? $metaData->mdTitle : $value['name'],
+                                'title' => ($metaData->mdTitle)? $metaData->mdTitle : $subCategory->name,
                                 'type' => 'lots-bankrupt-subcategory'
                             ];
 
                             // Регионы банкротки
                             foreach ($regions as $region) {
-                                $metaData = MetaDate::find()->where(['mdName' => 'bankrupt/'.$category->translit_name.'/'.$key.'/'.$region->name_translit])->one();
+                                $metaData = MetaDate::find()->where(['mdName' => 'bankrupt/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$region->name_translit])->one();
 
                                 $urls[] = [
-                                    Yii::$app->urlManager->createUrl('bankrupt/'.$category->translit_name.'/'.$key.'/'.$region->name_translit), 
+                                    Yii::$app->urlManager->createUrl('bankrupt/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$region->name_translit), 
                                     'weekly', 
                                     'title' => ($metaData->mdTitle)? $metaData->mdTitle : $region->name,
                                     'type' => 'lots-bankrupt-region'
@@ -219,44 +210,116 @@ class SiteMapCreater extends Model
                         }
                     }
 
-                    // Категории арестовки
-                    $metaData = MetaDate::find()->where(['mdName' => 'arrest/'.$category->translit_name])->one();
+                }
+                break;
+            case 'lots_filter_arrest':
 
+                    $metaData = MetaDate::find()->where(['mdName' => 'arrest'])->one();
                     $urls[] = [
-                        Yii::$app->urlManager->createUrl('arrest/'.$category->translit_name), 
+                        Yii::$app->urlManager->createUrl('arrest'), 
                         'weekly', 
-                        'title' => ($metaData->mdTitle)? $metaData->mdTitle : $category->name,
-                        'type' => 'lots-arrest-category'
+                        'title' => ($metaData->mdTitle)? $metaData->mdTitle : 'Арестованное имущество',
+                        'type' => 'lots-type'
                     ];
-
-                    // Подкатегории арестовки
-                    if (!empty($category->arrest_categorys_translit)) {
-                        foreach ($category->arrest_categorys_translit as $key => $value) {
-                            $metaData = MetaDate::find()->where(['mdName' => 'arrest/'.$category->translit_name.'/'.$key])->one();
-
-                            $urls[] = [
-                                Yii::$app->urlManager->createUrl('arrest/'.$category->translit_name.'/'.$key), 
-                                'weekly', 
-                                'title' => ($metaData->mdTitle)? $metaData->mdTitle : $value['name'],
-                                'type' => 'lots-arrest-subcategory'
-                            ];
-
-                            // Регионы арестовки
-                            foreach ($regions as $region) {
-                                $metaData = MetaDate::find()->where(['mdName' => 'arrest/'.$category->translit_name.'/'.$key.'/'.$region->name_translit])->one();
-
+    
+                    // Категории лотов
+                    $lotsCategory = LotsCategory::find()->all();
+                    $regions = Regions::find()->all();
+    
+                    foreach ($lotsCategory as $category) {
+    
+                        // Категории арестовки
+                        $metaData = MetaDate::find()->where(['mdName' => 'arrest/'.$category->translit_name])->one();
+    
+                        $urls[] = [
+                            Yii::$app->urlManager->createUrl('arrest/'.$category->translit_name), 
+                            'weekly', 
+                            'title' => ($metaData->mdTitle)? $metaData->mdTitle : $category->name,
+                            'type' => 'lots-arrest-category'
+                        ];
+    
+                        // Подкатегории арестовки
+                        if (!empty($category->subCategorys)) {
+                            foreach ($category->subCategorys as $subCategory) {
+                                $metaData = MetaDate::find()->where(['mdName' => 'arrest/'.$category->translit_name.'/'.$subCategory->nameTranslit])->one();
+    
                                 $urls[] = [
-                                    Yii::$app->urlManager->createUrl('arrest/'.$category->translit_name.'/'.$key.'/'.$region->name_translit), 
+                                    Yii::$app->urlManager->createUrl('arrest/'.$category->translit_name.'/'.$subCategory->nameTranslit), 
                                     'weekly', 
-                                    'title' => ($metaData->mdTitle)? $metaData->mdTitle : $region->name,
-                                    'type' => 'lots-arrest-region'
+                                    'title' => ($metaData->mdTitle)? $metaData->mdTitle : $subCategory->name,
+                                    'type' => 'lots-arrest-subcategory'
                                 ];
+    
+                                // Регионы арестовки
+                                foreach ($regions as $region) {
+                                    $metaData = MetaDate::find()->where(['mdName' => 'arrest/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$region->name_translit])->one();
+    
+                                    $urls[] = [
+                                        Yii::$app->urlManager->createUrl('arrest/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$region->name_translit), 
+                                        'weekly', 
+                                        'title' => ($metaData->mdTitle)? $metaData->mdTitle : $region->name,
+                                        'type' => 'lots-arrest-region'
+                                    ];
+                                }
                             }
                         }
                     }
-                }
                 break;
-            case 'lots_bankrupt':
+            case 'lots_filter_zalog':
+
+                    $metaData = MetaDate::find()->where(['mdName' => 'zalog'])->one();
+                    $urls[] = [
+                        Yii::$app->urlManager->createUrl('zalog'), 
+                        'weekly', 
+                        'title' => ($metaData->mdTitle)? $metaData->mdTitle : 'Имущество организации',
+                        'type' => 'lots-type'
+                    ];
+                    
+                    // Категории лотов
+                    $lotsCategory = LotsCategory::find()->all();
+                    $regions = Regions::find()->all();
+    
+                    foreach ($lotsCategory as $category) {
+                        
+                        // Категории залога
+                        $metaData = MetaDate::find()->where(['mdName' => 'zalog/'.$category->translit_name])->one();
+    
+                        $urls[] = [
+                            Yii::$app->urlManager->createUrl('zalog/'.$category->translit_name), 
+                            'weekly', 
+                            'title' => ($metaData->mdTitle)? $metaData->mdTitle : $category->name,
+                            'type' => 'lots-zalog-category'
+                        ];
+    
+                        // Подкатегории залога
+                        if (!empty($category->subCategorys)) {
+                            foreach ($category->subCategorys as $subCategory) {
+                                $metaData = MetaDate::find()->where(['mdName' => 'zalog/'.$category->translit_name.'/'.$subCategory->nameTranslit])->one();
+    
+                                $urls[] = [
+                                    Yii::$app->urlManager->createUrl('zalog/'.$category->translit_name.'/'.$subCategory->nameTranslit), 
+                                    'weekly', 
+                                    'title' => ($metaData->mdTitle)? $metaData->mdTitle : $subCategory->name,
+                                    'type' => 'lots-zalog-subcategory'
+                                ];
+    
+                                // Регионы залога
+                                foreach ($regions as $region) {
+                                    $metaData = MetaDate::find()->where(['mdName' => 'zalog/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$region->name_translit])->one();
+    
+                                    $urls[] = [
+                                        Yii::$app->urlManager->createUrl('zalog/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$region->name_translit), 
+                                        'weekly', 
+                                        'title' => ($metaData->mdTitle)? $metaData->mdTitle : $region->name,
+                                        'type' => 'lots-zalog-region'
+                                    ];
+                                }
+                            }
+                        }
+    
+                    }
+                break;
+            case 'lots':
                     // Лоты банкротки
                     if (!$param['limit']) {
                         return ['error' => 'не задан limit'];
@@ -264,7 +327,7 @@ class SiteMapCreater extends Model
                     
                     $metaData = MetaDate::find()->where(['mdName' => 'lot-page'])->one();
 
-                    $lots = Lots::find()->joinWith('torgy')->where('torgy.timeend >= NOW()')->limit($limit)->offset($offset)->all();
+                    $lots = Lots::find()->joinWith('torg')->where('torg."publishedDate" >= NOW()')->limit($limit)->offset($offset)->all();
                 
                     $search  = [
                         '${lotTitle}', 
@@ -287,94 +350,36 @@ class SiteMapCreater extends Model
                         '${timeBegin}'
                     ];
                     
+                    
                     foreach ($lots as $lot){
                         $replace = [
-                            str_replace('"',"'",$lot->lotTitle),
-                            str_replace('"',"'",$lot->lotAddress),
-                            str_replace('"',"'",$lot->lotStatus),
-                            str_replace('"',"'",$lot->lotBnkrName),
-                            str_replace('"',"'",$lot->lotArbtrName),
-                            str_replace('"',"'",$lot->lotSroTitle),
-                            str_replace('"',"'",$lot->lotEtp),
-                            (($lot->lotTradeType != 'PublicOffer')? 'публичное предложение': 'открытый аукцион'),
-                            $lot->torgy->case->caseid, 
-                            $category_title,
-                            $subCategory,
-                            Yii::$app->formatter->asCurrency($lot->startprice),
-                            Yii::$app->formatter->asCurrency($lot->lotPrice),
-                            (($lot->auctionstepunit == 'Percent')? $lot->stepprice.'% ('.Yii::$app->formatter->asCurrency((($lot->lotPrice / 100) * $lot->stepprice)).')' : Yii::$app->formatter->asCurrency($lot->stepprice)),
-                            (($lot->advancestepunit == 'Percent')? $lot->advance.'% ('.Yii::$app->formatter->asCurrency((($lot->lotPrice / 100) * $lot->advance)).')' : Yii::$app->formatter->asCurrency($lot->advance)),
-                            (($lot->torgy->pricetype == 'Public')? 'Открытая' : 'Закрытая'),
-                            Yii::$app->formatter->asDate($lot->torgy->timeend, 'long'),
-                            Yii::$app->formatter->asDate($lot->torgy->timebegin, 'long')
+                            str_replace('"',"'",$lot->title),
+                            str_replace('"',"'",$lot->district.''.$lot->info['address']['region'].''.$lot->city.''.$lot->info['address']['street']),
+                            str_replace('"',"'",$lot->status),
+                            str_replace('"',"'",(($lot->torg->bankrupt)? $lot->torg->bankrupt->name : '')),
+                            str_replace('"',"'",$lot->torg->publisher->fullName),
+                            str_replace('"',"'",(($lot->torg->publisher->sro)? $lot->torg->publisher->sro->title : '')),
+                            str_replace('"',"'",(($lot->torg->etp)? $lot->torg->etp->title : '')),
+                            (($lot->torg->tradeType == 0)? 'публичное предложение': 'открытый аукцион'),
+                            (($lot->torg->case)? $lot->torg->case->number : ''), 
+                            $titleCategory,
+                            $titleSubcategory,
+                            Yii::$app->formatter->asCurrency($lot->startPrice),
+                            Yii::$app->formatter->asCurrency($lot->price),
+                            (($lot->stepTypeId == 1)? $lot->step.'% ('.Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->step)).')' : Yii::$app->formatter->asCurrency($lot->step)),
+                            (($lot->depositTypeId == 1)? $lot->deposit.'% ('.Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->deposit)).')' : Yii::$app->formatter->asCurrency($lot->deposit)),
+                            (($lot->torg->info['priceType'] == 'Public')? 'Открытая' : 'Закрытая'),
+                            Yii::$app->formatter->asDate($lot->torg->startDate, 'long'),
+                            Yii::$app->formatter->asDate($lot->torg->endDate, 'long')
                         ];
 
                         $urls[] = [
                             Yii::$app->urlManager->createUrl($lot->lotUrl), 
                             'daily', 
                             'title' => str_replace($search, $replace, $metaData->mdTitle),
-                            'type' => 'lots-bankrupt'
+                            'type' => 'lots'
                         ];
                     }
-                break;
-            case 'lots_arrest':
-                // Лоты арестовки
-                if (!$param['limit']) {
-                    return ['error' => 'не задан limit'];
-                }
-                
-                $metaData = MetaDate::find()->where(['mdName' => 'lot-page'])->one();
-
-                $lots = LotsArrest::find()->joinWith('torgs')->where('torgs."trgExpireDate" >= NOW()')->limit($limit)->offset($offset)->all();
-            
-                $search = [
-                    '${lotTitle}', 
-                    '${lotAddress}', 
-                    '${lotStatus}', 
-                    '${trgFullName}',
-                    '${trgHeadOrg}',
-                    '${trgEtpName}',
-                    '${trgBidFormName}',
-                    '${trgLotCount}', 
-                    '${lotCategory}',
-                    '${lotStartPrice}',
-                    '${lotPriceStep}',
-                    '${lotMinPrice}',
-                    '${lotDepositSize}',
-                    '${trgPublished}',
-                    '${trgExpireDate}',
-                    '${trgStartDateRequest}',
-                    '${trgOpeningDate}'
-                ];
-                
-                foreach ($lots as $lot){
-                    $replace = [
-                        str_replace('"',"'",$lot->lotTitle),
-                        str_replace('"',"'",$lot->lotKladrLocationName),
-                        str_replace('"',"'",$lotStatus),
-                        str_replace('"',"'",$lot->torgs->trgFullName),
-                        str_replace('"',"'",$lot->torgs->trgHeadOrg),
-                        str_replace('"',"'",$lot->torgs->trgEtpName),
-                        $lot->torgs->trgBidFormName,
-                        $lot->torgs->trgLotCount, 
-                        $lot->lotPropKindName,
-                        Yii::$app->formatter->asCurrency($lot->lotStartPrice),
-                        Yii::$app->formatter->asCurrency($lot->lotPriceStep),
-                        Yii::$app->formatter->asCurrency($lot->lotMinPrice),
-                        Yii::$app->formatter->asCurrency($lot->lotDepositSize),
-                        Yii::$app->formatter->asDate($lot->torgs->trgPublished, 'long'),
-                        Yii::$app->formatter->asDate($lot->torgs->trgExpireDate, 'long'),
-                        Yii::$app->formatter->asDate($lot->torgs->trgStartDateRequest, 'long'),
-                        Yii::$app->formatter->asDate($lot->torgs->trgOpeningDate, 'long')
-                    ];
-
-                    $urls[] = [
-                        Yii::$app->urlManager->createUrl($lot->lotUrl), 
-                        'daily', 
-                        'title' => str_replace($search, $replace, $metaData->mdTitle),
-                        'type' => 'lots-arrest'
-                    ];
-                }
                 break;
             case 'arbtr':
                     // Арбитражники
@@ -382,7 +387,7 @@ class SiteMapCreater extends Model
                         return ['error' => 'не задан limit'];
                     }
 
-                    $arbitrs = Arbitrs::find()->limit($limit)->offset($offset)->all();
+                    $arbitrs = Managers::find()->where(['typeId' => 1])->limit($limit)->offset($offset)->all();
 
                     $metaData = MetaDate::find()->where(['mdName' => "arbitr-page"])->one();
 
@@ -400,13 +405,13 @@ class SiteMapCreater extends Model
                     foreach ($arbitrs as $arbitr){
 
                         $replace = [
-                            $arbitr->person->lname.' '.$arbitr->person->fname.' '.$arbitr->person->mname,
-                            $arbitr->postaddress,
+                            $arbitr->fullName,
+                            $arbitr->address,
                             str_replace('"',"'",$arbitr->sro->title),
                             $arbitr->regnum,
-                            $arbitr->person->inn,
-                            $countCases,
-                            count($lots_bankrupt)
+                            $arbitr->inn,
+                            null,
+                            null
                         ];
                         
                         $urls[] = [
@@ -435,17 +440,17 @@ class SiteMapCreater extends Model
                     
                     foreach ($bankrupts as $bankrupt){
 
-                        switch ($bankrupt->bankrupttype) {
-                            case 'Organization':
-                                    $name = $bankrupt->company->shortname;
-                                    $address = $bankrupt->company->legaladdress;
-                                    $inn = $bankrupt->company->inn;
-                                break;
-                            case 'Person':
-                                    $name = $bankrupt->person->lname.' '.$bankrupt->person->fname.' '.$bankrupt->person->mname;
-                                    $address = $bankrupt->person->address;
-                                    $inn = $bankrupt->person->inn;
-                                break;
+                        switch ($bankrupt->typeId) {
+                            case 1:
+                              $name = $bankrupt->name;
+                              $address = $bankrupt->address;
+                              $inn = $bankrupt->inn;
+                              break;
+                            case 2:
+                              $name = $bankrupt->name;
+                              $address = $bankrupt->address;
+                              $inn = $bankrupt->inn;
+                              break;
                         }
 
                         $replace = [
@@ -483,14 +488,14 @@ class SiteMapCreater extends Model
                     
                     foreach ($sros as $sro){
 
-                        $arbitrCount = Arbitrs::find()->joinWith(['sro','person'])->where(['sro.id'=>$sro->id])->count();
+                        $arbitrCount = Managers::find()->where(['sroId'=>$sro->id])->count();
 
                         $replace = [
                             $sro->title,
                             $sro->address,
                             $sro->regnum,
                             $sro->inn,
-                            $sro->ogrn,
+                            $sro->info['ogrn'],
                             $arbitrCount
                         ];
                         
