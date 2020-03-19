@@ -244,7 +244,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
           </div>
 
-          <div class="sidebar-box bankrupt-type sidebar-box__collaps <?=($model->etp)? '' : 'collaps'?> <?=($model->type == 'bankrupt' || $model->type == 'all')? '' : 'd-none'?>">
+          <div class="sidebar-box bankrupt-type sidebar-box__collaps <?=($model->etp)? '' : 'collaps'?>">
 
             <label class="control-label sidebar-box__label" >Торговые площадки</label>           
             <div class="box-content">
@@ -262,7 +262,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
           </div>
 
-          <div class="sidebar-box zalog-type sidebar-box__collaps <?=($model->owners)? '' : 'collaps'?> <?=($model->type == 'zalog' || $model->type == 'all')? '' : 'd-none'?>">
+          <div class="sidebar-box zalog-type sidebar-box__collaps <?=($model->owners)? '' : 'collaps'?>">
 
             <label class="control-label sidebar-box__label" >Организации</label>           
             <div class="box-content">
