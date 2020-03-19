@@ -40,32 +40,30 @@ class Lots extends ActiveRecord
                     case 'bankrupt':
                             foreach ($subCategory->bankruptCategorys as $id) {
                                 if ($this->category->categoryId == $id) {
-                                    return $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
-                                } else {
-                                    return $this->torg->type.'/'.$category->translit_name.'/prochee/'.$this->id;
+                                    $url = $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
                                 }
                             }
                         break;
                     case 'arrest':
                             foreach ($subCategory->arrestCategorys as $id) {
                                 if ($this->category->categoryId == $id) {
-                                    return $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
-                                } else {
-                                    return $this->torg->type.'/'.$category->translit_name.'/prochee/'.$this->id;
+                                    $url = $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
                                 }
                             }
                         break;
                     case 'zalog':
                             if ($this->category->categoryId == $subCategory->id) {
-                                return $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
-                            } else {
-                                return $this->torg->type.'/'.$category->translit_name.'/prochee/'.$this->id;
+                                $url = $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
                             }
                         break;
                 }
             }
         }
-        return $this->torg->type.'/prochee/prochee/'.$this->id;
+        if ($url) {
+            return $url;
+        } else {
+            return $this->torg->type.'/prochee/prochee/'.$this->id;
+        }
     }
     public function getPrice() 
     {
