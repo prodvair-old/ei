@@ -61,7 +61,7 @@ foreach ($lotsCategoryQuery as $category) {
   }
 }
 
-$this->registerJsVar('lotType', $type, $position = yii\web\View::POS_HEAD);
+$this->registerJsVar('lotType', (($model->type)? $model->type : $type), $position = yii\web\View::POS_HEAD);
 $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\View::POS_HEAD);
 ?>
 
