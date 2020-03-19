@@ -28,7 +28,7 @@ class AppAsset extends AssetBundle
         'http://api-maps.yandex.ru/2.1-stable/?load=package.standard&lang=ru-RU',
         'https://cdn.jsdelivr.net/npm/vue/dist/vue.js',
         'js/data_picker.js',
-        'js/scripts.min.js',
+        'js/scripts.min.js?v=2.11',
     ];
     public $depends = [
         // 'yii\web\YiiAsset',
