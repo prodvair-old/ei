@@ -305,7 +305,6 @@ class LotController extends Controller
         $model->load((($get['SearchLot'])? $get : $get[1]));
         $query = $model->searchBy($url, (($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog' || $type == 'all')? $type : null), $modelSort->sortBy());
 
-        /* http://dev.ei.ru/rosselkhozbank/lot-list */
         $urlArray = explode('/', $url);
 
         if ($urlArray[0] != $model->type && ($urlArray[0] == 'all' || $urlArray[0] == 'bankrupt' || $urlArray[0] == 'arrest' || $urlArray[0] == 'zalog')) {

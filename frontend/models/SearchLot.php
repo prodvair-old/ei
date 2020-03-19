@@ -85,28 +85,36 @@ class SearchLot extends Model
 
         if (!empty($this->etp)) {
             if (count($this->etp) == 1) {
-                $where[] = ['torg.etpId'=>$this->etp[0]];
+                $etp = '"torg"."etpId" = '.$this->etp[0];
             } else {
-                $orWhere = ['or'];
-                foreach ($this->etp as $value) {
-                    $orWhere[] = ['torg.etpId'=>$value];
+                foreach ($this->etp as $key => $value) {
+                    if ($key != 0) {
+                        $etp .= ' OR ';
+                    }
+                    $etp .= ' "torg"."etpId" = '.$value;
                 }
-                $where[] = $orWhere;
             }
+            $where[] = 'CASE WHEN "torg"."typeId" = 1
+                        THEN '.$etp.'
+                    END';
             if ($this->type != 'all' && $this->type != 'bankrupt') {
                 $this->type = 'bunkrupt';
             }
         }
         if (!empty($this->owners)) {
             if (count($this->owners) == 1) {
-                $where[] = ['torg.ownerId'=>$this->owners[0]];
+                $owners = '"torg"."ownerId" = '.$this->owners[0];
             } else {
-                $orWhere = ['or'];
-                foreach ($this->owners as $value) {
-                    $orWhere[] = ['torg.ownerId'=>$value];
+                foreach ($this->owners as $key => $value) {
+                    if ($key != 0) {
+                        $owners .= ' OR ';
+                    }
+                    $owners .= ' "torg"."ownerId" = '.$value;
                 }
-                $where[] = $orWhere;
             }
+            $where[] = 'CASE WHEN "torg"."typeId" = 3
+                        THEN '.$owners.'
+                    END';
             if ($this->type != 'all' && $this->type != 'zalog') {
                 $this->type = 'zalog';
             }
