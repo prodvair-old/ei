@@ -107,13 +107,40 @@ class SearchLot extends Model
             if (empty($this->subCategory) || $this->subCategory == 'all' || $this->subCategory == '0') {
                 $orWhere = ['or'];
                 foreach (LotsSubCategory::find()->where(['categoryId' => $this->category])->all() as $key => $subCategory) {
-                    foreach ($subCategory->bankruptCategorys as $value) {
-                        $orWhere[] = ['categorys.categoryId'=>$value];
+                    // foreach ($subCategory->bankruptCategorys as $value) {
+                    //     $orWhere[] = ['categorys.categoryId'=>$value];
+                    // }
+                    // foreach ($subCategory->arrestCategorys as $value) {
+                    //     $orWhere[] = ['categorys.categoryId'=>$value];
+                    // }
+                    // $orWhere[] = ['categorys.categoryId'=>$subCategory->id];
+                    $otherCategoryBankrupt = '';
+                    $otherCategoryArrest = '';
+
+                    if (!empty($subCategory->bankruptCategorys)) {
+                        foreach ($subCategory->bankruptCategorys as $key => $value) {
+                            if ($key != 0) {
+                                $otherCategoryBankrupt .= ' OR ';
+                            }
+                            $otherCategoryBankrupt .= ' "categorys"."categoryId" = '.$value;
+                        }
+                        $orWhere[] = 'CASE WHEN "torg"."typeId" = 1
+                                THEN '.$otherCategoryBankrupt.'
+                            END';
                     }
-                    foreach ($subCategory->arrestCategorys as $value) {
-                        $orWhere[] = ['categorys.categoryId'=>$value];
+                    if (!empty($subCategory->arrestCategorys)) {
+                        foreach ($subCategory->arrestCategorys as $key => $value) {
+                            if ($key != 0) {
+                                $otherCategoryArrest .= ' OR ';
+                            }
+                            $otherCategoryArrest .= ' "categorys"."categoryId" = '.$value;
+                        }
+                        $orWhere[] = 'CASE WHEN "torg"."typeId" = 2
+                                THEN '.$otherCategoryArrest.'
+                            END';
                     }
-                    $orWhere[] = ['categorys.categoryId'=>$subCategory->id];
+                    $orWhere[] = 'CASE WHEN "torg"."typeId" = 3
+                            THEN "categorys"."categoryId" = '.$subCategory->id.' END';
                 }
                 $where[] = $orWhere;
             } else if ($this->subCategory != '0'){
@@ -126,13 +153,33 @@ class SearchLot extends Model
                         $checkUrl = true;
                     }
 
-                    foreach ($subCategory->bankruptCategorys as $value) {
-                        $orWhere[] = ['categorys.categoryId'=>$value];
+                    $otherCategoryBankrupt = '';
+                    $otherCategoryArrest = '';
+
+                    if (!empty($subCategory->bankruptCategorys)) {
+                        foreach ($subCategory->bankruptCategorys as $key => $value) {
+                            if ($key != 0) {
+                                $otherCategoryBankrupt .= ' OR ';
+                            }
+                            $otherCategoryBankrupt .= ' "categorys"."categoryId" = '.$value;
+                        }
+                        $orWhere[] = 'CASE WHEN "torg"."typeId" = 1
+                                THEN '.$otherCategoryBankrupt.'
+                            END';
                     }
-                    foreach ($subCategory->arrestCategorys as $value) {
-                        $orWhere[] = ['categorys.categoryId'=>$value];
+                    if (!empty($subCategory->arrestCategorys)) {
+                        foreach ($subCategory->arrestCategorys as $key => $value) {
+                            if ($key != 0) {
+                                $otherCategoryArrest .= ' OR ';
+                            }
+                            $otherCategoryArrest .= ' "categorys"."categoryId" = '.$value;
+                        }
+                        $orWhere[] = 'CASE WHEN "torg"."typeId" = 2
+                                THEN '.$otherCategoryArrest.'
+                            END';
                     }
-                    $orWhere[] = ['categorys.categoryId'=>$subCategory->id];
+                    $orWhere[] = 'CASE WHEN "torg"."typeId" = 3
+                            THEN "categorys"."categoryId" = '.$subCategory->id.' END';
 
                 }
                 $where[] = $orWhere;

@@ -7,6 +7,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
 use common\models\Query\LotsSubCategory;
+use common\models\Query\LotsCategory;
 
 use arogachev\excel\import\advanced\Importer;
 
@@ -485,18 +486,40 @@ class TestController extends Controller
         ];
 
 
-        foreach ($json as $key => $value) {
-            $category = new LotsSubCategory();
+        foreach (LotsSubCategory::find()->all() as $subCategory) {
+            foreach ($subCategory->categorys->bankrupt_categorys as $id => $category) {
+                if ($subCategory->bankruptCategorys != null) {
+                    foreach ($subCategory->bankruptCategorys as $subId) {
+                        if ($subId == $id) {
+                            $result[$subCategory->categorys->name][$subCategory->name]['Банкротка'][] = [
+                                'Номер' => $id,
+                                'Название' => $category['name']
+                            ];
+                        }
+                    }
+                }
+            }
 
-            $category->name = $value['name'];
-            $category->nameTranslit = $value['translit'];
-            $category->arrestCategorys = (($value['arrestIds'][0])? $value['arrestIds'] : null);
-            $category->bankruptCategorys = (($value['bankruptIds'][0])? $value['bankruptIds'] : null);
-            $category->categoryId = ltrim(substr($key, 0, 2),'0');
-
-            $category->save();
-
+            foreach ($subCategory->categorys->arrest_categorys as $id => $category) {
+                if ($subCategory->arrestCategorys != null) {
+                    foreach ($subCategory->arrestCategorys as $subId) {
+                        if ($subId == $id) {
+                            $result[$subCategory->categorys->name][$subCategory->name]['Арестовка'][] = [
+                                'Номер' => $id,
+                                'Название' => $category['name']
+                            ];
+                        }
+                    }
+                }
+            }
         }
+
+        // echo '<pre>';
+        // var_dump($result);
+        // echo '</pre>';
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        return $result;
     }
 
     public function actionStr()

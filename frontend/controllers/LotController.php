@@ -381,6 +381,7 @@ class LotController extends Controller
         $type = ($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog';
         return $this->render('search', compact('model', 'modelSort', 'type', 'queryCategory', 'lots', 'pages', 'count', 'offset', 'limit', 'price', 'url'));
     }
+    
     public function actionPage($type, $category, $subcategory, $id)
     {
 
