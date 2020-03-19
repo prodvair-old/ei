@@ -276,7 +276,8 @@ class LotController extends Controller
                     $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
                     $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : $owner->title;
 
-                    $model->etp[0] = $owner->id; 
+                    $model->owners[0] = $owner->id; 
+                    $model->type = 'zalog'; 
 
                 } else {
                     Yii::$app->response->statusCode = 404;
@@ -381,7 +382,7 @@ class LotController extends Controller
         $type = ($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog';
         return $this->render('search', compact('model', 'modelSort', 'type', 'queryCategory', 'lots', 'pages', 'count', 'offset', 'limit', 'price', 'url'));
     }
-    
+
     public function actionPage($type, $category, $subcategory, $id)
     {
 

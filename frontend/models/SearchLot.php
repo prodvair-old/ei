@@ -39,7 +39,7 @@ class SearchLot extends Model
     {
         return [
             [['type', 'category', 'search', 'sortBy'], 'string'],
-            [['subCategory', 'region', 'tradeType', 'etp'], 'default'],
+            [['subCategory', 'region', 'tradeType', 'etp', 'owners'], 'default'],
             [['minPrice', 'maxPrice'], 'number'],
             [['imageCheck', 'archivCheck'], 'boolean'],
         ];
@@ -83,6 +83,35 @@ class SearchLot extends Model
             }
         }
 
+        if (!empty($this->etp)) {
+            if (count($this->etp) == 1) {
+                $where[] = ['torg.etpId'=>$this->etp[0]];
+            } else {
+                $orWhere = ['or'];
+                foreach ($this->etp as $value) {
+                    $orWhere[] = ['torg.etpId'=>$value];
+                }
+                $where[] = $orWhere;
+            }
+            if ($this->type != 'all' && $this->type != 'bankrupt') {
+                $this->type = 'bunkrupt';
+            }
+        }
+        if (!empty($this->owners)) {
+            if (count($this->owners) == 1) {
+                $where[] = ['torg.ownerId'=>$this->owners[0]];
+            } else {
+                $orWhere = ['or'];
+                foreach ($this->owners as $value) {
+                    $orWhere[] = ['torg.ownerId'=>$value];
+                }
+                $where[] = $orWhere;
+            }
+            if ($this->type != 'all' && $this->type != 'zalog') {
+                $this->type = 'zalog';
+            }
+        }
+
         if (!empty($this->type)) {
             if ($this->type !== 'all') {
                 $where[] = ['torg.type' => $this->type];
@@ -108,13 +137,6 @@ class SearchLot extends Model
             if (empty($this->subCategory) || $this->subCategory == 'all' || $this->subCategory == '0') {
                 $orWhere = ['or'];
                 foreach (LotsSubCategory::find()->where(['categoryId' => $this->category])->all() as $key => $subCategory) {
-                    // foreach ($subCategory->bankruptCategorys as $value) {
-                    //     $orWhere[] = ['categorys.categoryId'=>$value];
-                    // }
-                    // foreach ($subCategory->arrestCategorys as $value) {
-                    //     $orWhere[] = ['categorys.categoryId'=>$value];
-                    // }
-                    // $orWhere[] = ['categorys.categoryId'=>$subCategory->id];
                     $otherCategoryBankrupt = '';
                     $otherCategoryArrest = '';
 
@@ -226,28 +248,6 @@ class SearchLot extends Model
 
                     $where[] = ['regionId'=>$this->region];
                 }
-            }
-        }
-        if (!empty($this->etp)) {
-            if (count($this->etp) == 1) {
-                $where[] = ['torg.etpId'=>$this->etp[0]];
-            } else {
-                $orWhere = ['or'];
-                foreach ($this->etp as $value) {
-                    $orWhere[] = ['torg.etpId'=>$value];
-                }
-                $where[] = $orWhere;
-            }
-        }
-        if (!empty($this->owners)) {
-            if (count($this->owners) == 1) {
-                $where[] = ['torg.ownerId'=>$this->owners[0]];
-            } else {
-                $orWhere = ['or'];
-                foreach ($this->owners as $value) {
-                    $orWhere[] = ['torg.ownerId'=>$value];
-                }
-                $where[] = $orWhere;
             }
         }
         if (!empty($this->tradeType)) {
