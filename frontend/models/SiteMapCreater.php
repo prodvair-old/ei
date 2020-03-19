@@ -327,7 +327,7 @@ class SiteMapCreater extends Model
                     
                     $metaData = MetaDate::find()->where(['mdName' => 'lot-page'])->one();
 
-                    $lots = Lots::find()->joinWith('torg')->where('torg."publishedDate" >= NOW()')->limit($limit)->offset($offset)->all();
+                    $lots = Lots::find()->limit($limit)->offset($offset)->all();
                 
                     $search  = [
                         '${lotTitle}', 
@@ -362,8 +362,8 @@ class SiteMapCreater extends Model
                             str_replace('"',"'",(($lot->torg->etp)? $lot->torg->etp->title : '')),
                             (($lot->torg->tradeType == 0)? 'публичное предложение': 'открытый аукцион'),
                             (($lot->torg->case)? $lot->torg->case->number : ''), 
-                            $titleCategory,
-                            $titleSubcategory,
+                            null,
+                            null,
                             Yii::$app->formatter->asCurrency($lot->startPrice),
                             Yii::$app->formatter->asCurrency($lot->price),
                             (($lot->stepTypeId == 1)? $lot->step.'% ('.Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->step)).')' : Yii::$app->formatter->asCurrency($lot->step)),
@@ -374,7 +374,7 @@ class SiteMapCreater extends Model
                         ];
 
                         $urls[] = [
-                            Yii::$app->urlManager->createUrl($lot->lotUrl), 
+                            Yii::$app->urlManager->createUrl($lot->Url), 
                             'daily', 
                             'title' => str_replace($search, $replace, $metaData->mdTitle),
                             'type' => 'lots'
