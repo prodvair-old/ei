@@ -32,6 +32,9 @@ class LotsAll extends ActiveRecord
     // Функции для вывода доп, инвормации
     public function getUrl()
     {
+        if (!$this->published) {
+            return false;
+        }
         $items = LotsCategory::find()->orderBy('id DESC')->all();
 
         foreach ($items as $category) {
@@ -40,24 +43,29 @@ class LotsAll extends ActiveRecord
                     case 'bankrupt':
                             foreach ($subCategory->bankruptCategorys as $id) {
                                 if ($this->category->categoryId == $id) {
-                                    return $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
+                                    $url = $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
                                 }
                             }
                         break;
                     case 'arrest':
                             foreach ($subCategory->arrestCategorys as $id) {
                                 if ($this->category->categoryId == $id) {
-                                    return $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
+                                    $url = $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
                                 }
                             }
                         break;
                     case 'zalog':
                             if ($this->category->categoryId == $subCategory->id) {
-                                return $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
+                                $url = $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
                             }
                         break;
                 }
             }
+        }
+        if ($url) {
+            return $url;
+        } else {
+            return $this->torg->type.'/prochee/prochee/'.$this->id;
         }
     }
     public function getPrice() 

@@ -32,6 +32,9 @@ class Lots extends ActiveRecord
     // Функции для вывода доп, инвормации
     public function getUrl()
     {
+        if (!$this->published) {
+            return false;
+        }
         $items = LotsCategory::find()->orderBy('id DESC')->all();
 
         foreach ($items as $category) {
