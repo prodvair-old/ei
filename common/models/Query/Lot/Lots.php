@@ -41,6 +41,8 @@ class Lots extends ActiveRecord
                             foreach ($subCategory->bankruptCategorys as $id) {
                                 if ($this->category->categoryId == $id) {
                                     return $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
+                                } else {
+                                    return $this->torg->type.'/'.$category->translit_name.'/prochee/'.$this->id;
                                 }
                             }
                         break;
@@ -48,12 +50,16 @@ class Lots extends ActiveRecord
                             foreach ($subCategory->arrestCategorys as $id) {
                                 if ($this->category->categoryId == $id) {
                                     return $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
+                                } else {
+                                    return $this->torg->type.'/'.$category->translit_name.'/prochee/'.$this->id;
                                 }
                             }
                         break;
                     case 'zalog':
                             if ($this->category->categoryId == $subCategory->id) {
                                 return $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
+                            } else {
+                                return $this->torg->type.'/'.$category->translit_name.'/prochee/'.$this->id;
                             }
                         break;
                 }
