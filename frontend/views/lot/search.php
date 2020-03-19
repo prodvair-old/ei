@@ -36,10 +36,12 @@ $traderList = [];
 if ($type == 'bankrupt') {
   $traderLabel = 'Торговые площадки';
   $traderPlaceholder = 'Все торговые площадки';
+  $traderName = 'etp';
   $traderList = ArrayHelper::map(Etp::find()->orderBy('title ASC')->all(), 'id', 'title');
 } else if ($type == 'zalog') {
   $traderLabel = 'Организации';
   $traderPlaceholder = 'Все организации';
+  $traderName = 'owners';
   $traderList = ArrayHelper::map(OwnerProperty::find()->orderBy('name ASC')->all(), 'id', 'name');
 }
 
@@ -249,7 +251,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
             </div> -->
             <label class="control-label sidebar-box__label" ><?= $traderLabel ?></label>           
             <div class="box-content">
-              <?= $form->field($model, 'etp')->dropDownList(
+              <?= $form->field($model, $traderName)->dropDownList(
                 $traderList,
                 [
                   'class' => 'chosen-the-basic form-control',

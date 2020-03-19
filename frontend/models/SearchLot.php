@@ -26,6 +26,7 @@ class SearchLot extends Model
     public $imageCheck;
     public $archivCheck;
     public $tradeType;
+    public $owners;
     public $search;
     public $sortBy;
     
@@ -238,11 +239,22 @@ class SearchLot extends Model
                 $where[] = $orWhere;
             }
         }
+        if (!empty($this->owners)) {
+            if (count($this->owners) == 1) {
+                $where[] = ['torg.ownerId'=>$this->owners[0]];
+            } else {
+                $orWhere = ['or'];
+                foreach ($this->owners as $value) {
+                    $orWhere[] = ['torg.ownerId'=>$value];
+                }
+                $where[] = $orWhere;
+            }
+        }
         if (!empty($this->tradeType)) {
             if (count($this->tradeType) == 1) {
                 $where[] = ['torg.tradeTypeId'=>$this->tradeType[0]];
             } else {
-                $where = [
+                $where[] = [
                     'or',
                     ['torg.tradeTypeId'=>$this->tradeType[0]],
                     ['torg.tradeTypeId'=>$this->tradeType[1]]
