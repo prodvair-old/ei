@@ -220,14 +220,15 @@ class LotsController extends Controller
                     $subcategorys = $categoryItem->zalog_categorys;
                     break;
             }
-
-            foreach ($subcategorys as $key => $item) {
-                foreach ($modelLot->subCategorys as $subcategory) {
-                    if ($key == $subcategory) {
-                        $modelLot->categorys = $categoryItem->id;
+            if ($subcategorys) {
+                foreach ($subcategorys as $key => $item) {
+                    foreach ($modelLot->subCategorys as $subcategory) {
+                        if ($key == $subcategory) {
+                            $modelLot->categorys = $categoryItem->id;
+                        }
                     }
+                    
                 }
-                
             }
         }
 

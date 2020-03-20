@@ -152,7 +152,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Get full name or username
+     * Получить полное имя пользователя
      * 
      * @return string
      */
@@ -166,6 +166,17 @@ class User extends ActiveRecord implements IdentityInterface
     public function getNameForUser()
     {
         return $this->info['firstname'].' '.$this->info['lastname'];
+    }
+
+    /**
+     * Проверить, нужно ли отправлять уведомление о событии
+     * 
+     * @param string $event
+     * @return boolean
+     */
+    public function needNotify($event)
+    {
+        return isset($this->info[$event]) && $this->info[$event];
     }
 
     public function getOwnerId()

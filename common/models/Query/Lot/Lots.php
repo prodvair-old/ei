@@ -176,11 +176,44 @@ class Lots extends ActiveRecord
         ]);
     }
 
-    // Связь с таблицей статистики
+    /**
+     * Получить запрос для выборки подписчиков.
+     * 
+     * @return yii\db\Query
+     */
     public function getWishlist()
     {
         return $this->hasMany(WishList::className(), ['lotId' => 'id'])->alias('wishList');
     }
+
+    /**
+     * Получить список подписчиков.
+     * 
+     * @return yii\db\ActiveRecords
+     */
+    public function getObservers()
+    {
+        return $this->wishList->all();
+    }
+
+    /**
+     * Известить подписчиков о произошедшем событии.
+     * 
+     * @param string $event
+     * @see common\models\WishList constants
+     */
+    public static function notifyObservers($event)
+    {
+        foreach($this->observers as $observer) {
+            if ($observer->user->needNotify($event))
+                Yii::$app->queue->push(new SendNotificationJob([
+                    'user_id' => $observer->userId,
+                    'lot_id'  => $this->id,
+                    'event'   => $event,
+                ]));
+        }
+    }
+
     public function getViews()
     {
         return $this->hasMany(PageViews::className(), ['page_id' => 'oldId'])->alias('views')->onCondition([
