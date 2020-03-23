@@ -25,10 +25,6 @@ class WishList extends ActiveRecord
      * @property integer $createdAt
      */
 
-    const EVENT_NEW_PICTURE     = 'new-picture'; // Добавлено новое фото к лоту
-    const EVENT_NEW_REPORT      = 'new-report'; // Добавлен новый отчет к лоту
-    const EVENT_PRICE_REDUCTION = 'price-reduction'; // Снижена цена на лот
-    
     /**
      * @return string the associated database table name
      */

@@ -15,6 +15,7 @@ use backend\models\Editors\TorgEditor;
 use backend\models\ImportZalog;
 
 use common\models\Query\Lot\LotsAll;
+use common\models\Query\Lot\Lots;
 use common\models\Query\Lot\LotCategorys;
 use common\models\Query\LotsCategory;
 use backend\models\HistoryAdd;
@@ -248,6 +249,12 @@ class LotsController extends Controller
 
             if ($modelLot->uploads = UploadedFile::getInstances($modelLot, 'uploads')) {
                 $modelLot->uploadImages();
+                
+                $event = new \common\components\LotEvent([
+                    'lot_id' => $modelLot->id, 
+                ]);
+                $this->trigger(Lots::EVENT_NEW_PICTURE, $event);
+                
             }
 
             if ($modelLot->update()) {

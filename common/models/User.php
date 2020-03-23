@@ -171,12 +171,12 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Проверить, нужно ли отправлять уведомление о событии
      * 
-     * @param string $event
+     * @param string $name of event
      * @return boolean
      */
-    public function needNotify($event)
+    public function needNotify($name)
     {
-        return isset($this->info[$event]) && $this->info[$event];
+        return isset($this->info[$name]) && $this->info[$name];
     }
 
     public function getOwnerId()

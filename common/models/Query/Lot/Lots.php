@@ -17,13 +17,27 @@ use common\models\Query\Lot\Torgs;
 
 class Lots extends ActiveRecord
 {
+    const EVENT_NEW_PICTURE     = 'new-picture'; // Добавлено новое фото к лоту
+    const EVENT_NEW_REPORT      = 'new-report'; // Добавлен новый отчет к лоту
+    const EVENT_PRICE_REDUCTION = 'price-reduction'; // Снижена цена на лот
+    
     public $whishCount;
     public $rank;
+
+    public function init()
+    {
+        parent::init();
+        
+        $this->on(self::EVENT_NEW_PICTURE,     function($event) { $this->notifyObservers($event); });
+        $this->on(self::EVENT_NEW_REPORT,      function($event) { $this->notifyObservers($event); });
+        $this->on(self::EVENT_PRICE_REDUCTION, function($event) { $this->notifyObservers($event); });
+    }
 
     public static function tableName()
     {
         return '"eiLot".{{lots}}';
     }
+    
     public static function getDb()
     {
         return Yii::$app->get('db');
@@ -177,7 +191,7 @@ class Lots extends ActiveRecord
     }
 
     /**
-     * Получить запрос для выборки подписчиков.
+     * Получить запрос для выборки подписчиков
      * 
      * @return yii\db\Query
      */
@@ -187,7 +201,7 @@ class Lots extends ActiveRecord
     }
 
     /**
-     * Получить список подписчиков.
+     * Получить список подписчиков
      * 
      * @return yii\db\ActiveRecords
      */
@@ -197,19 +211,18 @@ class Lots extends ActiveRecord
     }
 
     /**
-     * Известить подписчиков о произошедшем событии.
+     * Известить подписчиков о произошедшем событии
      * 
-     * @param string $event
-     * @see common\models\WishList constants
+     * @param \yii\base\Event $event
      */
-    public static function notifyObservers($event)
+    public function notifyObservers($event)
     {
         foreach($this->observers as $observer) {
-            if ($observer->user->needNotify($event))
+            if ($observer->user->needNotify($event->name))
                 Yii::$app->queue->push(new SendNotificationJob([
                     'user_id' => $observer->userId,
-                    'lot_id'  => $this->id,
-                    'event'   => $event,
+                    'lot_id'  => $event->lot_id,
+                    'view'    => $event->name,
                 ]));
         }
     }
