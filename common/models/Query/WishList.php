@@ -6,6 +6,7 @@ use yii\db\ActiveRecord;
 use common\models\Query\Bankrupt\LotsBankrupt;
 use common\models\Query\Arrest\LotsArrest;
 use common\models\Query\Lot\Lots;
+use common\models\User;
 
 /**
  * WishList model
@@ -75,7 +76,7 @@ class WishList extends ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'userId'])->one();
+        return $this->hasOne(User::className(), ['id' => 'userId']);
     }
 
     public static function getDb()

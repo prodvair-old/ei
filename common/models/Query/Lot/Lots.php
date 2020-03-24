@@ -14,6 +14,7 @@ use common\models\Query\Lot\LotPriceHistorys;
 use common\models\Query\Lot\Participants;
 use common\models\Query\Lot\Banks;
 use common\models\Query\Lot\Torgs;
+use common\jobs\SendNotificationJob;
 
 class Lots extends ActiveRecord
 {
@@ -207,7 +208,7 @@ class Lots extends ActiveRecord
      */
     public function getObservers()
     {
-        return $this->wishList->all();
+        return $this->wishlist;
     }
 
     /**

@@ -38,18 +38,18 @@ use common\models\Query\LotsCategory;
  * @property int|null $oldId
  * @property int|null $bankId
  */
-class LotEditor extends \yii\db\ActiveRecord
+class LotEditor extends \common\models\Query\Lot\Lots
 {
     public $uploads;
     public $categorys;
     public $subCategorys;
     /**
      * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'eiLot.lots';
     }
+     */
 
     /**
      * {@inheritdoc}

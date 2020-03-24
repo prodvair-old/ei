@@ -4,7 +4,7 @@
 /* @var $user common\models\User */
 /* @var $lot common\models\Query\Lot\Lots */
 
-$lotLink = Yii::$app->urlManager->createAbsoluteUrl(['lot/view', 'id' => $lot_id]);
+$lotLink = Yii::$app->urlManager->createAbsoluteUrl(['lot/view', 'id' => $lot->id]);
 ?>
 Добрый день, <?= $user->getFullName() ?>,
 

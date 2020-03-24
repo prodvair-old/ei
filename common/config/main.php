@@ -1,11 +1,18 @@
 <?php
 return [
+    'bootstrap' => [
+        'queue',
+    ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
+        'queue' => [
+            'class' => \yii\queue\file\Queue::class,
+            'path' => '@console/runtime/queue',
+        ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'useFileTransport' => false,

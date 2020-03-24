@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $user common\models\User */
 /* @var $lot common\models\Query\Lot\Lots */
 
-$lotLink = Yii::$app->urlManager->createAbsoluteUrl(['lot/view', 'id' => $lot_id]);
+$lotLink = Yii::$app->urlManager->createAbsoluteUrl(['lot/view', 'id' => $lot->id]);
 ?>
 <div class="password-reset">
     <p>Добрый день, <?= Html::encode($user->getFullName()) ?>,</p>

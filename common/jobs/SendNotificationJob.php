@@ -1,9 +1,14 @@
 <?php
 
-namespace backend\jobs;
+namespace common\jobs;
 
+use Yii;
 use yii\base\BaseObject;
 use yii\web\NotFoundHttpException;
+
+use common\models\User;
+use common\models\Query\Settings;
+use common\models\Query\Lot\Lots;
 
 /**
  * Класс для отправки email подписчикам лота.
@@ -23,8 +28,8 @@ class SendNotificationJob extends BaseObject implements \yii\queue\JobInterface
     public function execute($queue)
     {
         //  найти текст email subject по $view
-        if (!($param = Settings::findOne(['param' => $view])))
-            throw new NotFoundHttpException('Параметр - ' . $view . ' не найден.');
+        if (!($param = Settings::findOne(['param' => $this->view])))
+            throw new NotFoundHttpException('Параметр - ' . $this->view . ' не найден.');
         
         $subject = $param->value;
         
@@ -37,10 +42,10 @@ class SendNotificationJob extends BaseObject implements \yii\queue\JobInterface
             throw new NotFoundHttpException('Лот с Id - ' . $this->lot_id . ' не существует.');
 
         // отправить сообщение
-        Yii::$app->mailer->compose(['html' => ($view . '-html'), 'text' => ($view . '-text')], ['user' => $user, 'lot' => $lot])
+        Yii::$app->mailer_support->compose(['html' => ($this->view . '-html'), 'text' => ($this->view . '-text')], ['user' => $user, 'lot' => $lot])
             ->setFrom([Yii::$app->params['email']['support'] => (Yii::$app->name . ' robot')])
-            ->setTo($user->email)
+            ->setTo($user->info['contacts']['emails'][0])
             ->setSubject($subject)
             ->send();
-        }
+    }
 }

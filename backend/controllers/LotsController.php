@@ -249,12 +249,11 @@ class LotsController extends Controller
 
             if ($modelLot->uploads = UploadedFile::getInstances($modelLot, 'uploads')) {
                 $modelLot->uploadImages();
-                
+
                 $event = new \common\components\LotEvent([
                     'lot_id' => $modelLot->id, 
                 ]);
-                $this->trigger(Lots::EVENT_NEW_PICTURE, $event);
-                
+                $modelLot->trigger(Lots::EVENT_NEW_PICTURE, $event);
             }
 
             if ($modelLot->update()) {
