@@ -222,7 +222,7 @@ class Lots extends ActiveRecord
             if ($observer->user->needNotify($event->name))
                 Yii::$app->queue->push(new SendNotificationJob([
                     'user_id' => $observer->userId,
-                    'lot_id'  => $event->lot_id,
+                    'lot_id'  => $this->id,
                     'view'    => $event->name,
                 ]));
         }

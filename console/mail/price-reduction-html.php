@@ -9,14 +9,8 @@ use yii\helpers\Html;
 <div class='notification'>
     <p>Добрый день, <?= Html::encode($user->getFullName()) ?>,</p>
 
-    <p>К лоту <?= Html::a(Html::encode($lot->title), $links['view']) ?> добавлены фотографии.
-        <div class='gallery'>
-            <?php foreach($lot->images as $image): ?>
-                <img src="<?= $image['min'] ?>" />
-            <?php endforeach; ?>
-        </div>
-    </p>
-    <p>Для просмотра перейдите по <?= Html::a('ссылке', $links['view']) ?>.</p>
+    <p>По лоту <?= Html::a(Html::encode($lot->title), $links['view']) ?> изменилась цена. 
+        Для просмотра перейдите по <?= Html::a('ссылке', $links['view']) ?>.</p>
     
     <hr>
     <p><small>Вы получили это письмо, так-как данный лот у Вас в избранном. 

@@ -29,7 +29,7 @@ return [
             'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
- 			//'baseUrl' => 'http://ei',
+ 			'baseUrl' => 'https://ei',
        ],
         'log' => [
             'targets' => [
