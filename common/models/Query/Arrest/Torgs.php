@@ -20,6 +20,13 @@ class Torgs extends ActiveRecord
         return Yii::$app->get('db');
     }
 
+    public static function find()
+    {
+        return parent::find()->onCondition([
+            'trgBidKindId' => 13
+        ]);
+    }
+
     public function getDocuments()
     {
         return $this->hasMany(Documents::className(), ['tdocBidNumber' => 'trgBidNumber'])->alias('documents');

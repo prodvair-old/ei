@@ -152,6 +152,13 @@ class LotsArrest extends ActiveRecord
     //     return parent::find()->select('count(wish.id)')->alias('lot')->joinWith(['torgs', 'wishlist'])->orderBy('torgs.trgPublished DESC'))['count'];
     // }
 
+    public static function find()
+    {
+        return parent::find()->joinWith(['torgs'])->onCondition([
+            'torgs.trgBidKindId' => 13
+        ]);
+    }
+
     // Связь с таблицей парсинга
     public function getParser()
     {
