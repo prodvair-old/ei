@@ -47,7 +47,7 @@ class ResetPasswordForm extends Model
             [['password', 'confirm_password'], 'required'],
             [['password', 'confirm_password'], 'string', 'min' => 6],
 
-            ['password', 'compare', 'compareAttribute' => 'confirm_password'],
+            ['confirm_password', 'compare', 'compareAttribute' => 'password', 'message'=>"Пароли не совподают!"],
         ];
     }
     public function attributeLabels()

@@ -173,7 +173,7 @@ $this->params['breadcrumbs'][] = [
                                                         'Женский'=>'Женский'
                                                     ],
                                                     [
-                                                        'class'=>'chosen-category-select form-control form-control-sm', 
+                                                        'class'=>'chosen-the-basic form-control form-control-sm', 
                                                         'data-placeholder'=>'Все категории', 
                                                         'tabindex'=>'2',
                                                         'options' => [

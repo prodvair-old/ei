@@ -385,8 +385,12 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
           </div>
 
           <div class="tour-long-item-wrapper-01 load-list">
-            <? foreach ($lots as $lot) {
-              echo LotBlock::widget(['lot' => $lot, 'type' => 'long']);
+            <? if (count($lots) > 0) {
+                foreach ($lots as $lot) {
+                  echo LotBlock::widget(['lot' => $lot, 'type' => 'long']);
+                } 
+            } else {
+                echo "<div class='p-15 font-bold'>По данному запросу не удалось найти лоты</div>";
             } ?>
           </div>
 

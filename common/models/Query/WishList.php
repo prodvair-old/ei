@@ -3,8 +3,6 @@ namespace common\models\Query;
 
 use Yii;
 use yii\db\ActiveRecord;
-use common\models\Query\Bankrupt\LotsBankrupt;
-use common\models\Query\Arrest\LotsArrest;
 use common\models\Query\Lot\Lots;
 
 class WishList extends ActiveRecord

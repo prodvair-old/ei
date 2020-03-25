@@ -424,23 +424,12 @@ class UserController extends Controller
   {
     if (!Yii::$app->user->isGuest) {
 
-      $wishBankruptCount = WishList::find()->where(['userId' => Yii::$app->user->id, 'type' => 'bankrupt'])->count();
-      $pagesBankrupt = new Pagination(['totalCount' => $wishBankruptCount, 'pageSize' => 6]);
+      $wishCount = WishList::find()->where(['userId' => Yii::$app->user->id])->count();
+      $pages = new Pagination(['totalCount' => $wishCount, 'pageSize' => 6]);
 
-      $wishBankruptList = WishList::find()->where(['userId' => Yii::$app->user->id, 'type' => 'bankrupt'])->offset($pagesBankrupt->offset)->limit($pagesBankrupt->limit)->all();
+      $wishList = WishList::find()->where(['userId' => Yii::$app->user->id])->offset($pages->offset)->limit($pages->limit)->orderBy('id DESC')->all();
 
-
-      $wishArrestCount = WishList::find()->where(['userId' => Yii::$app->user->id, 'type' => 'arrest'])->count();
-      $pagesArrest = new Pagination(['totalCount' => $wishArrestCount, 'pageSize' => 6]);
-
-      $wishArrestList = WishList::find()->where(['userId' => Yii::$app->user->id, 'type' => 'arrest'])->offset($pagesArrest->offset)->limit($pagesArrest->limit)->all();
-
-      $wishZalogCount = WishList::find()->where(['userId' => Yii::$app->user->id, 'type' => 'zalog'])->count();
-      $pagesZalog = new Pagination(['totalCount' => $wishZalogCount, 'pageSize' => 6]);
-
-      $wishZalogList = WishList::find()->where(['userId' => Yii::$app->user->id, 'type' => 'zalog'])->offset($pagesZalog->offset)->limit($pagesZalog->limit)->orderBy('id DESC')->all();
-
-      return $this->render('wish_list', ['wishBankruptList' => $wishBankruptList, 'wishArrestList' => $wishArrestList, 'wishZalogList' => $wishZalogList, 'pagesBankrupt' => $pagesBankrupt, 'pagesArrest' => $pagesArrest, 'pagesZalog' => $pagesZalog]);
+      return $this->render('wish_list', ['wishCount' => $wishCount, 'pages' => $pages, 'wishList' => $wishList]);
     } else {
       return $this->goHome();
     }
