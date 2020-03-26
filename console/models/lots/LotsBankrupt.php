@@ -127,6 +127,7 @@ class LotsBankrupt extends Module
                 $newLot->status         = ($status)? $status : $lot->lotStatus;
                 $newLot->info           = $info;
                 $newLot->images         = $images;
+                $newLot->address        = $address['fullAddress'];
                 $newLot->regionId       = $address['regionId'];
                 $newLot->city           = $address['address']['city'];
                 $newLot->district       = $address['address']['district'];
