@@ -123,7 +123,7 @@ class LotsBankruptStatus extends Module
                 if ($lot->pheLotIsNotUpdated === 0) {
                     $parser->status = 'updated';
                 } else {
-                    $parser->statusId = 'success';
+                    $parser->status = 'success';
                 }
 
                 try {
