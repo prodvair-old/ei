@@ -96,9 +96,9 @@ class LotsBankrupt extends Module
                     foreach ($lot->purchaselots as $key => $value) {
                         if ($value->pheLotNumber == $lot->lotid) {
                             $title  = $value->pheLotName;
-                        }
-                        if ($value->pheLotNumber == $lot->lotid) {
                             $status  = $value->pheLotStatus;
+                            $info['etpUrl']          = $value->pheLotHost;
+                            $info['etpLotUrl']       = $value->pheLotUrl;
                         }
                     }
                 }
