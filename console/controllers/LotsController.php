@@ -153,7 +153,7 @@ class LotsController extends Controller
         $parserCount = 0;
 
         if ($count > 0) {
-            $lots = Purchaselots::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['or', ['parser.checked' => true], ['parser.statusId' => 4]])->limit($limit)->orderBy('"pheLotId" '.(($sort = 'new')? 'DESC' : 'ASC'))->all();
+            $lots = Purchaselots::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['or', ['parser.checked' => true], ['parser.statusId' => 4]])->limit($limit)->orderBy('"pheLotId" '.(($sort == 'new')? 'DESC' : 'ASC'))->all();
 
             echo "Ограничения записей $limit. \n";
 
