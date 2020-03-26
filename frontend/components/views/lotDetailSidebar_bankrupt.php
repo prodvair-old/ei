@@ -35,7 +35,11 @@ use frontend\components\NumberWords;
                 <li class="clearfix">Форма предложения цены <span class="float-right"><?=($lot->torg->info['priceType'] == 'Public')? 'Открытая' : 'Закрытая'?></span></li>
                 <li class="clearfix">Тип торгов <span class="float-right text-<?=($lot->torg->tradeTypeId == 2)? 'success' : 'primary'?>"><?=($lot->torg->tradeTypeId == 2)? 'Открытый аукцион' : ' Публичное предложение';?></span></li>
                 <li class="clearfix">ЭТП <span class="float-right"><?=$lot->torg->etp->title?></span></li>
-                <li class="clearfix border-top"><?= ($lot->torg->etp->url !== 'http://')? '<a href="'.$lot->torg->etp->url.'" target="_blank" rel="nofollow">Ссылка на торги</a>' : null ?></li>
+                <? if ($lot->info['etpLotUrl']) { ?>
+                    <li class="clearfix border-top"><a href="<?= $lot->info['etpLotUrl'] ?>" target="_blank" rel="nofollow">Ссылка на торги</a></li>
+                <? } else { ?>
+                    <li class="clearfix border-top"><?= ($lot->torg->etp->url !== 'http://')? '<a href="'.$lot->torg->etp->url.'" target="_blank" rel="nofollow">Ссылка на торги</a>' : null ?></li>
+                <? } ?>
                 <!-- <li class="clearfix"><a href="https://bankrot.fedresurs.ru/MessageWindow.aspx?ID=<?=$lot->torg->msgId?>" target="_blank" rel="nofollow">Страница лота на ЕФРСБ</a></li> -->
                 <li class="clearfix border-top font700">
                     <div class="border-top mt-1">

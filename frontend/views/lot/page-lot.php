@@ -300,7 +300,7 @@ foreach ($lot->info as $key => $value) {
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
                                 <h6>Должник</h6>
                                 <ul class="ul">
-                                    <li><a href="<?=Url::to(['doljnik/list'])?>/<?=$lot->torg->bankrupt->oldId?>" target="_blank" itemprop="brand"><?=$lot->torg->bankrupt->name?></a></li>
+                                    <li><a href="<?=Url::to(['doljnik/list'])?>/<?=$lot->torg->bankrupt->id?>" target="_blank" itemprop="brand"><?=$lot->torg->bankrupt->name?></a></li>
                                     <li>ИНН: <span class="text-list-name"><?= $lot->torg->bankrupt->inn?></span></li>
                                     <li>Адрес: <span class="text-list-name"><?= $lot->torg->bankrupt->address;?></span></li>
                                 </ul>
@@ -324,7 +324,7 @@ foreach ($lot->info as $key => $value) {
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span> 
                                 <h6>Арбитражный управляющий</h6>
                                 <ul class="ul">
-                                    <li><a href="<?=Url::to(['arbitr/list'])?>/<?=$lot->torg->publisher->oldId?>" target="_blank"><?=$lot->torg->publisher->fullName?></a></li>
+                                    <li><a href="<?=Url::to(['arbitr/list'])?>/<?=$lot->torg->publisher->id?>" target="_blank"><?=$lot->torg->publisher->fullName?></a></li>
                                     <li>Рег. номер: <span class="text-list-name"><?= $lot->torg->publisher->regnum?></span></li>
                                     <li>ИНН: <span class="text-list-name"><?= $lot->torg->publisher->inn?></span></li>
                                     <!-- <li>ОГРН: <span class="text-list-name"><?= $lot->torg->publisher->info['ogrn']?></span></li> -->
