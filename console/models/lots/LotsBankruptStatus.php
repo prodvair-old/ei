@@ -47,9 +47,9 @@ class LotsBankruptStatus extends Module
                 $parser->save();
             }
 
-            if ($sendEmpty) {
-                ErrorSend::parser($parser->id);
-            }
+            // if ($sendEmpty) {
+            //     ErrorSend::parser($parser->id);
+            // }
 
             echo "Лот не найден ID ".$lot->pheLotId.". \n";
 
@@ -111,7 +111,7 @@ class LotsBankruptStatus extends Module
                         $parser->save();
                     }
                     
-                    ErrorSend::parser($parser->id);
+                    // ErrorSend::parser($parser->id);
         
                     echo "Ошибка при редактировании таблицы Лотов ID ".$lot->pheLotId.". \n";
                     return false;
