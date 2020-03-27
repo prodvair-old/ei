@@ -4,6 +4,8 @@ namespace common\models\Query\Lot;
 use yii\db\ActiveRecord;
 
 use Yii;
+use yii\queue\cli\Queue;
+
 use common\models\Query\LotsCategory;
 use common\models\Query\WishList;
 use common\models\Query\PageViews;
@@ -14,7 +16,8 @@ use common\models\Query\Lot\LotPriceHistorys;
 use common\models\Query\Lot\Participants;
 use common\models\Query\Lot\Banks;
 use common\models\Query\Lot\Torgs;
-use common\jobs\SendNotificationJob;
+
+use common\jobs\KeepNotificationJob;
 
 class Lots extends ActiveRecord
 {
@@ -28,7 +31,7 @@ class Lots extends ActiveRecord
     public function init()
     {
         parent::init();
-        
+
         $this->on(self::EVENT_NEW_PICTURE,     function($event) { $this->notifyObservers($event); });
         $this->on(self::EVENT_NEW_REPORT,      function($event) { $this->notifyObservers($event); });
         $this->on(self::EVENT_PRICE_REDUCTION, function($event) { $this->notifyObservers($event); });
@@ -220,10 +223,10 @@ class Lots extends ActiveRecord
     {
         foreach($this->observers as $observer) {
             if ($observer->user->needNotify($event->name))
-                Yii::$app->queue->push(new SendNotificationJob([
+                Yii::$app->queue->push(new KeepNotificationJob([
                     'user_id' => $observer->userId,
                     'lot_id'  => $this->id,
-                    'view'    => $event->name,
+                    'event'   => $event->name,
                 ]));
         }
     }

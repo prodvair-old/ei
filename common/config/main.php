@@ -12,6 +12,7 @@ return [
         'queue' => [
             'class' => \yii\queue\file\Queue::class,
             'path' => '@console/runtime/queue',
+            'as prep' => \common\behaviors\PrepareNotificationBehavior::class,
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
