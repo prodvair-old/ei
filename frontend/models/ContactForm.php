@@ -48,8 +48,7 @@ class ContactForm extends Model
                 ['param'=>$this]
             )
             ->setFrom(['support@ei.ru' => 'Поддержка – '.Yii::$app->name])
-            // ->setTo('support@ei.ru')
-            ->setTo('prodvair.almaz@yandex.ru')
+            ->setTo('support@ei.ru')
             ->setSubject('Форма обратной связи')
             ->send();
     }
