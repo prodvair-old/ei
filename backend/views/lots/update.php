@@ -127,9 +127,10 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
              'type'=>LteConst::TYPE_DEFAULT,
              'isSolid'=>true,
              'tooltip'=>'Документы дел по лоту',
-             'title'=>'Документы дел по лоту - '.count($lot->torg->case->documents),
+             'title'=>'Документы дел по лоту - ' . (isset($lot->torg->case) ? count($lot->torg->case->documents) : 0),
         ])?>
         <div class="row">
+            <?php if (isset($lot->torg->case)): ?>
             <?php foreach ($lot->torg->case->documents as $document): 
                 switch ($document->format) {
                     case 'doc':
@@ -159,6 +160,7 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
                     <a href="<?= $document->url ?>" class="btn" target="_blank" download><?= $icon ?> <?= $document->name ?></a>
                 </div>
             <?php endforeach; ?>
+            <?php endif; ?>
         </div>
 <?php CollapseBox::end()?>
 
@@ -181,11 +183,13 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
         </div>
 
         <div class="row">
+            <?php if (isset($lot->images) && count($lot->images) > 0): ?>
             <?php foreach ($lot->images as $id => $image): ?>
                 <div class="col-lg-2">
                     <?=Html::a('<img src="'.Yii::$app->params['frontLink'].'/'.$image['min'].'" style="max-width: 100%" alt="">', Url::to(['lots/image-del', 'id' => $id, 'lotId' => $lot->id]),['class' => 'btn', 'title' => 'Удалить', 'aria-label' => 'Удалить', 'data-pjax' => 1, 'data-confirm' => 'Вы уверены, что хотите Удалить Картинку №'.$id.' у этого лота?', 'data-method' => 'post'])?>
                 </div>
             <?php endforeach; ?>
+            <?php endif; ?>
             <div class="col-lg-12">
                 <br>
                 <?= $form->field($modelLot, 'uploads[]')->fileInput(['multiple' => true, 'accept' => 'image/jpeg,image/png,image/jpg']) ?>
