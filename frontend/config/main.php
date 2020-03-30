@@ -82,6 +82,9 @@ return [
         '/contact'  => 'pages/contact',
         '/faq'      => 'pages/faq',
         '/sitemap'  => 'pages/sitemap',
+        
+        // '/tarify'         => 'pay/tariffs',
+        // '/tarify/oplata'  => 'pay/payments',
 
         '/service'             => 'services/index',
         '/service/agent'       => 'services/agent',

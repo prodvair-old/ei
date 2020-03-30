@@ -58,7 +58,7 @@ use yii\bootstrap\ActiveForm;
                         <div class="custom-control custom-checkbox pl-0">
                             <?= $form->field($model, 'checkPolicy',[
                                 'template' => "{input}{label}"
-                                ])->checkbox(['labelOption' => ['class'=>'line-145']])->label('Я принимаю <a href="/policy" target="_blank">соглашения!</a>') ?>
+                                ])->checkbox(['checked' => true])->label('Я принимаю <a href="/policy" target="_blank">соглашения!</a>') ?>
                         </div>
                         <?=Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-primary btn-wide', 'name' => 'signup-button'])?>
                     </div>

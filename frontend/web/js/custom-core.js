@@ -106,7 +106,9 @@ jQuery(function($) {
 		$('.load-list').html('<div class="spinner-wrapper"><div class="spinner"></div>Сортируем лоты...</div>');
         $("#sort-lot-form").submit();
 	});
-	filterParams();
+	if (lotType) {
+		filterParams();
+	}
 
 	$(".chosen-type-select").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, type) {
 		lotType = type.selected;
