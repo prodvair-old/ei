@@ -5,7 +5,7 @@ use Yii;
 use yii\base\Module;
 
 use console\models\GetInfoFor;
-use console\models\torgs\TorgsArrest;
+use console\models\torgs\TorgsMunicipal;
 use console\models\banks\BankArrest;
 
 use common\models\ErrorSend;
@@ -20,11 +20,11 @@ use common\models\Query\Lot\LotCategorys;
 
 use common\models\Query\Lot\Parser;
 
-class LotsArrest extends Module
+class LotsMunicipal extends Module
 {
     public function id($id, $sendEmpty = true)
     {
-        $lot = \common\models\Query\Arrest\LotsArrest::findOne($id);
+        $lot = \common\models\Query\Municipal\LotsMunicipal::findOne($id);
         
         $parser = new Parser();
 
@@ -50,7 +50,7 @@ class LotsArrest extends Module
                 if (!$torg = Torgs::find()->where(['oldId' => $lot->torgs->trgId])->one()) {
                     echo "Торг для связи отцуствует! \nПробуем спарсить данный Торга. \n";
 
-                    $parsingManager = TorgsArrest::id($lot->torgs->trgId);
+                    $parsingManager = TorgsMunicipal::id($lot->torgs->trgId);
 
                     if (!$parsingManager && !$parsingManager[0] && $parsingManager !== 2){
                         
@@ -94,19 +94,141 @@ class LotsArrest extends Module
 
                 $newLot = new Lots();
 
-                $info = [
-                    'torgReason'        => $lot->lotTorgReason,
-                    'sellType'          => $lot->lotSellTypeName,
-                    'sellTypeId'        => $lot->lotSellTypeId,
-                    'minPrice'          => $lot->lotMinPrice,
-                    'isBurdened'        => $lot->lotIsBurdened,
-                    'burdenDesc'        => $lot->lotBurdenDesc,
-                    'depositDesc'       => $lot->lotDepositDesc,
-                    'contractDesc'      => $lot->lotContractDesc,
-                    'contractTerm'      => $lot->lotContractTerm,
-                    'currency'          => $lot->lotCurrency,
-                    'vin'               => GetInfoFor::vin($lot->lotPropName),
-                ];
+                if ($lot->lotTorgReason) {
+                    $info['torgReason'] = $lot->lotTorgReason;
+                }
+                if ($lot->lotSellTypeName) {
+                    $info['sellType'] = $lot->lotSellTypeName;
+                }
+                if ($lot->lotSellTypeId) {
+                    $info['sellTypeId'] = $lot->lotSellTypeId;
+                }
+                if ($lot->lotMinPrice) {
+                    $info['minPrice'] = $lot->lotMinPrice;
+                }
+                if ($lot->lotIsBurdened) {
+                    $info['isBurdened'] = $lot->lotIsBurdened;
+                }
+                if ($lot->lotBurdenDesc) {
+                    $info['burdenDesc'] = $lot->lotBurdenDesc;
+                }
+                if ($lot->lotDepositDesc) {
+                    $info['depositDesc'] = $lot->lotDepositDesc;
+                }
+                if ($lot->lotContractDesc) {
+                    $info['contractDesc'] = $lot->lotContractDesc;
+                }
+                if ($lot->lotContractTerm) {
+                    $info['contractTerm'] = $lot->lotContractTerm;
+                }
+                if ($lot->lotCurrency) {
+                    $info['currency'] = $lot->lotCurrency;
+                }
+                if ($lot->lotTorgAcceptReason) {
+                    $info['torgAcceptReason'] = $lot->lotTorgAcceptReason;
+                }
+                if ($lot->lotPropDesc) {
+                    $info['propDesc'] = $lot->lotPropDesc;
+                }
+                if ($lot->lotOrgFullName) {
+                    $info['orgFullName'] = $lot->lotOrgFullName;
+                }
+                if ($lot->lotPostAddress) {
+                    $info['postAddress'] = $lot->lotPostAddress;
+                }
+                if ($lot->lotFundSize) {
+                    $info['fundSize'] = $lot->lotFundSize;
+                }
+                if ($lot->lotOrgNominalValue) {
+                    $info['orgNominal'] = $lot->lotOrgNominalValue;
+                }
+                if ($lot->lotAcsPart) {
+                    $info['acsPart'] = $lot->lotAcsPart;
+                }
+                if ($lot->lotStepNegative) {
+                    $info['stepNegative'] = $lot->lotStepNegative;
+                }
+                if ($lot->lotCondition) {
+                    $info['condition'] = $lot->lotCondition;
+                }
+                if ($lot->lotWorkList) {
+                    $info['workList'] = $lot->lotWorkList;
+                }
+                if ($lot->lotDocsList) {
+                    $info['docsList'] = $lot->lotDocsList;
+                }
+                if ($lot->lotMarketPartDesc) {
+                    $info['marketPartDesc'] = $lot->lotMarketPartDesc;
+                }
+                if ($lot->lotAreaUnmovable) {
+                    $info['areaUnmovable'] = $lot->lotAreaUnmovable;
+                }
+                if ($lot->lotObjectsList) {
+                    $info['objectsList'] = $lot->lotObjectsList;
+                }
+                if ($lot->lotEmplNum) {
+                    $info['emplNum'] = $lot->lotEmplNum;
+                }
+                if ($lot->lotDepositReturn) {
+                    $info['depositReturn'] = $lot->lotDepositReturn;
+                }
+                if ($lot->lotArea) {
+                    $info['area'] = $lot->lotArea;
+                }
+                if ($lot->lotAreaMeters) {
+                    $info['areaMeters'] = $lot->lotAreaMeters;
+                }
+                if ($lot->lotSecuringObligations) {
+                    $info['securingObligations'] = $lot->lotSecuringObligations;
+                }
+                if ($lot->lotOfferSendDesc) {
+                    $info['offerSendDesc'] = $lot->lotOfferSendDesc;
+                }
+                if ($lot->lotLimit) {
+                    $info['limit'] = $lot->lotLimit;
+                }
+                if ($lot->lotWinnerDefineDesc) {
+                    $info['winnerDefineDesc'] = $lot->lotWinnerDefineDesc;
+                }
+                if ($lot->lotPrivateConditions) {
+                    $info['privateConditions'] = $lot->lotPrivateConditions;
+                }
+                if ($lot->lotPaymentConditions) {
+                    $info['paymentConditions'] = $lot->lotPaymentConditions;
+                }
+                if ($lot->lotLastInfo) {
+                    $info['lastInfo'] = $lot->lotLastInfo;
+                }
+                if ($lot->lotFederalStockPercent) {
+                    $info['federalStockPercent'] = $lot->lotFederalStockPercent;
+                }
+                if ($lot->lotStockNum) {
+                    $info['stockNum'] = $lot->lotStockNum;
+                }
+                if ($lot->lotStockPercentSale) {
+                    $info['stockPercentSale'] = $lot->lotStockPercentSale;
+                }
+                if ($lot->lotFederalSharePerc) {
+                    $info['federalSharePerc'] = $lot->lotFederalSharePerc;
+                }
+                if ($lot->lotSharePercSale) {
+                    $info['sharePercSale'] = $lot->lotSharePercSale;
+                }
+                if ($lot->lotFinalPrice) {
+                    $info['finalPrice'] = $lot->lotFinalPrice;
+                }
+                if ($lot->lotResult) {
+                    $info['result'] = $lot->lotResult;
+                }
+                if ($lot->lotSinglePrice) {
+                    $info['singlePrice'] = $lot->lotSinglePrice;
+                }
+                if ($lot->lotContractPayment) {
+                    $info['contractPayment'] = $lot->lotContractPayment;
+                }
+                if ($vin = GetInfoFor::vin($lot->lotPropName)) {
+                    $info['vin'] = $vin;
+                }
 
                 $cadastrNumber = GetInfoFor::cadastr($lot->lotPropName);
 
@@ -118,9 +240,9 @@ class LotsArrest extends Module
                     $info['flatName']       = $cadastr['flatName'];
                 }
 
-                $address = GetInfoFor::address($lot->lotKladrLocationName);
+                $address = GetInfoFor::address($lot->lotLocation);
         
-                $info['address']       = $address['address'];
+                $info['address']        = $address['address'];
 
                 $newLot->torgId         = $torg->id;
                 $newLot->bankId         = $bank->id;
@@ -128,7 +250,7 @@ class LotsArrest extends Module
                 $newLot->lotNumber      = $lot->lotNum;
                 $newLot->title          = GetInfoFor::mb_ucfirst(GetInfoFor::title($lot->lotPropName));
                 $newLot->description    = GetInfoFor::mb_ucfirst($lot->lotPropName);
-                $newLot->startPrice     = $lot->lotStartPrice;
+                $newLot->startPrice     = $lot->lotStartSalePrice;
                 $newLot->step           = $lot->lotPriceStep;
                 $newLot->stepTypeId     = 2;
                 $newLot->deposit        = $lot->lotDepositSize;

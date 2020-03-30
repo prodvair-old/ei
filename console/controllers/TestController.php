@@ -8,12 +8,14 @@ use console\models\GetInfoFor;
 use common\models\Query\Bankrupt\Auction;
 use common\models\Query\Bankrupt\Arbitrs;
 use common\models\Query\Bankrupt\Offerreductions;
-use common\models\Query\Bankrupt\Lots;
+use common\models\Query\Municipal\Lots;
 use common\models\Query\Arrest\LotDocuments;
 use common\models\Query\Bankrupt\Purchaselots;
 use console\models\torgs\TorgsBankrupt;
 use console\models\lots\LotsBankrupt;
 use console\models\managers\ArbitrsBankrupt;
+
+
 
 /**
  * Test controller
@@ -22,13 +24,11 @@ class TestController extends Controller
 {
     public function actionIndex() 
     {
-        error_reporting(0);
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-        echo 'start';
-        $lotInfo = Purchaselots::find()->limit(1)->all();
-        echo 'get';
+        $lots = Lots::find()->count();
 
-        var_dump($lotInfo[0]->lot[1]->title);
+        return $lots;
     }
 
     public function actionAddress()

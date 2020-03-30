@@ -10,6 +10,9 @@ use common\models\Query\LotsSubCategory;
 
 use arogachev\excel\import\advanced\Importer;
 
+use common\models\Query\Municipal\LotsMunicipal;
+use common\models\Query\Municipal\Torgs;
+
 use common\models\Query\Regions;
 
 /**
@@ -69,6 +72,20 @@ class TestController extends Controller
      * @return mixed
      */
     public function actionIndex()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $lots = LotsMunicipal::find()->select('DISTINCT ON (lotPropertyTypeName) ')->limit(50)->all();
+
+        $json = json_encode($lots, JSON_UNESCAPED_UNICODE);
+
+        // echo '<pre>';
+        // // var_dump($lots);
+        // echo $json;
+        // echo '</pre>';
+        return $lots;
+    }
+    public function actionIndexssa()
     {
         $json = [
             "0101" => [
@@ -494,7 +511,7 @@ class TestController extends Controller
             $category->bankruptCategorys = (($value['bankruptIds'][0])? $value['bankruptIds'] : null);
             $category->categoryId = ltrim(substr($key, 0, 2),'0');
 
-            $category->save();
+            // $category->save();
 
         }
     }
