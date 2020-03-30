@@ -83,8 +83,8 @@ return [
         '/faq'      => 'pages/faq',
         '/sitemap'  => 'pages/sitemap',
         
-        // '/tarify'         => 'pay/tariffs',
-        // '/tarify/oplata'  => 'pay/payments',
+        // '/tariffs'     => 'pay/tariffs',
+        // '/tariffs/pay' => 'pay/payments',
 
         '/service'             => 'services/index',
         '/service/agent'       => 'services/agent',
