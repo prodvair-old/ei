@@ -11,15 +11,21 @@ use common\models\Query\Settings;
 use common\models\Query\Lot\Lots;
 
 /**
- * Класс для отправки одного email подписчику о событиях, связанных с одним или несколькими лотами.
+ * Класс для отправки одного email подписчику о событиях связанных с лотами
+ * 
+ * Юзер может быть подписан на несколько лотов, 
+ * по каждому из которых может быть несколько событий.
+ * 
+ * @see \common\models\Query\Lot\Lots
  */
 class SendNotificationJob extends BaseObject implements \yii\queue\JobInterface
 {
+    // название параметра в \common\models\Query\Settings, в котором может быть определено назначение письма
     const PARAM_SUBJECT = 'notification_subject';
     
     /** @var integer $user_id */
     public $user_id;
-    /** @var array $lots [lot_id => ['new-picture', 'price-reduction']] */
+    /** @var array $lots with events [lot_id => ['new-picture', 'price-reduction']] */
     public $lots;
 
     /**
@@ -27,7 +33,7 @@ class SendNotificationJob extends BaseObject implements \yii\queue\JobInterface
      */
     public function execute($queue)
     {
-        // найти текст email subject или использовать значение по умолчанию
+        // найти текст subject или использовать значение по умолчанию
         $subject = ($param = Settings::findOne(['param' => self::PARAM_SUBJECT]))
             ? $param->value
             : (Yii::$app->name . ': изменения в лотах.');
@@ -39,24 +45,12 @@ class SendNotificationJob extends BaseObject implements \yii\queue\JobInterface
         // найти Лоты
         $models = Lots::find()->where(['in', 'id', array_keys($this->lots)])->all();
 
-        // сформировать ссылки
-        $links = [];
-        // для каждого лота
-        foreach ($this->lots as $lot_id => $events)
-            $links[$lot_id] = [
-                'view'           => Yii::$app->urlManager->createAbsoluteUrl(['/lot/view', 'id' => $lot_id]),
-                'unsubscribe'    => Yii::$app->urlManager->createAbsoluteUrl(['/lot/unsubscribe', 'user_id' => $user->id, 'lot_id' => $lot_id]),
-            ];
-        // одну для всех лотов
-        $links['unsubscribeAll'] = Yii::$app->urlManager->createAbsoluteUrl(['/lot/unsubscribe-all', 'user_id' => $user->id]);
-
-        // отправить сообщение
+        // отправить сообщение, если лоты в избранном и найдены
         if ($this->lots && $models)
-            Yii::$app->mailer_support->compose(['html' => 'notification-html', 'text' => 'notification-text'], [
+            Yii::$app->mailer_support->compose(['html' => 'notification-html'], [
                 'user'   => $user, 
                 'models' => $models, 
                 'lots'   => $this->lots, 
-                'links'  => $links,
             ])
                 ->setFrom([Yii::$app->params['email']['support'] => (Yii::$app->name . ' robot')])
                 ->setTo($user->info['contacts']['emails'][0])
