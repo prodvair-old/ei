@@ -10,6 +10,7 @@ use common\models\Query\Bankrupt\Arbitrs;
 use common\models\Query\Bankrupt\Offerreductions;
 use common\models\Query\Bankrupt\Lots;
 use common\models\Query\Arrest\LotDocuments;
+use common\models\Query\Bankrupt\Purchaselots;
 use console\models\torgs\TorgsBankrupt;
 use console\models\lots\LotsBankrupt;
 use console\models\managers\ArbitrsBankrupt;
@@ -23,19 +24,11 @@ class TestController extends Controller
     {
         error_reporting(0);
 
-        // $table = Lots::findOne($id);
+        echo 'start';
+        $lotInfo = Purchaselots::find()->limit(1)->all();
+        echo 'get';
 
-        // var_dump($table);
-
-        // $parsing = LotsBankrupt::id($id);
-
-        $doc = LotDocuments::findOne(63813);
-
-        var_dump($doc->ldocId);
-        var_dump($doc->lot);
-        
-        // var_dump(Arbitrs::find()->where(['id' => 59878])->one());
-        // echo "Yes, cron service is running.";
+        var_dump($lotInfo[0]->lot[1]->title);
     }
 
     public function actionAddress()

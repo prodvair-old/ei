@@ -5,8 +5,10 @@ use Yii;
 use yii\console\Controller;
 
 use console\models\lots\LotsBankrupt;
+use console\models\lots\LotsBankruptStatus;
 
 use common\models\Query\Bankrupt\Lots;
+use common\models\Query\Bankrupt\Purchaselots;
 use common\models\Query\Arrest\LotsArrest;
 
 use common\models\Query\LotsCategory;
@@ -136,6 +138,61 @@ class LotsController extends Controller
         }
 
         echo "Завершение парсинга \n";
+    }
+
+    // Статус лота Банкротного имущества
+    // php yii lots/bankrupt-status
+    public function actionBankruptStatus($limit = 100, $delay = 'y', $sort = 'new')
+    {
+        error_reporting(0);
+        
+        echo 'Парсинг статусов торгов (bailiff.purchaselots)';
+        $count = Purchaselots::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['or', ['parser.checked' => true], ['parser.statusId' => 4]])->count();
+        echo "\nКоличество записей осталось: $count. \n";
+        
+        $parserCount = 0;
+
+        if ($count > 0) {
+            $lots = Purchaselots::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['or', ['parser.checked' => true], ['parser.statusId' => 4]])->limit($limit)->orderBy('"pheLotId" '.(($sort == 'new')? 'DESC' : 'ASC'))->all();
+
+            echo "Ограничения записей $limit. \n";
+
+            if (!empty($lots[0])) {
+                echo "Данные взяты из быза. \n";
+
+                foreach ($lots as $lot) {
+                    $parsingLotStatus = LotsBankruptStatus::id($lot->pheLotId);
+
+                    if ($parsingLotStatus && $parsingLotStatus !== 2) {
+                        foreach ($lot->parser as $value) {
+                            if ($value->checked) {
+                                $parser = Parser::findOne($value->id);
+
+                                $parser->checked = false;
+
+                                $parser->update();
+                            }
+                        }
+
+                        $parserCount++;
+                    }
+
+                    if ($delay == 'y') {
+                        $sleep = rand(1, 3);
+
+                        echo "Задержка $sleep секунды. \n";
+
+                        sleep($sleep);
+                    }
+                    
+                }
+            }
+
+            echo "Загружено $parserCount записей. \n";
+        } else {
+            echo "Новых данных нет. \n";
+        }
+        echo "Завершение парсинга. \n";
     }
 
     // Лоты Арестованного имущества
