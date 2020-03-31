@@ -253,7 +253,7 @@ class LotController extends Controller
             }
         }
 
-        $model->type = ($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog' || $type == 'all')? $type : 'zalog';
+        $model->type = ($type == 'bankrupt' || $type == 'arrest' || $type == 'municipal' || $type == 'zalog' || $type == 'all')? $type : 'zalog';
         
         $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
 
@@ -269,6 +269,9 @@ class LotController extends Controller
                 break;
             case 'zalog':
                 $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Имущество организаций';
+                break;
+            case 'municipal':
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Муниципальное организаций';
                 break;
             default:
                 $owner = Owners::find()->where(['linkEi' => $type])->one();
@@ -482,6 +485,20 @@ class LotController extends Controller
                     'url' => ["/$type"]
                 ];
                 // Хлебные крошки <-End
+                break;
+            case 'municipal':
+                    $metaType = 'lot-page';
+    
+                    $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
+                    $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Муниципальное имущество';
+    
+                    // Хлебные крошки Start->
+                    Yii::$app->params['breadcrumbs'][] = [
+                        'label' => ' '.$titleType,
+                        'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
+                        'url' => ["/$type"]
+                    ];
+                    // Хлебные крошки <-End
                 break;
             case 'zalog':
                 $metaType = 'lot-page';
