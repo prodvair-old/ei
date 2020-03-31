@@ -62,11 +62,11 @@ class LotsAll extends ActiveRecord
                             if ($this->category->categoryId == $subCategory->id) {
                                 $url = $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
                             }
-                        }
                         break;
                 }
             }
         }
+
         if ($url) {
             return $url;
         } else {

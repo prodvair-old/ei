@@ -175,11 +175,6 @@ class User extends ActiveRecord implements IdentityInterface
             : $this->username;
     }
 
-    public function getNameForUser()
-    {
-        return $this->info['firstname'].' '.$this->info['lastname'];
-    }
-
     /**
      * Проверить, нужно ли отправлять уведомление о событии
      * 
