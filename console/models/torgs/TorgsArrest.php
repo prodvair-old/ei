@@ -40,7 +40,7 @@ class TorgsArrest extends Module
             if ($torg->trgPublished != null && $torg->trgBidFormId != null) {
 
                 // Организатор торгов
-                if (!$manager = Managers::find()->where(['oldId' => $torg->trgOrganizationId])->one()) {
+                if (!$manager = Managers::find()->where(['oldId' => $torg->trgOrganizationId, 'typeId' => 3])->one()) {
                     echo "Организатор торгов для связи отцуствует! \nПробуем спарсить данный Организатора торгов. \n";
 
                     if (!ManagerArrest::torg($torg)){
@@ -55,7 +55,7 @@ class TorgsArrest extends Module
 
                         echo "Отсутствует Организатор торгов...\n";
                     } else {
-                        $manager = Managers::find()->where(['oldId' => $torg->trgOrganizationId])->one();
+                        $manager = Managers::find()->where(['oldId' => $torg->trgOrganizationId, 'typeId' => 3])->one();
                     }
                 }
 
@@ -76,6 +76,15 @@ class TorgsArrest extends Module
                     'openingDate'       => $torg->trgOpeningDate,
                     'placeRequest'      => $torg->trgPlaceRequest,
                 ];
+
+                if ($torg->trgBidFormId == 2) {
+                    $newTorg->tradeTypeId = 2;
+                } else if ($torg->trgBidFormId == 10) {
+                    $newTorg->tradeTypeId = 1;
+                } else {
+                    $newTorg->tradeTypeId   = $torg->trgBidFormId;
+                    $newTorg->tradeType     = $torg->trgBidFormName;
+                }
         
                 $newTorg->typeId        = 2;
                 $newTorg->publisherId   = $manager->id;
@@ -84,7 +93,6 @@ class TorgsArrest extends Module
                 $newTorg->startDate     = GetInfoFor::date_check($torg->trgStartDateRequest);
                 $newTorg->endDate       = GetInfoFor::date_check($torg->trgExpireDate);
                 $newTorg->publishedDate = GetInfoFor::date_check($torg->trgPublished);
-                $newTorg->tradeTypeId   = $torg->trgBidFormId;
                 $newTorg->info          = $info;
                 $newTorg->oldId         = $torg->trgId;
         

@@ -10,6 +10,7 @@ use console\models\lots\LotsBankruptStatus;
 use common\models\Query\Bankrupt\Lots;
 use common\models\Query\Bankrupt\Purchaselots;
 use common\models\Query\Arrest\LotsArrest;
+use common\models\Query\Municipal\LotsMunicipal;
 
 use common\models\Query\LotsCategory;
 

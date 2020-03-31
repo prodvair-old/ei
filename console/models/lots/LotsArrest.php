@@ -44,10 +44,10 @@ class LotsArrest extends Module
 
             return true;
         } else {
-            if ($lot->lotBidNumber != null && $lot->lotPaymentRequisitesRs != null && $lot->lotNum != null && $lot->lotPropName != null && $lot->lotStartPrice != null && $lot->lotDepositSize != null) {
+            if ($lot->lotBidNumber != null && $lot->lotNum != null && $lot->lotPropName != null && $lot->lotStartPrice != null) {
 
                 // Торг
-                if (!$torg = Torgs::find()->where(['oldId' => $lot->torgs->trgId])->one()) {
+                if (!$torg = Torgs::find()->where(['oldId' => $lot->torgs->trgId, 'typeId' => 2])->one()) {
                     echo "Торг для связи отцуствует! \nПробуем спарсить данный Торга. \n";
 
                     $parsingManager = TorgsArrest::id($lot->torgs->trgId);
@@ -67,7 +67,7 @@ class LotsArrest extends Module
                         echo "Ошибка при добавлении в таблицу Лотов ID ".$lot->lotId.". \nОтсутствует Торг...\n";
                         return false;
                     } else {
-                        $torg = Torgs::find()->where(['oldId' => $lot->torgs->trgId])->one();
+                        $torg = Torgs::find()->where(['oldId' => $lot->torgs->trgId, 'typeId' => 2])->one();
                     }
                 }
 
@@ -86,7 +86,6 @@ class LotsArrest extends Module
                         $parser->save();
 
                         echo "Ошибка при добавлении в таблицу Лотов ID ".$lot->lotId.". \nОтсутствует Организатор торгов...\n";
-                        return false;
                     } else {
                         $bank = Banks::find()->where(['payment' => $lot->lotPaymentRequisitesRs])->one();
                     }

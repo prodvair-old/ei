@@ -136,13 +136,13 @@ class TorgsController extends Controller
         error_reporting(0);
 
         echo 'Парсинг таблицы Торгов (bailiff.torgs)';
-        $count = common\models\Query\Municipal\Torgs::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
+        $count = \common\models\Query\Municipal\Torgs::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
         echo "\nКоличество записей осталось: $count. \n";
         
         $parserCount = 0;
 
         if ($count > 0) {
-            $torgs = common\models\Query\Municipal\Torgs::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->limit($limit)->orderBy('id DESC')->all();
+            $torgs = \common\models\Query\Municipal\Torgs::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->limit($limit)->orderBy('id DESC')->all();
 
             echo "Ограничения записей $limit. \n";
 

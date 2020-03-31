@@ -44,10 +44,10 @@ class LotsMunicipal extends Module
 
             return true;
         } else {
-            if ($lot->lotBidNumber != null && $lot->lotPaymentRequisitesRs != null && $lot->lotNum != null && $lot->lotPropName != null && $lot->lotStartPrice != null && $lot->lotDepositSize != null) {
+            if ($lot->lotBidNumber != null && $lot->lotNum != null && $lot->lotPropDesc != null && $lot->lotStartSalePrice != null) {
 
                 // Торг
-                if (!$torg = Torgs::find()->where(['oldId' => $lot->torgs->trgId])->one()) {
+                if (!$torg = Torgs::find()->where(['oldId' => $lot->torgs->trgId, 'typeId' => 4])->one()) {
                     echo "Торг для связи отцуствует! \nПробуем спарсить данный Торга. \n";
 
                     $parsingManager = TorgsMunicipal::id($lot->torgs->trgId);
@@ -67,7 +67,7 @@ class LotsMunicipal extends Module
                         echo "Ошибка при добавлении в таблицу Лотов ID ".$lot->lotId.". \nОтсутствует Торг...\n";
                         return false;
                     } else {
-                        $torg = Torgs::find()->where(['oldId' => $lot->torgs->trgId])->one();
+                        $torg = Torgs::find()->where(['oldId' => $lot->torgs->trgId, 'typeId' => 4])->one();
                     }
                 }
 
@@ -86,7 +86,6 @@ class LotsMunicipal extends Module
                         $parser->save();
 
                         echo "Ошибка при добавлении в таблицу Лотов ID ".$lot->lotId.". \nОтсутствует Организатор торгов...\n";
-                        return false;
                     } else {
                         $bank = Banks::find()->where(['payment' => $lot->lotPaymentRequisitesRs])->one();
                     }
@@ -248,8 +247,8 @@ class LotsMunicipal extends Module
                 $newLot->bankId         = $bank->id;
                 $newLot->msgId          = $lot->lotBidNumber;
                 $newLot->lotNumber      = $lot->lotNum;
-                $newLot->title          = GetInfoFor::mb_ucfirst(GetInfoFor::title($lot->lotPropName));
-                $newLot->description    = GetInfoFor::mb_ucfirst($lot->lotPropName);
+                $newLot->title          = GetInfoFor::mb_ucfirst(GetInfoFor::title($lot->lotPropDesc));
+                $newLot->description    = GetInfoFor::mb_ucfirst($lot->lotPropDesc);
                 $newLot->startPrice     = $lot->lotStartSalePrice;
                 $newLot->step           = $lot->lotPriceStep;
                 $newLot->stepTypeId     = 2;
@@ -372,6 +371,7 @@ class LotsMunicipal extends Module
             } else {
         
                 $parser->message = 'Запись пуста';
+                $parser->messageJson = $lot;
                 $parser->statusId = 2;
         
                 $parser->save();

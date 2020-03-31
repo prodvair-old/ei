@@ -110,6 +110,15 @@ class TorgsMunicipal extends Module
                     $info['bulletinNumber'] = $torg->trgBulletinNumber;
                 }
                 $info['isFas'] = (($torg->trgIsFas == 1)? 'Создан' : 'Не создан');
+
+                if ($torg->trgBidFormId == 2) {
+                    $newTorg->tradeTypeId = 2;
+                } else if ($torg->trgBidFormId == 10) {
+                    $newTorg->tradeTypeId = 1;
+                } else {
+                    $newTorg->tradeTypeId   = $torg->trgBidFormId;
+                    $newTorg->tradeType     = $torg->trgBidFormName;
+                }
         
                 $newTorg->typeId        = 4;
                 $newTorg->publisherId   = $manager->id;
@@ -118,7 +127,6 @@ class TorgsMunicipal extends Module
                 $newTorg->startDate     = GetInfoFor::date_check($torg->trgStartDateRequest);
                 $newTorg->endDate       = GetInfoFor::date_check($torg->trgExpireDate);
                 $newTorg->publishedDate = GetInfoFor::date_check($torg->trgPublished);
-                $newTorg->tradeTypeId   = $torg->trgBidFormId;
                 $newTorg->info          = $info;
                 $newTorg->oldId         = $torg->trgId;
         
