@@ -36,8 +36,10 @@ class SignupForm extends Model
             
             [['password', 'passwordConfirm'], 'required'],
             [['password', 'passwordConfirm'], 'string', 'min' => 6],
+            ['passwordConfirm', 'compare', 'compareAttribute'=>'password', 'message'=>"Пароли не совподают!" ],
 
             ['checkPolicy', 'required'],
+            ['checkPolicy', 'compare', 'compareValue' => 1, 'message' => 'Поставте галочку на соглашение!'], 
         ];
     }
 

@@ -120,30 +120,56 @@ class LotEditor extends \common\models\Query\Lot\Lots
 
         switch ($type) {
             case '1':
-                $subcategorys = $categoryItem->bankrupt_categorys;
+                foreach ($categoryItem->bankrupt_categorys as $key => $subcategory) {
+                    foreach ($this->subCategorys as $categoryId) {
+                        if ($key == $categoryId) {
+                            $newCategory = new LotCategorys();
+        
+                            $newCategory->lotId         = $this->id;
+                            $newCategory->categoryId    = $categoryId;
+                            $newCategory->name          = $subcategory['name'];
+                            $newCategory->nameTranslit  = $subcategory['translit'];
+        
+                            $newCategory->save();
+                        }
+                    }
+                }
                 break;
             case '2':
-                $subcategorys = $categoryItem->arrest_categorys;
+                foreach ($categoryItem->arrest_categorys as $key => $subcategory) {
+                    foreach ($this->subCategorys as $categoryId) {
+                        if ($key == $categoryId) {
+                            $newCategory = new LotCategorys();
+        
+                            $newCategory->lotId         = $this->id;
+                            $newCategory->categoryId    = $categoryId;
+                            $newCategory->name          = $subcategory['name'];
+                            $newCategory->nameTranslit  = $subcategory['translit'];
+        
+                            $newCategory->save();
+                        }
+                    }
+                }
                 break;
             case '3':
-                $subcategorys = $categoryItem->zalog_categorys;
+                foreach ($categoryItem->subCategorys as $subcategory) {
+                    foreach ($this->subCategorys as $categoryId) {
+                        if ($subcategory->id == $categoryId) {
+                            $newCategory = new LotCategorys();
+        
+                            $newCategory->lotId         = $this->id;
+                            $newCategory->categoryId    = $categoryId;
+                            $newCategory->name          = $subcategory->name;
+                            $newCategory->nameTranslit  = $subcategory->nameTranslit;
+        
+                            $newCategory->save();
+                        }
+                    }
+                }
                 break;
         }
 
-        foreach ($subcategorys as $key => $subcategory) {
-            foreach ($this->subCategorys as $categoryId) {
-                if ($key == $categoryId) {
-                    $newCategory = new LotCategorys();
-
-                    $newCategory->lotId         = $this->id;
-                    $newCategory->categoryId    = $categoryId;
-                    $newCategory->name          = $subcategory['name'];
-                    $newCategory->nameTranslit  = $subcategory['translit'];
-
-                    $newCategory->save();
-                }
-            }
-        }
+        
         
         return true;
     }

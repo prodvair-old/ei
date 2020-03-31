@@ -206,7 +206,6 @@ class LotController extends Controller
     // Ссылка на категории лотов
     public function actionSearch($type, $category, $subcategory = null, $region = null)
     {
-        $start = microtime(true);
         $model = new SearchLot();
         $modelSort = new SortLot();
         $urlParamServer = $_SERVER['REQUEST_URI'];
@@ -280,7 +279,8 @@ class LotController extends Controller
                     $metaDataType = MetaDate::find()->where(['mdName' => $type])->one();
                     $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : $owner->title;
 
-                    $model->etp[0] = $owner->id; 
+                    $model->owners[0] = $owner->id; 
+                    $model->type = 'zalog'; 
 
                 } else {
                     Yii::$app->response->statusCode = 404;
@@ -308,7 +308,6 @@ class LotController extends Controller
         $model->load((($get['SearchLot'])? $get : $get[1]));
         $query = $model->searchBy($url, (($type !== 'bankrupt' || $type !== 'arrest' || $type !== 'zalog' || $type == 'all')? $type : null), $modelSort->sortBy());
 
-        /* http://dev.ei.ru/rosselkhozbank/lot-list */
         $urlArray = explode('/', $url);
 
         if ($urlArray[0] != $model->type && ($urlArray[0] == 'all' || $urlArray[0] == 'bankrupt' || $urlArray[0] == 'arrest' || $urlArray[0] == 'zalog')) {
@@ -385,8 +384,10 @@ class LotController extends Controller
         $type = ($type == 'bankrupt' || $type == 'arrest' || $type == 'zalog')? $type : 'zalog';
         return $this->render('search', compact('model', 'modelSort', 'type', 'queryCategory', 'lots', 'pages', 'count', 'offset', 'limit', 'price', 'url'));
     }
+
     public function actionPage($type, $category, $subcategory, $id)
     {
+
         // Проверка ссылок ЧПУ и подставление типа лотов Strat->
         if (!empty($items = LotsCategory::find()->where(['translit_name'=>$category])->one())) {
             $queryCategory = $items->id;
@@ -543,6 +544,7 @@ class LotController extends Controller
             'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
             'url' => ["javascript:void(0);"]
         ];
+        
         // Хлебные крошки <-End
 
         return $this->render("page-lot", ['lot'=>$lot, 'type'=>$type]);

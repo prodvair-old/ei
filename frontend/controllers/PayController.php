@@ -64,46 +64,13 @@ class PagesController extends Controller
      *
      * @return mixed
      */
-    public function actionAbout()
+    public function actionTariffs()
     {
-        return $this->render('about');
+        return $this->render('tariffs');
     }
-    public function actionLicense()
+    public function actionPayments()
     {
-        return $this->render('license');
-    }
-    public function actionPolicy()
-    {
-        return $this->render('policy');
-    }
-    public function actionContact()
-    {
-        $model = new ContactForm();
-
-        if (!Yii::$app->user->isGuest) {
-            $model->name    = Yii::$app->user->identity->info['firstname'];
-            $model->email   = Yii::$app->user->identity->firstEmail;
-            $model->phone   = Yii::$app->user->identity->firstPhone;
-        }
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $model->sendEmail('contact');
-        }
-
-
-        return $this->render('contact', ['model' => $model]);
-    }
-    // public function actionService()
-    // {
-    //     return $this->render('service');
-    // }
-    public function actionFaq()
-    {
-        return $this->render('faq');
-    }
-    public function actionSitemap()
-    {
-        return $this->render('sitemap');
+        return $this->render('payments');
     }
 
 }

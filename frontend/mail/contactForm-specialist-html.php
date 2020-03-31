@@ -1,15 +1,9 @@
 <?php
 use yii\helpers\Url;
 
-switch ($type) {
-    case 'specialist':
-        $name = 'Страница консультация специалиста';
-        $url = Url::to(['services/specialist']);
-        break;
-}
 ?>
 <p>
-    <h3><a href="<?=$url?>"><?=$name?></a></h3>
+    <h3><a href="<?=Url::to(['services/specialist'])?>">Страница консультация специалиста</a></h3>
     <h4>Запрос на услуги агента по лоту № <a href="<?=Yii::$app->request->hostInfo.'/'.$params->lot->lotUrl?>"><?= Html::encode($params->lotId) ?></a>, <?=$name?></h4>
     <p>
         Пользователь: <b><?=($user->info['firstname'] || $user->info['lastname'])? $user->info['firstname'].' '.$user->info['lastname'] : $user->info['contacts']['emails'][0]?></b>

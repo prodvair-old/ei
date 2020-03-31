@@ -19,11 +19,11 @@ $this->title = 'Импортирование лотов';
 <ul class="list-icon-absolute what-included-list mb-30">
     <li>
     <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-    Скачайте <a href="<?= Url::to('files/Формат_добавления_лотов_в_залоговое_иммущество_ei.ru.xlsx') ?>" target="_blank" download>шаблон excel</a> файла;
+    Скачайте <a href="<?= Url::to('@web/files/Формат_добавления_лотов_в_залоговое_иммущество_ei.ru.xlsx') ?>" target="_blank" download>шаблон excel</a> файла;
     </li>
     <li>
     <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-    Заполните файл в соответствии с <a href="<?= Url::to('files/Формат_добавления_лотов_в_залоговое_иммущество_ei.ru.xlsx') ?>" target="_blank" download>требованиями</a>;
+    Заполните файл в соответствии с <a href="<?= Url::to('@web/files/Формат_добавления_лотов_в_залоговое_иммущество_ei.ru.xlsx') ?>" target="_blank" download>требованиями</a>;
     </li>
     <li>
     <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
@@ -65,6 +65,7 @@ if ($where != null) {
         ]
     ]);
 ?>
+<hr>
     <?php LteBox::begin(['type'=>LteConst::TYPE_DEFAULT]);?>
         <?= GridView::widget([
                     'dataProvider' => $dataProvider,
@@ -101,11 +102,6 @@ if ($where != null) {
                             'value' => function ($model) {
                                 return $model->price.' руб.';
                             }
-                        ],
-                        [
-                            'attribute' => 'price',
-                            'format' => 'ntext',
-                            'label' => 'Цена',
                         ],
                         [
                             'class' => 'yii\grid\ActionColumn',

@@ -19,6 +19,7 @@ use common\models\Query\Lot\Lots;
 use common\models\Query\Lot\LotCategorys;
 use common\models\Query\LotsCategory;
 use backend\models\HistoryAdd;
+use backend\models\Search;
 
 /**
  * Lots controller
@@ -88,7 +89,22 @@ class LotsController extends Controller
                 $subcategorys = $categoryItem->arrest_categorys;
                 break;
             case '3':
-                $subcategorys = $categoryItem->zalog_categorys;
+                // $subcategorys = $categoryItem->bankrupt_categorys;
+                foreach ($categoryItem->subCategorys as $subcategory) {
+                    if (!is_null($q)) {
+                        if (strpos($subcategory->name, $q)) {
+                            $categorysList['results'][] = [
+                                'id' => $subcategory->id,
+                                'text' => '<b>'.$subcategory->name.'</b>'
+                            ];
+                        }
+                    } else {
+                        $categorysList['results'][] = [
+                            'id' => $subcategory->id,
+                            'text' => '<b>'.$subcategory->name.'</b>'
+                        ];
+                    }
+                }
                 break;
         }
 
@@ -129,19 +145,29 @@ class LotsController extends Controller
         if (!UserAccess::forManager('lots') && !UserAccess::forAgent('lots')) {
             return $this->goHome();
         }
-
+        
         if (UserAccess::forAgent('lots') && !UserAccess::forSuperAdmin()) {
-            $lots = LotsAll::find()->joinWith(['torg'])->where([
+            $lots = LotsAll::find()->alias('lot')->joinWith(['torg'])->where([
                 'torg.typeId' => 3,
                 'torg.publisherId' => Yii::$app->user->id
-            ])->orderBy('torg."publishedDate" DESC');
+            ]);
         } else {
-            $lots = LotsAll::find()->joinWith('torg')->where([
+            $lots = LotsAll::find()->alias('lot')->joinWith('torg')->where([
                 '!=', 'torg.typeId', 3
-            ])->orderBy('torg."publishedDate" DESC');
+            ]);
+        }
+
+        $model = new Search();
+
+        if ($model->load(Yii::$app->request->get()) && $model->validate()) {
+            $lots
+                ->andWhere('to_tsvector(lot.description) @@ plainto_tsquery(\''.pg_escape_string($model->search).'\')')
+                ->orderBy('ts_rank(to_tsvector(lot.description), plainto_tsquery(\''.pg_escape_string($model->search).'\')) ASC');
+        } else {
+            $lots->orderBy('torg."publishedDate" DESC');
         }
         
-        return $this->render('index', ['lots' => $lots]);
+        return $this->render('index', ['lots' => $lots, 'model' => $model]);
     }
     public function actionImport()
     {
@@ -212,24 +238,35 @@ class LotsController extends Controller
         foreach (LotsCategory::find()->all() as $categoryItem) {
             switch ($modelTorg->typeId) {
                 case '1':
-                    $subcategorys = $categoryItem->bankrupt_categorys;
+                    foreach ($categoryItem->bankrupt_categorys as $key => $item) {
+                        foreach ($modelLot->subCategorys as $subcategory) {
+                            if ($key == $subcategory) {
+                                $modelLot->categorys = $categoryItem->id;
+                            }
+                        }
+                        
+                    }
                     break;
                 case '2':
-                    $subcategorys = $categoryItem->arrest_categorys;
+                    foreach ($categoryItem->arrest_categorys as $key => $item) {
+                        foreach ($modelLot->subCategorys as $subcategory) {
+                            if ($key == $subcategory) {
+                                $modelLot->categorys = $categoryItem->id;
+                            }
+                        }
+                        
+                    }
                     break;
                 case '3':
-                    $subcategorys = $categoryItem->zalog_categorys;
-                    break;
-            }
-            if ($subcategorys) {
-                foreach ($subcategorys as $key => $item) {
-                    foreach ($modelLot->subCategorys as $subcategory) {
-                        if ($key == $subcategory) {
-                            $modelLot->categorys = $categoryItem->id;
+                    foreach ($categoryItem->subCategorys as $item) {
+                        foreach ($modelLot->subCategorys as $subcategory) {
+                            if ($item->id == $subcategory) {
+                                $modelLot->categorys = $categoryItem->id;
+                            }
                         }
+                        
                     }
-                    
-                }
+                    break;
             }
         }
 

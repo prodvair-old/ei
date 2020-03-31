@@ -10,6 +10,8 @@ use yii\data\Pagination;
 
 use backend\models\UserAccess;
 use backend\models\Editors\UsersEditor;
+use backend\models\HistoryAdd;
+use backend\models\Search;
 
 use common\models\User;
 
@@ -28,7 +30,7 @@ class UsersController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['update', 'add', 'index'],
+                        'actions' => ['update', 'delete', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -66,13 +68,19 @@ class UsersController extends Controller
             return $this->goHome();
         }
 
-        $users = User::find()->orderBy('created_at ASC');
+        $users = User::find();
 
         if (!UserAccess::forSuperAdmin()) {
             $users->where(['!=', 'role', 'superAdmin']);
         }
+
+        $model = new Search();
+
+        if ($model->load(Yii::$app->request->get()) && $model->validate()) {
+            $users->andWhere(['like', 'username', pg_escape_string($model->search)]);
+        }
         
-        return $this->render('index', ['users' => $users]);
+        return $this->render('index', ['users' => $users, 'model' => $model]);
     }
 
     public function actionUpdate()
@@ -85,6 +93,39 @@ class UsersController extends Controller
 
         $model = UsersEditor::findOne($get['id']);
 
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+            if ($model->update()) {
+                Yii::$app->session->setFlash('success', "Пользователь успешнот изменён.");
+                HistoryAdd::edit(1, 'users/update','Редактирование пользователя №'.$model->id, ['userId' => $model->id], Yii::$app->user->identity);
+
+                return $this->redirect(['users/update', 'id' => $model->id]);
+            } else {
+                Yii::$app->session->setFlash('error', "Ошибка при редактировании пользователя");
+                HistoryAdd::edit(2, 'owners/update','Ошибка при редактировании пользователя №'.$model->id, ['userId' => $model->id], Yii::$app->user->identity);
+            }
+        }
+
         return $this->render('update', ['model' => $model]);
+    }
+    public function actionDelete()
+    {
+        if (!UserAccess::forManager('users', 'delete')) {
+            return $this->goHome();
+        }
+
+        $get = Yii::$app->request->get();
+
+        $user = UsersEditor::findOne($get['id']);
+
+        if ($user->delete()) {
+            Yii::$app->session->setFlash('success', "Пользователь успешно удалёно");
+            HistoryAdd::remove(1, 'users/delete','Удалён пользователь №'.$get['id'], ['userId' => $get['id']], Yii::$app->user->identity);
+            return $this->redirect(['users/index']);
+        } else {
+            Yii::$app->session->setFlash('error', "Ошибка при удалении пользователя №".$get['id']);
+            HistoryAdd::remove(2, 'users/delete','Ошибка удаления пользователя №'.$get['id'], ['userId' => $get['id']], Yii::$app->user->identity);
+            return $this->redirect(['users/update', 'id' => $get['id']]);
+        }
     }
 }

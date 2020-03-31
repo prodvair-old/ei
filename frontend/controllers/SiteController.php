@@ -88,15 +88,15 @@ class SiteController extends Controller
         Yii::$app->params['title'] = $metaData->mdTitle;
         Yii::$app->params['h1'] = $metaData->mdH1;
 
-        $lotsBankruptCount = Lots::isActive()->joinWith(['categorys', 'torg', 'thisPriceHistorys'])->where(['torg.typeId' => 1])->count();
-        $lotsArrestCount = Lots::isActive()->joinWith(['categorys', 'torg', 'thisPriceHistorys'])->where(['torg.typeId' => 2])->count();
-        $lotsZalogCount = Lots::isActive()->joinWith(['categorys', 'torg', 'thisPriceHistorys'])->where(['torg.typeId' => 3])->count();
-
-        return $this->render('index', [
-            'lotsBankruptCount' => $lotsBankruptCount,
-            'lotsArrestCount' => $lotsArrestCount,
-            'lotsZalogCount' => $lotsZalogCount
-        ]);
+        // $lotsBankruptCount = Lots::isActive()->joinWith(['categorys', 'torg', 'thisPriceHistorys'])->where(['torg.typeId' => 1])->count();
+        // $lotsArrestCount = Lots::isActive()->joinWith(['categorys', 'torg', 'thisPriceHistorys'])->where(['torg.typeId' => 2])->count();
+        // $lotsZalogCount = Lots::isActive()->joinWith(['categorys', 'torg', 'thisPriceHistorys'])->where(['torg.typeId' => 3])->count();
+        // [
+        //     'lotsBankruptCount' => $lotsBankruptCount,
+        //     'lotsArrestCount' => $lotsArrestCount,
+        //     'lotsZalogCount' => $lotsZalogCount
+        // ]
+        return $this->render('index');
     }
 
     /**

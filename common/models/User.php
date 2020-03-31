@@ -29,13 +29,25 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = false;
     const STATUS_ACTIVE = true;
 
-
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
         return 'site.user';
+    }
+
+    public function getNameForUser()
+    {
+        return $this->info['firstname'].' '.$this->info['lastname'];
+    }
+    public function getFirstEmail()
+    {
+        return $this->info['contacts']['emails'][0];
+    }
+    public function getFirstPhone()
+    {
+        return $this->info['contacts']['phones'][0];
     }
 
     /**

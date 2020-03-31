@@ -106,18 +106,33 @@ jQuery(function($) {
 		$('.load-list').html('<div class="spinner-wrapper"><div class="spinner"></div>Сортируем лоты...</div>');
         $("#sort-lot-form").submit();
 	});
-	
+	if (lotType) {
+		filterParams();
+	}
+
 	$(".chosen-type-select").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, type) {
 		lotType = type.selected;
 
 		$('.card-search-form').attr('action', '/'+lotType+'/lot-list');
 
+		filterParams();
+	});
+	
+	function filterParams() {
 		if (lotType == 'arrest') {
 			$('.bankrupt-type').hide();
-		} else {
+			$('.zalog-type').hide();
+		} else if (lotType == 'bankrupt') {
 			$('.bankrupt-type').show();
+			$('.zalog-type').hide();
+		} else if (lotType == 'zalog') {
+			$('.zalog-type').show();
+			$('.bankrupt-type').hide();
+		} else if (lotType == 'all') {
+			$('.bankrupt-type').show();
+			$('.zalog-type').show();
 		}
-    });
+	}
 	
 	$(".chosen-category-select").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, id) {
 		if (id.selected == 0) {
@@ -137,7 +152,7 @@ jQuery(function($) {
 	$(".chosen-zalog-category-select").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, id) {
 		var lotId = $(this).data('lotid');
 		var lotType = $(this).data('lottype');
-		console.log(lotType);
+		
 		if (id.selected == 0) {
 			$('.subcategory-'+lotId+'-load').prop('disabled', true).trigger("chosen:updated");
 		} else {
