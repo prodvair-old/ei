@@ -247,7 +247,7 @@ class LotsMunicipal extends Module
                 $newLot->bankId         = $bank->id;
                 $newLot->msgId          = $lot->lotBidNumber;
                 $newLot->lotNumber      = $lot->lotNum;
-                $newLot->title          = GetInfoFor::mb_ucfirst(GetInfoFor::title($lot->lotPropDesc));
+                $newLot->title          = GetInfoFor::mb_ucfirst(GetInfoFor::title((($lot->lotPropDesc)? $lot->lotPropDesc : $lot->lotPropName)));
                 $newLot->description    = GetInfoFor::mb_ucfirst($lot->lotPropDesc);
                 $newLot->startPrice     = $lot->lotStartSalePrice;
                 $newLot->step           = $lot->lotPriceStep;

@@ -44,7 +44,7 @@ class LotsArrest extends Module
 
             return true;
         } else {
-            if ($lot->lotBidNumber != null && $lot->lotNum != null && $lot->lotPropName != null && $lot->lotStartPrice != null) {
+            if ($lot->lotBidNumber != null && $lot->lotNum != null && $lot->lotStartPrice != null) {
 
                 // Торг
                 if (!$torg = Torgs::find()->where(['oldId' => $lot->torgs->trgId, 'typeId' => 2])->one()) {
@@ -125,7 +125,7 @@ class LotsArrest extends Module
                 $newLot->bankId         = $bank->id;
                 $newLot->msgId          = $lot->lotBidNumber;
                 $newLot->lotNumber      = $lot->lotNum;
-                $newLot->title          = GetInfoFor::mb_ucfirst(GetInfoFor::title($lot->lotPropName));
+                $newLot->title          = GetInfoFor::mb_ucfirst(GetInfoFor::title(($lot->lotPropName)? $lot->lotPropName : $lot->lotPropertyTypeName ));
                 $newLot->description    = GetInfoFor::mb_ucfirst($lot->lotPropName);
                 $newLot->startPrice     = $lot->lotStartPrice;
                 $newLot->step           = $lot->lotPriceStep;
