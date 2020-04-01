@@ -38,7 +38,7 @@ class User extends ActiveRecord implements IdentityInterface
     public $address;
     public $email;
     public $phone;
-    public $notification;
+    public $notifications;
 
     /**
      * {@inheritdoc}
@@ -213,7 +213,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function needNotify($name)
     {
-        return isset($this->info[$name]) && $this->info[$name];
+        return isset($this->notifications[$name]) && $this->notifications[$name];
     }
 
     /**

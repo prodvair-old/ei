@@ -4,7 +4,7 @@ namespace frontend\models\user;
 use Yii;
 use yii\base\Model;
 
-class Notification extends Model
+class NotificationForm extends Model
 { 
     public $new_picture;
     public $new_report;
