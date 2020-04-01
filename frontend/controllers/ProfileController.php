@@ -37,7 +37,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Editing User's Notifications.
+     * Edit User Notifications.
      *
      * @param integer $id User ID
      * @return mixed
@@ -51,14 +51,20 @@ class ProfileController extends Controller
             'price_reduction' => $user->price_reduction,
         ]);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save())
+        if ($model->load(Yii::$app->request->post()) && $model->validate())
         {
-            Yii::$app->session->setFlash('success', 'Уведомления успешно обновлены.');
+            $user->new_picture     = $model->new_picture;
+            $user->new_report      = $model->new_report;
+            $user->price_reduction = $model->price_reduction;
+            $user->save(false);
+            Yii::$app->session->setFlash('success', 'Уведомления успешно обновлены');
             
             return $this->refresh();
         } else {
-            return $this->render('user/notification', [
-                'model' => $model,
+            return $this->render('update', [
+                'caption' => 'Уведомления',
+                'form'    => '_notification_form',
+                'model'   => $model,
             ]);
         }
     }
