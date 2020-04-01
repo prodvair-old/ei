@@ -29,6 +29,16 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = false;
     const STATUS_ACTIVE = true;
 
+    public $firstname;
+    public $lastname;
+    public $middlename;
+    public $sex;
+    public $birthday;
+    public $city;
+    public $address;
+    public $email;
+    public $phone;
+    public $notification;
 
     /**
      * {@inheritdoc}
@@ -56,6 +66,25 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'lastname' => 'Фамилия',
+            'firstname' => 'Имя',
+            'middlename' => 'Отчество',
+            'phone' => 'Номер телефона',
+            'birthday' => 'Дата рождения',
+            'sex' => 'Пол',
+            'city' => 'Город',
+            'address' => 'Адрес',
+            'email' => 'E-Mail',
+            'new_password' => 'Новый пароль',
+            'old_passport' => 'Старый пароль',
+            'repeat_password' => 'Подтвеждение пароля',
+            'notifications' => 'Уведомления',
         ];
     }
 
@@ -177,6 +206,46 @@ class User extends ActiveRecord implements IdentityInterface
     public function needNotify($name)
     {
         return isset($this->info[$name]) && $this->info[$name];
+    }
+
+    /**
+     * inheritdoc
+     */
+    public function afterFind()
+    {
+        parent::afterFind();
+        
+        // установить внутренний переменные по json массиву
+        $this->firstname = $this->info['firstname']; 
+        $this->lastname = $this->info['lastname']; 
+        $this->middlename = $this->info['middlename']; 
+        $this->sex = $this->info['sex']; 
+        $this->birthday = $this->info['birthday']; 
+        $this->phone = $this->info['contacts']['phone']; 
+        $this->email = $this->info['contacts']['email']; 
+        $this->address = $this->info['contacts']['address']; 
+        $this->city = $this->info['contacts']['city']; 
+        $this->notifications = $this->info['notifications']; 
+    }
+    
+    /**
+     * inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        // сохранить внутренние переменные в json массиве 
+        $this->info['firstname'] = $this->firstname; 
+        $this->info['lastname'] = $this->lastname; 
+        $this->info['middlename'] = $this->middlename; 
+        $this->info['sex'] = $this->sex; 
+        $this->info['birthday'] = $this->birthday; 
+        $this->info['contacts']['phone'] = $this->phone; 
+        $this->info['contacts']['email'] = $this->email; 
+        $this->info['contacts']['address'] = $this->address; 
+        $this->info['contacts']['city'] = $this->city; 
+        $this->info['notifications'] = $this->notifications;
+        
+        return parent::beforeSave($insert); 
     }
 
     public function getOwnerId()

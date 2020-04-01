@@ -21,9 +21,9 @@ use common\jobs\KeepNotificationJob;
 
 class Lots extends ActiveRecord
 {
-    const EVENT_NEW_PICTURE     = 'new-picture'; // Добавлено новое фото к лоту
-    const EVENT_NEW_REPORT      = 'new-report'; // Добавлен новый отчет к лоту
-    const EVENT_PRICE_REDUCTION = 'price-reduction'; // Снижена цена на лот
+    const EVENT_NEW_PICTURE     = 'new_picture'; // Добавлено новое фото к лоту
+    const EVENT_NEW_REPORT      = 'new_report'; // Добавлен новый отчет к лоту
+    const EVENT_PRICE_REDUCTION = 'price_reduction'; // Снижена цена на лот
     
     public $whishCount;
     public $rank;

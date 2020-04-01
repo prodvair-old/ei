@@ -6,7 +6,6 @@ use yii\helpers\Html;
 /* @var $user common\models\User */
 /* @var $models common\models\Query\Lot\Lots */
 /* @var $lots array [lot_id => ['new-picture', 'price-reduction']] */
-/* @var $links array [lot_id => link] */
 
 $unsubscribeAllLink = Yii::$app->urlManager->createAbsoluteUrl(['/lot/unsubscribe-all', 'user_id' => $user->id]);
 ?>

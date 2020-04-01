@@ -2,7 +2,7 @@
 namespace frontend\models;
 
 use Yii;
-use yii\base\Model;
+//use yii\base\Model;
 use common\models\Api;
 use yii\db\Query;
 use yii\web\UploadedFile;
@@ -12,19 +12,19 @@ use yii\imagine\Image;
 use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;
 
-class UserSetting extends Model
+class UserSetting extends User
 { 
-    public $firstname;
-    public $lastname;
-    public $middlename;
-    public $sex;
-    public $birthday;
-    public $city;
-    public $address;
+//    public $firstname;
+//    public $lastname;
+//    public $middlename;
+//    public $sex;
+//    public $birthday;
+//    public $city;
+//    public $address;
     public $avatar;
     public $passport_img;
-    public $email;
-    public $phone;
+//    public $email;
+//    public $phone;
     public $photo;
     public $passport;
     public $new_password;
@@ -52,27 +52,10 @@ class UserSetting extends Model
 
             [['old_photo', 'old_passport'], 'string'],
 
-            [['photo', 'passport'], 'file', 'extensions' => 'png, jpg, svg', 'skipOnEmpty' => true],
+            ['photo', 'file', 'extensions' => 'png, jpg, svg', 'skipOnEmpty' => true],
+            //[['photo', 'passport'], 'file', 'extensions' => 'png, jpg, svg', 'skipOnEmpty' => true],
             [['old_password', 'new_password', 'repeat_password'], 'string', 'min' => 6],
             // [['old_password', 'new_password', 'repeat_password'], 'min' => 6, 'string'],
-        ];
-    }
-
-    public function attributeLabels()
-    {
-        return [
-            'lastname' => 'Фамилия',
-            'firstname' => 'Имя',
-            'middlename' => 'Отчество',
-            'phone' => 'Номер телефона',
-            'birthday' => 'Дата рождения',
-            'sex' => 'Пол',
-            'city' => 'Город',
-            'address' => 'Адрес',
-            'email' => 'E-Mail',
-            'new_password' => 'Новый пароль',
-            'old_passport' => 'Старый пароль',
-            'repeat_password' => 'Подтвеждение пароля',
         ];
     }
 
@@ -80,7 +63,7 @@ class UserSetting extends Model
     {
 
         $user = User::findOne($user_id);
-
+/*
         $userInfo = [
             'sex' => $this->sex,
             'birthday' => $this->birthday,
@@ -101,6 +84,7 @@ class UserSetting extends Model
         if ($this->middlename) {
             $userInfo['middlename'] = $this->middlename;
         }
+*/
         // if ($this->photo != Null) {
         //     $userInfo['avatar'] = "img/users/$user_id-avatar.".$this->photo->getExtension().'?'.$this->photo->name;
         // } else {
@@ -136,7 +120,7 @@ class UserSetting extends Model
             }
         }
 
-        $user->info = $userInfo;
+        //$user->info = $userInfo;
 
         $user->update();
 
