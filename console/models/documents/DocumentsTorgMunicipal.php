@@ -6,7 +6,7 @@ use yii\base\Module;
 
 use console\models\GetInfoFor;
 
-use console\models\torgs\TorgsArrest;
+use console\models\torgs\TorgsMunicipal;
 
 use common\models\ErrorSend;
 
@@ -14,7 +14,7 @@ use common\models\Query\Lot\Torgs;
 use common\models\Query\Lot\Documents;
 use common\models\Query\Lot\Parser;
 
-class DocumentsTorgArrest extends Module
+class DocumentsTorgMunicipal extends Module
 {
     public function id($id)
     {
@@ -40,10 +40,10 @@ class DocumentsTorgArrest extends Module
             if ($doc->tdocType != null && $doc->tdocUrl) {
 
                 // Торг
-                if (!$torg = Torgs::find()->where(['oldId' => $doc->torg->trgId, 'typeId' => 2])->one()) {
+                if (!$torg = Torgs::find()->where(['oldId' => $doc->torg->trgId, 'typeId' => 4])->one()) {
                     echo "Торг для связи отцуствует! \nПробуем спарсить данный Торга. \n";
 
-                    $parsingLot = TorgsArrest::id($doc->torg->trgId);
+                    $parsingLot = TorgsMunicipal::id($doc->torg->trgId);
 
                     if (!$parsingLot && $parsingLot !== 2){
                         
@@ -60,7 +60,7 @@ class DocumentsTorgArrest extends Module
                         echo "Ошибка при добавлении в таблицу Документов ID ".$doc->tdocId.". \nОтсутствует Торг...\n";
                         return false;
                     } else {
-                        $torg = Torgs::find()->where(['oldId' => $doc->torg->trgId, 'typeId' => 2])->one();
+                        $torg = Torgs::find()->where(['oldId' => $doc->torg->trgId, 'typeId' => 4])->one();
                     }
                 }
 

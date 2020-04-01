@@ -6,6 +6,7 @@ use yii\console\Controller;
 
 use console\models\torgs\TorgsBankrupt;
 use console\models\torgs\TorgsArrest;
+use console\models\torgs\TorgsMunicipal;
 
 use common\models\Query\Bankrupt\Auction;
 use common\models\Query\Arrest\Torgs;
@@ -95,6 +96,61 @@ class TorgsController extends Controller
 
                 foreach ($torgs as $torg) {
                     $parsingTorg = TorgsArrest::id($torg->trgId);
+
+                    if ($parsingTorg && $parsingTorg !== 2) {
+                        foreach ($torg->parser as $value) {
+                            if ($value->checked) {
+                                $parser = Parser::findOne($value->id);
+
+                                $parser->checked = false;
+
+                                $parser->update();
+                            }
+                        }
+
+                        $parserCount++;
+                    }
+
+                    if ($delay == 'y') {
+                        $sleep = rand(1, 3);
+
+                        echo "Задержка $sleep секунды. \n";
+
+                        sleep($sleep);
+                    }
+                    
+                }
+            }
+
+            echo "Загружено $parserCount записей. \n";
+        } else {
+            echo "Новых данных нет. \n";
+        }
+        echo "Завершение парсинга. \n";
+    }
+
+    // Торги Муниципального имущества
+    // php yii torgs/municipal
+    public function actionMunicipal($limit = 100, $delay = 'y') 
+    {
+        error_reporting(0);
+
+        echo 'Парсинг таблицы Торгов (bailiff.torgs)';
+        $count = \common\models\Query\Municipal\Torgs::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
+        echo "\nКоличество записей осталось: $count. \n";
+        
+        $parserCount = 0;
+
+        if ($count > 0) {
+            $torgs = \common\models\Query\Municipal\Torgs::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->limit($limit)->orderBy('id DESC')->all();
+
+            echo "Ограничения записей $limit. \n";
+
+            if (!empty($torgs[0])) {
+                echo "Данные взяты из быза. \n";
+
+                foreach ($torgs as $torg) {
+                    $parsingTorg = TorgsMunicipal::id($torg->trgId);
 
                     if ($parsingTorg && $parsingTorg !== 2) {
                         foreach ($torg->parser as $value) {

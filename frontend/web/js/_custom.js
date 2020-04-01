@@ -202,14 +202,6 @@ $(document).ready(function () {
     return false;
   });
 
-  if (typeof (lotType) != "undefined" && lotType !== null) {
-    if (lotType == 'arrest') {
-      $('.bankrupt-type').hide();
-    } else {
-      $('.bankrupt-type').show();
-    }
-  }
-
   $('.wish-js').on('click', function (e) {
     e.preventDefault();
     var lotId = $(this).data('id'),

@@ -6,9 +6,9 @@ use yii\base\Module;
 
 use console\models\GetInfoFor;
 
-use common\models\Query\Arrest\LotDocuments;
+use common\models\Query\Municipal\LotDocuments;
 
-use console\models\lots\LotsArrest;
+use console\models\lots\LotsMunicipal;
 
 use common\models\ErrorSend;
 
@@ -16,7 +16,7 @@ use common\models\Query\Lot\Lots;
 use common\models\Query\Lot\Documents;
 use common\models\Query\Lot\Parser;
 
-class DocumentsLotArrest extends Module
+class DocumentsLotMunicipal extends Module
 {
     public function id($id)
     {
@@ -27,7 +27,7 @@ class DocumentsLotArrest extends Module
         $parser->tableNameFrom = 'bailiff.lotdocuments';
         $parser->tableIdFrom = $doc->ldocId;
 
-        $chekDoc = LotDocuments::find()->where(['oldId' => $doc->ldocId, 'tableTypeId' => 1])->all();
+        $chekDoc = Documents::find()->where(['oldId' => $doc->ldocId, 'tableTypeId' => 1])->all();
 
         if (!empty($chekDoc[0])) {
             $parser->message = 'Был добавлен';
@@ -45,7 +45,7 @@ class DocumentsLotArrest extends Module
                 if (!$lot = Lots::find()->alias('lot')->joinWith(['torg'])->where(['lot.oldId' => $doc->lot->lotId, 'torg.typeId' => 1])->one()) {
                     echo "Лот для связи отцуствует! \nПробуем спарсить данный Лота. \n";
 
-                    $parsingLot = LotsArrest::id($doc->lot->lotId, false);
+                    $parsingLot = LotsMunicipal::id($doc->lot->lotId, false);
 
                     if (!$parsingLot && $parsingLot !== 2){
                         

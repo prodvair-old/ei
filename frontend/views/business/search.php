@@ -201,7 +201,7 @@ $this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\Vi
                         
                     </div>
                     
-                    <div class="sidebar-box bankrupt-type">
+                    <div class="sidebar-box">
                     
                         <div class="box-title"><h5>Тип торгов</h5></div>
                         
@@ -227,7 +227,7 @@ $this->registerJsVar( 'categorySelected', $queryCategory, $position = yii\web\Vi
                         
                     </div>
 
-                    <div class="sidebar-box bankrupt-type">
+                    <div class="sidebar-box">
                     
                         <div class="box-title"><h5>Торговые площадки</h5></div>
                         

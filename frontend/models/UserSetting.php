@@ -55,6 +55,7 @@ class UserSetting extends User
             ['photo', 'file', 'extensions' => 'png, jpg, svg', 'skipOnEmpty' => true],
             //[['photo', 'passport'], 'file', 'extensions' => 'png, jpg, svg', 'skipOnEmpty' => true],
             [['old_password', 'new_password', 'repeat_password'], 'string', 'min' => 6],
+            ['repeat_password', 'compare', 'compareAttribute'=>'new_password', 'message'=>"Пароли не совподают!" ],
             // [['old_password', 'new_password', 'repeat_password'], 'min' => 6, 'string'],
         ];
     }

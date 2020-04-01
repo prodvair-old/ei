@@ -5,6 +5,7 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
+
 // Таблица Всех gобщих под категории лота данных таблицы
 class LotsSubCategory extends ActiveRecord
 {

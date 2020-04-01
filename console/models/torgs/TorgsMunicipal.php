@@ -14,11 +14,11 @@ use common\models\Query\Lot\Managers;
 
 use common\models\Query\Lot\Parser;
 
-class TorgsArrest extends Module
+class TorgsMunicipal extends Module
 {
     public function id($id)
     {
-        $torg = \common\models\Query\Arrest\Torgs::findOne($id);
+        $torg = \common\models\Query\Municipal\Torgs::findOne($id);
         $parser = new Parser();
 
         $parser->tableNameTo = 'eiLot.torgs';
@@ -40,7 +40,7 @@ class TorgsArrest extends Module
             if ($torg->trgPublished != null && $torg->trgBidFormId != null) {
 
                 // Организатор торгов
-                if (!$manager = Managers::find()->where(['oldId' => $torg->trgOrganizationId, 'typeId' => 3])->one()) {
+                if (!$manager = Managers::find()->where(['oldId' => $torg->trgOrganizationId])->one()) {
                     echo "Организатор торгов для связи отцуствует! \nПробуем спарсить данный Организатора торгов. \n";
 
                     if (!ManagerArrest::torg($torg)){
@@ -55,27 +55,61 @@ class TorgsArrest extends Module
 
                         echo "Отсутствует Организатор торгов...\n";
                     } else {
-                        $manager = Managers::find()->where(['oldId' => $torg->trgOrganizationId, 'typeId' => 3])->one();
+                        $manager = Managers::find()->where(['oldId' => $torg->trgOrganizationId])->one();
                     }
                 }
 
                 $newTorg = new Torgs();
         
-                $info = [
-                    'auctionType'       => $torg->trgBidKindName,
-                    'auctionDate'       => $torg->trgBidAuctionDate,
-                    'auctionPlace'      => $torg->trgBidAuctionPlace,
-                    'SummationPlace'    => $torg->trgSummationPlace,
-                    'url'               => $torg->trgBidUrl,
-                    'notificationUrl'   => $torg->trgNotificationUrl,
-                    'contactFio'        => $torg->trgFio,
-                    'lotCount'          => $torg->trgLotCount,
-                    'lastChanged'       => GetInfoFor::date_check($torg->trgLastChanged),
-                    'withDrawType'      => $torg->trgWithDrawType,
-                    'requirement'       => $torg->trgAppRequirement,
-                    'openingDate'       => $torg->trgOpeningDate,
-                    'placeRequest'      => $torg->trgPlaceRequest,
-                ];
+                if ($lot->trgBidKindName) {
+                    $info['auctionType'] = $lot->trgBidKindName;
+                }
+                if ($lot->trgBidAuctionDate) {
+                    $info['auctionDate'] = $lot->trgBidAuctionDate;
+                }
+                if ($lot->trgBidAuctionPlace) {
+                    $info['auctionPlace'] = $lot->trgBidAuctionPlace;
+                }
+                if ($lot->trgSummationPlace) {
+                    $info['SummationPlace'] = $lot->trgSummationPlace;
+                }
+                if ($lot->trgNotificationUrl) {
+                    $info['notificationUrl'] = $lot->trgNotificationUrl;
+                }
+                if ($lot->trgBidUrl) {
+                    $info['url'] = $lot->trgBidUrl;
+                }
+                if ($lot->trgFio) {
+                    $info['contactFio'] = $lot->trgFio;
+                }
+                if ($lot->trgLotCount) {
+                    $info['lotCount'] = $lot->trgLotCount;
+                }
+                if ($torg->trgLastChanged) {
+                    $info['lastChanged'] = GetInfoFor::date_check($torg->trgLastChanged);
+                }
+                if ($torg->trgWithDrawType) {
+                    $info['withDrawType'] = $torg->trgWithDrawType;
+                }
+                if ($torg->trgAppRequirement) {
+                    $info['requirement'] = $torg->trgAppRequirement;
+                }
+                if ($torg->trgOpeningDate) {
+                    $info['openingDate'] = $torg->trgOpeningDate;
+                }
+                if ($torg->trgPlaceRequest) {
+                    $info['placeRequest'] = $torg->trgPlaceRequest;
+                }
+                if ($torg->trgTimeOut) {
+                    $info['timeOut'] = $torg->trgTimeOut;
+                }
+                if ($torg->trgPlaceOffer) {
+                    $info['placeOffer'] = $torg->trgPlaceOffer;
+                }
+                if ($torg->trgBulletinNumber) {
+                    $info['bulletinNumber'] = $torg->trgBulletinNumber;
+                }
+                $info['isFas'] = (($torg->trgIsFas == 1)? 'Создан' : 'Не создан');
 
                 if ($torg->trgBidFormId == 2) {
                     $newTorg->tradeTypeId = 2;
@@ -86,7 +120,7 @@ class TorgsArrest extends Module
                     $newTorg->tradeType     = $torg->trgBidFormName;
                 }
         
-                $newTorg->typeId        = 2;
+                $newTorg->typeId        = 4;
                 $newTorg->publisherId   = $manager->id;
                 $newTorg->msgId         = $torg->trgBidNumber;
                 $newTorg->description   = GetInfoFor::mb_ucfirst($torg->trgAppReceiptDetails);

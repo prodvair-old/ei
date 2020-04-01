@@ -74,66 +74,42 @@ class FindController extends Controller
 
         if(Yii::$app->request->post()){
             ini_set('memory_limit', '1024M');
-            $modelImport->fileImport = \yii\web\UploadedFile::getInstance($modelImport,'fileImport');
             
-            if($modelImport->fileImport && $modelImport->validate()){
-                $where = $modelImport->excelArrest();
+            if($modelImport->load(Yii::$app->request->post()) && $modelImport->validate()){
+                $result = $modelImport->excelArrest();
 
-                $lots = LotsArrest::find()->where($where)->all();
-
-                if ($lots[0] != null) {
+                if ($result[0] != null) {
                     HistoryAdd::export(1, 'find/arrest', 'Иммущество успешно экспортировано', null, Yii::$app->user->identity);
                 
                     header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
                     Excel::export([
-                        'models' => $lots,
+                        'models' => $result,
                         'columns' => [
-                            'lotId:text',
-                            [
-                                'attribute' => 'lotUrl',
-                                'header' => 'Ссылка на лот',
-                                'format' => 'text',
-                                'value' => function($model) {
-                                    return 'https://ei.ru/'.$model->lotUrl;
-                                },
-                            ],
-                            'torgs.trgNotificationUrl:text',
-                            'lotPropName:text',
-                            'lotTorgReason:text',
-                            'torgs.trgBidAuctionDate:datetime',
-                            'torgs.trgBidFormName:text',
-                            'torgs.trgPublished:datetime',
-                            'lotWinnerName:text',
-                            'lotContractPrice:text',
-                            'lotStartPrice:text',
-                            'lotCadastre:text',
-                            'lotVin:text',
-                            'lotKladrLocationName:text',
-                            [
-                                'attribute' => 'lotCategory',
-                                'header' => 'Категория лота',
-                                'format' => 'text',
-                                'value' => function($model) {
-                                    return $model->lotCategory[0];
-                                },
-                            ],
-                            'lot_archive:boolean',
+                            'inn:text',
+                            'name:text',
+                            'title:text',
+                            'torg:text',
+                            'publication:datetime',
+                            'auction:datetime',
+                            'form:text',
+                            'repeat:text',
+                            'winner:text',
+                            'price:text',
+                            'url:text',
                         ],
                         'headers' => [
-                            'lotId' => 'ID лота',
-                            'torgs.trgNotificationUrl' => 'Ссылка на извещение',
-                            'lotPropName' => 'Описание',
-                            'lotTorgReason' => 'Основания реализации торгов',
-                            'torgs.trgBidAuctionDate' => 'Дата и время проведения торгов',
-                            'torgs.trgBidFormName' => 'Форма торгов',
-                            'torgs.trgPublished' => 'Дата публикации',
-                            'lotWinnerName' => 'Победитель',
-                            'lotContractPrice' => 'Цена предложенное победителем',
-                            'lotCadastre' => 'Кадастровый номер',
-                            'lotVin' => 'VIN номер',
-                            'lotKladrLocationName' => 'Адрес',
-                            'lot_archive' => 'В архиве',
+                            'inn' => 'ИНН',
+                            'name' => 'Наименование/ФИО',
+                            'title' => 'Наименование имущества',
+                            'torg' => 'Источник: torgi.gov.ru/bankrot.fedresurs.ru',
+                            'publication' => 'Дата публикации',
+                            'auction' => 'Дата торгов',
+                            'form' => 'Способ реализации',
+                            'repeat' => 'Повторные',
+                            'winner' => 'Победитель',
+                            'price' => 'Цена',
+                            'url' => 'Ссылка на торг',
                         ],
                     ]);
                 } else {

@@ -10,6 +10,7 @@ use console\models\lots\LotsBankruptStatus;
 use common\models\Query\Bankrupt\Lots;
 use common\models\Query\Bankrupt\Purchaselots;
 use common\models\Query\Arrest\LotsArrest;
+use common\models\Query\Municipal\LotsMunicipal;
 
 use common\models\Query\LotsCategory;
 
@@ -217,6 +218,61 @@ class LotsController extends Controller
 
                 foreach ($lots as $lot) {
                     $parsingLot = \console\models\lots\LotsArrest::id($lot->lotId);
+
+                    if ($parsingLot && $parsingLot !== 2) {
+                        foreach ($lot->parser as $value) {
+                            if ($value->checked) {
+                                $parser = Parser::findOne($value->id);
+
+                                $parser->checked = false;
+
+                                $parser->update();
+                            }
+                        }
+
+                        $parserCount++;
+                    }
+
+                    if ($delay == 'y') {
+                        $sleep = rand(1, 3);
+
+                        echo "Задержка $sleep секунды. \n";
+
+                        sleep($sleep);
+                    }
+                    
+                }
+            }
+
+            echo "Загружено $parserCount записей. \n";
+        } else {
+            echo "Новых данных нет. \n";
+        }
+        echo "Завершение парсинга. \n";
+    }
+
+    // Лоты Муниципального имущества
+    // php yii lots/municipal
+    public function actionMunicipal($limit = 100, $delay = 'y', $sort = 'new') 
+    {
+        error_reporting(0);
+        
+        echo 'Парсинг таблицы Лотов (bailiff.lots)';
+        $count = LotsMunicipal::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
+        echo "\nКоличество записей осталось: $count. \n";
+        
+        $parserCount = 0;
+
+        if ($count > 0) {
+            $lots = LotsMunicipal::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->limit($limit)->orderBy('lotId '.(($sort = 'new')? 'DESC' : 'ASC'))->all();
+
+            echo "Ограничения записей $limit. \n";
+
+            if (!empty($lots[0])) {
+                echo "Данные взяты из быза. \n";
+
+                foreach ($lots as $lot) {
+                    $parsingLot = \console\models\lots\LotsMunicipal::id($lot->lotId);
 
                     if ($parsingLot && $parsingLot !== 2) {
                         foreach ($lot->parser as $value) {

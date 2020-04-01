@@ -1,13 +1,13 @@
 <?php
-namespace common\models\Query\Arrest;
+namespace common\models\Query\Municipal;
 
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
-use common\models\Query\Arrest\Documents;
-use common\models\Query\Arrest\LotDocuments;
+use common\models\Query\Municipal\Documents;
+use common\models\Query\Municipal\LotDocuments;
 
 use common\models\Query\WishList;
 use common\models\Query\PageViews;
@@ -16,7 +16,7 @@ use common\models\Query\LotsCategory;
 use common\models\Query\Lot\Parser;
 
 // Таблица лотов арестовки
-class LotsArrest extends ActiveRecord
+class LotsMunicipal extends ActiveRecord
 {
     public static function tableName()
     {
@@ -30,7 +30,7 @@ class LotsArrest extends ActiveRecord
         $items = LotsCategory::find()->all();
         foreach ($items as $value) {
             if ($value->arrest_categorys[$this->lotPropertyTypeId]['translit'] !== null) {
-                return 'arrest/'.$value->translit_name.'/'.$value->arrest_categorys[$this->lotPropertyTypeId]['translit'].'/'.$this->lotId;
+                return 'municipal/'.$value->translit_name.'/'.$value->arrest_categorys[$this->lotPropertyTypeId]['translit'].'/'.$this->lotId;
             }
         }
     }
@@ -69,7 +69,7 @@ class LotsArrest extends ActiveRecord
     }
     public function getLotType()
     {
-        return 'arrest';
+        return 'municipal';
     }
     public function getLotCadastre() 
     {
@@ -155,7 +155,7 @@ class LotsArrest extends ActiveRecord
     public static function find()
     {
         return parent::find()->joinWith(['torgs'])->onCondition([
-            'torgs.trgBidKindId' => 13
+            'torgs.trgBidKindId' => 8
         ]);
     }
 

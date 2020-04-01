@@ -48,6 +48,19 @@ class User extends ActiveRecord implements IdentityInterface
         return 'site.user';
     }
 
+    public function getNameForUser()
+    {
+        return $this->info['firstname'].' '.$this->info['lastname'];
+    }
+    public function getFirstEmail()
+    {
+        return $this->info['contacts']['emails'][0];
+    }
+    public function getFirstPhone()
+    {
+        return $this->info['contacts']['phones'][0];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -190,11 +203,6 @@ class User extends ActiveRecord implements IdentityInterface
         return (isset($this->info['firstname']) && isset($this->info['lastname'])) 
             ? $this->info['firstname'] . ' ' . $this->info['lastname']
             : $this->username;
-    }
-
-    public function getNameForUser()
-    {
-        return $this->info['firstname'].' '.$this->info['lastname'];
     }
 
     /**

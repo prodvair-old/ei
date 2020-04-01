@@ -11,8 +11,10 @@ use yii\base\Model;
 class ContactForm extends Model
 {
     public $name;
+    public $email;
     public $phone;
-    public $verifyCode;
+    public $message;
+    public $checkPolicy;
 
 
     /**
@@ -22,7 +24,12 @@ class ContactForm extends Model
     {
         return [
             // name, email, subject and body are required
-            [['name', 'phone', 'captcha'], 'required'],
+            [['name', 'email', 'phone', 'message'], 'required'],
+            ['phone', 'string', 'min' => 5, 'max' => 12],
+            ['message', 'string', 'min' => 10],
+            ['email', 'email'],
+            ['checkPolicy', 'required'],
+            ['checkPolicy', 'compare', 'compareValue' => 1, 'message' => 'Поставте галочку на соглашение!'], 
         ];
     }
 
@@ -35,15 +42,11 @@ class ContactForm extends Model
      */
     public function sendEmail($type)
     {
-        if (!$this->validate()) {
-            return null;
-        }
 
         return Yii::$app->mailer_support->compose(
-                ['html' => 'contactForm-html'],
-                ['type' => $type, 'param'=>$this]
+                ['html' => 'contactForm-'.$type.'-html'],
+                ['param'=>$this]
             )
-            ->setTo($email)
             ->setFrom(['support@ei.ru' => 'Поддержка – '.Yii::$app->name])
             ->setTo('support@ei.ru')
             ->setSubject('Форма обратной связи')

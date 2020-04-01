@@ -228,7 +228,7 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
             <div class="col-lg-8">
                 <?=$form->field($modelLot, 'subCategorys')->widget(Select2::classname(), [
                         'data' => $subCategorysItems,
-                        'options' => ['multiple'=>true, 'placeholder' => 'Найти менеджера'],
+                        'options' => ['multiple'=>true, 'placeholder' => 'Найти подкатегории'],
                         'pluginOptions' => [
                             'allowClear' => true,
                             'language' => [
@@ -330,7 +330,7 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
         </div>
 
         <? if (UserAccess::forAgent('lots') && !UserAccess::forSuperAdmin()) { ?>
-            <?= $form->field($modelTorg, 'typeId')->hiddenInput(['value'=>3])->label(false) ?>
+            <?= $form->field($modelTorg, 'typeId')->hiddenInput(['value'=>3, 'id'=>'type-select'])->label(false) ?>
             <?= $form->field($modelTorg, 'publisherId')->hiddenInput(['value'=>Yii::$app->user->id])->label(false) ?>
             <?= $form->field($modelTorg, 'ownerId')->hiddenInput(['value'=>Yii::$app->user->identity->ownerId])->label(false) ?>
         <? } ?>

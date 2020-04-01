@@ -17,7 +17,7 @@ use common\models\Query\LotsSubCategory;
 use common\models\Query\Regions;
 
 use common\models\Query\Lot\Etp;
-use common\models\Query\Zalog\OwnerProperty;
+use common\models\Query\Lot\Owners;
 
 $this->title = Yii::$app->params['title'];
 $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
@@ -33,15 +33,17 @@ foreach ($regions as $region) {
 
 $traderList = [];
 
-if ($type == 'bankrupt') {
-  $traderLabel = 'Торговые площадки';
-  $traderPlaceholder = 'Все торговые площадки';
-  $traderList = ArrayHelper::map(Etp::find()->orderBy('title ASC')->all(), 'id', 'title');
-} else if ($type == 'zalog') {
-  $traderLabel = 'Организации';
-  $traderPlaceholder = 'Все организации';
-  $traderList = ArrayHelper::map(OwnerProperty::find()->orderBy('name ASC')->all(), 'id', 'name');
-}
+// if ($type == 'bankrupt') {
+//   $traderLabel = 'Торговые площадки';
+//   $traderPlaceholder = 'Все торговые площадки';
+//   $traderName = 'etp';
+//   $traderList = ArrayHelper::map(Etp::find()->orderBy('title ASC')->all(), 'id', 'title');
+// } else if ($type == 'zalog') {
+//   $traderLabel = 'Организации';
+//   $traderPlaceholder = 'Все организации';
+//   $traderName = 'owners';
+//   $traderList = ArrayHelper::map(OwnerProperty::find()->orderBy('name ASC')->all(), 'id', 'name');
+// }
 
 $lotsCategoryQuery = LotsCategory::find()->orderBy('id ASC')->all();
 
@@ -49,16 +51,17 @@ $lotsCategorys[0] = 'Все категории';
 
 foreach ($lotsCategoryQuery as $category) {
   $lotsCategorys[$category->id] = $category->name;
-}
-
-if ($model->category != '0') {
-  $subcategoryCheck = false;
-  foreach ($lotsCategoryQuery[$model->category]->subCategorys as $subCategory) {
-    $lotsSubcategory[$subCategory->id] = $subCategory->name;
+  if ($model->category != '0') {
+    $subcategoryCheck = false;
+    if ($category->id == $model->category) {
+      foreach ($category->subCategorys as $subCategory) {
+        $lotsSubcategory[$subCategory->id] = $subCategory->name;
+      }
+    }
   }
 }
 
-$this->registerJsVar('lotType', $type, $position = yii\web\View::POS_HEAD);
+$this->registerJsVar('lotType', (($model->type)? $model->type : $type), $position = yii\web\View::POS_HEAD);
 $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\View::POS_HEAD);
 ?>
 
@@ -241,20 +244,34 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
           </div>
 
-
           <div class="sidebar-box bankrupt-type sidebar-box__collaps <?=($model->etp)? '' : 'collaps'?>">
 
-            <!-- <div class="box-title">
-              <h5><?= $traderLabel ?></h5>
-            </div> -->
-            <label class="control-label sidebar-box__label" ><?= $traderLabel ?></label>           
+            <label class="control-label sidebar-box__label" >Торговые площадки</label>           
             <div class="box-content">
               <?= $form->field($model, 'etp')->dropDownList(
-                $traderList,
+                ArrayHelper::map(Etp::find()->orderBy('title ASC')->all(), 'id', 'title'),
                 [
                   'class' => 'chosen-the-basic form-control',
-                  'prompt' => $traderPlaceholder,
-                  'data-placeholder' => $traderPlaceholder,
+                  'prompt' => 'Все торговые площадки',
+                  'data-placeholder' => 'Все торговые площадки',
+                  'multiple' => true
+                ]
+              )
+                ->label(false); ?>
+            </div>
+
+          </div>
+
+          <div class="sidebar-box zalog-type sidebar-box__collaps <?=($model->owners)? '' : 'collaps'?>">
+
+            <label class="control-label sidebar-box__label" >Организации</label>           
+            <div class="box-content">
+              <?= $form->field($model, 'owners')->dropDownList(
+                ArrayHelper::map(Owners::find()->orderBy('title ASC')->all(), 'id', 'title'),
+                [
+                  'class' => 'chosen-the-basic form-control',
+                  'prompt' => 'Все организации',
+                  'data-placeholder' => 'Все организации',
                   'multiple' => true
                 ]
               )
@@ -368,8 +385,12 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
           </div>
 
           <div class="tour-long-item-wrapper-01 load-list">
-            <? foreach ($lots as $lot) {
-              echo LotBlock::widget(['lot' => $lot, 'type' => 'long']);
+            <? if (count($lots) > 0) {
+                foreach ($lots as $lot) {
+                  echo LotBlock::widget(['lot' => $lot, 'type' => 'long']);
+                } 
+            } else {
+                echo "<div class='p-15 font-bold'>По данному запросу не удалось найти лоты</div>";
             } ?>
           </div>
 
