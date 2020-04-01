@@ -41,6 +41,10 @@ class SendNotificationJob extends BaseObject implements \yii\queue\JobInterface
         // найти Пользователя
         if (!($user = User::findOne(['id' => $this->user_id])))
             throw new NotFoundHttpException('Пользователь с Id - ' . $this->user_id . ' не существует.');
+
+        if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
+            $user->generatePasswordResetToken();
+        }
         
         // найти Лоты
         $models = Lots::find()->where(['in', 'id', array_keys($this->lots)])->all();

@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $models common\models\Query\Lot\Lots */
 /* @var $lots array [lot_id => ['new-picture', 'price-reduction']] */
 
-$unsubscribeAllLink = Yii::$app->urlManager->createAbsoluteUrl(['/lot/unsubscribe-all', 'user_id' => $user->id]);
+$unsubscribeAllLink = Yii::$app->urlManager->createAbsoluteUrl(['/wishlist/unsubscribe', 'token' => $user->password_reset_token]);
 ?>
 <div class='notification'>
     <p>Добрый день, <?= Html::encode($user->getFullName()) ?>,</p>
@@ -22,7 +22,7 @@ $unsubscribeAllLink = Yii::$app->urlManager->createAbsoluteUrl(['/lot/unsubscrib
         <hr>
         <p><small>
             <?= Html::a('Отписаться', 
-                Yii::$app->urlManager->createAbsoluteUrl(['/lot/unsubscribe', 'user_id' => $user->id, 'lot_id' => $model->id])) ?> 
+                Yii::$app->urlManager->createAbsoluteUrl(['/wishlist/unsubscribe', 'token' => $user->$user->password_reset_token, 'lot_id' => $model->id])) ?> 
                 от уведомлений по данному лоту.
         </small></p>
     <?php endforeach; ?>
