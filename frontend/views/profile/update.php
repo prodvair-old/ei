@@ -73,12 +73,12 @@ $this->params['breadcrumbs'][] = [
                                 
                                 <div class="content">
                                     <h6><?=$name?></h6>
-                                    <p class="mb-15"><?=(\Yii::$app->user->identity->info['firstname'] || \Yii::$app->user->identity->info['lastname'])? \Yii::$app->user->identity->info['contacts']['emails'][0]: ''?></p>
+                                    <p class="mb-15"><?= Yii::$app->user->identity->getFullName() ?></p>
                                 </div>
                                 
                             </div>
                             
-                            <?=ProfileMenu::widget(['page'=>'setting'])?>
+                            <?= ProfileMenu::widget(['page' => $form]) ?>
                             
                             <!-- <p class="font-sm mt-20">Your last logged-in: <span class="text-primary font700">4 hours ago</span></p> -->
 
@@ -102,7 +102,7 @@ $this->params['breadcrumbs'][] = [
 
                             <div class="row gap-30">
                                 
-                                <?= $this->render($form, ['model' => $model]) ?>
+                                <?= $this->render('_' . $form . '_form', ['model' => $model]) ?>
                             
                             </div>
                             

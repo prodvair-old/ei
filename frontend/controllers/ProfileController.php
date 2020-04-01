@@ -29,7 +29,7 @@ class ProfileController extends Controller
                     [
                         'actions' => ['notification'],
                         'allow' => true,
-                        'roles' => ['?'],
+                        'roles' => ['@'],
                     ],
                 ],
             ],
@@ -57,13 +57,13 @@ class ProfileController extends Controller
             $user->new_report      = $model->new_report;
             $user->price_reduction = $model->price_reduction;
             $user->save(false);
-            Yii::$app->session->setFlash('success', 'Уведомления успешно обновлены');
+            Yii::$app->session->setFlash('success', 'Уведомления успешно обновлены.');
             
             return $this->refresh();
         } else {
             return $this->render('update', [
                 'caption' => 'Уведомления',
-                'form'    => '_notification_form',
+                'form'    => 'notification',
                 'model'   => $model,
             ]);
         }

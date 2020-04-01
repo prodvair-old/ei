@@ -17,6 +17,7 @@ use yii\helpers\Url;
       <? } ?>
     <? } ?>
     <li <?= ($page == 'setting') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/setting']) ?>">Настройки</a></li>
+    <li <?= ($page == 'notification') ? 'class="active"' : '' ?>><a href="<?= Url::to(['profile/notification']) ?>">Уведомления</a></li>
     <? if (Yii::$app->user->identity->role !== 'user') { ?>
       <li><a href="<?= Yii::$app->params['backLink'].'/login?token='.Yii::$app->user->identity->auth_key ?>" target="_blank">Панель управления</a></li>
     <? } ?>
