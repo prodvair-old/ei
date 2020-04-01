@@ -10,7 +10,7 @@ use common\models\User;
 use frontend\models\user\NotificationForm;
 
 /**
- * User Profile controller
+ * User Profile controller.
  */
 class ProfileController extends Controller
 {

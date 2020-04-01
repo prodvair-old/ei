@@ -57,5 +57,9 @@ class WishlistController extends Controller
             // отписаться от всех лотов
             WhishList::deleteAll(['user_id' => $user->id]);
         }
+        
+        Yii::$app->session->setFlash('success', 
+            'Дорогой ' . $user->getFullName . ', Вы успешно отписаны от выбранных лотов. Для управления уведомлениями, используйте Личный Кабинет.');
+        return $this->goHome();
     }
 }
