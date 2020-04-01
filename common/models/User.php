@@ -217,7 +217,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * inheritdoc
+     * @inheritdoc
      */
     public function afterFind()
     {
@@ -237,7 +237,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
     
     /**
-     * inheritdoc
+     * @inheritdoc
      */
     public function beforeSave($insert)
     {

@@ -39,25 +39,32 @@ class WishlistController extends Controller
      */
     public function actionUnsubscribe($token, $lot_id = false)
     {
+        // проверить существование токена
         try {
             $form = new ResetPasswordForm($token);
         } catch (InvalidArgumentException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
-
+        
+        // токен существует и определен в $form
         $user = $form->user;
+        
+        // удалить использованный токен
         $user->removePasswordResetToken();
-        if ($lot_id) {
-            // отписаться от лота
-            if ($model = WhishList::findOne(['user_id' => $user->id, 'lot_id' => $lot_id]))
-                $model->delete();
-            else
-                throw new NotFoundHttpException();
-        } else {
-            // отписаться от всех лотов
-            WhishList::deleteAll(['user_id' => $user->id]);
+        $user->save();
+        
+        // задать условие удаления одной или всех подписок
+        $condition = $lot_id
+            ? ['user_id' => $user->id, 'lot_id' => $lot_id]
+            : ['user_id' => $user->id];
+        $models = WhishList::find()->where($condition)->all();
+        
+        // удалить подписки
+        foreach ($models as $model) {
+            $model->delete();
         }
         
+        // перейти на главную страницу и известить юзера о том, что он успешно отписался
         Yii::$app->session->setFlash('success', 
             'Дорогой ' . $user->getFullName . ', Вы успешно отписаны от выбранных лотов. Для управления уведомлениями, используйте Личный Кабинет.');
         return $this->goHome();
