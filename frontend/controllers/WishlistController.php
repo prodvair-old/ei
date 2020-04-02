@@ -46,7 +46,7 @@ class WishlistController extends Controller
             throw new BadRequestHttpException($e->getMessage());
         }
         
-        // токен существует и определен в $form
+        // юзер найден по токену в $form
         $user = $form->user;
         
         // удалить использованный токен
@@ -66,7 +66,7 @@ class WishlistController extends Controller
         
         // перейти на главную страницу и известить юзера о том, что он успешно отписался
         Yii::$app->session->setFlash('success', 
-            'Дорогой ' . $user->getFullName . ', Вы успешно отписаны от выбранных лотов. Для управления уведомлениями, используйте Личный Кабинет.');
+            $user->getFullName() . ', Вы успешно отписаны от выбранных лотов.');
         return $this->goHome();
     }
 }

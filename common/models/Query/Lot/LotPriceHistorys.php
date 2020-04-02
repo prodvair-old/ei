@@ -24,10 +24,11 @@ class LotPriceHistorys extends ActiveRecord
     }
 
     /**
-     * inheritdoc
+     * @inheritdoc
      */
     public function afterSave($insert,$changedAttributes)
     {
+        parent::afterSave($insert,$changedAttributes);
         if ($insert) {
             $this->lot->trigger(Lots::EVENT_PRICE_REDUCTION);
         }
