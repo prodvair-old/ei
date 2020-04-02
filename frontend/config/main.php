@@ -116,6 +116,8 @@ return [
 
         '/profile'               => 'user/index',
 
+        '/profile/notification'       => 'profile/notification',
+
         '/profile/setting'       => 'user/setting',
         '/profile/setting_image' => 'user/setting_image',
 

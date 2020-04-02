@@ -39,23 +39,22 @@ class ProfileController extends Controller
     /**
      * Edit User Notifications.
      *
-     * @param integer $id User ID
      * @return mixed
      */
-    public function actionNotification($id)
+    public function actionNotification()
     {
-        $user = $this->findModel($id);
+        $user = $this->findModel(Yii::$app->user->id);
         $model = new NotificationForm([
-            'new_picture'     => $user->new_picture,
-            'new_report'      => $user->new_report,
-            'price_reduction' => $user->price_reduction,
+            'new_picture'     => isset($user->notifications['new_picture']) ? $user->notifications['new_picture'] : true,
+            'new_report'      => isset($user->notifications['new_report']) ? $user->notifications['new_report'] : true,
+            'price_reduction' => isset($user->notifications['price_reduction']) ? $user->notifications['price_reduction'] : true,
         ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate())
         {
-            $user->new_picture     = $model->new_picture;
-            $user->new_report      = $model->new_report;
-            $user->price_reduction = $model->price_reduction;
+            $user->notifications['new_picture']     = $model->new_picture;
+            $user->notifications['new_report']      = $model->new_report;
+            $user->notifications['price_reduction'] = $model->price_reduction;
             $user->save(false);
             Yii::$app->session->setFlash('success', 'Уведомления успешно обновлены.');
             

@@ -25,6 +25,7 @@ use frontend\models\ImportZalog;
 use frontend\models\zalog\FilterLots;
 use frontend\models\arrestBankrupt\importFIleForm;
 
+use common\models\User;
 use common\models\Query\WishList;
 
 /**
@@ -32,6 +33,8 @@ use common\models\Query\WishList;
  */
 class UserController extends Controller
 {
+    public $_model;
+    
   /**
    * {@inheritdoc}
    */
@@ -388,16 +391,16 @@ class UserController extends Controller
   {
     if (!Yii::$app->user->isGuest) {
 
-      $model = new UserSetting();
-      $model_image = new UserSetting();
+        $model = $this->findModel(Yii::$app->user->id);
+        $model_image = new UserSetting();
 
-      if ($model->load(Yii::$app->request->post())) {
-        $model->setting(Yii::$app->user->id);
-      }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->setting(Yii::$app->user->id);
+        }
 
-      return $this->render('setting', compact('model', 'model_image'));
+        return $this->render('setting', ['model' => $model, 'model_image' => $model_image]);
     } else {
-      return $this->goHome();
+        return $this->goHome();
     }
   }
   public function actionSetting_image()
@@ -546,4 +549,24 @@ class UserController extends Controller
       return $this->goHome();
     }
   }
+
+    /**
+     * Finds the User model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id User ID
+     * @return User the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function findModel($id)
+    {
+		if($this->_model === null) 
+		{
+			if(($this->_model = UserSetting::findOne($id)) && $this->_model->status == User::STATUS_ACTIVE) 
+			{
+				return $this->_model;
+			} else {
+				throw new NotFoundHttpException('The requested model does not exist.');
+			}
+		}
+	}
 }

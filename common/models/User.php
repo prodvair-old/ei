@@ -67,7 +67,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            //TimestampBehavior::className(),
         ];
     }
 
@@ -224,16 +224,16 @@ class User extends ActiveRecord implements IdentityInterface
         parent::afterFind();
         
         // установить внутренний переменные по json массиву
-        $this->firstname = $this->info['firstname']; 
-        $this->lastname = $this->info['lastname']; 
-        $this->middlename = $this->info['middlename']; 
-        $this->sex = $this->info['sex']; 
-        $this->birthday = $this->info['birthday']; 
-        $this->phone = $this->info['contacts']['phone']; 
-        $this->email = $this->info['contacts']['email']; 
-        $this->address = $this->info['contacts']['address']; 
-        $this->city = $this->info['contacts']['city']; 
-        $this->notifications = $this->info['notifications']; 
+        $this->firstname = isset($this->info['firstname']) ? $this->info['firstname'] : '';
+        $this->lastname = isset($this->info['lastname']) ? $this->info['lastname'] : '';
+        $this->middlename = isset($this->info['middlename']) ? $this->info['middlename'] : '';
+        $this->sex = isset($this->info['sex']) ? $this->info['sex'] : false;
+        $this->birthday = isset($this->info['birthday']) ? $this->info['birthday'] : false; 
+        $this->phone = isset($this->info['contacts']['phones']) ? $this->info['contacts']['phones'][0] : ''; 
+        $this->email = $this->info['contacts']['emails'][0]; 
+        $this->address = isset($this->info['contacts']['address']) ? $this->info['contacts']['address'] : ''; 
+        $this->city = isset($this->info['contacts']['city']) ? $this->info['contacts']['city'] : ''; 
+        $this->notifications = isset($this->info['notifications']) ? $this->info['notifications'] : []; 
     }
     
     /**
@@ -242,16 +242,20 @@ class User extends ActiveRecord implements IdentityInterface
     public function beforeSave($insert)
     {
         // сохранить внутренние переменные в json массиве 
-        $this->info['firstname'] = $this->firstname; 
-        $this->info['lastname'] = $this->lastname; 
-        $this->info['middlename'] = $this->middlename; 
-        $this->info['sex'] = $this->sex; 
-        $this->info['birthday'] = $this->birthday; 
-        $this->info['contacts']['phone'] = $this->phone; 
-        $this->info['contacts']['email'] = $this->email; 
-        $this->info['contacts']['address'] = $this->address; 
-        $this->info['contacts']['city'] = $this->city; 
-        $this->info['notifications'] = $this->notifications;
+        $this->info = [
+            'firstname'  => $this->firstname, 
+            'lastname'   => $this->lastname, 
+            'middlename' => $this->middlename, 
+            'sex'        => $this->sex, 
+            'birthday'   => $this->birthday, 
+            'contacts'   => [
+                'phones' => [$this->phone], 
+                'emails' => [$this->email], 
+                'address'=> $this->address,
+                'city'   => $this->city,
+            ],
+            'notifications' => $this->notifications,
+        ];
         
         return parent::beforeSave($insert); 
     }

@@ -59,6 +59,7 @@ class Lots extends ActiveRecord
             foreach ($category->subCategorys as $key => $subCategory) {
                 switch ($this->torg->type) {
                     case 'bankrupt':
+                        if (isset($subCategory->bankruptCategorys))
                             foreach ($subCategory->bankruptCategorys as $id) {
                                 if ($this->category->categoryId == $id) {
                                     $url = $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
@@ -66,6 +67,7 @@ class Lots extends ActiveRecord
                             }
                         break;
                     case 'arrest':
+                        if (isset($subCategory->arrestCategorys))
                             foreach ($subCategory->arrestCategorys as $id) {
                                 if ($this->category->categoryId == $id) {
                                     $url = $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
@@ -80,7 +82,7 @@ class Lots extends ActiveRecord
                 }
             }
         }
-        if ($url) {
+        if (isset($url) && $url) {
             return $url;
         } else {
             return $this->torg->type.'/prochee/prochee/'.$this->id;

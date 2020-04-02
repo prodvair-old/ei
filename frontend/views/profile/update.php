@@ -1,4 +1,4 @@
-<?
+<?php
 /* @var $this yii\web\View */
 /* @var $model frontend\models\user\NotificationForm */
 /* @var $form string name of file with form definition */

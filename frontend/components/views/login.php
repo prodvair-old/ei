@@ -1,4 +1,5 @@
 <?php
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 ?>
@@ -12,7 +13,7 @@ use yii\bootstrap\ActiveForm;
         </div>
         
         <div class="form-body">
-            <?php $form = ActiveForm::begin(['action'=>'/login', 'id' => 'login-form']); ?>
+            <?php $form = ActiveForm::begin(['action' => Url::to(['/login']), 'id' => 'login-form']); ?>
             
                 <span class="login-form-error tab-external-link block mt-25 text-danger"></span>
                 
