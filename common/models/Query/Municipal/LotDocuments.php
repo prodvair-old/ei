@@ -1,5 +1,5 @@
 <?php
-namespace common\models\Query\Municipal;
+namespace common\models\Query\Arrest;
 
 use Yii;
 use yii\db\ActiveRecord;
@@ -8,7 +8,7 @@ use yii\helpers\StringHelper;
 
 use common\models\Query\Lot\Parser;
 
-use common\models\Query\Municipal\Lots;
+use common\models\Query\Arrest\LotsArrest;
 
 // Таблица лотов арестовки
 class LotDocuments extends ActiveRecord
@@ -30,6 +30,6 @@ class LotDocuments extends ActiveRecord
 
     public function getLot()
     {
-        return $this->hasOne(Lots::className(), ['lotBidNumber' => 'ldocBidNumber'])->alias('lot')->onCondition(['lot.lotNum'=>'ldocLotNum']);
+        return $this->hasOne(LotsArrest::className(), ['lotBidNumber' => 'ldocBidNumber'])->alias('lot')->onCondition(['lot.lotNum'=>'ldocLotNum']);
     }
 }

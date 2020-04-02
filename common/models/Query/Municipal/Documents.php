@@ -1,12 +1,12 @@
 <?php
-namespace common\models\Query\Municipal;
+namespace common\models\Query\Arrest;
 
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
-use common\models\Query\Municipal\Torgs;
+use common\models\Query\Arrest\Torgs;
 
 use common\models\Query\Lot\Parser;
 

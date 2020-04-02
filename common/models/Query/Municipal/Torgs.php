@@ -1,10 +1,10 @@
 <?php
-namespace common\models\Query\Municipal;
+namespace common\models\Query\Arrest;
 
 use Yii;
 use yii\db\ActiveRecord;
 
-use common\models\Query\Municipal\Documents;
+use common\models\Query\Arrest\Documents;
 
 use common\models\Query\Lot\Parser;
 

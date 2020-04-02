@@ -143,6 +143,7 @@ class Lots extends ActiveRecord
     {
         return parent::find()->onCondition([
             'and', 
+            ['!=', 'torg.typeId', 4],
             [ 'published' => true ], 
             [ 
                 'not',
@@ -154,6 +155,7 @@ class Lots extends ActiveRecord
     {
         return parent::find()->onCondition([
             'and',
+            ['!=', 'torg.typeId', 4],
             [ 'published' => true ],
             ['not like', 'lower(status)', mb_strtolower('Окончен', 'UTF-8')],
             ['not like', 'lower(status)', mb_strtolower('Несостоявшиеся', 'UTF-8')],
