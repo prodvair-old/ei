@@ -38,6 +38,9 @@ foreach ($lotsCategory as $value) {
   if ($value->arrest_categorys != null) {
     $arrestLotsCategoryMenu[] = ['label' => $value->name, 'url' => ['/arrest/' . $value->translit_name]];
   }
+  if ($value->arrest_categorys != null) {
+    $municipaltLotsCategoryMenu[] = ['label' => $value->name, 'url' => ['/municipal/' . $value->translit_name]];
+  }
 }
 
 AppAsset::register($this);
@@ -199,6 +202,7 @@ AppAsset::register($this);
                             ['label' => 'Банкротное имущество', 'url' => ['/bankrupt'], 'items' => $bankruptLotsCategoryMenu],
                             ['label' => 'Арестованное имущество', 'url' => ['/arrest'], 'items' => $arrestLotsCategoryMenu],
                             ['label' => 'Имущество организаций', 'url' => ['/zalog'], 'items' => $ownersMenu],
+                            ['label' => 'Муниципальное имущество', 'url' => ['/municipal'], 'items' => $municipaltLotsCategoryMenu],
                           ]],
                           ['label' => 'О компании', 'url' => ['pages/about'], 'items' => [
                             ['label' => 'О нас', 'url' => ['pages/about']],

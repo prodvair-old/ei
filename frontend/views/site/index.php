@@ -56,6 +56,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                         <li><a href="/all/lot-list"> Все имущество <!--<span>1999</span>--></a></li>
                         <li><a href="/bankrupt/lot-list" itemprop="https://schema.org/itemOffered"> Банкротное имущество <!--<span>1999</span>--></a></li>
                         <li><a href="/arrest/lot-list" itemprop="https://schema.org/itemOffered"> Арестованное имущество <!--<span>1999</span>--></a></li>
+                        <li><a href="/municipal/lot-list" itemprop="https://schema.org/itemOffered"> Муниципальное имущество <!--<span>1999</span>--></a></li>
                         <li><a href="/caterpillar/lot-list" itemprop="https://schema.org/itemOffered">Caterpillar<!--<span>1999</span>--></a></li>
                         <!-- <li><a href="/portal-da">Portal Da</a></li> -->
                         <li><a href="/open-bank/lot-list" itemprop="https://schema.org/itemOffered">Банк Открытие<!--<span>1999</span>--></a></li>
