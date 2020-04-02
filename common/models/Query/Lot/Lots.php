@@ -21,9 +21,9 @@ use common\jobs\KeepNotificationJob;
 
 class Lots extends ActiveRecord
 {
-    const EVENT_NEW_PICTURE     = 'new-picture'; // Добавлено новое фото к лоту
-    const EVENT_NEW_REPORT      = 'new-report'; // Добавлен новый отчет к лоту
-    const EVENT_PRICE_REDUCTION = 'price-reduction'; // Снижена цена на лот
+    const EVENT_NEW_PICTURE     = 'new_picture'; // Добавлено новое фото к лоту
+    const EVENT_NEW_REPORT      = 'new_report'; // Добавлен новый отчет к лоту
+    const EVENT_PRICE_REDUCTION = 'price_reduction'; // Снижена цена на лот
     
     public $whishCount;
     public $rank;
@@ -59,6 +59,7 @@ class Lots extends ActiveRecord
             foreach ($category->subCategorys as $key => $subCategory) {
                 switch ($this->torg->type) {
                     case 'bankrupt':
+                        if (isset($subCategory->bankruptCategorys))
                             foreach ($subCategory->bankruptCategorys as $id) {
                                 if ($this->category->categoryId == $id) {
                                     $url = $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
@@ -66,6 +67,7 @@ class Lots extends ActiveRecord
                             }
                         break;
                     case 'arrest':
+                        if (isset($subCategory->arrestCategorys))
                             foreach ($subCategory->arrestCategorys as $id) {
                                 if ($this->category->categoryId == $id) {
                                     $url = $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
@@ -87,7 +89,7 @@ class Lots extends ActiveRecord
                 }
             }
         }
-        if ($url) {
+        if (isset($url) && $url) {
             return $url;
         } else {
             return $this->torg->type.'/prochee/prochee/'.$this->id;

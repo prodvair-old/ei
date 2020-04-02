@@ -126,9 +126,6 @@ class LotsMunicipal extends Module
                 if ($lot->lotTorgAcceptReason) {
                     $info['torgAcceptReason'] = $lot->lotTorgAcceptReason;
                 }
-                if ($lot->lotPropDesc) {
-                    $info['propDesc'] = $lot->lotPropDesc;
-                }
                 if ($lot->lotOrgFullName) {
                     $info['orgFullName'] = $lot->lotOrgFullName;
                 }

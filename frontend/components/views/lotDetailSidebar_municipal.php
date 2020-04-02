@@ -14,10 +14,18 @@ use frontend\components\NumberWords;
             
             <ul class="border-top mt-20 pt-15">
                 <li class="clearfix">Статус<span class="float-right"><?=$lot->status?></span></li>
+                <?= ($lot->info['singlePrice'])? '<li class="clearfix">Единая цена<span class="float-right">'.$lot->info['singlePrice'].'</span></li>' : ''?>
+                <?= ($lot->info['contractPayment'])? '<li class="clearfix">Цена договора<span class="float-right">'.$lot->info['contractPayment'].'</span></li>' : ''?>
                 <li class="clearfix">Шаг<span class="float-right"><?=($lot->stepTypeId == 1)? $lot->step.'% ('.Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->step)).')' : Yii::$app->formatter->asCurrency($lot->step) ?></span></li>
+                <?= ($lot->info['stepNegative'])? '<li class="clearfix">Шаг понижения<span class="float-right">'.$lot->info['stepNegative'].'</span></li>' : ''?>
                 <li class="clearfix">Задаток<span class="float-right"><?=($lot->depositTypeId == 1)? $lot->deposit.'% ('.Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->deposit)).')' : Yii::$app->formatter->asCurrency($lot->deposit) ?></span></li>
                 <li class="clearfix">Минимальная цена<span class="float-right"><?=Yii::$app->formatter->asCurrency($lot->info['minPrice']) ?></span></li>
-                <li class="clearfix">Конечная цена<span class="float-right"><?=Yii::$app->formatter->asCurrency($lot->info['finalPrice']) ?></span></li>
+                <?= ($lot->info['area'] != null)? '<li class="clearfix">Площадь<span class="float-right">'.$lot->info['area'].'</span></li>' : ''?>
+                <?= ($lot->info['areaMeters'])? '<li class="clearfix">Площадь в кв.м<span class="float-right">'.$lot->info['areaMeters'].'</span></li>' : ''?>
+                <?= ($lot->info['fundSize'])? '<li class="clearfix">Размер уставного капитала<span class="float-right">'.$lot->info['fundSize'].'</span></li>' : ''?>
+                <?= ($lot->info['acsPart'])? '<li class="clearfix">Процент продаваемых акций<span class="float-right">'.$lot->info['acsPart'].'</span></li>' : ''?>
+                <?= ($lot->info['stockNum'])? '<li class="clearfix">Акции на продажу<span class="float-right">'.$lot->info['stockNum'].'</span></li>' : ''?>
+                <?= ($lot->info['stockPercentSale'])? '<li class="clearfix">Процент УК акций на продажу<span class="float-right">'.$lot->info['stockPercentSale'].'</span></li>' : ''?>
                 <?= ($lot->info['sellType'] != null)? '<li class="clearfix">Основания реализации<span class="float-right">'.$lot->info['sellType'].'</span></li>' : ''?>
                 <?= ($lot->torg->info['auctionType'] != null)? '<li class="clearfix">Тип торгов<span class="float-right">'.$lot->torg->info['auctionType'].'</span></li>' : ''?>
                 <li class="clearfix border-top"><?= ($lot->torg->info['url'] != null)? '<a href="'.$lot->torg->info['url'].'" target="_blank" rel="nofollow">Сайт организатора торгов</a>' : null ?></li>

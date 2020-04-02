@@ -74,7 +74,7 @@ class LotsAll extends ActiveRecord
             }
         }
 
-        if ($url) {
+        if (isset($url) && $url) {
             return $url;
         } else {
             return $this->torg->type.'/prochee/prochee/'.$this->id;

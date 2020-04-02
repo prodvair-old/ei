@@ -88,6 +88,9 @@ class LotsController extends Controller
             case '2':
                 $subcategorys = $categoryItem->arrest_categorys;
                 break;
+            case '4':
+                $subcategorys = $categoryItem->arrest_categorys;
+                break;
             case '3':
                 // $subcategorys = $categoryItem->bankrupt_categorys;
                 foreach ($categoryItem->subCategorys as $subcategory) {
@@ -238,25 +241,41 @@ class LotsController extends Controller
         foreach (LotsCategory::find()->all() as $categoryItem) {
             switch ($modelTorg->typeId) {
                 case '1':
-                    foreach ($categoryItem->bankrupt_categorys as $key => $item) {
-                        foreach ($modelLot->subCategorys as $subcategory) {
-                            if ($key == $subcategory) {
-                                $modelLot->categorys = $categoryItem->id;
+                    if (isset($categoryItem->bankrupt_categorys)) {
+                        foreach ($categoryItem->bankrupt_categorys as $key => $item) {
+                            foreach ($modelLot->subCategorys as $subcategory) {
+                                if ($key == $subcategory) {
+                                    $modelLot->categorys = $categoryItem->id;
+                                }
                             }
+                            
                         }
-                        
                     }
                     break;
                 case '2':
-                    foreach ($categoryItem->arrest_categorys as $key => $item) {
-                        foreach ($modelLot->subCategorys as $subcategory) {
-                            if ($key == $subcategory) {
-                                $modelLot->categorys = $categoryItem->id;
+                    if (isset($categoryItem->arrest_categorys)) {
+                        foreach ($categoryItem->arrest_categorys as $key => $item) {
+                            foreach ($modelLot->subCategorys as $subcategory) {
+                                if ($key == $subcategory) {
+                                    $modelLot->categorys = $categoryItem->id;
+                                }
                             }
+                            
                         }
-                        
                     }
                     break;
+                case '4':
+                        if (isset($categoryItem->arrest_categorys)) {
+                            foreach ($categoryItem->arrest_categorys as $key => $item) {
+                                foreach ($modelLot->subCategorys as $subcategory) {
+                                    if ($key == $subcategory) {
+                                        $modelLot->categorys = $categoryItem->id;
+                                    }
+                                }
+                                
+                            }
+                        }
+                        break;
                 case '3':
                     foreach ($categoryItem->subCategorys as $item) {
                         foreach ($modelLot->subCategorys as $subcategory) {

@@ -56,7 +56,7 @@ AppAsset::register($this);
 	<!-- Title Of Site -->
     <title><?= Html::encode($this->title) ?></title>
 
-    <meta name="description" content="<?=Yii::$app->params['description']?>" />
+    <meta name="description" content="<?= isset(Yii::$app->params['description']) ? Yii::$app->params['description'] : '' ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
 	
@@ -161,12 +161,12 @@ AppAsset::register($this);
                           <img class="setting-image-tag" src="<?= isset(Yii::$app->user->identity->avatar) ? Yii::$app->user->identity->avatar : 'img/image-man/01.jpg' ?>" alt="Image" />
                         </div>
                         <div class="ml-15">
-                          <?= (!Yii::$app->user->isGuest && (Yii::$app->user->identity->info['firstname'] || Yii::$app->user->identity->info['lastname'])) 
-                            ? Yii::$app->user->identity->info['firstname'] . ' ' . Yii::$app->user->identity->info['lastname'] 
-                            : (!Yii::$app->user->isGuest ? Yii::$app->user->identity->info['contacts']['emails'][0] : '') ?>
-                          <?= (!Yii::$app->user->isGuest && (Yii::$app->user->identity->info['firstname'] || Yii::$app->user->identity->info['lastname']))
-                            ? '<p class="head-email lowercase">' . Yii::$app->user->identity->info['contacts']['emails'][0] . '</p>' 
-                            : '' ?>
+                          <?= Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->getFullName() ?>
+                          <?php if (!Yii::$app->user->isGuest): ?> 
+                                <p class="head-email lowercase">
+                                    <?= Yii::$app->user->identity->getFirstEmail() ?>
+                                </p>
+                          <?php endif; ?>
                         </div>
                       </a>
                     </li>

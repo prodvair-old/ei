@@ -6,9 +6,8 @@ use yii\helpers\Html;
 /* @var $user common\models\User */
 /* @var $models common\models\Query\Lot\Lots */
 /* @var $lots array [lot_id => ['new-picture', 'price-reduction']] */
-/* @var $links array [lot_id => link] */
 
-$unsubscribeAllLink = Yii::$app->urlManager->createAbsoluteUrl(['/lot/unsubscribe-all', 'user_id' => $user->id]);
+$link = Yii::$app->params['frontLink'] . '/wishlist/unsubscribe?token=' . $user->password_reset_token;
 ?>
 <div class='notification'>
     <p>Добрый день, <?= Html::encode($user->getFullName()) ?>,</p>
@@ -22,12 +21,10 @@ $unsubscribeAllLink = Yii::$app->urlManager->createAbsoluteUrl(['/lot/unsubscrib
             Yii::$app->urlManager->createAbsoluteUrl(['/lot/view', 'id' => $model->id])) ?>.</p>
         <hr>
         <p><small>
-            <?= Html::a('Отписаться', 
-                Yii::$app->urlManager->createAbsoluteUrl(['/lot/unsubscribe', 'user_id' => $user->id, 'lot_id' => $model->id])) ?> 
-                от уведомлений по данному лоту.
+            <?= Html::a('Отписаться', $link . '&lot_id=' . $model->id) ?> от уведомлений по данному лоту.
         </small></p>
     <?php endforeach; ?>
     <p><small>
-        Вы также можете полностью <?= Html::a('очистить', $unsubscribeAllLink) ?> список избранных лотов.
+        Вы также можете полностью <?= Html::a('очистить', $link) ?> список избранных лотов.
     </small></p>
 </div>

@@ -1,4 +1,4 @@
-<?
+<?php
 use yii\widgets\Breadcrumbs;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -6,7 +6,8 @@ use yii\helpers\Url;
 
 use frontend\components\ProfileMenu;
 
-$name = (\Yii::$app->user->identity->info['firstname'] || \Yii::$app->user->identity->info['lastname'])? \Yii::$app->user->identity->info['firstname'].' '.\Yii::$app->user->identity->info['lastname'] : \Yii::$app->user->identity->info['contacts']['emails'][0];
+$name = Yii::$app->user->identity->getFullName();
+
 $this->title = "Настройка профиля – $name";
 $this->params['breadcrumbs'][] = [
     'label' => 'Профиль',
@@ -37,7 +38,7 @@ $this->params['breadcrumbs'][] = [
                             'tag' => 'ol',
                             'activeItemTemplate' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
                             'homeLink' => ['label' => '<i class="fas fa-home"></i>', 'url' => '/'],
-                            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                            'links' => $this->params['breadcrumbs'],
                         ]) ?>
                     </nav>
                     
@@ -70,7 +71,7 @@ $this->params['breadcrumbs'][] = [
                                 
                                 <div class="content">
                                     <h6><?=$name?></h6>
-                                    <p class="mb-15"><?=(\Yii::$app->user->identity->info['firstname'] || \Yii::$app->user->identity->info['lastname'])? \Yii::$app->user->identity->info['contacts']['emails'][0]: ''?></p>
+                                    <p class="mb-15"><?= Yii::$app->user->identity->getFullName() ?></p>
                                 </div>
                                 
                             </div>
@@ -132,37 +133,37 @@ $this->params['breadcrumbs'][] = [
                                         
                                             <div class="col-12 col-sm-4">
                                                 <div class="form-group mb-0">
-                                                    <?= $form->field($model, 'firstname')->textInput(['class' => 'form-control', 'value' => Yii::$app->user->identity->info['firstname']])->label('Имя') ?>
+                                                    <?= $form->field($model, 'firstname')->textInput(['class' => 'form-control'])->label('Имя') ?>
                                                 </div>
                                             </div>
                                             
                                             <div class="col-12 col-sm-4">
                                                 <div class="form-group mb-0">
-                                                    <?= $form->field($model, 'lastname')->textInput(['class' => 'form-control', 'value' => Yii::$app->user->identity->info['lastname']])->label('Фамилия') ?>
+                                                    <?= $form->field($model, 'lastname')->textInput(['class' => 'form-control'])->label('Фамилия') ?>
                                                 </div>
                                             </div>
 
                                             <div class="col-12 col-sm-4">
                                                 <div class="form-group mb-0">
-                                                    <?= $form->field($model, 'middlename')->textInput(['class' => 'form-control', 'value' => Yii::$app->user->identity->info['middlename']])->label('Отчество') ?>
+                                                    <?= $form->field($model, 'middlename')->textInput(['class' => 'form-control'])->label('Отчество') ?>
                                                 </div>
                                             </div>
                                             
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-group mb-0">
-                                                    <?= $form->field($model, 'phone')->textInput(['class' => 'form-control', 'value' => Yii::$app->user->identity->info['contacts']['phones'][0]])->label('Номер телефона') ?>
+                                                    <?= $form->field($model, 'phone')->textInput(['class' => 'form-control'])->label('Номер телефона') ?>
                                                 </div>
                                             </div>
                                             
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-group mb-0">
-                                                    <?= $form->field($model, 'email')->textInput(['class' => 'form-control', 'value' => Yii::$app->user->identity->info['contacts']['emails'][0]])->label('E-mail') ?>
+                                                    <?= $form->field($model, 'email')->textInput(['class' => 'form-control'])->label('E-mail') ?>
                                                 </div>
                                             </div>
 
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-group mb-0 chosen-bg-light">
-                                                    <?= $form->field($model, 'birthday')->textInput(['class' => 'form-control', 'onClick' => 'xCal(this, {lang: \'ru\'})', 'value' => Yii::$app->user->identity->info['birthday']])->label('Дата рождения') ?>
+                                                    <?= $form->field($model, 'birthday')->textInput(['class' => 'form-control', 'onClick' => 'xCal(this, {lang: \'ru\'})'])->label('Дата рождения') ?>
                                                 </div>
                                             </div>
                                             
@@ -176,9 +177,9 @@ $this->params['breadcrumbs'][] = [
                                                         'class'=>'chosen-the-basic form-control form-control-sm', 
                                                         'data-placeholder'=>'Все категории', 
                                                         'tabindex'=>'2',
-                                                        'options' => [
-                                                            Yii::$app->user->identity->info['sex'] => ['Selected' => true]
-                                                        ]
+                                                        //'options' => [
+                                                            //Yii::$app->user->identity->info['sex'] => ['Selected' => true]
+                                                        //]
                                                     ])
                                                     ->label('Пол');?>
                                                 </div>

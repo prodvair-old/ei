@@ -157,6 +157,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                     'bankrupt' => 'Банкротное имущество',
                     'arrest' => 'Арестованное имущество',
                     'zalog' => 'Имущество организаций',
+                    'municipal' => ' Муниципальное имущество',
                   ], [
                     'class' => 'chosen-type-select form-control form-control-sm',
                     'data-placeholder' => 'Выберите тип лота',
