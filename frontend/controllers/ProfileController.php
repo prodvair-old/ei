@@ -52,9 +52,9 @@ class ProfileController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate())
         {
-            $user->notifications['new_picture']     = $model->new_picture;
-            $user->notifications['new_report']      = $model->new_report;
-            $user->notifications['price_reduction'] = $model->price_reduction;
+            $user->notifications['new_picture']     = (int) $model->new_picture;
+            $user->notifications['new_report']      = (int) $model->new_report;
+            $user->notifications['price_reduction'] = (int) $model->price_reduction;
             $user->save(false);
             Yii::$app->session->setFlash('success', 'Уведомления успешно обновлены.');
             

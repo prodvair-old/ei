@@ -44,6 +44,7 @@ class SendNotificationJob extends BaseObject implements \yii\queue\JobInterface
 
         if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
             $user->generatePasswordResetToken();
+            $user->save();
         }
         
         // найти Лоты
@@ -57,7 +58,7 @@ class SendNotificationJob extends BaseObject implements \yii\queue\JobInterface
                 'lots'   => $this->lots, 
             ])
                 ->setFrom([Yii::$app->params['email']['support'] => (Yii::$app->name . ' robot')])
-                ->setTo($user->info['contacts']['emails'][0])
+                ->setTo($user->email)
                 ->setSubject($subject)
                 ->send();
     }

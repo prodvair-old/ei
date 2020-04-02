@@ -55,9 +55,9 @@ class WishlistController extends Controller
         
         // задать условие удаления одной или всех подписок
         $condition = $lot_id
-            ? ['user_id' => $user->id, 'lot_id' => $lot_id]
-            : ['user_id' => $user->id];
-        $models = WhishList::find()->where($condition)->all();
+            ? ['userId' => $user->id, 'lotId' => $lot_id]
+            : ['userId' => $user->id];
+        $models = WishList::find()->where($condition)->all();
         
         // удалить подписки
         foreach ($models as $model) {

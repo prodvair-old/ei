@@ -230,7 +230,7 @@ class Lots extends ActiveRecord
     public function notifyObservers($event)
     {
         foreach($this->observers as $observer) {
-            if ($observer->user->needNotify($event->name))
+            //if ($observer->user->needNotify($event->name))
                 Yii::$app->queue->push(new KeepNotificationJob([
                     'user_id' => $observer->userId,
                     'lot_id'  => $this->id,
