@@ -66,6 +66,7 @@ class WishList extends ActiveRecord
             'arrest',
             'bunkrupt',
             'zalog',
+            'municipal',
         ];
     }
     

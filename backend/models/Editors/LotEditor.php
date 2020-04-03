@@ -151,6 +151,22 @@ class LotEditor extends \common\models\Query\Lot\Lots
                     }
                 }
                 break;
+            case '4':
+                foreach ($categoryItem->arrest_categorys as $key => $subcategory) {
+                    foreach ($this->subCategorys as $categoryId) {
+                        if ($key == $categoryId) {
+                            $newCategory = new LotCategorys();
+        
+                            $newCategory->lotId         = $this->id;
+                            $newCategory->categoryId    = $categoryId;
+                            $newCategory->name          = $subcategory['name'];
+                            $newCategory->nameTranslit  = $subcategory['translit'];
+        
+                            $newCategory->save();
+                        }
+                    }
+                }
+                break;
             case '3':
                 foreach ($categoryItem->subCategorys as $subcategory) {
                     foreach ($this->subCategorys as $categoryId) {

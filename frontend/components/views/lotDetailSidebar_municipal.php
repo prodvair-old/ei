@@ -20,8 +20,8 @@ use frontend\components\NumberWords;
                 <?= ($lot->info['stepNegative'])? '<li class="clearfix">Шаг понижения<span class="float-right">'.$lot->info['stepNegative'].'</span></li>' : ''?>
                 <li class="clearfix">Задаток<span class="float-right"><?=($lot->depositTypeId == 1)? $lot->deposit.'% ('.Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->deposit)).')' : Yii::$app->formatter->asCurrency($lot->deposit) ?></span></li>
                 <li class="clearfix">Минимальная цена<span class="float-right"><?=Yii::$app->formatter->asCurrency($lot->info['minPrice']) ?></span></li>
-                <?= ($lot->info['area'] != null)? '<li class="clearfix">Площадь<span class="float-right">'.$lot->info['area'].'</span></li>' : ''?>
-                <?= ($lot->info['areaMeters'])? '<li class="clearfix">Площадь в кв.м<span class="float-right">'.$lot->info['areaMeters'].'</span></li>' : ''?>
+                <?= ($lot->info['area'] > 0)? '<li class="clearfix">Площадь<span class="float-right">'.$lot->info['area'].'</span></li>' : ''?>
+                <?= ($lot->info['areaMeters'] > 0)? '<li class="clearfix">Площадь в кв.м<span class="float-right">'.$lot->info['areaMeters'].'</span></li>' : ''?>
                 <?= ($lot->info['fundSize'])? '<li class="clearfix">Размер уставного капитала<span class="float-right">'.$lot->info['fundSize'].'</span></li>' : ''?>
                 <?= ($lot->info['acsPart'])? '<li class="clearfix">Процент продаваемых акций<span class="float-right">'.$lot->info['acsPart'].'</span></li>' : ''?>
                 <?= ($lot->info['stockNum'])? '<li class="clearfix">Акции на продажу<span class="float-right">'.$lot->info['stockNum'].'</span></li>' : ''?>
