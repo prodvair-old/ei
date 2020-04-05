@@ -22,6 +22,7 @@ $this->params['breadcrumbs'][] = [
     'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
     'url' => ['user/wish_list']
 ];
+$this->registerJsVar( 'lotType', '', $position = yii\web\View::POS_HEAD );
 ?>
 
 <section class="page-wrapper page-detail">

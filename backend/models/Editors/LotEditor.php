@@ -45,12 +45,12 @@ class LotEditor extends \common\models\Query\Lot\Lots
     public $subCategorys;
     /**
      * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'eiLot.lots';
     }
-     */
-
+    
     /**
      * {@inheritdoc}
      */

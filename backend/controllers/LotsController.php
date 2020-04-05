@@ -310,6 +310,7 @@ class LotsController extends Controller
             }
 
             if ($modelLot->update()) {
+
                 if ($modelLot->setCategorys($modelTorg->typeId)) {
                     Yii::$app->session->setFlash('success', "Изменения лота успешно применены");
                     HistoryAdd::edit(1, 'lots/update','Редактирование лота №'.$lot->id, ['lotId' => $lot->id], Yii::$app->user->identity);
