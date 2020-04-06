@@ -77,6 +77,11 @@ foreach ($lot->info as $key => $value) {
             $key != 'dateAuction' &&
             $key != 'procedureDate' &&
             $key != 'conclusionDate' &&
+            $key != 'areaMeters' &&
+            $key != 'area' &&
+            $key != 'finalPrice' &&
+            $key != 'propDesc' &&
+            $key != 'fundSize' &&
             $key != 'currency'
         ) {
         $otherInfo[$key] = $value;
@@ -447,6 +452,78 @@ foreach ($lot->info as $key => $value) {
                                                     break;
                                                 case 'contractTerm':
                                                     $title = 'Срок действия контракта';
+                                                    break;
+                                                case 'lastInfo':
+                                                    $title = 'Информация о предыдущих торгах';
+                                                    break;
+                                                case 'docsList':
+                                                    $title = 'Перечень представляемых документов';
+                                                    break;
+                                                case 'condition':
+                                                    $title = 'Условия конкурса';
+                                                    break;
+                                                case 'winnerDefineDesc':
+                                                    $title = 'Порядок определения победителей';
+                                                    break;
+                                                case 'privateConditions':
+                                                    $title = 'Срок договора';
+                                                    break;
+                                                case 'torgReason':
+                                                    $title = 'Реквизиты документа';
+                                                    break;
+                                                case 'torgAcceptReason':
+                                                    $title = 'Решение о согласовании сделки по продаже';
+                                                    break;
+                                                case 'orgFullName':
+                                                    $title = 'Полное наименование';
+                                                    break;
+                                                case 'postAddress':
+                                                    $title = 'Почтовый адрес';
+                                                    break;
+                                                case 'orgNominal':
+                                                    $title = 'Категория (тип) и номинальная стоимость';
+                                                    break;
+                                                case 'workList':
+                                                    $title = 'Перечень видов основной продукции';
+                                                    break;
+                                                case 'marketPartDesc':
+                                                    $title = 'Сведения о доле на рынке';
+                                                    break;
+                                                case 'areaUnmovable':
+                                                    $title = 'Площадь земельных участков';
+                                                    break;
+                                                case 'objectsList':
+                                                    $title = 'Площадь и перечень объектов';
+                                                    break;
+                                                case 'emplNum':
+                                                    $title = 'Численность работников';
+                                                    break;
+                                                case 'depositReturn':
+                                                    $title = 'Порядок возвращения задатка';
+                                                    break;
+                                                case 'securingObligations':
+                                                    $title = 'Способ обеспечения исполнения обязательств';
+                                                    break;
+                                                case 'offerSendDesc':
+                                                    $title = 'Порядок подачи заявок и предложений';
+                                                    break;
+                                                case 'paymentConditions':
+                                                    $title = 'Условия и сроки платежа';
+                                                    break;
+                                                case 'federalStockPercent':
+                                                    $title = 'Акции в федеральной собственности';
+                                                    break;
+                                                case 'federalSharePerc':
+                                                    $title = 'Доля в федеральной собственности';
+                                                    break;
+                                                case 'sharePercSale':
+                                                    $title = 'Процент УК доли на продажу';
+                                                    break;
+                                                case 'result':
+                                                    $title = 'Итоги приватизации/продажи';
+                                                    break;
+                                                case 'limit':
+                                                    $title = 'Ограничения участия в торгах';
                                                     break;
                                                 default:
                                                     $title = $key;

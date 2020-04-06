@@ -58,6 +58,13 @@ class LotsAll extends ActiveRecord
                             }
                         }
                         break;
+                    case 'municipal':
+                            foreach ($subCategory->arrestCategorys as $id) {
+                                if ($this->category->categoryId == $id) {
+                                    $url = $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
+                                }
+                            }
+                        break;
                     case 'zalog':
                             if ($this->category->categoryId == $subCategory->id) {
                                 $url = $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;

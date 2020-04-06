@@ -150,6 +150,10 @@ class LotController extends Controller
                 $title = 'Имущество организаций';
                 $queryType = $type;
                 break;
+            case 'municipal':
+                $title = 'Муниципальное имущество';
+                $queryType = $type;
+                break;
             default:
                 $owner = Owners::find()->where(['linkEi' => $type])->one();
                 if (!empty($owner)) {

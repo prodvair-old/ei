@@ -45,12 +45,12 @@ class LotEditor extends \common\models\Query\Lot\Lots
     public $subCategorys;
     /**
      * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'eiLot.lots';
     }
-     */
-
+    
     /**
      * {@inheritdoc}
      */
@@ -136,6 +136,22 @@ class LotEditor extends \common\models\Query\Lot\Lots
                 }
                 break;
             case '2':
+                foreach ($categoryItem->arrest_categorys as $key => $subcategory) {
+                    foreach ($this->subCategorys as $categoryId) {
+                        if ($key == $categoryId) {
+                            $newCategory = new LotCategorys();
+        
+                            $newCategory->lotId         = $this->id;
+                            $newCategory->categoryId    = $categoryId;
+                            $newCategory->name          = $subcategory['name'];
+                            $newCategory->nameTranslit  = $subcategory['translit'];
+        
+                            $newCategory->save();
+                        }
+                    }
+                }
+                break;
+            case '4':
                 foreach ($categoryItem->arrest_categorys as $key => $subcategory) {
                     foreach ($this->subCategorys as $categoryId) {
                         if ($key == $categoryId) {

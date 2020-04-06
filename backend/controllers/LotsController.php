@@ -88,6 +88,9 @@ class LotsController extends Controller
             case '2':
                 $subcategorys = $categoryItem->arrest_categorys;
                 break;
+            case '4':
+                $subcategorys = $categoryItem->arrest_categorys;
+                break;
             case '3':
                 // $subcategorys = $categoryItem->bankrupt_categorys;
                 foreach ($categoryItem->subCategorys as $subcategory) {
@@ -261,6 +264,18 @@ class LotsController extends Controller
                         }
                     }
                     break;
+                case '4':
+                        if (isset($categoryItem->arrest_categorys)) {
+                            foreach ($categoryItem->arrest_categorys as $key => $item) {
+                                foreach ($modelLot->subCategorys as $subcategory) {
+                                    if ($key == $subcategory) {
+                                        $modelLot->categorys = $categoryItem->id;
+                                    }
+                                }
+                                
+                            }
+                        }
+                        break;
                 case '3':
                     foreach ($categoryItem->subCategorys as $item) {
                         foreach ($modelLot->subCategorys as $subcategory) {
@@ -295,6 +310,7 @@ class LotsController extends Controller
             }
 
             if ($modelLot->update()) {
+
                 if ($modelLot->setCategorys($modelTorg->typeId)) {
                     Yii::$app->session->setFlash('success', "Изменения лота успешно применены");
                     HistoryAdd::edit(1, 'lots/update','Редактирование лота №'.$lot->id, ['lotId' => $lot->id], Yii::$app->user->identity);

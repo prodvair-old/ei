@@ -23,6 +23,9 @@ if ($lot->torg->typeId == 1) {
     $lotType = 'Имущество организации';
     $lotTypeClass = 'lot__zalog';
     $lotOrganizatioun = $lot->torg->owner->title;
+} else if ($lot->torg->typeId == 4){
+    $lotType = 'Муниципально имущество';
+    $lotTypeClass = 'lot__municipal';
 }
 
 $isCategory = 

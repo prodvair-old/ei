@@ -20,6 +20,9 @@ switch ($lotType) {
     case 'bankrupt':
             $name = 'Банкротное имущество';
         break;
+    case 'municipal':
+            $name = 'Муниципальное имущество';
+        break;
     case 'zalog':
             $name = ($lot->torg->owner->title)? $lot->torg->owner->title : 'Имущество организации';
             $btnName = 'Подать заявку';
