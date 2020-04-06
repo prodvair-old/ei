@@ -15,6 +15,7 @@ use common\models\Query\Lot\Lots;
  * 
  * Юзер может быть подписан на несколько лотов, 
  * по каждому из которых может быть несколько событий.
+ * Но email отправляется только один и включает все лоты, по которым произошли события.
  * 
  * @see \common\models\Query\Lot\Lots
  */
@@ -42,6 +43,7 @@ class SendNotificationJob extends BaseObject implements \yii\queue\JobInterface
         if (!($user = User::findOne(['id' => $this->user_id])))
             throw new NotFoundHttpException('Пользователь с Id - ' . $this->user_id . ' не существует.');
 
+        // сгенерировать токен, если необходимо
         if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
             $user->generatePasswordResetToken();
             $user->save();

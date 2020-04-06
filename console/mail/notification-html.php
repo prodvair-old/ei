@@ -18,7 +18,7 @@ $link = Yii::$app->params['frontLink'] . '/wishlist/unsubscribe?token=' . $user-
             <?= $this->render("notification/$event-html", ['model' => $model, 'message' => $message]) ?>
         <?php endforeach; ?>
         <p>Для просмотра лота перейдите по <?= Html::a('ссылке', 
-            Yii::$app->urlManager->createAbsoluteUrl(['/lot/view', 'id' => $model->id])) ?>.</p>
+            Yii::$app->params['frontLink'] .'/lot/view/' . $model->id) ?>.</p>
         <hr>
         <p><small>
             <?= Html::a('Отписаться', $link . '&lot_id=' . $model->id) ?> от уведомлений по данному лоту.
