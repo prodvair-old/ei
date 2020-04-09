@@ -24,9 +24,7 @@ class LotsArcive extends Module
                 OR lower(status) LIKE '%торги не состоялись%'
                 OR lower(status) LIKE '%торги по лоту отменены%'
                 OR lower(status) LIKE '%торги по лоту не состоялись%'
-            )
-            AND (
-                \"torg\".\"publishedDate\" IS NULL
+                OR \"torg\".\"publishedDate\" IS NULL
                 OR \"torg\".\"endDate\" <= NOW()
                 OR \"torg\".\"completeDate\" <= NOW()		
             )")->limit($limit)->all();
