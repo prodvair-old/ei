@@ -83,6 +83,19 @@ return [
             'username' => 'bankrupt',
             'password' => 'bankrupt',
             'charset'  => 'utf8',
+            'tablePrefix' => 'eidb.',
+
+            // Schema cache options (for production environment)
+            'enableSchemaCache' => false,
+            'schemaCacheDuration' => 6,
+            'schemaCache' => 'cache',
+        ],
+        'obj' => [
+            'class' => 'yii\db\Connection',
+            'dsn'      => 'pgsql:host=localhost;dbname=uds',
+            'username' => 'bankrupt',
+            'password' => 'bankrupt',
+            'charset'  => 'utf8',
             'tablePrefix' => 'obj$',
 
             // Schema cache options (for production environment)

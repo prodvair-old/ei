@@ -12,7 +12,7 @@ use common\jobs\SendNotificationJob;
  * Ализируется общий список, сформированный на предыдущем этапе и
  * задания распределяются по подписчикам.
  * 
- * @see \common\jobs\KeepNotificationJob
+ * @see \common\models\Query\Lot\Lots
  * @see \common\jobs\SendNotificationJob
  */
 
