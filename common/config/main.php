@@ -83,7 +83,7 @@ return [
             'username' => 'bankrupt',
             'password' => 'bankrupt',
             'charset'  => 'utf8',
-            'tablePrefix' => 'obj$',
+            'tablePrefix' => 'eidb.',
 
             // Schema cache options (for production environment)
             'enableSchemaCache' => false,

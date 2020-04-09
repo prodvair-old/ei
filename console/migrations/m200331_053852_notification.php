@@ -10,8 +10,8 @@ use yii\db\Migration;
  */
 class m200331_053852_notification extends Migration
 {
-    const TABLE = '{{%site.notification}}';
-    const TABLE_USER = '{{%site.user}}';
+    const TABLE = '{{%notification}}';
+    const TABLE_USER = '{{%user}}';
 
     /**
      * {@inheritdoc}
