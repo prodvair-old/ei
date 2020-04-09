@@ -11,7 +11,7 @@ use common\models\Query\LotsCategory;
 
 use arogachev\excel\import\advanced\Importer;
 
-use common\models\Query\Municipal\LotsMunicipal;
+use common\models\Query\Lot\Lots;
 use common\models\Query\Municipal\Torgs;
 
 use common\models\Query\Regions;
@@ -74,17 +74,37 @@ class TestController extends Controller
      */
     public function actionIndex()
     {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        // Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-        $lots = LotsMunicipal::find()->select('DISTINCT ON (lotPropertyTypeName) ')->limit(50)->all();
+        $lots = Lots::find()->joinWith(['torg'])->where([
+            'or',
+            ['like', 'lower(status)', mb_strtolower('Окончен', 'UTF-8')],
+            ['like', 'lower(status)', mb_strtolower('Несостоявшиеся', 'UTF-8')],
+            ['like', 'lower(status)', mb_strtolower('Состоявшиеся', 'UTF-8')],
+            ['like', 'lower(status)', mb_strtolower('Не состоялся', 'UTF-8')],
+            ['like', 'lower(status)', mb_strtolower('Отменен/аннулирован', 'UTF-8')],
+            ['like', 'lower(status)', mb_strtolower('Отменён организатором', 'UTF-8')],
+            ['like', 'lower(status)', mb_strtolower('Торги завершены', 'UTF-8')],
+            ['like', 'lower(status)', mb_strtolower('Торги отменены', 'UTF-8')],
+            ['like', 'lower(status)', mb_strtolower('Торги не состоялись', 'UTF-8')],
+            ['like', 'lower(status)', mb_strtolower('Торги по лоту отменены', 'UTF-8')],
+            ['like', 'lower(status)', mb_strtolower('Торги по лоту не состоялись', 'UTF-8')],
+            ['torg.publishedDate' => null],
+            [
+                'or',
+                ['<=', 'torg.endDate', 'NOW()'],
+                ['not', ['torg.endDate' => null]],
+            ],
+            [
+                'or',
+                ['<=', 'torg.completeDate', 'NOW()'],
+                ['not', ['torg.completeDate' => null]],
+            ]
+        ]);
 
-        $json = json_encode($lots, JSON_UNESCAPED_UNICODE);
+        echo $lots->createCommand()->getRawSql();
 
-        // echo '<pre>';
-        // // var_dump($lots);
-        // echo $json;
-        // echo '</pre>';
-        return $lots;
+        // return $lots;
     }
     public function actionIndexssa()
     {

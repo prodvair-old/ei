@@ -6,6 +6,7 @@ use yii\console\Controller;
 
 use console\models\lots\LotsBankrupt;
 use console\models\lots\LotsBankruptStatus;
+use console\models\lots\LotsArcive;
 
 use common\models\Query\Bankrupt\Lots;
 use common\models\Query\Bankrupt\Purchaselots;
@@ -304,5 +305,18 @@ class LotsController extends Controller
             echo "Новых данных нет. \n";
         }
         echo "Завершение парсинга. \n";
+    }
+
+    // Проверка архивных лотов
+    // php yii lots/archive
+    public function actionArchive($limit = 100)
+    {
+        echo "Запуск проверки \n";
+
+        echo "Ограничения записей $limit. \n";
+
+        echo "Обновлено: ".LotsArcive::checking($limit)." записей \n";
+
+        echo 'Конец проверки.';
     }
 }  
