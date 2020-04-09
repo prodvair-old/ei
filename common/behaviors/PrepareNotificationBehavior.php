@@ -30,7 +30,7 @@ class PrepareNotificationBehavior extends Behavior
     {
         $queue = $event->sender;
         if (!file_exists($queue->path . '/data.csv'))
-            // первый проход, список еще не создан, просто пропустить данный этап
+            // нет событий
             return;
         $jobs = [];
         // разложить все события по юзерам, далее по лотам
@@ -57,7 +57,7 @@ class PrepareNotificationBehavior extends Behavior
             ]));
         }
         
-        // удалить отработанный файл событий
+        // удалить отработанный список событий
         unlink($queue->path . '/data.csv');
     }
 }

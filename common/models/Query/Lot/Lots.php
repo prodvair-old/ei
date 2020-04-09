@@ -232,20 +232,33 @@ class Lots extends ActiveRecord
     /**
      * Известить подписчиков о произошедшем событии
      * 
-     * @param \yii\base\Event $event
+     * @param array $data as in yii\base\Event
      */
     public function notifyObservers($event)
     {
         foreach($this->observers as $observer) {
             if ($observer->user->needNotify($event->name))
-                Yii::$app->queue->push(new KeepNotificationJob([
+                $this->keepNotification([
                     'user_id' => $observer->userId,
                     'lot_id'  => $this->id,
                     'event'   => $event->name,
-                ]));
+                ]);
         }
     }
 
+    /**
+     * Сохранить информацию о событии в общем списке
+     * 
+     * @param \yii\base\Event $event
+     * @param array $data
+     */
+    public function keepNotification($data)
+    {
+        $file = fopen(Yii::$app->queue->path . '/data.csv', 'a');
+        fwrite($file, "{$data['user_id']},{$data['lot_id']},{$data['event']}\n");
+        fclose($file);
+    }
+    
     public function getViews()
     {
         return $this->hasMany(PageViews::className(), ['page_id' => 'oldId'])->alias('views')->onCondition([
