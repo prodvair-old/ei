@@ -21,9 +21,9 @@ class m200331_053852_notification extends Migration
         $this->createTable(self::TABLE, [
             'id'              => $this->primaryKey(),
             'user_id'         => $this->integer()->notNull(),
-            'new_picture'     => $this->boolean()->defaultValue(1),
-            'new_report'      => $this->boolean()->defaultValue(1),
-            'price_reduction' => $this->boolean()->defaultValue(1),
+            'new_picture'     => $this->boolean()->defaultValue(true),
+            'new_report'      => $this->boolean()->defaultValue(true),
+            'price_reduction' => $this->boolean()->defaultValue(true),
             'created_at'      => $this->integer()->notNull(),
             'updated_at'      => $this->integer()->notNull(),
         ]);
