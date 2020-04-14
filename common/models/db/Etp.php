@@ -6,25 +6,27 @@ use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * Manager model
+ * Etp (Электронная торговая площадка) model
  *
  * @property integer $id
- * @property integer $sro_id
+ * @property string  $name
+ * @property string  $title
+ * @property string  $link
  * @property string  $inn
  * @property integer $created_at
  * @property integer $updated_at
  */
-class Manager extends ActiveRecord
+class Etp extends ActiveRecord implements ProfileInterface
 {
     // внутренний код модели используемый в составном ключе
-    const INT_CODE = 2;
+    const INT_CODE = 3;
 
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return '{{%manager}}';
+        return '{{%etp}}';
     }
 
     /**
@@ -45,8 +47,10 @@ class Manager extends ActiveRecord
     public function rules()
     {
         return [
-            ['sro_id', 'required'],
-            ['inn', 'match', 'pattern' => '/\d{12}/'],
+            [['name', 'link'], 'required'],
+            ['inn', 'match', 'pattern' => '/\d{10}/'],
+            [['name', 'title', 'link'], 'string', 'max' => 255],
+            ['link', 'url', 'defaultScheme' => 'http'],
             [['created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -57,7 +61,9 @@ class Manager extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'sro_id'     => Yii::t('app', 'SRO'),
+            'name'       => Yii::t('app', 'Name'),
+            'title'      => Yii::t('app', 'Full name'),
+            'link'       => Yii::t('app', 'Link'),
             'inn'        => Yii::t('app', 'INN'),
             'created_at' => Yii::t('app', 'Created'),
             'updated_at' => Yii::t('app', 'Modified'),
@@ -68,15 +74,16 @@ class Manager extends ActiveRecord
      * Get place manager connected with
      * @return yii\db\ActiveRecord
      */
-    public function getPlace() {
+    public function getPlace()
+    {
         return Place::findOne(['model' => self::INT_CODE, 'parent_id' => $this->id]);
     }
 
     /**
-     * Get manager profile
-     * @return yii\db\ActiveRecord
+     * @inheritdoc
      */
-    public function getProfile() {
-        return Profile::findOne(['model' => self::INT_CODE, 'parent_id' => $this->id]);
-    }
+    public function getFullName()
+    {
+        return $this->title;
+    };
 }

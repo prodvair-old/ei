@@ -6,7 +6,6 @@ use yii\db\Migration;
  * Class m200331_053852_notification
  * 
  * Таблица уведомлений для юзера.
- * Пока значения сохраняются в json массиве $user->info, а данная миграция создана для примера.
  */
 class m200331_053852_notification extends Migration
 {

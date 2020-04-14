@@ -24,7 +24,7 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    // внутренний код модели используемый в составных ключах, например в модели Profile
+    // внутренний код модели используемый в составном ключе
     const INT_CODE          = 1;
     
     const STATUS_ACTIVE     = 1;

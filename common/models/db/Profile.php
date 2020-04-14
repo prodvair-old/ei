@@ -20,7 +20,7 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $created_at
  * @property integer $updated_at
  */
-class Profile extends ActiveRecord
+class Profile extends ActiveRecord implements ProfileInterface
 {
     const GENDER_MALE     = 1;
     const GENDER_FEMALE   = 2;
