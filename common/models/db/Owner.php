@@ -4,9 +4,11 @@ namespace common\models\db;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use common\interfaces\ProfileInterface;
 
 /**
- * Owner (владелец залога) model
+ * Owner model
+ * Владелец залога.
  *
  * @property integer $id
  * @property string  $title
@@ -93,7 +95,7 @@ class Owner extends ActiveRecord implements ProfileInterface
     }
 
     /**
-     * Get place manager connected with
+     * Get place owner connected with
      * @return yii\db\ActiveRecord
      */
     public function getPlace()

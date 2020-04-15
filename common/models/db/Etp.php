@@ -4,9 +4,11 @@ namespace common\models\db;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use common\interfaces\ProfileInterface;
 
 /**
- * Etp (Электронная торговая площадка) model
+ * Etp model
+ * Электронная торговая площадка.
  *
  * @property integer $id
  * @property string  $name

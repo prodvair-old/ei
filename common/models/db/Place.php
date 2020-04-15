@@ -7,6 +7,8 @@ use yii\behaviors\TimestampBehavior;
 
 /**
  * Place model
+ * Адресные данные.
+ * 
  * @property integer $id
  * @property integer $model
  * @property integer $parent_id

@@ -10,6 +10,7 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
 
 /**
  * User model
+ * Учетные данные.
  *
  * @property integer $id
  * @property string $username

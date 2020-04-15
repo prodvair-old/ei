@@ -4,9 +4,11 @@ namespace common\models\db;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use common\interfaces\ProfileInterface;
 
 /**
  * Profile model
+ * Индивидуальные данные.
  *
  * @property integer $id
  * @property integer $model
@@ -55,7 +57,8 @@ class Profile extends ActiveRecord implements ProfileInterface
             [['gender', 'birthday'], 'integer'],
             ['gender', 'in', 'range' => self::getGenderVariants()],
             ['gender', 'default', 'value' => null],
-            ['phone', 'match', 'pattern' => '/\d{10}/'],
+            ['phone', 'match', 'pattern' => '/^\+7 \d\d\d-\d\d\d-\d\d-\d\d$/',
+                'message' => 'Номер должен состоять ровно из 10 цифр.'],
             [['first_name', 'last_name', 'middle_name', 'birth_place'], 'string', 'max' => 255],
             [['created_at', 'updated_at'], 'safe'],
         ];

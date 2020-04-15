@@ -7,6 +7,7 @@ use yii\behaviors\TimestampBehavior;
 
 /**
  * Manager model
+ * Управляющий, ответственный за ведение дел по банкротному имуществу.
  *
  * @property integer $id
  * @property integer $sro_id
