@@ -14,7 +14,7 @@ use common\interfaces\ProfileInterface;
  * @property string  $title
  * @property string  $link
  * @property string  $logo
- * @property string  $description
+ * @property text    $description
  * @property string  $email
  * @property string  $phone
  * @property integer $status

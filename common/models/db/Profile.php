@@ -13,6 +13,7 @@ use common\interfaces\ProfileInterface;
  * @property integer $id
  * @property integer $model
  * @property integer $parent_id
+ * @property string  $inn
  * @property integer $gender
  * @property integer $birthday
  * @property string  $phone
@@ -54,6 +55,7 @@ class Profile extends ActiveRecord implements ProfileInterface
     {
         return [
             [['model', 'parent_id', 'first_name'], 'required'],
+            ['inn', 'match', 'pattern' => '/\d{12}/'],
             [['gender', 'birthday'], 'integer'],
             ['gender', 'in', 'range' => self::getGenderVariants()],
             ['gender', 'default', 'value' => null],
@@ -70,6 +72,7 @@ class Profile extends ActiveRecord implements ProfileInterface
     public function attributeLabels()
     {
         return [
+            'inn'         => Yii::t('app', 'INN'),
             'gender'      => Yii::t('app', 'Gender'),
             'birthday'    => Yii::t('app', 'Birthday'),
             'first_name'  => Yii::t('app', 'First name'),
