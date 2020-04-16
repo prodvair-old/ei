@@ -28,6 +28,9 @@ class Log extends ActiveRecord
 {
     // внутренний код модели используемый в составном ключе
     const INT_CODE = 6;
+    
+    const MEASURE_PERCENT    = 1;
+    const MEASURE_SUM        = 2;
 
     const STATUS_IN_PROGRESS = 1;
     const STATUS_ANNOUNCED   = 2;
@@ -82,6 +85,7 @@ class Log extends ActiveRecord
             ['title', 'string', 'max' => 255],
             [['start_price', 'step', 'deposite'], 'number', 'numberFormat' => '/^\s*[-+]?[0-9]*\.?\d{0,2}\s*$/'],
             ['step_measure', 'deposite_measure'], 'in', 'range' => self::getMeasures()],
+            ['step_measure', 'deposite_measure'], 'default', 'value' => MEASURE_PERCENT],
             ['status', 'in', 'range' => self::getStatuses()],
             ['status', 'default', 'value' => self::STATUS_IN_PROGRESS],
             ['reason', 'in', 'range' => self::getReasons()],
@@ -108,6 +112,17 @@ class Log extends ActiveRecord
             'reason'           => Yii::t('app', 'Reason'),
             'created_at'       => Yii::t('app', 'Created'),
             'updated_at'       => Yii::t('app', 'Modified'),
+        ];
+    }
+
+    /**
+     * Get measure keys
+     * @return array
+     */
+    public static function getMeasures() {
+        return [
+            self::MEASURE_PERCENT,
+            self::MEASURE_SUM,
         ];
     }
 

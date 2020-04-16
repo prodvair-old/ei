@@ -40,7 +40,7 @@ class m200416_134224_lot extends Migration
 		$this->addCommentOnColumn(self::TABLE, 'step', 'Шаг уменьшения цены');
 		$this->addCommentOnColumn(self::TABLE, 'step_measure', 'Мера шага - сумма, %');
 		$this->addCommentOnColumn(self::TABLE, 'deposite', 'Размер задатка за лот');
-		$this->addCommentOnColumn(self::TABLE, 'deposite_measure', 'Мера депозита - сумма, %');
+		$this->addCommentOnColumn(self::TABLE, 'deposite_measure', 'Мера задатка - сумма, %');
 		$this->addCommentOnColumn(self::TABLE, 'status', 'Статус');
 		$this->addCommentOnColumn(self::TABLE, 'reason', 'Причина статуса');
     }

@@ -30,9 +30,7 @@ class m200415_132026_torg extends Migration
             'updated_at'   => $this->integer()->notNull(),
         ]);
         
-        $this->createIndex('idx-model-parent_id', self::TABLE, ['model', 'parent_id']);
-
-		$this->addForeignKey('fk-torg-etp', self::TABLE, 'etp_id', '{{%etp}}', 'id', 'restrict', 'restrict');
+		$this->addForeignKey('fk-torg-etp',  self::TABLE, 'etp_id', '{{%etp}}',  'id', 'restrict', 'restrict');
 		$this->addForeignKey('fk-torg-case', self::TABLE, 'etp_id', '{{%case}}', 'id', 'restrict', 'restrict');
 
 		$this->addCommentOnColumn(self::TABLE, 'etp_id', 'Электронная торговая площадка');
