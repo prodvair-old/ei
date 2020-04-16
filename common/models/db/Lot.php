@@ -4,6 +4,7 @@ namespace common\models\db;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use sergmoro1\uploader\behaviors\HaveFileBehavior;
 
 /**
  * Lot model
@@ -59,6 +60,15 @@ class Log extends ActiveRecord
             [
                 TimestampBehavior::className(),
             ],
+			[
+				'class' => HaveFileBehavior::className(),
+				'file_path' => '/lot/',
+                'sizes' => [
+                    'original'  => ['width' => 1600, 'height' => 900, 'catalog' => 'original'],
+                    'main'      => ['width' => 400,  'height' => 400, 'catalog' => ''],
+                    'thumb'     => ['width' => 90,   'height' => 90,  'catalog' => 'thumb'],
+                ],
+			],
         ];
     }
 
