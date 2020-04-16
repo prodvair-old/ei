@@ -112,8 +112,17 @@ class Torg extends ActiveRecord
     }
 
     /**
+     * Получить информацию о торге
+     * @return yii\db\ActiveQuery
+     */
+    public function getLots()
+    {
+        return $this->hasMany(Lot::className(), ['torg_id' => 'id']);
+    }
+    
+    /**
      * Получить информацию о должнике
-     * @return yii\db\ActiveRecord
+     * @return yii\db\ActiveQuery
      */
     public function getBankrupt() {
         return $this->hasOne(Torg::className(), ['id' => 'torg_id'])
@@ -122,7 +131,7 @@ class Torg extends ActiveRecord
 
     /**
      * Получить информацию об управляющем
-     * @return yii\db\ActiveRecord
+     * @return yii\db\ActiveQuery
      */
     public function getManager() {
         return $this->hasOne(Torg::className(), ['id' => 'torg_id'])
@@ -131,7 +140,7 @@ class Torg extends ActiveRecord
     
     /**
      * Получить информацию о залогодержателе
-     * @return yii\db\ActiveRecord
+     * @return yii\db\ActiveQuery
      */
     public function getOwner() {
         return $this->hasOne(Torg::className(), ['id' => 'torg_id'])
@@ -140,7 +149,7 @@ class Torg extends ActiveRecord
 
     /**
      * Получить информацию о владельце залога
-     * @return yii\db\ActiveRecord
+     * @return yii\db\ActiveQuery
      */
     public function getUser() {
         return $this->hasOne(Torg::className(), ['id' => 'torg_id'])

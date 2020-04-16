@@ -32,9 +32,11 @@ class m200415_132026_torg extends Migration
         
         $this->createIndex('idx-model-parent_id', self::TABLE, ['model', 'parent_id']);
 
+		$this->addForeignKey('fk-torg-etp', self::TABLE, 'etp_id', '{{%etp}}', 'id', 'restrict', 'restrict');
+		$this->addForeignKey('fk-torg-case', self::TABLE, 'etp_id', '{{%case}}', 'id', 'restrict', 'restrict');
+
 		$this->addCommentOnColumn(self::TABLE, 'etp_id', 'Электронная торговая площадка');
 		$this->addCommentOnColumn(self::TABLE, 'case_id', 'Дело');
-        
 		$this->addCommentOnColumn(self::TABLE, 'property', 'Тип имущества - должник, залог');
 		$this->addCommentOnColumn(self::TABLE, 'description', 'Описание');
 		$this->addCommentOnColumn(self::TABLE, 'started_at', 'Назначенная дата начала торга');
