@@ -115,17 +115,35 @@ class Torg extends ActiveRecord
      * Получить информацию о должнике
      * @return yii\db\ActiveRecord
      */
-    public function getDebtor()
-    {
-        return $this->hasOne(TorgDebtor::className(), ['id' => 'torg_id']);
+    public function getBankrupt() {
+        return $this->hasOne(Torg::className(), ['id' => 'torg_id'])
+            ->viaTable(TorgDebtor::tableName(), ['bankrupt_id' => 'id');
     }
 
     /**
-     * Получить информацию о залоге
+     * Получить информацию об управляющем
      * @return yii\db\ActiveRecord
      */
-    public function getPledge()
-    {
-        return $this->hasOne(TorgPledge::className(), ['id' => 'torg_id']);
+    public function getManager() {
+        return $this->hasOne(Torg::className(), ['id' => 'torg_id'])
+            ->viaTable(TorgDebtor::tableName(), ['manager_id' => 'id');
+    }
+    
+    /**
+     * Получить информацию о залогодержателе
+     * @return yii\db\ActiveRecord
+     */
+    public function getOwner() {
+        return $this->hasOne(Torg::className(), ['id' => 'torg_id'])
+            ->viaTable(TorgPledge::tableName(), ['owner_id' => 'id');
+    }
+
+    /**
+     * Получить информацию о владельце залога
+     * @return yii\db\ActiveRecord
+     */
+    public function getUser() {
+        return $this->hasOne(Torg::className(), ['id' => 'torg_id'])
+            ->viaTable(TorgPledge::tableName(), ['user_id' => 'id');
     }
 }

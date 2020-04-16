@@ -16,13 +16,13 @@ class m200415_132026_torg extends Migration
             'etp_id'       => $this->bigInteger()->notNull(),
             'case_id'      => $this->bigInteger()->notNull(),
             
-            'property'     => $this->string(12)->notNull(),
+            'property'     => $this->smallInteger()->notNull(),
             'description'  => $this->text()->notNull(),
             
-            'started_at'   => $this->string()->notNull(),
-            'end_at'       => $this->string()->notNull(),
-            'completed_at' => $this->string()->notNull(),
-            'published_at' => $this->string()->notNull(),
+            'started_at'   => $this->integer()->notNull(),
+            'end_at'       => $this->integer()->notNull(),
+            'completed_at' => $this->integer()->notNull(),
+            'published_at' => $this->integer()->notNull(),
             
             'auction'      => $this->smallInteger()->notNull(),
 
