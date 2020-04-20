@@ -33,6 +33,11 @@ foreach ($regions as $region) {
 
 $traderList = [];
 
+foreach ($lots[0] as $key => $value) {
+  var_dump($key);
+
+}
+
 // if ($type == 'bankrupt') {
 //   $traderLabel = 'Торговые площадки';
 //   $traderPlaceholder = 'Все торговые площадки';
