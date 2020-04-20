@@ -6,7 +6,7 @@ use yiister\adminlte\widgets\FlashAlert;
     <section class="content-header">
         <h1>
             <?php
-            if ($this->params['h1'] !== null) {
+            if (isset($this->params['h1']) && $this->params['h1'] !== null) {
                 echo $this->params['h1'];
             } else {
                 echo \yii\helpers\Inflector::camel2words(\yii\helpers\Inflector::id2camel($this->context->module->id));

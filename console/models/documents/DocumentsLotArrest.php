@@ -27,7 +27,7 @@ class DocumentsLotArrest extends Module
         $parser->tableNameFrom = 'bailiff.lotdocuments';
         $parser->tableIdFrom = $doc->ldocId;
 
-        $chekDoc = Documents::find()->where(['oldId' => $doc->ldocId])->all();
+        $chekDoc = LotDocuments::find()->where(['oldId' => $doc->ldocId, 'tableTypeId' => 1])->all();
 
         if (!empty($chekDoc[0])) {
             $parser->message = 'Был добавлен';
@@ -42,7 +42,7 @@ class DocumentsLotArrest extends Module
             if ($doc->ldocType != null && $doc->ldocCreated != null && $doc->ldocUrl) {
 
                 // Лот
-                if (!$lot = Lots::find()->where(['oldId' => $doc->lot->lotId])->one()) {
+                if (!$lot = Lots::find()->alias('lot')->joinWith(['torg'])->where(['lot.oldId' => $doc->lot->lotId, 'torg.typeId' => 1])->one()) {
                     echo "Лот для связи отцуствует! \nПробуем спарсить данный Лота. \n";
 
                     $parsingLot = LotsArrest::id($doc->lot->lotId, false);
@@ -62,7 +62,7 @@ class DocumentsLotArrest extends Module
                         echo "Ошибка при добавлении в таблицу Документов ID ".$doc->ldocId.". \nОтсутствует Лот...\n";
                         return false;
                     } else {
-                        $lot = Lots::find()->where(['oldId' => $doc->lot->lotId])->one();
+                        $lot = Lots::find()->alias('lot')->joinWith(['torg'])->where(['lot.oldId' => $doc->lot->lotId, 'torg.typeId' => 1])->one();
                     }
                 }
 
@@ -77,7 +77,7 @@ class DocumentsLotArrest extends Module
                 $newDocument->info          = [
                     'created' => $doc->ldocCreated
                 ];
-                $newDocument->tableTypeId   = 3;
+                $newDocument->tableTypeId   = 1;
                 $newDocument->oldId         = $doc->ldocId;
         
                 try {

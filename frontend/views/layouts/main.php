@@ -38,6 +38,9 @@ foreach ($lotsCategory as $value) {
   if ($value->arrest_categorys != null) {
     $arrestLotsCategoryMenu[] = ['label' => $value->name, 'url' => ['/arrest/' . $value->translit_name]];
   }
+  if ($value->arrest_categorys != null) {
+    $municipaltLotsCategoryMenu[] = ['label' => $value->name, 'url' => ['/municipal/' . $value->translit_name]];
+  }
 }
 
 AppAsset::register($this);
@@ -56,7 +59,7 @@ AppAsset::register($this);
 	<!-- Title Of Site -->
     <title><?= Html::encode($this->title) ?></title>
 
-    <meta name="description" content="<?=Yii::$app->params['description']?>" />
+    <meta name="description" content="<?= isset(Yii::$app->params['description']) ? Yii::$app->params['description'] : '' ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
 	
@@ -122,7 +125,7 @@ AppAsset::register($this);
               <div class="col-inner">
                 <div class="main-logo">
                   <a href="<?= Url::to(['site/index']) ?>" class="main-logo__link">
-                    <img src="/img/logo-ei(green).svg" alt="" class="logo">
+                    <img src="<?= Url::base() ?>/img/logo-ei(green).svg" alt="" class="logo">
                     <!-- <svg xmlns="http://www.w3.org/2000/svg" class="logo" width="168" height="150" viewBox="0 0 1680 1500" shape-rendering="geometricPrecision">
                       <path class="logo-icon" d="M753.7 88.8c350.6 0 637.5 272.7 660.2 617.6h-132.7c-22.4-271.7-250-485.3-527.5-485.3-292.4 0-529.4 237-529.4 529.4 0 291 234.8 527.1 525.3 529.3 1.3.1 2.7.2 4.1.2 24.4 0 44.1-19.8 44.1-44.2 0-24.3-19.7-44.1-44.1-44.1v-.1c-243.6 0-441.1-197.5-441.1-441.1 0-243.7 197.5-441.2 441.1-441.2 228.8 0 416.8 174.2 438.9 397.1h-133.2C1038 556.8 909.3 441.7 753.7 441.7c-170.5 0-308.8 138.2-308.8 308.8 0 169.2 136.1 306.6 304.8 308.7 2.6.2 5.1.2 7.6 0 14.3-.1 28.5-1.3 42.6-3.4 23.4-1.1 42-20.4 42-44.1 0-24.3-19.7-44.1-44.1-44.1-1.9 0-3.9.1-5.8.4-12.6 2.2-25.5 3.2-38.3 3.2-121.8 0-220.6-98.8-220.6-220.6S631.9 530 753.7 530c106.7 0 195.7 75.8 216.1 176.4H753.7c-24.3 0-44.1 19.9-44.1 44.1 0 24.3 19.8 44.2 44.1 44.2h705.8c24.3 0 44.1-19.9 44.1-44.2C1503.6 336.3 1167.9.6 753.7.6S3.8 336.3 3.8 750.5c0 414.1 335.7 749.9 749.9 749.9 30.2 0 60.4-1.8 90.4-5.5 23.3-1.1 41.9-20.4 41.9-44 0-24.4-19.7-44.1-44.1-44.1-2.6 0-5.1.2-7.5.6-26.8 3.3-53.7 4.8-80.7 4.8-365.4 0-661.7-296.3-661.7-661.7C92 385 388.3 88.8 753.7 88.8z" />
                       <path class="logo-icon" d="M753.7 88.8c350.6 0 637.5 272.7 660.2 617.6h-132.7c-22.4-271.7-250-485.3-527.5-485.3-292.4 0-529.4 237-529.4 529.4 0 291 234.8 527.1 525.3 529.3 1.3.1 2.7.2 4.1.2 24.4 0 44.1-19.8 44.1-44.2 0-24.3-19.7-44.1-44.1-44.1v-.1c-243.6 0-441.1-197.5-441.1-441.1 0-243.7 197.5-441.2 441.1-441.2 228.8 0 416.8 174.2 438.9 397.1h-133.2C1038 556.8 909.3 441.7 753.7 441.7c-170.5 0-308.8 138.2-308.8 308.8 0 169.2 136.1 306.6 304.8 308.7 2.6.2 5.1.2 7.6 0 14.3-.1 28.5-1.3 42.6-3.4 23.4-1.1 42-20.4 42-44.1 0-24.3-19.7-44.1-44.1-44.1-1.9 0-3.9.1-5.8.4-12.6 2.2-25.5 3.2-38.3 3.2-121.8 0-220.6-98.8-220.6-220.6S631.9 530 753.7 530c106.7 0 195.7 75.8 216.1 176.4H753.7c-24.3 0-44.1 19.9-44.1 44.1 0 24.3 19.8 44.2 44.1 44.2h705.8c24.3 0 44.1-19.9 44.1-44.2C1503.6 336.3 1167.9.6 753.7.6S3.8 336.3 3.8 750.5c0 414.1 335.7 749.9 749.9 749.9 30.2 0 60.4-1.8 90.4-5.5 23.3-1.1 41.9-20.4 41.9-44 0-24.4-19.7-44.1-44.1-44.1-2.6 0-5.1.2-7.5.6-26.8 3.3-53.7 4.8-80.7 4.8-365.4 0-661.7-296.3-661.7-661.7C92 385 388.3 88.8 753.7 88.8z" />
@@ -138,7 +141,7 @@ AppAsset::register($this);
             <div class="col-7 col-shrink order-last-lg">
               <div class="col-inner">
                 <ul class="nav-mini-right vertival-center">
-                  <? if (Yii::$app->user->isGuest) { ?>
+                  <?php if (Yii::$app->user->isGuest) { ?>
                     <li class="d-none d-sm-block">
                       <a href="#loginFormTabInModal-register" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false" class="main-page__link">
                         <span class="icon-font"><i class="icon-user-follow"></i></span> Зарегистрироваться
@@ -154,15 +157,19 @@ AppAsset::register($this);
                         <span class="icon-font"><i class="icon-user-follow"></i></span> Войти
                       </a>
                     </li>
-                  <? } else { ?>
+                  <?php } else { ?>
                     <li class="d-block d-sm-block">
                       <a href="<?= Url::to(['user/wish_list']) ?>" class="vertival-center">
                         <div class="image header-avatar">
-                          <img class="setting-image-tag" src="<?= (Yii::$app->user->identity->avatar) ? Yii::$app->user->identity->avatar : 'img/image-man/01.jpg' ?>" alt="Image" />
+                          <img class="setting-image-tag" src="<?= isset(Yii::$app->user->identity->avatar) ? Yii::$app->user->identity->avatar : 'img/image-man/01.jpg' ?>" alt="Image" />
                         </div>
                         <div class="ml-15">
-                          <?= (Yii::$app->user->identity->info['firstname'] || Yii::$app->user->identity->info['lastname']) ? Yii::$app->user->identity->info['firstname'] . ' ' . Yii::$app->user->identity->info['lastname'] : Yii::$app->user->identity->info['contacts']['emails'][0] ?>
-                          <?= (Yii::$app->user->identity->info['firstname'] || Yii::$app->user->identity->info['lastname']) ? '<p class="head-email lowercase">' . Yii::$app->user->identity->info['contacts']['emails'][0] . '</p>' : '' ?>
+                          <?= Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->getFullName() ?>
+                          <?php if (!Yii::$app->user->isGuest): ?> 
+                                <p class="head-email lowercase">
+                                    <?= Yii::$app->user->identity->getFirstEmail() ?>
+                                </p>
+                          <?php endif; ?>
                         </div>
                       </a>
                     </li>
@@ -171,7 +178,7 @@ AppAsset::register($this);
                         <span class="icon-font ml-15"><i class="icon-logout"></i></span>
                       </a>
                     </!-->
-                  <? } ?>
+                  <?php } ?>
                   <li>
                     <button class="btn btn-toggle collapsed" data-toggle="collapse" data-target="#mobileMenu"></button>
                   </li>
@@ -195,6 +202,7 @@ AppAsset::register($this);
                             ['label' => 'Банкротное имущество', 'url' => ['/bankrupt'], 'items' => $bankruptLotsCategoryMenu],
                             ['label' => 'Арестованное имущество', 'url' => ['/arrest'], 'items' => $arrestLotsCategoryMenu],
                             ['label' => 'Имущество организаций', 'url' => ['/zalog'], 'items' => $ownersMenu],
+                            ['label' => 'Муниципальное имущество', 'url' => ['/municipal'], 'items' => $municipaltLotsCategoryMenu],
                           ]],
                           ['label' => 'О компании', 'url' => ['pages/about'], 'items' => [
                             ['label' => 'О нас', 'url' => ['pages/about']],
@@ -355,7 +363,7 @@ AppAsset::register($this);
                     <span>
                       8 (800) 600-33-05
                     </span>
-                    <img src="img/telephone.svg" alt="icon_phone" class="link-mobile__icon">
+                    <img src="<?= Url::base() ?>/img/telephone.svg" alt="icon_phone" class="link-mobile__icon">
                   </a>
                 
                     <div class="col-lg-4">

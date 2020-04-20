@@ -27,7 +27,7 @@ class DocumentsBankrupt extends Module
         $parser->tableNameFrom = 'uds.obj$casefiles';
         $parser->tableIdFrom = $doc->id;
 
-        $chekDoc = Documents::find()->where(['oldId' => $doc->id])->all();
+        $chekDoc = Documents::find()->where(['oldId' => $doc->id, 'tableTypeId' => 3])->all();
 
         if (!empty($chekDoc[0])) {
             $parser->message = 'Был добавлен';

@@ -23,16 +23,8 @@ use Yii;
  * @property int|null $ownerId
  * @property string|null $access
  */
-class UsersEditor extends \yii\db\ActiveRecord
+class UsersEditor extends \common\models\User
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName()
-    {
-        return 'site.user';
-    }
-
     /**
      * {@inheritdoc}
      */

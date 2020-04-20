@@ -12,6 +12,7 @@ try {
     $priceClass = 'text-primary';
 }
 
+$lotOrganizatioun = '';
 if ($lot->torg->typeId == 1) {
     $lotType = 'Банкротное имущество';
     $lotTypeClass = 'lot__bankrupt';
@@ -22,11 +23,11 @@ if ($lot->torg->typeId == 1) {
     $lotType = 'Имущество организации';
     $lotTypeClass = 'lot__zalog';
     $lotOrganizatioun = $lot->torg->owner->title;
+} else if ($lot->torg->typeId == 4){
+    $lotType = 'Муниципально имущество';
+    $lotTypeClass = 'lot__municipal';
 }
 
-?>
-
-<?
 $isCategory = 
 $lot->category->categoryId == '2' ||
 $lot->category->categoryId == '3' ||
@@ -54,23 +55,23 @@ $lot->category->categoryId == '1102';
                     
                     <div class="image image-galery">
 
-                        <?if(
-                            !$lot[info][address][geo_lat] && 
-                            !$lot[info][address][geo_lon] &&
+                        <?php if(
+                            !$lot['info']['address']['geo_lat'] && 
+                            !$lot['info']['address']['geo_lon'] &&
                             !$lot->images[0]['min'] || (!$isCategory && !$lot->images[0]['min'])):
                         ?>
                             <img src="img/img.svg" alt="" />
-                        <?endif;?>
+                        <?php endif; ?>
 
-                        <?= ($lot->images[0]['min'])? '<img src="'.$lot->images[0]['min'].'" alt="" />'  : '';?>    
-                        <?= ($lot->images[1]['min'])? '<img src="'.$lot->images[1]['min'].'" alt="" />'  : '';?>
-                        <?= ($lot->images[2]['min'])? '<img src="'.$lot->images[2]['min'].'" alt="" />'  : '';?>
-                        <?= ($lot->images[3]['min'])? '<img src="'.$lot->images[3]['min'].'" alt="" />'  : '';?>
-                        <?= ($lot->images[4]['min'])? '<img src="'.$lot->images[4]['min'].'" alt="" />'  : '';?>
-                        <?if($isCategory):?>
-                            <?= ($lot[info][address][geo_lat] && $lot[info][address][geo_lon])? '<img src="https://static-maps.yandex.ru/1.x/?ll='.$lot[info][address][geo_lon].','.$lot[info][address][geo_lat].'&size=300,250&z=16&l=sat&pt='.$lot[info][address][geo_lon].','.$lot[info][address][geo_lat].',pm2gnl" alt="" />'  : '';?>
-                            <?= ($lot[info][address][geo_lat] && $lot[info][address][geo_lon])? '<img src="https://static-maps.yandex.ru/1.x/?ll='.$lot[info][address][geo_lon].','.$lot[info][address][geo_lat].'&size=300,250&z=13&l=sat&pt='.$lot[info][address][geo_lon].','.$lot[info][address][geo_lat].',pm2gnl" alt="" />'  : '';?>
-                        <?endif;?>
+                        <?= isset($lot->images[0]['min'])? '<img src="'.$lot->images[0]['min'].'" alt="" />'  : '';?>    
+                        <?= isset($lot->images[1]['min'])? '<img src="'.$lot->images[1]['min'].'" alt="" />'  : '';?>
+                        <?= isset($lot->images[2]['min'])? '<img src="'.$lot->images[2]['min'].'" alt="" />'  : '';?>
+                        <?= isset($lot->images[3]['min'])? '<img src="'.$lot->images[3]['min'].'" alt="" />'  : '';?>
+                        <?= isset($lot->images[4]['min'])? '<img src="'.$lot->images[4]['min'].'" alt="" />'  : '';?>
+                        <?php if($isCategory): ?>
+                            <?= (isset($lot['info']['address']['geo_lat']) && $lot['info']['address']['geo_lon'])? '<img src="https://static-maps.yandex.ru/1.x/?ll='.$lot['info']['address']['geo_lon'].','.$lot['info']['address']['geo_lat'].'&size=300,250&z=16&l=sat&pt='.$lot['info']['address']['geo_lon'].','.$lot['info']['address']['geo_lat'].',pm2gnl" alt="" />'  : '';?>
+                            <?= (isset($lot['info']['address']['geo_lat']) && $lot['info']['address']['geo_lon'])? '<img src="https://static-maps.yandex.ru/1.x/?ll='.$lot['info']['address']['geo_lon'].','.$lot['info']['address']['geo_lat'].'&size=300,250&z=13&l=sat&pt='.$lot['info']['address']['geo_lon'].','.$lot['info']['address']['geo_lat'].',pm2gnl" alt="" />'  : '';?>
+                        <?php endif; ?>
                         <div class="image-galery__control"></div>
 
                     </div>
@@ -106,7 +107,7 @@ $lot->category->categoryId == '1102';
                         <hr>
                         <ul class="item-meta lot-block__info">
                             <li>
-                                Организация: <span class="<?=($lot->archive)? 'text-muted' : '' ?>"> <?= $lot->torg->owner->title?></span>
+                                Организация: <span class="<?=($lot->archive)? 'text-muted' : '' ?>"> <?= isset($lot->torg->owner) ? $lot->torg->owner->title : '' ?></span>
                             </li>
                         </ul>
                         <? } ?>

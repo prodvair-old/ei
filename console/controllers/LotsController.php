@@ -5,9 +5,13 @@ use Yii;
 use yii\console\Controller;
 
 use console\models\lots\LotsBankrupt;
+use console\models\lots\LotsBankruptStatus;
+use console\models\lots\LotsArcive;
 
 use common\models\Query\Bankrupt\Lots;
+use common\models\Query\Bankrupt\Purchaselots;
 use common\models\Query\Arrest\LotsArrest;
+use common\models\Query\Municipal\LotsMunicipal;
 
 use common\models\Query\LotsCategory;
 
@@ -138,6 +142,61 @@ class LotsController extends Controller
         echo "Завершение парсинга \n";
     }
 
+    // Статус лота Банкротного имущества
+    // php yii lots/bankrupt-status
+    public function actionBankruptStatus($limit = 100, $delay = 'y', $sort = 'new')
+    {
+        error_reporting(0);
+        
+        echo 'Парсинг статусов торгов (bailiff.purchaselots)';
+        $count = Purchaselots::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['or', ['parser.checked' => true], ['parser.statusId' => 4]])->count();
+        echo "\nКоличество записей осталось: $count. \n";
+        
+        $parserCount = 0;
+
+        if ($count > 0) {
+            $lots = Purchaselots::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['or', ['parser.checked' => true], ['parser.statusId' => 4]])->limit($limit)->orderBy('"pheLotId" '.(($sort == 'new')? 'DESC' : 'ASC'))->all();
+
+            echo "Ограничения записей $limit. \n";
+
+            if (!empty($lots[0])) {
+                echo "Данные взяты из быза. \n";
+
+                foreach ($lots as $lot) {
+                    $parsingLotStatus = LotsBankruptStatus::id($lot->pheLotId);
+
+                    if ($parsingLotStatus && $parsingLotStatus !== 2) {
+                        foreach ($lot->parser as $value) {
+                            if ($value->checked) {
+                                $parser = Parser::findOne($value->id);
+
+                                $parser->checked = false;
+
+                                $parser->update();
+                            }
+                        }
+
+                        $parserCount++;
+                    }
+
+                    if ($delay == 'y') {
+                        $sleep = rand(1, 3);
+
+                        echo "Задержка $sleep секунды. \n";
+
+                        sleep($sleep);
+                    }
+                    
+                }
+            }
+
+            echo "Загружено $parserCount записей. \n";
+        } else {
+            echo "Новых данных нет. \n";
+        }
+        echo "Завершение парсинга. \n";
+    }
+
     // Лоты Арестованного имущества
     // php yii lots/arrest
     public function actionArrest($limit = 100, $delay = 'y', $sort = 'new') 
@@ -191,5 +250,73 @@ class LotsController extends Controller
             echo "Новых данных нет. \n";
         }
         echo "Завершение парсинга. \n";
+    }
+
+    // Лоты Муниципального имущества
+    // php yii lots/municipal
+    public function actionMunicipal($limit = 100, $delay = 'y', $sort = 'new') 
+    {
+        error_reporting(0);
+        
+        echo 'Парсинг таблицы Лотов (bailiff.lots)';
+        $count = LotsMunicipal::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->count();
+        echo "\nКоличество записей осталось: $count. \n";
+        
+        $parserCount = 0;
+
+        if ($count > 0) {
+            $lots = LotsMunicipal::find()->joinWith('parser')->where(['parser.id' => Null])->orWhere(['parser.checked' => true])->limit($limit)->orderBy('lotId '.(($sort = 'new')? 'DESC' : 'ASC'))->all();
+
+            echo "Ограничения записей $limit. \n";
+
+            if (!empty($lots[0])) {
+                echo "Данные взяты из быза. \n";
+
+                foreach ($lots as $lot) {
+                    $parsingLot = \console\models\lots\LotsMunicipal::id($lot->lotId);
+
+                    if ($parsingLot && $parsingLot !== 2) {
+                        foreach ($lot->parser as $value) {
+                            if ($value->checked) {
+                                $parser = Parser::findOne($value->id);
+
+                                $parser->checked = false;
+
+                                $parser->update();
+                            }
+                        }
+
+                        $parserCount++;
+                    }
+
+                    if ($delay == 'y') {
+                        $sleep = rand(1, 3);
+
+                        echo "Задержка $sleep секунды. \n";
+
+                        sleep($sleep);
+                    }
+                    
+                }
+            }
+
+            echo "Загружено $parserCount записей. \n";
+        } else {
+            echo "Новых данных нет. \n";
+        }
+        echo "Завершение парсинга. \n";
+    }
+
+    // Проверка архивных лотов
+    // php yii lots/archive
+    public function actionArchive($limit = 100)
+    {
+        echo "Запуск проверки \n";
+
+        echo "Ограничения записей $limit. \n";
+
+        echo "Обновлено: ".LotsArcive::checking($limit)." записей \n";
+
+        echo 'Конец проверки.';
     }
 }  

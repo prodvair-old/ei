@@ -4,6 +4,8 @@ namespace common\models\Query\Lot;
 use yii\db\ActiveRecord;
 
 use Yii;
+use yii\queue\cli\Queue;
+
 use common\models\Query\LotsCategory;
 use common\models\Query\WishList;
 use common\models\Query\PageViews;
@@ -15,15 +17,31 @@ use common\models\Query\Lot\Participants;
 use common\models\Query\Lot\Banks;
 use common\models\Query\Lot\Torgs;
 
+use common\jobs\KeepNotificationJob;
+
 class Lots extends ActiveRecord
 {
+    const EVENT_NEW_PICTURE     = 'new_picture'; // Добавлено новое фото к лоту
+    const EVENT_NEW_REPORT      = 'new_report'; // Добавлен новый отчет к лоту
+    const EVENT_PRICE_REDUCTION = 'price_reduction'; // Снижена цена на лот
+    
     public $whishCount;
     public $rank;
+
+    public function init()
+    {
+        parent::init();
+
+        $this->on(self::EVENT_NEW_PICTURE,     function($event) { $this->notifyObservers($event); });
+        $this->on(self::EVENT_NEW_REPORT,      function($event) { $this->notifyObservers($event); });
+        $this->on(self::EVENT_PRICE_REDUCTION, function($event) { $this->notifyObservers($event); });
+    }
 
     public static function tableName()
     {
         return '"eiLot".{{lots}}';
     }
+    
     public static function getDb()
     {
         return Yii::$app->get('db');
@@ -41,6 +59,7 @@ class Lots extends ActiveRecord
             foreach ($category->subCategorys as $key => $subCategory) {
                 switch ($this->torg->type) {
                     case 'bankrupt':
+                        if (isset($subCategory->bankruptCategorys))
                             foreach ($subCategory->bankruptCategorys as $id) {
                                 if ($this->category->categoryId == $id) {
                                     $url = $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
@@ -48,6 +67,14 @@ class Lots extends ActiveRecord
                             }
                         break;
                     case 'arrest':
+                        if (isset($subCategory->arrestCategorys))
+                            foreach ($subCategory->arrestCategorys as $id) {
+                                if ($this->category->categoryId == $id) {
+                                    $url = $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
+                                }
+                            }
+                        break;
+                    case 'municipal':
                             foreach ($subCategory->arrestCategorys as $id) {
                                 if ($this->category->categoryId == $id) {
                                     $url = $this->torg->type.'/'.$category->translit_name.'/'.$subCategory->nameTranslit.'/'.$this->id;
@@ -62,7 +89,7 @@ class Lots extends ActiveRecord
                 }
             }
         }
-        if ($url) {
+        if (isset($url) && $url) {
             return $url;
         } else {
             return $this->torg->type.'/prochee/prochee/'.$this->id;
@@ -184,11 +211,56 @@ class Lots extends ActiveRecord
         ]);
     }
 
-    // Связь с таблицей статистики
+    /**
+     * Получить запрос для выборки подписчиков
+     * 
+     * @return yii\db\Query
+     */
     public function getWishlist()
     {
         return $this->hasMany(WishList::className(), ['lotId' => 'id'])->alias('wishList');
     }
+
+    /**
+     * Получить список подписчиков
+     * 
+     * @return yii\db\ActiveRecords
+     */
+    public function getObservers()
+    {
+        return $this->wishlist;
+    }
+
+    /**
+     * Известить подписчиков о произошедшем событии
+     * 
+     * @param array $data as in yii\base\Event
+     */
+    public function notifyObservers($event)
+    {
+        foreach($this->observers as $observer) {
+            if ($observer->user->needNotify($event->name))
+                $this->keepNotification([
+                    'user_id' => $observer->userId,
+                    'lot_id'  => $this->id,
+                    'event'   => $event->name,
+                ]);
+        }
+    }
+
+    /**
+     * Сохранить информацию о событии в общем списке
+     * 
+     * @param \yii\base\Event $event
+     * @param array $data
+     */
+    public function keepNotification($data)
+    {
+        $file = fopen(Yii::$app->queue->path . '/data.csv', 'a');
+        fwrite($file, "{$data['user_id']},{$data['lot_id']},{$data['event']}\n");
+        fclose($file);
+    }
+    
     public function getViews()
     {
         return $this->hasMany(PageViews::className(), ['page_id' => 'oldId'])->alias('views')->onCondition([

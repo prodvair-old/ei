@@ -45,7 +45,7 @@ $dataProvider = new ActiveDataProvider([
                             'format' => 'ntext',
                             'label' => 'ФИО',
                             'value' => function ($model) {
-                                return $model->info['lastname'].' '.$model->info['firstname'].' '.$model->info['middlename'];
+                                return $model->getFullName();
                             }
                         ],
                         [

@@ -169,7 +169,7 @@ class SearchLot extends Model
                             }
                             $otherCategoryArrest .= ' "categorys"."categoryId" = '.$value;
                         }
-                        $orWhere[] = 'CASE WHEN "torg"."typeId" = 2
+                        $orWhere[] = 'CASE WHEN "torg"."typeId" = 2 OR "torg"."typeId" = 4
                                 THEN '.$otherCategoryArrest.'
                             END';
                     }
@@ -208,7 +208,7 @@ class SearchLot extends Model
                             }
                             $otherCategoryArrest .= ' "categorys"."categoryId" = '.$value;
                         }
-                        $orWhere[] = 'CASE WHEN "torg"."typeId" = 2
+                        $orWhere[] = 'CASE WHEN "torg"."typeId" = 2 OR "torg"."typeId" = 4
                                 THEN '.$otherCategoryArrest.'
                             END';
                     }

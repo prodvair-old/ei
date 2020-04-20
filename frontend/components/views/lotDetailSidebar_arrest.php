@@ -13,10 +13,11 @@ use frontend\components\NumberWords;
             <h4 class="line-125"> <?= Yii::$app->formatter->asCurrency($lot->startPrice)?> </h4>
             
             <ul class="border-top mt-20 pt-15">
-                <li class="clearfix">Статус<span class="float-right"><?=$lotStatus?></span></li>
+                <li class="clearfix">Статус<span class="float-right"><?=$lot->status?></span></li>
                 <li class="clearfix">Шаг<span class="float-right"><?=($lot->stepTypeId == 1)? $lot->step.'% ('.Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->step)).')' : Yii::$app->formatter->asCurrency($lot->step) ?></span></li>
                 <li class="clearfix">Задаток<span class="float-right"><?=($lot->depositTypeId == 1)? $lot->deposit.'% ('.Yii::$app->formatter->asCurrency((($lot->price / 100) * $lot->deposit)).')' : Yii::$app->formatter->asCurrency($lot->deposit) ?></span></li>
                 <li class="clearfix">Минимальная цена<span class="float-right"><?=Yii::$app->formatter->asCurrency($lot->info['minPrice']) ?></span></li>
+                <li class="clearfix">Конечная цена<span class="float-right"><?=Yii::$app->formatter->asCurrency($lot->info['finalPrice']) ?></span></li>
                 <?= ($lot->info['sellType'] != null)? '<li class="clearfix">Основания реализации<span class="float-right">'.$lot->info['sellType'].'</span></li>' : ''?>
                 <?= ($lot->torg->info['auctionType'] != null)? '<li class="clearfix">Тип торгов<span class="float-right">'.$lot->torg->info['auctionType'].'</span></li>' : ''?>
                 <li class="clearfix border-top"><?= ($lot->torg->info['url'] != null)? '<a href="'.$lot->torg->info['url'].'" target="_blank" rel="nofollow">Сайт организатора торгов</a>' : null ?></li>

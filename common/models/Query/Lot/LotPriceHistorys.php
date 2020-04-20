@@ -1,9 +1,9 @@
 <?php
 namespace common\models\Query\Lot;
 
+use Yii;
 use yii\db\ActiveRecord;
 
-use Yii;
 use common\models\Query\Lot\Lots;
 
 class LotPriceHistorys extends ActiveRecord
@@ -21,5 +21,16 @@ class LotPriceHistorys extends ActiveRecord
     public function getLot()
     {
         return $this->hasOne(Lots::className(), ['id' => 'lotId'])->alias('lot'); // Лот
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert,$changedAttributes)
+    {
+        parent::afterSave($insert,$changedAttributes);
+        if ($insert) {
+            $this->lot->trigger(Lots::EVENT_PRICE_REDUCTION);
+        }
     }
 }

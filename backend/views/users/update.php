@@ -13,7 +13,7 @@ use common\models\Query\Lot\Owners;
 
 use backend\models\UserAccess;
 
-$this->params['h1'] = 'Редактирование пользователя - '.$model->info['lastname'].' '.$model->info['firstname'].' '.$model->info['middlename'];
+$this->params['h1'] = 'Редактирование пользователя - '.$model->getFullName();
 $this->title = 'Редактирование пользователя - '.$model->username;
 
 $role = [

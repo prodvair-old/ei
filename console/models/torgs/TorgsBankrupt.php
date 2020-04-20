@@ -49,7 +49,7 @@ class TorgsBankrupt extends Module
             if ($torg->description != null && $torg->tradetype != null) {
 
                 // Арбитражный управляющий
-                if (!$manager = Managers::find()->where(['oldId' => $torg->case->arbitr->id])->one()) {
+                if (!$manager = Managers::find()->where(['oldId' => $torg->case->arbitr->id, 'typeId' => 1])->one()) {
                     echo "Арбитражниый управляющии для связи отцуствует! \nПробуем спарсить данный Арбитражного управляющего. \n";
 
                     $parsingManager = ArbitrsBankrupt::id($torg->case->arbitr->id);
@@ -66,7 +66,7 @@ class TorgsBankrupt extends Module
 
                         echo "Отсутствует Арбитражный управляющии...\n";
                     } else {
-                        $manager = Managers::find()->where(['oldId' => $torg->case->arbitr->id])->one();
+                        $manager = Managers::find()->where(['oldId' => $torg->case->arbitr->id, 'typeId' => 1])->one();
                     }
                 }
 

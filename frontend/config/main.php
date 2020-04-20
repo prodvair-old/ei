@@ -116,6 +116,8 @@ return [
 
         '/profile'               => 'user/index',
 
+        '/profile/notification'  => 'profile/notification',
+
         '/profile/setting'       => 'user/setting',
         '/profile/setting_image' => 'user/setting_image',
 
@@ -135,7 +137,8 @@ return [
         '/profile/lot-remove'    => 'user/lot-remove',
         '/profile/lot-status'    => 'user/lot-status',
 
-
+        '/wishlist/unsubscribe' => 'wishlist/unsubscribe',
+        
         '/lots-arrest-<limit:\d+>.xlsx' => 'lots/arrest',
         '/arbitrs-<limit:\d+>.xlsx' => 'lots/arbitrs',
 
@@ -149,7 +152,7 @@ return [
         '/map'              => 'lot/map',
         '/load-category'    => 'lot/load_category',
         '/wish-list-edit'   => 'lot/wish_list',
-
+        
         '/<type>'                                     => 'lot/index',
         '/<type>/<category>'                          => 'lot/search',
         '/<type>/<category>/<subcategory>'            => 'lot/search',
@@ -158,13 +161,14 @@ return [
 
       ]
     ],
+    /*
     'assetManager' => [
       'basePath' => '@webroot/assets',
       'baseUrl' => '@web/assets'
     ],
     'request' => [
       'baseUrl' => ''
-    ]
+    ],*/
   ],
   'params' => $params,
 ];

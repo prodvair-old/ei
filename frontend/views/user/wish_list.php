@@ -1,4 +1,4 @@
-<?
+<?php
 use yii\widgets\Breadcrumbs;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -9,7 +9,7 @@ use common\models\Query\Lot\Lots;
 use frontend\components\LotBlock;
 use frontend\components\ProfileMenu;
 
-$name = (\Yii::$app->user->identity->info['firstname'] || \Yii::$app->user->identity->info['lastname'])? \Yii::$app->user->identity->info['firstname'].' '.\Yii::$app->user->identity->info['lastname'] : \Yii::$app->user->identity->info['contacts']['emails'][0];
+$name = Yii::$app->user->identity->getFullName();
 
 $this->title = "Избранные – $name";
 $this->params['breadcrumbs'][] = [
@@ -22,6 +22,7 @@ $this->params['breadcrumbs'][] = [
     'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
     'url' => ['user/wish_list']
 ];
+$this->registerJsVar( 'lotType', '', $position = yii\web\View::POS_HEAD );
 ?>
 
 <section class="page-wrapper page-detail">
@@ -41,7 +42,7 @@ $this->params['breadcrumbs'][] = [
                             'tag' => 'ol',
                             'activeItemTemplate' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
                             'homeLink' => ['label' => '<i class="fas fa-home"></i>', 'url' => '/'],
-                            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                            'links' => $this->params['breadcrumbs'],
                         ]) ?>
                     </nav>
                     
@@ -75,7 +76,7 @@ $this->params['breadcrumbs'][] = [
                                 
                                 <div class="content">
                                     <h6><?=$name?></h6>
-                                    <p class="mb-15"><?=(\Yii::$app->user->identity->info['firstname'] || \Yii::$app->user->identity->info['lastname'])? \Yii::$app->user->identity->info['contacts']['emails'][0]: ''?></p>
+                                    <p class="mb-15"><?= Yii::$app->user->identity->getFullName() ?></p>
                                 </div>
                                 
                             </div>
@@ -106,7 +107,7 @@ $this->params['breadcrumbs'][] = [
 
 
                         <div data-count="<?= $wishCount?>" class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list" id="">
-                            <? if ($wishList[0]->lots) {
+                            <?php if ($wishList[0]->lots) {
                                 foreach ($wishList as $wish) { echo LotBlock::widget(['lot' => $wish->lots]); } 
                             } else {
                                 echo "<div class='p-15 font-bold'>Пока нет избранных лотов по арестованному имуществу</div>";

@@ -1,10 +1,10 @@
 <?php
-namespace common\models\Query\Arrest;
+namespace common\models\Query\Municipal;
 
 use Yii;
 use yii\db\ActiveRecord;
 
-use common\models\Query\Arrest\Documents;
+use common\models\Query\Municipal\Documents;
 
 use common\models\Query\Lot\Parser;
 
@@ -23,7 +23,7 @@ class Torgs extends ActiveRecord
     public static function find()
     {
         return parent::find()->onCondition([
-            'trgBidKindId' => 13
+            'trgBidKindId' => 8
         ]);
     }
 

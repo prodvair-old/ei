@@ -53,7 +53,7 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
              'title'=>'Документы лота - '.count($lot->documents),
         ])?>
         <div class="row">
-            <? foreach ($lot->documents as $document) { 
+            <?php foreach ($lot->documents as $document): 
                 switch ($document->format) {
                     case 'doc':
                         $icon = '<i class="fa fa-file-word-o"></i>';
@@ -75,13 +75,12 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
                         break;
                     default:
                         $icon = '<i class="fa fa-file-o"></i>';
-                        break;
                 }    
             ?>
                 <div class="col-lg-12">
-                    <a href="<?=$document->url?>" class="btn" target="_blank" download><?=$icon?> <?=$document->name?></a>
+                    <a href="<?= $document->url ?>" class="btn" target="_blank" download><?= $icon ?> <?= $document->name ?></a>
                 </div>
-            <? } ?>
+            <?php endforeach; ?>
         </div>
 <?php CollapseBox::end()?>
 
@@ -92,7 +91,7 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
              'title'=>'Документы торга - '.count($lot->torg->documents),
         ])?>
         <div class="row">
-            <? foreach ($lot->torg->documents as $document) { 
+            <?php foreach ($lot->torg->documents as $document): 
                 switch ($document->format) {
                     case 'doc':
                         $icon = '<i class="fa fa-file-word-o"></i>';
@@ -118,9 +117,9 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
                 }    
             ?>
                 <div class="col-lg-12">
-                    <a href="<?=$document->url?>" class="btn" target="_blank" download><?=$icon?> <?=$document->name?></a>
+                    <a href="<?= $document->url ?>" class="btn" target="_blank" download><?= $icon ?> <?= $document->name ?></a>
                 </div>
-            <? } ?>
+            <?php endforeach; ?>
         </div>
 <?php CollapseBox::end()?>
 
@@ -128,10 +127,11 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
              'type'=>LteConst::TYPE_DEFAULT,
              'isSolid'=>true,
              'tooltip'=>'Документы дел по лоту',
-             'title'=>'Документы дел по лоту - '.count($lot->torg->case->documents),
+             'title'=>'Документы дел по лоту - ' . (isset($lot->torg->case) ? count($lot->torg->case->documents) : 0),
         ])?>
         <div class="row">
-            <? foreach ($lot->torg->case->documents as $document) { 
+            <?php if (isset($lot->torg->case)): ?>
+            <?php foreach ($lot->torg->case->documents as $document): 
                 switch ($document->format) {
                     case 'doc':
                         $icon = '<i class="fa fa-file-word-o"></i>';
@@ -157,9 +157,10 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
                 }    
             ?>
                 <div class="col-lg-12">
-                    <a href="<?=$document->url?>" class="btn" target="_blank" download><?=$icon?> <?=$document->name?></a>
+                    <a href="<?= $document->url ?>" class="btn" target="_blank" download><?= $icon ?> <?= $document->name ?></a>
                 </div>
-            <? } ?>
+            <?php endforeach; ?>
+            <?php endif; ?>
         </div>
 <?php CollapseBox::end()?>
 
@@ -182,11 +183,13 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
         </div>
 
         <div class="row">
-            <? foreach ($lot->images as $id => $image) { ?>
+            <?php if (isset($lot->images) && count($lot->images) > 0): ?>
+            <?php foreach ($lot->images as $id => $image): ?>
                 <div class="col-lg-2">
                     <?=Html::a('<img src="'.Yii::$app->params['frontLink'].'/'.$image['min'].'" style="max-width: 100%" alt="">', Url::to(['lots/image-del', 'id' => $id, 'lotId' => $lot->id]),['class' => 'btn', 'title' => 'Удалить', 'aria-label' => 'Удалить', 'data-pjax' => 1, 'data-confirm' => 'Вы уверены, что хотите Удалить Картинку №'.$id.' у этого лота?', 'data-method' => 'post'])?>
                 </div>
-            <? } ?>
+            <?php endforeach; ?>
+            <?php endif; ?>
             <div class="col-lg-12">
                 <br>
                 <?= $form->field($modelLot, 'uploads[]')->fileInput(['multiple' => true, 'accept' => 'image/jpeg,image/png,image/jpg']) ?>
@@ -272,30 +275,30 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
         <div class="my-field"></div>
 
         <div class="row">
-            <? foreach ($modelLot->info as $key => $info): ?>
-                <?if (is_array($info)) { ?>
+            <?php foreach ($modelLot->info as $key => $info): ?>
+                <?php if (is_array($info)): ?>
                     <div class="col-lg-12">
                         <hr>
 
                         <h4><?= $key ?></h4>
 
                         <div class="row">
-                            <? foreach ($info as $name => $value): ?>
+                            <?php foreach ($info as $name => $value): ?>
                                 <div class="col-lg-6">
                                     <?= $form->field($modelLot, "info[$key][$name]")->textInput(['value'=>$value])->label($name) ?>
                                 </div>
-                            <? endforeach ?>
+                            <?php endforeach; ?>
                         </div>
 
                         <hr>
                     </div>
 
-                <? } else { ?>
+                <?php else: ?>
                     <div class="col-lg-12">
                         <?= $form->field($modelLot, "info[$key]")->textInput(['value'=>$info])->label($key) ?>
                     </div>
-                <? } ?>
-            <? endforeach ?>
+                <?php endif; ?>
+            <?php endforeach; ?>
         </div>
 
         <div id="ajax-content-lot" class="row"></div>
@@ -342,6 +345,7 @@ $this->title = 'Редактирование лота - '.$modelLot->title;
                             1 => 'Банкротное имущество',
                             2 => 'Арестованное имущество',
                             3 => 'Залоговое имущество',
+                            4 => 'Муниципальное имущество',
                         ], ['id' => 'type-select']) ?>
                 </div>
             <? } ?>

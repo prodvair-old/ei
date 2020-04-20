@@ -33,7 +33,7 @@ class SearchForm extends Widget
                     $model = new SearchLot();
 
                     $type = $this->type;
-                    $model->type = $url;
+                    $model->type = $this->url;
                     
                     $typeZalog  = $this->typeZalog;
                     $btnColor   = $this->btnColor;

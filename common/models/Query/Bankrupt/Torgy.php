@@ -28,7 +28,7 @@ class Torgy extends ActiveRecord
     }
     public static function getDb()
     {
-        return Yii::$app->get('db');
+        return Yii::$app->get('obj');
     }
     public function getTorgyMsgId() {
         return $this->msgid;

@@ -1,11 +1,19 @@
 <?php
 return [
+    'bootstrap' => [
+        'queue',
+    ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
+        'queue' => [
+            'class' => \yii\queue\file\Queue::class,
+            'path' => '@console/runtime/queue',
+            'as prep' => \common\behaviors\PrepareNotificationBehavior::class,
+        ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'useFileTransport' => false,
@@ -70,6 +78,26 @@ return [
             'class' => 'yii\caching\FileCache',
         ],
         'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn'      => 'pgsql:host=localhost;dbname=uds',
+            'username' => 'bankrupt',
+            'password' => 'bankrupt',
+            'charset'  => 'utf8',
+            'tablePrefix' => 'eidb"."',
+            'emulatePrepare' => false,
+            'schemaMap' => [
+                'pgsql'=> [
+                    'class'=>'yii\db\pgsql\Schema',
+                    'defaultSchema' => 'eidb' //specify your schema here
+                ]
+            ],
+
+            // Schema cache options (for production environment)
+            'enableSchemaCache' => false,
+            'schemaCacheDuration' => 6,
+            'schemaCache' => 'cache',
+        ],
+        'obj' => [
             'class' => 'yii\db\Connection',
             'dsn'      => 'pgsql:host=localhost;dbname=uds',
             'username' => 'bankrupt',

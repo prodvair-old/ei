@@ -38,7 +38,7 @@ use common\models\Query\LotsCategory;
  * @property int|null $oldId
  * @property int|null $bankId
  */
-class LotEditor extends \yii\db\ActiveRecord
+class LotEditor extends \common\models\Query\Lot\Lots
 {
     public $uploads;
     public $categorys;
@@ -50,7 +50,7 @@ class LotEditor extends \yii\db\ActiveRecord
     {
         return 'eiLot.lots';
     }
-
+    
     /**
      * {@inheritdoc}
      */
@@ -136,6 +136,22 @@ class LotEditor extends \yii\db\ActiveRecord
                 }
                 break;
             case '2':
+                foreach ($categoryItem->arrest_categorys as $key => $subcategory) {
+                    foreach ($this->subCategorys as $categoryId) {
+                        if ($key == $categoryId) {
+                            $newCategory = new LotCategorys();
+        
+                            $newCategory->lotId         = $this->id;
+                            $newCategory->categoryId    = $categoryId;
+                            $newCategory->name          = $subcategory['name'];
+                            $newCategory->nameTranslit  = $subcategory['translit'];
+        
+                            $newCategory->save();
+                        }
+                    }
+                }
+                break;
+            case '4':
                 foreach ($categoryItem->arrest_categorys as $key => $subcategory) {
                     foreach ($this->subCategorys as $categoryId) {
                         if ($key == $categoryId) {

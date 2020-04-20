@@ -1,4 +1,4 @@
-<?
+<?php
 
 use yii\widgets\Breadcrumbs;
 use yii\widgets\ActiveForm;
@@ -13,7 +13,8 @@ use frontend\components\LotBlockZalog;
 use frontend\components\ProfileMenu;
 use frontend\components\SearchForm;
 
-$name = (\Yii::$app->user->identity->info['firstname'] || \Yii::$app->user->identity->info['lastname']) ? \Yii::$app->user->identity->info['firstname'] . ' ' . \Yii::$app->user->identity->info['lastname'] : \Yii::$app->user->identity->info['contacts']['emails'][0];
+$name = Yii::$app->user->identity->getFullName();
+
 $this->title = "Мои лоты – $name";
 $this->params['breadcrumbs'][] = [
   'label' => 'Профиль',
@@ -48,7 +49,7 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
               'tag' => 'ol',
               'activeItemTemplate' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
               'homeLink' => ['label' => '<i class="fas fa-home"></i>', 'url' => '/'],
-              'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+              'links' => $this->params['breadcrumbs'],
             ]) ?>
           </nav>
 
@@ -84,7 +85,7 @@ $owner = OwnerProperty::findOne(Yii::$app->user->identity->ownerId);
 
                 <div class="content">
                   <h6><?= $name ?></h6>
-                  <p class="mb-15"><?= (\Yii::$app->user->identity->info['firstname'] || \Yii::$app->user->identity->info['lastname']) ? \Yii::$app->user->identity->info['contacts']['emails'][0] : '' ?></p>
+                  <p class="mb-15"><?= Yii::$app->user->identity->getFullName() ?></p>
                 </div>
 
               </div>
