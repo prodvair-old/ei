@@ -16,13 +16,13 @@ class m200415_132026_torg extends Migration
             'etp_id'       => $this->bigInteger()->notNull(),
             'case_id'      => $this->bigInteger()->notNull(),
             
-            'property'     => $this->string(12)->notNull(),
+            'property'     => $this->smallInteger()->notNull(),
             'description'  => $this->text()->notNull(),
             
-            'started_at'   => $this->string()->notNull(),
-            'end_at'       => $this->string()->notNull(),
-            'completed_at' => $this->string()->notNull(),
-            'published_at' => $this->string()->notNull(),
+            'started_at'   => $this->integer()->notNull(),
+            'end_at'       => $this->integer()->notNull(),
+            'completed_at' => $this->integer()->notNull(),
+            'published_at' => $this->integer()->notNull(),
             
             'auction'      => $this->smallInteger()->notNull(),
 
@@ -30,11 +30,11 @@ class m200415_132026_torg extends Migration
             'updated_at'   => $this->integer()->notNull(),
         ]);
         
-        $this->createIndex('idx-model-parent_id', self::TABLE, ['model', 'parent_id']);
+		$this->addForeignKey('fk-torg-etp',  self::TABLE, 'etp_id', '{{%etp}}',  'id', 'restrict', 'restrict');
+		$this->addForeignKey('fk-torg-case', self::TABLE, 'etp_id', '{{%case}}', 'id', 'restrict', 'restrict');
 
 		$this->addCommentOnColumn(self::TABLE, 'etp_id', 'Электронная торговая площадка');
 		$this->addCommentOnColumn(self::TABLE, 'case_id', 'Дело');
-        
 		$this->addCommentOnColumn(self::TABLE, 'property', 'Тип имущества - должник, залог');
 		$this->addCommentOnColumn(self::TABLE, 'description', 'Описание');
 		$this->addCommentOnColumn(self::TABLE, 'started_at', 'Назначенная дата начала торга');
