@@ -21,8 +21,8 @@ class m200421_050742_wish_list extends Migration
             'created_at' => $this->integer()->notNull(),
         ]);
 
-        $this->createIndex('idx-post_id',   self::TABLE, 'lot_id');
-        $this->createIndex('idx-author_id', self::TABLE, 'user_id');
+        $this->createIndex('idx-wish_list-lot_id',   self::TABLE, 'lot_id');
+        $this->createIndex('idx-wish_list-user_id',  self::TABLE, 'user_id');
 
         $this->addForeignKey('fk-wish_list-lot',  self::TABLE, 'lot_id',  '{{%lot}}',  'id', 'restrict', 'restrict');
         $this->addForeignKey('fk-wish_list-user', self::TABLE, 'user_id', '{{%user}}', 'id', 'restrict', 'restrict');

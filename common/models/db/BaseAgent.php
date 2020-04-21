@@ -12,7 +12,6 @@ use common\interfaces\PlaceInterface;
  *
  * @property integer $id
  * @property integer $who
- * @property integer $type
  * @property integer $created_at
  * @property integer $updated_at
  */

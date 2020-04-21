@@ -19,18 +19,18 @@ class m200410_083045_profile extends Migration
             'parent_id'    => $this->bigInteger()->notNull(),
             
             'inn'          => $this->string(12)->notNull(),
-            'gender'       => $this->smallInteger()->devaultValue(null),
+            'gender'       => $this->smallInteger()->defaultValue(null),
             'birthday'     => $this->integer()->notNull(),
             'phone'        => $this->string()->notNull(),
             'first_name'   => $this->string()->notNull(),
             'last_name'    => $this->string()->notNull(),
-            'middle_bname' => $this->string()->notNull(),
+            'middle_name'  => $this->string()->notNull(),
 
             'created_at'   => $this->integer()->notNull(),
             'updated_at'   => $this->integer()->notNull(),
         ]);
         
-        $this->createIndex('idx-model-parent_id', self::TABLE, ['model', 'parent_id']);
+        $this->createIndex('idx-profile-model-parent_id', self::TABLE, ['model', 'parent_id'], true);
 
 		$this->addCommentOnColumn(self::TABLE, 'model', 'Код модели, например User::INT_CODE');
 		$this->addCommentOnColumn(self::TABLE, 'parent_id', 'ID в соответствующей модели, например в User, Manager');

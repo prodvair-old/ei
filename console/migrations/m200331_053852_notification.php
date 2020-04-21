@@ -26,7 +26,10 @@ class m200331_053852_notification extends Migration
             'created_at'      => $this->integer()->notNull(),
             'updated_at'      => $this->integer()->notNull(),
         ]);
-        $this->addForeignKey ('fk-notification-user', self::TABLE, 'user_id', self::TABLE_USER, 'id', 'CASCADE');
+
+        $this->createIndex('idx-user_id',   self::TABLE, 'user_id', true);
+        
+        $this->addForeignKey ('fk-notification-user', self::TABLE, 'user_id', self::TABLE_USER, 'id', 'restrict', 'restrict');
     }
 
     /**

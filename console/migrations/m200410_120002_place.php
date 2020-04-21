@@ -29,7 +29,7 @@ class m200410_120002_place extends Migration
             'updated_at' => $this->integer()->notNull(),
         ]);
         
-        $this->createIndex('idx-model-parent_id', self::TABLE, ['model', 'parent_id'], true);
+        $this->createIndex('idx-place-model-parent_id', self::TABLE, ['model', 'parent_id'], true);
 
 		$this->addCommentOnColumn(self::TABLE, 'model', 'Код модели, например User::INT_CODE');
 		$this->addCommentOnColumn(self::TABLE, 'parent_id', 'ID в соответствующей модели, например в User, Manager');

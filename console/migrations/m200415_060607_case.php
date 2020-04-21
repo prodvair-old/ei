@@ -23,7 +23,7 @@ class m200415_060607_case extends Migration
         
 		$this->addCommentOnColumn(self::TABLE, 'reg_number', 'Регистрационный номер');
 		$this->addCommentOnColumn(self::TABLE, 'year', 'Год');
-		$this->addCommentOnColumn(self::TABLE, 'judje', 'Судья');
+		$this->addCommentOnColumn(self::TABLE, 'judge', 'Судья');
     }
 
     public function down()

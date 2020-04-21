@@ -17,16 +17,22 @@ class m200416_063504_torg_pledge extends Migration
             'user_id'  => $this->bigInteger()->notNull(),
         ]);
         
-        $this->createIndex('idx-torg-owner', self::TABLE, ['torg_id', 'owner_id']);
-        $this->createIndex('idx-torg-user',  self::TABLE, ['torg_id', 'user_id']);
+        $this->createIndex('idx-torg-torg_pledge', self::TABLE, 'torg_id', true);
 
-		$this->addCommentOnColumn(self::TABLE, 'torg_id', 'Торг');
-		$this->addCommentOnColumn(self::TABLE, 'bankrupt_id', 'Залогодержатель');
-		$this->addCommentOnColumn(self::TABLE, 'manager_id', 'Персона, оставившая залог');
+        $this->addForeignKey('fk-torg_pledge-torg',  self::TABLE, 'torg_id',  '{{%torg}}',  'id', 'restrict', 'restrict');
+        $this->addForeignKey('fk-torg_pledge-owner', self::TABLE, 'owner_id', '{{%owner}}', 'id', 'restrict', 'restrict');
+        $this->addForeignKey('fk-torg_pledge-user',  self::TABLE, 'user_id', ' {{%user}}',  'id', 'restrict', 'restrict');
+
+		$this->addCommentOnColumn(self::TABLE, 'torg_id',  'Торг');
+		$this->addCommentOnColumn(self::TABLE, 'owner_id', 'Залогодержатель');
+		$this->addCommentOnColumn(self::TABLE, 'user_id',  'Персона, оставившая залог');
     }
 
     public function down()
     {
+        $this->dropForeignKey('fk-torg_pledge-torg',  self::TABLE);
+        $this->dropForeignKey('fk-torg_pledge-owner', self::TABLE);
+        $this->dropForeignKey('fk-torg_pledge-user',  self::TABLE);
         $this->dropTable(self::TABLE);
     }
 }

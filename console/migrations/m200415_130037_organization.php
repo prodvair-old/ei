@@ -25,7 +25,7 @@ class m200415_130037_organization extends Migration
             'updated_at'   => $this->integer()->notNull(),
         ]);
         
-        $this->createIndex('idx-model-parent_id', self::TABLE, ['model', 'parent_id']);
+        $this->createIndex('idx-organization-model-parent_id', self::TABLE, ['model', 'parent_id'], true);
 
 		$this->addCommentOnColumn(self::TABLE, 'model', 'Код модели');
 		$this->addCommentOnColumn(self::TABLE, 'parent_id', 'ID в соответствующей модели, например в Bankrupt');

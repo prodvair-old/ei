@@ -20,7 +20,7 @@ use common\interfaces\ProfileInterface;
  * @property integer $created_at
  * @property integer $updated_at
  */
-class Profile extends ActiveRecord
+class Organization extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -48,7 +48,8 @@ class Profile extends ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'inn'], 'required'],
+            [['model', 'parent_id', 'title', 'inn'], 'required'],
+            [['model', 'parent_id'], 'integer'],
             ['inn', 'match', 'pattern' => '/\d{10}/'],
             ['ogrn', 'match', 'pattern' => '/\d{13}/'],
             ['reg_number', 'string', 'max' => 255],

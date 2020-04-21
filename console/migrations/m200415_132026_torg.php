@@ -46,6 +46,8 @@ class m200415_132026_torg extends Migration
 
     public function down()
     {
+		$this->dropForeignKey('fk-torg-etp',  self::TABLE);
+		$this->dropForeignKey('fk-torg-case', self::TABLE);
         $this->dropTable(self::TABLE);
     }
 }

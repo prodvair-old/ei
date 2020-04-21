@@ -17,8 +17,11 @@ class m200416_062822_torg_debtor extends Migration
             'manager_id'  => $this->bigInteger()->notNull(),
         ]);
         
-        $this->createIndex('idx-torg-bankrupt', self::TABLE, ['torg_id', 'bankrupt_id']);
-        $this->createIndex('idx-torg-manager',  self::TABLE, ['torg_id', 'manager_id']);
+        $this->createIndex('idx-torg-torg_debtor', self::TABLE, 'torg_id', true);
+
+        $this->addForeignKey('fk-torg_debtor-torg',  self::TABLE, 'torg_id',  '{{%torg}}',  'id', 'restrict', 'restrict');
+        $this->addForeignKey('fk-torg_debtor-bankrupt', self::TABLE, 'bankrupt_id', '{{%bankrupt}}', 'id', 'restrict', 'restrict');
+        $this->addForeignKey('fk-torg_debtor-manager', self::TABLE, 'manager_id', '{{%manager}}', 'id', 'restrict', 'restrict');
 
 		$this->addCommentOnColumn(self::TABLE, 'torg_id', 'Торг');
 		$this->addCommentOnColumn(self::TABLE, 'bankrupt_id', 'Банкрот');
@@ -27,6 +30,9 @@ class m200416_062822_torg_debtor extends Migration
 
     public function down()
     {
+        $this->dropForeignKey('fk-torg_debtor-torg',  self::TABLE);
+        $this->dropForeignKey('fk-torg_debtor-bankrupt', self::TABLE);
+        $this->dropForeignKey('fk-torg_debtor-manager', self::TABLE);
         $this->dropTable(self::TABLE);
     }
 }
