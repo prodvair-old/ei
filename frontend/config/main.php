@@ -75,6 +75,7 @@ return [
 
         '/test'    => 'test/index',
         '/test/str'    => 'test/str',
+        '/test/del-lots'    => 'test/del-lots',
         
         '/about'    => 'pages/about',
         '/license'  => 'pages/license',
