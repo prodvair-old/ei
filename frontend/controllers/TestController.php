@@ -106,6 +106,14 @@ class TestController extends Controller
 
         // return $lots;
     }
+    public function actionDelLots()
+    {
+        echo Lots::find()->joinWith(['torg'])->where(['publisherId' => 231, 'typeId' => 3])->count();
+        foreach (Lots::find()->joinWith(['torg'])->where(['publisherId' => 231, 'typeId' => 3])->all() as $lot) {
+            // echo $lot->trog->delete();
+            echo $lot->delete();
+        }
+    }
     public function actionIndexssa()
     {
         $json = [
