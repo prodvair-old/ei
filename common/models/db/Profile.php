@@ -8,20 +8,20 @@ use common\interfaces\ProfileInterface;
 
 /**
  * Profile model
- * Индивидуальные данные.
+ * Данные персоны.
  *
- * @property integer $id
- * @property integer $model
- * @property integer $parent_id
- * @property string  $inn
- * @property integer $gender
- * @property integer $birthday
- * @property string  $phone
- * @property string  $first_name
- * @property string  $last_name
- * @property string  $middle_name
- * @property integer $created_at
- * @property integer $updated_at
+ * @var integer $id
+ * @var integer $model
+ * @var integer $parent_id
+ * @var string  $inn
+ * @var integer $gender
+ * @var integer $birthday
+ * @var string  $phone
+ * @var string  $first_name
+ * @var string  $last_name
+ * @var string  $middle_name
+ * @var integer $created_at
+ * @var integer $updated_at
  */
 class Profile extends ActiveRecord implements ProfileInterface
 {

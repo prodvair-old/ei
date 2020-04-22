@@ -11,19 +11,21 @@ use sergmoro1\lookup\models\Lookup;
  * Lot model
  * Информация о лоте.
  *
- * @property integer $id
- * @property integer $torg_id
- * @property string  $title
- * @property text    $description
- * @property float   $start_price
- * @property float   $step
- * @property integer $step_measure
- * @property float   $deposite
- * @property integer $deposite_measure
- * @property integer $status
- * @property integer $reason
- * @property integer $created_at
- * @property integer $updated_at
+ * @var integer $id
+ * @var integer $torg_id
+ * @var string  $title
+ * @var text    $description
+ * @var float   $start_price
+ * @var float   $step
+ * @var integer $step_measure
+ * @var float   $deposite
+ * @var integer $deposite_measure
+ * @var integer $status
+ * @var integer $reason
+ * @var integer $created_at
+ * @var integer $updated_at
+ * 
+ * @property Torg $torg
  */
 class Log extends ActiveRecord
 {
@@ -132,7 +134,15 @@ class Log extends ActiveRecord
      * @return array
      */
     public static function getStatuses() {
-        return array_keys(Lookup::items('LotStatus'));
+        return [
+            self::STATUS_IN_PROGRESS,
+            self::STATUS_ANNOUNCED,
+            self::STATUS_APPLICATION,
+            self::STATUS_CANCELLED,
+            self::STATUS_COMPLETED,
+            self::STATUS_SUSPENDED,
+            self::STATUS_ARCHIVED,
+        ];
     }
 
     /**
@@ -140,7 +150,13 @@ class Log extends ActiveRecord
      * @return array
      */
     public static function getReasons() {
-        return array_keys(Lookup::items('LotReason'));
+        return [
+            self::REASON_NO_MATTER, 
+            self::REASON_PRICE,
+            self::REASON_CONTRACT,
+            self::REASON_PARTICIPANT,
+            self::REASON_SUMMARIZING,
+        ];
     }
 
     /**

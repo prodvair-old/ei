@@ -3,10 +3,10 @@
 use yii\db\Migration;
 
 /**
- * Class m200410_100432_lookup_fill
+ * Class m200410_100432_lookup_profile
  * Профайл - пол
  */
-class m200410_100432_lookup_fill extends Migration
+class m200410_100432_lookup_profile extends Migration
 {
     const TABLE_LOOKUP   = '{{%lookup}}';
     const TABLE_PROPERTY = '{{%property}}';
@@ -23,6 +23,6 @@ class m200410_100432_lookup_fill extends Migration
     public function safeDown()
     {
         $this->delete(self::TABLE_LOOKUP, 'property_id=' . self::GENDER);
-        $this->delete(self::TABLE_PROPERTY, self::GENDER);
+        $this->delete(self::TABLE_PROPERTY, 'id=' . self::GENDER);
     }
 }

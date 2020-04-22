@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m200415_133234_lookup_fill
+ * Class m200415_133234_lookup_torg
  */
-class m200415_133234_lookup_fill extends Migration
+class m200415_133234_lookup_torg extends Migration
 {
     const TABLE_LOOKUP   = '{{%lookup}}';
     const TABLE_PROPERTY = '{{%property}}';
@@ -32,8 +32,8 @@ class m200415_133234_lookup_fill extends Migration
     public function safeDown()
     {
         $this->delete(self::TABLE_LOOKUP, 'property_id=' . self::TORG_PROPERTY);
-        $this->delete(self::TABLE_PROPERTY, self::TORG_PROPERTY);
+        $this->delete(self::TABLE_PROPERTY, 'id=' . self::TORG_PROPERTY);
         $this->delete(self::TABLE_LOOKUP, 'property_id=' . self::TORG_OFFER);
-        $this->delete(self::TABLE_PROPERTY, self::TORG_OFFER);
+        $this->delete(self::TABLE_PROPERTY, 'id=' . self::TORG_OFFER);
     }
 }

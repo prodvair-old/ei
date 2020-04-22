@@ -9,17 +9,17 @@ use yii\behaviors\TimestampBehavior;
  * Place model
  * Адресные данные.
  * 
- * @property integer $id
- * @property integer $model
- * @property integer $parent_id
- * @property string  $city
- * @property integer $region
- * @property string  $district
- * @property string  $address
- * @property string  $geo_lat
- * @property string  $geo_lon
- * @property integer $created_at
- * @property integer $updated_at
+ * @var integer $id
+ * @var integer $model
+ * @var integer $parent_id
+ * @var string  $city
+ * @var integer $region
+ * @var string  $district
+ * @var string  $address
+ * @var string  $geo_lat
+ * @var string  $geo_lon
+ * @var integer $created_at
+ * @var integer $updated_at
  */
 class Place extends ActiveRecord
 {

@@ -10,23 +10,31 @@ use sergmoro1\lookup\models\Lookup;
  * Torg model
  * Торг, аукцион по продаже лотов.
  *
- * @property integer $id
- * @property integer $etp_id
- * @property integer $case_id
- * @property integer $property
- * @property text    $description
- * @property string  $started_at
- * @property string  $end_at
- * @property string  $completed_at
- * @property string  $published_at
- * @property integer $offer
- * @property integer $created_at
- * @property integer $updated_at
+ * @var integer $id
+ * @var integer $etp_id
+ * @var integer $case_id
+ * @var integer $property
+ * @var text    $description
+ * @var string  $started_at
+ * @var string  $end_at
+ * @var string  $completed_at
+ * @var string  $published_at
+ * @var integer $offer
+ * @var integer $created_at
+ * @var integer $updated_at
+ * 
+ * @property Lot[]    $lots
+ * @property Bankrupt $bankrupt
+ * @property Manager  $manager
+ * @property Owner    $owner
+ * @property User     $user
+ * @property Etp      $etp
+ * @property Case     $case
  */
 class Torg extends ActiveRecord
 {
     // внутренний код модели используемый в составном ключе
-    const INT_CODE = 5;
+    const INT_CODE = 7;
 
     // тип имущества
     const PROPERTY_BANKRUPT  = 1;
@@ -67,8 +75,9 @@ class Torg extends ActiveRecord
     public function rules()
     {
         return [
-            [['etp_id', 'case_id', 'property', 'description'], 'required'],
-            [['etp_id', 'case_id', 'propery', 'auction'], 'integer'],
+            [['manager_id', 'who', 'etp_id', 'case_id', 'owner_id', 'property', 'description'], 'required'],
+            [['manager_id', 'who', 'etp_id', 'case_id', 'owner_id', 'propery', 'auction'], 'integer'],
+            ['who', 'in', 'range' => self::getWhoVariants()],
             [['started_at', 'end_at', 'completed_at', 'published_at'], 'date', 'format' => 'php:Y-m-d H:i:s+O'],
             ['property', 'in', 'range' => self::getProperties()],
             ['offer', 'in', 'range' => self::getOffers()],
@@ -82,8 +91,11 @@ class Torg extends ActiveRecord
     public function attributeLabels()
     {
         return [
+            'manager_id'   => Yii::t('app', 'Manager'),
+            'who'          => Yii::t('app', 'Who manager')
             'etp_id'       => Yii::t('app', 'Etp'),
             'case_id'      => Yii::t('app', 'Case'),
+            'owner_id'     => Yii::t('app', 'Owner'),
             'property'     => Yii::t('app', 'Property'),
             'description'  => Yii::t('app', 'Description'),
             'started_at'   => Yii::t('app', 'Start'),
@@ -101,7 +113,12 @@ class Torg extends ActiveRecord
      * @return array
      */
     public static function getProperties() {
-        return array_keys(Lookup::items('TorgProperty'));
+        return [
+            self::PROPERTY_BANKRUPT,
+            self::PROPERTY_ZALOG,
+            self::PROPERTY_ARRESTED,
+            self::PROPERTY_MUNICIPAL,
+        ];
     }
 
     /**
@@ -109,7 +126,12 @@ class Torg extends ActiveRecord
      * @return array
      */
     public static function getOffers() {
-        return array_keys(Lookup::items('TorgOffer'));
+        return [
+            self::PROPERTY_BANKRUPT,
+            self::PROPERTY_ZALOG,
+            self::PROPERTY_ARRESTED,
+            self::PROPERTY_MUNICIPAL,
+        ];
     }
 
     /**
@@ -155,5 +177,23 @@ class Torg extends ActiveRecord
     public function getUser() {
         return $this->hasOne(Torg::className(), ['id' => 'torg_id'])
             ->viaTable(TorgPledge::tableName(), ['user_id' => 'id']);
+    }
+
+    /**
+     * Получить эдектронную торговую площадку (ETP)
+     * 
+     * @return yii\db\ActiveRecord
+     */
+    public function getEtp()
+    {
+        return Organization::findOne(['model' => Organization::TYPE_ETP, 'parent_id' => $this->id]);
+    }
+    
+    /**
+     * Получить дело торга
+     * @return yii\db\ActiveQuery
+     */
+    public function getCase() {
+        return $this->hasOne(Case::className(), ['id' => 'case_id']);
     }
 }

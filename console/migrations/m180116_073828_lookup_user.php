@@ -3,10 +3,10 @@
 use yii\db\Migration;
 
 /**
- * Class m180116_073828_lookup_fill
+ * Class m180116_073828_lookup_user
  * Пользователь - роль, статус
  */
-class m180116_073828_lookup_fill extends Migration
+class m180116_073828_lookup_user extends Migration
 {
     const TABLE_LOOKUP   = '{{%lookup}}';
     const TABLE_PROPERTY = '{{%property}}';
@@ -30,7 +30,7 @@ class m180116_073828_lookup_fill extends Migration
     {
         $this->delete(self::TABLE_LOOKUP, 'property_id=' . self::USER_ROLE);
         $this->delete(self::TABLE_LOOKUP, 'property_id=' . self::USER_STATUS);
-        $this->delete(self::TABLE_PROPERTY, self::USER_ROLE);
-        $this->delete(self::TABLE_PROPERTY, self::USER_STATUS);
+        $this->delete(self::TABLE_PROPERTY, 'id=' . self::USER_ROLE);
+        $this->delete(self::TABLE_PROPERTY, 'id=' . self::USER_STATUS);
     }
 }

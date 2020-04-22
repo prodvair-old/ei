@@ -12,16 +12,18 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
  * User model
  * Учетные данные.
  *
- * @property integer $id
- * @property string $username
- * @property string $auth_key
- * @property string $password_hash
- * @property string $password_reset_token
- * @property string $email
- * @property integer $status
- * @property integer $group
- * @property integer $created_at
- * @property integer $updated_at
+ * @var integer $id
+ * @var string $username
+ * @var string $auth_key
+ * @var string $password_hash
+ * @var string $password_reset_token
+ * @var string $email
+ * @var integer $status
+ * @var integer $group
+ * @var integer $created_at
+ * @var integer $updated_at
+ * 
+ * @property Profile $profile
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -311,12 +313,12 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Получить профайл
+     * Получить профиль
      * 
      * @return yii\db\ActiveRecord
      */
     public function getProfile()
     {
-        return Profile::findOne(['model' => self::INT_CODE, 'parent_id' => 'id']);
+        return Profile::findOne(['model' => self::INT_CODE, 'parent_id' => $this->id]);
     }
 }

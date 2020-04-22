@@ -10,10 +10,14 @@ use common\interfaces\PlaceInterface;
  * BaseAgent model
  * Агент это либо Персона либо Организация.
  *
- * @property integer $id
- * @property integer $who
- * @property integer $created_at
- * @property integer $updated_at
+ * @var integer $id
+ * @var integer $who
+ * @var integer $created_at
+ * @var integer $updated_at
+ * 
+ * @property Place        $place
+ * @property Profile      $profile
+ * @property Organization $organization
  */
 class BaseAgent extends ActiveRecord implements ProfileInterface, PlaceInterface
 {
@@ -39,7 +43,7 @@ class BaseAgent extends ActiveRecord implements ProfileInterface, PlaceInterface
     {
         return [
             ['who', 'required'],
-            ['who', 'in', 'range' => self::getWhoAgent()],
+            ['who', 'in', 'range' => self::getWhoVariants()],
             [['created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -57,10 +61,10 @@ class BaseAgent extends ActiveRecord implements ProfileInterface, PlaceInterface
     }
 
     /**
-     * Get gender variants
+     * Get manager variants
      * @return array
      */
-    public static function getWhoAgent() {
+    public static function getWhoVariants() {
         return [
             self::WHO_PERSON,
             self::WHO_ORGANIZATION, 
@@ -72,7 +76,7 @@ class BaseAgent extends ActiveRecord implements ProfileInterface, PlaceInterface
      * @return string
      */
     public function getProfile() {
-        return Profile::findOne(['model' => self::INT_CODE, 'parent_id' => $this->id]);
+        return $this->who == WHO_PERSON ? Profile::findOne(['model' => self::INT_CODE, 'parent_id' => $this->id]) : null;
     }
 
     /**
@@ -89,7 +93,7 @@ class BaseAgent extends ActiveRecord implements ProfileInterface, PlaceInterface
      * @return string
      */
     public function getOrganization() {
-        return Organization::findOne(['model' => self::INT_CODE, 'parent_id' => $this->id]);
+        return $this->who == WHO_ORGANIZATION ? Organization::findOne(['model' => self::INT_CODE, 'parent_id' => $this->id]) : null;
     }
 
     /**
@@ -97,9 +101,9 @@ class BaseAgent extends ActiveRecord implements ProfileInterface, PlaceInterface
      * @return string
      */
     public static function getFullName() {
-        if ($this->who == self::PERSON)
+        if ($this->who == self::WHO_PERSON)
             return $this->profile->fullName
-        elseif ($this->who == self::ORGANIZATION)
+        elseif ($this->who == self::WHO_ORGANIZATION)
             return $this->organization->title;
         else
             return '';

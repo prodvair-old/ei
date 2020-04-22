@@ -1,0 +1,41 @@
+Внутренние коды моделей
+=======================
+
+/**
+ * # Таблица
+ */
+
+1 User
+2 Organization
+3 Manager
+4 Case
+5 Protocol
+6 Lot
+7 Torg
+
+Связи
+=====
+
+/**
+ * Ресурс
+ * ------
+ * Таблицы, которые потребляют ресурс
+ */
+
+Documents
+---------
+Case
+Torg
+Lot
+
+Place
+-----
+Manager
+Lot
+Organization
+Protocol
+
+Profile
+-------
+User
+Manager

@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m200416_182713_lookup_fill
+ * Class m200416_182713_lookup_lot
  */
-class m200416_182713_lookup_fill extends Migration
+class m200416_182713_lookup_lot extends Migration
 {
     const TABLE_LOOKUP   = '{{%lookup}}';
     const TABLE_PROPERTY = '{{%property}}';
@@ -32,7 +32,7 @@ class m200416_182713_lookup_fill extends Migration
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Архив',        'code' => 7, 'property_id' => self::LOT_STATUS, 'position' => 7]);
 
         // причины
-        $this->insert(self::TABLE_PROPERTY, ['id' => self::LOT_REASON, 'name' => 'TorgAuction']);
+        $this->insert(self::TABLE_PROPERTY, ['id' => self::LOT_REASON, 'name' => 'LotReason']);
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Не важно',             'code' => 1, 'property_id' => self::LOT_REASON, 'position' => 1]);
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Цена не повышалась',   'code' => 2, 'property_id' => self::LOT_REASON, 'position' => 2]);
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Контракт не подписан', 'code' => 3, 'property_id' => self::LOT_REASON, 'position' => 3]);
@@ -43,10 +43,10 @@ class m200416_182713_lookup_fill extends Migration
     public function safeDown()
     {
         $this->delete(self::TABLE_LOOKUP, 'property_id=' . self::SUM_MEASURE);
-        $this->delete(self::TABLE_PROPERTY, self::SUM_MEASURE);
+        $this->delete(self::TABLE_PROPERTY, 'id=' . self::SUM_MEASURE);
         $this->delete(self::TABLE_LOOKUP, 'property_id=' . self::LOT_STATUS);
-        $this->delete(self::TABLE_PROPERTY, self::LOT_STATUS);
+        $this->delete(self::TABLE_PROPERTY, 'id=' . self::LOT_STATUS);
         $this->delete(self::TABLE_LOOKUP, 'property_id=' . self::LOT_REASON);
-        $this->delete(self::TABLE_PROPERTY, self::LOT_REASON);
+        $this->delete(self::TABLE_PROPERTY, 'id=' . self::LOT_REASON);
     }
 }

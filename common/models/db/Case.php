@@ -7,17 +7,20 @@ use yii\behaviors\TimestampBehavior;
 
 /**
  * Case model
- * Дела по Торгу.
+ * Дело по Торгу.
  *
- * @property integer $id
- * @property string  $reg_number
- * @property integer $year
- * @property string  $judje
- * @property integer $created_at
- * @property integer $updated_at
+ * @var integer $id
+ * @var string  $reg_number
+ * @var integer $year
+ * @var string  $judje
+ * @var integer $created_at
+ * @var integer $updated_at
  */
 class Case extends ActiveRecord
 {
+    // внутренний код модели используемый в составном ключе
+    const INT_CODE          = 4;
+
     /**
      * {@inheritdoc}
      */

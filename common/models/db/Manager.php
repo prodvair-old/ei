@@ -5,15 +5,19 @@ namespace common\models\db;
  * Manager model
  * Управляющий, ответственный за ведение дел по банкротному имуществу.
  *
- * @property integer $id
- * @property integer $who
- * @property integer $created_at
- * @property integer $updated_at
+ * @var integer $id
+ * @var integer $who
+ * @var integer $created_at
+ * @var integer $updated_at
+ * 
+ * @property Place        $place
+ * @property Profile      $profile
+ * @property Organization $organization
  */
 class Manager extends BaseAgent
 {
     // внутренний код модели используемый в составном ключе
-    const INT_CODE = 2;
+    const INT_CODE = 3;
 
     /**
      * {@inheritdoc}

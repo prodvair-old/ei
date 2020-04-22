@@ -13,27 +13,38 @@ class m200415_130037_organization extends Migration
     {
         $this->createTable(self::TABLE, [
             'id'           => $this->bigPrimaryKey(),
-            'model'        => $this->smallInteger()->notNull(),
-            'parent_id'    => $this->bigInteger()->notNull(),
+
+            'type'         => $this->smallInteger()->notNull(),
+            'ownership'    => $this->smallInteger()->notNull(),
             
             'title'        => $this->string()->notNull(),
-            'inn'          => $this->string(10)->notNull(),
-            'ogrn'         => $this->string(13)->notNull(),
-            'reg_number'   => $this->string()->notNull(),
+            'full_title'   => $this->string(),
+            'inn'          => $this->string(10),
+            'ogrn'         => $this->string(13),
+            'reg_number'   => $this->string(),
+            'email'        => $this->string(),
+            'phone'        => $this->string(10),
+            'website'      => $this->string(),
+            'status'       => $this->smallInteger()->notNull(),
 
             'created_at'   => $this->integer()->notNull(),
             'updated_at'   => $this->integer()->notNull(),
         ]);
         
-        $this->createIndex('idx-organization-model-parent_id', self::TABLE, ['model', 'parent_id'], true);
+        $this->createIndex('idx-organization-id-type', self::TABLE, ['id', 'type'], true);
+        $this->createIndex('idx-organization-type', self::TABLE, 'type');
 
-		$this->addCommentOnColumn(self::TABLE, 'model', 'Код модели');
-		$this->addCommentOnColumn(self::TABLE, 'parent_id', 'ID в соответствующей модели, например в Bankrupt');
+		$this->addCommentOnColumn(self::TABLE, 'type', 'Тип организации - OWNER, ETP, BANKRUPT');
+		$this->addCommentOnColumn(self::TABLE, 'ownership', 'Форма собственности предприятия');
         
 		$this->addCommentOnColumn(self::TABLE, 'title', 'название');
 		$this->addCommentOnColumn(self::TABLE, 'inn', 'ИНН');
 		$this->addCommentOnColumn(self::TABLE, 'ogrn', 'ОГРН');
 		$this->addCommentOnColumn(self::TABLE, 'reg_number', 'Регистрационный номер');
+		$this->addCommentOnColumn(self::TABLE, 'email', 'Email');
+		$this->addCommentOnColumn(self::TABLE, 'phone', 'Телефон');
+		$this->addCommentOnColumn(self::TABLE, 'website', 'Сайт');
+		$this->addCommentOnColumn(self::TABLE, 'status', 'Статус - WAITING, CHECKED');
     }
 
     public function down()
