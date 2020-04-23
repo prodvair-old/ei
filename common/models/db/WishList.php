@@ -1,7 +1,6 @@
 <?php
 namespace common\models\db;
 
-use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 
@@ -9,12 +8,15 @@ use yii\behaviors\TimestampBehavior;
  * WishList model
  * Избранные лоты.
  *
- * @property integer $id
- * @property integer $lot_id
- * @property integer $user_id
- * @property integer $created_at
+ * @var integer $id
+ * @var integer $lot_id
+ * @var integer $user_id
+ * @var integer $created_at
+ * 
+ * @property User $user
+ * @property Lot  $lot
  */
-class WishList extends BaseAgent
+class WishList extends ActiveRecord
 {
 
     /**
@@ -28,11 +30,24 @@ class WishList extends BaseAgent
     /**
      * {@inheritdoc}
      */
+    public function behaviors()
+    {
+        return [
+            [
+                TimestampBehavior::className(),
+                'updatedAtAttribute' => false,
+            ],
+        ];
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [
-            'lot_id'        => Yii::t('app', 'Лот'),
-            'user_id'        => Yii::t('app', 'Пользователь'),
+            'lot_id'  => Yii::t('app', 'Лот'),
+            'user_id' => Yii::t('app', 'Пользователь'),
         ]);
     }
 
