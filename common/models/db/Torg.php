@@ -5,6 +5,7 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use sergmoro1\lookup\models\Lookup;
+use sergmoro1\uploader\behaviors\HaveFileBehavior;
 
 /**
  * Torg model
@@ -30,6 +31,7 @@ use sergmoro1\lookup\models\Lookup;
  * @property User     $user
  * @property Etp      $etp
  * @property Case     $case
+ * @property sergmoro1\uploader\models\OneFile[] $files
  */
 class Torg extends ActiveRecord
 {
@@ -66,9 +68,33 @@ class Torg extends ActiveRecord
             [
                 TimestampBehavior::className(),
             ],
+			[
+				'class' => HaveFileBehavior::className(),
+				'file_path' => '/torg/',
+			],
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                TimestampBehavior::className(),
+            ],
+			[
+				'class' => HaveFileBehavior::className(),
+				'file_path' => '/lot/',
+                'sizes' => [
+                    'original'  => ['width' => 1600, 'height' => 900, 'catalog' => 'original'],
+                    'main'      => ['width' => 400,  'height' => 400, 'catalog' => ''],
+                    'thumb'     => ['width' => 90,   'height' => 90,  'catalog' => 'thumb'],
+                ],
+			],
+        ];
+    }
     /**
      * {@inheritdoc}
      */

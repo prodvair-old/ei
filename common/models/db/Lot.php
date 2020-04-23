@@ -26,12 +26,20 @@ use sergmoro1\lookup\models\Lookup;
  * @var integer $updated_at
  * 
  * @property Torg $torg
+ * @property WishList[] $observers
+ * @property sergmoro1\uploader\models\OneFile[] $files
  */
-class Log extends ActiveRecord
+class Lot extends ActiveRecord
 {
     // внутренний код модели используемый в составном ключе
     const INT_CODE = 6;
-    
+
+    // события
+    const EVENT_NEW_PICTURE     = 'new_picture';     // Добавлено новое фото к лоту
+    const EVENT_NEW_REPORT      = 'new_report';      // Добавлен новый отчет к лоту
+    const EVENT_PRICE_REDUCTION = 'price_reduction'; // Снижена цена на лот
+
+    // значения перечислимых переменых
     const MEASURE_PERCENT    = 1;
     const MEASURE_SUM        = 2;
 
@@ -55,6 +63,15 @@ class Log extends ActiveRecord
     public static function tableName()
     {
         return '{{%torg}}';
+    }
+
+    public function init()
+    {
+        parent::init();
+
+        $this->on(self::EVENT_NEW_PICTURE,     function($event) { $this->notifyObservers($event); });
+        $this->on(self::EVENT_NEW_REPORT,      function($event) { $this->notifyObservers($event); });
+        $this->on(self::EVENT_PRICE_REDUCTION, function($event) { $this->notifyObservers($event); });
     }
 
     /**
@@ -163,7 +180,48 @@ class Log extends ActiveRecord
      * Получить информацию о торге
      * @return yii\db\ActiveQuery
      */
-    public function getTorg() {
+    public function getTorg()
+    {
         return $this->hasOne(Torg::className(), ['id' => 'torg_id']);
+    }
+
+    /**
+     * Получить список ID подписчиков
+     * 
+     * @return yii\db\ActiveRecords
+     */
+    public function getObservers()
+    {
+        return $this->hasMany(WishList::className(), ['lotId' => 'id']);
+    }
+
+    /**
+     * Известить подписчиков о произошедшем событии
+     * 
+     * @param array $data as in yii\base\Event
+     */
+    public function notifyObservers($event)
+    {
+        foreach($this->observers as $observer) {
+            if ($observer->user->needNotify($event->name))
+                $this->keepNotification([
+                    'user_id' => $observer->userId,
+                    'lot_id'  => $this->id,
+                    'event'   => $event->name,
+                ]);
+        }
+    }
+
+    /**
+     * Сохранить информацию о событии в общем списке
+     * 
+     * @param \yii\base\Event $event
+     * @param array $data
+     */
+    public function keepNotification($data)
+    {
+        $file = fopen(Yii::$app->queue->path . '/data.csv', 'a');
+        fwrite($file, "{$data['user_id']},{$data['lot_id']},{$data['event']}\n");
+        fclose($file);
     }
 }

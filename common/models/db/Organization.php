@@ -12,7 +12,7 @@ use sergmoro1\lookup\Lookup;
  *
  * @var integer $id
  * @var integer $type
- * @var integer $ownership
+ * @var integer $activity
  * @var string  $title
  * @var string  $full_title
  * @var string  $inn
@@ -32,6 +32,7 @@ class Organization extends ActiveRecord
     // внутренний код модели используемый в составном ключе
     const INT_CODE              = 2;
     
+    // значения перечислимых переменных
     const STATUS_WAITING        = 1;
     const STATUS_CHECKED        = 2;
 
@@ -41,9 +42,18 @@ class Organization extends ActiveRecord
     const TYPE_OWNER            = 4;
     const TYPE_BANKRUPT         = 5;
 
-    const OWNERSHIP_ORDINARY    = 1,
-    const OWNERSHIP_ENTERPRISER = 2,
-    const OWNERSHIP_DISSOLVED   = 3, 
+    const ACTIVITY_ABSENTBANKRUPT       = 1;
+    const ACTIVITY_AGRICULTURE          = 2;
+    const ACTIVITY_CITY                 = 3;
+    const ACTIVITY_CREDIT               = 4;
+    const ACTIVITY_DEVELOPMENT          = 5;
+    const ACTIVITY_DISSOLVED_BANKRUPT   = 6;
+    const ACTIVITY_INSURANCE            = 7;
+    const ACTIVITY_MONOPOLY             = 8;
+    const ACTIVITY_OTHER                = 9;
+    const ACTIVITY_PRIVATE_PENSION_FUND = 10;
+    const ACTIVITY_SIMPLE               = 11;
+    const ACTIVITY_STRATEGIC            = 12;
     
     /**
      * {@inheritdoc}
@@ -72,11 +82,11 @@ class Organization extends ActiveRecord
     {
         return [
             [['title', 'inn'], 'required'],
-            [['type', 'ownership'], 'integer'],
+            [['type', 'activity'], 'integer'],
             ['type', 'in', 'range' => self::getTypes()],
             ['type', 'default', 'value' => self::TYPE_NOMATTER],
-            ['ownership', 'in', 'range' => self::getOwnerships()],
-            ['ownership', 'default', 'value' => self::OWNERSHIP_ORDINARY],
+            ['activity', 'in', 'range' => self::getActivities()],
+            ['activity', 'default', 'value' => self::ACTIVITY_SIMPLE],
             ['inn', 'match', 'pattern' => '/\d{10}/'],
             ['ogrn', 'match', 'pattern' => '/\d{13}/'],
             [['title', 'full_title', 'reg_number', 'website'], 'string', 'max' => 255],
@@ -136,14 +146,23 @@ class Organization extends ActiveRecord
     }
 
     /**
-     * Get ownership variants
+     * Get activity variants
      * @return array
      */
-    public static function getOwnerships() {
+    public static function getActivities() {
         return [
-            self::OWNERSHIP_ORDINARY,
-            self::OWNERSHIP_ENTERPRISER,
-            self::OWNERSHIP_DISSOLVED, 
+            self::ACTIVITY_ABSENTBANKRUPT,
+            self::ACTIVITY_AGRICULTURE,
+            self::ACTIVITY_CITY,
+            self::ACTIVITY_CREDIT,
+            self::ACTIVITY_DEVELOPMENT,
+            self::ACTIVITY_DISSOLVED_BANKRUPT,
+            self::ACTIVITY_INSURANCE,
+            self::ACTIVITY_MONOPOLY,
+            self::ACTIVITY_OTHER,
+            self::ACTIVITY_PRIVATE_PENSION_FUND,
+            self::ACTIVITY_SIMPLE,
+            self::ACTIVITY_STRATEGIC,
         ];
     }
 

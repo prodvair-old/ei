@@ -10,8 +10,8 @@ class m200415_133234_lookup_torg extends Migration
     const TABLE_LOOKUP   = '{{%lookup}}';
     const TABLE_PROPERTY = '{{%property}}';
     
-    const TORG_PROPERTY = 7;
-    const TORG_OFFER    = 8;
+    const TORG_PROPERTY = 8;
+    const TORG_OFFER    = 9;
 
     public function safeUp()
     {

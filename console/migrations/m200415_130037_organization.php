@@ -15,7 +15,7 @@ class m200415_130037_organization extends Migration
             'id'           => $this->bigPrimaryKey(),
 
             'type'         => $this->smallInteger()->notNull(),
-            'ownership'    => $this->smallInteger()->notNull(),
+            'activity'     => $this->smallInteger()->notNull(),
             
             'title'        => $this->string()->notNull(),
             'full_title'   => $this->string(),
@@ -35,7 +35,7 @@ class m200415_130037_organization extends Migration
         $this->createIndex('idx-organization-type', self::TABLE, 'type');
 
 		$this->addCommentOnColumn(self::TABLE, 'type', 'Тип организации - OWNER, ETP, BANKRUPT');
-		$this->addCommentOnColumn(self::TABLE, 'ownership', 'Форма собственности предприятия');
+		$this->addCommentOnColumn(self::TABLE, 'activity', 'Поле деятельности организации');
         
 		$this->addCommentOnColumn(self::TABLE, 'title', 'название');
 		$this->addCommentOnColumn(self::TABLE, 'inn', 'ИНН');

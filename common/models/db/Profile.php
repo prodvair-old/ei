@@ -14,6 +14,7 @@ use common\interfaces\ProfileInterface;
  * @var integer $model
  * @var integer $parent_id
  * @var string  $inn
+ * @var integer $activity
  * @var integer $gender
  * @var integer $birthday
  * @var string  $phone
@@ -25,8 +26,14 @@ use common\interfaces\ProfileInterface;
  */
 class Profile extends ActiveRecord implements ProfileInterface
 {
+    // значения перечислимых переменных
     const GENDER_MALE     = 1;
     const GENDER_FEMALE   = 2;
+
+    const ACTIVITY_ENTERPRENEUR = 13;
+    const ACTIVITY_FARMER       = 14;
+    const ACTIVITY_SIMPLE       = 15;
+    const ACTIVITY_OTHER        = 16;
 
     /**
      * {@inheritdoc}
@@ -56,9 +63,11 @@ class Profile extends ActiveRecord implements ProfileInterface
         return [
             [['model', 'parent_id', 'first_name'], 'required'],
             ['inn', 'match', 'pattern' => '/\d{12}/'],
-            [['gender', 'birthday'], 'integer'],
+            [['activity', 'gender', 'birthday'], 'integer'],
             ['gender', 'in', 'range' => self::getGenderVariants()],
             ['gender', 'default', 'value' => null],
+            ['activity', 'in', 'range' => self::getActivities()],
+            ['activity', 'default', 'value' => ACTIVITY_SIMPLE],
             ['phone', 'match', 'pattern' => '/^\+7 \d\d\d-\d\d\d-\d\d-\d\d$/',
                 'message' => 'Номер должен состоять ровно из 10 цифр.'],
             [['first_name', 'last_name', 'middle_name', 'birth_place'], 'string', 'max' => 255],
@@ -94,6 +103,19 @@ class Profile extends ActiveRecord implements ProfileInterface
         ];
     }
 
+    /**
+     * Get activity variants
+     * @return array
+     */
+    public static function getActivities() {
+        return [
+            self::ACTIVITY_ENTERPRENEUR,
+            self::ACTIVITY_FARMER,
+            self::ACTIVITY_SIMPLE,
+            self::ACTIVITY_OTHER,
+        ];
+    }
+    
     /**
      * Get full name
      * @return string

@@ -15,6 +15,8 @@ use yii\behaviors\TimestampBehavior;
  * @var string  $judje
  * @var integer $created_at
  * @var integer $updated_at
+ * 
+ * @property sergmoro1\uploader\models\OneFile[] $files
  */
 class Case extends ActiveRecord
 {
@@ -38,6 +40,10 @@ class Case extends ActiveRecord
             [
                 TimestampBehavior::className(),
             ],
+			[
+				'class' => HaveFileBehavior::className(),
+				'file_path' => '/case/',
+			],
         ];
     }
 

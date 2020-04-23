@@ -22,8 +22,8 @@
  * Таблицы, которые потребляют ресурс
  */
 
-Document
---------
+sergmoro1\uploader\models\OneFile
+---------------------------------
 Case
 Torg
 Lot

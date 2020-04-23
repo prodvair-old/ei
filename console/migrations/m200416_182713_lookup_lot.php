@@ -10,9 +10,9 @@ class m200416_182713_lookup_lot extends Migration
     const TABLE_LOOKUP   = '{{%lookup}}';
     const TABLE_PROPERTY = '{{%property}}';
     
-    const SUM_MEASURE = 9;
-    const LOT_STATUS  = 10;
-    const LOT_REASON  = 11;
+    const SUM_MEASURE = 10;
+    const LOT_STATUS  = 11;
+    const LOT_REASON  = 12;
 
     public function safeUp()
     {

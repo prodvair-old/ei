@@ -24,6 +24,8 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
  * @var integer $updated_at
  * 
  * @property Profile $profile
+ * @property Lot[]   $lots
+ * @property sergmoro1\uploader\models\OneFile[] $files
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -315,10 +317,20 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Получить профиль
      * 
-     * @return yii\db\ActiveRecord
+     * @return yii\db\ActiveQuery
      */
     public function getProfile()
     {
         return Profile::findOne(['model' => self::INT_CODE, 'parent_id' => $this->id]);
+    }
+
+    /**
+     * Получить понравившиеся лоты
+     * @return yii\db\ActiveQuery
+     */
+    public function getLots()
+    {
+        return $this->hasMany(Lot::className(), ['id' => 'user_id'])
+            ->viaTable(WishList::tableName(), ['lot_id' => 'id']);
     }
 }
