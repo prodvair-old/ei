@@ -32,7 +32,7 @@ class m200423_200500_category extends Migration
 
         $this->createIndex('idx-lft',   static::TABLE, 'lft');
         $this->createIndex('idx-rgt',   static::TABLE, 'rgt');
-        $this->createIndex('idx-level', static::TABLE, 'level');
+        $this->createIndex('idx-depth', static::TABLE, 'depth');
 
 		$this->addCommentOnColumn(static::TABLE, 'lft',   'Left');
 		$this->addCommentOnColumn(static::TABLE, 'rgt',   'Right');

@@ -23,6 +23,8 @@ class m200423_194649_lot_price extends Migration
             'updated_at' => $this->integer()->notNull(),
         ]);
         
+        $this->createIndex('idx-lot_price-lot', static::TABLE, 'lot');
+
 		$this->addForeignKey('fk-lot_price-lot', self::TABLE, 'lot_id', '{{%lot}}', 'id', 'restrict', 'restrict');
 
 		$this->addCommentOnColumn(self::TABLE, 'lot_id', 'Лот');
