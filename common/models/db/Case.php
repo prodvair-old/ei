@@ -21,7 +21,7 @@ use yii\behaviors\TimestampBehavior;
 class Case extends ActiveRecord
 {
     // внутренний код модели используемый в составном ключе
-    const INT_CODE          = 4;
+    const INT_CODE = 4;
 
     /**
      * {@inheritdoc}
