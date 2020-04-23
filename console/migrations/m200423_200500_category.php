@@ -3,7 +3,8 @@
 use yii\db\Migration;
 
 /**
- * Category table for NestedSet structure
+ * Class m200423_200500_category
+ * Category table for NestedSet structure.
  */
 class m200423_200500_category extends Migration
 {
@@ -21,7 +22,7 @@ class m200423_200500_category extends Migration
             'id'         => $this->primaryKey(),
             'lft'        => $this->integer()->notNull(),
             'rgt'        => $this->integer()->notNull(),
-            'level'      => $this->integer()->notNull(),
+            'depth'      => $this->integer()->notNull(),
             'name'       => $this->string()->notNull(),
             'slug'       => $this->string()->notNull(),
 
@@ -35,9 +36,9 @@ class m200423_200500_category extends Migration
 
 		$this->addCommentOnColumn(static::TABLE, 'lft',   'Left');
 		$this->addCommentOnColumn(static::TABLE, 'rgt',   'Right');
-		$this->addCommentOnColumn(static::TABLE, 'level', 'Level from the root');
+		$this->addCommentOnColumn(static::TABLE, 'depth', 'depth or level of a tree');
 		$this->addCommentOnColumn(static::TABLE, 'name',  'Node name');
-		$this->addCommentOnColumn(static::TABLE, 'slug',  'Symbolic ID');
+		$this->addCommentOnColumn(static::TABLE, 'slug',  'Slug');
 
         $this->insert(static::TABLE, [
             'id'         => 1,

@@ -4,6 +4,7 @@ use yii\db\Migration;
 
 /**
  * Class m200423_202539_lot_category
+ * Связь Лотов и Катеогрий. 
  */
 class m200423_202539_lot_category extends Migration
 {

@@ -4,6 +4,7 @@ use yii\db\Migration;
 
 /**
  * Class m200423_194649_lot_price
+ * История снижения цены Лота.
  */
 class m200423_194649_lot_price extends Migration
 {
