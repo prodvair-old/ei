@@ -13,11 +13,11 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
  * Учетные данные.
  *
  * @var integer $id
- * @var string $username
- * @var string $auth_key
- * @var string $password_hash
- * @var string $password_reset_token
- * @var string $email
+ * @var string  $username
+ * @var string  $auth_key
+ * @var string  $password_hash
+ * @var string  $password_reset_token
+ * @var string  $email
  * @var integer $status
  * @var integer $group
  * @var integer $created_at
@@ -296,21 +296,19 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Get user avatar from thumb if there is a registered user or icon.
-     * Icon may be defined in params.
+     * Get user avatar from thumb if there is a registered user or icon if no.
+     * Icon may be defined in App params.
      * 
-     * @param string $class of image
+     * @param array $htmlOptions of image
      * @param string $icon tag
      * @return string avatar
      */
-    public function getAvatar($class = '', $icon = false)
+    public function getAvatar($htmlOptions = [], $icon = false)
     {
-        if($icon === false)
-            $icon = isset(Yii::$app->params['icons']['user']) ? Yii::$app->params['icons']['user'] : '';
         if($image = $this->getAvatarImage()) {
-            return Html::img($image, ['class' => $class]);
+            return Html::img($image, $htmlOptions);
         } else {
-            return $icon;
+            return $icon ?: (isset(Yii::$app->params['icons']['user']) ? Yii::$app->params['icons']['user'] : '');
         }
     }
 

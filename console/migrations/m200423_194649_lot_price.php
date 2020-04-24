@@ -16,19 +16,19 @@ class m200423_194649_lot_price extends Migration
             'id'         => $this->bigPrimaryKey(),
             'lot_id'     => $this->bigInteger()->notNull(),
             
-            'start_at'   => $this->integer()->notNull(),
+            'started_at' => $this->integer()->notNull(),
             'end_at'     => $this->integer()->notNull(),
 
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ]);
         
-        $this->createIndex('idx-lot_price-lot', static::TABLE, 'lot');
+        $this->createIndex('idx-lot_price-lot', self::TABLE, 'lot');
 
 		$this->addForeignKey('fk-lot_price-lot', self::TABLE, 'lot_id', '{{%lot}}', 'id', 'restrict', 'restrict');
 
 		$this->addCommentOnColumn(self::TABLE, 'lot_id', 'Лот');
-		$this->addCommentOnColumn(self::TABLE, 'start_at', 'Дата начала действия цены');
+		$this->addCommentOnColumn(self::TABLE, 'started_at', 'Дата начала действия цены');
 		$this->addCommentOnColumn(self::TABLE, 'end_at', 'Дата окончания действия цены');
     }
 

@@ -18,7 +18,7 @@ class m200423_200500_category extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable(static::TABLE, [
+        $this->createTable(self::TABLE, [
             'id'         => $this->primaryKey(),
             'lft'        => $this->integer()->notNull(),
             'rgt'        => $this->integer()->notNull(),
@@ -30,24 +30,23 @@ class m200423_200500_category extends Migration
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);
 
-        $this->createIndex('idx-lft',   static::TABLE, 'lft');
-        $this->createIndex('idx-rgt',   static::TABLE, 'rgt');
-        $this->createIndex('idx-depth', static::TABLE, 'depth');
+        $this->createIndex('idx-lft',   self::TABLE, 'lft');
+        $this->createIndex('idx-rgt',   self::TABLE, 'rgt');
+        $this->createIndex('idx-depth', self::TABLE, 'depth');
 
-		$this->addCommentOnColumn(static::TABLE, 'lft',   'Left');
-		$this->addCommentOnColumn(static::TABLE, 'rgt',   'Right');
-		$this->addCommentOnColumn(static::TABLE, 'depth', 'depth or level of a tree');
-		$this->addCommentOnColumn(static::TABLE, 'name',  'Node name');
-		$this->addCommentOnColumn(static::TABLE, 'slug',  'Slug');
+		$this->addCommentOnColumn(self::TABLE, 'lft',   'Left');
+		$this->addCommentOnColumn(self::TABLE, 'rgt',   'Right');
+		$this->addCommentOnColumn(self::TABLE, 'depth', 'depth or level of a tree');
+		$this->addCommentOnColumn(self::TABLE, 'name',  'Node name');
+		$this->addCommentOnColumn(self::TABLE, 'slug',  'Slug');
 
-        $this->insert(static::TABLE, [
+        $this->insert(self::TABLE, [
             'id'         => 1,
             'lft'        => 1, 
             'rgt'        => 2, 
-            'level'      => 1, 
+            'depth'      => 1, 
             'name'       => 'Категории', 
             'slug'       => 'root', 
-            'show'       => false, 
             'created_at' => time(), 
             'updated_at' => time()
         ]);
@@ -55,6 +54,6 @@ class m200423_200500_category extends Migration
 
     public function safeDown()
     {
-        $this->dropTable(static::TABLE);
+        $this->dropTable(self::TABLE);
     }
 }

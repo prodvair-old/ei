@@ -27,6 +27,8 @@ use sergmoro1\lookup\models\Lookup;
  * 
  * @property Torg $torg
  * @property WishList[] $observers
+ * @property LotPrice[] $prices
+ * @property Category[] $categories
  * @property sergmoro1\uploader\models\OneFile[] $files
  */
 class Lot extends ActiveRecord
@@ -188,7 +190,7 @@ class Lot extends ActiveRecord
     /**
      * Получить список ID подписчиков
      * 
-     * @return yii\db\ActiveRecords
+     * @return yii\db\ActiveQuery
      */
     public function getObservers()
     {
@@ -223,5 +225,26 @@ class Lot extends ActiveRecord
         $file = fopen(Yii::$app->queue->path . '/data.csv', 'a');
         fwrite($file, "{$data['user_id']},{$data['lot_id']},{$data['event']}\n");
         fclose($file);
+    }
+
+    /**
+     * Получить историю снижения цены по Лоту
+     * 
+     * @return yii\db\ActiveQuery
+     */
+    public function getPrices()
+    {
+        return $this->hasMany(LotPrice::className(), ['lotId' => 'id']);
+    }
+
+    /**
+     * Получить категории, к которым принадлежит Лот
+     * 
+     * @return yii\db\ActiveQuery
+     */
+    public function getCategories()
+    {
+        return $this->hasMany(self::className(), ['id' => 'lot_id'])
+            ->viaTable(LotCategory::tableName(), ['category_id' => 'id']);
     }
 }

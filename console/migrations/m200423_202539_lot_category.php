@@ -4,7 +4,7 @@ use yii\db\Migration;
 
 /**
  * Class m200423_202539_lot_category
- * Связь Лотов и Катеогрий. 
+ * Связь Лотов и Категорий. 
  */
 class m200423_202539_lot_category extends Migration
 {
@@ -15,10 +15,10 @@ class m200423_202539_lot_category extends Migration
         $this->createTable(self::TABLE, [
             'lot_id'      => $this->bigInteger()->notNull(),
             'category_id' => $this->integer()->notNull(),
-            'created_at' => $this->integer()->notNull(),
+            'created_at'  => $this->integer()->notNull(),
         ]);
         
-        $this->createIndex('idx-lot_category-lot', static::TABLE, 'lot');
+        $this->createIndex('idx-lot_category-lot', self::TABLE, 'lot');
 
 		$this->addForeignKey('fk-lot_category-lot',      self::TABLE, 'lot_id',      '{{%lot}}',      'id', 'restrict', 'restrict');
 		$this->addForeignKey('fk-lot_category-category', self::TABLE, 'category_id', '{{%category}}', 'id', 'restrict', 'restrict');
