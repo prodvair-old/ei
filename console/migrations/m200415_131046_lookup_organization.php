@@ -16,7 +16,7 @@ class m200415_131046_lookup_organization extends Migration
 
     public function safeUp()
     {
-        $this->insert(self::TABLE_PROPERTY, ['id' => self::ORGANIZATION__STATUS, 'name' => 'OrganizationStatus']);
+        $this->insert(self::TABLE_PROPERTY, ['id' => self::ORGANIZATION_STATUS, 'name' => 'OrganizationStatus']);
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Ожидание',  'code' => 1, 'property_id' => self::ORGANIZATION_STATUS, 'position' => 1]);
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Проверено', 'code' => 2, 'property_id' => self::ORGANIZATION_STATUS, 'position' => 2]);
 

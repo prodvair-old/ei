@@ -18,7 +18,7 @@ class m200423_202539_lot_category extends Migration
             'created_at'  => $this->integer()->notNull(),
         ]);
         
-        $this->createIndex('idx-lot_category-lot', self::TABLE, 'lot');
+        $this->createIndex('idx-lot_category-lot', self::TABLE, 'lot_id');
 
 		$this->addForeignKey('fk-lot_category-lot',      self::TABLE, 'lot_id',      '{{%lot}}',      'id', 'restrict', 'restrict');
 		$this->addForeignKey('fk-lot_category-category', self::TABLE, 'category_id', '{{%category}}', 'id', 'restrict', 'restrict');
@@ -29,8 +29,8 @@ class m200423_202539_lot_category extends Migration
 
     public function down()
     {
-		$this->addForeignKey('fk-lot_category-lot',      self::TABLE);
-		$this->addForeignKey('fk-lot_category-category', self::TABLE);
+		$this->dropForeignKey('fk-lot_category-lot',      self::TABLE);
+		$this->dropForeignKey('fk-lot_category-category', self::TABLE);
         $this->dropTable(self::TABLE);
     }
 }
