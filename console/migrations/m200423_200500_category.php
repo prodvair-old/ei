@@ -39,17 +39,6 @@ class m200423_200500_category extends Migration
 		$this->addCommentOnColumn(self::TABLE, 'depth', 'depth or level of a tree');
 		$this->addCommentOnColumn(self::TABLE, 'name',  'Node name');
 		$this->addCommentOnColumn(self::TABLE, 'slug',  'Slug');
-
-        $this->insert(self::TABLE, [
-            'id'         => 1,
-            'lft'        => 1, 
-            'rgt'        => 2, 
-            'depth'      => 1, 
-            'name'       => 'Категории', 
-            'slug'       => 'root', 
-            'created_at' => time(), 
-            'updated_at' => time()
-        ]);
     }
 
     public function safeDown()

@@ -15,7 +15,7 @@ use yii\behaviors\TimestampBehavior;
  * 
  * @property Lot $lot которому принадлежит данная цена
  */
-class LotPrice extends ActiveRecord
+class LotCategory extends ActiveRecord
 {
     /**
      * {@inheritdoc}

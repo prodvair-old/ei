@@ -29,7 +29,7 @@ class Category extends ActiveRecord
     /* count of models in the category */
     public $model_count;        
     
-    const ROOT = 1;
+    const ROOT = 0;
     
     /**
      * @return string the associated database table name
@@ -39,6 +39,9 @@ class Category extends ActiveRecord
         return '{{%category}}';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -53,6 +56,24 @@ class Category extends ActiveRecord
                 'class' => NestedSetsBehavior::className(),
             ],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function transactions()
+    {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_ALL,
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function find()
+    {
+        return new CategoryQuery(get_called_class());
     }
 
     /**
