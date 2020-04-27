@@ -101,9 +101,8 @@ class Torg extends ActiveRecord
     public function rules()
     {
         return [
-            [['manager_id', 'who', 'etp_id', 'case_id', 'owner_id', 'property', 'description'], 'required'],
-            [['manager_id', 'who', 'etp_id', 'case_id', 'owner_id', 'propery', 'auction'], 'integer'],
-            ['who', 'in', 'range' => self::getWhoVariants()],
+            [['etp_id', 'case_id', 'property', 'description'], 'required'],
+            [['etp_id', 'case_id', 'propery', 'offer'], 'integer'],
             [['started_at', 'end_at', 'completed_at', 'published_at'], 'date', 'format' => 'php:Y-m-d H:i:s+O'],
             ['property', 'in', 'range' => self::getProperties()],
             ['offer', 'in', 'range' => self::getOffers()],
@@ -117,11 +116,8 @@ class Torg extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'manager_id'   => Yii::t('app', 'Manager'),
-            'who'          => Yii::t('app', 'Who manager')
             'etp_id'       => Yii::t('app', 'Etp'),
             'case_id'      => Yii::t('app', 'Case'),
-            'owner_id'     => Yii::t('app', 'Owner'),
             'property'     => Yii::t('app', 'Property'),
             'description'  => Yii::t('app', 'Description'),
             'started_at'   => Yii::t('app', 'Start'),
