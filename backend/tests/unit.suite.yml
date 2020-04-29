@@ -1,2 +1,14 @@
 suite_namespace: backend\tests\unit
 actor: UnitTester
+modules:
+    enabled:
+      - Yii2:
+            part: [orm, email, fixtures]
+      - Asserts
+      - Db:
+            dsn: 'mysql:host=localhost;dbname=test'
+            user: 'root'
+            password: 'splin16'
+            populate: false
+            cleanup: false
+            reconnect: true

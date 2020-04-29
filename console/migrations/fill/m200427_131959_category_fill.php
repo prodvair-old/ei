@@ -35,8 +35,10 @@ class m200427_131959_category_fill extends Migration
 
         // добавление категорий в новый справочник
         foreach($rows as $row) {
+            // первый уровень
             $model = new Category(['id' => $row['id'], 'name' => $row['name'], 'slug' => $row['translit_name']]);
             $model->appendTo($category);
+            // второй уровень
             foreach($this->properties as $step => $property) {
                 if ($row[$property . '_categorys']) {
                     $objs = json_decode($row[$property . '_categorys']);
@@ -58,6 +60,6 @@ class m200427_131959_category_fill extends Migration
     public function safeDown()
     {
         $db = \Yii::$app->db;
-        $select = $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
     }
 }

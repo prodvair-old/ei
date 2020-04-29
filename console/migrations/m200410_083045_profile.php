@@ -18,10 +18,10 @@ class m200410_083045_profile extends Migration
             'model'        => $this->smallInteger()->notNull(),
             'parent_id'    => $this->bigInteger()->notNull(),
             
-            'inn'          => $this->string(12)->notNull(),
+            'inn'          => $this->string(12),
             'activity'     => $this->smallInteger()->notNull(),
             'gender'       => $this->smallInteger()->defaultValue(null),
-            'birthday'     => $this->integer()->notNull(),
+            'birthday'     => $this->integer(),
             'phone'        => $this->string()->notNull(),
             'first_name'   => $this->string()->notNull(),
             'last_name'    => $this->string()->notNull(),

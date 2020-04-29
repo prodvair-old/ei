@@ -4,6 +4,7 @@ namespace common\models\db;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use common\interfaces\PlaceInterface;
 
 /**
  * Place model
@@ -21,7 +22,7 @@ use yii\behaviors\TimestampBehavior;
  * @var integer $created_at
  * @var integer $updated_at
  */
-class Place extends ActiveRecord
+class Place extends ActiveRecord implements PlaceInterface
 {
     /**
      * {@inheritdoc}
@@ -38,7 +39,7 @@ class Place extends ActiveRecord
     {
         return [
             [
-                TimestampBehavior::className(),
+                'class' => TimestampBehavior::className(),
             ],
         ];
     }
@@ -72,5 +73,13 @@ class Place extends ActiveRecord
             'created_at' => Yii::t('app', 'Created'),
             'updated_at' => Yii::t('app', 'Modified'),
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAddress()
+    {
+        return $this->address;
     }
 }

@@ -50,7 +50,7 @@ class Profile extends ActiveRecord implements ProfileInterface
     {
         return [
             [
-                TimestampBehavior::className(),
+                'class' => TimestampBehavior::className(),
             ],
         ];
     }
@@ -67,10 +67,10 @@ class Profile extends ActiveRecord implements ProfileInterface
             ['gender', 'in', 'range' => self::getGenderVariants()],
             ['gender', 'default', 'value' => null],
             ['activity', 'in', 'range' => self::getActivities()],
-            ['activity', 'default', 'value' => ACTIVITY_SIMPLE],
+            ['activity', 'default', 'value' => self::ACTIVITY_SIMPLE],
             ['phone', 'match', 'pattern' => '/^\+7 \d\d\d-\d\d\d-\d\d-\d\d$/',
                 'message' => 'Номер должен состоять ровно из 10 цифр.'],
-            [['first_name', 'last_name', 'middle_name', 'birth_place'], 'string', 'max' => 255],
+            [['first_name', 'last_name', 'middle_name'], 'string', 'max' => 255],
             [['created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -120,7 +120,7 @@ class Profile extends ActiveRecord implements ProfileInterface
      * Get full name
      * @return string
      */
-    public static function getFullName() {
+    public function getFullName() {
         return
             ($this->last_name ? $this->last_name . ' ' : '') .
             $this->first_name . 

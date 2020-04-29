@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models\db;
+namespace common\interfaces;
 
 /**
  * Интерфейс адресных данных

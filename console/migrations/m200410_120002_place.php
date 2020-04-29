@@ -19,11 +19,11 @@ class m200410_120002_place extends Migration
             'parent_id'  => $this->bigInteger()->notNull(),
             
             'city'       => $this->string()->notNull(),
-            'region'     => $this->integer()->notNull(),
+            'region'     => $this->integer(),
             'district'   => $this->string()->notNull(),
             'address'    => $this->string()->notNull(),
-            'geo_lat'    => $this->string()->notNull(),
-            'geo_lon'    => $this->string()->notNull(),
+            'geo_lat'    => $this->string(),
+            'geo_lon'    => $this->string(),
 
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),

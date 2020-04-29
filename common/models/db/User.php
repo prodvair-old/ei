@@ -1,4 +1,5 @@
 <?php
+
 namespace common\models\db;
 
 use Yii;
@@ -23,8 +24,9 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
  * @var integer $created_at
  * @var integer $updated_at
  * 
+ * @property Notification $notification
  * @property Profile $profile
- * @property Lot[]   $lots
+ * @property Lot[] $lots
  * @property sergmoro1\uploader\models\OneFile[] $files
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -37,7 +39,8 @@ class User extends ActiveRecord implements IdentityInterface
 
     const GROUP_ADMIN       = 1;
     const GROUP_MANAGER     = 2;
-    const GROUP_USER        = 3;
+    const GROUP_AGENT       = 3;
+    const GROUP_USER        = 4;
 
     /**
      * {@inheritdoc}
@@ -54,7 +57,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [
-                TimestampBehavior::className(),
+                'class' => TimestampBehavior::className(),
             ],
 			[
 				'class' => HaveFileBehavior::className(),
@@ -81,9 +84,9 @@ class User extends ActiveRecord implements IdentityInterface
             ['group', 'default', 'value' => self::GROUP_USER],
             ['group', 'in', 'range' => self::getGroups()],
             [['username', 'email', 'password_hash', 'password_reset_token'], 'string', 'max' => 255],
-            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => Yii::t('app', 'This username has already been taken.')],
+            ['username', 'unique', 'targetClass' => '\common\models\db\User', 'message' => Yii::t('app', 'This username has already been taken.')],
             ['email', 'email'],
-            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => Yii::t('app', 'This email address has already been taken.')],
+            ['email', 'unique', 'targetClass' => '\common\models\db\User', 'message' => Yii::t('app', 'This email address has already been taken.')],
             [['auth_key'], 'string', 'max' => 32],
             [['created_at', 'updated_at'], 'safe'],
         ];
@@ -223,7 +226,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function needNotify($name)
     {
-        return $this->notifications ? $this->notifications->$name : false;
+        return $this->notification ? $this->notification->$name : false;
     }
 
     /**
@@ -320,6 +323,15 @@ class User extends ActiveRecord implements IdentityInterface
     public function getProfile()
     {
         return Profile::findOne(['model' => self::INT_CODE, 'parent_id' => $this->id]);
+    }
+
+    /**
+     * Уведомления, заказанные пользователем
+     * @return yii\db\ActiveQuery
+     */
+    public function getNotification()
+    {
+        return $this->hasOne(Notification::className(), ['user_id' => 'id']);
     }
 
     /**
