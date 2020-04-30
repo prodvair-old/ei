@@ -14,7 +14,7 @@ use common\interfaces\PlaceInterface;
  * @var integer $model
  * @var integer $parent_id
  * @var string  $city
- * @var integer $region
+ * @var integer $region_id
  * @var string  $district
  * @var string  $address
  * @var string  $geo_lat
@@ -51,7 +51,7 @@ class Place extends ActiveRecord implements PlaceInterface
     {
         return [
             [['model', 'parent_id', 'address'], 'required'],
-            ['region', 'integer'],
+            [['model', 'parent_id', 'region_id'], 'integer'],
             [['city', 'district', 'address'], 'string', 'max' => 255],
             [['geo_lat', 'geo_lon'], 'string', 'max' => 16],
             [['created_at', 'updated_at'], 'safe'],
@@ -65,7 +65,7 @@ class Place extends ActiveRecord implements PlaceInterface
     {
         return [
             'city'       => Yii::t('app', 'City'),
-            'region'     => Yii::t('app', 'Region'),
+            'region_id'  => Yii::t('app', 'Region'),
             'district'   => Yii::t('app', 'District'),
             'address'    => Yii::t('app', 'Address'),
             'geo_lat'    => Yii::t('app', 'Latitude'),

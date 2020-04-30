@@ -74,7 +74,7 @@ class m200428_181633_user_fill extends Migration
 
                 // Place
                 $city = isset($obj->contacts->city) ? $obj->contacts->city : '';
-                $region = isset($obj->contacts->region) ? $obj->contacts->region : null;
+                $region_id = isset($obj->contacts->region) ? $obj->contacts->region : null;
                 $district = isset($obj->contacts->district) ? $obj->contacts->district : '';
                 $address = isset($obj->contacts->address) ? $obj->contacts->address : $city;
                 if ($city || $address) {
@@ -82,7 +82,7 @@ class m200428_181633_user_fill extends Migration
                         'model'         => User::INT_CODE,
                         'parent_id'     => $user_id,
                         'city'          => $city,
-                        'region'        => $region,
+                        'region_id'     => $region_id,
                         'district'      => $district,
                         'address'       => $address,
                         'created_at'    => $created_at,

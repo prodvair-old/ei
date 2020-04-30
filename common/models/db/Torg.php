@@ -208,7 +208,7 @@ class Torg extends ActiveRecord
      */
     public function getEtp()
     {
-        return Organization::findOne(['model' => Organization::TYPE_ETP, 'parent_id' => $this->id]);
+        return Organization::findOne(['type' => Organization::TYPE_ETP, 'parent_id' => $this->id]);
     }
     
     /**

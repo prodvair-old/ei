@@ -30,12 +30,18 @@ Lot
 
 Place
 -----
+User
 Manager
-Lot
 Organization
-Protocol
+Lot
 
 Profile
 -------
 User
 Manager
+
+Organization
+------------
+Profile
+Manager
+

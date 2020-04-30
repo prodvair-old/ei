@@ -21,11 +21,12 @@ class m200415_131046_lookup_organization extends Migration
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Проверено', 'code' => 2, 'property_id' => self::ORGANIZATION_STATUS, 'position' => 2]);
 
         $this->insert(self::TABLE_PROPERTY, ['id' => self::ORGANIZATION_TYPE, 'name' => 'OrganizationType']);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Не важно', 'code' => 1, 'property_id' => self::ORGANIZATION_TYPE, 'position' => 1]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'СРО',      'code' => 2, 'property_id' => self::ORGANIZATION_TYPE, 'position' => 2]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'ЕТП',      'code' => 3, 'property_id' => self::ORGANIZATION_TYPE, 'position' => 3]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Владелец', 'code' => 4, 'property_id' => self::ORGANIZATION_TYPE, 'position' => 4]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Банкрот',  'code' => 5, 'property_id' => self::ORGANIZATION_TYPE, 'position' => 5]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Не важно',    'code' => 11, 'property_id' => self::ORGANIZATION_TYPE, 'position' => 1]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'СРО',         'code' => 12, 'property_id' => self::ORGANIZATION_TYPE, 'position' => 2]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'ЕТП',         'code' => 13, 'property_id' => self::ORGANIZATION_TYPE, 'position' => 3]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Владелец',    'code' => 14, 'property_id' => self::ORGANIZATION_TYPE, 'position' => 4]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Банкрот',     'code' => 15, 'property_id' => self::ORGANIZATION_TYPE, 'position' => 5]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Управляющий', 'code' => 3,  'property_id' => self::ORGANIZATION_TYPE, 'position' => 6]);
         
         $this->insert(self::TABLE_PROPERTY, ['id' => self::ORGANIZATION_ACTIVITY, 'name' => 'OrganizationActivity']);
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Отсутствующий банкрот',            'code' => 1,  'property_id' => self::ORGANIZATION_ACTIVITY, 'position' => 1]);

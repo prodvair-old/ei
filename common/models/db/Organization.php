@@ -11,7 +11,8 @@ use sergmoro1\lookup\Lookup;
  * Данные организации.
  *
  * @var integer $id
- * @var integer $type
+ * @var integer $model
+ * @var integer $parent_id
  * @var integer $activity
  * @var string  $title
  * @var string  $full_title
@@ -36,11 +37,12 @@ class Organization extends ActiveRecord
     const STATUS_WAITING        = 1;
     const STATUS_CHECKED        = 2;
 
-    const TYPE_NOMATTER         = 1;
-    const TYPE_SRO              = 2;
-    const TYPE_ETP              = 3;
-    const TYPE_OWNER            = 4;
-    const TYPE_BANKRUPT         = 5;
+    const TYPE_NOMATTER         = 11;
+    const TYPE_SRO              = 12;
+    const TYPE_ETP              = 13;
+    const TYPE_OWNER            = 14;
+    const TYPE_BANKRUPT         = 15;
+    const TYPE_MANAGER          = 3;
 
     const ACTIVITY_ABSENTBANKRUPT       = 1;
     const ACTIVITY_AGRICULTURE          = 2;
@@ -70,7 +72,7 @@ class Organization extends ActiveRecord
     {
         return [
             [
-                TimestampBehavior::className(),
+                'class' => TimestampBehavior::className(),
             ],
         ];
     }
@@ -81,17 +83,16 @@ class Organization extends ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'inn'], 'required'],
-            [['type', 'activity'], 'integer'],
-            ['type', 'in', 'range' => self::getTypes()],
-            ['type', 'default', 'value' => self::TYPE_NOMATTER],
+            [['model', 'parent_id', 'title', 'inn'], 'required'],
+            [['model', 'parent_id', 'activity'], 'integer'],
+            ['model', 'in', 'range' => self::getTypes()],
+            ['model', 'default', 'value' => self::TYPE_NOMATTER],
             ['activity', 'in', 'range' => self::getActivities()],
             ['activity', 'default', 'value' => self::ACTIVITY_SIMPLE],
-            ['inn', 'match', 'pattern' => '/\d{10}/'],
-            ['ogrn', 'match', 'pattern' => '/\d{13}/'],
-            [['title', 'full_title', 'reg_number', 'website'], 'string', 'max' => 255],
+            ['inn', 'match', 'pattern' => '/\d{10,12}/', 'skipOnEmpty' => true],
+            ['ogrn', 'match', 'pattern' => '/\d{13,15}/', 'skipOnEmpty' => true],
+            [['title', 'full_title', 'reg_number', 'phone', 'website'], 'string', 'max' => 255],
             ['email', 'email'],
-            ['phone', 'match', 'pattern' => '/^\+7 \d\d\d-\d\d\d-\d\d-\d\d$/',
             ['website', 'url'],
             ['status', 'in', 'range' => self::getStatuses()],
             ['status', 'default', 'value' => self::STATUS_WAITING],
@@ -106,7 +107,6 @@ class Organization extends ActiveRecord
     {
         return [
             'title'       => Yii::t('app', 'Title'),
-            'type'        => Yii::t('app', 'Type'),
             'ownership'   => Yii::t('app', 'Ownership'),
             'inn'         => Yii::t('app', 'INN'),
             'ogrn'        => Yii::t('app', 'OGRN'),
@@ -142,6 +142,7 @@ class Organization extends ActiveRecord
             self::TYPE_OWNER, 
             self::TYPE_ETP, 
             self::TYPE_BANKRUPT, 
+            self::TYPE_MANAGER, 
         ];
     }
 
@@ -171,6 +172,6 @@ class Organization extends ActiveRecord
      * @return yii\db\ActiveRecord
      */
     public function getPlace() {
-        return Place::findOne(['model' => self::INT_CODE, 'parent_id' => 'id']);
+        return Place::findOne(['model' => self::INT_CODE, 'parent_id' => $this->id]);
     }
 }

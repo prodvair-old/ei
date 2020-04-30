@@ -19,7 +19,7 @@ class m200410_120002_place extends Migration
             'parent_id'  => $this->bigInteger()->notNull(),
             
             'city'       => $this->string()->notNull(),
-            'region'     => $this->integer(),
+            'region_id'  => $this->integer(),
             'district'   => $this->string()->notNull(),
             'address'    => $this->string()->notNull(),
             'geo_lat'    => $this->string(),
@@ -35,7 +35,7 @@ class m200410_120002_place extends Migration
 		$this->addCommentOnColumn(self::TABLE, 'parent_id', 'ID в соответствующей модели, например в Organization');
         
 		$this->addCommentOnColumn(self::TABLE, 'city', 'Город');
-		$this->addCommentOnColumn(self::TABLE, 'region', 'Код региона');
+		$this->addCommentOnColumn(self::TABLE, 'region_id', 'Код региона');
 		$this->addCommentOnColumn(self::TABLE, 'district', 'Округ');
 		$this->addCommentOnColumn(self::TABLE, 'address', 'Полный адрес');
 		$this->addCommentOnColumn(self::TABLE, 'geo_lat', 'Широта');

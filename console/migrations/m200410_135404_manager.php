@@ -13,13 +13,15 @@ class m200410_135404_manager extends Migration
     public function up()
     {
         $this->createTable(self::TABLE, [
-            'id'         => $this->bigPrimaryKey(),
-            'who'        => $this->smallInteger()->notNull(),
-            'created_at' => $this->integer()->notNull(),
-            'updated_at' => $this->integer()->notNull(),
+            'id'           => $this->bigPrimaryKey(),
+            'type'         => $this->smallInteger()->notNull(),
+            'organizer_id' => $this->bigInteger(),
+            'created_at'   => $this->integer()->notNull(),
+            'updated_at'   => $this->integer()->notNull(),
         ]);
         
-		$this->addCommentOnColumn(self::TABLE, 'who', 'Кто или что - персона или организация');
+		$this->addCommentOnColumn(self::TABLE, 'type', 'Тип - арбитр или организатор (персона или организация)');
+		$this->addCommentOnColumn(self::TABLE, 'organizer_id', 'Компания, организатор торга или компания, чьи интересы представляет персона (СРО)');
     }
 
     public function down()

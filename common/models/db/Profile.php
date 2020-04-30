@@ -10,7 +10,6 @@ use common\interfaces\ProfileInterface;
  * Profile model
  * Данные персоны.
  *
- * @var integer $id
  * @var integer $model
  * @var integer $parent_id
  * @var string  $inn
@@ -23,6 +22,8 @@ use common\interfaces\ProfileInterface;
  * @var string  $middle_name
  * @var integer $created_at
  * @var integer $updated_at
+ * 
+ * @property Organization $sro
  */
 class Profile extends ActiveRecord implements ProfileInterface
 {
