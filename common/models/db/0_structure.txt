@@ -12,7 +12,7 @@
 5 Case
 6 Lot
 7 Torg
-8 Etp
+12 Etp
 
 Связи
 =====
