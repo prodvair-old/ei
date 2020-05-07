@@ -12,6 +12,7 @@
 5 Protocol
 6 Lot
 7 Torg
+8 Etp
 
 Связи
 =====
