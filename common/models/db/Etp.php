@@ -92,7 +92,7 @@ class Etp extends ActiveRecord
      * Get full name
      * @return string
      */
-    public function getFullName() {
+    public function getTitle() {
         return $this->organizer->title;
     }
 
