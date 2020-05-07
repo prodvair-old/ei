@@ -66,9 +66,9 @@ class m200502_224600_bankrupt_fill extends Migration
                         'gender'      => (isset($obj->polId) ? $obj->polId : null),
                         'birthday'    => (isset($obj->birthDay) && $obj->birthDay ? self::getBirthday($obj->birthDay) : null),
                         'phone'       => $phone,
-                        'first_name'  => (isset($json->firstName) ? $json->firstName : '-'),
-                        'last_name'   => (isset($json->lastName) ? $json->lastName : ''),
-                        'middle_name' => (isset($json->middleName) ? $json->middleName : ''),
+                        'first_name'  => (isset($obj->firstName) ? $obj->firstName : '-'),
+                        'last_name'   => (isset($obj->lastName) ? $obj->lastName : ''),
+                        'middle_name' => (isset($obj->middleName) ? $obj->middleName : ''),
                         'created_at'  => $created_at,
                         'updated_at'  => $updated_at,
                     ];
@@ -159,7 +159,13 @@ class m200502_224600_bankrupt_fill extends Migration
         if ($birthday)
             $a = explode('-', $birthday);
         return (count($a) == 3)
-            ? strtotime($a[0] . '-' . $a[1] . '-' . $a[2])
+            ? (($time_stamp = strtotime($a[0] . '-' . $a[1] . '-' . $a[2])) > 0 
+                ? $time_stamp 
+                : (($time_stamp = strtotime($a[2] . '-' . $a[1] . '-' . $a[0])) > 0
+                    ? $time_stamp
+                    : null
+                )
+            )
             : null;
     }
 }

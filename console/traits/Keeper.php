@@ -9,7 +9,7 @@ trait Keeper
     /**
      * @param ActiveRecord $model
      * @param array $arr 
-     * @param array $elm
+     * @param &array $elm
      * @throw yii\console\Exception
      */
     public function validateAndKeep($model, &$arr, $elm)
@@ -18,6 +18,6 @@ trait Keeper
             $arr[] = $elm;
             return true;
         } else
-            throw new Exception(print_r($model->getErrors()));
+            throw new Exception(print_r($model->getErrors()) . "\n" . print_r($model->getAttributes()));
     }
 }
