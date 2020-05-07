@@ -14,6 +14,9 @@ return [
             'path' => '@console/runtime/queue',
             'as prep' => \common\behaviors\PrepareNotificationBehavior::class,
         ],
+        'lookup' => [
+            'class' => 'zacksleo\yii2\lookup\models\Lookup',
+        ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'useFileTransport' => false,
