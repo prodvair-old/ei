@@ -21,7 +21,7 @@ class m200410_120002_place extends Migration
             'city'       => $this->string()->notNull(),
             'region_id'  => $this->integer(),
             'district'   => $this->string()->notNull(),
-            'address'    => $this->string()->notNull(),
+            'address'    => $this->text()->notNull(),
             'geo_lat'    => $this->string(),
             'geo_lon'    => $this->string(),
 

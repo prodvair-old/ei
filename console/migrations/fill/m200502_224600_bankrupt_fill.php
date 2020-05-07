@@ -8,52 +8,46 @@ use common\models\db\Organization;
 use console\traits\Keeper;
 
 /**
- * Class m200430_070745_manager_fill
+ * Class m200502_224600_bankrupt_fill
  */
-class m200430_070745_manager_fill extends Migration
+class m200502_224600_bankrupt_fill extends Migration
 {
     use Keeper;
     
-    const TABLE = '{{%manager}}';
+    const TABLE = '{{%bankrupt}}';
 
     public function safeUp()
     {
         // получение менеджеров из существующего справочника
         $db = \Yii::$app->db;
         $select = $db->createCommand(
-            'SELECT * FROM "eiLot".managers ORDER BY "managers".id'
+            'SELECT * FROM "eiLot".bankrupts ORDER BY "bankrupts".id'
         );
         $rows = $select->queryAll();
         
-        $managers = [];
-        $manager_sro = [];
+        $bankrupts = [];
         $profiles = [];
         $organizations = [];
         $places = [];
         
-        $convertor = [1 => 2, 3 => 1];
-        // добавление управляющих торгами
+        // добавление банкротов
         foreach($rows as $row) {
 
-            $manager_id = $row['id'];
-            $created_at = strtotime($row['createdAt']);
-            $updated_at = strtotime($row['updatedAt']);
+            $bankrupt_id = $row['id'];
+            $created_at  = strtotime($row['createdAt']);
+            $updated_at  = strtotime($row['updatedAt']);
             $agent = $row['typeId'];
             $obj = json_decode($row['info']);
             
-            $m = [
+            $b = [
                 'id'         => $manager_id,
-                'agent'      => $convertor[$agent],
+                'agent'      => $agent,
                 'created_at' => $created_at,
                 'updated_at' => $updated_at,
             ];
-            $manager = new Manager($m);
+            $bankrupt = new Bankrupt($b);
             
-            // добавление связи менеджера и СРО 
-            if ($sro_id = $row['sroId'])
-                $manager_sro[] = ['manager_id' => $manager_id, 'sro_id' => $sro_id];
-                
-            if ($this->validateAndKeep($manager, $managers, $m)) {
+            if ($this->validateAndKeep($bankrupt, $bankrupts, $b)) {
                 
                 $city     = isset($row['city']) && $row['city'] ? $row['city'] : '';
                 $district = isset($row['district']) && $row['district'] ? $row['district'] : '';
@@ -62,19 +56,19 @@ class m200430_070745_manager_fill extends Migration
                 $geo_lon  = (isset($obg->address->geo_lon) && $obg->address->geo_lon ? $obg->address->geo_lon : null);
                 $phone    = (isset($obj->contacts->phone) && $obj->contacts->phone) ? $obj->contacts->phone : '';
                 
-                if ($agent == Manager::AGENT_PERSON) {
+                if ($agent == Bankrupt::AGENT_PERSON) {
                     // Profile
                     $p = [
-                        'model'       => Manager::INT_CODE,
-                        'parent_id'   => $manager_id,
-                        'activity'    => Profile::ACTIVITY_SIMPLE,
+                        'model'       => Bankrupt::INT_CODE,
+                        'parent_id'   => $bankrupt_id,
+                        'activity'    => $row['categoryId'],
                         'inn'         => $row['inn'],
                         'gender'      => $obj->polId,
                         'birthday'    => (isset($obj->birthDay) && $obj->birthDay ? self::getBirthday($obj->birthDay) : null),
                         'phone'       => $phone,
-                        'first_name'  => ($row['firstName'] ?: '-'),
-                        'last_name'   => $row['lastName'],
-                        'middle_name' => $row['middleName'],
+                        'first_name'  => (isset($json->firstName) ? $json->firstName : '-'),
+                        'last_name'   => (isset($json->lastName) ? $json->lastName : ''),
+                        'middle_name' => (isset($json->middleName) ? $json->middleName : ''),
                         'created_at'  => $created_at,
                         'updated_at'  => $updated_at,
                     ];
@@ -84,8 +78,8 @@ class m200430_070745_manager_fill extends Migration
                     
                     // Place
                     $p = [
-                        'model'       => Manager::INT_CODE,
-                        'parent_id'   => $manager_id,
+                        'model'       => Bankrupt::INT_CODE,
+                        'parent_id'   => $bankrupt_id,
                         'city'        => $city,
                         'region_id'   => $row['regionId'],
                         'district'    => $district,
@@ -102,18 +96,18 @@ class m200430_070745_manager_fill extends Migration
                 } else {
                     // Organization
                     $o = [
-                        'model'      => Manager::INT_CODE,
-                        'parent_id'  => $manager_id,
-                        'activity'   => Organization::ACTIVITY_SIMPLE,
-                        'title'      => $row['fullName'],
-                        'full_title' => '',
+                        'model'      => Bankrupt::INT_CODE,
+                        'parent_id'  => $bankrupt_id,
+                        'activity'   => $row['categoryId'],
+                        'title'      => $row['name'],
+                        'full_title' => (isset($json->fullName) ? $json->fullName : ''),
                         'inn'        => $row['inn'],
-                        'ogrn'       => $obj->ogrn,
-                        'reg_number' => $row['regnum'],
-                        'email'      => $obj->contacts->email,
+                        'ogrn'       => (isset($obj->ogrn) ? $obj->ogrn : ''),
+                        'reg_number' => '',
+                        'email'      => (isset($obj->contacts->email) ? $obj->contacts->email : ''),
                         'phone'      => $phone,
-                        'website'    => $obj->contacts->url,
-                        'status'     => ($row['checked'] ? Organization::STATUS_CHECKED : Organization::STATUS_WAITING),
+                        'website'    => (isset($obj->contacts->url) ? $obj->contacts->url : ''),
+                        'status'     => Organization::STATUS_CHECKED,
                         'created_at' => $created_at,
                         'updated_at' => $updated_at,
                     ];
@@ -123,8 +117,8 @@ class m200430_070745_manager_fill extends Migration
 
                     // Place
                     $p = [
-                        'model'      => Manager::INT_CODE,
-                        'parent_id'  => $manager_id,
+                        'model'      => Bankrupt::INT_CODE,
+                        'parent_id'  => $bankrupt_id,
                         'city'       => $city,
                         'region_id'  => $row['regionId'],
                         'district'   => $district,
@@ -140,8 +134,7 @@ class m200430_070745_manager_fill extends Migration
                 }
             }
         }
-        $this->batchInsert(self::TABLE, ['id', 'agent', 'created_at', 'updated_at'], $managers);
-        $this->batchInsert('{{%manager_sro}}', ['manager_id', 'sro_id'], $manager_sro);
+        $this->batchInsert(self::TABLE, ['id', 'agent', 'created_at', 'updated_at'], $bankrupts);
         $this->batchInsert('{{%profile}}', ['model', 'parent_id', 'activity', 'inn', 'gender', 'birthday', 'phone', 'first_name', 'last_name', 'middle_name', 'created_at', 'updated_at'], $profiles);
         $this->batchInsert('{{%organization}}', ['model', 'parent_id', 'activity', 'title', 'full_title', 'inn', 'ogrn', 'reg_number', 'email', 'phone', 'website', 'status', 'created_at', 'updated_at'], $organizations);
         $this->batchInsert('{{%place}}', ['model', 'parent_id', 'city', 'region_id', 'district', 'address', 'geo_lat', 'geo_lon', 'created_at', 'updated_at'], $places);
@@ -150,10 +143,9 @@ class m200430_070745_manager_fill extends Migration
     public function safeDown()
     {
         $db = \Yii::$app->db;
-        $db->createCommand('DELETE FROM {{%place}} WHERE model=' . Manager::INT_CODE)->execute();
-        $db->createCommand('DELETE FROM {{%organization}} WHERE model=' . Manager::INT_CODE)->execute();
-        $db->createCommand('DELETE FROM {{%profile}} WHERE model=' . Manager::INT_CODE)->execute();
-        $db->createCommand('TRUNCATE TABLE {{%manager_sro}} CASCADE')->execute();
+        $db->createCommand('DELETE FROM {{%place}} WHERE model=' . Bankrupt::INT_CODE)->execute();
+        $db->createCommand('DELETE FROM {{%organization}} WHERE model=' . Bankrupt::INT_CODE)->execute();
+        $db->createCommand('DELETE FROM {{%profile}} WHERE model=' . Bankrupt::INT_CODE)->execute();
         $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
     }
 
@@ -165,9 +157,9 @@ class m200430_070745_manager_fill extends Migration
     {
         $a = [];
         if ($birthday)
-            $a = explode('.', $birthday);
+            $a = explode('-', $birthday);
         return (count($a) == 3)
-            ? strtotime($a[2] . '-' . $a[1] . '-' . $a[0])
+            ? strtotime($a[0] . '-' . $a[1] . '-' . $a[2])
             : null;
     }
 }

@@ -3,12 +3,12 @@
 use yii\db\Migration;
 
 /**
- * Class m200410_135404_manager
- * Частное лицо или организация назначенное арбитражным управляющим
+ * Class m200411_100500_bankrupt
+ * Частное лицо или организация банкрот
  */
-class m200410_135404_manager extends Migration
+class m200411_100500_bankrupt extends Migration
 {
-    const TABLE = '{{%manager}}';
+    const TABLE = '{{%bankrupt}}';
 
     public function up()
     {
