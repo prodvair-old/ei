@@ -15,7 +15,7 @@ class m200415_060607_case extends Migration
             'id'          => $this->bigPrimaryKey(),
             'reg_number'  => $this->string()->notNull(),
             'year'        => $this->integer()->notNull(),
-            'judge'       => $this->string()->notNull(),
+            'judge'       => $this->string(),
 
             'created_at'  => $this->integer()->notNull(),
             'updated_at'  => $this->integer()->notNull(),

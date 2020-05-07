@@ -14,7 +14,7 @@ class m200415_132026_torg extends Migration
         $this->createTable(self::TABLE, [
             'id'           => $this->bigPrimaryKey(),
             'etp_id'       => $this->bigInteger()->notNull(),
-            'case_id'      => $this->bigInteger()->notNull(),
+            'case_id'      => $this->bigInteger(),
             
             'property'     => $this->smallInteger()->notNull(),
             'description'  => $this->text()->notNull(),

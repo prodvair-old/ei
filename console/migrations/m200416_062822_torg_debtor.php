@@ -15,16 +15,19 @@ class m200416_062822_torg_debtor extends Migration
             'torg_id'     => $this->bigInteger()->notNull(),
             'bankrupt_id' => $this->bigInteger()->notNull(),
             'manager_id'  => $this->bigInteger()->notNull(),
+            'case_id'     => $this->bigInteger()->notNull(),
         ]);
         
         $this->createIndex('idx-torg_debtor-torg', self::TABLE, 'torg_id', true);
 
         $this->addForeignKey('fk-torg_debtor-torg',  self::TABLE, 'torg_id',  '{{%torg}}',  'id', 'restrict', 'restrict');
         $this->addForeignKey('fk-torg_debtor-manager', self::TABLE, 'manager_id', '{{%manager}}', 'id', 'restrict', 'restrict');
+        $this->addForeignKey('fk-torg_debtor-case', self::TABLE, 'case_id', '{{%case}}', 'id', 'restrict', 'restrict');
 
 		$this->addCommentOnColumn(self::TABLE, 'torg_id', 'Торг');
 		$this->addCommentOnColumn(self::TABLE, 'bankrupt_id', 'Банкрот');
 		$this->addCommentOnColumn(self::TABLE, 'manager_id', 'Менеджер, назначенный управлять имеществом Банкрота');
+		$this->addCommentOnColumn(self::TABLE, 'case_id', 'Дело Банкрота');
     }
 
     public function down()
