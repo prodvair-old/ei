@@ -21,7 +21,7 @@ use yii\behaviors\TimestampBehavior;
 class Etp extends ActiveRecord
 {
     // внутренний код модели используемый в составном ключе
-    const INT_CODE = 8;
+    const INT_CODE = 12;
 
     /**
      * {@inheritdoc}
