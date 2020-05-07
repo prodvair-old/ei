@@ -83,7 +83,7 @@ class Organization extends ActiveRecord
     public function rules()
     {
         return [
-            [['model', 'parent_id', 'title', 'inn'], 'required'],
+            [['model', 'parent_id'], 'required'], // , 'title', 'inn'
             [['model', 'parent_id', 'activity'], 'integer'],
             ['model', 'in', 'range' => self::getTypes()],
             ['model', 'default', 'value' => self::TYPE_NOMATTER],

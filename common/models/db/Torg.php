@@ -66,27 +66,11 @@ class Torg extends ActiveRecord
     {
         return [
             [
-                TimestampBehavior::className(),
+                'class' => TimestampBehavior::className(),
             ],
 			[
 				'class' => HaveFileBehavior::className(),
 				'file_path' => '/torg/',
-			],
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            [
-                TimestampBehavior::className(),
-            ],
-			[
-				'class' => HaveFileBehavior::className(),
-				'file_path' => '/lot/',
                 'sizes' => [
                     'original'  => ['width' => 1600, 'height' => 900, 'catalog' => 'original'],
                     'main'      => ['width' => 400,  'height' => 400, 'catalog' => ''],
@@ -95,6 +79,7 @@ class Torg extends ActiveRecord
 			],
         ];
     }
+    
     /**
      * {@inheritdoc}
      */
@@ -149,10 +134,11 @@ class Torg extends ActiveRecord
      */
     public static function getOffers() {
         return [
-            self::PROPERTY_BANKRUPT,
-            self::PROPERTY_ZALOG,
-            self::PROPERTY_ARRESTED,
-            self::PROPERTY_MUNICIPAL,
+            self::OFFER_PUBLIC,
+            self::OFFER_AUCTION,
+            self::OFFER_AUCTION_OPEN,
+            self::OFFER_CONTEST,
+            self::OFFER_CONTEST_OPEN,
         ];
     }
 

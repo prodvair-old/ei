@@ -1,7 +1,7 @@
 <?php
 
 use yii\db\Migration;
-use common\models\db\Manager;
+use common\models\db\Bankrupt;
 use common\models\db\Profile;
 use common\models\db\Place;
 use common\models\db\Organization;
@@ -40,7 +40,7 @@ class m200502_224600_bankrupt_fill extends Migration
             $obj = json_decode($row['info']);
             
             $b = [
-                'id'         => $manager_id,
+                'id'         => $bankrupt_id,
                 'agent'      => $agent,
                 'created_at' => $created_at,
                 'updated_at' => $updated_at,
@@ -51,7 +51,7 @@ class m200502_224600_bankrupt_fill extends Migration
                 
                 $city     = isset($row['city']) && $row['city'] ? $row['city'] : '';
                 $district = isset($row['district']) && $row['district'] ? $row['district'] : '';
-                $address  = isset($row['address']) && $row['address'] ? $row['address'] : '';
+                $address  = isset($row['address']) && $row['address'] ? $row['address'] : '-';
                 $geo_lat  = (isset($obg->address->geo_lat) && $obg->address->geo_lat ? $obg->address->geo_lat : null);
                 $geo_lon  = (isset($obg->address->geo_lon) && $obg->address->geo_lon ? $obg->address->geo_lon : null);
                 $phone    = (isset($obj->contacts->phone) && $obj->contacts->phone) ? $obj->contacts->phone : '';
@@ -63,7 +63,7 @@ class m200502_224600_bankrupt_fill extends Migration
                         'parent_id'   => $bankrupt_id,
                         'activity'    => $row['categoryId'],
                         'inn'         => $row['inn'],
-                        'gender'      => $obj->polId,
+                        'gender'      => (isset($obj->polId) ? $obj->polId : null),
                         'birthday'    => (isset($obj->birthDay) && $obj->birthDay ? self::getBirthday($obj->birthDay) : null),
                         'phone'       => $phone,
                         'first_name'  => (isset($json->firstName) ? $json->firstName : '-'),

@@ -83,7 +83,7 @@ class Lot extends ActiveRecord
     {
         return [
             [
-                TimestampBehavior::className(),
+                'class' => TimestampBehavior::className(),
             ],
 			[
 				'class' => HaveFileBehavior::className(),

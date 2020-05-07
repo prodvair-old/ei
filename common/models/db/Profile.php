@@ -64,11 +64,12 @@ class Profile extends ActiveRecord implements ProfileInterface
         return [
             [['model', 'parent_id', 'first_name'], 'required'],
             ['inn', 'match', 'pattern' => '/\d{12}/'],
-            [['activity', 'gender', 'birthday'], 'integer'],
+            [['activity', 'gender'], 'integer'],
             ['gender', 'in', 'range' => self::getGenderVariants()],
             ['gender', 'default', 'value' => null],
             ['activity', 'in', 'range' => self::getActivities()],
             ['activity', 'default', 'value' => self::ACTIVITY_SIMPLE],
+            ['birthday', 'default', 'value' => null],
             ['phone', 'match', 'pattern' => '/^\+7 \d\d\d-\d\d\d-\d\d-\d\d$/',
                 'message' => 'Номер должен состоять ровно из 10 цифр.'],
             [['first_name', 'last_name', 'middle_name'], 'string', 'max' => 255],

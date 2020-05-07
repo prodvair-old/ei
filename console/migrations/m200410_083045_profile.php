@@ -21,7 +21,7 @@ class m200410_083045_profile extends Migration
             'inn'          => $this->string(12),
             'activity'     => $this->smallInteger()->notNull(),
             'gender'       => $this->smallInteger()->defaultValue(null),
-            'birthday'     => $this->integer(),
+            'birthday'     => $this->integer()->defaultValue(null),
             'phone'        => $this->string()->notNull(),
             'first_name'   => $this->string()->notNull(),
             'last_name'    => $this->string()->notNull(),
