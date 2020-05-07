@@ -8,8 +8,8 @@
 1 User
 2 Organization
 3 Manager
-4 Case
-5 Protocol
+4 Bankrupt
+5 Case
 6 Lot
 7 Torg
 8 Etp
@@ -33,6 +33,7 @@ Place
 -----
 User
 Manager
+Bankrupt
 Organization
 Lot
 
@@ -40,9 +41,11 @@ Profile
 -------
 User
 Manager
+Bankrupt
 
 Organization
 ------------
 Profile
 Manager
+Bankrupt
 

@@ -126,6 +126,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             self::GROUP_ADMIN, 
             self::GROUP_MANAGER, 
+            self::GROUP_AGENT,
             self::GROUP_USER,
         ];
     }

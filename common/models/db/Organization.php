@@ -37,12 +37,12 @@ class Organization extends ActiveRecord
     const STATUS_WAITING        = 1;
     const STATUS_CHECKED        = 2;
 
-    const TYPE_NOMATTER         = 11;
-    const TYPE_SRO              = 12;
-    const TYPE_ETP              = 13;
-    const TYPE_OWNER            = 14;
-    const TYPE_BANKRUPT         = 15;
+    const TYPE_NOMATTER         = 10;
+    const TYPE_SRO              = 11;
+    const TYPE_ETP              = 12;
+    const TYPE_OWNER            = 13;
     const TYPE_MANAGER          = 3;
+    const TYPE_BANKRUPT         = 4;
 
     const ACTIVITY_ABSENTBANKRUPT       = 1;
     const ACTIVITY_AGRICULTURE          = 2;
@@ -93,7 +93,7 @@ class Organization extends ActiveRecord
             ['ogrn', 'match', 'pattern' => '/\d{13,15}/', 'skipOnEmpty' => true],
             [['title', 'full_title', 'reg_number', 'phone', 'website'], 'string', 'max' => 255],
             ['email', 'email'],
-            ['website', 'url'],
+            //['website', 'url'],
             ['status', 'in', 'range' => self::getStatuses()],
             ['status', 'default', 'value' => self::STATUS_WAITING],
             [['created_at', 'updated_at'], 'safe'],
@@ -141,8 +141,8 @@ class Organization extends ActiveRecord
             self::TYPE_SRO, 
             self::TYPE_OWNER, 
             self::TYPE_ETP, 
-            self::TYPE_BANKRUPT, 
             self::TYPE_MANAGER, 
+            self::TYPE_BANKRUPT, 
         ];
     }
 
@@ -172,6 +172,6 @@ class Organization extends ActiveRecord
      * @return yii\db\ActiveRecord
      */
     public function getPlace() {
-        return Place::findOne(['model' => self::INT_CODE, 'parent_id' => $this->id]);
+        return Place::findOne(['model' => $this->model, 'parent_id' => $this->id]);
     }
 }
