@@ -6,9 +6,9 @@ use common\models\db\Place;
 use console\traits\Keeper;
 
 /**
- * Class m200507_082106_organization_etp_fill
+ * Class m200507_090505_organization_sro_fill
  */
-class m200507_082106_organization_etp_fill extends Migration
+class m200507_090505_organization_sro_fill extends Migration
 {
     use Keeper;
     
@@ -16,10 +16,10 @@ class m200507_082106_organization_etp_fill extends Migration
 
     public function safeUp()
     {
-        // получение электронных торговых площадок из существующего справочника
+        // получение само-регулируемых организаций из существующего справочника
         $db = \Yii::$app->db;
         $select = $db->createCommand(
-            'SELECT * FROM "eiLot".etp ORDER BY "etp".id'
+            'SELECT * FROM "eiLot".sro ORDER BY "sro".id'
         );
         $rows = $select->queryAll();
         
@@ -29,31 +29,31 @@ class m200507_082106_organization_etp_fill extends Migration
         // добавление торговой компании
         foreach($rows as $row) {
 
-            $etp_id     = $row['id'];
+            $sro_id     = $row['id'];
             $created_at = strtotime($row['createdAt']);
             $updated_at = strtotime($row['updatedAt']);
             $obj = json_decode($row['info']);
             
-            // Etp
+            // Sro
             $o = [
-                'model'      => Organization::TYPE_ETP,
-                'parent_id'  => $etp_id,
+                'model'      => Organization::TYPE_SRO,
+                'parent_id'  => $sro_id,
                 'activity'   => Organization::ACTIVITY_SIMPLE,
                 'title'      => $row['title'],
-                'full_title' => (isset($obj->fullTitle) ? $obj->fullTitle : ''),
+                'full_title' => '',
                 'inn'        => $row['inn'],
-                'ogrn'       => null,
-                'reg_number' => null,
-                'email'      => $row['email'],
-                'phone'      => $row['phone'],
-                'website'    => $row['url'],
+                'ogrn'       => $row['inn'],
+                'reg_number' => $row['regnum'],
+                'email'      => '',
+                'phone'      => '',
+                'website'    => '',
                 'status'     => Organization::STATUS_CHECKED,
                 'created_at' => $created_at,
                 'updated_at' => $updated_at,
             ];
-            $etp = new Organization($o);
+            $sro = new Organization($o);
             
-            if ($this->validateAndKeep($etp, $organizations, $o)) {
+            if ($this->validateAndKeep($sro, $organizations, $o)) {
                 
                 $city     = isset($row['city']) && $row['city'] ? $row['city'] : '';
                 $district = isset($row['district']) && $row['district'] ? $row['district'] : '';
@@ -67,8 +67,8 @@ class m200507_082106_organization_etp_fill extends Migration
                     'region_id'  => $row['regionId'],
                     'district'   => $district,
                     'address'    => $address,
-                    'geo_lat'    => null,
-                    'geo_lon'    => null,
+                    'geo_lat'    => (isset($obj->address->geo_lat) ? $obj->address->geo_lat : null),
+                    'geo_lon'    => (isset($obj->address->geo_lon) ? $obj->address->geo_lon : null),
                     'created_at' => $created_at,
                     'updated_at' => $updated_at,
                 ];
@@ -84,7 +84,7 @@ class m200507_082106_organization_etp_fill extends Migration
     public function safeDown()
     {
         $db = \Yii::$app->db;
-        $db->createCommand('DELETE FROM {{%place}} WHERE model=' . Organization::TYPE_ETP)->execute();
-        $db->createCommand('DELETE FROM '. self::TABLE .' WHERE model=' . Organization::TYPE_ETP)->execute();
+        $db->createCommand('DELETE FROM {{%place}} WHERE model=' . Organization::TYPE_SRO)->execute();
+        $db->createCommand('DELETE FROM '. self::TABLE .' WHERE model=' . Organization::TYPE_SRO)->execute();
     }
 }
