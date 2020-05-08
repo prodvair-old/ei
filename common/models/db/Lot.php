@@ -47,17 +47,17 @@ class Lot extends ActiveRecord
 
     const STATUS_IN_PROGRESS = 1;
     const STATUS_ANNOUNCED   = 2;
-    const STATUS_APPLICATION = 3;
+    const STATUS_SUSPENDED   = 3;
     const STATUS_CANCELLED   = 4;
     const STATUS_COMPLETED   = 5;
-    const STATUS_SUSPENDED   = 6;
-    const STATUS_ARCHIVED    = 7;
+    const STATUS_ARCHIVED    = 6;
 
     const REASON_NO_MATTER   = 1; 
-    const REASON_PRICE       = 2;
-    const REASON_CONTRACT    = 3;
-    const REASON_PARTICIPANT = 4;
-    const REASON_SUMMARIZING = 5;
+    const REASON_APPLICATION = 2;
+    const REASON_PRICE       = 3;
+    const REASON_CONTRACT    = 4;
+    const REASON_PARTICIPANT = 5;
+    const REASON_SUMMARIZING = 6;
 
     /**
      * {@inheritdoc}
@@ -156,10 +156,9 @@ class Lot extends ActiveRecord
         return [
             self::STATUS_IN_PROGRESS,
             self::STATUS_ANNOUNCED,
-            self::STATUS_APPLICATION,
+            self::STATUS_SUSPENDED,
             self::STATUS_CANCELLED,
             self::STATUS_COMPLETED,
-            self::STATUS_SUSPENDED,
             self::STATUS_ARCHIVED,
         ];
     }
