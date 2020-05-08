@@ -37,8 +37,9 @@ class m200507_101510_owner_fill extends Migration
             
             // Owner
             $o = [
-                'id'   = $owner_id;
+                'id' = $owner_id;
                 'slug' = $row['linkEi'];
+                'description' = $row['description'];
             ];
             $owner = new Owner($o);
             
@@ -87,7 +88,7 @@ class m200507_101510_owner_fill extends Migration
                 $this->validateAndKeep($place, $places, $p);
             }
         }
-        $this->batchInsert(self::TABLE, ['id', 'slug', 'created_at', 'updated_at'], $owners);
+        $this->batchInsert(self::TABLE, ['id', 'slug', 'description', 'created_at', 'updated_at'], $owners);
         $this->batchInsert('{{%organization}}', ['model', 'parent_id', 'activity', 'title', 'full_title', 'inn', 'ogrn', 'reg_number', 'email', 'phone', 'website', 'status', 'created_at', 'updated_at'], $organizations);
         $this->batchInsert('{{%place}}', ['model', 'parent_id', 'city', 'region_id', 'district', 'address', 'geo_lat', 'geo_lon', 'created_at', 'updated_at'], $places);
     }

@@ -8,9 +8,11 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
 
 /**
  * Owner model
+ * Владельцы лотов
  *
  * @var integer $id
- * @var integer $slug
+ * @var string  $slug
+ * @var text    $description
  * @var integer $created_at
  * @var integer $updated_at
  * 
@@ -57,7 +59,7 @@ class Owner extends ActiveRecord
     {
         return [
             [['slug'], 'required'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['description', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -67,9 +69,10 @@ class Owner extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'slug'       => Yii::t('app', 'Slug'),
-            'created_at' => Yii::t('app', 'Created'),
-            'updated_at' => Yii::t('app', 'Modified'),
+            'slug'        => Yii::t('app', 'Slug'),
+            'description' => Yii::t('app', 'Description'),
+            'created_at'  => Yii::t('app', 'Created'),
+            'updated_at'  => Yii::t('app', 'Modified'),
         ];
     }
 
@@ -77,7 +80,8 @@ class Owner extends ActiveRecord
      * Get organization
      * @return ActiveRecord | null
      */
-    public function getOrganization() {
+    public function getOrganization()
+    {
         return Organization::findOne([
             'model'     => self::INT_CODE, 
             'parent_id' => $this->id,
