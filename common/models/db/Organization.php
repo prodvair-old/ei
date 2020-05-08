@@ -56,10 +56,6 @@ class Organization extends ActiveRecord
     const ACTIVITY_PRIVATE_PENSION_FUND = 10;
     const ACTIVITY_SIMPLE               = 11;
     const ACTIVITY_STRATEGIC            = 12;
-    const ACTIVITY_ENTERPRENEUR_PERSON  = 13;
-    const ACTIVITY_FARMER_PERSON        = 14;
-    const ACTIVITY_SIMPLE_PERSON        = 15;
-    const ACTIVITY_OTHER_PERSON         = 16;
     
     /**
      * {@inheritdoc}
@@ -168,10 +164,6 @@ class Organization extends ActiveRecord
             self::ACTIVITY_PRIVATE_PENSION_FUND,
             self::ACTIVITY_SIMPLE,
             self::ACTIVITY_STRATEGIC,
-            self::ACTIVITY_ENTERPRENEUR_PERSON,
-            self::ACTIVITY_FARMER_PERSON,
-            self::ACTIVITY_SIMPLE_PERSON,
-            self::ACTIVITY_OTHER_PERSON,
         ];
     }
 

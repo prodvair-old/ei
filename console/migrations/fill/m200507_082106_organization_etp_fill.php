@@ -86,6 +86,5 @@ class m200507_082106_organization_etp_fill extends Migration
         $db = \Yii::$app->db;
         $db->createCommand('DELETE FROM {{%place}} WHERE model=' . Organization::TYPE_ETP)->execute();
         $db->createCommand('DELETE FROM '. self::TABLE .' WHERE model=' . Organization::TYPE_ETP)->execute();
-        // $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
     }
 }

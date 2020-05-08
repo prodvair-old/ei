@@ -41,10 +41,6 @@ class m200415_131046_lookup_organization extends Migration
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Частный пенсионный фонд',          'code' => 10, 'property_id' => self::ORGANIZATION_ACTIVITY, 'position' => 10]);
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Простая организация',              'code' => 11, 'property_id' => self::ORGANIZATION_ACTIVITY, 'position' => 11]);
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Стратегическая организация',       'code' => 12, 'property_id' => self::ORGANIZATION_ACTIVITY, 'position' => 12]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Предприниматель',                  'code' => 13, 'property_id' => self::ORGANIZATION_ACTIVITY, 'position' => 13]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Фермер',                           'code' => 14, 'property_id' => self::ORGANIZATION_ACTIVITY, 'position' => 14]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Обычный человек',                  'code' => 15, 'property_id' => self::ORGANIZATION_ACTIVITY, 'position' => 15]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Некто',                            'code' => 16, 'property_id' => self::ORGANIZATION_ACTIVITY, 'position' => 16]);
     }
 
     public function safeDown()

@@ -18,7 +18,7 @@ class m200507_121529_torg_fill extends Migration
         // получение данных о торгах
         $db = \Yii::$app->db;
         $select = $db->createCommand(
-            'SELECT * FROM "eiLot".torg ORDER BY "torg".id'
+            'SELECT * FROM "eiLot".torgs ORDER BY "torgs".id'
         );
         $rows = $select->queryAll();
         
@@ -54,7 +54,7 @@ class m200507_121529_torg_fill extends Migration
             ];
             $torg = new Torg($t);
             
-            if ($this->validateAndKeep($torg, $torgss, $t)) {
+            if ($this->validateAndKeep($torg, $torgs, $t)) {
                 if ($property == Torg::PROPERTY_BANKRUPT) {
                     $td = [
                         'torg_id'     => $torg_id,
@@ -92,6 +92,9 @@ class m200507_121529_torg_fill extends Migration
     public function safeDown()
     {
         $db = \Yii::$app->db;
+        $db->createCommand('TRUNCATE TABLE {{%torg_drawish}} CASCADE')->execute();
+        $db->createCommand('TRUNCATE TABLE {{%torg_pledge}} CASCADE')->execute();
+        $db->createCommand('TRUNCATE TABLE {{%torg_debtor}} CASCADE')->execute();
         $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
     }
 }
