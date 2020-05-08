@@ -72,7 +72,7 @@ class m200507_101510_owner_fill extends Migration
                 
                 // Place
                 $p = [
-                    'model'      => Organization::TYPE_ETP,
+                    'model'      => Organization::TYPE_OWNER,
                     'parent_id'  => $etp_id,
                     'city'       => $city,
                     'region_id'  => $row['regionId'],

@@ -67,15 +67,4 @@ class Etp extends ActiveRecord
             'updated_at'   => Yii::t('app', 'Modified'),
         ];
     }
-
-    /**
-     * Get organization
-     * @return ActiveRecord | null
-     */
-    public function getOrganization() {
-        return Organization::findOne([
-            'model'     => self::INT_CODE, 
-            'parent_id' => $this->id,
-        ]);
-    }
 }
