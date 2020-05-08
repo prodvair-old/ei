@@ -156,8 +156,8 @@ class Torg extends ActiveRecord
      * @return yii\db\ActiveQuery
      */
     public function getBankrupt() {
-        return $this->hasOne(Torg::className(), ['id' => 'torg_id'])
-            ->viaTable(TorgDebtor::tableName(), ['bankrupt_id' => 'id']);
+        return $this->hasOne(Bankrupt::className(), ['id' => 'bankrupt_id'])
+            ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
 
     /**
@@ -165,8 +165,8 @@ class Torg extends ActiveRecord
      * @return yii\db\ActiveQuery
      */
     public function getManager() {
-        return $this->hasOne(Torg::className(), ['id' => 'torg_id'])
-            ->viaTable(TorgDebtor::tableName(), ['manager_id' => 'id']);
+        return $this->hasOne(Manager::className(), ['id' => 'manager_id'])
+            ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
     
     /**
@@ -174,8 +174,8 @@ class Torg extends ActiveRecord
      * @return yii\db\ActiveQuery
      */
     public function getOwner() {
-        return $this->hasOne(Torg::className(), ['id' => 'torg_id'])
-            ->viaTable(TorgPledge::tableName(), ['owner_id' => 'id']);
+        return $this->hasOne(Owner::className(), ['id' => 'owner_id'])
+            ->viaTable(TorgPledge::tableName(), ['torg_id' => 'id']);
     }
 
     /**
@@ -183,8 +183,8 @@ class Torg extends ActiveRecord
      * @return yii\db\ActiveQuery
      */
     public function getUser() {
-        return $this->hasOne(Torg::className(), ['id' => 'torg_id'])
-            ->viaTable(TorgPledge::tableName(), ['user_id' => 'id']);
+        return $this->hasOne(User::className(), ['id' => 'user_id'])
+            ->viaTable(TorgPledge::tableName(), ['torg_id' => 'id']);
     }
 
     /**
@@ -194,14 +194,15 @@ class Torg extends ActiveRecord
      */
     public function getEtp()
     {
-        return Organization::findOne(['type' => Organization::TYPE_ETP, 'parent_id' => $this->id]);
+        return Organization::findOne(['model' => Organization::TYPE_ETP, 'parent_id' => $this->etp_id]);
     }
     
     /**
-     * Получить дело торга
+     * Получить дело по торгу
      * @return yii\db\ActiveQuery
      */
     public function getCase() {
-        return $this->hasOne(Case::className(), ['id' => 'case_id']);
+        return $this->hasOne(Case::className(), ['id' => 'case_id'])
+            ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
 }
