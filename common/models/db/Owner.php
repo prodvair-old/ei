@@ -5,6 +5,7 @@ namespace common\models\db;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use sergmoro1\uploader\behaviors\HaveFileBehavior;
+use common\traits\Company;
 
 /**
  * Owner model
@@ -17,9 +18,12 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
  * @var integer $updated_at
  * 
  * @property Organization $organization
+ * @property Place $place
  */
 class Owner extends ActiveRecord
 {
+    use Company;
+    
     // внутренний код модели используемый в составном ключе
     const INT_CODE = 13;
 
@@ -74,17 +78,5 @@ class Owner extends ActiveRecord
             'created_at'  => Yii::t('app', 'Created'),
             'updated_at'  => Yii::t('app', 'Modified'),
         ];
-    }
-
-    /**
-     * Get organization
-     * @return ActiveRecord | null
-     */
-    public function getOrganization()
-    {
-        return Organization::findOne([
-            'model'     => self::INT_CODE, 
-            'parent_id' => $this->id,
-        ]);
     }
 }

@@ -4,6 +4,7 @@ namespace common\models\db;
 
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use common\traits\Company;
 
 /**
  * Etp model
@@ -15,9 +16,12 @@ use yii\behaviors\TimestampBehavior;
  * @var integer $updated_at
  * 
  * @property Organization $organization
+ * @property Place $place
  */
 class Etp extends ActiveRecord
 {
+    use Company;
+    
     // внутренний код модели используемый в составном ключе
     const INT_CODE = 12;
 
@@ -62,16 +66,5 @@ class Etp extends ActiveRecord
             'created_at'   => Yii::t('app', 'Created'),
             'updated_at'   => Yii::t('app', 'Modified'),
         ];
-    }
-
-    /**
-     * Get organization
-     * @return ActiveRecord | null
-     */
-    public function getOrganization() {
-        return Organization::findOne([
-            'model'     => self::INT_CODE, 
-            'parent_id' => $this->id,
-        ]);
     }
 }

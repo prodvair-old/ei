@@ -4,6 +4,7 @@ namespace common\models\db;
 
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use common\traits\Company;
 
 /**
  * Sro model
@@ -15,9 +16,12 @@ use yii\behaviors\TimestampBehavior;
  * @var integer $updated_at
  * 
  * @property Organization $organization
+ * @property Place $place
  */
 class Etp extends ActiveRecord
 {
+    use Company;
+
     // внутренний код модели используемый в составном ключе
     const INT_CODE = 11;
 
