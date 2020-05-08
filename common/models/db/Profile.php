@@ -31,10 +31,11 @@ class Profile extends ActiveRecord implements ProfileInterface
     const GENDER_MALE     = 1;
     const GENDER_FEMALE   = 2;
 
-    const ACTIVITY_ENTERPRENEUR = 13;
-    const ACTIVITY_FARMER       = 14;
-    const ACTIVITY_SIMPLE       = 15;
-    const ACTIVITY_OTHER        = 16;
+    const ACTIVITY_ABSENTBANKRUPT = 1;
+    const ACTIVITY_ENTERPRENEUR   = 13;
+    const ACTIVITY_FARMER         = 14;
+    const ACTIVITY_SIMPLE         = 15;
+    const ACTIVITY_OTHER          = 16;
 
     /**
      * {@inheritdoc}
@@ -63,12 +64,13 @@ class Profile extends ActiveRecord implements ProfileInterface
     {
         return [
             [['model', 'parent_id', 'first_name'], 'required'],
-            ['inn', 'match', 'pattern' => '/\d{12}/'],
-            [['activity', 'gender', 'birthday'], 'integer'],
+            ['inn', 'match', 'pattern' => '/\d{10,12}/'],
+            [['activity', 'gender'], 'integer'],
             ['gender', 'in', 'range' => self::getGenderVariants()],
             ['gender', 'default', 'value' => null],
             ['activity', 'in', 'range' => self::getActivities()],
             ['activity', 'default', 'value' => self::ACTIVITY_SIMPLE],
+            ['birthday', 'default', 'value' => null],
             ['phone', 'match', 'pattern' => '/^\+7 \d\d\d-\d\d\d-\d\d-\d\d$/',
                 'message' => 'Номер должен состоять ровно из 10 цифр.'],
             [['first_name', 'last_name', 'middle_name'], 'string', 'max' => 255],
@@ -110,6 +112,7 @@ class Profile extends ActiveRecord implements ProfileInterface
      */
     public static function getActivities() {
         return [
+            self::ACTIVITY_ABSENTBANKRUPT,
             self::ACTIVITY_ENTERPRENEUR,
             self::ACTIVITY_FARMER,
             self::ACTIVITY_SIMPLE,

@@ -83,7 +83,7 @@ class Lot extends ActiveRecord
     {
         return [
             [
-                TimestampBehavior::className(),
+                'class' => TimestampBehavior::className(),
             ],
 			[
 				'class' => HaveFileBehavior::className(),
@@ -244,7 +244,7 @@ class Lot extends ActiveRecord
      */
     public function getCategories()
     {
-        return $this->hasMany(self::className(), ['id' => 'lot_id'])
-            ->viaTable(LotCategory::tableName(), ['category_id' => 'id']);
+        return $this->hasMany(Category::className(), ['category_id' => 'id'])
+            ->viaTable(LotCategory::tableName(), ['lot_id' => 'id']);
     }
 }

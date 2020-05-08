@@ -21,10 +21,11 @@ class m200410_100432_lookup_profile extends Migration
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Женский', 'code' => 2, 'property_id' => self::GENDER, 'position' => 2]);
 
         $this->insert(self::TABLE_PROPERTY, ['id' => self::PERSON_ACTIVITY, 'name' => 'PersonActivity']);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Предприниматель', 'code' => 13, 'property_id' => self::PERSON_ACTIVITY, 'position' => 1]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Фермер',          'code' => 14, 'property_id' => self::PERSON_ACTIVITY, 'position' => 2]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Обычный человек', 'code' => 15, 'property_id' => self::PERSON_ACTIVITY, 'position' => 3]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Другое',          'code' => 16, 'property_id' => self::PERSON_ACTIVITY, 'position' => 4]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Отсутствующий банкрот', 'code' => 1,  'property_id' => self::PERSON_ACTIVITY, 'position' => 1]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Предприниматель',       'code' => 13, 'property_id' => self::PERSON_ACTIVITY, 'position' => 2]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Фермер',                'code' => 14, 'property_id' => self::PERSON_ACTIVITY, 'position' => 3]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Обычный человек',       'code' => 15, 'property_id' => self::PERSON_ACTIVITY, 'position' => 4]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Другое',                'code' => 16, 'property_id' => self::PERSON_ACTIVITY, 'position' => 5]);
     }
 
     public function safeDown()
