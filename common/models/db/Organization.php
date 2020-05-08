@@ -41,6 +41,7 @@ class Organization extends ActiveRecord
     const TYPE_SRO              = 11;
     const TYPE_ETP              = 12;
     const TYPE_OWNER            = 13;
+    const TYPE_BANK             = 16;
     const TYPE_MANAGER          = 3;
     const TYPE_BANKRUPT         = 4;
 

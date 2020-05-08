@@ -19,7 +19,8 @@ class m200508_090815_owner extends Migration
 
             'organizer_id'  => $this->bigInteger()->notNull(),
 
-            'link'          => $this->text(),
+            'description'   => $this->text()->notNull(),
+            'link'          => $this->text()->notNull(),
             'logo'          => $this->text(),
             'bg'            => $this->text(),
             'color_btn'     => $this->string(),
@@ -37,6 +38,7 @@ class m200508_090815_owner extends Migration
         $this->addForeignKey('fk-owner-organization', self::TABLE, 'organizer_id', '{{%organization}}', 'id', 'restrict', 'restrict');
 
 		$this->addCommentOnColumn(self::TABLE, 'organizer_id', 'Компания владеьца лота');
+		$this->addCommentOnColumn(self::TABLE, 'description', 'Описание владельца');
 		$this->addCommentOnColumn(self::TABLE, 'link', 'Ссылка транслит на сайте');
 		$this->addCommentOnColumn(self::TABLE, 'logo', 'Лотготип');
 		$this->addCommentOnColumn(self::TABLE, 'bg', 'Фоновая картинка');
