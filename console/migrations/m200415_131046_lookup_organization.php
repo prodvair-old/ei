@@ -26,7 +26,8 @@ class m200415_131046_lookup_organization extends Migration
         $this->insert(self::TABLE_LOOKUP, ['name' => 'ЕТП',         'code' => 13, 'property_id' => self::ORGANIZATION_TYPE, 'position' => 3]);
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Владелец',    'code' => 14, 'property_id' => self::ORGANIZATION_TYPE, 'position' => 4]);
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Банкрот',     'code' => 15, 'property_id' => self::ORGANIZATION_TYPE, 'position' => 5]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Управляющий', 'code' => 3,  'property_id' => self::ORGANIZATION_TYPE, 'position' => 6]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Банк',        'code' => 16, 'property_id' => self::ORGANIZATION_TYPE, 'position' => 6]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Управляющий', 'code' => 3,  'property_id' => self::ORGANIZATION_TYPE, 'position' => 7]);
         
         $this->insert(self::TABLE_PROPERTY, ['id' => self::ORGANIZATION_ACTIVITY, 'name' => 'OrganizationActivity']);
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Отсутствующий банкрот',            'code' => 1,  'property_id' => self::ORGANIZATION_ACTIVITY, 'position' => 1]);
