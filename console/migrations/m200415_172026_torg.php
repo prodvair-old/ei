@@ -13,10 +13,10 @@ class m200415_172026_torg extends Migration
     {
         $this->createTable(self::TABLE, [
             'id'           => $this->bigPrimaryKey(),
-            'etp_id'       => $this->bigInteger()->notNull(),
+            'etp_id'       => $this->bigInteger(),
             
             'property'     => $this->smallInteger()->notNull(),
-            'description'  => $this->text()->notNull(),
+            'description'  => $this->text(),
             
             'started_at'   => $this->integer(),
             'end_at'       => $this->integer(),

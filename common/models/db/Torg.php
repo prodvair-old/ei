@@ -12,8 +12,6 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
  * Торг, аукцион по продаже лотов.
  *
  * @var integer $id
- * @var integer $etp_id
- * @var integer $case_id
  * @var integer $property
  * @var text    $description
  * @var string  $started_at
@@ -40,8 +38,8 @@ class Torg extends ActiveRecord
 
     // тип имущества
     const PROPERTY_BANKRUPT  = 1;
-    const PROPERTY_ZALOG     = 2;
-    const PROPERTY_ARRESTED  = 3;
+    const PROPERTY_ARRESTED  = 2;
+    const PROPERTY_ZALOG     = 3;
     const PROPERTY_MUNICIPAL = 4;
 
     // тип предложения
@@ -86,8 +84,7 @@ class Torg extends ActiveRecord
     public function rules()
     {
         return [
-            //[['etp_id', 'property', 'description'], 'required'],
-            [['property'], 'required'],
+            ['property', 'required'],
             [['property', 'offer'], 'integer'],
             ['description', 'string'],
             //[['started_at', 'end_at', 'completed_at', 'published_at'], 'integer', 'skipOnEmpty' => true],
@@ -195,7 +192,8 @@ class Torg extends ActiveRecord
      */
     public function getEtp()
     {
-        return Organization::findOne(['model' => Organization::TYPE_ETP, 'parent_id' => $this->etp_id]);
+        return $this->hasOne(Organization::className(), ['id' => 'etp_id'])
+            ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
     
     /**

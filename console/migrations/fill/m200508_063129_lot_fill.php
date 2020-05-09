@@ -11,6 +11,7 @@ class m200508_063129_lot_fill extends Migration
     use Keeper;
     
     const TABLE = '{{%lot}}';
+    const OFFSET = 1000;
 
     private static $status_convertor = [
         "подводятся итоги (приостановлены) " => [Lot::STATUS_SUSPENDED, LOT::REASON_SUMMARIZING],
@@ -73,22 +74,33 @@ class m200508_063129_lot_fill extends Migration
         // получение данных о лотах
         $db = \Yii::$app->db;
         $select = $db->createCommand(
-            'SELECT * FROM "eiLot".lots ORDER BY "lots".id'
+            'SELECT id FROM "eiLot".lots ORDER BY "lots".id'
         );
         $rows = $select->queryAll();
         
         $lots = [];
         
         // добавление информации о лотах
-        foreach($rows as $row) {
+        for($i = 1; $i <= count($rows); $i++) {
 
-            $lot_id    = $row['id'];
+            if (($b = floor($i / self::OFFSET)) && (($b * self::OFFSET) == $i)) {
+
+                $this->batchInsert(self::TABLE, ['id', 'torg_id', 'title', 'description', 'start_price', 'step', 'step_measure', 'deposite', 'deposite_measure', 'status', 'reason', 'created_at', 'updated_at'], $lots);
+
+                $lots = [];
+            }
+
+            $lot_id = $rows[$i - 1]['id'];
+
+            $select = $db->createCommand(
+                'SELECT * FROM "eiLot".lots WHERE id = ' . $lot_id
+            );
+            $row = $select->queryAll();
+            $row = $row[0];
+
             $created_at = strtotime($row['createdAt']);
             $updated_at = strtotime($row['updatedAt']);
-
-            $obj = json_decode($row['info']);
-            
-            $a = self::$status_convertor($row['status']);
+            $a = self::$status_convertor[$row['status']];
             
             // Lot
             $l = [
@@ -113,17 +125,14 @@ class m200508_063129_lot_fill extends Migration
             $this->validateAndKeep($lot, $lots, $l);
         }
         
-        $this->batchInsert(self::TABLE, ['id', 'torg_id', 'title', 'description', 'start_price', 'step', 'step_measure', 'deposite', 'deposite_measure', 'status', 'reason', 'created_at', 'updated_at'], $lots);
+        if (count($lots) > 0) {
+            $this->batchInsert(self::TABLE, ['id', 'torg_id', 'title', 'description', 'start_price', 'step', 'step_measure', 'deposite', 'deposite_measure', 'status', 'reason', 'created_at', 'updated_at'], $lots);
+        }
     }
 
     public function safeDown()
     {
         $db = \Yii::$app->db;
         $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
-    }
-
-    public function getStatusReason($status)
-    {
-        return self::$status_reason[$status];
     }
 }

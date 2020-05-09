@@ -13,7 +13,7 @@ class m200416_063504_torg_pledge extends Migration
     {
         $this->createTable(self::TABLE, [
             'torg_id'  => $this->bigInteger()->notNull(),
-            'owner_id' => $this->bigInteger()->notNull(),
+            'owner_id' => $this->bigInteger(),
             'user_id'  => $this->bigInteger()->notNull(),
         ]);
         

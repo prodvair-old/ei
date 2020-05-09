@@ -9,6 +9,7 @@ use yii\db\ActiveRecord;
  * Связь Торга и Банкрота.
  *
  * @var integer $torg_id
+ * @var integer $etp_id
  * @var integer $bankrupt_id
  * @var integer $manager_id
  * @var integer $case_id
@@ -30,8 +31,9 @@ class TorgDebtor extends ActiveRecord
     public function rules()
     {
         return [
-            ['torg_id', 'required'],
-            [['bankrupt_id', 'manager_id', 'case_id'], 'safe'],
+            [['torg_id', 'bankrupt_id', 'case_id'], 'required'],
+            [['torg_id', 'bankrupt_id', 'case_id'], 'integer'],
+            [['etp_id', 'manager_id'], 'safe'],
         ];
     }
 }
