@@ -29,8 +29,8 @@ class TorgPledge extends ActiveRecord
     public function rules()
     {
         return [
-            [['torg_id', 'owner_id', 'user_id'], 'required'],
-            [['torg_id', 'owner_id', 'user_id'], 'integer'],
+            ['torg_id', 'required'],
+            [['owner_id', 'user_id'], 'safe'],
         ];
     }
 }

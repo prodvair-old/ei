@@ -1,7 +1,7 @@
 <?php
 
 use yii\db\Migration;
-use common\models\db\Etp;
+use common\models\db\Owner;
 use common\models\db\Organization;
 use common\models\db\Place;
 use console\traits\Keeper;
@@ -37,9 +37,11 @@ class m200507_101510_owner_fill extends Migration
             
             // Owner
             $o = [
-                'id' = $owner_id;
-                'slug' = $row['linkEi'];
-                'description' = $row['description'];
+                'id'          => $owner_id,
+                'slug'        => $row['linkEi'],
+                'description' => $row['description'],
+                'created_at'  => $created_at,
+                'updated_at'  => $updated_at,
             ];
             $owner = new Owner($o);
             
@@ -73,7 +75,7 @@ class m200507_101510_owner_fill extends Migration
                 // Place
                 $p = [
                     'model'      => Organization::TYPE_OWNER,
-                    'parent_id'  => $etp_id,
+                    'parent_id'  => $owner_id,
                     'city'       => $city,
                     'region_id'  => $row['regionId'],
                     'district'   => $district,

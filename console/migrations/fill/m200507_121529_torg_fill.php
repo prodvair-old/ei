@@ -2,6 +2,9 @@
 
 use yii\db\Migration;
 use common\models\db\Torg;
+use common\models\db\TorgDebtor;
+use common\models\db\TorgPledge;
+use common\models\db\TorgDrawish;
 use console\traits\Keeper;
 
 /**
@@ -12,6 +15,14 @@ class m200507_121529_torg_fill extends Migration
     use Keeper;
     
     const TABLE = '{{%torg}}';
+    
+    private static $offer_convertor = [
+        "Конкурс" => 4,
+        "Открытый конкурс" => 5,
+        "открытый аукцион" => 3,
+        "публичное предложение" => 1,
+        "Аукцион" => 2,
+    ];
 
     public function safeUp()
     {
@@ -33,7 +44,8 @@ class m200507_121529_torg_fill extends Migration
             $torg_id    = $row['id'];
             $created_at = strtotime($row['createdAt']);
             $updated_at = strtotime($row['updatedAt']);
-
+            $property   = $row['typeId'];
+            
             $obj = json_decode($row['info']);
             
             // Torg
@@ -41,13 +53,13 @@ class m200507_121529_torg_fill extends Migration
                 'id'           => $torg_id,
                 'etp_id'       => $row['etpId'],
 
-                'property'     => $row['typeId'],
+                'property'     => $property,
                 'description'  => $row['description'],
                 'started_at'   => strtotime($row['startDate']),
                 'end_at'       => strtotime($row['endDate']),
-                'completed_at' => strtotime($row['completedDate']),
+                'completed_at' => strtotime($row['completeDate']),
                 'published_at' => strtotime($row['publishedDate']),
-                'offer'        => $row['tradeTypeId'],
+                'offer'        => self::$offer_convertor[$row['tradeType']],
 
                 'created_at'   => $created_at,
                 'updated_at'   => $updated_at,
@@ -59,7 +71,7 @@ class m200507_121529_torg_fill extends Migration
                     $td = [
                         'torg_id'     => $torg_id,
                         'bankrupt_id' => $row['bankruptId'],
-                        'manager_id'  => $row['publisherId'];
+                        'manager_id'  => $row['publisherId'],
                         'case_id'     => $row['caseId'],
                     ];
                     $torg_debtor = new TorgDebtor($td);
@@ -67,7 +79,7 @@ class m200507_121529_torg_fill extends Migration
                 } elseif ($property == Torg::PROPERTY_ZALOG) {
                     $tp = [
                         'torg_id'  => $torg_id,
-                        'user_id'  => $row['publisherId'];
+                        'user_id'  => $row['publisherId'],
                         'owner_id' => $row['bankruptId'],
                     ];
                     $torg_pledge = new TorgPledge($tp);
@@ -75,9 +87,9 @@ class m200507_121529_torg_fill extends Migration
                 } else {
                     $td = [
                         'torg_id'    => $torg_id,
-                        'manager_id' => $row['publisherId'];
+                        'manager_id' => $row['publisherId'],
                     ];
-                    $torg_drawish = new TorgDrawish($tp);
+                    $torg_drawish = new TorgDrawish($td);
                     $this->validateAndKeep($torg_drawish, $torgs_drowish, $td);
                 }
             }

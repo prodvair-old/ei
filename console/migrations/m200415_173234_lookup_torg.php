@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m200415_133234_lookup_torg
+ * Class m200415_173234_lookup_torg
  */
-class m200415_133234_lookup_torg extends Migration
+class m200415_173234_lookup_torg extends Migration
 {
     const TABLE_LOOKUP   = '{{%lookup}}';
     const TABLE_PROPERTY = '{{%property}}';

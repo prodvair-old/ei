@@ -38,8 +38,10 @@ class m200507_092106_etp_fill extends Migration
             
             // Etp
             $e = [
-                'id' = $etp_id;
-                'efrsb_id' = $row['number'];
+                'id'         => $etp_id,
+                'efrsb_id'   => $row['number'],
+                'created_at' => $created_at,
+                'updated_at' => $updated_at,
             ];
             $etp = new Etp($e);
             

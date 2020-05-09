@@ -98,7 +98,7 @@ class m200502_224600_bankrupt_fill extends Migration
                     $o = [
                         'model'      => Bankrupt::INT_CODE,
                         'parent_id'  => $bankrupt_id,
-                        'activity'   => $row['categoryId'],
+                        'activity'   => ($row['categoryId'] == 16 ? 9 : $row['categoryId']),
                         'title'      => $row['name'],
                         'full_title' => (isset($json->fullName) ? $json->fullName : ''),
                         'inn'        => $row['inn'],

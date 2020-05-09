@@ -4,10 +4,11 @@ namespace common\models\db;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use sergmoro1\uploader\behaviors\HaveFileBehavior;
 
 /**
- * Case model
- * Дело по Торгу.
+ * Casefile model
+ * Дело по банкротному Торгу.
  *
  * @var integer $id
  * @var string  $reg_number
@@ -18,7 +19,7 @@ use yii\behaviors\TimestampBehavior;
  * 
  * @property sergmoro1\uploader\models\OneFile[] $files
  */
-class Case extends ActiveRecord
+class Casefile extends ActiveRecord
 {
     // внутренний код модели используемый в составном ключе
     const INT_CODE = 4;
@@ -28,7 +29,7 @@ class Case extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%case}}';
+        return '{{%casefile}}';
     }
 
     /**
@@ -38,7 +39,7 @@ class Case extends ActiveRecord
     {
         return [
             [
-                TimestampBehavior::className(),
+                'class' => TimestampBehavior::className(),
             ],
 			[
 				'class' => HaveFileBehavior::className(),
@@ -55,7 +56,7 @@ class Case extends ActiveRecord
         return [
             [['reg_number', 'year'], 'required'],
             [['reg_number', 'judge'], 'string', 'max' => 255],
-            ['year', 'integer', 'min' => '1970'],
+            ['year', 'integer'],
             [['created_at', 'updated_at'], 'safe'],
         ];
     }

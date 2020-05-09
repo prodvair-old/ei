@@ -91,7 +91,7 @@ class Organization extends ActiveRecord
             ['activity', 'in', 'range' => self::getActivities()],
             ['activity', 'default', 'value' => self::ACTIVITY_SIMPLE],
             ['inn', 'match', 'pattern' => '/\d{10,12}/', 'skipOnEmpty' => true],
-            ['ogrn', 'match', 'pattern' => '/\d{13,15}/', 'skipOnEmpty' => true],
+            ['ogrn', 'match', 'pattern' => '/\d{10,15}/', 'skipOnEmpty' => true],
             [['title', 'full_title', 'reg_number', 'phone', 'website'], 'string', 'max' => 255],
             ['email', 'email'],
             //['website', 'url'],

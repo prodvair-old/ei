@@ -28,8 +28,8 @@ class TorgDrawish extends ActiveRecord
     public function rules()
     {
         return [
-            [['torg_id', 'manager_id'], 'required'],
-            [['torg_id', 'manager_id'], 'integer'],
+            ['torg_id', 'required'],
+            [['manager_id'], 'safe'],
         ];
     }
 }

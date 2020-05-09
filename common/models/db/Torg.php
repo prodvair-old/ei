@@ -30,7 +30,7 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
  * @property Owner    $owner
  * @property User     $user
  * @property Etp      $etp
- * @property Case     $case
+ * @property Casefile $case
  * @property sergmoro1\uploader\models\OneFile[] $files
  */
 class Torg extends ActiveRecord
@@ -86,12 +86,14 @@ class Torg extends ActiveRecord
     public function rules()
     {
         return [
-            [['etp_id', 'case_id', 'property', 'description'], 'required'],
-            [['etp_id', 'case_id', 'propery', 'offer'], 'integer'],
-            [['started_at', 'end_at', 'completed_at', 'published_at'], 'date', 'format' => 'php:Y-m-d H:i:s+O'],
+            //[['etp_id', 'property', 'description'], 'required'],
+            [['property'], 'required'],
+            [['property', 'offer'], 'integer'],
+            ['description', 'string'],
+            //[['started_at', 'end_at', 'completed_at', 'published_at'], 'integer', 'skipOnEmpty' => true],
             ['property', 'in', 'range' => self::getProperties()],
             ['offer', 'in', 'range' => self::getOffers()],
-            [['created_at', 'updated_at'], 'safe'],
+            [['etp_id', 'started_at', 'end_at', 'completed_at', 'published_at', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -102,7 +104,6 @@ class Torg extends ActiveRecord
     {
         return [
             'etp_id'       => Yii::t('app', 'Etp'),
-            'case_id'      => Yii::t('app', 'Case'),
             'property'     => Yii::t('app', 'Property'),
             'description'  => Yii::t('app', 'Description'),
             'started_at'   => Yii::t('app', 'Start'),
@@ -199,10 +200,11 @@ class Torg extends ActiveRecord
     
     /**
      * Получить дело по торгу
+     *
      * @return yii\db\ActiveQuery
      */
     public function getCase() {
-        return $this->hasOne(Case::className(), ['id' => 'case_id'])
+        return $this->hasOne(Casefile::className(), ['id' => 'case_id'])
             ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
 }

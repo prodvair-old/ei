@@ -4,7 +4,7 @@ namespace common\models\db;
 
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
-use common\traits\Company;
+use common\models\traits\Company;
 
 /**
  * Etp model

@@ -1,14 +1,15 @@
 <?php
 
 use yii\db\Migration;
+use common\models\db\Sro;
 use common\models\db\Organization;
 use common\models\db\Place;
 use console\traits\Keeper;
 
 /**
- * Class m200507_080505_organization_sro_fill
+ * Class m200507_080505_sro_fill
  */
-class m200507_080505_organization_sro_fill extends Migration
+class m200507_080505_sro_fill extends Migration
 {
     use Keeper;
     
@@ -37,8 +38,10 @@ class m200507_080505_organization_sro_fill extends Migration
             
             // Sro
             $s = [
-                'id' = $etp_id;
-                'efrsb_id' = $row['sroId'];
+                'id' => $sro_id,
+                'efrsb_id' => $row['sroId'],
+                'created_at' => $created_at,
+                'updated_at' => $updated_at,
             ];
             $sro = new Sro($s);
             
@@ -70,7 +73,7 @@ class m200507_080505_organization_sro_fill extends Migration
                 // Place
                 $p = [
                     'model'      => Organization::TYPE_SRO,
-                    'parent_id'  => $etp_id,
+                    'parent_id'  => $sro_id,
                     'city'       => $city,
                     'region_id'  => $row['regionId'],
                     'district'   => $district,

@@ -30,8 +30,8 @@ class TorgDebtor extends ActiveRecord
     public function rules()
     {
         return [
-            [['torg_id', 'bankrupt_id', 'manager_id', 'case_id'], 'required'],
-            [['torg_id', 'bankrupt_id', 'manager_id', 'case_id'], 'integer'],
+            ['torg_id', 'required'],
+            [['bankrupt_id', 'manager_id', 'case_id'], 'safe'],
         ];
     }
 }

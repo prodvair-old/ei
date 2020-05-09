@@ -3,11 +3,11 @@
 use yii\db\Migration;
 
 /**
- * Class m200415_060607_case
+ * Class m200415_060607_casefile
  */
-class m200415_060607_case extends Migration
+class m200415_060607_casefile extends Migration
 {
-    const TABLE = '{{%case}}';
+    const TABLE = '{{%casefile}}';
 
     public function up()
     {

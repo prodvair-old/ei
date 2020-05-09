@@ -12,7 +12,7 @@ class m200508_063129_lot_fill extends Migration
     
     const TABLE = '{{%lot}}';
 
-    private static $status_reason = [
+    private static $status_convertor = [
         "подводятся итоги (приостановлены) " => [Lot::STATUS_SUSPENDED, LOT::REASON_SUMMARIZING],
         "Определение участников " => [Lot::STATUS_IN_PROGRESS, LOT::REASON_APPLICATION],
         "Несостоявшиеся из-за отсутствия предложения повышения цены" => [Lot::STATUS_CANCELLED, LOT::REASON_PRICE],
@@ -88,7 +88,7 @@ class m200508_063129_lot_fill extends Migration
 
             $obj = json_decode($row['info']);
             
-            $a = self::$status_reason($row['status']);
+            $a = self::$status_convertor($row['status']);
             
             // Lot
             $l = [

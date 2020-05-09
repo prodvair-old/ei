@@ -5,7 +5,7 @@ namespace common\models\db;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use sergmoro1\uploader\behaviors\HaveFileBehavior;
-use common\traits\Company;
+use common\models\traits\Company;
 
 /**
  * Owner model

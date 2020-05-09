@@ -4,7 +4,7 @@ namespace common\models\db;
 
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
-use common\traits\Company;
+use common\models\traits\Company;
 
 /**
  * Sro model
@@ -18,7 +18,7 @@ use common\traits\Company;
  * @property Organization $organization
  * @property Place $place
  */
-class Etp extends ActiveRecord
+class Sro extends ActiveRecord
 {
     use Company;
 
