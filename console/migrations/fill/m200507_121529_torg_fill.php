@@ -121,6 +121,13 @@ class m200507_121529_torg_fill extends Migration
             $torgs_pledge = [];
             $torgs_drawish = [];
         }
+        
+        if (count($torgs) > 0 ) {
+            $this->batchInsert(self::TABLE, ['id', 'property', 'description', 'started_at', 'end_at', 'completed_at', 'published_at', 'offer', 'created_at', 'updated_at'], $torgs);
+            $this->batchInsert('{{%torg_debtor}}', ['torg_id', 'etp_id', 'bankrupt_id', 'manager_id', 'case_id'], $torgs_debtor);
+            $this->batchInsert('{{%torg_pledge}}', ['torg_id', 'owner_id', 'user_id'], $torgs_pledge);
+            $this->batchInsert('{{%torg_drawish}}', ['torg_id', 'manager_id'], $torgs_drawish);
+        }
     }
 
     public function safeDown()
