@@ -148,6 +148,21 @@ jQuery(function($) {
 		}
 		
 	});
+
+	$(".chosen-category-select-lot").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, id) {
+		if (id.selected == 0) {
+			$('#searchlot-subcategory').prop('disabled', true).trigger("chosen:updated");
+		} else {
+			$("#searchlot-subcategory").load("/lot/load-sub-categories", {'id': id.selected}, function(data){
+				if (data == '<option value="0">Все подкатегории</option>') {
+					$("#searchlot-subcategory").prop('disabled', true).trigger("chosen:updated");
+				} else {
+					$("#searchlot-subcategory").prop('disabled', false).trigger("chosen:updated");
+				}
+			});
+		}
+
+	});
 	
 	$(".chosen-zalog-category-select").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, id) {
 		var lotId = $(this).data('lotid');

@@ -5,12 +5,25 @@ namespace frontend\modules\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use frontend\modules\models\Lot;
+use yii\data\Pagination;
 
 /**
  * LotSearch represents the model behind the search form of `frontend\modules\models\Lot`.
  */
 class LotSearch extends Lot
 {
+    public $pages;
+
+    public $minPrice;
+
+    public $maxPrice;
+
+    public $mainCategory;
+
+    public $type;
+
+    public $subCategory;
+
     /**
      * {@inheritdoc}
      */
@@ -18,7 +31,7 @@ class LotSearch extends Lot
     {
         return [
             [['id', 'torg_id', 'step_measure', 'deposite_measure', 'status', 'reason', 'created_at', 'updated_at'], 'integer'],
-            [['title', 'description'], 'safe'],
+            [['title', 'description', 'minPrice', 'maxPrice', 'mainCategory', 'type', 'subCategory'], 'safe'],
             [['start_price', 'step', 'deposite'], 'number'],
         ];
     }
@@ -42,12 +55,23 @@ class LotSearch extends Lot
     public function search($params)
     {
         $query = Lot::find();
+        $limit = 2;
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'       => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC,
+                ]
+            ],
+//            'pagination' => [
+//                'pageSize' => 2,
+//            ]
         ]);
+
+        $query->joinWith(['torg', 'category', 'category.category']);
 
         $this->load($params);
 
@@ -58,22 +82,54 @@ class LotSearch extends Lot
         }
 
         // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'torg_id' => $this->torg_id,
-            'start_price' => $this->start_price,
-            'step' => $this->step,
-            'step_measure' => $this->step_measure,
-            'deposite' => $this->deposite,
-            'deposite_measure' => $this->deposite_measure,
-            'status' => $this->status,
-            'reason' => $this->reason,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ]);
+//        $query->andFilterWhere([
+//            'id' => $this->id,
+//            'torg_id' => $this->torg_id,
+//            'start_price' => $this->start_price,
+//            'step' => $this->step,
+//            'step_measure' => $this->step_measure,
+//            'deposite' => $this->deposite,
+//            'deposite_measure' => $this->deposite_measure,
+//            'status' => $this->status,
+//            'reason' => $this->reason,
+//            'created_at' => $this->created_at,
+//            'updated_at' => $this->updated_at,
+//        ]);
+
+//        echo "<pre>";
+//        var_dump($this->category);
+//        echo "</pre>";
+//        die;
 
         $query->andFilterWhere(['ilike', 'title', $this->title])
-            ->andFilterWhere(['ilike', 'description', $this->description]);
+            ->andFilterWhere(['ilike', 'description', $this->description])
+            ->andFilterWhere(['>=', 'start_price', $this->minPrice])
+            ->andFilterWhere(['<=', 'start_price', $this->maxPrice])
+            ;
+
+
+
+        if($this->subCategory !== null) {
+            $query->andFilterWhere(['in', Category::tableName() . '.id', $this->subCategory]);
+        }
+        elseif($this->mainCategory != 0) {
+            $query->andFilterWhere(['=', Category::tableName() . '.id', $this->mainCategory]);
+        }
+
+
+        if($this->type != 0) {
+            $query->andFilterWhere(['=', Torg::tableName() . '.property', $this->type]);
+        }
+
+
+//        $totalCount = $dataProvider->getTotalCount();
+
+//        $limit = ($totalCount <= $limit) ? $totalCount : $limit;
+
+//        $countQuery = clone $query;
+//        $this->pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 1, 'defaultPageSize' => 1]);
+//        $query->offset($this->pages->offset)
+//            ->limit($this->pages->limit);
 
         return $dataProvider;
     }

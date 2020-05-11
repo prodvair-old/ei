@@ -14,14 +14,14 @@ return [
   'name' => 'Единый агрегатор торгов',
   'sourceLanguage' => 'ru-RU',
   'controllerNamespace' => 'frontend\controllers',
-//  'modules' => [
-//      'lot' => [
-//          'class' => 'frontend\modules\Lot',
-//      ],
-//      'LotOld' => [
-//          'class' => 'frontend\modules\LotOld',
-//      ],
-//  ],
+  'modules' => [
+      'lot' => [
+          'class' => 'frontend\modules\Lot',
+      ],
+      'LotOld' => [
+          'class' => 'frontend\modules\LotOld',
+      ],
+  ],
   'components' => [
     'socialShare' => [
       'class' => \ymaker\social\share\configurators\Configurator::class,
@@ -164,6 +164,7 @@ return [
 
         '/lot/list' => '/lot/lot/index',
         '/lot/list/old' => '/LotOld/lot-old/index',
+        '/lot/load-sub-categories' => '/lot/lot/load-sub-categories',
 
         '/<type>'                                     => 'lot/index',
         '/<type>/<category>'                          => 'lot/search',

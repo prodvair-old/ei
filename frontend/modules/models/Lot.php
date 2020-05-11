@@ -68,4 +68,12 @@ class Lot extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
+
+    public function getCategory() {
+        return $this->hasMany(LotCategory::className(), ['lot_id' => 'id']);
+    }
+
+    public function getTorg() {
+        return $this->hasOne(Torg::className(), ['id' => 'torg_id']);
+    }
 }

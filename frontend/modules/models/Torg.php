@@ -3,6 +3,7 @@
 namespace frontend\modules\models;
 
 use Yii;
+use sergmoro1\lookup\models\Lookup;
 
 /**
  * This is the model class for table "eidb.torg".
@@ -58,5 +59,11 @@ class Torg extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    public static function getTypeList() {
+        $result['0'] = 'Все Типы';
+        $result += Lookup::items('TorgProperty'); //TODO
+        return $result;
     }
 }
