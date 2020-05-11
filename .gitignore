@@ -51,3 +51,5 @@ phpunit.phar
 package-lock.json
 composer.lock
 gulpfile.js
+
+/yii2-basic
