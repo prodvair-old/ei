@@ -13,6 +13,10 @@ class LotsSubCategory extends ActiveRecord
     {
         return 'site.{{lotsSubCategory}}';
     }
+    public static function getDb()
+    {
+        return Yii::$app->get('obj');
+    }
 
     // Связи с таблицами
     public function getCategorys()

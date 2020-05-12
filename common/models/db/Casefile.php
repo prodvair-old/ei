@@ -41,10 +41,10 @@ class Casefile extends ActiveRecord
             [
                 'class' => TimestampBehavior::className(),
             ],
-			[
-				'class' => HaveFileBehavior::className(),
-				'file_path' => '/case/',
-			],
+			// [
+			// 	'class' => HaveFileBehavior::className(),
+			// 	'file_path' => '/case/',
+			// ],
         ];
     }
 

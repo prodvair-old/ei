@@ -12,41 +12,61 @@ class m200507_111010_case_fill extends Migration
     use Keeper;
     
     const TABLE = '{{%casefile}}';
+    const POOLE = 1000;
 
     public function safeUp()
     {
-        // получение дел по банкротным делам
+        // получение данных о делах по банкротным делам
         $db = \Yii::$app->db;
         $select = $db->createCommand(
-            'SELECT * FROM "eiLot".cases ORDER BY "cases".id'
+            'SELECT id FROM "eiLot".cases ORDER BY "cases".id'
         );
-        $rows = $select->queryAll();
+        $ids = $select->queryAll();
         
-        $cases = [];
-        
-        // добавление дел
-        foreach($rows as $row) {
+        $poole = [];
+   
+        // добавление информации о делах по банкротным делам
+        foreach($ids as $id)
+        {
+            // получение дел по банкротным делам
+            if (count($poole) < self::POOLE) {
+                $poole[] = $id['id'];
+                continue;
+            }
 
-            $case_id = $row['id'];
-            $created_at = strtotime($row['createdAt']);
-            $updated_at = strtotime($row['updatedAt']);
-            $obj = json_decode($row['info']);
+            $q = $db->createCommand(
+                'SELECT * FROM "eiLot".cases WHERE id IN (' . implode(',', $poole) . ')'
+            );
+
+            $rows = $q->queryAll();
+            $poole = [];
+        
+            $cases = [];
+        
+            // добавление дел
+            foreach($rows as $row) {
+
+                $case_id = $row['id'];
+                $created_at = strtotime($row['createdAt']);
+                $updated_at = strtotime($row['updatedAt']);
+                $obj = json_decode($row['info']);
             
-            // Case
-            $c = [
-                'id'          => $case_id,
-                'reg_number'  => $row['regnum'],
-                'year'        => $obj->regYear,
-                'judge'       => $row['judge'],
-                'created_at'  => $created_at,
-                'updated_at'  => $updated_at,
-            ];
-            $case = new Casefile($c);
+                // Case
+                $c = [
+                    'id'          => $case_id,
+                    'reg_number'  => $row['regnum'],
+                    'year'        => $obj->regYear,
+                    'judge'       => $row['judge'],
+                    'created_at'  => $created_at,
+                    'updated_at'  => $updated_at,
+                ];
+                $case = new Casefile($c);
             
-            $this->validateAndKeep($case, $cases, $c);
+                $this->validateAndKeep($case, $cases, $c);
+            }
+
+            $this->batchInsert(self::TABLE, ['id', 'reg_number', 'year', 'judge', 'created_at', 'updated_at'], $cases);
         }
-
-        $this->batchInsert(self::TABLE, ['id', 'reg_number', 'year', 'judge', 'created_at', 'updated_at'], $cases);
     }
 
     public function safeDown()

@@ -66,15 +66,15 @@ class Torg extends ActiveRecord
             [
                 'class' => TimestampBehavior::className(),
             ],
-			[
-				'class' => HaveFileBehavior::className(),
-				'file_path' => '/torg/',
-                'sizes' => [
-                    'original'  => ['width' => 1600, 'height' => 900, 'catalog' => 'original'],
-                    'main'      => ['width' => 400,  'height' => 400, 'catalog' => ''],
-                    'thumb'     => ['width' => 90,   'height' => 90,  'catalog' => 'thumb'],
-                ],
-			],
+			// [
+			// 	'class' => HaveFileBehavior::className(),
+			// 	'file_path' => 'torg/',
+            //     'sizes' => [
+            //         'original'  => ['width' => 1600, 'height' => 900, 'catalog' => 'original'],
+            //         'main'      => ['width' => 400,  'height' => 400, 'catalog' => ''],
+            //         'thumb'     => ['width' => 90,   'height' => 90,  'catalog' => 'thumb'],
+            //     ],
+			// ],
         ];
     }
     

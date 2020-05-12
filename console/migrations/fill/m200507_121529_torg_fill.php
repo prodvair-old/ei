@@ -15,7 +15,7 @@ class m200507_121529_torg_fill extends Migration
     use Keeper;
     
     const TABLE  = '{{%torg}}';
-    const POOLE = 100;
+    const POOLE = 1000;
     
     private static $offer_convertor = [
         "Конкурс" => 4,
@@ -35,11 +35,6 @@ class m200507_121529_torg_fill extends Migration
         $ids = $select->queryAll();
         
         $poole = [];
-        
-        $torgs = [];
-        $torgs_debtor = [];
-        $torgs_pledge = [];
-        $torgs_drawish = [];
    
         // добавление информации о торгах
         foreach($ids as $id)
@@ -56,6 +51,11 @@ class m200507_121529_torg_fill extends Migration
 
             $rows = $q->queryAll();
             $poole = [];
+
+            $torgs = [];
+            $torgs_debtor = [];
+            $torgs_pledge = [];
+            $torgs_drawish = [];
 
             foreach($rows as $row)
             {

@@ -18,7 +18,7 @@ class m200427_131959_category_fill extends Migration
     {
         // создание корневой категории
         $category = new Category(['id' => Category::ROOT, 'name' => 'Все категории', 'slug' => 'lot-list']);
-        $category->makeRoot();
+        // $category->makeRoot();
 
         // получение категорий из существующего справочника
         $db = \Yii::$app->db;

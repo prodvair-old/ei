@@ -73,7 +73,7 @@ class Category extends ActiveRecord
      */
     public static function find()
     {
-        return new CategoryQuery(get_called_class());
+        return new Category(get_called_class());
     }
 
     /**
