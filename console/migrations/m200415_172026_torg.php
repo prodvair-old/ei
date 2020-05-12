@@ -13,7 +13,6 @@ class m200415_172026_torg extends Migration
     {
         $this->createTable(self::TABLE, [
             'id'           => $this->bigPrimaryKey(),
-            'etp_id'       => $this->bigInteger(),
             
             'property'     => $this->smallInteger()->notNull(),
             'description'  => $this->text(),
@@ -31,7 +30,6 @@ class m200415_172026_torg extends Migration
         
 		$this->addForeignKey('fk-torg-etp', self::TABLE, 'etp_id', '{{%etp}}', 'id', 'restrict', 'restrict');
 
-		$this->addCommentOnColumn(self::TABLE, 'etp_id', 'Электронная торговая площадка');
 		$this->addCommentOnColumn(self::TABLE, 'property', 'Тип имущества - должник, залог, арестованное, муниципальное');
 		$this->addCommentOnColumn(self::TABLE, 'description', 'Описание');
 		$this->addCommentOnColumn(self::TABLE, 'started_at', 'Назначенная дата начала торга');

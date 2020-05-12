@@ -29,9 +29,14 @@ class TorgPledge extends ActiveRecord
     public function rules()
     {
         return [
-            [['torg_id', 'user_id'], 'required'],
-            [['torg_id', 'user_id'], 'integer'],
-            ['owner_id', 'safe'],
+            [['torg_id'], 'required'],
+            [['torg_id'], 'integer'],
+            ['owner_id', 'required', 'when' => function ($model) {
+                return is_null($model->user_id);
+            }],
+            ['user_id', 'required', 'when' => function ($model) {
+                return is_null($model->owner_id);
+            }],
         ];
     }
 }

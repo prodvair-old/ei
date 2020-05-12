@@ -18,7 +18,7 @@ class m200507_101510_owner_fill extends Migration
     public function safeUp()
     {
         // получение собственников лотов из существующего справочника
-        $db = \Yii::$app->db;
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : isset(\Yii::$app->db);
         $select = $db->createCommand(
             'SELECT * FROM "eiLot".owners ORDER BY "owners".id'
         );
@@ -100,6 +100,8 @@ class m200507_101510_owner_fill extends Migration
         $db = \Yii::$app->db;
         $db->createCommand('DELETE FROM {{%place}} WHERE model=' . Organization::TYPE_OWNER)->execute();
         $db->createCommand('DELETE FROM {{%organization}} WHERE model=' . Organization::TYPE_OWNER)->execute();
+        $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')->execute();
         $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')->execute();
     }
 }

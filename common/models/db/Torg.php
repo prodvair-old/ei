@@ -86,11 +86,10 @@ class Torg extends ActiveRecord
         return [
             ['property', 'required'],
             [['property', 'offer'], 'integer'],
-            ['description', 'string'],
             //[['started_at', 'end_at', 'completed_at', 'published_at'], 'integer', 'skipOnEmpty' => true],
             ['property', 'in', 'range' => self::getProperties()],
             ['offer', 'in', 'range' => self::getOffers()],
-            [['etp_id', 'started_at', 'end_at', 'completed_at', 'published_at', 'created_at', 'updated_at'], 'safe'],
+            [['description', 'etp_id', 'started_at', 'end_at', 'completed_at', 'published_at', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -120,8 +119,8 @@ class Torg extends ActiveRecord
     public static function getProperties() {
         return [
             self::PROPERTY_BANKRUPT,
-            self::PROPERTY_ZALOG,
             self::PROPERTY_ARRESTED,
+            self::PROPERTY_ZALOG,
             self::PROPERTY_MUNICIPAL,
         ];
     }

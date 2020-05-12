@@ -21,7 +21,7 @@ class m200427_131959_category_fill extends Migration
         $category->makeRoot();
 
         // получение категорий из существующего справочника
-        $db = \Yii::$app->db;
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : isset(\Yii::$app->db);
         $select = $db->createCommand(
             'SELECT * FROM site."lotsCategory" WHERE id > ' . Category::ROOT
         );
@@ -60,6 +60,8 @@ class m200427_131959_category_fill extends Migration
     public function safeDown()
     {
         $db = \Yii::$app->db;
-        $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')->execute();
+        $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
+        $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')->execute();
     }
 }

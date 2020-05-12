@@ -16,7 +16,7 @@ class m200507_111010_case_fill extends Migration
     public function safeUp()
     {
         // получение дел по банкротным делам
-        $db = \Yii::$app->db;
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : isset(\Yii::$app->db);
         $select = $db->createCommand(
             'SELECT * FROM "eiLot".cases ORDER BY "cases".id'
         );
@@ -52,6 +52,8 @@ class m200507_111010_case_fill extends Migration
     public function safeDown()
     {
         $db = \Yii::$app->db;
+        $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')->execute();
         $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')->execute();
     }
 }
