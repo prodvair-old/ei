@@ -19,7 +19,7 @@ class m200502_224600_bankrupt_fill extends Migration
     public function safeUp()
     {
         // получение менеджеров из существующего справочника
-        $db = \Yii::$app->db;
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
         $select = $db->createCommand(
             'SELECT * FROM "eiLot".bankrupts ORDER BY "bankrupts".id'
         );
@@ -146,7 +146,9 @@ class m200502_224600_bankrupt_fill extends Migration
         $db->createCommand('DELETE FROM {{%place}} WHERE model=' . Bankrupt::INT_CODE)->execute();
         $db->createCommand('DELETE FROM {{%organization}} WHERE model=' . Bankrupt::INT_CODE)->execute();
         $db->createCommand('DELETE FROM {{%profile}} WHERE model=' . Bankrupt::INT_CODE)->execute();
-        $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')->execute();
+        $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
+        $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')->execute();
     }
 
     /**

@@ -12,34 +12,30 @@ class m200507_111010_case_fill extends Migration
     use Keeper;
     
     const TABLE = '{{%casefile}}';
-    const POOLE = 1000;
+    const LIMIT = 1000;
 
     public function safeUp()
     {
-        // получение данных о делах по банкротным делам
-        $db = \Yii::$app->db;
+        // получение дел по банкротным делам
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
         $select = $db->createCommand(
-            'SELECT id FROM "eiLot".cases ORDER BY "cases".id'
+            'SELECT count(id) FROM "eiLot".cases'
         );
-        $ids = $select->queryAll();
+        $result = $select->queryAll();
         
-        $poole = [];
+        $offset = 0;
    
         // добавление информации о делах по банкротным делам
-        foreach($ids as $id)
-        {
-            // получение дел по банкротным делам
-            if (count($poole) < self::POOLE) {
-                $poole[] = $id['id'];
-                continue;
-            }
+        while ($offset < $result[0]['count']) {
 
+            // получение дел по банкротным делам
             $q = $db->createCommand(
-                'SELECT * FROM "eiLot".cases WHERE id IN (' . implode(',', $poole) . ')'
+                'SELECT * FROM "eiLot".cases ORDER BY "cases".id ASC LIMIT '.self::LIMIT.' OFFSET '.$offset
             );
 
+            $offset = $offset + self::LIMIT;
+
             $rows = $q->queryAll();
-            $poole = [];
         
             $cases = [];
         
@@ -72,6 +68,8 @@ class m200507_111010_case_fill extends Migration
     public function safeDown()
     {
         $db = \Yii::$app->db;
+        // $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
         $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        // $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')->execute();
     }
 }

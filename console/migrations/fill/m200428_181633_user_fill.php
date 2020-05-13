@@ -27,11 +27,13 @@ class m200428_181633_user_fill extends Migration
     public function safeUp()
     {
         // получение пользователей из существующего справочника
-        $db = \Yii::$app->db;
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
         $select = $db->createCommand(
             'SELECT * FROM site.user ORDER BY "user".created_at'
         );
         $rows = $select->queryAll();
+        
+        $usernames = [];
         
         $users = [];
         $profiles = [];
@@ -40,6 +42,13 @@ class m200428_181633_user_fill extends Migration
         
         // добавление пользователей в новый справочник
         foreach($rows as $row) {
+            // пропустить дубли
+            $username = strtolower($row['username']);
+            if (in_array($username, $usernames))
+                continue;
+            else
+                $usernames[] = $username;
+            
             // User
             $obj = json_decode($row['info']);
             $created_at = strtotime($row['created_at']);
@@ -48,8 +57,8 @@ class m200428_181633_user_fill extends Migration
 
             $u = [
                 'id'            => $user_id,
-                'username'      => $row['username'],
-                'email'         => $row['username'],
+                'username'      => $username,
+                'email'         => $username,
                 'auth_key'      => $row['auth_key'],
                 'password_hash' => $row['password'],
                 'status'        => ($row['status'] ? 1 : 2),
@@ -135,10 +144,12 @@ class m200428_181633_user_fill extends Migration
     public function safeDown()
     {
         $db = \Yii::$app->db;
-        $db->createCommand('TRUNCATE TABLE {{%notification}} CASCADE')->execute();
-        $db->createCommand('TRUNCATE TABLE {{%place}} CASCADE')->execute();
-        $db->createCommand('TRUNCATE TABLE {{%profile}} CASCADE')->execute();
-        $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')->execute();
+        $db->createCommand('TRUNCATE TABLE {{%notification}}')->execute();
+        $db->createCommand('TRUNCATE TABLE {{%place}}')->execute();
+        $db->createCommand('TRUNCATE TABLE {{%profile}}')->execute();
+        $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
+        $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')->execute();
     }
 
     /**

@@ -71,6 +71,9 @@ class m200508_063129_lot_fill extends Migration
     
     public function safeUp()
     {
+        // торги, не попавшие в таблицу eidb.torg из-за того, что ключевые поля null
+        // select * from "eiLot".torgs where "typeId"=1 and ("bankruptId" isnull and "publisherId" is null);
+
         // получение данных о лотах
         $db = \Yii::$app->db;
         $select = $db->createCommand(
