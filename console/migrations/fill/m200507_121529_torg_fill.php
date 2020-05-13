@@ -15,7 +15,7 @@ class m200507_121529_torg_fill extends Migration
     use Keeper;
     
     const TABLE  = '{{%torg}}';
-    const POOLE = 1000;
+    const POOLE = 2000;
     
     private static $offer_convertor = [
         "Конкурс" => 4,
@@ -55,6 +55,12 @@ class m200507_121529_torg_fill extends Migration
         if (count($poole) > 0 ) {
             $this->insertPoole($db, $poole);
         }
+        
+        $db = \Yii::$app->db;
+        $db->createCommand('update torg set started_at = null where started_at = 0')->execute();
+        $db->createCommand('update torg set end_at = null where end_at = 0')->execute();
+        $db->createCommand('update torg set completed_at = null where completed_at = 0')->execute();
+        $db->createCommand('update torg set published_at = null where published_at = 0')->execute();
     }
 
     public function safeDown()
@@ -104,10 +110,10 @@ class m200507_121529_torg_fill extends Migration
                 'id'           => $torg_id,
                 'property'     => $property,
                 'description'  => $row['description'],
-                'started_at'   => ($row['startDate'] ? strtotime($row['startDate']) : null),
-                'end_at'       => ($row['endDate'] ? strtotime($row['endDate']) : null),
-                'completed_at' => ($row['completeDate'] ? strtotime($row['completeDate']) : null),
-                'published_at' => ($row['publishedDate'] ? strtotime($row['publishedDate']) : null),
+                'started_at'   => ($row['startDate'] ? strtotime($row['startDate']) : 0),
+                'end_at'       => ($row['endDate'] ? strtotime($row['endDate']) : 0),
+                'completed_at' => ($row['completeDate'] ? strtotime($row['completeDate']) : 0),
+                'published_at' => ($row['publishedDate'] ? strtotime($row['publishedDate']) : 0),
                 'offer'        => self::$offer_convertor[$row['tradeType']],
 
                 'created_at'   => $created_at,

@@ -94,7 +94,10 @@ class m200508_063129_lot_fill extends Migration
             }
 
             $this->insertPoole($db, $poole);
-        }
+ 
+            $sleep = rand(1, 3);
+            sleep($sleep);
+       }
         
         if (count($poole) > 0 ) {
             $this->insertPoole($db, $poole);
