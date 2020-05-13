@@ -15,7 +15,7 @@ class m200507_121529_torg_fill extends Migration
     use Keeper;
     
     const TABLE  = '{{%torg}}';
-    const LIMIT = 500;
+    const LIMIT = 1000;
     
     private static $offer_convertor = [
         "Конкурс" => 4,
@@ -55,6 +55,9 @@ class m200507_121529_torg_fill extends Migration
             $this->insertPoole($db, $offset);
 
             $offset = $offset + self::LIMIT;
+            $sleep = rand(1, 3);
+
+            sleep($sleep);
 
         }
         

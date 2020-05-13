@@ -34,6 +34,9 @@ class m200507_111010_case_fill extends Migration
             );
 
             $offset = $offset + self::LIMIT;
+            $sleep = rand(1, 3);
+
+            sleep($sleep);
 
             $rows = $q->queryAll();
         
