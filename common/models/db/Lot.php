@@ -105,7 +105,8 @@ class Lot extends ActiveRecord
     {
         return [
             [['torg_id', 'title', 'start_price', 'deposit'], 'required'],
-            [['start_price', 'step', 'deposit'], 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*\.?\d{0,2}\s*$/'],
+            ['start_price', 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*\.?\d{0,2}\s*$/'],
+            [['step', 'deposit'], 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*\.?\d{0,4}\s*$/'],
             [['step', 'deposit'], 'default', 'value' => 0],
             [['step_measure', 'deposit_measure'], 'in', 'range' => self::getMeasures()],
             [['step_measure', 'deposit_measure'], 'default', 'value' => self::MEASURE_PERCENT],

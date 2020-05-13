@@ -12,7 +12,7 @@ class m200508_063129_lot_fill extends Migration
     use Keeper;
     
     const TABLE = '{{%lot}}';
-    const POOLE = 10;
+    const LIMIT = 20000;
 
     private static $status_convertor = [
         "подводятся итоги (приостановлены) " => [Lot::STATUS_SUSPENDED, LOT::REASON_SUMMARIZING],
@@ -72,36 +72,26 @@ class m200508_063129_lot_fill extends Migration
     
     public function safeUp()
     {
-        // торги, не попавшие в таблицу eidb.torg из-за того, что ключевые поля null
-        // select * from "eiLot".torgs where "typeId"=1 and ("bankruptId" isnull and "publisherId" is null);
-
-        // получение данных о лотах
-        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : isset(\Yii::$app->db);
-        $select = $db->createCommand(
-            'SELECT DISTINCT lots.id FROM "eiLot".lots INNER JOIN "eiLot".torgs ON lots."torgId" = torgs.id'
-        );
-        $ids = $select->queryAll();
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
         
-        $poole = [];
+        $select = $db->createCommand(
+            'SELECT count(id) FROM "eiLot".lots'
+        );
+        $result = $select->queryAll();
+        
+        $offset = 0;
+   
+        // добавление информации по банкротным делам
+        while ($offset < $result[0]['count']) {
 
-        // добавление информации о торгах
-        foreach($ids as $id)
-        {
-            
-            if (count($poole) < self::POOLE) {
-                $poole[] = $id['id'];
-                continue;
-            }
+            $this->insertPoole($db, $offset);
 
-            $this->insertPoole($db, $poole);
- 
+            $offset = $offset + self::LIMIT;
+
             $sleep = rand(1, 3);
             sleep($sleep);
-       }
-        
-        if (count($poole) > 0 ) {
-            $this->insertPoole($db, $poole);
         }
+
     }
 
     public function safeDown()
@@ -115,17 +105,14 @@ class m200508_063129_lot_fill extends Migration
             $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
     }
 
-    private function insertPoole($db, &$poole)
+    private function insertPoole($db, $offset)
     {
-
-        $lots = [];
+        $cases = [];
 
         $query = $db->createCommand(
-            'SELECT * FROM "eiLot".lots WHERE id IN (' . implode(',', $poole) . ')'
+            'SELECT * FROM "eiLot".lots ORDER BY "lots".id ASC LIMIT ' . self::LIMIT . ' OFFSET ' . $offset
         );
 
-        $poole = [];
-        
         $rows = $query->queryAll();
 
         foreach($rows as $row)
@@ -144,10 +131,10 @@ class m200508_063129_lot_fill extends Migration
                 'title'            => $row['title'],
                 'description'      => $row['description'],
                 'start_price'      => $row['startPrice'],
-                'step'             => ($row['step'] ? : 0),
-                'step_measure'     => $row['stepTypeId'],
-                'deposit'          => ($row['deposit'] ?: 0),
-                'deposit_measure'  => $row['depositTypeId'],
+                'step'             => round(($row['step'] ? : 0), 4),
+                'step_measure'     => ($row['stepTypeId'] ?: Lot::MEASURE_PERCENT),
+                'deposit'          => round(($row['deposit'] ?: 0), 4),
+                'deposit_measure'  => ($row['depositTypeId'] ?: Lot::MEASURE_PERCENT),
                 'status'           => $a[0],
                 'reason'           => $a[1],
 
