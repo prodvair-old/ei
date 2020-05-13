@@ -12,53 +12,42 @@ class m200507_111010_case_fill extends Migration
     use Keeper;
     
     const TABLE = '{{%casefile}}';
-    const POOLE = 10000;
+    const LIMIT = 10000;
 
     public function safeUp()
     {
-        // получение дел по банкротным делам
         $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
         
         $select = $db->createCommand(
-            'SELECT id FROM "eiLot".cases ORDER BY "cases".id'
+            'SELECT count(id) FROM "eiLot".cases'
         );
-        $ids = $select->queryAll();
-
-        $poole = [];
+        $result = $select->queryAll();
+        
+        $offset = 0;
    
-        // добавление информации о делах по банкротным делам
-        foreach($ids as $id)
-        {
-            
-            if (count($poole) < self::POOLE) {
-                $poole[] = $id['id'];
-                continue;
-            }
+        // добавление информации по банкротным делам
+        while ($offset < $result[0]['count']) {
 
-            $this->insertPoole($db, $poole);
+            $this->insertPoole($db, $offset);
+
+            $offset = $offset + self::LIMIT;
 
             $sleep = rand(1, 3);
             sleep($sleep);
         }
-        if (count($poole) > 0 ) {
-            $this->insertPoole($db, $poole);
-        }
     }
 
-    private function insertPoole($db, &$poole)
+    private function insertPoole($db, $offset)
     {
 
         $cases = [];
 
         $query = $db->createCommand(
-            'SELECT * FROM "eiLot".cases WHERE id IN (' . implode(',', $poole) . ')'
+            'SELECT * FROM "eiLot".cases ORDER BY "cases".id ASC LIMIT ' . self::LIMIT . ' OFFSET ' . $offset
         );
 
-        $poole = [];
-        
         $rows = $query->queryAll();
     
-        // получение дел по банкротным делам
         foreach($rows as $row)
         {
             $case_id = $row['id'];

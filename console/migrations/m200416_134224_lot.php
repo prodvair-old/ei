@@ -15,13 +15,13 @@ class m200416_134224_lot extends Migration
             'id'               => $this->bigPrimaryKey(),
             'torg_id'          => $this->bigInteger()->notNull(),
             
-            'title'            => $this->string()->notNull(),
+            'title'            => $this->text()->notNull(),
             'description'      => $this->text()->notNull(),
             
-            'start_price'      => $this->decimal(10, 2)->notNull(),
-            'step'             => $this->decimal(10, 2)->notNull(),
+            'start_price'      => $this->decimal(15, 2)->notNull(),
+            'step'             => $this->decimal(12, 2)->notNull(),
             'step_measure'     => $this->smallInteger()->notNull(),
-            'deposit'          => $this->decimal(10, 2)->notNull(),
+            'deposit'          => $this->decimal(15, 2)->notNull(),
             'deposit_measure'  => $this->smallInteger()->notNull(),
             
             'status'           => $this->smallInteger()->notNull(),

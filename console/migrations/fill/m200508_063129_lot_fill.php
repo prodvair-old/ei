@@ -12,7 +12,7 @@ class m200508_063129_lot_fill extends Migration
     use Keeper;
     
     const TABLE = '{{%lot}}';
-    const POOLE = 10000;
+    const POOLE = 10;
 
     private static $status_convertor = [
         "подводятся итоги (приостановлены) " => [Lot::STATUS_SUSPENDED, LOT::REASON_SUMMARIZING],
@@ -78,7 +78,7 @@ class m200508_063129_lot_fill extends Migration
         // получение данных о лотах
         $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : isset(\Yii::$app->db);
         $select = $db->createCommand(
-            'SELECT id FROM "eiLot".lots ORDER BY "lots".id'
+            'SELECT DISTINCT lots.id FROM "eiLot".lots INNER JOIN "eiLot".torgs ON lots."torgId" = torgs.id'
         );
         $ids = $select->queryAll();
         
@@ -144,9 +144,9 @@ class m200508_063129_lot_fill extends Migration
                 'title'            => $row['title'],
                 'description'      => $row['description'],
                 'start_price'      => $row['startPrice'],
-                'step'             => $row['step'],
+                'step'             => ($row['step'] ? : 0),
                 'step_measure'     => $row['stepTypeId'],
-                'deposit'          => $row['deposit'],
+                'deposit'          => ($row['deposit'] ?: 0),
                 'deposit_measure'  => $row['depositTypeId'],
                 'status'           => $a[0],
                 'reason'           => $a[1],

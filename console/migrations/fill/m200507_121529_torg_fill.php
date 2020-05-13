@@ -15,7 +15,7 @@ class m200507_121529_torg_fill extends Migration
     use Keeper;
     
     const TABLE  = '{{%torg}}';
-    const POOLE = 2000;
+    const LIMIT = 1000;
     
     private static $offer_convertor = [
         "Конкурс" => 4,
@@ -30,32 +30,24 @@ class m200507_121529_torg_fill extends Migration
         // получение данных о торгах
         $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
         $select = $db->createCommand(
-            'SELECT id FROM "eiLot".torgs ORDER BY "torgs".id'
+            'SELECT count(id) FROM "eiLot".torgs'
         );
-        $ids = $select->queryAll();
+        $result = $select->queryAll();
         
-        $poole = [];
+        $offset = 0;
         
         // добавление информации о торгах
-        foreach($ids as $id)
-        {
-            
-            if (count($poole) < self::POOLE) {
-                $poole[] = $id['id'];
-                continue;
-            }
+        while ($offset < $result[0]['count']) {
 
-            $this->insertPoole($db, $poole);
+            $this->insertPoole($db, $offset);
+
+            $offset = $offset + self::LIMIT;
 
             $sleep = rand(1, 3);
             sleep($sleep);
-
         }
         
-        if (count($poole) > 0 ) {
-            $this->insertPoole($db, $poole);
-        }
-        
+        // змена возможных нулевых значений в датах на NULL 
         $db = \Yii::$app->db;
         $db->createCommand('update torg set started_at = null where started_at = 0')->execute();
         $db->createCommand('update torg set end_at = null where end_at = 0')->execute();
@@ -81,7 +73,7 @@ class m200507_121529_torg_fill extends Migration
         }
     }
 
-    private function insertPoole($db, &$poole)
+    private function insertPoole($db, $offset)
     {
 
         $torgs = [];
@@ -90,11 +82,9 @@ class m200507_121529_torg_fill extends Migration
         $torgs_drawish = [];
 
         $query = $db->createCommand(
-            'SELECT * FROM "eiLot".torgs WHERE id IN (' . implode(',', $poole) . ')'
+            'SELECT * FROM "eiLot".torgs ORDER BY "torgs".id ASC LIMIT ' . self::LIMIT .' OFFSET ' . $offset
         );
 
-        $poole = [];
-        
         $rows = $query->queryAll();
 
         foreach($rows as $row)

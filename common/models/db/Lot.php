@@ -65,7 +65,7 @@ class Lot extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%torg}}';
+        return '{{%lot}}';
     }
 
     public function init()
@@ -104,15 +104,15 @@ class Lot extends ActiveRecord
     public function rules()
     {
         return [
-            [['torg_id', 'title', 'start_price', 'step', 'deposite'], 'required'],
-            ['title', 'string', 'max' => 255],
-            [['start_price', 'step', 'deposit'], 'number', 'numberFormat' => '/^\s*[-+]?[0-9]*\.?\d{0,2}\s*$/'],
+            [['torg_id', 'title', 'start_price', 'deposit'], 'required'],
+            [['start_price', 'step', 'deposit'], 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*\.?\d{0,2}\s*$/'],
+            [['step', 'deposit'], 'default', 'value' => 0],
             [['step_measure', 'deposit_measure'], 'in', 'range' => self::getMeasures()],
-            [['step_measure', 'deposit_measure'], 'default', 'value' => MEASURE_PERCENT],
+            [['step_measure', 'deposit_measure'], 'default', 'value' => self::MEASURE_PERCENT],
             ['status', 'in', 'range' => self::getStatuses()],
             ['status', 'default', 'value' => self::STATUS_IN_PROGRESS],
             ['reason', 'in', 'range' => self::getReasons()],
-            ['status', 'default', 'value' => self::REASON_NO_MATTER],
+            ['reason', 'default', 'value' => self::REASON_NO_MATTER],
             [['description', 'created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -172,6 +172,7 @@ class Lot extends ActiveRecord
     public static function getReasons() {
         return [
             self::REASON_NO_MATTER, 
+            self::REASON_APPLICATION,
             self::REASON_PRICE,
             self::REASON_CONTRACT,
             self::REASON_PARTICIPANT,
