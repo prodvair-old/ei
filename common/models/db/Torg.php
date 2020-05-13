@@ -172,7 +172,7 @@ class Torg extends ActiveRecord
      * @return yii\db\ActiveQuery
      */
     public function getOwner() {
-        return $this->hasOne(Owner::className(), ['id' => 'owner_id'])
+        return $this->hasOne(Organization::className(), ['id' => 'owner_id'])
             ->viaTable(TorgPledge::tableName(), ['torg_id' => 'id']);
     }
 

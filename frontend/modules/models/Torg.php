@@ -66,4 +66,8 @@ class Torg extends \yii\db\ActiveRecord
         $result += Lookup::items('TorgProperty'); //TODO
         return $result;
     }
+
+    public function getTorgPledge() {
+        return $this->hasOne(TorgPledge::className(), ['torg_id' => 'id']);
+    }
 }

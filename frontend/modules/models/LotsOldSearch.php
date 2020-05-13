@@ -62,7 +62,7 @@ class LotsOldSearch extends LotsOld
 //            ]
         ]);
 
-//        $query->joinWith(['torg', 'category', 'priceHistory'], true, 'INNER JOIN');
+        $query->joinWith(['torg', 'category', 'priceHistory'], true, 'INNER JOIN');
 //        $query->joinWith(['torg', 'category'], true, 'INNER JOIN');
 
         $this->load($params);

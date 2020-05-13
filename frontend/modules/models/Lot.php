@@ -14,8 +14,8 @@ use Yii;
  * @property float $start_price Начальная цена
  * @property float $step Шаг уменьшения цены
  * @property int $step_measure Мера шага - сумма, %
- * @property float $deposite Размер задатка за лот
- * @property int $deposite_measure Мера задатка - сумма, %
+ * @property float $deposit Размер задатка за лот
+ * @property int $deposit_measure Мера задатка - сумма, %
  * @property int $status Статус
  * @property int $reason Причина статуса
  * @property int $created_at
@@ -37,11 +37,11 @@ class Lot extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['torg_id', 'title', 'description', 'start_price', 'step', 'step_measure', 'deposite', 'deposite_measure', 'status', 'reason', 'created_at', 'updated_at'], 'required'],
-            [['torg_id', 'step_measure', 'deposite_measure', 'status', 'reason', 'created_at', 'updated_at'], 'default', 'value' => null],
-            [['torg_id', 'step_measure', 'deposite_measure', 'status', 'reason', 'created_at', 'updated_at'], 'integer'],
+            [['torg_id', 'title', 'description', 'start_price', 'step', 'step_measure', 'deposit', 'deposit_measure', 'status', 'reason', 'created_at', 'updated_at'], 'required'],
+            [['torg_id', 'step_measure', 'deposit_measure', 'status', 'reason', 'created_at', 'updated_at'], 'default', 'value' => null],
+            [['torg_id', 'step_measure', 'deposit_measure', 'status', 'reason', 'created_at', 'updated_at'], 'integer'],
             [['description'], 'string'],
-            [['start_price', 'step', 'deposite'], 'number'],
+            [['start_price', 'step', 'deposit'], 'number'],
             [['title'], 'string', 'max' => 255],
             [['torg_id'], 'exist', 'skipOnError' => true, 'targetClass' => Torg::className(), 'targetAttribute' => ['torg_id' => 'id']],
         ];
@@ -60,8 +60,8 @@ class Lot extends \yii\db\ActiveRecord
             'start_price' => 'Начальная цена',
             'step' => 'Шаг уменьшения цены',
             'step_measure' => 'Мера шага - сумма, %',
-            'deposite' => 'Размер задатка за лот',
-            'deposite_measure' => 'Мера задатка - сумма, %',
+            'deposit' => 'Размер задатка за лот',
+            'deposit_measure' => 'Мера задатка - сумма, %',
             'status' => 'Статус',
             'reason' => 'Причина статуса',
             'created_at' => 'Created At',
@@ -74,6 +74,7 @@ class Lot extends \yii\db\ActiveRecord
     }
 
     public function getTorg() {
-        return $this->hasOne(Torg::className(), ['id' => 'torg_id']);
+//        return $this->hasOne(Torg::className(), ['id' => 'torg_id']);
+        return $this->hasOne(\common\models\db\Torg::className(), ['id' => 'torg_id']);
     }
 }

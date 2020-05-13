@@ -5,6 +5,7 @@
 
 /* @var $type */
 
+use sergmoro1\lookup\models\Lookup;
 use yii\widgets\Breadcrumbs;
 use frontend\modules\models\Category;
 use frontend\modules\models\Torg;
@@ -16,13 +17,11 @@ use yii\helpers\Url;
 
 use frontend\modules\components\LotBlock;
 
-use common\models\Query\Settings;
 use common\models\Query\LotsCategory;
 use common\models\Query\LotsSubCategory;
 use common\models\Query\Regions;
 
 use common\models\Query\Lot\Etp;
-use common\models\Query\Lot\Owners;
 
 $this->title = Yii::$app->params[ 'title' ];
 $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
@@ -30,11 +29,6 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 $lotsSubcategory[ 0 ] = 'Все подкатегории';
 $subcategoryCheck = true;
 
-$regionList[ 0 ] = 'Все регионы';
-$regions = Regions::find()->orderBy('id ASC')->all();
-foreach ($regions as $region) {
-    $regionList[ $region->id ] = $region->name;
-}
 
 $traderList = [];
 
@@ -159,16 +153,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                                 </div>
                             </div>
 
-
-                            <!-- <div class="col-12">
-                <div class="col-inner  pv-15">
-                  <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
-                </div>
-              </div> -->
-
                         </div>
-
-                        <!-- </div> -->
 
                         <div class="sidebar-box sidebar-box__collaps <?= ($model->minPrice || $model->maxPrice) ? '' : 'collaps' ?>">
 
@@ -183,6 +168,62 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                                 </div>
 
                                 <!-- <div class="mb-10"></div> -->
+                            </div>
+
+                        </div>
+
+                        <div class="sidebar-box  sidebar-box__collaps <?=($model->etp)? '' : 'collaps'?>">
+
+                            <label class="control-label sidebar-box__label" >Торговые площадки</label>
+                            <div class="box-content">
+                                <?= $form->field($model, 'etp')->dropDownList(
+                                    \common\models\db\Etp::getOrganizationList(),
+                                    [
+                                        'class' => 'chosen-the-basic form-control',
+                                        'prompt' => 'Все торговые площадки',
+                                        'data-placeholder' => 'Все торговые площадки',
+                                        'multiple' => true
+                                    ]
+                                )
+                                    ->label(false); ?>
+                            </div>
+
+                        </div>
+
+                        <div class="sidebar-box sidebar-box__collaps <?=($model->owner)? '' : 'collaps'?>">
+
+                            <label class="control-label sidebar-box__label" >Организации</label>
+                            <div class="box-content">
+                                <?= $form->field($model, 'owner')->dropDownList(
+                                     \common\models\db\Owner::getOrganizationList(),
+                                    [
+                                        'class' => 'chosen-the-basic form-control',
+                                        'prompt' => 'Все организации',
+                                        'data-placeholder' => 'Все организации',
+                                        'multiple' => true
+                                    ]
+                                )
+                                    ->label(false); ?>
+                            </div>
+
+                        </div>
+
+                        <div class="sidebar-box sidebar-box__collaps <?=($model->tradeType)? '' : 'collaps'?>">
+
+                            <label class="control-label sidebar-box__label" >Тип торгов</label>
+                            <div class="box-content">
+
+                                <?= $form->field($model, 'tradeType')->checkboxList(
+                                    Lookup::items('TorgOffer'), [
+                                    'class' => 'custom-control custom-checkbox',
+                                    'item'=>function ($index, $label, $name, $checked, $value) {
+                                        $inputId = 'tradetype'.$index;
+
+                                        return "<div><input type=\"checkbox\" name=\"$name\" value=\"$value\" id=\"$inputId\" ".(($checked)? 'checked': '')." class=\"custom-control-input\">"
+                                            . "<label for=\"$inputId\" class=\"custom-control-label\">$label</label></div>";
+                                    }
+                                ])->label(false); ?>
+
                             </div>
 
                         </div>

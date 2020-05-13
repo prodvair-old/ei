@@ -2,6 +2,7 @@
 
 namespace frontend\modules\models;
 
+use common\models\db\Organization;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use frontend\modules\models\Lot;
@@ -24,6 +25,15 @@ class LotSearch extends Lot
 
     public $subCategory;
 
+    public $etp;
+
+    public $owner;
+
+    public $tradeType;
+
+    public $deposite_measure;
+    public $deposite;
+
     /**
      * {@inheritdoc}
      */
@@ -31,7 +41,8 @@ class LotSearch extends Lot
     {
         return [
             [['id', 'torg_id', 'step_measure', 'deposite_measure', 'status', 'reason', 'created_at', 'updated_at'], 'integer'],
-            [['title', 'description', 'minPrice', 'maxPrice', 'mainCategory', 'type', 'subCategory'], 'safe'],
+            [['title', 'description', 'minPrice', 'maxPrice', 'mainCategory', 'type',
+                'subCategory', 'etp', 'owner', 'tradeType'], 'safe'],
             [['start_price', 'step', 'deposite'], 'number'],
         ];
     }
@@ -61,7 +72,7 @@ class LotSearch extends Lot
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort'       => [
+            'sort'  => [
                 'defaultOrder' => [
                     'id' => SORT_DESC,
                 ]
@@ -71,7 +82,9 @@ class LotSearch extends Lot
 //            ]
         ]);
 
-        $query->joinWith(['torg', 'category', 'category.category']);
+//        $query->joinWith(['torg', 'torg.torgPledge', 'torg.torgPledge.owner', 'category', 'category.category']);
+//        $query->joinWith(['torg', 'torg.etp', 'torg.owner', 'category', 'category.category']);
+        $query->joinWith(['torg', 'torg.etp', 'torg.owner owner', 'category', 'category.category']);
 
         $this->load($params);
 
@@ -104,22 +117,24 @@ class LotSearch extends Lot
         $query->andFilterWhere(['ilike', 'title', $this->title])
             ->andFilterWhere(['ilike', 'description', $this->description])
             ->andFilterWhere(['>=', 'start_price', $this->minPrice])
-            ->andFilterWhere(['<=', 'start_price', $this->maxPrice])
-            ;
+            ->andFilterWhere(['<=', 'start_price', $this->maxPrice]);
 
 
-
-        if($this->subCategory !== null) {
+        if ($this->subCategory !== null) {
             $query->andFilterWhere(['in', Category::tableName() . '.id', $this->subCategory]);
-        }
-        elseif($this->mainCategory != 0) {
+        } elseif ($this->mainCategory != 0) {
             $query->andFilterWhere(['=', Category::tableName() . '.id', $this->mainCategory]);
         }
 
 
-        if($this->type != 0) {
+        if ($this->type != 0) {
             $query->andFilterWhere(['=', Torg::tableName() . '.property', $this->type]);
         }
+
+        $query->andFilterWhere(['IN', Torg::tableName() . '.offer', $this->tradeType]);
+
+        $query->andFilterWhere(['IN', Organization::tableName() . '.id', $this->etp]);
+        $query->andFilterWhere(['IN', 'owner' . '.id', $this->owner]);
 
 
 //        $totalCount = $dataProvider->getTotalCount();
