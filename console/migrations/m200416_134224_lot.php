@@ -9,7 +9,7 @@ class m200416_134224_lot extends Migration
 {
     const TABLE = '{{%lot}}';
 
-    public function up()
+    public function safeUp()
     {
         $this->createTable(self::TABLE, [
             'id'               => $this->bigPrimaryKey(),
@@ -21,8 +21,8 @@ class m200416_134224_lot extends Migration
             'start_price'      => $this->decimal(10, 2)->notNull(),
             'step'             => $this->decimal(10, 2)->notNull(),
             'step_measure'     => $this->smallInteger()->notNull(),
-            'deposite'         => $this->decimal(10, 2)->notNull(),
-            'deposite_measure' => $this->smallInteger()->notNull(),
+            'deposit'          => $this->decimal(10, 2)->notNull(),
+            'deposit_measure'  => $this->smallInteger()->notNull(),
             
             'status'           => $this->smallInteger()->notNull(),
             'reason'           => $this->smallInteger()->notNull(),
@@ -39,13 +39,13 @@ class m200416_134224_lot extends Migration
 		$this->addCommentOnColumn(self::TABLE, 'start_price', 'Начальная цена');
 		$this->addCommentOnColumn(self::TABLE, 'step', 'Шаг уменьшения цены');
 		$this->addCommentOnColumn(self::TABLE, 'step_measure', 'Мера шага - сумма, %');
-		$this->addCommentOnColumn(self::TABLE, 'deposite', 'Размер задатка за лот');
-		$this->addCommentOnColumn(self::TABLE, 'deposite_measure', 'Мера задатка - сумма, %');
+		$this->addCommentOnColumn(self::TABLE, 'deposit', 'Размер задатка за лот');
+		$this->addCommentOnColumn(self::TABLE, 'deposit_measure', 'Мера задатка - сумма, %');
 		$this->addCommentOnColumn(self::TABLE, 'status', 'Статус');
 		$this->addCommentOnColumn(self::TABLE, 'reason', 'Причина статуса');
     }
 
-    public function down()
+    public function safeDown()
     {
         $this->dropForeignKey('fk-lot-torg', self::TABLE);
         $this->dropTable(self::TABLE);

@@ -153,10 +153,15 @@ class m200430_070745_manager_fill extends Migration
         $db->createCommand('DELETE FROM {{%place}} WHERE model=' . Manager::INT_CODE)->execute();
         $db->createCommand('DELETE FROM {{%organization}} WHERE model=' . Manager::INT_CODE)->execute();
         $db->createCommand('DELETE FROM {{%profile}} WHERE model=' . Manager::INT_CODE)->execute();
-        $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')->execute();
-        $db->createCommand('TRUNCATE TABLE {{%manager_sro}}')->execute();
-        $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
-        $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')->execute();
+        if ($this->db->driverName === 'mysql') {
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
+            $db->createCommand('TRUNCATE TABLE {{%manager_sro}}')->execute();
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')-> execute();
+        } else {
+            $db->createCommand('TRUNCATE TABLE {{%manager_sro}} CASCADE')->execute();
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        }
     }
 
     /**

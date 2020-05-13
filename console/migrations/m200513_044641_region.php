@@ -3,11 +3,11 @@
 use yii\db\Migration;
 
 /**
- * Class m200513_044641_regions
+ * Class m200513_044641_region
  */
-class m200513_044641_regions extends Migration
+class m200513_044641_region extends Migration
 {
-    const TABLE = '{{%regions}}';
+    const TABLE = '{{%region}}';
 
     /**
      * {@inheritdoc}
@@ -17,15 +17,14 @@ class m200513_044641_regions extends Migration
         $this->createTable(self::TABLE, [
             'id'            => $this->bigPrimaryKey(),
             'name'          => $this->text()->notNull(),
-            'name_translit' => $this->text()->notNull(),
+            'slug'          => $this->text()->notNull(),
             'created_at'    => $this->integer()->notNull(),
             'updated_at'    => $this->integer()->notNull(),
         ]);
 
-		$this->addCommentOnColumn(self::TABLE, 'id',  'Код региона');
-		$this->addCommentOnColumn(self::TABLE, 'name',  'Наименование региона');
-		$this->addCommentOnColumn(self::TABLE, 'name_translit',  'Наименование региона в транслитерации');
-
+		$this->addCommentOnColumn(self::TABLE, 'id', 'Код региона');
+		$this->addCommentOnColumn(self::TABLE, 'name', 'Наименование региона');
+		$this->addCommentOnColumn(self::TABLE, 'slug', 'Наименование региона в транслитерации');
     }
 
     /**

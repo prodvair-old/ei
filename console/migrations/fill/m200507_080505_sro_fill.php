@@ -98,8 +98,11 @@ class m200507_080505_sro_fill extends Migration
         $db = \Yii::$app->db;
         $db->createCommand('DELETE FROM {{%place}} WHERE model=' . Organization::TYPE_SRO)->execute();
         $db->createCommand('DELETE FROM {{%organization}} WHERE model=' . Organization::TYPE_SRO)->execute();
-        $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')->execute();
-        $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
-        $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')->execute();
+        if ($this->db->driverName === 'mysql') {
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')-> execute();
+        } else
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
     }
 }

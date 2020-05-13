@@ -22,7 +22,7 @@ class m200416_062822_torg_debtor extends Migration
         $this->createIndex('idx-torg_debtor-torg', self::TABLE, 'torg_id', true);
 
         $this->addForeignKey('fk-torg_debtor-torg',  self::TABLE, 'torg_id',  '{{%torg}}',  'id', 'restrict', 'restrict');
-        $this->addForeignKey('fk-torg_debtor-case', self::TABLE, 'case_id', '{{%casefile}}', 'id', 'restrict', 'restrict');
+        //$this->addForeignKey('fk-torg_debtor-case', self::TABLE, 'case_id', '{{%casefile}}', 'id', 'restrict', 'restrict');
 
 		$this->addCommentOnColumn(self::TABLE, 'torg_id', 'Торг');
 		$this->addCommentOnColumn(self::TABLE, 'bankrupt_id', 'Банкрот');

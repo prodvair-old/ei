@@ -4,14 +4,15 @@ namespace common\models\db;
 
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use yii\behaviors\SluggableBehavior;
 
 /**
- * Regions model
- * Список регионов.
+ * Region model
+ * Справочник регионов.
  *
  * @var integer $id
- * @var string $name
- * @var string $name_translit
+ * @var string  $name
+ * @var string  $slug
  * @var integer $created_at
  * @var integer $updated_at
  */
@@ -22,7 +23,7 @@ class Regions extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%regions}}';
+        return '{{%region}}';
     }
 
     /**
@@ -34,6 +35,10 @@ class Regions extends ActiveRecord
             [
                 'class' => TimestampBehavior::className(),
             ],
+            [
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'name',
+            ],
         ];
     }
 
@@ -43,7 +48,7 @@ class Regions extends ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'name', 'name_translit'], 'required'],
+            [['id', 'name'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -54,11 +59,9 @@ class Regions extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id'            => Yii::t('app', 'Код региона'),
-            'name'          => Yii::t('app', 'Наименование региона'),
-            'name_translit' => Yii::t('app', 'Наименование региона в транслитерации'),
-            'created_at'    => Yii::t('app', 'Created'),
-            'updated_at'    => Yii::t('app', 'Modified'),
+            'name'       => Yii::t('app', 'Region'),
+            'created_at' => Yii::t('app', 'Created'),
+            'updated_at' => Yii::t('app', 'Modified'),
         ];
     }
 }

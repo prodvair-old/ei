@@ -144,12 +144,19 @@ class m200428_181633_user_fill extends Migration
     public function safeDown()
     {
         $db = \Yii::$app->db;
-        $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')->execute();
-        $db->createCommand('TRUNCATE TABLE {{%notification}}')->execute();
-        $db->createCommand('TRUNCATE TABLE {{%place}}')->execute();
-        $db->createCommand('TRUNCATE TABLE {{%profile}}')->execute();
-        $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
-        $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')->execute();
+        if ($this->db->driverName === 'mysql') {
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
+            $db->createCommand('TRUNCATE TABLE {{%notification}}')->execute();
+            $db->createCommand('TRUNCATE TABLE {{%place}}')->execute();
+            $db->createCommand('TRUNCATE TABLE {{%profile}}')->execute();
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')-> execute();
+        } else {
+            $db->createCommand('TRUNCATE TABLE {{%notification}} CASCADE')->execute();
+            $db->createCommand('TRUNCATE TABLE {{%place}} CASCADE')->execute();
+            $db->createCommand('TRUNCATE TABLE {{%profile}} CASCADE')->execute();
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        }
     }
 
     /**

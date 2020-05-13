@@ -15,7 +15,7 @@ class m200507_121529_torg_fill extends Migration
     use Keeper;
     
     const TABLE  = '{{%torg}}';
-    const LIMIT = 1000;
+    const POOLE = 1000;
     
     private static $offer_convertor = [
         "Конкурс" => 4,
@@ -29,55 +29,53 @@ class m200507_121529_torg_fill extends Migration
     {
         // получение данных о торгах
         $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
-        // $select = $db->createCommand(
-        //     'SELECT id FROM "eiLot".torgs ORDER BY "torgs".id'
-        // );
-        // $ids = $select->queryAll();
         $select = $db->createCommand(
-            'SELECT count(id) FROM "eiLot".torgs'
+            'SELECT id FROM "eiLot".torgs ORDER BY "torgs".id'
         );
-        $result = $select->queryAll();
+        $ids = $select->queryAll();
         
-        $offset = 0;
-        
-        // $poole = [];
+        $poole = [];
         
         // добавление информации о торгах
-        while ($offset < $result[0]['count']) {
-        // foreach($ids as $id)
-        // {
+        foreach($ids as $id)
+        {
             
-            // if (count($poole) < self::POOLE) {
-            //     $poole[] = $id['id'];
-            //     continue;
-            // }
+            if (count($poole) < self::POOLE) {
+                $poole[] = $id['id'];
+                continue;
+            }
 
-            $this->insertPoole($db, $offset);
+            $this->insertPoole($db, $poole);
 
-            $offset = $offset + self::LIMIT;
             $sleep = rand(1, 3);
-
             sleep($sleep);
 
         }
         
-        // if (count($poole) > 0 ) {
-        //     $this->insertPoole($db, $poole);
-        // }
+        if (count($poole) > 0 ) {
+            $this->insertPoole($db, $poole);
+        }
     }
 
     public function safeDown()
     {
         $db = \Yii::$app->db;
-        $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')->execute();
-        $db->createCommand('TRUNCATE TABLE {{%torg_drawish}}')->execute();
-        $db->createCommand('TRUNCATE TABLE {{%torg_pledge}}')->execute();
-        $db->createCommand('TRUNCATE TABLE {{%torg_debtor}}')->execute();
-        $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
-        $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')->execute();
+        if ($this->db->driverName === 'mysql') {
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
+            $db->createCommand('TRUNCATE TABLE {{%torg_drawish}}')->execute();
+            $db->createCommand('TRUNCATE TABLE {{%torg_pledge}}')->execute();
+            $db->createCommand('TRUNCATE TABLE {{%torg_debtor}}')->execute();
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')-> execute();
+        } else {
+            $db->createCommand('TRUNCATE TABLE {{%torg_drawish}} CASCADE')->execute();
+            $db->createCommand('TRUNCATE TABLE {{%torg_pledge}} CASCADE')->execute();
+            $db->createCommand('TRUNCATE TABLE {{%torg_debtor}} CASCADE')->execute();
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        }
     }
 
-    private function insertPoole($db, &$offset)
+    private function insertPoole($db, &$poole)
     {
 
         $torgs = [];
@@ -86,7 +84,7 @@ class m200507_121529_torg_fill extends Migration
         $torgs_drawish = [];
 
         $query = $db->createCommand(
-            'SELECT * FROM "eiLot".torgs ORDER BY "torgs".id ASC LIMIT '.self::LIMIT.' OFFSET '.$offset
+            'SELECT * FROM "eiLot".torgs WHERE id IN (' . implode(',', $poole) . ')'
         );
 
         $poole = [];

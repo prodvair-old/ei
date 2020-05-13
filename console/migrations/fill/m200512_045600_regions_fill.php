@@ -5,13 +5,13 @@ use common\models\db\Regions;
 use console\traits\Keeper;
 
 /**
- * Class m200506_045600_regions_fill
+ * Class m200512_045600_region_fill
  */
-class m200506_045600_regions_fill extends Migration
+class m200512_045600_region_fill extends Migration
 {
     use Keeper;
     
-    const TABLE = '{{%regions}}';
+    const TABLE = '{{%region}}';
 
     public function safeUp()
     {
@@ -34,23 +34,28 @@ class m200506_045600_regions_fill extends Migration
             
             // Regions
             $r = [
-                'id'            => $region_id,
-                'name'          => $row['name'],
-                'name_translit' => $row['name_translit'],
-                'created_at'    => $created_at,
-                'updated_at'    => $updated_at,
+                'id'         => $region_id,
+                'name'       => $row['name'],
+                'slug'       => $row['name_translit'],
+                'created_at' => $created_at,
+                'updated_at' => $updated_at,
             ];
-            $region = new Regions($r);
+            $region = new Region($r);
 
             $this->validateAndKeep($region, $regions, $r);
         }
 
-        $this->batchInsert(self::TABLE, ['id', 'name', 'name_translit', 'created_at', 'updated_at'], $regions);
+        $this->batchInsert(self::TABLE, ['id', 'name', 'slug', 'created_at', 'updated_at'], $regions);
     }
 
     public function safeDown()
     {
         $db = \Yii::$app->db;
-        $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        if ($this->db->driverName === 'mysql') {
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')-> execute();
+        } else
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
     }
 }
