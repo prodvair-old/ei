@@ -46,13 +46,6 @@ class m200507_121529_torg_fill extends Migration
             $sleep = rand(1, 3);
             sleep($sleep);
         }
-        
-        // змена возможных нулевых значений в датах на NULL 
-        $db = \Yii::$app->db;
-        $db->createCommand('update torg set started_at = null where started_at = 0')->execute();
-        $db->createCommand('update torg set end_at = null where end_at = 0')->execute();
-        $db->createCommand('update torg set completed_at = null where completed_at = 0')->execute();
-        $db->createCommand('update torg set published_at = null where published_at = 0')->execute();
     }
 
     public function safeDown()
@@ -148,8 +141,11 @@ class m200507_121529_torg_fill extends Migration
         }
 
         $this->batchInsert(self::TABLE, ['id', 'property', 'description', 'started_at', 'end_at', 'completed_at', 'published_at', 'offer', 'created_at', 'updated_at'], $torgs);
-        $this->batchInsert('{{%torg_debtor}}', ['torg_id', 'etp_id', 'bankrupt_id', 'manager_id', 'case_id'], $torgs_debtor);
-        $this->batchInsert('{{%torg_pledge}}', ['torg_id', 'owner_id', 'user_id'], $torgs_pledge);
-        $this->batchInsert('{{%torg_drawish}}', ['torg_id', 'manager_id'], $torgs_drawish);
+        if ($torgs_debtor)
+            $this->batchInsert('{{%torg_debtor}}', ['torg_id', 'etp_id', 'bankrupt_id', 'manager_id', 'case_id'], $torgs_debtor);
+        if ($torgs_pledge)
+            $this->batchInsert('{{%torg_pledge}}', ['torg_id', 'owner_id', 'user_id'], $torgs_pledge);
+        if ($torgs_drawish)
+            $this->batchInsert('{{%torg_drawish}}', ['torg_id', 'manager_id'], $torgs_drawish);
     }
 }

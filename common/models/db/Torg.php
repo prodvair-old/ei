@@ -66,15 +66,10 @@ class Torg extends ActiveRecord
             [
                 'class' => TimestampBehavior::className(),
             ],
-			// [
-			// 	'class' => HaveFileBehavior::className(),
-			// 	'file_path' => 'torg/',
-            //     'sizes' => [
-            //         'original'  => ['width' => 1600, 'height' => 900, 'catalog' => 'original'],
-            //         'main'      => ['width' => 400,  'height' => 400, 'catalog' => ''],
-            //         'thumb'     => ['width' => 90,   'height' => 90,  'catalog' => 'thumb'],
-            //     ],
-			// ],
+			[
+				'class' => HaveFileBehavior::className(),
+				'file_path' => 'torg/',
+			],
         ];
     }
     
@@ -86,7 +81,6 @@ class Torg extends ActiveRecord
         return [
             ['property', 'required'],
             [['property', 'offer'], 'integer'],
-            //[['started_at', 'end_at', 'completed_at', 'published_at'], 'integer', 'skipOnEmpty' => true],
             ['property', 'in', 'range' => self::getProperties()],
             ['offer', 'in', 'range' => self::getOffers()],
             [['description', 'etp_id', 'started_at', 'end_at', 'completed_at', 'published_at', 'created_at', 'updated_at'], 'safe'],
@@ -153,6 +147,8 @@ class Torg extends ActiveRecord
      * @return yii\db\ActiveQuery
      */
     public function getBankrupt() {
+        if ($this->property != self::PROPERTY_BANKRUPT)
+            return null;
         return $this->hasOne(Bankrupt::className(), ['id' => 'bankrupt_id'])
             ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
@@ -162,28 +158,12 @@ class Torg extends ActiveRecord
      * @return yii\db\ActiveQuery
      */
     public function getManager() {
+        if ($this->property == self::PROPERTY_ZALOG)
+            return null;
         return $this->hasOne(Manager::className(), ['id' => 'manager_id'])
             ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
     
-    /**
-     * Получить информацию о залогодержателе
-     * @return yii\db\ActiveQuery
-     */
-    public function getOwner() {
-        return $this->hasOne(Owner::className(), ['id' => 'owner_id'])
-            ->viaTable(TorgPledge::tableName(), ['torg_id' => 'id']);
-    }
-
-    /**
-     * Получить информацию о собственнике залога
-     * @return yii\db\ActiveQuery
-     */
-    public function getUser() {
-        return $this->hasOne(User::className(), ['id' => 'user_id'])
-            ->viaTable(TorgPledge::tableName(), ['torg_id' => 'id']);
-    }
-
     /**
      * Получить эдектронную торговую площадку (ETP)
      * 
@@ -191,6 +171,8 @@ class Torg extends ActiveRecord
      */
     public function getEtp()
     {
+        if ($this->property != self::PROPERTY_BANKRUPT)
+            return null;
         return $this->hasOne(Organization::className(), ['id' => 'etp_id'])
             ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
@@ -201,7 +183,31 @@ class Torg extends ActiveRecord
      * @return yii\db\ActiveQuery
      */
     public function getCase() {
+        if ($this->property != self::PROPERTY_BANKRUPT)
+            return null;
         return $this->hasOne(Casefile::className(), ['id' => 'case_id'])
             ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
+    }
+
+    /**
+     * Получить информацию о залогодержателе
+     * @return yii\db\ActiveQuery
+     */
+    public function getOwner() {
+        if ($this->property != self::PROPERTY_ZALOG)
+            return null;
+        return $this->hasOne(Owner::className(), ['id' => 'owner_id'])
+            ->viaTable(TorgPledge::tableName(), ['torg_id' => 'id']);
+    }
+
+    /**
+     * Получить информацию о собственнике залога
+     * @return yii\db\ActiveQuery
+     */
+    public function getUser() {
+        if ($this->property != self::PROPERTY_ZALOG)
+            return null;
+        return $this->hasOne(User::className(), ['id' => 'user_id'])
+            ->viaTable(TorgPledge::tableName(), ['torg_id' => 'id']);
     }
 }

@@ -15,11 +15,10 @@ class m200513_044641_region extends Migration
     public function safeUp()
     {
         $this->createTable(self::TABLE, [
-            'id'            => $this->bigPrimaryKey(),
-            'name'          => $this->text()->notNull(),
-            'slug'          => $this->text()->notNull(),
-            'created_at'    => $this->integer()->notNull(),
-            'updated_at'    => $this->integer()->notNull(),
+            'id'         => $this->bigPrimaryKey(),
+            'name'       => $this->string()->notNull(),
+            'slug'       => $this->string()->notNull(),
+            'created_at' => $this->integer()->notNull(),
         ]);
 
 		$this->addCommentOnColumn(self::TABLE, 'id', 'Код региона');

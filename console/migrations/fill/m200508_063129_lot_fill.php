@@ -81,7 +81,7 @@ class m200508_063129_lot_fill extends Migration
         
         $offset = 0;
    
-        // добавление информации по банкротным делам
+        // добавление информации по лотам
         while ($offset < $result[0]['count']) {
 
             $this->insertPoole($db, $offset);

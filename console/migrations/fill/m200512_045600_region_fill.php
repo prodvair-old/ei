@@ -1,7 +1,7 @@
 <?php
 
 use yii\db\Migration;
-use common\models\db\Regions;
+use common\models\db\Region;
 use console\traits\Keeper;
 
 /**
@@ -28,24 +28,21 @@ class m200512_045600_region_fill extends Migration
         foreach($rows as $row) {
 
             $region_id  = $row['id'];
-            $created_at = strtotime(date("Y-m-d H:i:s"));
-            $updated_at = strtotime(date("Y-m-d H:i:s"));
-            $obj = json_decode($row['info']);
+            $created_at = time();
             
-            // Regions
+            // Region
             $r = [
                 'id'         => $region_id,
                 'name'       => $row['name'],
                 'slug'       => $row['name_translit'],
                 'created_at' => $created_at,
-                'updated_at' => $updated_at,
             ];
             $region = new Region($r);
 
             $this->validateAndKeep($region, $regions, $r);
         }
 
-        $this->batchInsert(self::TABLE, ['id', 'name', 'slug', 'created_at', 'updated_at'], $regions);
+        $this->batchInsert(self::TABLE, ['id', 'name', 'slug', 'created_at'], $regions);
     }
 
     public function safeDown()

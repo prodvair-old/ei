@@ -14,9 +14,8 @@ use yii\behaviors\SluggableBehavior;
  * @var string  $name
  * @var string  $slug
  * @var integer $created_at
- * @var integer $updated_at
  */
-class Regions extends ActiveRecord
+class Region extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -34,6 +33,7 @@ class Regions extends ActiveRecord
         return [
             [
                 'class' => TimestampBehavior::className(),
+                'updatedAtAttribute' => false,
             ],
             [
                 'class' => SluggableBehavior::className(),
@@ -49,7 +49,7 @@ class Regions extends ActiveRecord
     {
         return [
             [['id', 'name'], 'required'],
-            [['created_at', 'updated_at'], 'safe'],
+            ['created_at', 'safe'],
         ];
     }
 
@@ -61,7 +61,6 @@ class Regions extends ActiveRecord
         return [
             'name'       => Yii::t('app', 'Region'),
             'created_at' => Yii::t('app', 'Created'),
-            'updated_at' => Yii::t('app', 'Modified'),
         ];
     }
 }
