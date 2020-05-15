@@ -29,6 +29,7 @@ use sergmoro1\lookup\models\Lookup;
  * @property WishList[] $observers
  * @property LotPrice[] $prices
  * @property Category[] $categories
+ * @property Document[] $documents
  * @property sergmoro1\uploader\models\OneFile[] $files
  */
 class Lot extends ActiveRecord
@@ -249,5 +250,15 @@ class Lot extends ActiveRecord
     {
         return $this->hasMany(Category::className(), ['category_id' => 'id'])
             ->viaTable(LotCategory::tableName(), ['lot_id' => 'id']);
+    }
+
+    /**
+     * Получить документы по лоту.
+     * 
+     * @return yii\db\ActiveQuery
+     */
+    public function getDocuments()
+    {
+        return $this->hasMany(Document::className(), ['model' => self::INT_CODE, 'parent_id' => $this->id]);
     }
 }

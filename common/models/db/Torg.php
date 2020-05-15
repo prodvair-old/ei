@@ -5,7 +5,6 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use sergmoro1\lookup\models\Lookup;
-use sergmoro1\uploader\behaviors\HaveFileBehavior;
 
 /**
  * Torg model
@@ -29,7 +28,7 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
  * @property User     $user
  * @property Etp      $etp
  * @property Casefile $case
- * @property sergmoro1\uploader\models\OneFile[] $files
+ * @property Document[] $documents
  */
 class Torg extends ActiveRecord
 {
@@ -66,10 +65,6 @@ class Torg extends ActiveRecord
             [
                 'class' => TimestampBehavior::className(),
             ],
-			[
-				'class' => HaveFileBehavior::className(),
-				'file_path' => 'torg/',
-			],
         ];
     }
     
@@ -209,5 +204,15 @@ class Torg extends ActiveRecord
             return null;
         return $this->hasOne(User::className(), ['id' => 'user_id'])
             ->viaTable(TorgPledge::tableName(), ['torg_id' => 'id']);
+    }
+
+    /**
+     * Получить документы по торгу.
+     * 
+     * @return yii\db\ActiveQuery
+     */
+    public function getDocuments()
+    {
+        return $this->hasMany(Document::className(), ['model' => self::INT_CODE, 'parent_id' => $this->id]);
     }
 }

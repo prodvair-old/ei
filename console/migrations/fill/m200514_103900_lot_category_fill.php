@@ -16,7 +16,7 @@ class m200514_103900_lot_category_fill extends Migration
     private $categories;
     
     const TABLE = '{{%lot_category}}';
-    const LIMIT = 1;
+    const LIMIT = 20000;
 
     public function safeUp()
     {
@@ -37,7 +37,7 @@ class m200514_103900_lot_category_fill extends Migration
         );
         $result = $select->queryAll();
         
-        $offset = 421200;
+        $offset = 0;
         
         // добавление информации по лотам
         while ($offset < $result[0]['count']) {

@@ -4,7 +4,6 @@ namespace common\models\db;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
-use sergmoro1\uploader\behaviors\HaveFileBehavior;
 
 /**
  * Casefile model
@@ -17,7 +16,7 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
  * @var integer $created_at
  * @var integer $updated_at
  * 
- * @property sergmoro1\uploader\models\OneFile[] $files
+ * @property Document[] $documents
  */
 class Casefile extends ActiveRecord
 {
@@ -41,10 +40,6 @@ class Casefile extends ActiveRecord
             [
                 'class' => TimestampBehavior::className(),
             ],
-			// [
-			// 	'class' => HaveFileBehavior::className(),
-			// 	'file_path' => '/case/',
-			// ],
         ];
     }
 
@@ -73,5 +68,15 @@ class Casefile extends ActiveRecord
             'created_at' => Yii::t('app', 'Created'),
             'updated_at' => Yii::t('app', 'Modified'),
         ];
+    }
+
+    /**
+     * Получить документы по делу.
+     * 
+     * @return yii\db\ActiveQuery
+     */
+    public function getDocuments()
+    {
+        return $this->hasMany(Document::className(), ['model' => self::INT_CODE, 'parent_id' => $this->id]);
     }
 }

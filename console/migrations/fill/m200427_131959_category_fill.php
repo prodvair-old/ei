@@ -13,7 +13,7 @@ class m200427_131959_category_fill extends Migration
     const TABLE = '{{%category}}';
 
     // индексом является шаг, который равен соответствующей константе в Category
-    private $properties = [10000 => 'bankrupt', 20000 => 'arrest', 30000 => 'zalog'];
+    private $properties = [10000 => 'bankrupt', 20000 => 'arrest', 30000 => 'zalog', ];
 
     public function safeUp()
     {

@@ -70,9 +70,7 @@ class m200507_121529_torg_fill extends Migration
     {
 
         $torgs = [];
-        $torgs_debtor = [];
-        $torgs_pledge = [];
-        $torgs_drawish = [];
+        $links = ['debtor' => [], 'pledge' => [], 'drawish' => []];
 
         $query = $db->createCommand(
             'SELECT * FROM "eiLot".torgs ORDER BY "torgs".id ASC LIMIT ' . self::LIMIT .' OFFSET ' . $offset
@@ -115,7 +113,7 @@ class m200507_121529_torg_fill extends Migration
                             'case_id'     => $row['caseId'],
                         ];
                         $torg_debtor = new TorgDebtor($td);
-                        $this->validateAndKeep($torg_debtor, $torgs_debtor, $td);
+                        $this->validateAndKeep($torg_debtor, $links['debtor'], $td);
                     }
                 } elseif ($property == Torg::PROPERTY_ZALOG) {
                     if ($row['bankruptId'] || $row['publisherId']) {
@@ -125,7 +123,7 @@ class m200507_121529_torg_fill extends Migration
                             'user_id'  => $row['publisherId'],
                         ];
                         $torg_pledge = new TorgPledge($tp);
-                        $this->validateAndKeep($torg_pledge, $torgs_pledge, $tp);
+                        $this->validateAndKeep($torg_pledge, $links['pledge'], $tp);
                     }
                 } else {
                     if ($row['publisherId']) {
@@ -134,18 +132,18 @@ class m200507_121529_torg_fill extends Migration
                             'manager_id' => $row['publisherId'],
                         ];
                         $torg_drawish = new TorgDrawish($tdw);
-                        $this->validateAndKeep($torg_drawish, $torgs_drawish, $tdw);
+                        $this->validateAndKeep($torg_drawish, $links['drawish'], $tdw);
                     }
                 }
             }
         }
 
         $this->batchInsert(self::TABLE, ['id', 'property', 'description', 'started_at', 'end_at', 'completed_at', 'published_at', 'offer', 'created_at', 'updated_at'], $torgs);
-        if ($torgs_debtor)
-            $this->batchInsert('{{%torg_debtor}}', ['torg_id', 'etp_id', 'bankrupt_id', 'manager_id', 'case_id'], $torgs_debtor);
-        if ($torgs_pledge)
-            $this->batchInsert('{{%torg_pledge}}', ['torg_id', 'owner_id', 'user_id'], $torgs_pledge);
-        if ($torgs_drawish)
-            $this->batchInsert('{{%torg_drawish}}', ['torg_id', 'manager_id'], $torgs_drawish);
+        if ($links['debtor'])
+            $this->batchInsert('{{%torg_debtor}}', ['torg_id', 'etp_id', 'bankrupt_id', 'manager_id', 'case_id'], $links['debtor']);
+        if ($links['pledge'])
+            $this->batchInsert('{{%torg_pledge}}', ['torg_id', 'owner_id', 'user_id'], $links['pledge']);
+        if ($links['drawish'])
+            $this->batchInsert('{{%torg_drawish}}', ['torg_id', 'manager_id'], $links['drawish']);
     }
 }
