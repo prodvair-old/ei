@@ -12,7 +12,7 @@ class m200508_063129_lot_fill extends Migration
     use Keeper;
     
     const TABLE = '{{%lot}}';
-    const OFFSET = 1000;
+    const LIMIT = 20000;
 
     private static $status_convertor = [
         "подводятся итоги (приостановлены) " => [Lot::STATUS_SUSPENDED, LOT::REASON_SUMMARIZING],
@@ -72,39 +72,56 @@ class m200508_063129_lot_fill extends Migration
     
     public function safeUp()
     {
-        // торги, не попавшие в таблицу eidb.torg из-за того, что ключевые поля null
-        // select * from "eiLot".torgs where "typeId"=1 and ("bankruptId" isnull and "publisherId" is null);
-
-        // получение данных о лотах
-        $db = \Yii::$app->db;
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
+        
         $select = $db->createCommand(
-            'SELECT id FROM "eiLot".lots ORDER BY "lots".id'
+            'SELECT count(id) FROM "eiLot".lots'
         );
-        $rows = $select->queryAll();
+        $result = $select->queryAll();
         
-        $lots = [];
-        
-        // добавление информации о лотах
-        for($i = 1; $i <= count($rows); $i++) {
+        $offset = 0;
+   
+        // добавление информации по лотам
+        while ($offset < $result[0]['count']) {
 
-            if (($b = floor($i / self::OFFSET)) && (($b * self::OFFSET) == $i)) {
+            $this->insertPoole($db, $offset);
 
-                $this->batchInsert(self::TABLE, ['id', 'torg_id', 'title', 'description', 'start_price', 'step', 'step_measure', 'deposite', 'deposite_measure', 'status', 'reason', 'created_at', 'updated_at'], $lots);
+            $offset = $offset + self::LIMIT;
 
-                $lots = [];
-            }
+            $sleep = rand(1, 3);
+            sleep($sleep);
+        }
 
-            $lot_id = $rows[$i - 1]['id'];
+    }
 
-            $select = $db->createCommand(
-                'SELECT * FROM "eiLot".lots WHERE id = ' . $lot_id
-            );
-            $row = $select->queryAll();
-            $row = $row[0];
+    public function safeDown()
+    {
+        $db = \Yii::$app->db;
+        if ($this->db->driverName === 'mysql') {
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')-> execute();
+        } else
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+    }
+
+    private function insertPoole($db, $offset)
+    {
+        $cases = [];
+
+        $query = $db->createCommand(
+            'SELECT * FROM "eiLot".lots ORDER BY "lots".id ASC LIMIT ' . self::LIMIT . ' OFFSET ' . $offset
+        );
+
+        $rows = $query->queryAll();
+
+        foreach($rows as $row)
+        {
+            $lot_id = $row['id'];
 
             $created_at = strtotime($row['createdAt']);
             $updated_at = strtotime($row['updatedAt']);
-            $a = self::$status_convertor[$row['status']];
+            $a = $this->convert($row['status']);
             
             // Lot
             $l = [
@@ -114,10 +131,10 @@ class m200508_063129_lot_fill extends Migration
                 'title'            => $row['title'],
                 'description'      => $row['description'],
                 'start_price'      => $row['startPrice'],
-                'step'             => $row['step'],
-                'step_measure'     => $row['stepTypeId'],
-                'deposite'         => $row['deposite'],
-                'deposite_measure' => $row['depositeTypeId'],
+                'step'             => round(($row['step'] ? : 0), 4),
+                'step_measure'     => ($row['stepTypeId'] ?: Lot::MEASURE_PERCENT),
+                'deposit'          => round(($row['deposit'] ?: 0), 4),
+                'deposit_measure'  => ($row['depositTypeId'] ?: Lot::MEASURE_PERCENT),
                 'status'           => $a[0],
                 'reason'           => $a[1],
 
@@ -129,15 +146,14 @@ class m200508_063129_lot_fill extends Migration
             $this->validateAndKeep($lot, $lots, $l);
         }
         
-        if (count($lots) > 0) {
-            $this->batchInsert(self::TABLE, ['id', 'torg_id', 'title', 'description', 'start_price', 'step', 'step_measure', 'deposite', 'deposite_measure', 'status', 'reason', 'created_at', 'updated_at'], $lots);
-        }
+        $this->batchInsert(self::TABLE, ['id', 'torg_id', 'title', 'description', 'start_price', 'step', 'step_measure', 'deposit', 'deposit_measure', 'status', 'reason', 'created_at', 'updated_at'], $lots);
     }
 
-    public function safeDown()
+    private function convert($status)
     {
-        $db = \Yii::$app->db;
-        $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        return isset(self::$status_convertor[$status])
+            ? self::$status_convertor[$status]
+            : [Lot::STATUS_NOT_DEFINED, Lot::REASON_NO_MATTER];
     }
 }
 

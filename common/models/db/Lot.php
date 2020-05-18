@@ -18,8 +18,8 @@ use sergmoro1\lookup\models\Lookup;
  * @var float   $start_price
  * @var float   $step
  * @var integer $step_measure
- * @var float   $deposite
- * @var integer $deposite_measure
+ * @var float   $deposit
+ * @var integer $deposit_measure
  * @var integer $status
  * @var integer $reason
  * @var integer $created_at
@@ -29,6 +29,7 @@ use sergmoro1\lookup\models\Lookup;
  * @property WishList[] $observers
  * @property LotPrice[] $prices
  * @property Category[] $categories
+ * @property Document[] $documents
  * @property sergmoro1\uploader\models\OneFile[] $files
  */
 class Lot extends ActiveRecord
@@ -51,6 +52,7 @@ class Lot extends ActiveRecord
     const STATUS_CANCELLED   = 4;
     const STATUS_COMPLETED   = 5;
     const STATUS_ARCHIVED    = 6;
+    const STATUS_NOT_DEFINED = 10;
 
     const REASON_NO_MATTER   = 1; 
     const REASON_APPLICATION = 2;
@@ -64,7 +66,7 @@ class Lot extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%torg}}';
+        return '{{%lot}}';
     }
 
     public function init()
@@ -90,8 +92,8 @@ class Lot extends ActiveRecord
 				'file_path' => '/lot/',
                 'sizes' => [
                     'original'  => ['width' => 1600, 'height' => 900, 'catalog' => 'original'],
-                    'main'      => ['width' => 400,  'height' => 400, 'catalog' => ''],
-                    'thumb'     => ['width' => 90,   'height' => 90,  'catalog' => 'thumb'],
+                    'main'      => ['width' => 400,  'height' => 300, 'catalog' => ''],
+                    'thumb'     => ['width' => 120,  'height' => 90,  'catalog' => 'thumb'],
                 ],
 			],
         ];
@@ -103,15 +105,16 @@ class Lot extends ActiveRecord
     public function rules()
     {
         return [
-            [['torg_id', 'title', 'start_price', 'step', 'deposite'], 'required'],
-            ['title', 'string', 'max' => 255],
-            [['start_price', 'step', 'deposite'], 'number', 'numberFormat' => '/^\s*[-+]?[0-9]*\.?\d{0,2}\s*$/'],
-            [['step_measure', 'deposite_measure'], 'in', 'range' => self::getMeasures()],
-            [['step_measure', 'deposite_measure'], 'default', 'value' => MEASURE_PERCENT],
+            [['torg_id', 'title', 'start_price', 'deposit'], 'required'],
+            ['start_price', 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*\.?\d{0,2}\s*$/'],
+            [['step', 'deposit'], 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*\.?\d{0,4}\s*$/'],
+            [['step', 'deposit'], 'default', 'value' => 0],
+            [['step_measure', 'deposit_measure'], 'in', 'range' => self::getMeasures()],
+            [['step_measure', 'deposit_measure'], 'default', 'value' => self::MEASURE_PERCENT],
             ['status', 'in', 'range' => self::getStatuses()],
             ['status', 'default', 'value' => self::STATUS_IN_PROGRESS],
             ['reason', 'in', 'range' => self::getReasons()],
-            ['status', 'default', 'value' => self::REASON_NO_MATTER],
+            ['reason', 'default', 'value' => self::REASON_NO_MATTER],
             [['description', 'created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -128,8 +131,8 @@ class Lot extends ActiveRecord
             'start_price'      => Yii::t('app', 'Start price'),
             'step'             => Yii::t('app', 'Step'),
             'step_measure'     => Yii::t('app', 'Step measure'),
-            'deposite'         => Yii::t('app', 'Deposite'),
-            'deposite_measure' => Yii::t('app', 'Deposite measure'),
+            'deposit'          => Yii::t('app', 'Deposit'),
+            'deposit_measure'  => Yii::t('app', 'Deposit measure'),
             'status'           => Yii::t('app', 'Status'),
             'reason'           => Yii::t('app', 'Reason'),
             'created_at'       => Yii::t('app', 'Created'),
@@ -160,6 +163,7 @@ class Lot extends ActiveRecord
             self::STATUS_CANCELLED,
             self::STATUS_COMPLETED,
             self::STATUS_ARCHIVED,
+            self::STATUS_NOT_DEFINED,
         ];
     }
 
@@ -170,6 +174,7 @@ class Lot extends ActiveRecord
     public static function getReasons() {
         return [
             self::REASON_NO_MATTER, 
+            self::REASON_APPLICATION,
             self::REASON_PRICE,
             self::REASON_CONTRACT,
             self::REASON_PARTICIPANT,
@@ -245,5 +250,15 @@ class Lot extends ActiveRecord
     {
         return $this->hasMany(Category::className(), ['category_id' => 'id'])
             ->viaTable(LotCategory::tableName(), ['lot_id' => 'id']);
+    }
+
+    /**
+     * Получить документы по лоту.
+     * 
+     * @return yii\db\ActiveQuery
+     */
+    public function getDocuments()
+    {
+        return $this->hasMany(Document::className(), ['model' => self::INT_CODE, 'parent_id' => $this->id]);
     }
 }

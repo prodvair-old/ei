@@ -15,7 +15,11 @@ class m200507_121529_torg_fill extends Migration
     use Keeper;
     
     const TABLE  = '{{%torg}}';
+<<<<<<< HEAD
     const LIMIT = 100;
+=======
+    const LIMIT = 1000;
+>>>>>>> ebec2832a1010f5773b8814137ec37553a6cc4e2
     
     private static $offer_convertor = [
         "Конкурс" => 4,
@@ -29,10 +33,6 @@ class m200507_121529_torg_fill extends Migration
     {
         // получение данных о торгах
         $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
-        // $select = $db->createCommand(
-        //     'SELECT id FROM "eiLot".torgs ORDER BY "torgs".id'
-        // );
-        // $ids = $select->queryAll();
         $select = $db->createCommand(
             'SELECT count(id) FROM "eiLot".torgs'
         );
@@ -40,54 +40,46 @@ class m200507_121529_torg_fill extends Migration
         
         $offset = 0;
         
-        // $poole = [];
-        
         // добавление информации о торгах
         while ($offset < $result[0]['count']) {
-        // foreach($ids as $id)
-        // {
-            
-            // if (count($poole) < self::POOLE) {
-            //     $poole[] = $id['id'];
-            //     continue;
-            // }
 
             $this->insertPoole($db, $offset);
 
             $offset = $offset + self::LIMIT;
 
+            $sleep = rand(1, 3);
+            sleep($sleep);
         }
-        
-        // if (count($poole) > 0 ) {
-        //     $this->insertPoole($db, $poole);
-        // }
     }
 
     public function safeDown()
     {
         $db = \Yii::$app->db;
-        $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')->execute();
-        $db->createCommand('TRUNCATE TABLE {{%torg_drawish}}')->execute();
-        $db->createCommand('TRUNCATE TABLE {{%torg_pledge}}')->execute();
-        $db->createCommand('TRUNCATE TABLE {{%torg_debtor}}')->execute();
-        $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
-        $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')->execute();
+        if ($this->db->driverName === 'mysql') {
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
+            $db->createCommand('TRUNCATE TABLE {{%torg_drawish}}')->execute();
+            $db->createCommand('TRUNCATE TABLE {{%torg_pledge}}')->execute();
+            $db->createCommand('TRUNCATE TABLE {{%torg_debtor}}')->execute();
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')-> execute();
+        } else {
+            $db->createCommand('TRUNCATE TABLE {{%torg_drawish}} CASCADE')->execute();
+            $db->createCommand('TRUNCATE TABLE {{%torg_pledge}} CASCADE')->execute();
+            $db->createCommand('TRUNCATE TABLE {{%torg_debtor}} CASCADE')->execute();
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        }
     }
 
-    private function insertPoole($db, &$offset)
+    private function insertPoole($db, $offset)
     {
 
         $torgs = [];
-        $torgs_debtor = [];
-        $torgs_pledge = [];
-        $torgs_drawish = [];
+        $links = ['debtor' => [], 'pledge' => [], 'drawish' => []];
 
         $query = $db->createCommand(
-            'SELECT * FROM "eiLot".torgs ORDER BY "torgs".id ASC LIMIT '.self::LIMIT.' OFFSET '.$offset
+            'SELECT * FROM "eiLot".torgs ORDER BY "torgs".id ASC LIMIT ' . self::LIMIT .' OFFSET ' . $offset
         );
 
-        $poole = [];
-        
         $rows = $query->queryAll();
 
         foreach($rows as $row)
@@ -103,10 +95,17 @@ class m200507_121529_torg_fill extends Migration
                 'id'           => $torg_id,
                 'property'     => $property,
                 'description'  => $row['description'],
+<<<<<<< HEAD
                 'started_at'   => ($row['startDate'] ? (strtotime($row['startDate'])? strtotime($row['startDate']) : null) : null),
                 'end_at'       => ($row['endDate'] ? (strtotime($row['endDate'])? strtotime($row['endDate']) : null) : null),
                 'completed_at' => ($row['completeDate'] ? (strtotime($row['completeDate'])? strtotime($row['completeDate']) : null) : null),
                 'published_at' => ($row['publishedDate'] ? (strtotime($row['publishedDate'])? strtotime($row['publishedDate']) : null) : null),
+=======
+                'started_at'   => ($row['startDate'] ? strtotime($row['startDate']) : 0),
+                'end_at'       => ($row['endDate'] ? strtotime($row['endDate']) : 0),
+                'completed_at' => ($row['completeDate'] ? strtotime($row['completeDate']) : 0),
+                'published_at' => ($row['publishedDate'] ? strtotime($row['publishedDate']) : 0),
+>>>>>>> ebec2832a1010f5773b8814137ec37553a6cc4e2
                 'offer'        => self::$offer_convertor[$row['tradeType']],
 
                 'created_at'   => $created_at,
@@ -125,7 +124,7 @@ class m200507_121529_torg_fill extends Migration
                             'case_id'     => $row['caseId'],
                         ];
                         $torg_debtor = new TorgDebtor($td);
-                        $this->validateAndKeep($torg_debtor, $torgs_debtor, $td);
+                        $this->validateAndKeep($torg_debtor, $links['debtor'], $td);
                     }
                 } elseif ($property == Torg::PROPERTY_ZALOG) {
                     if ($row['bankruptId'] || $row['publisherId']) {
@@ -135,7 +134,7 @@ class m200507_121529_torg_fill extends Migration
                             'user_id'  => $row['publisherId'],
                         ];
                         $torg_pledge = new TorgPledge($tp);
-                        $this->validateAndKeep($torg_pledge, $torgs_pledge, $tp);
+                        $this->validateAndKeep($torg_pledge, $links['pledge'], $tp);
                     }
                 } else {
                     if ($row['publisherId']) {
@@ -144,15 +143,18 @@ class m200507_121529_torg_fill extends Migration
                             'manager_id' => $row['publisherId'],
                         ];
                         $torg_drawish = new TorgDrawish($tdw);
-                        $this->validateAndKeep($torg_drawish, $torgs_drawish, $tdw);
+                        $this->validateAndKeep($torg_drawish, $links['drawish'], $tdw);
                     }
                 }
             }
         }
 
         $this->batchInsert(self::TABLE, ['id', 'property', 'description', 'started_at', 'end_at', 'completed_at', 'published_at', 'offer', 'created_at', 'updated_at'], $torgs);
-        $this->batchInsert('{{%torg_debtor}}', ['torg_id', 'etp_id', 'bankrupt_id', 'manager_id', 'case_id'], $torgs_debtor);
-        $this->batchInsert('{{%torg_pledge}}', ['torg_id', 'owner_id', 'user_id'], $torgs_pledge);
-        $this->batchInsert('{{%torg_drawish}}', ['torg_id', 'manager_id'], $torgs_drawish);
+        if ($links['debtor'])
+            $this->batchInsert('{{%torg_debtor}}', ['torg_id', 'etp_id', 'bankrupt_id', 'manager_id', 'case_id'], $links['debtor']);
+        if ($links['pledge'])
+            $this->batchInsert('{{%torg_pledge}}', ['torg_id', 'owner_id', 'user_id'], $links['pledge']);
+        if ($links['drawish'])
+            $this->batchInsert('{{%torg_drawish}}', ['torg_id', 'manager_id'], $links['drawish']);
     }
 }

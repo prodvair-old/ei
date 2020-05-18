@@ -1,28 +1,28 @@
 <?php
+
 namespace common\models\db;
 
-use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use yii\behaviors\SluggableBehavior;
 
 /**
- * LotCategory model
- * Категории, к которым принадлежит Лот.
+ * Region model
+ * Справочник регионов.
  *
- * @var integer $lot_id
- * @var integer $category_id
+ * @var integer $id
+ * @var string  $name
+ * @var string  $slug
  * @var integer $created_at
- * 
- * @property Lot $lot которому принадлежит данная цена
  */
-class LotCategory extends ActiveRecord
+class Region extends ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return '{{%lot_category}}';
+        return '{{%region}}';
     }
 
     /**
@@ -35,6 +35,10 @@ class LotCategory extends ActiveRecord
                 'class' => TimestampBehavior::className(),
                 'updatedAtAttribute' => false,
             ],
+            [
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'name',
+            ],
         ];
     }
 
@@ -44,7 +48,7 @@ class LotCategory extends ActiveRecord
     public function rules()
     {
         return [
-            [['lot_id', 'category_id'], 'required'],
+            [['id', 'name'], 'required'],
             ['created_at', 'safe'],
         ];
     }
@@ -55,9 +59,8 @@ class LotCategory extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'lot_id'      => Yii::t('app', 'Lot'),
-            'category_id' => Yii::t('app', 'Category'),
-            'created_at'  => Yii::t('app', 'Created'),
+            'name'       => Yii::t('app', 'Region'),
+            'created_at' => Yii::t('app', 'Created'),
         ];
     }
 }

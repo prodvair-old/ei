@@ -15,6 +15,8 @@ class m200423_194649_lot_price extends Migration
         $this->createTable(self::TABLE, [
             'id'         => $this->bigPrimaryKey(),
             'lot_id'     => $this->bigInteger()->notNull(),
+
+            'price'      => $this->decimal(15, 2)->notNull(),
             
             'started_at' => $this->integer()->notNull(),
             'end_at'     => $this->integer()->notNull(),
