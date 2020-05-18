@@ -12,7 +12,7 @@ class m200507_111010_case_fill extends Migration
     use Keeper;
     
     const TABLE = '{{%casefile}}';
-    const LIMIT = 1000;
+    const LIMIT = 100;
 
     public function safeUp()
     {
@@ -68,8 +68,8 @@ class m200507_111010_case_fill extends Migration
     public function safeDown()
     {
         $db = \Yii::$app->db;
-        // $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
+        $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
         $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
-        // $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')->execute();
+        $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')->execute();
     }
 }

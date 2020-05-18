@@ -2,6 +2,7 @@
 
 use yii\db\Migration;
 use common\models\db\Lot;
+use console\traits\Keeper;
 
 /**
  * Class m200508_063129_lot_fill
@@ -139,3 +140,8 @@ class m200508_063129_lot_fill extends Migration
         $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
     }
 }
+
+
+// php yii migrate --migrationPath=@console/migrations/fill
+// php yii migrate/update --migrationPath=@console/migration/fill
+// php yii migrate/down --migrationPath=@console/migrations/fill

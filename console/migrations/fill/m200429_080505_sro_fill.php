@@ -7,9 +7,9 @@ use common\models\db\Place;
 use console\traits\Keeper;
 
 /**
- * Class m200507_080505_sro_fill
+ * Class m200429_080505_sro_fill
  */
-class m200507_080505_sro_fill extends Migration
+class m200429_080505_sro_fill extends Migration
 {
     use Keeper;
     
