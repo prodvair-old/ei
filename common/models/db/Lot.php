@@ -92,8 +92,8 @@ class Lot extends ActiveRecord
 				'file_path' => '/lot/',
                 'sizes' => [
                     'original'  => ['width' => 1600, 'height' => 900, 'catalog' => 'original'],
-                    'main'      => ['width' => 400,  'height' => 400, 'catalog' => ''],
-                    'thumb'     => ['width' => 90,   'height' => 90,  'catalog' => 'thumb'],
+                    'main'      => ['width' => 400,  'height' => 300, 'catalog' => ''],
+                    'thumb'     => ['width' => 120,  'height' => 90,  'catalog' => 'thumb'],
                 ],
 			],
         ];

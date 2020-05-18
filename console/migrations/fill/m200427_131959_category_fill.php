@@ -12,8 +12,9 @@ class m200427_131959_category_fill extends Migration
 {
     const TABLE = '{{%category}}';
 
-    // индексом является шаг, который равен соответствующей константе в Category
-    private $properties = [10000 => 'bankrupt', 20000 => 'arrest', 30000 => 'zalog', ];
+    // индексом является тип имущества, значением - шаг, отделяющий ID категорий одной группы от другой,
+    // шаг равен соответствующей константе в Category
+    private $properties = ['bankrupt' => 10000, 'arrest' => 20000, 'zalog' => 30000];
 
     public function safeUp()
     {
@@ -38,7 +39,7 @@ class m200427_131959_category_fill extends Migration
             );
             $node->appendTo($category);
             // второй уровень
-            foreach($this->properties as $step => $property) {
+            foreach($this->properties as $property => $step) {
                 if ($row[$property . '_categorys']) {
                     $objs = json_decode($row[$property . '_categorys']);
                     foreach($objs as $id => $obj) {
