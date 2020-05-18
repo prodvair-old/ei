@@ -24,7 +24,7 @@ class m200507_111010_case_fill extends Migration
         $result = $select->queryAll();
         
         $offset = 0;
-   
+    
         // добавление информации по банкротным делам
         while ($offset < $result[0]['count']) {
 
@@ -75,17 +75,12 @@ class m200507_111010_case_fill extends Migration
     public function safeDown()
     {
         $db = \Yii::$app->db;
-<<<<<<< HEAD
-        $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
-        $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
-        $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')->execute();
-=======
         if ($this->db->driverName === 'mysql') {
             $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
             $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
             $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')->execute();
-        } else
+        } else {
             $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
->>>>>>> ebec2832a1010f5773b8814137ec37553a6cc4e2
+        }
     }
 }
