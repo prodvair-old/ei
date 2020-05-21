@@ -27,6 +27,8 @@ class m200416_134224_lot extends Migration
             'status'           => $this->smallInteger()->notNull(),
             'reason'           => $this->smallInteger()->notNull(),
 
+            'info'             => $this->text(),
+
             'created_at'       => $this->integer()->notNull(),
             'updated_at'       => $this->integer()->notNull(),
         ]);
@@ -43,6 +45,7 @@ class m200416_134224_lot extends Migration
 		$this->addCommentOnColumn(self::TABLE, 'deposit_measure', 'Мера задатка - сумма, %');
 		$this->addCommentOnColumn(self::TABLE, 'status', 'Статус');
 		$this->addCommentOnColumn(self::TABLE, 'reason', 'Причина статуса');
+		$this->addCommentOnColumn(self::TABLE, 'info', 'Дополнительная информация по лоту в виде json массива');
     }
 
     public function safeDown()

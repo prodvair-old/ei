@@ -25,6 +25,7 @@ use sergmoro1\lookup\models\Lookup;
  * @var integer $created_at
  * @var integer $updated_at
  * 
+ * @property Place $place
  * @property Torg $torg
  * @property WishList[] $observers
  * @property LotPrice[] $prices
@@ -183,6 +184,15 @@ class Lot extends ActiveRecord
     }
 
     /**
+     * Получить информацию о месте
+     * @return yii\db\ActiveQuery
+     */
+    public function getPlace()
+    {
+        return $this->hasOne(Place::className(), ['model' => self::INT_CODE, 'parent_id' => 'id']);
+    }
+
+    /**
      * Получить информацию о торге
      * @return yii\db\ActiveQuery
      */
@@ -248,7 +258,7 @@ class Lot extends ActiveRecord
      */
     public function getCategories()
     {
-        return $this->hasMany(Category::className(), ['category_id' => 'id'])
+        return $this->hasMany(Category::className(), ['id' => 'category_id'])
             ->viaTable(LotCategory::tableName(), ['lot_id' => 'id']);
     }
 
