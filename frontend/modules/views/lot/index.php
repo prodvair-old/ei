@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View */
 /* @var $queryCategory */
+/* @var $model \frontend\modules\models\LotSearch */
 
 /* @var $type */
 
@@ -30,13 +31,20 @@ $lotsSubcategory[ 0 ] = 'Все подкатегории';
 $subcategoryCheck = true;
 
 
+if ($model->mainCategory) {
+    $subCategories = Category::findOne(['id' => $model->mainCategory]);
+    $leaves = $subCategories->leaves()->all();
+    $leaves = ArrayHelper::map($leaves, 'id', 'name');
+    $lotsSubcategory += $leaves;
+    $subcategoryCheck = false;
+}
+
 $traderList = [];
 
 $this->registerJsVar('lotType', $type, $position = yii\web\View::POS_HEAD);
 $this->registerJsVar('lotType', $type, $position = yii\web\View::POS_HEAD);
 $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\View::POS_HEAD);
 ?>
-
 
 <section class="page-wrapper page-result pb-0">
 
@@ -111,6 +119,17 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                         <!-- <h4 class="">Поиск</h4> -->
 
                         <div class="row">
+
+                            <div class="col-12">
+                                <div class="">
+                                    <?= $form->field($model, 'search')->textInput([
+                                        'class'       => 'form-control search-form-control',
+                                        'placeholder' => 'Поиск: Машина, Квартира...',
+                                        // 'value' =>
+                                    ])->label('Поиск'); ?>
+                                </div>
+                            </div>
+
                             <div class="col-12">
                                 <div class="col-inner">
                                     <?= $form->field($model, 'type')->dropDownList(
@@ -141,12 +160,12 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                                     <?= $form->field($model, 'subCategory')->dropDownList(
                                         $lotsSubcategory,
                                         [
-                                            'class' => 'chosen-the-basic subcategory-load form-control form-control-sm',
+                                            'class'            => 'chosen-the-basic subcategory-load form-control form-control-sm',
                                             'data-placeholder' => 'Все подкатегории',
-                                            'id' => 'searchlot-subcategory',
-                                            'disabled' => $subcategoryCheck,
-                                            'multiple' => true,
-                                            'tabindex' => '2'
+                                            'id'               => 'searchlot-subcategory',
+                                            'disabled'         => $subcategoryCheck,
+                                            'multiple'         => true,
+                                            'tabindex'         => '2'
                                         ]
                                     )
                                         ->label('Подкатегория'); ?>
@@ -172,17 +191,17 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
                         </div>
 
-                        <div class="sidebar-box  sidebar-box__collaps <?=($model->etp)? '' : 'collaps'?>">
+                        <div class="sidebar-box  sidebar-box__collaps <?= ($model->etp) ? '' : 'collaps' ?>">
 
-                            <label class="control-label sidebar-box__label" >Торговые площадки</label>
+                            <label class="control-label sidebar-box__label">Торговые площадки</label>
                             <div class="box-content">
                                 <?= $form->field($model, 'etp')->dropDownList(
                                     \common\models\db\Etp::getOrganizationList(),
                                     [
-                                        'class' => 'chosen-the-basic form-control',
-                                        'prompt' => 'Все торговые площадки',
+                                        'class'            => 'chosen-the-basic form-control',
+                                        'prompt'           => 'Все торговые площадки',
                                         'data-placeholder' => 'Все торговые площадки',
-                                        'multiple' => true
+                                        'multiple'         => true
                                     ]
                                 )
                                     ->label(false); ?>
@@ -190,17 +209,17 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
                         </div>
 
-                        <div class="sidebar-box sidebar-box__collaps <?=($model->owner)? '' : 'collaps'?>">
+                        <div class="sidebar-box sidebar-box__collaps <?= ($model->owner) ? '' : 'collaps' ?>">
 
-                            <label class="control-label sidebar-box__label" >Организации</label>
+                            <label class="control-label sidebar-box__label">Организации</label>
                             <div class="box-content">
                                 <?= $form->field($model, 'owner')->dropDownList(
-                                     \common\models\db\Owner::getOrganizationList(),
+                                    \common\models\db\Owner::getOrganizationList(),
                                     [
-                                        'class' => 'chosen-the-basic form-control',
-                                        'prompt' => 'Все организации',
+                                        'class'            => 'chosen-the-basic form-control',
+                                        'prompt'           => 'Все организации',
                                         'data-placeholder' => 'Все организации',
-                                        'multiple' => true
+                                        'multiple'         => true
                                     ]
                                 )
                                     ->label(false); ?>
@@ -208,18 +227,18 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
                         </div>
 
-                        <div class="sidebar-box sidebar-box__collaps <?=($model->tradeType)? '' : 'collaps'?>">
+                        <div class="sidebar-box sidebar-box__collaps <?= ($model->tradeType) ? '' : 'collaps' ?>">
 
-                            <label class="control-label sidebar-box__label" >Тип торгов</label>
+                            <label class="control-label sidebar-box__label">Тип торгов</label>
                             <div class="box-content">
 
                                 <?= $form->field($model, 'tradeType')->checkboxList(
                                     Lookup::items('TorgOffer'), [
                                     'class' => 'custom-control custom-checkbox',
-                                    'item'=>function ($index, $label, $name, $checked, $value) {
-                                        $inputId = 'tradetype'.$index;
+                                    'item'  => function ($index, $label, $name, $checked, $value) {
+                                        $inputId = 'tradetype' . $index;
 
-                                        return "<div><input type=\"checkbox\" name=\"$name\" value=\"$value\" id=\"$inputId\" ".(($checked)? 'checked': '')." class=\"custom-control-input\">"
+                                        return "<div><input type=\"checkbox\" name=\"$name\" value=\"$value\" id=\"$inputId\" " . (($checked) ? 'checked' : '') . " class=\"custom-control-input\">"
                                             . "<label for=\"$inputId\" class=\"custom-control-label\">$label</label></div>";
                                     }
                                 ])->label(false); ?>
@@ -242,10 +261,27 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
                     <div class="d-flex justify-content-between flex-row align-items-center sort-group page-result-01">
                         <div class="sort-box">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    БД: <?= round(Yii::getLogger()->getDbProfiling()[ 1 ], 3) ?> сек.
+                                </div>
+                                <div id="profiling_page_load" class="col-md-6"></div>
+                            </div>
                             <div class="d-flex align-items-center sort-item">
-
                                 <label class="sort-label d-none d-sm-flex">Сортировка по:</label>
                                 <?php $form = ActiveForm::begin(['id' => 'sort-lot-form', 'method' => 'GET']); ?>
+                                <div class="sort-form">
+                                    <?= $form->field($model, 'sortBy')->dropDownList(
+                                        $model->getSortMap(), [
+                                        'class'            => 'chosen-sort-select form-control sortSelect',
+                                        'data-placeholder' => 'Сортировка по',
+                                        'tabindex'         => '2',
+//                                        'options'          => [
+//                                            'dateDESC' => ['Selected' => true]
+//                                        ]
+                                    ])
+                                        ->label(false); ?>
+                                </div>
                                 <?php ActiveForm::end(); ?>
 
                             </div>
@@ -256,6 +292,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                             </div>
                         </div>
                     </div>
+
 
                     <div class="tour-long-item-wrapper-01 load-list">
                         <? if ($count > 0) {
@@ -279,18 +316,18 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                             <div class="row align-items-center text-center text-lg-left">
 
                                 <div class="col-12">
-                                    <!--                                    <nav class="mt-10 mt-lg-0">-->
-                                    <!--                                        --><? //= LinkPager::widget([
-                                    //                                            'pagination'           => $pages,
-                                    //                                            'nextPageLabel'        => "<span aria-hidden=\"true\">Далее</span></i>",
-                                    //                                            'prevPageLabel'        => "<span aria-hidden=\"true\">Назад</span>",
-                                    //                                            'maxButtonCount'       => 6,
-                                    //                                            'options'              => ['class' => 'pagination justify-content-center justify-content-lg-left'],
-                                    //                                            'linkOptions'          => ['class' => 'page-link'],
-                                    //                                            'linkContainerOptions' => ['class' => 'page-item'],
-                                    //                                            'disabledPageCssClass' => 'disabled',
-                                    //                                        ]); ?>
-                                    <!--                                    </nav>-->
+                                    <nav class="mt-10 mt-lg-0">
+                                        <?= LinkPager::widget([
+                                            'pagination'           => $pages,
+                                            'nextPageLabel'        => "<span aria-hidden=\"true\">Далее</span></i>",
+                                            'prevPageLabel'        => "<span aria-hidden=\"true\">Назад</span>",
+                                            'maxButtonCount'       => 6,
+                                            'options'              => ['class' => 'pagination justify-content-center justify-content-lg-left'],
+                                            'linkOptions'          => ['class' => 'page-link'],
+                                            'linkContainerOptions' => ['class' => 'page-item'],
+                                            'disabledPageCssClass' => 'disabled',
+                                        ]); ?>
+                                    </nav>
                                 </div>
 
                             </div>
@@ -308,3 +345,10 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
     </aside>
 
 </section>
+
+<script>
+    window.addEventListener('load', function() {
+        console.log("Fiered load after " + performance.now() + " ms");
+        document.getElementById('profiling_page_load').innerHTML = 'Страница: ' + (Math.round(performance.now())/1000) + ' сек.';
+        }, false);
+</script>

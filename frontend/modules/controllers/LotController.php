@@ -51,7 +51,7 @@ class LotController extends Controller
 //        $dataProvider->setTotalCount(20);
         $lots = $dataProvider->getModels();
 //        $pageSize = 1;
-        $count = count($lots);
+        $count = $searchModel->count;
 //        $pages = new Pagination(['totalCount' => $count, 'pageSize' => $pageSize]);
 
 //        $dataProvider->setPagination($pages);
@@ -71,7 +71,7 @@ class LotController extends Controller
             'queryCategory' => 0,
             'type'          => 'bankrupt',
             'count'         => $count,
-//            'pages'         => $searchModel->pages,
+            'pages'         => $searchModel->pages,
         ]);
     }
 
@@ -110,5 +110,15 @@ class LotController extends Controller
         }
 
         return $result;
+    }
+
+    public function actionTest() {
+        $searchModel = new LotSearch();
+        $res = $searchModel->findSuggest(Yii::$app->request->queryParams['search']);
+
+        echo "<pre>";
+        var_dump($res);
+        echo "</pre>";
+        die;
     }
 }

@@ -165,7 +165,8 @@ return [
         '/load-category'    => 'lot/load_category',
         '/wish-list-edit'   => 'lot/wish_list',
 
-        '/lot/list' => '/lot/lot/index',
+        '/lot/list' => '/lot/lot/index', //TODO
+        '/lot/test' => '/lot/lot/test',
         '/lot/list/old' => '/LotOld/lot-old/index',
         '/lot/load-sub-categories' => '/lot/lot/load-sub-categories',
 
