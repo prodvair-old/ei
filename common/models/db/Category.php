@@ -30,7 +30,14 @@ class Category extends ActiveRecord
     public $model_count;        
     
     const ROOT = 0;
-    
+
+    private static $offset = [
+        Torg::PROPERTY_BANKRUPT  => 10000, 
+        Torg::PROPERTY_ARRESTED  => 20000,
+        Torg::PROPERTY_ZALOG     => 30000,
+        Torg::PROPERTY_MUNICIPAL => 40000,
+    ];
+
     /**
      * @return string the associated database table name
      */
@@ -147,7 +154,7 @@ class Category extends ActiveRecord
      */
     public function getPrettyName($plain = false)
     {
-        $indentation = str_repeat('-', ($this->level - 2) * 3);
+        $indentation = str_repeat('-', $this->depth * 3);
         return $plain
             ? $indentation . ' ' . $this->name
             : '<span class="branch">' . $indentation . '</span>' . ' ' . $this->name;
@@ -195,5 +202,10 @@ class Category extends ActiveRecord
             $ids .= ',' . $node->id;
         // replace links in a connected model
         return LotCategory::updateAll(['category_id' => $recipient_id], 'category_id IN (' . $ids . ')');
+    }
+
+    public function getOffset($property) 
+    {
+        return self::$offset[$property];
     }
 }

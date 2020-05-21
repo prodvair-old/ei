@@ -5,7 +5,6 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use sergmoro1\lookup\models\Lookup;
-use sergmoro1\uploader\behaviors\HaveFileBehavior;
 
 /**
  * Torg model
@@ -29,7 +28,7 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
  * @property User     $user
  * @property Etp      $etp
  * @property Casefile $case
- * @property sergmoro1\uploader\models\OneFile[] $files
+ * @property Document[] $documents
  */
 class Torg extends ActiveRecord
 {
@@ -66,15 +65,6 @@ class Torg extends ActiveRecord
             [
                 'class' => TimestampBehavior::className(),
             ],
-			[
-				'class' => HaveFileBehavior::className(),
-				'file_path' => '/torg/',
-                'sizes' => [
-                    'original'  => ['width' => 1600, 'height' => 900, 'catalog' => 'original'],
-                    'main'      => ['width' => 400,  'height' => 400, 'catalog' => ''],
-                    'thumb'     => ['width' => 90,   'height' => 90,  'catalog' => 'thumb'],
-                ],
-			],
         ];
     }
     
@@ -86,11 +76,9 @@ class Torg extends ActiveRecord
         return [
             ['property', 'required'],
             [['property', 'offer'], 'integer'],
-            ['description', 'string'],
-            //[['started_at', 'end_at', 'completed_at', 'published_at'], 'integer', 'skipOnEmpty' => true],
             ['property', 'in', 'range' => self::getProperties()],
             ['offer', 'in', 'range' => self::getOffers()],
-            [['etp_id', 'started_at', 'end_at', 'completed_at', 'published_at', 'created_at', 'updated_at'], 'safe'],
+            [['description', 'etp_id', 'started_at', 'end_at', 'completed_at', 'published_at', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -120,8 +108,8 @@ class Torg extends ActiveRecord
     public static function getProperties() {
         return [
             self::PROPERTY_BANKRUPT,
-            self::PROPERTY_ZALOG,
             self::PROPERTY_ARRESTED,
+            self::PROPERTY_ZALOG,
             self::PROPERTY_MUNICIPAL,
         ];
     }
@@ -137,6 +125,7 @@ class Torg extends ActiveRecord
             self::OFFER_AUCTION_OPEN,
             self::OFFER_CONTEST,
             self::OFFER_CONTEST_OPEN,
+
         ];
     }
 
@@ -154,6 +143,8 @@ class Torg extends ActiveRecord
      * @return yii\db\ActiveQuery
      */
     public function getBankrupt() {
+        if ($this->property != self::PROPERTY_BANKRUPT)
+            return null;
         return $this->hasOne(Bankrupt::className(), ['id' => 'bankrupt_id'])
             ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
@@ -163,16 +154,45 @@ class Torg extends ActiveRecord
      * @return yii\db\ActiveQuery
      */
     public function getManager() {
+        if ($this->property == self::PROPERTY_ZALOG)
+            return null;
         return $this->hasOne(Manager::className(), ['id' => 'manager_id'])
             ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
     
     /**
+     * Получить эдектронную торговую площадку (ETP)
+     *
+     * @return yii\db\ActiveRecord
+     */
+    public function getEtp()
+    {
+        if ($this->property != self::PROPERTY_BANKRUPT)
+            return null;
+        return $this->hasOne(Organization::className(), ['id' => 'etp_id'])
+            ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
+    }
+
+    /**
+     * Получить дело по торгу
+     *
+     * @return yii\db\ActiveQuery
+     */
+    public function getCase() {
+        if ($this->property != self::PROPERTY_BANKRUPT)
+            return null;
+        return $this->hasOne(Casefile::className(), ['id' => 'case_id'])
+            ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
+    }
+
+    /**
      * Получить информацию о залогодержателе
      * @return yii\db\ActiveQuery
      */
     public function getOwner() {
-        return $this->hasOne(Organization::className(), ['id' => 'owner_id'])
+        if ($this->property != self::PROPERTY_ZALOG)
+            return null;
+        return $this->hasOne(Owner::className(), ['id' => 'owner_id'])
             ->viaTable(TorgPledge::tableName(), ['torg_id' => 'id']);
     }
 
@@ -181,28 +201,19 @@ class Torg extends ActiveRecord
      * @return yii\db\ActiveQuery
      */
     public function getUser() {
+        if ($this->property != self::PROPERTY_ZALOG)
+            return null;
         return $this->hasOne(User::className(), ['id' => 'user_id'])
             ->viaTable(TorgPledge::tableName(), ['torg_id' => 'id']);
     }
 
     /**
-     * Получить эдектронную торговую площадку (ETP)
-     * 
-     * @return yii\db\ActiveRecord
-     */
-    public function getEtp()
-    {
-        return $this->hasOne(Organization::className(), ['id' => 'etp_id'])
-            ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
-    }
-    
-    /**
-     * Получить дело по торгу
+     * Получить документы по торгу.
      *
      * @return yii\db\ActiveQuery
      */
-    public function getCase() {
-        return $this->hasOne(Casefile::className(), ['id' => 'case_id'])
-            ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
+    public function getDocuments()
+    {
+        return $this->hasMany(Document::className(), ['model' => self::INT_CODE, 'parent_id' => $this->id]);
     }
 }

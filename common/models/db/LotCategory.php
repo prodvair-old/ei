@@ -32,7 +32,7 @@ class LotCategory extends ActiveRecord
     {
         return [
             [
-                TimestampBehavior::className(),
+                'class' => TimestampBehavior::className(),
                 'updatedAtAttribute' => false,
             ],
         ];

@@ -12,21 +12,44 @@ class m200507_111010_case_fill extends Migration
     use Keeper;
     
     const TABLE = '{{%casefile}}';
+    const LIMIT = 10000;
 
     public function safeUp()
     {
-        // получение дел по банкротным делам
-        $db = \Yii::$app->db;
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
+        
         $select = $db->createCommand(
-            'SELECT * FROM "eiLot".cases ORDER BY "cases".id'
+            'SELECT count(id) FROM "eiLot".cases'
         );
-        $rows = $select->queryAll();
+        $result = $select->queryAll();
         
-        $cases = [];
-        
-        // добавление дел
-        foreach($rows as $row) {
+        $offset = 0;
+    
+        // добавление информации по банкротным делам
+        while ($offset < $result[0]['count']) {
 
+            $this->insertPoole($db, $offset);
+
+            $offset = $offset + self::LIMIT;
+
+            $sleep = rand(1, 3);
+            sleep($sleep);
+        }
+    }
+
+    private function insertPoole($db, $offset)
+    {
+
+        $cases = [];
+
+        $query = $db->createCommand(
+            'SELECT * FROM "eiLot".cases ORDER BY "cases".id ASC LIMIT ' . self::LIMIT . ' OFFSET ' . $offset
+        );
+
+        $rows = $query->queryAll();
+    
+        foreach($rows as $row)
+        {
             $case_id = $row['id'];
             $created_at = strtotime($row['createdAt']);
             $updated_at = strtotime($row['updatedAt']);
@@ -42,7 +65,7 @@ class m200507_111010_case_fill extends Migration
                 'updated_at'  => $updated_at,
             ];
             $case = new Casefile($c);
-            
+        
             $this->validateAndKeep($case, $cases, $c);
         }
 
@@ -52,6 +75,12 @@ class m200507_111010_case_fill extends Migration
     public function safeDown()
     {
         $db = \Yii::$app->db;
-        $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        if ($this->db->driverName === 'mysql') {
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')->execute();
+        } else {
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        }
     }
 }

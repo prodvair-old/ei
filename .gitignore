@@ -45,11 +45,10 @@ phpunit.phar
 
 
 /frontend/web/img/lot/*
+/frontend/web/uploads
 
 /node_modules
 # /newThames
 package-lock.json
 composer.lock
 gulpfile.js
-
-/yii2-basic

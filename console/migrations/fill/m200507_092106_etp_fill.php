@@ -18,7 +18,7 @@ class m200507_092106_etp_fill extends Migration
     public function safeUp()
     {
         // получение электронных торговых площадок из существующего справочника
-        $db = \Yii::$app->db;
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
         $select = $db->createCommand(
             'SELECT * FROM "eiLot".etp ORDER BY "etp".id'
         );
@@ -100,6 +100,11 @@ class m200507_092106_etp_fill extends Migration
         $db = \Yii::$app->db;
         $db->createCommand('DELETE FROM {{%place}} WHERE model=' . Organization::TYPE_ETP)->execute();
         $db->createCommand('DELETE FROM {{%organization}} WHERE model=' . Organization::TYPE_ETP)->execute();
-        $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        if ($this->db->driverName === 'mysql') {
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')-> execute();
+        } else
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
     }
 }

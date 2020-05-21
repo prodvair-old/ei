@@ -12,45 +12,47 @@ class m200427_131959_category_fill extends Migration
 {
     const TABLE = '{{%category}}';
 
-    private $properties = [10000 => 'bankrupt', 20000 => 'arrest', 30000 => 'zalog'];
+    // индексом является тип имущества, значением - шаг, отделяющий ID категорий одной группы от другой,
+    // шаг равен соответствующей константе в Category
+    private $properties = ['bankrupt' => 10000, 'arrest' => 20000, 'zalog' => 30000];
 
     public function safeUp()
     {
         // создание корневой категории
         $category = new Category(['id' => Category::ROOT, 'name' => 'Все категории', 'slug' => 'lot-list']);
         $category->makeRoot();
-
+        
         // получение категорий из существующего справочника
-        $db = \Yii::$app->db;
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
         $select = $db->createCommand(
             'SELECT * FROM site."lotsCategory" WHERE id > ' . Category::ROOT
         );
         $rows = $select->queryAll();
         
-        // сохранение ID всех категорий первого уровня, чтобы не пытаться добавить категорию с таким же ID
-        $all_ids = [];
-        foreach($rows as $row) {
-            $all_ids[] = $row['id'];
-        }
-
         // добавление категорий в новый справочник
         foreach($rows as $row) {
             // первый уровень
-            $model = new Category(['id' => $row['id'], 'name' => $row['name'], 'slug' => $row['translit_name']]);
-            $model->appendTo($category);
+            $node = new Category([
+                'id'   => $row['id'],
+                'name' => $row['name'],
+                'slug' => $row['translit_name']],
+            );
+            $node->appendTo($category);
             // второй уровень
-            foreach($this->properties as $step => $property) {
+            foreach($this->properties as $property => $step) {
                 if ($row[$property . '_categorys']) {
                     $objs = json_decode($row[$property . '_categorys']);
                     foreach($objs as $id => $obj) {
                         $id = (int) $id;
-                        // увеличиваем ID категорий, которые уже существуют
-                        if (in_array($id, $all_ids)) {
-                            $id += $step;
-                        }
-                        $m = new Category(['id' => $id, 'name' => $obj->name, 'slug' => $obj->translit]);
-                        $m->appendTo($model);
-                        $all_ids[] = $id;
+                        // увеличить ID категорий на соответствующую (типу имущества) константу
+                        $id += $step;
+                        // добавить подкатегорию
+                        $leaf = new Category([
+                            'id'   => $id, 
+                            'name' => $obj->name, 
+                            'slug' => $obj->translit,
+                        ]);
+                        $leaf->appendTo($node);
                     }
                 }
             }
@@ -60,6 +62,11 @@ class m200427_131959_category_fill extends Migration
     public function safeDown()
     {
         $db = \Yii::$app->db;
-        $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        if ($this->db->driverName === 'mysql') {
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')-> execute();
+        } else
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
     }
 }

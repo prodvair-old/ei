@@ -17,7 +17,11 @@ return [
     'modules' => [
         'gridview' => [
             'class' => 'kartik\grid\Module',
-        ]
+        ],
+        'admin' => [
+            'class' => 'backend\modules\admin\Module',
+            'defaultRoute' => 'lot/index',
+        ],
     ],
     'components' => [
         'assetManager' => [

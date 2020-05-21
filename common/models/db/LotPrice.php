@@ -35,7 +35,7 @@ class LotPrice extends ActiveRecord
     {
         return [
             [
-                TimestampBehavior::className(),
+                'class' => TimestampBehavior::className(),
             ],
         ];
     }
@@ -46,9 +46,9 @@ class LotPrice extends ActiveRecord
     public function rules()
     {
         return [
-            [['lot_id', 'started_at', 'end_at'], 'required'],
-            [['started_at', 'end_at'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['lot_id', 'price'], 'required'],
+            ['price', 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*\.?\d{0,2}\s*$/'],
+            [['started_at', 'end_at', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -58,6 +58,7 @@ class LotPrice extends ActiveRecord
     public function attributeLabels()
     {
         return [
+            'price'      => Yii::t('app', 'Price'),
             'started_at' => Yii::t('app', 'Started at'),
             'end_at'     => Yii::t('app', 'End at'),
             'created_at' => Yii::t('app', 'Created'),

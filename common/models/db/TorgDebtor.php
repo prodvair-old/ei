@@ -31,9 +31,15 @@ class TorgDebtor extends ActiveRecord
     public function rules()
     {
         return [
-            [['torg_id', 'bankrupt_id', 'case_id'], 'required'],
-            [['torg_id', 'bankrupt_id', 'case_id'], 'integer'],
-            [['etp_id', 'manager_id'], 'safe'],
+            [['torg_id', 'case_id'], 'required'],
+            [['torg_id', 'case_id'], 'integer'],
+            ['bankrupt_id', 'required', 'when' => function ($model) {
+                return is_null($model->manager_id);
+            }],
+            ['manager_id', 'required', 'when' => function ($model) {
+                return is_null($model->bankrupt_id);
+            }],
+            [['etp_id'], 'safe'],
         ];
     }
 }

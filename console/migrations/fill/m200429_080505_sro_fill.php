@@ -7,9 +7,9 @@ use common\models\db\Place;
 use console\traits\Keeper;
 
 /**
- * Class m200507_080505_sro_fill
+ * Class m200429_080505_sro_fill
  */
-class m200507_080505_sro_fill extends Migration
+class m200429_080505_sro_fill extends Migration
 {
     use Keeper;
     
@@ -18,7 +18,7 @@ class m200507_080505_sro_fill extends Migration
     public function safeUp()
     {
         // получение само-регулируемых организаций из существующего справочника
-        $db = \Yii::$app->db;
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
         $select = $db->createCommand(
             'SELECT * FROM "eiLot".sro ORDER BY "sro".id'
         );
@@ -98,6 +98,11 @@ class m200507_080505_sro_fill extends Migration
         $db = \Yii::$app->db;
         $db->createCommand('DELETE FROM {{%place}} WHERE model=' . Organization::TYPE_SRO)->execute();
         $db->createCommand('DELETE FROM {{%organization}} WHERE model=' . Organization::TYPE_SRO)->execute();
-        $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        if ($this->db->driverName === 'mysql') {
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')-> execute();
+        } else
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
     }
 }

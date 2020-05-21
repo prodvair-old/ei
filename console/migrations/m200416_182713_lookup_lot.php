@@ -23,12 +23,13 @@ class m200416_182713_lookup_lot extends Migration
 
         $this->insert(self::TABLE_PROPERTY, ['id' => self::LOT_STATUS, 'name' => 'LotStatus']);
         // торги
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Действуют',      'code' => 1, 'property_id' => self::LOT_STATUS, 'position' => 1]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Объявлены',      'code' => 2, 'property_id' => self::LOT_STATUS, 'position' => 2]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Приостановлены', 'code' => 3, 'property_id' => self::LOT_STATUS, 'position' => 3]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Отменены',       'code' => 4, 'property_id' => self::LOT_STATUS, 'position' => 4]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Завершены',      'code' => 5, 'property_id' => self::LOT_STATUS, 'position' => 5]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Архив',          'code' => 6, 'property_id' => self::LOT_STATUS, 'position' => 6]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Действуют',      'code' => 1,  'property_id' => self::LOT_STATUS, 'position' => 1]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Объявлены',      'code' => 2,  'property_id' => self::LOT_STATUS, 'position' => 2]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Приостановлены', 'code' => 3,  'property_id' => self::LOT_STATUS, 'position' => 3]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Отменены',       'code' => 4,  'property_id' => self::LOT_STATUS, 'position' => 4]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Завершены',      'code' => 5,  'property_id' => self::LOT_STATUS, 'position' => 5]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Архив',          'code' => 6,  'property_id' => self::LOT_STATUS, 'position' => 6]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Не определен',   'code' => 10, 'property_id' => self::LOT_STATUS, 'position' => 10]);
 
         // причины
         $this->insert(self::TABLE_PROPERTY, ['id' => self::LOT_REASON, 'name' => 'LotReason']);

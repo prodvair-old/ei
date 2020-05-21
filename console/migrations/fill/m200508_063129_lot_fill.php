@@ -2,6 +2,8 @@
 
 use yii\db\Migration;
 use common\models\db\Lot;
+use common\models\db\Place;
+use console\traits\Keeper;
 
 /**
  * Class m200508_063129_lot_fill
@@ -11,7 +13,7 @@ class m200508_063129_lot_fill extends Migration
     use Keeper;
     
     const TABLE = '{{%lot}}';
-    const OFFSET = 1000;
+    const LIMIT = 20000;
 
     private static $status_convertor = [
         "подводятся итоги (приостановлены) " => [Lot::STATUS_SUSPENDED, LOT::REASON_SUMMARIZING],
@@ -71,36 +73,60 @@ class m200508_063129_lot_fill extends Migration
     
     public function safeUp()
     {
-        // получение данных о лотах
-        $db = \Yii::$app->db;
+
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
+        
         $select = $db->createCommand(
-            'SELECT id FROM "eiLot".lots ORDER BY "lots".id'
+            'SELECT count(id) FROM "eiLot".lots'
         );
-        $rows = $select->queryAll();
+        $result = $select->queryAll();
         
+        $offset = 0;
+   
+        // добавление информации по лотам
+        while ($offset < $result[0]['count']) {
+
+            $this->insertPoole($db, $offset);
+
+            $offset = $offset + self::LIMIT;
+
+            $sleep = rand(1, 3);
+            sleep($sleep);
+        }
+
+    }
+
+    public function safeDown()
+    {
+        $db = \Yii::$app->db;
+        $db->createCommand('DELETE FROM {{%place}} WHERE model=' . Lot::INT_CODE)->execute();
+        if ($this->db->driverName === 'mysql') {
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')-> execute();
+        } else
+            $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+    }
+
+    private function insertPoole($db, $offset)
+    {
         $lots = [];
-        
-        // добавление информации о лотах
-        for($i = 1; $i <= count($rows); $i++) {
+        $places = [];
 
-            if (($b = floor($i / self::OFFSET)) && (($b * self::OFFSET) == $i)) {
+        $query = $db->createCommand(
+            'SELECT * FROM "eiLot".lots ORDER BY "lots".id ASC LIMIT ' . self::LIMIT . ' OFFSET ' . $offset
+        );
 
-                $this->batchInsert(self::TABLE, ['id', 'torg_id', 'title', 'description', 'start_price', 'step', 'step_measure', 'deposite', 'deposite_measure', 'status', 'reason', 'created_at', 'updated_at'], $lots);
+        $rows = $query->queryAll();
 
-                $lots = [];
-            }
-
-            $lot_id = $rows[$i - 1]['id'];
-
-            $select = $db->createCommand(
-                'SELECT * FROM "eiLot".lots WHERE id = ' . $lot_id
-            );
-            $row = $select->queryAll();
-            $row = $row[0];
+        foreach($rows as $row)
+        {
+            $lot_id = $row['id'];
 
             $created_at = strtotime($row['createdAt']);
             $updated_at = strtotime($row['updatedAt']);
-            $a = self::$status_convertor[$row['status']];
+            $obj = json_decode($row['info']);
+            $a = $this->convert($row['status']);
             
             // Lot
             $l = [
@@ -110,29 +136,60 @@ class m200508_063129_lot_fill extends Migration
                 'title'            => $row['title'],
                 'description'      => $row['description'],
                 'start_price'      => $row['startPrice'],
-                'step'             => $row['step'],
-                'step_measure'     => $row['stepTypeId'],
-                'deposite'         => $row['deposite'],
-                'deposite_measure' => $row['depositeTypeId'],
+                'step'             => round(($row['step'] ? : 0), 4),
+                'step_measure'     => ($row['stepTypeId'] ?: Lot::MEASURE_PERCENT),
+                'deposit'          => round(($row['deposit'] ?: 0), 4),
+                'deposit_measure'  => ($row['depositTypeId'] ?: Lot::MEASURE_PERCENT),
                 'status'           => $a[0],
                 'reason'           => $a[1],
+                'info'             => json_encode(isset($obj->vin) ? ['vin' => $obj->vin] : []),
 
                 'created_at'       => $created_at,
                 'updated_at'       => $updated_at,
             ];
             $lot = new Lot($l);
             
-            $this->validateAndKeep($lot, $lots, $l);
+            if ($this->validateAndKeep($lot, $lots, $l) && $row['regionId']) {
+
+                $city     = isset($row['city']) && $row['city'] ? $row['city'] : '';
+                $district = isset($row['district']) && $row['district'] ? $row['district'] : '';
+                $address = (isset($obj->address) ? $obj->address->city . ', ' . $obj->address->region . ', ' . $obj->address->street : '');
+                $address  = isset($row['address']) && $row['address'] ? $row['address'] : $address;
+                $geo_lat  = (isset($obg->address->geo_lat) && $obg->address->geo_lat ? $obg->address->geo_lat : null);
+                $geo_lon  = (isset($obg->address->geo_lon) && $obg->address->geo_lon ? $obg->address->geo_lon : null);
+
+                // Place
+                $p = [
+                    'model'       => Lot::INT_CODE,
+                    'parent_id'   => $lot_id,
+                    'city'        => $city,
+                    'region_id'   => $row['regionId'],
+                    'district'    => $district,
+                    'address'     => $address,
+                    'geo_lat'     => $geo_lat,
+                    'geo_lon'     => $geo_lon,
+                    'created_at'  => $created_at,
+                    'updated_at'  => $updated_at,
+                ];
+                $place = new Place($p);
+
+                $this->validateAndKeep($place, $places, $p);
+            }
         }
         
-        if (count($lots) > 0) {
-            $this->batchInsert(self::TABLE, ['id', 'torg_id', 'title', 'description', 'start_price', 'step', 'step_measure', 'deposite', 'deposite_measure', 'status', 'reason', 'created_at', 'updated_at'], $lots);
-        }
+        $this->batchInsert(self::TABLE, ['id', 'torg_id', 'title', 'description', 'start_price', 'step', 'step_measure', 'deposit', 'deposit_measure', 'status', 'reason', 'info', 'created_at', 'updated_at'], $lots);
+        $this->batchInsert('{{%place}}', ['model', 'parent_id', 'city', 'region_id', 'district', 'address', 'geo_lat', 'geo_lon', 'created_at', 'updated_at'], $places);
     }
 
-    public function safeDown()
+    private function convert($status)
     {
-        $db = \Yii::$app->db;
-        $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        return isset(self::$status_convertor[$status])
+            ? self::$status_convertor[$status]
+            : [Lot::STATUS_NOT_DEFINED, Lot::REASON_NO_MATTER];
     }
 }
+
+
+// php yii migrate --migrationPath=@console/migrations/fill
+// php yii migrate/update --migrationPath=@console/migration/fill
+// php yii migrate/down --migrationPath=@console/migrations/fill
