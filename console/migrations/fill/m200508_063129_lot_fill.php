@@ -192,3 +192,8 @@ class m200508_063129_lot_fill extends Migration
             : [Lot::STATUS_NOT_DEFINED, Lot::REASON_NO_MATTER];
     }
 }
+
+
+// php yii migrate --migrationPath=@console/migrations/fill
+// php yii migrate/update --migrationPath=@console/migration/fill
+// php yii migrate/down --migrationPath=@console/migrations/fill

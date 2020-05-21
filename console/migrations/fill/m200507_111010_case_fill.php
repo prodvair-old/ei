@@ -12,7 +12,7 @@ class m200507_111010_case_fill extends Migration
     use Keeper;
     
     const TABLE = '{{%casefile}}';
-    const LIMIT = 10000;
+    const LIMIT = 100;
 
     public function safeUp()
     {
@@ -24,7 +24,7 @@ class m200507_111010_case_fill extends Migration
         $result = $select->queryAll();
         
         $offset = 0;
-   
+    
         // добавление информации по банкротным делам
         while ($offset < $result[0]['count']) {
 
@@ -79,7 +79,8 @@ class m200507_111010_case_fill extends Migration
             $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
             $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
             $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')->execute();
-        } else
+        } else {
             $db->createCommand('TRUNCATE TABLE '. self::TABLE .' CASCADE')->execute();
+        }
     }
 }

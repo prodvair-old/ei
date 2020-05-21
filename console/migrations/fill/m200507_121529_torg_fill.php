@@ -15,7 +15,7 @@ class m200507_121529_torg_fill extends Migration
     use Keeper;
     
     const TABLE  = '{{%torg}}';
-    const LIMIT = 1000;
+    const LIMIT = 100;
     
     private static $offer_convertor = [
         "Конкурс" => 4,
@@ -91,10 +91,10 @@ class m200507_121529_torg_fill extends Migration
                 'id'           => $torg_id,
                 'property'     => $property,
                 'description'  => $row['description'],
-                'started_at'   => ($row['startDate'] ? strtotime($row['startDate']) : 0),
-                'end_at'       => ($row['endDate'] ? strtotime($row['endDate']) : 0),
-                'completed_at' => ($row['completeDate'] ? strtotime($row['completeDate']) : 0),
-                'published_at' => ($row['publishedDate'] ? strtotime($row['publishedDate']) : 0),
+                'started_at'   => ($row['startDate'] ? (strtotime($row['startDate'])? strtotime($row['startDate']) : null) : null),
+                'end_at'       => ($row['endDate'] ? (strtotime($row['endDate'])? strtotime($row['endDate']) : null) : null),
+                'completed_at' => ($row['completeDate'] ? (strtotime($row['completeDate'])? strtotime($row['completeDate']) : null) : null),
+                'published_at' => ($row['publishedDate'] ? (strtotime($row['publishedDate'])? strtotime($row['publishedDate']) : null) : null),
                 'offer'        => self::$offer_convertor[$row['tradeType']],
 
                 'created_at'   => $created_at,
