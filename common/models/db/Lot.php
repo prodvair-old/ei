@@ -22,6 +22,7 @@ use sergmoro1\lookup\models\Lookup;
  * @var integer $deposit_measure
  * @var integer $status
  * @var integer $reason
+ * @var info    $text
  * @var integer $created_at
  * @var integer $updated_at
  * 
@@ -116,7 +117,7 @@ class Lot extends ActiveRecord
             ['status', 'default', 'value' => self::STATUS_IN_PROGRESS],
             ['reason', 'in', 'range' => self::getReasons()],
             ['reason', 'default', 'value' => self::REASON_NO_MATTER],
-            [['description', 'created_at', 'updated_at'], 'safe'],
+            [['description', 'info', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 

@@ -2,6 +2,7 @@
 
 use yii\db\Migration;
 use common\models\db\Lot;
+use common\models\db\Place;
 use console\traits\Keeper;
 
 /**
@@ -13,8 +14,6 @@ class m200508_063129_lot_fill extends Migration
     
     const TABLE = '{{%lot}}';
     const LIMIT = 20000;
-
-    private $regions;
 
     private static $status_convertor = [
         "подводятся итоги (приостановлены) " => [Lot::STATUS_SUSPENDED, LOT::REASON_SUMMARIZING],
@@ -74,15 +73,6 @@ class m200508_063129_lot_fill extends Migration
     
     public function safeUp()
     {
-        // загрузить справочник регионов в массив, в качестве ключа использовать name, значение - ID региона
-        $regions = Region::find()->select(['name', 'id'])->all();
-        $a = ArrayHelper::toArray($categories, [
-            'common\models\db\Region' => [
-                'name',
-                'id',
-            ],
-        ]);
-        $this->regions = ArrayHelper::map($a, 'name', 'id');
 
         $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
         
@@ -152,26 +142,32 @@ class m200508_063129_lot_fill extends Migration
                 'deposit_measure'  => ($row['depositTypeId'] ?: Lot::MEASURE_PERCENT),
                 'status'           => $a[0],
                 'reason'           => $a[1],
-                'info'             => json_encode(['vin' => $obj->vin],
+                'info'             => json_encode(isset($obj->vin) ? ['vin' => $obj->vin] : []),
 
                 'created_at'       => $created_at,
                 'updated_at'       => $updated_at,
             ];
             $lot = new Lot($l);
             
-            if ($this->validateAndKeep($lot, $lots, $l)) {
+            if ($this->validateAndKeep($lot, $lots, $l) && $row['regionId']) {
+
+                $city     = isset($row['city']) && $row['city'] ? $row['city'] : '';
+                $district = isset($row['district']) && $row['district'] ? $row['district'] : '';
+                $address = (isset($obj->address) ? $obj->address->city . ', ' . $obj->address->region . ', ' . $obj->address->street : '');
+                $address  = isset($row['address']) && $row['address'] ? $row['address'] : $address;
+                $geo_lat  = (isset($obg->address->geo_lat) && $obg->address->geo_lat ? $obg->address->geo_lat : null);
+                $geo_lon  = (isset($obg->address->geo_lon) && $obg->address->geo_lon ? $obg->address->geo_lon : null);
+
                 // Place
-                $region = isset($this->regions[$obj->address->region]) ? $this->regions[$obj->address->region] : '';
-                $address = $obj->address->city . ', ' . ($region ? $region . ', ' : '') . $obj->address->street;
                 $p = [
                     'model'       => Lot::INT_CODE,
                     'parent_id'   => $lot_id,
-                    'city'        => $obj->address->city,
-                    'region_id'   => $region,
-                    'district'    => $obj->address->district,
+                    'city'        => $city,
+                    'region_id'   => $row['regionId'],
+                    'district'    => $district,
                     'address'     => $address,
-                    'geo_lat'     => $obj->address->geo_lat,
-                    'geo_lon'     => $obj->address->geo_lon,
+                    'geo_lat'     => $geo_lat,
+                    'geo_lon'     => $geo_lon,
                     'created_at'  => $created_at,
                     'updated_at'  => $updated_at,
                 ];
@@ -181,7 +177,7 @@ class m200508_063129_lot_fill extends Migration
             }
         }
         
-        $this->batchInsert(self::TABLE, ['id', 'torg_id', 'title', 'description', 'start_price', 'step', 'step_measure', 'deposit', 'deposit_measure', 'status', 'reason', 'created_at', 'updated_at'], $lots);
+        $this->batchInsert(self::TABLE, ['id', 'torg_id', 'title', 'description', 'start_price', 'step', 'step_measure', 'deposit', 'deposit_measure', 'status', 'reason', 'info', 'created_at', 'updated_at'], $lots);
         $this->batchInsert('{{%place}}', ['model', 'parent_id', 'city', 'region_id', 'district', 'address', 'geo_lat', 'geo_lon', 'created_at', 'updated_at'], $places);
     }
 

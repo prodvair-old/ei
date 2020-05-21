@@ -7,7 +7,7 @@ use console\traits\Keeper;
 /**
  * Class m200512_045600_region_fill
  */
-class m200512_045600_region_fill extends Migration
+class m200508_045600_region_fill extends Migration
 {
     use Keeper;
     

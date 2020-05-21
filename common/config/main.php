@@ -86,7 +86,7 @@ return [
             'username' => 'bankrupt',
             'password' => 'bankrupt',
             'charset'  => 'utf8',
-/*            
+          
             'tablePrefix' => 'eidb"."',
             'emulatePrepare' => false,
             'schemaMap' => [
@@ -99,7 +99,7 @@ return [
             'enableSchemaCache' => false,
             'schemaCacheDuration' => 6,
             'schemaCache' => 'cache',
-*/            
+            
         ],
         'obj' => [
             'class' => 'yii\db\Connection',

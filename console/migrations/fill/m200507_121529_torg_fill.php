@@ -15,7 +15,7 @@ class m200507_121529_torg_fill extends Migration
     use Keeper;
     
     const TABLE  = '{{%torg}}';
-    const LIMIT = 100;
+    const LIMIT = 1000;
     
     private static $offer_convertor = [
         "Конкурс" => 4,
@@ -95,7 +95,7 @@ class m200507_121529_torg_fill extends Migration
                 'end_at'       => ($row['endDate'] ? (strtotime($row['endDate'])? strtotime($row['endDate']) : null) : null),
                 'completed_at' => ($row['completeDate'] ? (strtotime($row['completeDate'])? strtotime($row['completeDate']) : null) : null),
                 'published_at' => ($row['publishedDate'] ? (strtotime($row['publishedDate'])? strtotime($row['publishedDate']) : null) : null),
-                'offer'        => self::$offer_convertor[$row['tradeType']],
+                'offer'        => (isset(self::$offer_convertor[$row['tradeType']]) ? self::$offer_convertor[$row['tradeType']] : Torg::OFFER_PUBLIC),
 
                 'created_at'   => $created_at,
                 'updated_at'   => $updated_at,
