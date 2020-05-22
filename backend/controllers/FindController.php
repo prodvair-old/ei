@@ -74,43 +74,79 @@ class FindController extends Controller
 
         if(Yii::$app->request->post()){
             ini_set('memory_limit', '1024M');
-            
-            if($modelImport->load(Yii::$app->request->post()) && $modelImport->validate()){
+
+            $modelImport->fileImport = \yii\web\UploadedFile::getInstance($modelImport,'fileImport');
+            if($modelImport->fileImport && $modelImport->validate()){
                 $result = $modelImport->excelArrest();
 
-                if ($result[0] != null) {
+                if ($result['first'][0] != null || $result['second'][0] != null) {
                     HistoryAdd::export(1, 'find/arrest', 'Иммущество успешно экспортировано', null, Yii::$app->user->identity);
                 
                     header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
                     Excel::export([
-                        'models' => $result,
+                        'isMultipleSheet' => true,
+                        'models' => [
+                            'sheet1' => $result['first'], 
+                            'sheet2' => $result['second'], 
+                        ],
                         'columns' => [
-                            'inn:text',
-                            'name:text',
-                            'title:text',
-                            'torg:text',
-                            'publication:datetime',
-                            'auction:datetime',
-                            'form:text',
-                            'repeat:text',
-                            'winner:text',
-                            'price:text',
-                            'url:text',
+                            'sheet1' => [
+                                'inn:text',
+                                'name:text',
+                                'title:text',
+                                'torg:text',
+                                'publication:datetime',
+                                'auction:datetime',
+                                'form:text',
+                                'repeat:text',
+                                'winner:text',
+                                'price:text',
+                                'url:text',
+                            ],
+                            'sheet2' => [
+                                'inn:text',
+                                'name:text',
+                                'title:text',
+                                'torg:text',
+                                'publication:datetime',
+                                'auction:datetime',
+                                'form:text',
+                                'repeat:text',
+                                'winner:text',
+                                'price:text',
+                                'url:text',
+                            ], 
                         ],
                         'headers' => [
-                            'inn' => 'ИНН',
-                            'name' => 'Наименование/ФИО',
-                            'title' => 'Наименование имущества',
-                            'torg' => 'Источник: torgi.gov.ru/bankrot.fedresurs.ru',
-                            'publication' => 'Дата публикации',
-                            'auction' => 'Дата торгов',
-                            'form' => 'Способ реализации',
-                            'repeat' => 'Повторные',
-                            'winner' => 'Победитель',
-                            'price' => 'Цена',
-                            'url' => 'Ссылка на торг',
+                            'sheet1' => [
+                                'inn' => 'ИНН',
+                                'name' => 'Наименование/ФИО',
+                                'title' => 'Наименование имущества',
+                                'torg' => 'Источник: torgi.gov.ru/bankrot.fedresurs.ru',
+                                'publication' => 'Дата публикации',
+                                'auction' => 'Дата торгов',
+                                'form' => 'Способ реализации',
+                                'repeat' => 'Повторные',
+                                'winner' => 'Победитель',
+                                'price' => 'Цена',
+                                'url' => 'Ссылка на торг',
+                            ],
+                            'sheet2' => [
+                                'inn' => 'ИНН',
+                                'name' => 'Наименование/ФИО',
+                                'title' => 'Наименование имущества',
+                                'torg' => 'Источник: torgi.gov.ru/bankrot.fedresurs.ru',
+                                'publication' => 'Дата публикации',
+                                'auction' => 'Дата торгов',
+                                'form' => 'Способ реализации',
+                                'repeat' => 'Повторные',
+                                'winner' => 'Победитель',
+                                'price' => 'Цена',
+                                'url' => 'Ссылка на торг',
+                            ],
                         ],
+                        
                     ]);
                 } else {
                     HistoryAdd::export(2, 'find/arrest','Не удалось найти данные', $modelImport->errors, Yii::$app->user->identity);

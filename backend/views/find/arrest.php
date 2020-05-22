@@ -25,8 +25,8 @@ $this->title = 'Расширенный поиск имущества';
 <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <div class="custom-file">
-        <?= $form->field($modelImport, 'fileImport')->textarea()->label('Скопированные данные таблицы') ?>
-        <? // $form->field($modelImport, 'fileImport',['template' => '<div class="custom-file">{label}{hint}{input}{error}</div>'])->fileInput(['class' => 'custom-file-input', 'accept' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel'])->label('Загрузить файл',['class'=>'custom-file-label']) ?>
+        <?// $form->field($modelImport, 'fileImport')->textarea()->label('Скопированные данные таблицы') ?>
+        <?= $form->field($modelImport, 'fileImport',['template' => '<div class="custom-file">{label}{hint}{input}{error}</div>'])->fileInput(['class' => 'custom-file-input', 'accept' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel'])->label('Загрузить файл',['class'=>'custom-file-label']) ?>
         
         <?= Html::submitButton('Поиск', ['class' => 'btn btn-primary']); ?>
     </div>
