@@ -47,7 +47,7 @@ class m200515_141720_lot_image_fill extends Migration
         $result = $select->queryAll();
         
         $offset = 0;
-   
+        
         // добавление информации по лотам
         while ($offset < $result[0]['count']) {
 

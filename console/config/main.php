@@ -29,8 +29,8 @@ return [
             'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
- 			'baseUrl' => 'https://ei',
-       ],
+            'baseUrl' => 'https://ei',
+        ],
         'log' => [
             'targets' => [
                 [
