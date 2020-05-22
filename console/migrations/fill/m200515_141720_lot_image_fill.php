@@ -2,6 +2,7 @@
 
 use yii\db\Migration;
 use yii\helpers\Url;
+use yii\helpers\FileHelper;
 use common\models\db\Lot;
 use console\traits\Keeper;
 use sergmoro1\uploader\models\OneFile;;
@@ -39,6 +40,7 @@ class m200515_141720_lot_image_fill extends Migration
     
     public function safeUp()
     {
+/*
         $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
         
         $select = $db->createCommand(
@@ -58,11 +60,12 @@ class m200515_141720_lot_image_fill extends Migration
             $sleep = rand(1, 3);
             sleep($sleep);
         }
-
+*/
     }
 
     public function safeDown()
     {
+/*
         $db = \Yii::$app->db;
         if ($this->db->driverName === 'mysql') {
             $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
@@ -74,7 +77,8 @@ class m200515_141720_lot_image_fill extends Migration
         if (isset(Yii::$app->queue))
             FileHelper::removeDirectory(Yii::getAlias('@console/runtime/queue'));
         $dir = Yii::getAlias('@absolute') . Yii::getAlias('@uploader') . '/lot';
-        FileHelper::removeDirectory(Yii::getAlias($dir));
+        FileHelper::removeDirectory($dir);
+*/
     }
 
     private function insertPoole($db, $offset)

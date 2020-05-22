@@ -319,11 +319,21 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Получить профиль
      * 
-     * @return yii\db\ActiveQuery
+     * @return yii\db\ActiveRecord
      */
     public function getProfile()
     {
         return Profile::findOne(['model' => self::INT_CODE, 'parent_id' => $this->id]);
+    }
+
+    /**
+     * Получить полное имя или  username 
+     * 
+     * @return string
+     */
+    public function getFullName()
+    {
+        return $this->profile ? $this->profile->getFullName() : $this->username;
     }
 
     /**

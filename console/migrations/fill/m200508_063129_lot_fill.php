@@ -2,6 +2,7 @@
 
 use yii\db\Migration;
 use common\models\db\Lot;
+use common\models\db\Place;
 use console\traits\Keeper;
 
 /**
@@ -72,6 +73,7 @@ class m200508_063129_lot_fill extends Migration
     
     public function safeUp()
     {
+
         $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
         
         $select = $db->createCommand(
@@ -97,6 +99,7 @@ class m200508_063129_lot_fill extends Migration
     public function safeDown()
     {
         $db = \Yii::$app->db;
+        $db->createCommand('DELETE FROM {{%place}} WHERE model=' . Lot::INT_CODE)->execute();
         if ($this->db->driverName === 'mysql') {
             $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
             $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
@@ -107,7 +110,8 @@ class m200508_063129_lot_fill extends Migration
 
     private function insertPoole($db, $offset)
     {
-        $cases = [];
+        $lots = [];
+        $places = [];
 
         $query = $db->createCommand(
             'SELECT * FROM "eiLot".lots ORDER BY "lots".id ASC LIMIT ' . self::LIMIT . ' OFFSET ' . $offset
@@ -121,6 +125,7 @@ class m200508_063129_lot_fill extends Migration
 
             $created_at = strtotime($row['createdAt']);
             $updated_at = strtotime($row['updatedAt']);
+            $obj = json_decode($row['info']);
             $a = $this->convert($row['status']);
             
             // Lot
@@ -137,16 +142,43 @@ class m200508_063129_lot_fill extends Migration
                 'deposit_measure'  => ($row['depositTypeId'] ?: Lot::MEASURE_PERCENT),
                 'status'           => $a[0],
                 'reason'           => $a[1],
+                'info'             => json_encode(isset($obj->vin) ? ['vin' => $obj->vin] : []),
 
                 'created_at'       => $created_at,
                 'updated_at'       => $updated_at,
             ];
             $lot = new Lot($l);
             
-            $this->validateAndKeep($lot, $lots, $l);
+            if ($this->validateAndKeep($lot, $lots, $l) && $row['regionId']) {
+
+                $city     = isset($row['city']) && $row['city'] ? $row['city'] : '';
+                $district = isset($row['district']) && $row['district'] ? $row['district'] : '';
+                $address = (isset($obj->address) ? $obj->address->city . ', ' . $obj->address->region . ', ' . $obj->address->street : '');
+                $address  = isset($row['address']) && $row['address'] ? $row['address'] : $address;
+                $geo_lat  = (isset($obg->address->geo_lat) && $obg->address->geo_lat ? $obg->address->geo_lat : null);
+                $geo_lon  = (isset($obg->address->geo_lon) && $obg->address->geo_lon ? $obg->address->geo_lon : null);
+
+                // Place
+                $p = [
+                    'model'       => Lot::INT_CODE,
+                    'parent_id'   => $lot_id,
+                    'city'        => $city,
+                    'region_id'   => $row['regionId'],
+                    'district'    => $district,
+                    'address'     => $address,
+                    'geo_lat'     => $geo_lat,
+                    'geo_lon'     => $geo_lon,
+                    'created_at'  => $created_at,
+                    'updated_at'  => $updated_at,
+                ];
+                $place = new Place($p);
+
+                $this->validateAndKeep($place, $places, $p);
+            }
         }
         
-        $this->batchInsert(self::TABLE, ['id', 'torg_id', 'title', 'description', 'start_price', 'step', 'step_measure', 'deposit', 'deposit_measure', 'status', 'reason', 'created_at', 'updated_at'], $lots);
+        $this->batchInsert(self::TABLE, ['id', 'torg_id', 'title', 'description', 'start_price', 'step', 'step_measure', 'deposit', 'deposit_measure', 'status', 'reason', 'info', 'created_at', 'updated_at'], $lots);
+        $this->batchInsert('{{%place}}', ['model', 'parent_id', 'city', 'region_id', 'district', 'address', 'geo_lat', 'geo_lon', 'created_at', 'updated_at'], $places);
     }
 
     private function convert($status)

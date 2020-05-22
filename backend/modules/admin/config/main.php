@@ -1,35 +1,28 @@
 <?php
 $params = array_merge(
-    require __DIR__ . '/../../common/config/params.php',
-    require __DIR__ . '/../../common/config/params-local.php',
+    require __DIR__ . '/../../../../common/config/params.php',
+    require __DIR__ . '/../../../../common/config/params-local.php',
     require __DIR__ . '/params.php',
     require __DIR__ . '/params-local.php'
 );
 
 return [
-    'id' => 'app-backend',
+    'id' => 'app-admin-backend',
     'basePath' => dirname(__DIR__),
-    'controllerNamespace' => 'backend\controllers',
+    'controllerNamespace' => 'backend\modules\admin\controllers',
     'bootstrap' => ['log'],
     'language' => 'ru-RU',
     'name' => 'Панель управления - Единый информатор',
     'sourceLanguage' => 'ru-RU',
     'modules' => [
-        'gridview' => [
-            'class' => 'kartik\grid\Module',
-        ],
-        'admin' => [
-            'class' => 'backend\modules\admin\Module',
-            'defaultRoute' => 'lot/index',
-        ],
+        'uploader' => ['class' => 'sergmoro1\uploader\Module']
     ],
     'components' => [
-        'assetManager' => [
-            'bundles' => [
-                'kartik\form\ActiveFormAsset' => [
-                    'bsDependencyEnabled' => false // do not load bootstrap assets for a specific asset bundle
-                ],
-            ],
+        'authManager' => [
+            'class' => 'yii\rbac\PhpManager',
+            'defaultRoles' => ['user', 'agent', 'manager', 'admin'],
+            'itemFile' => __DIR__ . '/../../console/rbac/items.php',
+            'ruleFile' => __DIR__ . '/../../console/rbac/rules.php',
         ],
         'request' => [
             'csrfParam' => '_csrf-backend',

@@ -125,6 +125,7 @@ class Torg extends ActiveRecord
             self::OFFER_AUCTION_OPEN,
             self::OFFER_CONTEST,
             self::OFFER_CONTEST_OPEN,
+            
         ];
     }
 
