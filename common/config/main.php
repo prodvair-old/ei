@@ -86,8 +86,8 @@ return [
             'username' => 'bankrupt',
             'password' => 'bankrupt',
             'charset'  => 'utf8',
-            /*
             'tablePrefix' => 'eidb"."',
+            /*
             'emulatePrepare' => false,
             'schemaMap' => [
                 'pgsql'=> [
