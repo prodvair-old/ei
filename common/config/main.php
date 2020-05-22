@@ -98,8 +98,8 @@ return [
             // Schema cache options (for production environment)
             'enableSchemaCache' => false,
             'schemaCacheDuration' => 6,
-            'schemaCache' => 'cache',
-            */
+            'schemaCache' => 'cache',*/
+            
         ],
         'obj' => [
             'class' => 'yii\db\Connection',

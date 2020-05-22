@@ -22,9 +22,11 @@ use sergmoro1\lookup\models\Lookup;
  * @var integer $deposit_measure
  * @var integer $status
  * @var integer $reason
+ * @var info    $text
  * @var integer $created_at
  * @var integer $updated_at
  * 
+ * @property Place $place
  * @property Torg $torg
  * @property WishList[] $observers
  * @property LotPrice[] $prices
@@ -115,7 +117,7 @@ class Lot extends ActiveRecord
             ['status', 'default', 'value' => self::STATUS_IN_PROGRESS],
             ['reason', 'in', 'range' => self::getReasons()],
             ['reason', 'default', 'value' => self::REASON_NO_MATTER],
-            [['description', 'created_at', 'updated_at'], 'safe'],
+            [['description', 'info', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -180,6 +182,15 @@ class Lot extends ActiveRecord
             self::REASON_PARTICIPANT,
             self::REASON_SUMMARIZING,
         ];
+    }
+
+    /**
+     * Получить информацию о месте
+     * @return yii\db\ActiveQuery
+     */
+    public function getPlace()
+    {
+        return $this->hasOne(Place::className(), ['model' => self::INT_CODE, 'parent_id' => 'id']);
     }
 
     /**
@@ -248,7 +259,7 @@ class Lot extends ActiveRecord
      */
     public function getCategories()
     {
-        return $this->hasMany(Category::className(), ['category_id' => 'id'])
+        return $this->hasMany(Category::className(), ['id' => 'category_id'])
             ->viaTable(LotCategory::tableName(), ['lot_id' => 'id']);
     }
 

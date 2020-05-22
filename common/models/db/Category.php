@@ -154,7 +154,7 @@ class Category extends ActiveRecord
      */
     public function getPrettyName($plain = false)
     {
-        $indentation = str_repeat('-', ($this->level - 2) * 3);
+        $indentation = str_repeat('-', $this->depth * 3);
         return $plain
             ? $indentation . ' ' . $this->name
             : '<span class="branch">' . $indentation . '</span>' . ' ' . $this->name;

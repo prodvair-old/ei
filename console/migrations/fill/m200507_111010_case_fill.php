@@ -12,7 +12,7 @@ class m200507_111010_case_fill extends Migration
     use Keeper;
     
     const TABLE = '{{%casefile}}';
-    const LIMIT = 100;
+    const LIMIT = 10000;
 
     public function safeUp()
     {
