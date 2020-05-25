@@ -20,7 +20,7 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
  * @var string  $password_reset_token
  * @var string  $email
  * @var integer $status
- * @var integer $group
+ * @var integer $role
  * @var integer $created_at
  * @var integer $updated_at
  * 
@@ -32,15 +32,15 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
 class User extends ActiveRecord implements IdentityInterface
 {
     // внутренний код модели используемый в составном ключе
-    const INT_CODE          = 1;
+    const INT_CODE        = 1;
     
-    const STATUS_ACTIVE     = 1;
-    const STATUS_ARCHIVED   = 2;
+    const STATUS_ACTIVE   = 1;
+    const STATUS_ARCHIVED = 2;
 
-    const GROUP_ADMIN       = 1;
-    const GROUP_MANAGER     = 2;
-    const GROUP_AGENT       = 3;
-    const GROUP_USER        = 4;
+    const ROLE_ADMIN      = 1;
+    const ROLE_MANAGER    = 2;
+    const ROLE_AGENT      = 3;
+    const ROLE_USER       = 4;
 
     /**
      * {@inheritdoc}
@@ -81,8 +81,8 @@ class User extends ActiveRecord implements IdentityInterface
             [['status', 'group'], 'integer'],
             ['status', 'default', 'value' => self::STATUS_ARCHIVED],
             ['status', 'in', 'range' => self::getStatuses()],
-            ['group', 'default', 'value' => self::GROUP_USER],
-            ['group', 'in', 'range' => self::getGroups()],
+            ['role', 'default', 'value' => self::ROLE_USER],
+            ['role', 'in', 'range' => self::getRoles()],
             [['username', 'email', 'password_hash', 'password_reset_token'], 'string', 'max' => 255],
             ['username', 'unique', 'targetClass' => '\common\models\db\User', 'message' => Yii::t('app', 'This username has already been taken.')],
             ['email', 'email'],
@@ -100,7 +100,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             'username'   => Yii::t('app', 'Username'),
             'email'      => Yii::t('app', 'Email'),
-            'group'      => Yii::t('app', 'Group'),
+            'role'       => Yii::t('app', 'Role'),
             'status'     => Yii::t('app', 'Status'),
             'created_at' => Yii::t('app', 'Created'),
             'updated_at' => Yii::t('app', 'Modified'),
@@ -122,12 +122,12 @@ class User extends ActiveRecord implements IdentityInterface
      * Get groups
      * @return array
      */
-    public static function getGroups() {
+    public static function getRoles() {
         return [
-            self::GROUP_ADMIN, 
-            self::GROUP_MANAGER, 
-            self::GROUP_AGENT,
-            self::GROUP_USER,
+            self::ROLE_ADMIN, 
+            self::ROLE_MANAGER, 
+            self::ROLE_AGENT,
+            self::ROLE_USER,
         ];
     }
 

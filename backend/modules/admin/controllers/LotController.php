@@ -9,7 +9,7 @@ use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
 
 use common\models\db\Lot;
-use backend\models\search\LotSearch;
+use backend\modules\admin\models\LotSearch;
 
 /**
  * LotController implements the CRUD actions for Lot model.
@@ -68,12 +68,12 @@ class LotController extends Controller
     public function actionView($id = 0)
     {
         $model = $this->findModel($id);
-        if (Yii::$app->user->can('viewPost', ['lot' => $model])) {
-            return $this->render('view', [
-                'model' => $model,
-            ]);
-        } else
+        if (!Yii::$app->user->can('viewPost', ['lot' => $model]))
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+
+        return $this->render('view', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -107,17 +107,16 @@ class LotController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        if (Yii::$app->user->can('update', ['lot' => $model])) {
+        //if (!Yii::$app->user->can('update', ['lot' => $model]))
+            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
  
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('update', [
-                    'model' => $model,
-                ]);
-            }
-        } else
-            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**
@@ -155,4 +154,21 @@ class LotController extends Controller
             }
         }
     }
+
+	public function actionMore()
+	{
+		if(Yii::$app->getRequest()->isAjax) {
+            $searchModel = new LotSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->get(), Yii::$app->request->get('offset'));
+
+            return $this->asJson([
+                'count' => $dataProvider->getCount(),
+                'content' => $this->renderAjax('more', [
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                ])
+            ]);
+		} else
+			throw new ForbiddenHttpException('Only ajax request suitable.');
+	}
 }

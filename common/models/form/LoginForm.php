@@ -1,5 +1,5 @@
 <?php
-namespace backend\modules\asmin\models;
+namespace common\models\form;
 
 use Yii;
 use yii\helpers\Url;
@@ -14,7 +14,12 @@ use common\models\db\User;
  */
 class LoginForm extends Model
 {
-    public $groups = [];
+    public $roles = [
+        User::ROLE_ADMIN,
+        User::ROLE_MANAGER,
+        User::ROLE_AGENT,
+        User::ROLE_USER,
+    ];
     
     public $username;
     public $password;
@@ -32,10 +37,8 @@ class LoginForm extends Model
             [['username', 'password'], 'required'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
-            // password is validated by validatePassword()
-            ['password', 'validatePassword'],
             // registered user should also belongs to group
-            ['username', 'allowedUserGroups', 'params' => ['groups' => $this->groups]],
+            ['username', 'allowedUserGroups', 'params' => ['roles' => $this->roles]],
         ];
     }
 
@@ -50,9 +53,9 @@ class LoginForm extends Model
         if(!($user = $this->getUser()))
             // user has not registered yet
             return;
-        if ($params['groups'] && !in_array($user->group, $params['groups'])) {
+        if ($params['roles'] && !in_array($user->role, $params['roles'])) {
             $this->addError($attribute, 
-                Module::t('core', 'You are registered, but you belong to a group that is not allowed to enter this part of the site.'));
+                Module::t('core', 'You are registered, but you belong to a role that is not allowed to enter this part of the site.'));
         }
     }
 

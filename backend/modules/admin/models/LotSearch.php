@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\models\search;
+namespace backend\modules\admin\models;
 
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -22,19 +22,24 @@ class LotSearch extends Lot
         ];
     }
 
-    public function search($params)
+    public function search($params, $offset = 0)
     {
-        $query = Lot::find()->joinWith('categories', true, 'INNER JOIN');
+        $query = Lot::find()
+            ->joinWith('torg', true, 'INNER JOIN')
+            ->joinWith('categories', true, 'LEFT JOIN')
+            ->limit(Yii::$app->params['recordsPerPage'])
+            ->offset($offset);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [
-                'pageSize' => Yii::$app->params['recordsPerPage'],
-            ],
+            'pagination' => false,
             'sort' => [
-                'defaultOrder' => [
-                    'created_at' => SORT_DESC,
-                ]
+                'attributes' => [
+                    'id',
+                    'title',
+                    'start_price',
+                    'end_at',
+                ],
             ],
         ]);
 
@@ -44,18 +49,18 @@ class LotSearch extends Lot
         }
        
         // adjust the query by adding the filters
-        $query->andFilterWhere(['id' => $this->id])
+        $query->andFilterWhere(['lot.id' => $this->id])
             ->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['status' => $this->status])
             ->andFilterWhere(['reason' => $this->reason])
-            ->andFilterWhere(['property' => $this->property]);
-
+            ->andFilterWhere(['torg.property' => $this->property]);
         if ($this->category_id) {
+            // adding category and it childrens to the filter
             $category = Category::findOne($this->category_id);
-            $category_ids = []; $category_ids[] = $this->category_id;
+            $ids = []; $ids[] = $category->id;
             foreach($category->children()->all() as $child)
-                $category_ids[] = $child->id;
-            $query->andFilterWhere(['in', 'lot_category.category_id', $category_ids]);
+                $ids[] = $child->id;
+            $query->andFilterWhere(['in', 'category_id', $ids]);
         }
         
         return $dataProvider;

@@ -1,11 +1,11 @@
 <?php
-namespace backend\controllers;
+namespace backend\modules\admin\controllers;
 
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
+use common\models\form\LoginForm;
 
 /**
  * Site controller
@@ -22,11 +22,11 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login', 'index', 'error'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'add-field'],
+                        'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
