@@ -18,12 +18,6 @@ return [
       'lot' => [
           'class' => 'frontend\modules\Lot',
       ],
-//      'LotOld' => [
-//          'class' => 'frontend\modules\LotOld',
-//      ],
-  ],
-  'aliases' => [
-      '@uploader' => '/path/to/foo',
   ],
   'components' => [
     'socialShare' => [

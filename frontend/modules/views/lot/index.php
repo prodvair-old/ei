@@ -3,8 +3,9 @@
 /* @var $this yii\web\View */
 /* @var $queryCategory */
 /* @var $model \frontend\modules\models\LotSearch */
-
+/* @var $regionList[] \common\models\db\Region */
 /* @var $type */
+
 
 use sergmoro1\lookup\models\Lookup;
 use yii\widgets\Breadcrumbs;
@@ -15,14 +16,10 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use common\models\db\Owner;
+use common\models\db\Etp;
 
 use frontend\modules\components\LotBlock;
-
-use common\models\Query\LotsCategory;
-use common\models\Query\LotsSubCategory;
-use common\models\Query\Regions;
-
-use common\models\Query\Lot\Etp;
 
 $this->title = Yii::$app->params[ 'title' ];
 $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
@@ -172,6 +169,21 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                                 </div>
                             </div>
 
+                            <div class="col-12">
+                                <div class="col-inner">
+                                    <?= $form->field($model, 'region')->dropDownList(
+                                        $regionList,
+                                        [
+                                            'class' => 'chosen-the-basic form-control form-control-sm',
+                                            'data-placeholder' => 'Выберите регионы',
+                                            'tabindex' => '2',
+                                            'multiple' => true
+                                        ]
+                                    )
+                                        ->label('Регион'); ?>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="sidebar-box sidebar-box__collaps <?= ($model->minPrice || $model->maxPrice) ? '' : 'collaps' ?>">
@@ -196,7 +208,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                             <label class="control-label sidebar-box__label">Торговые площадки</label>
                             <div class="box-content">
                                 <?= $form->field($model, 'etp')->dropDownList(
-                                    \common\models\db\Etp::getOrganizationList(),
+                                    Etp::getOrganizationList(),
                                     [
                                         'class'            => 'chosen-the-basic form-control',
                                         'prompt'           => 'Все торговые площадки',
@@ -209,23 +221,24 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
                         </div>
 
-                        <div class="sidebar-box sidebar-box__collaps <?= ($model->owner) ? '' : 'collaps' ?>">
-
-                            <label class="control-label sidebar-box__label">Организации</label>
-                            <div class="box-content">
-                                <?= $form->field($model, 'owner')->dropDownList(
-                                    \common\models\db\Owner::getOrganizationList(),
-                                    [
-                                        'class'            => 'chosen-the-basic form-control',
-                                        'prompt'           => 'Все организации',
-                                        'data-placeholder' => 'Все организации',
-                                        'multiple'         => true
-                                    ]
-                                )
-                                    ->label(false); ?>
-                            </div>
-
-                        </div>
+                        <!--                        <div class="sidebar-box sidebar-box__collaps -->
+                        <? //= ($model->owner) ? '' : 'collaps' ?><!--">-->
+                        <!---->
+                        <!--                            <label class="control-label sidebar-box__label">Организации</label>-->
+                        <!--                            <div class="box-content">-->
+                        <!--                                --><? //= $form->field($model, 'owner')->dropDownList(
+                        //                                    Owner::getOrganizationList(),
+                        //                                    [
+                        //                                        'class'            => 'chosen-the-basic form-control',
+                        //                                        'prompt'           => 'Все организации',
+                        //                                        'data-placeholder' => 'Все организации',
+                        //                                        'multiple'         => true
+                        //                                    ]
+                        //                                )
+                        //                                    ->label(false); ?>
+                        <!--                            </div>-->
+                        <!---->
+                        <!--                        </div>-->
 
                         <div class="sidebar-box sidebar-box__collaps <?= ($model->tradeType) ? '' : 'collaps' ?>">
 
@@ -245,6 +258,20 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
                             </div>
 
+                        </div>
+
+                        <div class="sidebar-box sidebar-box__collaps <?=($model->haveImage)? '' : 'collaps'?>">
+                            <label class="control-label  sidebar-box__label">Другое</label>
+                            <div class="box-content">
+                                <div class="custom-control custom-checkbox">
+                                    <?= $form->field($model, 'haveImage')->checkbox([
+                                        'class'    => 'custom-control-input',
+                                        'value'    => '1',
+                                        'id'       => 'imageCheck',
+                                        'template' => '{input}<label class="custom-control-label" for="imageCheck">Только с фото</label>'
+                                    ]) ?>
+                                </div>
+                            </div>
                         </div>
 
                         <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
@@ -347,8 +374,8 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 </section>
 
 <script>
-    window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
         console.log("Fiered load after " + performance.now() + " ms");
-        document.getElementById('profiling_page_load').innerHTML = 'Страница: ' + (Math.round(performance.now())/1000) + ' сек.';
-        }, false);
+        document.getElementById('profiling_page_load').innerHTML = 'Страница: ' + (Math.round(performance.now()) / 1000) + ' сек.';
+    }, false);
 </script>

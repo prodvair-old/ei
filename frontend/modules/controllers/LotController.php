@@ -2,6 +2,7 @@
 
 namespace frontend\modules\controllers;
 
+use common\models\db\Region;
 use common\models\Query\LotsCategory;
 use frontend\modules\models\Category;
 use frontend\modules\models\Menu;
@@ -9,6 +10,7 @@ use Yii;
 use frontend\modules\models\Lot;
 use frontend\modules\models\LotSearch;
 use yii\data\Pagination;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -30,48 +32,21 @@ class LotController extends Controller
      */
     public function actionIndex()
     {
-
-//        $roots = Menu::find()->roots()->all();
-//        $russia = new Menu(['name' => 'Russia']);
-//        $russia->prependTo($roots);
-//        $australia = new Menu(['name' => 'Germany']);
-//        $australia->appendTo($roots[0]);
-
-//        $countries = Category::findOne(['id' => 9]);
-//        $leaves = $countries->leaves()->all();
-//
-//        echo "<pre>";
-//        var_dump($leaves);
-//        echo "</pre>";
-//        die;
-
         $searchModel = new LotSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-//        $dataProvider->setTotalCount(20);
         $lots = $dataProvider->getModels();
-//        $pageSize = 1;
-        $count = $searchModel->count;
-//        $pages = new Pagination(['totalCount' => $count, 'pageSize' => $pageSize]);
 
-//        $dataProvider->setPagination($pages);
-
-
-//        $query = Lot::find();
-//        $countQuery = clone $query;
-//        $lots = $query->offset($pages->offset)
-//            ->limit($pages->limit)
-//            ->all();
-
-
+        $regionList = ArrayHelper::map(Region::find()->orderBy(['name' => SORT_ASC])->all(), 'id', 'name');
 
         return $this->render('index', [
             'model'         => $searchModel,
             'lots'          => $lots,
             'queryCategory' => 0,
             'type'          => 'bankrupt',
-            'count'         => $count,
+            'count'         => $searchModel->count,
             'pages'         => $searchModel->pages,
+            'regionList'         => $regionList,
         ]);
     }
 

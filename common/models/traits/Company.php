@@ -28,6 +28,7 @@ trait Company
             ->select(['id', 'title'])
             ->from(Organization::tableName())
             ->where(['model' => self::INT_CODE])
+            ->orderBy(['title' => SORT_ASC])
             ->all();
 
         return ArrayHelper::map($res, 'id', 'title');
