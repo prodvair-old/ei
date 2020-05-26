@@ -1,6 +1,7 @@
 <?php
 namespace common\models\db;
 
+use frontend\modules\models\Onefile;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
@@ -190,7 +191,7 @@ class Lot extends ActiveRecord
      */
     public function getPlace()
     {
-        return $this->hasOne(Place::className(), ['model' => self::INT_CODE, 'parent_id' => 'id']);
+        return $this->hasOne(Place::className(), ['parent_id' => 'id'])->andOnCondition(['place.model' => self::INT_CODE]);
     }
 
     /**
@@ -272,4 +273,9 @@ class Lot extends ActiveRecord
     {
         return $this->hasMany(Document::className(), ['model' => self::INT_CODE, 'parent_id' => $this->id]);
     }
+
+//    public function getOneFiles()
+//    {
+//        return $this->hasMany(Onefile::className(), ['parent_id' => $this->id]);
+//    }
 }

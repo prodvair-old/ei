@@ -557,9 +557,42 @@ jQuery(function($) {
             return false;
         }
     })
-	
-	
-	
+
+
+
+	var offset = 0;
+	var i = 2000;
+
+	$(window).scroll(function() {
+
+		// console.log($(window).scrollTop())
+		// console.log($(document).height())
+		// console.log($(window).height())
+		if($(window).scrollTop() + $(window).height() >= $(document).height() - i){
+			console.log('scrollllll');
+			offset = offset + 15;
+			i = 0;
+			// console.log(location.search + '&LotSearch[offset]=' + offset);
+			// $('#load_list').append('<div class="spinner-wrapper"><div class="spinner"></div>Сортируем лоты...</div>');
+
+			$.ajax({
+				type: "GET",
+				url: '/lot/list' + location.search + '&LotSearch[offset]=' + offset,
+				data: $(this).serialize(),
+				success: function (data)
+				{
+					$('#load_list').append(data);
+					console.log('success request');
+					i = 2000;
+				},
+				error: function (result) {
+					console.log('error!!!');
+					console.log(result);
+				}
+			});
+
+		}
+	});
 	/**
 	 * Back To Top
 	 */

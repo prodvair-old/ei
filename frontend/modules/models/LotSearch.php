@@ -46,6 +46,8 @@ class LotSearch extends Lot
 
     public $haveImage;
 
+    public $offset;
+
     const NAME_DESC = 'nameDESC',
         NAME_ASC = 'nameASC',
         DATE_DESC = 'dateDESC',
@@ -61,7 +63,7 @@ class LotSearch extends Lot
         return [
             [['id', 'torg_id', 'step_measure', 'deposit_measure', 'status', 'reason', 'created_at', 'updated_at'], 'integer'],
             [['title', 'description', 'minPrice', 'maxPrice', 'mainCategory', 'type',
-                'subCategory', 'etp', 'owner', 'tradeType', 'search', 'sortBy', 'haveImage', 'region'], 'safe'],
+                'subCategory', 'etp', 'owner', 'tradeType', 'search', 'sortBy', 'haveImage', 'region', 'offset'], 'safe'],
             [['start_price', 'step', 'deposit'], 'number'],
         ];
     }
@@ -85,7 +87,8 @@ class LotSearch extends Lot
     public function search($params)
     {
         $query = Lot::find()
-            ->select(['lot.id', 'lot.title', 'torg.published_at']);
+//            ->select(['lot.id', 'lot.title', 'lot.start_price', 'torg.published_at']);
+            ->select(['lot.*', 'torg.published_at']);
 
         // add conditions that should always apply here
 
@@ -157,11 +160,11 @@ class LotSearch extends Lot
         if ($this->sortBy) {
             switch ($this->sortBy) {
                 case self::NAME_DESC:
-                    $query->addOrderBy(['title' => SORT_DESC]);
+                    $query->addOrderBy(['lot.title' => SORT_DESC]);
                     break;
 
                 case self::NAME_ASC:
-                    $query->addOrderBy(['title' => SORT_ASC]);
+                    $query->addOrderBy(['lot.title' => SORT_ASC]);
                     break;
 
                 case self::DATE_DESC:
@@ -173,23 +176,32 @@ class LotSearch extends Lot
                     break;
 
                 case self::PRICE_DESC:
-                    $query->addOrderBy(['start_price' => SORT_DESC]);
+                    $query->addOrderBy(['lot.start_price' => SORT_DESC]);
                     break;
 
                 case self::PRICE_ASC:
-                    $query->addOrderBy(['start_price' => SORT_ASC]);
+                    $query->addOrderBy(['lot.start_price' => SORT_ASC]);
                     break;
             }
         } else {
             $query->addOrderBy(['torg.published_at' => SORT_DESC]);
+//            $query->addOrderBy(['lot.id' => SORT_DESC]);
         }
 
-        $this->count = $query->count("DISTINCT lot.id");
-        $query->groupBy(['lot.id', 'torg.published_at']);
+//        $this->count = $query->count();
+//        $this->count = $query->count("lot.id");
+//        $this->count = $query->count("DISTINCT lot.id");
+//        $query->groupBy(['lot.id', 'torg.published_at']);
 
-        $this->pages = new Pagination(['totalCount' => $this->count, 'defaultPageSize' => 10, 'pageSize' => 10]);
-        $query->offset($this->pages->offset)
-            ->limit(10);
+//        $this->pages = new Pagination(['totalCount' => $this->count, 'defaultPageSize' => 10, 'pageSize' => 10]);
+//        $this->pages = new Pagination(['defaultPageSize' => 10, 'pageSize' => 10]);
+        $query->offset($this->offset)
+            ->limit(15);
+
+//        echo "<pre>";
+//        var_dump($query->createCommand()->getRawSql());
+//        echo "</pre>";
+//        die;
 
         return $dataProvider;
     }

@@ -37,6 +37,13 @@ class LotController extends Controller
 
         $lots = $dataProvider->getModels();
 
+        if (Yii::$app->request->isAjax) {
+            return $this->renderPartial('lotBlockAjax', [
+                'type' => 'long',
+                'lots' => $lots,
+            ]);
+        }
+
         $regionList = ArrayHelper::map(Region::find()->orderBy(['name' => SORT_ASC])->all(), 'id', 'name');
 
         return $this->render('index', [
@@ -44,9 +51,8 @@ class LotController extends Controller
             'lots'          => $lots,
             'queryCategory' => 0,
             'type'          => 'bankrupt',
-            'count'         => $searchModel->count,
             'pages'         => $searchModel->pages,
-            'regionList'         => $regionList,
+            'regionList'    => $regionList,
         ]);
     }
 
@@ -63,23 +69,24 @@ class LotController extends Controller
         ]);
     }
 
-    public function actionLoadSubCategories() {
+    public function actionLoadSubCategories()
+    {
         $post = Yii::$app->request->post();
 
-        if ($post['get'] == 'category') {
+        if ($post[ 'get' ] == 'category') {
             $lotsCategory = LotsCategory::find()->orderBy('id ASC')->all();
             $result = '<option value="0">Все категории</option>';
             foreach ($lotsCategory as $value) {
-                $result .= '<option value="'.$value->id.'">'.$value->name.'</option>';
+                $result .= '<option value="' . $value->id . '">' . $value->name . '</option>';
             }
         } else {
-            $subCategories = Category::findOne(['id' => $post['id']]);
+            $subCategories = Category::findOne(['id' => $post[ 'id' ]]);
             $leaves = $subCategories->leaves()->all();
 
             $result = '<option value="0">Все подкатегории</option>';
             if ($leaves != null) {
                 foreach ($leaves as $value) {
-                    $result .= '<option value="'.$value->id.'">'.$value->name.'</option>';
+                    $result .= '<option value="' . $value->id . '">' . $value->name . '</option>';
                 }
             }
         }
@@ -87,9 +94,10 @@ class LotController extends Controller
         return $result;
     }
 
-    public function actionTest() {
+    public function actionTest()
+    {
         $searchModel = new LotSearch();
-        $res = $searchModel->findSuggest(Yii::$app->request->queryParams['search']);
+        $res = $searchModel->findSuggest(Yii::$app->request->queryParams[ 'search' ]);
 
         echo "<pre>";
         var_dump($res);

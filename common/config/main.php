@@ -96,8 +96,8 @@ return [
                 ]
             ],
             // Schema cache options (for production environment)
-            'enableSchemaCache' => false,
-            'schemaCacheDuration' => 6,
+            'enableSchemaCache' => true,
+            'schemaCacheDuration' => 3600,
             'schemaCache' => 'cache',
 
         ],

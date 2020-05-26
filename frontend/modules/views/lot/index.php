@@ -302,7 +302,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                                         $model->getSortMap(), [
                                         'class'            => 'chosen-sort-select form-control sortSelect',
                                         'data-placeholder' => 'Сортировка по',
-                                        'tabindex'         => '2',
+//                                        'tabindex'         => '2',
 //                                        'options'          => [
 //                                            'dateDESC' => ['Selected' => true]
 //                                        ]
@@ -313,16 +313,16 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
                             </div>
                         </div>
-                        <div class="sort-box">
-                            <div class="d-flex align-items-center sort-item">
-                                <label class="sort-label d-none d-sm-flex">Найдено лотов: <?= $count ?></label>
-                            </div>
-                        </div>
+<!--                        <div class="sort-box">-->
+<!--                            <div class="d-flex align-items-center sort-item">-->
+<!--                                <label class="sort-label d-none d-sm-flex">Найдено лотов: --><?//= $count ?><!--</label>-->
+<!--                            </div>-->
+<!--                        </div>-->
                     </div>
 
 
-                    <div class="tour-long-item-wrapper-01 load-list">
-                        <? if ($count > 0) {
+                    <div id="load_list" class="tour-long-item-wrapper-01 load-list">
+                        <? if (count($lots) > 0) {
                             foreach ($lots as $lot) {
                                 echo LotBlock::widget(['lot' => $lot, 'type' => 'long']);
                             }
@@ -331,37 +331,37 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                         } ?>
                     </div>
 
-                    <? if (!!$pages->links[ 'next' ]) { ?>
-                        <a href="<?= $pages->links[ 'next' ] ?>"
-                           class="alert alert-primary mt-30 text-center h5 d-block">Далее</a>
-                    <? } ?>
+<!--                    --><?// if (!!$pages->links[ 'next' ]) { ?>
+<!--                        <a href="--><?//= $pages->links[ 'next' ] ?><!--"-->
+<!--                           class="alert alert-primary mt-30 text-center h5 d-block">Далее</a>-->
+<!--                    --><?// } ?>
 
-                    <div class="pager-wrappper mt-40">
-
-                        <div class="pager-innner">
-
-                            <div class="row align-items-center text-center text-lg-left">
-
-                                <div class="col-12">
-                                    <nav class="mt-10 mt-lg-0">
-                                        <?= LinkPager::widget([
-                                            'pagination'           => $pages,
-                                            'nextPageLabel'        => "<span aria-hidden=\"true\">Далее</span></i>",
-                                            'prevPageLabel'        => "<span aria-hidden=\"true\">Назад</span>",
-                                            'maxButtonCount'       => 6,
-                                            'options'              => ['class' => 'pagination justify-content-center justify-content-lg-left'],
-                                            'linkOptions'          => ['class' => 'page-link'],
-                                            'linkContainerOptions' => ['class' => 'page-item'],
-                                            'disabledPageCssClass' => 'disabled',
-                                        ]); ?>
-                                    </nav>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
+<!--                    <div class="pager-wrappper mt-40">-->
+<!---->
+<!--                        <div class="pager-innner">-->
+<!---->
+<!--                            <div class="row align-items-center text-center text-lg-left">-->
+<!---->
+<!--                                <div class="col-12">-->
+<!--                                    <nav class="mt-10 mt-lg-0">-->
+<!--                                        --><?//= LinkPager::widget([
+//                                            'pagination'           => $pages,
+//                                            'nextPageLabel'        => "<span aria-hidden=\"true\">Далее</span></i>",
+//                                            'prevPageLabel'        => "<span aria-hidden=\"true\">Назад</span>",
+//                                            'maxButtonCount'       => 6,
+//                                            'options'              => ['class' => 'pagination justify-content-center justify-content-lg-left'],
+//                                            'linkOptions'          => ['class' => 'page-link'],
+//                                            'linkContainerOptions' => ['class' => 'page-item'],
+//                                            'disabledPageCssClass' => 'disabled',
+//                                        ]); ?>
+<!--                                    </nav>-->
+<!--                                </div>-->
+<!---->
+<!--                            </div>-->
+<!---->
+<!--                        </div>-->
+<!---->
+<!--                    </div>-->
 
                 </div>
 

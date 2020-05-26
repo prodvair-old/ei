@@ -1,4 +1,5 @@
 <?php
+
 namespace common\models\db;
 
 use Yii;
@@ -12,21 +13,21 @@ use sergmoro1\lookup\models\Lookup;
  *
  * @var integer $id
  * @var integer $property
- * @var text    $description
- * @var string  $started_at
- * @var string  $end_at
- * @var string  $completed_at
- * @var string  $published_at
+ * @var text $description
+ * @var string $started_at
+ * @var string $end_at
+ * @var string $completed_at
+ * @var string $published_at
  * @var integer $offer
  * @var integer $created_at
  * @var integer $updated_at
- * 
- * @property Lot[]    $lots
+ *
+ * @property Lot[] $lots
  * @property Bankrupt $bankrupt
- * @property Manager  $manager
- * @property Owner    $owner
- * @property User     $user
- * @property Etp      $etp
+ * @property Manager $manager
+ * @property Owner $owner
+ * @property User $user
+ * @property Etp $etp
  * @property Casefile $case
  * @property Document[] $documents
  */
@@ -36,16 +37,16 @@ class Torg extends ActiveRecord
     const INT_CODE = 7;
 
     // тип имущества
-    const PROPERTY_BANKRUPT  = 1;
-    const PROPERTY_ARRESTED  = 2;
-    const PROPERTY_ZALOG     = 3;
+    const PROPERTY_BANKRUPT = 1;
+    const PROPERTY_ARRESTED = 2;
+    const PROPERTY_ZALOG = 3;
     const PROPERTY_MUNICIPAL = 4;
 
     // тип предложения
-    const OFFER_PUBLIC       = 1;
-    const OFFER_AUCTION      = 2;
+    const OFFER_PUBLIC = 1;
+    const OFFER_AUCTION = 2;
     const OFFER_AUCTION_OPEN = 3;
-    const OFFER_CONTEST      = 4;
+    const OFFER_CONTEST = 4;
     const OFFER_CONTEST_OPEN = 5;
 
     /**
@@ -67,7 +68,7 @@ class Torg extends ActiveRecord
             ],
         ];
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -105,7 +106,8 @@ class Torg extends ActiveRecord
      * Get property types
      * @return array
      */
-    public static function getProperties() {
+    public static function getProperties()
+    {
         return [
             self::PROPERTY_BANKRUPT,
             self::PROPERTY_ARRESTED,
@@ -118,7 +120,8 @@ class Torg extends ActiveRecord
      * Get offer types
      * @return array
      */
-    public static function getOffers() {
+    public static function getOffers()
+    {
         return [
             self::OFFER_PUBLIC,
             self::OFFER_AUCTION,
@@ -137,12 +140,13 @@ class Torg extends ActiveRecord
     {
         return $this->hasMany(Lot::className(), ['torg_id' => 'id']);
     }
-    
+
     /**
      * Получить информацию о должнике
      * @return yii\db\ActiveQuery
      */
-    public function getBankrupt() {
+    public function getBankrupt()
+    {
         if ($this->property != self::PROPERTY_BANKRUPT)
             return null;
         return $this->hasOne(Bankrupt::className(), ['id' => 'bankrupt_id'])
@@ -153,13 +157,14 @@ class Torg extends ActiveRecord
      * Получить информацию об управляющем
      * @return yii\db\ActiveQuery
      */
-    public function getManager() {
+    public function getManager()
+    {
         if ($this->property == self::PROPERTY_ZALOG)
             return null;
         return $this->hasOne(Manager::className(), ['id' => 'manager_id'])
             ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
-    
+
     /**
      * Получить эдектронную торговую площадку (ETP)
      *
@@ -167,10 +172,24 @@ class Torg extends ActiveRecord
      */
     public function getEtp()
     {
-        if ($this->property != self::PROPERTY_BANKRUPT)
-            return null;
-        return $this->hasOne(Organization::className(), ['id' => 'etp_id'])
+//        if ($this->property != self::PROPERTY_BANKRUPT)
+//            return null;
+//        return $this->hasOne(Organization::className(), ['id' => 'etp_id'])
+//            ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
+
+//            if ($this->property != self::PROPERTY_BANKRUPT)
+//                return null;
+//            $torg_debtor = TorgDebtor::findOne(['torg_id' =>$this->id]);
+//            return Organization::find(['model' => Etp::INT_CODE, 'parent_id' => $torg_debtor->etp_id]);
+
+//        if ($this->property != self::PROPERTY_BANKRUPT)
+//            return null;
+        return $this->hasOne(Organization::className(), ['parent_id' => 'etp_id'])
+            ->andFilterWhere(['=', Organization::tableName() . '.model', Etp::INT_CODE])
             ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
+
+//        $torg_debtor = TorgDebtor::findOne(['torg_id' => $this->id]);
+//        return Organization::findOne(['model' => Etp::INT_CODE, 'parent_id' => $torg_debtor->etp_id]);
     }
 
     /**
@@ -178,7 +197,8 @@ class Torg extends ActiveRecord
      *
      * @return yii\db\ActiveQuery
      */
-    public function getCase() {
+    public function getCase()
+    {
         if ($this->property != self::PROPERTY_BANKRUPT)
             return null;
         return $this->hasOne(Casefile::className(), ['id' => 'case_id'])
@@ -189,10 +209,17 @@ class Torg extends ActiveRecord
      * Получить информацию о залогодержателе
      * @return yii\db\ActiveQuery
      */
-    public function getOwner() {
-        if ($this->property != self::PROPERTY_ZALOG)
-            return null;
-        return $this->hasOne(Owner::className(), ['id' => 'owner_id'])
+    public function getOwner()
+    {
+//        if ($this->property != self::PROPERTY_ZALOG)
+//            return null;
+//        return $this->hasOne(Owner::className(), ['id' => 'owner_id'])
+//            ->viaTable(TorgPledge::tableName(), ['torg_id' => 'id']);
+
+        //        if ($this->property != self::PROPERTY_ZALOG)
+//            return null;
+        return $this->hasOne(Organization::className(), ['parent_id' => 'owner_id'])
+//            ->andFilterWhere(['=', Organization::tableName() . '.model', Owner::INT_CODE])
             ->viaTable(TorgPledge::tableName(), ['torg_id' => 'id']);
     }
 
@@ -200,7 +227,8 @@ class Torg extends ActiveRecord
      * Получить информацию о собственнике залога
      * @return yii\db\ActiveQuery
      */
-    public function getUser() {
+    public function getUser()
+    {
         if ($this->property != self::PROPERTY_ZALOG)
             return null;
         return $this->hasOne(User::className(), ['id' => 'user_id'])
