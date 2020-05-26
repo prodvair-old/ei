@@ -95,10 +95,10 @@ return [
                     'defaultSchema' => 'eidb' //specify your schema here
                 ]
             ],
-            // Schema cache options (for production environment)
-            'enableSchemaCache' => false,
+            // Schema cache options (for production environment)*/
+            'enableSchemaCache' => true,
             'schemaCacheDuration' => 6,
-            'schemaCache' => 'cache',*/
+            'schemaCache' => 'cache',
             
         ],
         'obj' => [

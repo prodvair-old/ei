@@ -20,7 +20,7 @@ return [
         ],
         'admin' => [
             'class' => 'backend\modules\admin\Module',
-            'defaultRoute' => 'lot/index',
+            'defaultRoute' => 'admin/site/index',
         ],
     ],
     'components' => [
