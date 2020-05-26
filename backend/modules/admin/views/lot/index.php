@@ -40,11 +40,11 @@ $('body').on('click', '.btn.load-more',  function(){
 });
 JS;
 
-$this->registerJs($script, $position = yii\web\View::POS_READY);
+$this->registerJs($script, yii\web\View::POS_READY);
 ?>
 
 <p>
-	<?= Html::a(Yii::$app->params['icons']['plus'] . ' ' . Yii::t('app', 'Add'), ['create'], ['class' => 'btn btn-success']) ?>
+    <?= Html::a(Yii::$app->params['icons']['plus'] . ' ' . Yii::t('app', 'Add'), ['create'], ['class' => 'btn btn-success']) ?>
 
     <?= Html::submitButton(Yii::t('app', 'Find'), ['class' => 'btn btn-primary search-submit']) ?>
 </p>

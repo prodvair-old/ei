@@ -1,27 +1,25 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Post */
+/* @var $model common\models\db\Lot */
 /* @var $form yii\widgets\ActiveForm */
 
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-use vova07\imperavi\Widget;
 
-use sergmoro1\blog\Module;
-use sergmoro1\blog\models\Author;
-use sergmoro1\nestedsets\models\Category;
-use sergmoro1\blog\assets\Select2Asset;
+use backend\modules\admin\assets\Select2Asset;
+use vova07\imperavi\Widget;
+use common\components\Property;
 use sergmoro1\lookup\models\Lookup;
+use common\models\db\Category;
 use sergmoro1\uploader\widgets\Uploader;
+//use common\widgets\Document;
 
 Select2Asset::register($this);
 
 $script = <<<JS
-$(document).ready(function() {
-    $('#post-authors').select2();
-});
+$(document).ready(function() { $('#lot-new_categories').select2(); });
 JS;
 $this->registerJS($script);
 ?>
@@ -29,10 +27,10 @@ $this->registerJS($script);
 <?php $form = ActiveForm::begin(); ?>
 
 <div class='row'>
-    <div class="col-lg-8">
+    <div class='col-lg-8'>
 
-        <div class="form-group">
-            <?= Html::submitButton(Module::t('core', 'Save'), [
+        <div class='form-group'>
+            <?= Html::submitButton(Yii::t('app', 'Save'), [
                 'class' => 'btn btn-success',
             ]) ?>
         </div>
@@ -40,39 +38,37 @@ $this->registerJS($script);
         <?= Uploader::widget([
             'model'         => $model,
             'draggable'     => true,
-            'appendixView'  => '/post/appendix.php',
-            'cropAllowed'   => true,
+            'appendixView'  => '/lot/appendix.php',
         ]) ?>
         <br>
         
-        <?= $form->field($model, 'title')
-            ->textInput(['maxlength' => true])
-            ->hint(Module::t('core', 'Part of the title can be selected by [] as a link of the post'))
-        ?>
+        <?= $form->field($model, 'title')->textArea(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'subtitle')
-            ->textInput(['maxlength' => true]) 
-        ?>
-
-        <?= $form->field($model, 'slug')
-            ->textInput(['maxlength' => true])
-        ?>
-
-        <?= $form->field($model, 'previous_id')->dropdownList($model->CanBePrevious(), [
-            'prompt' => Module::t('core', 'Select'),
-        ]); ?>
-
-        <?= $form->field($model, 'excerpt')->widget(Widget::className(), [
-            'settings' => [
-                'lang' => 'ru',
-                'minHeight' => 200,
-                'plugins' => [
-                    'fullscreen',
-                ]
-            ]
-        ]); ?>
-
-        <?= $form->field($model, 'content')->widget(Widget::className(), [
+        <div class='row'>
+            <div class='col-sm-4'>
+                <?= $form->field($model, 'start_price')->textInput(['type' => 'number']) ?>
+            </div>
+            <div class='col-sm-4'>
+                <?= $form->field($model, 'deposit')->textInput(['type' => 'number']) ?>
+            </div>
+            <div class='col-sm-4'>
+                <?= $form->field($model, 'deposit_measure')->dropdownList(Lookup::items(Property::SUM_MEASURE, true), [
+                    'prompt' => Yii::t('app', 'Select'),
+                ]); ?>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-4 col-md-offset-4'>
+                <?= $form->field($model, 'step')->textInput(['type' => 'number']) ?>
+            </div>
+            <div class='col-sm-4'>
+                <?= $form->field($model, 'step_measure')->dropdownList(Lookup::items(Property::SUM_MEASURE, true), [
+                    'prompt' => Yii::t('app', 'Select'),
+                ]); ?>
+            </div>
+        </div>
+        
+        <?= $form->field($model, 'description')->widget(Widget::className(), [
             'settings' => [
                 'lang' => 'ru',
                 'minHeight' => 200,
@@ -95,47 +91,24 @@ $this->registerJS($script);
             ],
         ]); ?>
 
-        <?= $form->field($model, 'resume')->widget(Widget::className(), [
-            'settings' => [
-                'lang' => 'ru',
-                'minHeight' => 100,
-                'plugins' => [
-                    'fullscreen',
-                ]
-            ]
-        ]); ?>
-
-        <?= sergmoro1\blog\widgets\metaTagForm\Widget::widget([
-            'model' => $model,
-        ]); ?>
-
-        <div class="form-group">
-            <?= Html::submitButton(Module::t('core', 'Save'), [
+        <div class='form-group'>
+            <?= Html::submitButton(Yii::t('app', 'Save'), [
                 'class' => 'btn btn-success',
             ]) ?>
         </div>
     </div>
 
-    <div class="post-files col-lg-4">
+    <div class='lot-status col-lg-4'>
 
-        <?= $form->field($model, 'created_at_date') ?>
+        <?= $form->field($model, 'status')->dropdownList(Lookup::items(Property::LOT_STATUS, true)) ?>
+        <?= $form->field($model, 'reason')->dropdownList(Lookup::items(Property::LOT_REASON, true)) ?>
 
-        <?= $form->field($model, 'status')->dropdownList(
-            Lookup::items('PostStatus')
-        ); ?>
-
-        <?= $form->field($model, 'tags')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'category_id')->dropdownList(
-            Category::items(Module::t('core', 'Root'))
-        ); ?>
-
-        <?= $form->field($model, 'authors')            
-            ->dropDownList(Author::getAll(), [
+        <?= $form->field($model, 'new_categories')->dropDownList(Category::items(), [
                 'multiple'=>'multiple',
             ]             
         ); ?>
-
+        
+        <?= '';//Document::widget(['model' => $model, 'viewPath' => '@backend/modules/admin/widgets/views']) ?>
     </div>
 </div>
 

@@ -14,16 +14,15 @@ return [
     'language' => 'ru-RU',
     'name' => 'Панель управления - Единый информатор',
     'sourceLanguage' => 'ru-RU',
-    'modules' => [
-        'uploader' => ['class' => 'sergmoro1\uploader\Module']
-    ],
     'components' => [
+/*
         'authManager' => [
             'class' => 'yii\rbac\PhpManager',
             'defaultRoles' => ['user', 'agent', 'manager', 'admin'],
             'itemFile' => __DIR__ . '/../../console/rbac/items.php',
             'ruleFile' => __DIR__ . '/../../console/rbac/rules.php',
         ],
+*/
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],

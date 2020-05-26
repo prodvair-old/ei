@@ -22,6 +22,7 @@ return [
             'class' => 'backend\modules\admin\Module',
             'defaultRoute' => 'admin/site/index',
         ],
+        'uploader' => ['class' => 'sergmoro1\uploader\Module'],
     ],
     'components' => [
         'assetManager' => [

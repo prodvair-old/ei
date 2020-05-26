@@ -4,8 +4,8 @@
  */
 
 use common\components\Property;
-use common\models\db\Category;
 use sergmoro1\lookup\models\Lookup;
+use common\models\db\Category;
 
 return [
     [
@@ -46,7 +46,7 @@ return [
         'filter' => Category::items(),
         'value' => function($data) {
             $c = count($data->categories);
-            return $c > 0 ? ($data->categories[0]->name . ($c > 1 ? " (+$c)" : '')) : '-';
+            return $c > 0 ? ($data->categories[0]->name . ($c > 1 ? ' (+' . ($c-1) . ')' : '')) : '-';
         },
         'options' => ['style' => 'width:15%;'],
     ],
