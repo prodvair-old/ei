@@ -57,7 +57,6 @@ class ImportFIleForm extends Model
 
                 $whereFirst = $whereSecond = $whereCad;
 
-
                 // ----------------------------
                 $where = ['or'];
                 $where[] = ['like', 'lotPropName', (string)$sheetData[$baseRow]['B']];

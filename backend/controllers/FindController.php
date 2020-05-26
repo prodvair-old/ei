@@ -87,11 +87,11 @@ class FindController extends Controller
                     Excel::export([
                         'isMultipleSheet' => true,
                         'models' => [
-                            'sheet1' => $result['first'], 
-                            'sheet2' => $result['second'], 
+                            'Грубый поиск' => $result['first'], 
+                            'Лёгкий поиск' => $result['second'], 
                         ],
                         'columns' => [
-                            'sheet1' => [
+                            'Грубый поиск' => [
                                 'inn:text',
                                 'name:text',
                                 'title:text',
@@ -104,7 +104,7 @@ class FindController extends Controller
                                 'price:text',
                                 'url:text',
                             ],
-                            'sheet2' => [
+                            'Лёгкий поиск' => [
                                 'inn:text',
                                 'name:text',
                                 'title:text',
@@ -119,7 +119,7 @@ class FindController extends Controller
                             ], 
                         ],
                         'headers' => [
-                            'sheet1' => [
+                            'Грубый поиск' => [
                                 'inn' => 'ИНН',
                                 'name' => 'Наименование/ФИО',
                                 'title' => 'Наименование имущества',
@@ -132,7 +132,7 @@ class FindController extends Controller
                                 'price' => 'Цена',
                                 'url' => 'Ссылка на торг',
                             ],
-                            'sheet2' => [
+                            'Лёгкий поиск' => [
                                 'inn' => 'ИНН',
                                 'name' => 'Наименование/ФИО',
                                 'title' => 'Наименование имущества',
