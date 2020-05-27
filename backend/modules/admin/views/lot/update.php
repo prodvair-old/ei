@@ -8,6 +8,56 @@ $this->params['breadcrumbs'][] = ['label' => $model->shortTitle, 'url' => ['view
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<?= $this->render('_form', [
-    'model' => $model,
-]) ?>
+<div class='row'>
+    <div class='lot-common col-lg-8'>
+        <div class='box box-primary'>
+            <div class='box-header'>
+                <h3 class='box-title'><?= Yii::t('app', 'Common, price') ?></h3>
+            </div>
+            <div class='box-body'>
+
+                <?= $this->render('_form_common', [
+                    'model' => $model,
+                ]) ?>
+            
+            </div>
+        </div>
+    </div>
+    <div class='lot-status col-lg-4'>
+        <div class='box box-primary'>
+            <div class='box-header'>
+                <h3 class='box-title'><?= Yii::t('app', 'State') ?></h3>
+            </div>
+            <div class='box-body'>
+
+                <?= $this->render('_form_state', [
+                    'model' => $model,
+                ]) ?>
+            
+            </div>
+        </div>
+        <div class='box box-primary'>
+            <div class='box-header'>
+                <h3 class='box-title'><?= Yii::t('app', 'Image') ?></h3>
+            </div>
+            <div class='box-body'>
+
+                <?= $this->render('_form_image', [
+                    'model' => $model,
+                ]) ?>
+            
+            </div>
+        </div>
+        <div class='box box-primary'>
+            <div class='box-header'>
+                <h3 class='box-title'><?= Yii::t('app', 'Document') ?></h3>
+            </div>
+            <div class='box-body'>
+
+                <?= $this->render('_form_document', [
+                    'model' => $model,
+                ]) ?>
+            
+            </div>
+        </div>
+    </div>

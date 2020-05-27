@@ -12,11 +12,7 @@ use yiister\adminlte\widgets\FlashAlert;
     </section>
 
     <section class="content">
-        <div class='box'>
-            <div class='box-body'>
-                <?= $content ?>
-           </div>
-        </div>
+        <?= $content ?>
     </section>
 </div>
 

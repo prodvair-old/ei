@@ -284,11 +284,13 @@ class Lot extends ActiveRecord
     /**
      * Получить документы по лоту.
      * 
-     * @return yii\db\ActiveQuery
+     * @return array yii\db\ActiveRecord
      */
     public function getDocuments()
     {
-        return $this->hasMany(Document::className(), ['model' => self::INT_CODE, 'parent_id' => $this->id]);
+        return Document::find()
+            ->where(['model' => self::INT_CODE, 'parent_id' => $this->id])
+            ->all();
     }
 
     /**

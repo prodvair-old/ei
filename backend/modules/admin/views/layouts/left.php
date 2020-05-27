@@ -14,7 +14,7 @@ $user = common\models\db\User::findOne(['username' => 'sergey@vorst.ru']);
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="https://ei.ru<?= $user->avatar ?>" class="img-circle" alt="User Image"/>
+                <?= $user->getAvatar(['class' => 'img-circle']) ?>
             </div>
             <div class="pull-left info">
                 <p><?= $user->getFullName() ?></p>

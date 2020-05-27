@@ -30,13 +30,13 @@ $user = common\models\db\User::findOne(['username' => 'sergey@vorst.ru']);
 
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="https://ei.ru<?= $user->avatar ?>" class="user-image" alt="User Image"/>
+                        <?= $user->getAvatar(['class' => 'user-image']) ?>
                         <span class="hidden-xs"><?= $user->getFullName() ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="<?= $user->avatar ?>" class="img-circle" alt="User Image"/>
+                            <?= $user->getAvatar(['class' => 'img-circle'], true) ?>
                             <p>
                                 <?= $user->getFullName() ?>
                                 <small><?= Lookup::item('UserRole', $user->role) ?></small>

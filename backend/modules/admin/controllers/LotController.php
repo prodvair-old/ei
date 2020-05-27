@@ -112,7 +112,7 @@ class LotController extends Controller
  
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             //return $this->redirect(['view', 'id' => $model->id]);
-            return $this->redirect(['index']);
+            return $this->redirect(Yii::$app->request->referrer);
         } else {
             return $this->render('update', [
                 'model' => $model,

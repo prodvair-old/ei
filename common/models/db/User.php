@@ -3,6 +3,8 @@
 namespace common\models\db;
 
 use Yii;
+use yii\helpers\Url;
+use yii\helpers\Html;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use yii\base\NotSupportedException;
@@ -296,7 +298,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getAvatarImage()
     {
-        return $this->getImage('thumb');
+        return $image = $this->getImage('thumb') ?: Yii::getAlias('@uploader/site/user.png');
     }
 
     /**
@@ -312,7 +314,7 @@ class User extends ActiveRecord implements IdentityInterface
         if($image = $this->getAvatarImage()) {
             return Html::img($image, $htmlOptions);
         } else {
-            return $icon ?: (isset(Yii::$app->params['icons']['user']) ? Yii::$app->params['icons']['user'] : '');
+            return $icon ? (isset(Yii::$app->params['icons']['user']) ? Yii::$app->params['icons']['user'] : '') : '';
         }
     }
 
