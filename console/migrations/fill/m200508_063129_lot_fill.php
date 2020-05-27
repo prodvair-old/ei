@@ -13,7 +13,7 @@ class m200508_063129_lot_fill extends Migration
     use Keeper;
     
     const TABLE = '{{%lot}}';
-    const LIMIT = 20000;
+    const LIMIT = 10000;
 
     private static $status_convertor = [
         "подводятся итоги (приостановлены) " => [Lot::STATUS_SUSPENDED, LOT::REASON_SUMMARIZING],
@@ -81,7 +81,7 @@ class m200508_063129_lot_fill extends Migration
         );
         $result = $select->queryAll();
         
-        $offset = 0;
+        $offset = 0; //382000;
    
         // добавление информации по лотам
         while ($offset < $result[0]['count']) {
