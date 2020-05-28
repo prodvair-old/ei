@@ -4,25 +4,23 @@ namespace common\models\db;
 
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
-use yii\behaviors\SluggableBehavior;
 
 /**
- * Region model
- * Справочник регионов.
+ * District model
+ * Справочник округов.
  *
  * @var integer $id
  * @var string  $name
- * @var string  $slug
  * @var integer $created_at
  */
-class Region extends ActiveRecord
+class District extends ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return '{{%region}}';
+        return '{{%district}}';
     }
 
     /**
@@ -34,10 +32,6 @@ class Region extends ActiveRecord
             [
                 'class' => TimestampBehavior::className(),
                 'updatedAtAttribute' => false,
-            ],
-            [
-                'class' => SluggableBehavior::className(),
-                'attribute' => 'name',
             ],
         ];
     }
@@ -59,7 +53,7 @@ class Region extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'name'       => Yii::t('app', 'Region'),
+            'name'       => Yii::t('app', 'District'),
             'created_at' => Yii::t('app', 'Created'),
         ];
     }

@@ -10,7 +10,12 @@ use yii\widgets\ActiveForm;
 use common\widgets\Document;
 ?>
 
-<?php if (count($model->documents) > 0 || count($model->torg->documents) > 0 || count($model->torg->casefile->documents) > 0): ?>
+<?php if (
+    ($lot = (isset($model->documents) && count($model->documents) > 0)) || 
+    ($torg = (isset($model->torg->documents) && count($model->torg->documents) > 0)) || 
+    ($case = (isset($model->torg->casefile->documents) && count($model->torg->casefile->documents) > 0))
+): ?>
+
     <?= Document::widget([
         'title' => Yii::t('app', 'Lot'),
         'model' => $model,
@@ -25,6 +30,7 @@ use common\widgets\Document;
         'title' => Yii::t('app', 'Casefile'),
         'model' => $model->torg->casefile,
     ]) ?>
+
 <?php else: ?>
     <?= Yii::t('app', 'No documents related to the Lot.') ?>
 <?php endif; ?>

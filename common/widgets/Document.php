@@ -14,9 +14,10 @@ class Document extends Widget
     
     public function run()
     {
-        return $this->render('document', [
-            'title' => $this->title,
-            'model' => $this->model,
-        ]);
+        if (isset($this->model->documents) && count($this->model->documents) > 0)
+            return $this->render('document', [
+                'title' => $this->title,
+                'model' => $this->model,
+            ]);
     }
 }

@@ -204,11 +204,11 @@ class Lot extends ActiveRecord
 
     /**
      * Получить информацию о месте
-     * @return yii\db\ActiveQuery
+     * @return yii\db\ActiveRecord
      */
     public function getPlace()
     {
-        return $this->hasOne(Place::className(), ['model' => self::INT_CODE, 'parent_id' => 'id']);
+        return Place::findOne(['model' => self::INT_CODE, 'parent_id' => $this->id]);
     }
 
     /**
