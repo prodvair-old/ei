@@ -12,7 +12,7 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'language' => 'ru-RU',
-    'name' => 'Панель управления - Единый информатор',
+    'name' => 'Единый информатор',
     'sourceLanguage' => 'ru-RU',
     'modules' => [
         'gridview' => [
@@ -20,8 +20,9 @@ return [
         ],
         'admin' => [
             'class' => 'backend\modules\admin\Module',
-            'defaultRoute' => 'lot/index',
+            'defaultRoute' => 'admin/site/index',
         ],
+        'uploader' => ['class' => 'sergmoro1\uploader\Module'],
     ],
     'components' => [
         'assetManager' => [
@@ -35,7 +36,7 @@ return [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'common\models\db\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],

@@ -3,6 +3,7 @@ namespace common\models\db;
 
 use Yii;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\behaviors\TimestampBehavior;
 use sergmoro1\uploader\behaviors\HaveFileBehavior;
 use sergmoro1\lookup\models\Lookup;
@@ -63,6 +64,11 @@ class Lot extends ActiveRecord
     const REASON_PARTICIPANT = 5;
     const REASON_SUMMARIZING = 6;
 
+    const SHORT_TITLE_LENGTH = 20;
+
+    public $new_categories = [];
+    private $_old_categories;
+    
     /**
      * {@inheritdoc}
      */
@@ -117,7 +123,7 @@ class Lot extends ActiveRecord
             ['status', 'default', 'value' => self::STATUS_IN_PROGRESS],
             ['reason', 'in', 'range' => self::getReasons()],
             ['reason', 'default', 'value' => self::REASON_NO_MATTER],
-            [['description', 'info', 'created_at', 'updated_at'], 'safe'],
+            [['description', 'info', 'new_categories', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -137,6 +143,7 @@ class Lot extends ActiveRecord
             'deposit_measure'  => Yii::t('app', 'Deposit measure'),
             'status'           => Yii::t('app', 'Status'),
             'reason'           => Yii::t('app', 'Reason'),
+            'new_categories'   => Yii::t('app', 'Categories'),
             'created_at'       => Yii::t('app', 'Created'),
             'updated_at'       => Yii::t('app', 'Modified'),
         ];
@@ -185,12 +192,23 @@ class Lot extends ActiveRecord
     }
 
     /**
+     * Get short title
+     * @return string
+     */
+    public function getShortTitle() {
+        mb_internal_encoding('UTF-8');
+        return mb_strlen($this->title) > self::SHORT_TITLE_LENGTH
+            ? mb_substr($this->title, 0, self::SHORT_TITLE_LENGTH) . '...'
+            : $this->title;
+    }
+
+    /**
      * Получить информацию о месте
-     * @return yii\db\ActiveQuery
+     * @return yii\db\ActiveRecord
      */
     public function getPlace()
     {
-        return $this->hasOne(Place::className(), ['model' => self::INT_CODE, 'parent_id' => 'id']);
+        return Place::findOne(['model' => self::INT_CODE, 'parent_id' => $this->id]);
     }
 
     /**
@@ -266,10 +284,40 @@ class Lot extends ActiveRecord
     /**
      * Получить документы по лоту.
      * 
-     * @return yii\db\ActiveQuery
+     * @return array yii\db\ActiveRecord
      */
     public function getDocuments()
     {
-        return $this->hasMany(Document::className(), ['model' => self::INT_CODE, 'parent_id' => $this->id]);
+        return Document::find()
+            ->where(['model' => self::INT_CODE, 'parent_id' => $this->id])
+            ->all();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterFind()
+    {
+        parent::afterFind();
+        $this->_old_categories = ArrayHelper::getColumn(LotCategory::find()->where(['lot_id' => $this->id])->all(), 'category_id');
+        $this->new_categories = $this->_old_categories;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        LotCategory::updateOneToMany($this->id, $this->_old_categories, $this->new_categories);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        LotCategory::updateOneToMany($this->id, $this->_old_categories, []);
     }
 }

@@ -14,12 +14,12 @@ $user = common\models\db\User::findOne(['username' => 'sergey@vorst.ru']);
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="https://ei.ru<?= $user->avatar ?>" class="img-circle" alt="User Image"/>
+                <?= $user->getAvatar(['class' => 'img-circle']) ?>
             </div>
             <div class="pull-left info">
                 <p><?= $user->getFullName() ?></p>
 
-                <a href="#"><?= Lookup::item('UserRole', $user->group) ?></a>
+                <a href="#"><?= Lookup::item('UserRole', $user->role) ?></a>
             </div>
         </div>
 
@@ -33,23 +33,18 @@ $user = common\models\db\User::findOne(['username' => 'sergey@vorst.ru']);
                     ['label' => 'Главная', 'url' => ['site/index'], 'icon' => 'home'],
                     [
                         'label' => 'Лоты', 
-                        'url' => ['lots/index'], 
+                        'url' => ['lot/index'], 
                         'icon' => 'table',
                         'options' => ['class' => 'treeview'],
                         'items' => [
                             [
-                                'label' => 'Список лотов',
-                                'url' => ['lots/index'],
+                                'label' => 'Список',
+                                'url' => ['lot/index'],
                                 'icon' => 'list-ul',
                             ],
                             [
-                                'label' => 'Импортировать лот',
-                                'url' => ['lots/import'],
-                                'icon' => 'download',
-                            ],
-                            [
-                                'label' => 'Добавить лот',
-                                'url' => ['lots/create'],
+                                'label' => 'Добавить',
+                                'url' => ['lot/create'],
                                 'icon' => 'plus',
                             ],
                         ]
@@ -57,18 +52,18 @@ $user = common\models\db\User::findOne(['username' => 'sergey@vorst.ru']);
                     ],
                     [
                         'label' => 'Организации', 
-                        'url' => ['owners/index'], 
+                        'url' => ['owner/index'], 
                         'icon' => 'table',
                         'options' => ['class' => 'treeview'],
                         'items' => [
                             [
-                                'label' => 'Список организации',
-                                'url' => ['owners/index'],
+                                'label' => 'Список',
+                                'url' => ['owner/index'],
                                 'icon' => 'list-ul',
                             ],
                             [
-                                'label' => 'Добавить организацию',
-                                'url' => ['owners/create'],
+                                'label' => 'Добавить',
+                                'url' => ['owner/create'],
                                 'icon' => 'plus',
                             ],
                         ]
@@ -76,7 +71,7 @@ $user = common\models\db\User::findOne(['username' => 'sergey@vorst.ru']);
                     ],
                     [
                         'label' => 'Пользователи', 
-                        'url' => ['users/index'], 
+                        'url' => ['user/index'], 
                         'icon' => 'users',
 
                     ],

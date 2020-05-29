@@ -19,7 +19,7 @@ class m200416_100500_torg_drawish extends Migration
         $this->createIndex('idx-torg_drawish-torg', self::TABLE, 'torg_id', true);
 
         $this->addForeignKey('fk-torg_drawish-torg',  self::TABLE, 'torg_id',  '{{%torg}}',  'id', 'restrict', 'restrict');
-        //$this->addForeignKey('fk-torg_drawish-manager',  self::TABLE, 'manager_id', ' {{%manager}}',  'id', 'restrict', 'restrict');
+        $this->addForeignKey('fk-torg_drawish-manager',  self::TABLE, 'manager_id', ' {{%manager}}',  'id', 'restrict', 'restrict');
 
 		$this->addCommentOnColumn(self::TABLE, 'torg_id',  'Торг');
 		$this->addCommentOnColumn(self::TABLE, 'manager_id', 'Организация или частное лицо, опубликовавшая лот по арестованному, муниципальному имуществу');

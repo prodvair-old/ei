@@ -9,7 +9,8 @@ use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
 
 use common\models\db\Lot;
-use backend\models\search\LotSearch;
+use common\models\db\Place;
+use backend\modules\admin\models\LotSearch;
 
 /**
  * LotController implements the CRUD actions for Lot model.
@@ -68,12 +69,12 @@ class LotController extends Controller
     public function actionView($id = 0)
     {
         $model = $this->findModel($id);
-        if (Yii::$app->user->can('viewPost', ['lot' => $model])) {
-            return $this->render('view', [
-                'model' => $model,
-            ]);
-        } else
-            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        //if (!Yii::$app->user->can('viewPost', ['lot' => $model]))
+            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+
+        return $this->render('view', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -100,24 +101,33 @@ class LotController extends Controller
 
     /**
      * Updates an existing model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * If the update was successful, a success message flashes.
      * @param integer $id
      * @return mixed
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        if (Yii::$app->user->can('update', ['lot' => $model])) {
- 
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('update', [
-                    'model' => $model,
-                ]);
-            }
-        } else
-            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        
+        //if (!Yii::$app->user->can('update', ['lot' => $model]))
+            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        
+        $place = $model->place;
+        if (!$place)
+            $place = new Place();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Updated successfully.'));
+        }
+
+        if ($place->load(Yii::$app->request->post()) && $place->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Updated successfully.'));
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+            'place' => $place,
+        ]);
     }
 
     /**
@@ -155,4 +165,26 @@ class LotController extends Controller
             }
         }
     }
+
+    /**
+     * Getting a pool of lots that meet the conditions.
+     * @return json array {count: integer, content: string}
+     * @throws ForbiddenHttpException if this is not an ajax request
+     */
+	public function actionMore()
+	{
+		if(Yii::$app->getRequest()->isAjax) {
+            $searchModel = new LotSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->get(), Yii::$app->request->get('offset'));
+
+            return $this->asJson([
+                'count' => $dataProvider->getCount(),
+                'content' => $this->renderAjax('more', [
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                ])
+            ]);
+		} else
+			throw new ForbiddenHttpException('Only ajax request suitable.');
+	}
 }

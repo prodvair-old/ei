@@ -116,10 +116,10 @@ class m200507_121529_torg_fill extends Migration
                         $this->validateAndKeep($torg_debtor, $links['debtor'], $td);
                     }
                 } elseif ($property == Torg::PROPERTY_ZALOG) {
-                    if ($row['bankruptId'] || $row['publisherId']) {
+                    if ($row['ownerId'] || $row['publisherId']) {
                         $tp = [
                             'torg_id'  => $torg_id,
-                            'owner_id' => $row['bankruptId'],
+                            'owner_id' => $row['ownerId'],
                             'user_id'  => $row['publisherId'],
                         ];
                         $torg_pledge = new TorgPledge($tp);
