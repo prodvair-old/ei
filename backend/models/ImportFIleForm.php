@@ -46,7 +46,8 @@ class ImportFIleForm extends Model
 
         // foreach ($colsData as $row => $value) {
             // if ($row != 0 && !empty($value[3]) && !empty($sheetData[$baseRow]['C']) && !empty($value[1])) {
-                $whereCad = ['or'];
+                $whereCad   = ['or'];
+                $whereF     = ['and'];
 
                 if ($cad = $this->getCadastre((string)$sheetData[$baseRow]['D'])) {
                     $whereCad[] = ['like', 'lotPropName', $cad];
@@ -55,27 +56,29 @@ class ImportFIleForm extends Model
                     $whereCad[] = ['like', 'lotPropName', $vin];
                 }
 
-                $whereFirst = $whereSecond = $whereCad;
+                $whereF = $whereFirst = $whereSecond = $whereCad;
 
                 // ----------------------------
-                $where = ['or'];
-                $where[] = ['like', 'lotPropName', (string)$sheetData[$baseRow]['B']];
+                $whereS     = ['or'];
+                $whereS[]   = ['like', 'lotPropName', (string)$sheetData[$baseRow]['B']];
                 
                 $orWhere = ['or'];
-                if (strpos(mb_strtolower((string)$sheetData[$baseRow]['C'],'UTF-8'), 'ип') !== false || strpos(mb_strtolower((string)$sheetData[$baseRow]['C'],'UTF-8'), 'ооо') !== false || strpos(mb_strtolower((string)$sheetData[$baseRow]['C'],'UTF-8'), 'оао') !== false) {
+                if (strpos(mb_strtolower((string)$sheetData[$baseRow]['C'],'UTF-8'), 'ооо') !== false || strpos(mb_strtolower((string)$sheetData[$baseRow]['C'],'UTF-8'), 'оао') !== false) {
                     $orWhere[] = ['like', 'lotPropName', (string)$sheetData[$baseRow]['C']];
                 } else {
-                    $names = explode(' ', (string)$sheetData[$baseRow]['C']);
+                    $fio = str_replace(['ИП', 'ип'], '', (string)$sheetData[$baseRow]['C']);
+                    $names = explode(' ',  ltrim($fio));
                     $orWhere[] = ['like', 'lotPropName', $names[0]];
                     $orWhere[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').'.'.mb_substr($names[2],0,1,'UTF-8').'.'];
                     $orWhere[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').'. '.mb_substr($names[2],0,1,'UTF-8').'.'];
                     $orWhere[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').' '.mb_substr($names[2],0,1,'UTF-8')];
                     $orWhere[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').mb_substr($names[2],0,1,'UTF-8')];
                 }
-                $where[] = $orWhere;
+                $whereF = $whereS[] = $orWhere;
                 // ----------------------------
 
-                $whereSecond[] = $where;
+                $whereSecond[]  = $whereS;
+                $whereFirst[]   = $whereF;
 
                 $lotsFirst = LotsArrest::find()->joinWith('torgs')->where($whereFirst)->orderBy('trgPublished ASC')->limit(5)->all();
                 $lotsSecond = LotsArrest::find()->joinWith('torgs')->where($whereSecond)->orderBy('trgPublished ASC')->limit(30)->all();
