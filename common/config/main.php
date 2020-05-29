@@ -100,7 +100,6 @@ return [
             'enableSchemaCache' => true,
             'schemaCacheDuration' => 6,
             'schemaCache' => 'cache',
-*/
         ],
         'obj' => [
             'class' => 'yii\db\Connection',
