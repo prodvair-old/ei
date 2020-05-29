@@ -4,12 +4,19 @@ use yiister\adminlte\widgets\FlashAlert;
 ?>
 <div class="content-wrapper">
     <section class="content-header">
+        <h1><?= $this->title ?></h1>
         <?= FlashAlert::widget() ?>
-        <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
+        <?php if (isset($this->params['breadcrumbs'])): ?>
+            <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
+        <?php endif; ?>
     </section>
 
     <section class="content">
-        <?= $content ?>
+        <div class='box'>
+            <div class='box-body'>
+                <?= $content ?>
+           </div>
+        </div>
     </section>
 </div>
 

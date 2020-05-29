@@ -125,7 +125,6 @@ class Torg extends ActiveRecord
             self::OFFER_AUCTION_OPEN,
             self::OFFER_CONTEST,
             self::OFFER_CONTEST_OPEN,
-            
         ];
     }
 
@@ -169,8 +168,10 @@ class Torg extends ActiveRecord
     {
         if ($this->property != self::PROPERTY_BANKRUPT)
             return null;
-        return $this->hasOne(Organization::className(), ['id' => 'etp_id'])
-            ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
+        $torg_debtor = TorgDebtor::find()->select(['etp_id'])->where(['torg_id' =>$this->id]);
+        return Organization::findOne(['model' => Etp::INT_CODE, 'parent_id' => $torg_debtor->etp_id]);
+        //return $this->hasOne(Organization::className(), ['id' => 'etp_id'])
+            //->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
     
     /**

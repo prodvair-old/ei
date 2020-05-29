@@ -39,15 +39,15 @@ $user = common\models\db\User::findOne(['username' => 'sergey@vorst.ru']);
                             <img src="<?= $user->avatar ?>" class="img-circle" alt="User Image"/>
                             <p>
                                 <?= $user->getFullName() ?>
-                                <small><?= Lookup::item('UserRole', $user->group) ?></small>
+                                <small><?= Lookup::item('UserRole', $user->role) ?></small>
                             </p>
                         </li>
                         <!-- Menu Body -->
                         <li class="user-body">
-                            <div class="col-xs-<?= $user->group == User::GROUP_ADMIN ? '6' : '12' ?> text-center">
+                            <div class="col-xs-<?= $user->role == User::ROLE_ADMIN ? '6' : '12' ?> text-center">
                                 <a href="<?= Url::to(['historys/index']) ?>">История</a>
                             </div>
-                            <?php if ($user->group == User::GROUP_ADMIN): ?>
+                            <?php if ($user->role == User::ROLE_ADMIN): ?>
                             <div class="col-xs-4 text-center">
                                 <a href="<?= Url::to(['historys/all']) ?>">Журнал</a>
                             </div>

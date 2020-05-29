@@ -22,6 +22,7 @@ return [
             'class' => 'backend\modules\admin\Module',
             'defaultRoute' => 'admin/site/index',
         ],
+        'uploader' => ['class' => 'sergmoro1\uploader\Module'],
     ],
     'components' => [
         'assetManager' => [
@@ -35,7 +36,7 @@ return [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'common\models\db\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],

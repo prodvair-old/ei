@@ -80,6 +80,7 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+
         'db' => [
             'class' => 'yii\db\Connection',
             'dsn'      => 'pgsql:host=localhost;dbname=uds',
@@ -99,8 +100,8 @@ return [
             'enableSchemaCache' => true,
             'schemaCacheDuration' => 6,
             'schemaCache' => 'cache',
-            
         ],
+
         'obj' => [
             'class' => 'yii\db\Connection',
             'dsn'      => 'pgsql:host=localhost;dbname=uds',
@@ -108,11 +109,11 @@ return [
             'password' => 'bankrupt',
             'charset'  => 'utf8',
             'tablePrefix' => 'obj$',
-
             // Schema cache options (for production environment)
             'enableSchemaCache' => false,
             'schemaCacheDuration' => 6,
             'schemaCache' => 'cache',
         ],
+
     ],
 ];

@@ -1,11 +1,11 @@
 <?php
-namespace backend\controllers;
+namespace backend\modules\admin\controllers;
 
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
+use common\models\form\LoginForm;
 
 /**
  * Site controller
@@ -22,11 +22,16 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login', 'index', 'error'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'add-field'],
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['image-upload', 'file-upload', 'get-files', 'get-images', 'delete-file'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -50,6 +55,37 @@ class SiteController extends Controller
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
+            'image-upload' => [
+                'class' => 'vova07\imperavi\actions\UploadFileAction',
+                'url' => ($this->toFrontend() . '/uploads/common'),
+                'path' => '@frontend/web/uploads/common',
+                'uploadOnlyImage' => true,
+                'translit' => true,
+                'unique' => false,
+            ],
+            'file-upload' => [
+                'class' => 'vova07\imperavi\actions\UploadFileAction',
+                'url' => ($this->toFrontend() . '/uploads/common'),
+                'path' => '@frontend/web/uploads/common',
+                'uploadOnlyImage' => false,
+                'translit' => true,
+                'unique' => false,
+            ],
+            'get-images' => [
+                'class' => 'vova07\imperavi\actions\GetImagesAction',
+                'url' => ($this->toFrontend() . '/uploads/common'),
+                'path' => '@frontend/web/uploads/common',
+            ],    
+            'get-files' => [
+                'class' => 'vova07\imperavi\actions\GetFilesAction',
+                'url' => ($this->toFrontend() . '/uploads/common'),
+                'path' => '@frontend/web/uploads/common',
+            ],    
+            'delete-file' => [
+                'class' => 'vova07\imperavi\actions\DeleteFileAction',
+                'url' => ($this->toFrontend() . '/uploads/common'),
+                'path' => '@frontend/web/uploads/common',
+            ],    
         ];
     }
 
@@ -101,5 +137,15 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    /**
+     * Return host and full path to frontend saved in params-local.php (common or backend).
+     * 
+     * @return string
+     */
+    private function toFrontend()
+    {
+        return Yii::$app->params['frontLink'];
     }
 }

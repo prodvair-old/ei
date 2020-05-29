@@ -14,21 +14,20 @@ return [
     'language' => 'ru-RU',
     'name' => 'Панель управления - Единый информатор',
     'sourceLanguage' => 'ru-RU',
-    'modules' => [
-        'uploader' => ['class' => 'sergmoro1\uploader\Module']
-    ],
     'components' => [
+/*
         'authManager' => [
             'class' => 'yii\rbac\PhpManager',
             'defaultRoles' => ['user', 'agent', 'manager', 'admin'],
             'itemFile' => __DIR__ . '/../../console/rbac/items.php',
             'ruleFile' => __DIR__ . '/../../console/rbac/rules.php',
         ],
+*/
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'common\models\db\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
@@ -46,22 +45,12 @@ return [
             ],
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'admin/site/error',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                ''          => 'site/index',
-                '/login'    => 'site/login',
-                '/logout'   => 'site/logout',
-
-                '/add-field-<type>' => 'site/add-field',
-
-                '/historys' => 'historys/index',
-                '/historys-all' => 'historys/all',
-
-                '/<controller:\w+>' => '<controller>/index',
             ],
         ],
     ],
