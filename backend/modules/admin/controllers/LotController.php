@@ -9,6 +9,7 @@ use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
 
 use common\models\db\Lot;
+use common\models\db\Place;
 use backend\modules\admin\models\LotSearch;
 
 /**
@@ -100,24 +101,33 @@ class LotController extends Controller
 
     /**
      * Updates an existing model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * If the update was successful, a success message flashes.
      * @param integer $id
      * @return mixed
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        
         //if (!Yii::$app->user->can('update', ['lot' => $model]))
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
- 
+        
+        $place = $model->place;
+        if (!$place)
+            $place = new Place();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['view', 'id' => $model->id]);
-            return $this->redirect(['index']);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Updated successfully.'));
         }
+
+        if ($place->load(Yii::$app->request->post()) && $place->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Updated successfully.'));
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+            'place' => $place,
+        ]);
     }
 
     /**

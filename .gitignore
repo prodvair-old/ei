@@ -47,7 +47,8 @@ phpunit.phar
 
 
 /frontend/web/img/lot/*
-/frontend/web/uploads
+/frontend/web/uploads/*
+!/frontend/web/uploads/site
 
 /node_modules
 # /newThames

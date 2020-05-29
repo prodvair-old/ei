@@ -49,18 +49,24 @@ $this->registerJs($script, yii\web\View::POS_READY);
     <?= Html::submitButton(Yii::t('app', 'Find'), ['class' => 'btn btn-primary search-submit']) ?>
 </p>
 
-<div class='lot-index table-responsive'>
+<div class='row'>
+    <div class='col-lg-12'>
+        <div class='box box-primary lot-index table-responsive'>
+            <div class='box-body'>
 
-    <?= GridView::widget([
-        'id' => 'lot-grid',
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'filterOnFocusOut' => false,
-        'layout' => "{items}\n{summary}",
-        'options' => ['class' => false],
-        'columns' => $columns,
-    ]); ?>
+                <?= GridView::widget([
+                    'id' => 'lot-grid',
+                    'dataProvider' => $dataProvider,
+                    'filterModel' => $searchModel,
+                    'filterOnFocusOut' => false,
+                    'layout' => "{items}\n{summary}",
+                    'options' => ['class' => false],
+                    'columns' => $columns,
+                ]); ?>
 
+            </div>
+        </div>
+    </div>
 </div>
 
 <p class='lot-spinner' style='display: none;'>
@@ -69,6 +75,5 @@ $this->registerJs($script, yii\web\View::POS_READY);
 
 <?= Html::submitButton(Yii::t('app', 'More'), [
     'class' => 'btn btn-primary load-more',
-    'style' => 'margin-top:20px',
     'data-offset' => $dataProvider->getCount(),
 ]) ?>

@@ -179,7 +179,7 @@ class Torg extends ActiveRecord
      *
      * @return yii\db\ActiveQuery
      */
-    public function getCase() {
+    public function getCasefile() {
         if ($this->property != self::PROPERTY_BANKRUPT)
             return null;
         return $this->hasOne(Casefile::className(), ['id' => 'case_id'])
@@ -211,10 +211,12 @@ class Torg extends ActiveRecord
     /**
      * Получить документы по торгу.
      * 
-     * @return yii\db\ActiveQuery
+     * @return yii\db\ActiveRecord
      */
     public function getDocuments()
     {
-        return $this->hasMany(Document::className(), ['model' => self::INT_CODE, 'parent_id' => $this->id]);
+        return Document::find()
+            ->where(['model' => self::INT_CODE, 'parent_id' => $this->id])
+            ->all();
     }
 }
