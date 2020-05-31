@@ -1,25 +1,25 @@
 <?php
 
-/* @var $this yii\web\View */
-/* @var $queryCategory */
-/* @var $model \frontend\modules\models\LotSearch */
-/* @var $regionList[] \common\models\db\Region */
-/* @var $type */
-
-
+use common\models\db\Lot;
+use kartik\daterange\DateRangePicker;
 use sergmoro1\lookup\models\Lookup;
 use yii\widgets\Breadcrumbs;
 use frontend\modules\models\Category;
-use frontend\modules\models\Torg;
-use yii\widgets\LinkPager;
+use common\models\db\Torg;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\helpers\Url;
 use common\models\db\Owner;
 use common\models\db\Etp;
-
 use frontend\modules\components\LotBlock;
+
+/* @var $this yii\web\View */
+/* @var $queryCategory */
+/* @var $model \frontend\modules\models\LotSearch */
+/* @var $regionList [] \common\models\db\Region */
+
+/* @var $type */
+/* @var $lots Lot */
 
 $this->title = Yii::$app->params[ 'title' ];
 $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
@@ -174,10 +174,10 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                                     <?= $form->field($model, 'region')->dropDownList(
                                         $regionList,
                                         [
-                                            'class' => 'chosen-the-basic form-control form-control-sm',
+                                            'class'            => 'chosen-the-basic form-control form-control-sm',
                                             'data-placeholder' => 'Выберите регионы',
-                                            'tabindex' => '2',
-                                            'multiple' => true
+                                            'tabindex'         => '2',
+                                            'multiple'         => true
                                         ]
                                     )
                                         ->label('Регион'); ?>
@@ -203,42 +203,45 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
                         </div>
 
-                        <div class="sidebar-box  sidebar-box__collaps <?= ($model->etp) ? '' : 'collaps' ?>">
+                        <?php if ($model->type == Torg::PROPERTY_BANKRUPT) : ?>
 
-                            <label class="control-label sidebar-box__label">Торговые площадки</label>
+                            <div class="sidebar-box  sidebar-box__collaps <?= ($model->etp) ? '' : 'collaps' ?>">
+
+                                <label class="control-label sidebar-box__label">Торговые площадки</label>
+                                <div class="box-content">
+                                    <?= $form->field($model, 'etp')->dropDownList(
+                                        Etp::getOrganizationList(),
+                                        [
+                                            'class'            => 'chosen-the-basic form-control',
+                                            'prompt'           => 'Все торговые площадки',
+                                            'data-placeholder' => 'Все торговые площадки',
+                                            'multiple'         => true
+                                        ]
+                                    )
+                                        ->label(false); ?>
+                                </div>
+
+                            </div>
+
+                        <?php endif; ?>
+
+                        <div class="sidebar-box sidebar-box__collaps
+                        <?= ($model->owner) ? '' : 'collaps' ?>">
+
+                            <label class="control-label sidebar-box__label">Организации</label>
                             <div class="box-content">
-                                <?= $form->field($model, 'etp')->dropDownList(
-                                    Etp::getOrganizationList(),
+                                <?= $form->field($model, 'owner')->dropDownList(
+                                    Owner::getOrganizationList(),
                                     [
                                         'class'            => 'chosen-the-basic form-control',
-                                        'prompt'           => 'Все торговые площадки',
-                                        'data-placeholder' => 'Все торговые площадки',
+                                        'prompt'           => 'Все организации',
+                                        'data-placeholder' => 'Все организации',
                                         'multiple'         => true
                                     ]
                                 )
                                     ->label(false); ?>
                             </div>
-
                         </div>
-
-                        <!--                        <div class="sidebar-box sidebar-box__collaps -->
-                        <? //= ($model->owner) ? '' : 'collaps' ?><!--">-->
-                        <!---->
-                        <!--                            <label class="control-label sidebar-box__label">Организации</label>-->
-                        <!--                            <div class="box-content">-->
-                        <!--                                --><? //= $form->field($model, 'owner')->dropDownList(
-                        //                                    Owner::getOrganizationList(),
-                        //                                    [
-                        //                                        'class'            => 'chosen-the-basic form-control',
-                        //                                        'prompt'           => 'Все организации',
-                        //                                        'data-placeholder' => 'Все организации',
-                        //                                        'multiple'         => true
-                        //                                    ]
-                        //                                )
-                        //                                    ->label(false); ?>
-                        <!--                            </div>-->
-                        <!---->
-                        <!--                        </div>-->
 
                         <div class="sidebar-box sidebar-box__collaps <?= ($model->tradeType) ? '' : 'collaps' ?>">
 
@@ -260,8 +263,18 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
                         </div>
 
-                        <div class="sidebar-box sidebar-box__collaps <?=($model->haveImage)? '' : 'collaps'?>">
+                        <div class="sidebar-box sidebar-box__collaps <?= ($model->haveImage || $model->andArchived) ? '' : 'collaps' ?>">
                             <label class="control-label  sidebar-box__label">Другое</label>
+                            <div class="box-content">
+                                <div class="custom-control custom-checkbox">
+                                    <?= $form->field($model, 'andArchived')->checkbox([
+                                        'class'    => 'custom-control-input',
+                                        'value'    => '1',
+                                        'id'       => 'andArchived',
+                                        'template' => '{input}<label class="custom-control-label" for="andArchived">Лоты из архива</label>'
+                                    ]) ?>
+                                </div>
+                            </div>
                             <div class="box-content">
                                 <div class="custom-control custom-checkbox">
                                     <?= $form->field($model, 'haveImage')->checkbox([
@@ -273,6 +286,74 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                                 </div>
                             </div>
                         </div>
+
+                        <?php if ($model->type == Torg::PROPERTY_BANKRUPT) : ?>
+                            <div class="sidebar-box sidebar-box__collaps <?= ($model->type == Torg::PROPERTY_BANKRUPT) ? '' : 'collaps' ?>">
+                                <label class="control-label  sidebar-box__label">Дополнительные параметры</label>
+                                <div class="box-content col-md-12">
+                                    <label>Номер ЕФРСБ</label>
+                                    <div>
+                                        <?= $form->field($model, 'efrsb')->textInput(
+                                            ['class' => 'form-control', 'placeholder' => 'Введите номер']
+                                        )->label(false); ?>
+                                    </div>
+                                </div>
+
+                                <div class="box-content col-md-12">
+                                    <label>ФИО Должника</label>
+                                    <div>
+                                        <?= $form->field($model, 'bankruptName')->textInput(
+                                            ['class' => 'form-control', 'placeholder' => 'ФИО']
+                                        )->label(false); ?>
+                                    </div>
+                                </div>
+
+                                <div class="box-content col-md-12">
+                                    <label>Начало торгов</label>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <!--                                            --><? //= $form->field($model, 'torgStartDate')->textInput(
+                                            //                                                ['class' => 'form-control', 'placeholder' => 'От']
+                                            //                                            )->label(false)->widget(DateRangePicker::classname(), [
+                                            //                                                'useWithAddon' => true
+                                            //                                            ]); ?>
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <?= $form->field($model, 'torgStartDate')->textInput(
+                                                ['class' => 'form-control', 'placeholder' => 'От']
+                                            )->label(false); ?>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <?= $form->field($model, 'torgEndDate')->textInput(
+                                                ['class' => 'form-control', 'placeholder' => 'До']
+                                            )->label(false); ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="box-content col-md-12 mt-10">
+                                    <div class="custom-control custom-checkbox">
+                                        <?= $form->field($model, 'startApplication')->checkbox([
+                                            'class'    => 'custom-control-input',
+                                            'value'    => '1',
+                                            'id'       => 'startApplication',
+                                            'template' => '{input}<label class="custom-control-label" for="startApplication">Начало приема заявок</label>'
+                                        ]) ?>
+                                    </div>
+                                </div>
+                                <div class="box-content col-md-12 mt-10">
+                                    <div class="custom-control custom-checkbox">
+                                        <?= $form->field($model, 'competedApplication')->checkbox([
+                                            'class'    => 'custom-control-input',
+                                            'value'    => '1',
+                                            'id'       => 'competedApplication',
+                                            'template' => '{input}<label class="custom-control-label" for="competedApplication">Окончание приема заявок</label>'
+                                        ]) ?>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif; ?>
 
                         <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
 
@@ -313,11 +394,6 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
                             </div>
                         </div>
-<!--                        <div class="sort-box">-->
-<!--                            <div class="d-flex align-items-center sort-item">-->
-<!--                                <label class="sort-label d-none d-sm-flex">Найдено лотов: --><?//= $count ?><!--</label>-->
-<!--                            </div>-->
-<!--                        </div>-->
                     </div>
 
 
@@ -331,40 +407,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                         } ?>
                     </div>
 
-<!--                    --><?// if (!!$pages->links[ 'next' ]) { ?>
-<!--                        <a href="--><?//= $pages->links[ 'next' ] ?><!--"-->
-<!--                           class="alert alert-primary mt-30 text-center h5 d-block">Далее</a>-->
-<!--                    --><?// } ?>
-
-<!--                    <div class="pager-wrappper mt-40">-->
-<!---->
-<!--                        <div class="pager-innner">-->
-<!---->
-<!--                            <div class="row align-items-center text-center text-lg-left">-->
-<!---->
-<!--                                <div class="col-12">-->
-<!--                                    <nav class="mt-10 mt-lg-0">-->
-<!--                                        --><?//= LinkPager::widget([
-//                                            'pagination'           => $pages,
-//                                            'nextPageLabel'        => "<span aria-hidden=\"true\">Далее</span></i>",
-//                                            'prevPageLabel'        => "<span aria-hidden=\"true\">Назад</span>",
-//                                            'maxButtonCount'       => 6,
-//                                            'options'              => ['class' => 'pagination justify-content-center justify-content-lg-left'],
-//                                            'linkOptions'          => ['class' => 'page-link'],
-//                                            'linkContainerOptions' => ['class' => 'page-item'],
-//                                            'disabledPageCssClass' => 'disabled',
-//                                        ]); ?>
-<!--                                    </nav>-->
-<!--                                </div>-->
-<!---->
-<!--                            </div>-->
-<!---->
-<!--                        </div>-->
-<!---->
-<!--                    </div>-->
-
                 </div>
-
 
             </div>
 
@@ -378,4 +421,32 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
         console.log("Fiered load after " + performance.now() + " ms");
         document.getElementById('profiling_page_load').innerHTML = 'Страница: ' + (Math.round(performance.now()) / 1000) + ' сек.';
     }, false);
+
+    var offset = 0;
+    var i = 2000;
+
+    $(window).scroll(function () {
+
+        if ($(window).scrollTop() + $(window).height() >= $(document).height() - i) {
+            offset = offset + 15;
+            i = 0;
+
+            $.ajax({
+                type: "GET",
+                url: '/lot/list' + location.search + '&LotSearch[offset]=' + offset,
+                data: $(this).serialize(),
+                success: function (data) {
+                    $('#load_list').append(data);
+                    console.log('success request');
+                    i = 2000;
+                },
+                error: function (result) {
+                    console.log('error!!!');
+                    console.log(result);
+                }
+            });
+
+        }
+    });
+
 </script>

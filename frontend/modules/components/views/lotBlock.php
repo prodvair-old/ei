@@ -1,8 +1,9 @@
 <?php
 
+use common\models\db\Lot;
 use frontend\components\NumberWords;
 
-/* @var $lot \common\models\db\Lot */
+/* @var $lot Lot */
 
 $priceClass = 'text-secondary';
 $lotOrganizatioun = '';
@@ -11,14 +12,14 @@ $lotOrganizatioun = '';
 <?= ($type == 'grid') ? '<div class="col">' : '' ?>
 
 <figure class="tour-<?= $type ?>-item-01" itemscope itemtype="http://schema.org/Product">
-<!--    <a href="javascript:void()">-->
+    <!--    <a href="javascript:void()">-->
     <a href="lot/view/<?= $lot->id ?>">
 
-        <?=($type == 'long')? '<div class="d-flex flex-column flex-sm-row">' : ''?>
+        <?= ($type == 'long') ? '<div class="d-flex flex-column flex-sm-row">' : '' ?>
 
-        <?=($type == 'long')? '<div>' : ''?>
+        <?= ($type == 'long') ? '<div>' : '' ?>
 
-<!--        --><?//= $lot->getImage('thumb') ?>
+        <!--        --><? //= $lot->getImage('thumb') ?>
 
         <div class="image image-galery">
             <img src="<?= $lot->getImage('thumb') ?>" onError="this.src='img/img.svg'"/>
@@ -40,8 +41,9 @@ $lotOrganizatioun = '';
 
             <hr>
             <ul class="item-meta lot-block__info">
-<!--                <li>--><?//= $lot->id ?><!--</li>-->
-<!--                <li>--><?//= $lot->torg->etp->title ?><!--</li>-->
+                <li><?= $lot->torg->bankrupt->title ?></li>
+                <li><?= $lot->id ?></li>
+                <!--                <li>--><? //= $lot->torg->etp->title ?><!--</li>-->
                 <li><?= Yii::$app->formatter->asDate($lot->torg->published_at, 'long') ?></li>
                 <li>
                     <div class="rating-item rating-sm rating-inline clearfix">

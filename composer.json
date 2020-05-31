@@ -37,7 +37,8 @@
         "yiisoft/yii2-queue": "^2.3",
         "sergmoro1/yii2-lookup": "^1.1",
         "sergmoro1/yii2-uploader": "^2.0",
-        "creocoder/yii2-nested-sets": "^0.9.0"
+        "creocoder/yii2-nested-sets": "^0.9.0",
+        "kartik-v/yii2-date-range": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

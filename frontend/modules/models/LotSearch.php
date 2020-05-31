@@ -5,9 +5,9 @@ namespace frontend\modules\models;
 use common\models\db\Etp;
 use common\models\db\Organization;
 use common\models\db\Place;
+use common\models\db\Profile;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use yii\data\Pagination;
 use yii\db\Expression;
 use yii\db\Query;
 use common\models\db\Torg;
@@ -48,6 +48,22 @@ class LotSearch extends Lot
 
     public $offset;
 
+    public $andArchived;
+
+    public $efrsb;
+
+    public $bankruptName;
+
+    public $void;
+
+    public $startApplication;
+
+    public $competedApplication;
+
+    public $torgStartDate;
+
+    public $torgEndDate;
+
     const NAME_DESC = 'nameDESC',
         NAME_ASC = 'nameASC',
         DATE_DESC = 'dateDESC',
@@ -61,9 +77,12 @@ class LotSearch extends Lot
     public function rules()
     {
         return [
-            [['id', 'torg_id', 'step_measure', 'deposit_measure', 'status', 'reason', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'torg_id', 'step_measure', 'deposit_measure', 'status', 'reason', 'created_at', 'updated_at'],
+                'integer'],
             [['title', 'description', 'minPrice', 'maxPrice', 'mainCategory', 'type',
-                'subCategory', 'etp', 'owner', 'tradeType', 'search', 'sortBy', 'haveImage', 'region', 'offset'], 'safe'],
+                'subCategory', 'etp', 'owner', 'tradeType', 'search', 'sortBy', 'haveImage', 'region',
+                'offset', 'efrsb', 'bankruptName', 'torgStartDate', 'torgEndDate', 'andArchived',
+                'startApplication', 'competedApplication'], 'safe'],
             [['start_price', 'step', 'deposit'], 'number'],
         ];
     }
@@ -100,12 +119,48 @@ class LotSearch extends Lot
 
         $this->load($params);
 
-        if ($this->etp) {
-            $query->joinWith(['torg', 'torg.etp', 'torg.owner', 'categories', 'place']);
-            $query->andFilterWhere(['IN', Organization::tableName() . '.id', $this->etp]);
+        $query->joinWith(['torg', 'categories']);
 
-        } else {
-            $query->joinWith(['torg', 'torg.owner', 'categories', 'place']);
+        if (!$this->andArchived) {
+            $query->andFilterWhere(['!=', Lot::tableName() . '.status', Lot::STATUS_ARCHIVED]);
+        }
+
+        if ($this->startApplication) {
+            $query->andFilterWhere(['=', Lot::tableName() . '.status', Lot::STATUS_IN_PROGRESS]);
+            $query->andFilterWhere(['=', Lot::tableName() . '.reason', Lot::REASON_APPLICATION]);
+        }
+
+        if ($this->competedApplication) {
+            $query->andFilterWhere(['=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED]);
+            $query->andFilterWhere(['=', Lot::tableName() . '.reason', Lot::REASON_APPLICATION]);
+        }
+
+        if ($this->etp) {
+            $query->joinWith(['torg.etp']);
+            $query->andFilterWhere(['IN', Organization::tableName() . '.id', $this->etp]);
+        }
+
+        if ($this->type == Torg::PROPERTY_BANKRUPT) {
+            $query->joinWith(['torg.bankrupt']);
+        }
+
+        if ($this->bankruptName) {
+            $fullName = explode(' ', $this->bankruptName);
+            $query->joinWith(['torg.bankruptProfile']);
+            $query->andFilterWhere(['=', Profile::tableName() . '.last_name', $fullName[ 0 ]]);
+            $query->andFilterWhere(['=', Profile::tableName() . '.first_name', $fullName[ 1 ]]);
+            $query->andFilterWhere(['=', Profile::tableName() . '.middle_name', $fullName[ 2 ]]);
+        }
+
+        if ($this->type == Torg::PROPERTY_ZALOG) {
+            $query->joinWith(['torg.owner']);
+        }
+        if ($this->region) {
+            $query->joinWith(['place']);
+        }
+        if ($this->efrsb) {
+            $query->joinWith(['torg.bankruptEtp']);
+            $query->andFilterWhere(['=', Etp::tableName() . '.efrsb_id', $this->efrsb]);
         }
 
         if (!$this->validate()) {
@@ -114,9 +169,7 @@ class LotSearch extends Lot
             return $dataProvider;
         }
 
-        $query->andFilterWhere(['ilike', 'title', $this->title])
-            ->andFilterWhere(['ilike', 'description', $this->description])
-            ->andFilterWhere(['>=', 'start_price', $this->minPrice])
+        $query->andFilterWhere(['>=', 'start_price', $this->minPrice])
             ->andFilterWhere(['<=', 'start_price', $this->maxPrice]);
 
 
@@ -143,7 +196,25 @@ class LotSearch extends Lot
             $query->andFilterWhere(['=', Torg::tableName() . '.property', $this->type]);
         }
 
+//        echo "<pre>";
+//        var_dump(\Yii::$app->formatter->asTimestamp($this->torgStartDate));
+//        echo "</pre>";
+        if ($this->torgStartDate) {
+            $this->torgStartDate = \Yii::$app->formatter->asTimestamp($this->torgStartDate);
+        }
+        if ($this->torgEndDate) {
+            $this->torgEndDate = \Yii::$app->formatter->asTimestamp($this->torgEndDate);
+        }
+
         $query->andFilterWhere(['IN', Torg::tableName() . '.offer', $this->tradeType]);
+        $query->andFilterWhere(['BETWEEN', Torg::tableName() . '.started_at', $this->torgStartDate, $this->torgEndDate]);
+
+        if ($this->torgStartDate) { //TODO
+            $this->torgStartDate = \Yii::$app->formatter->asDate($this->torgStartDate, 'long');
+        }
+        if ($this->torgEndDate) { //TODO
+            $this->torgEndDate = \Yii::$app->formatter->asDate($this->torgEndDate, 'long');
+        }
 
         if ($this->search) {
             $query->addSelect(new Expression("ts_rank({{%lot}}.fts,plainto_tsquery('ru', :q)) as rank"));
@@ -151,11 +222,9 @@ class LotSearch extends Lot
             $query->addOrderBy(['rank' => SORT_DESC]);
         }
 
-
         if ($this->haveImage) {
             $query->rightJoin(Onefile::tableName(), 'onefile.parent_id = lot.id AND onefile.model = :lot AND onefile.name IS NOT NULL', ['lot' => Lot::className()]);
         }
-
 
         if ($this->sortBy) {
             switch ($this->sortBy) {
@@ -185,23 +254,10 @@ class LotSearch extends Lot
             }
         } else {
             $query->addOrderBy(['torg.published_at' => SORT_DESC]);
-//            $query->addOrderBy(['lot.id' => SORT_DESC]);
         }
 
-//        $this->count = $query->count();
-//        $this->count = $query->count("lot.id");
-//        $this->count = $query->count("DISTINCT lot.id");
-//        $query->groupBy(['lot.id', 'torg.published_at']);
-
-//        $this->pages = new Pagination(['totalCount' => $this->count, 'defaultPageSize' => 10, 'pageSize' => 10]);
-//        $this->pages = new Pagination(['defaultPageSize' => 10, 'pageSize' => 10]);
         $query->offset($this->offset)
             ->limit(15);
-
-//        echo "<pre>";
-//        var_dump($query->createCommand()->getRawSql());
-//        echo "</pre>";
-//        die;
 
         return $dataProvider;
     }
@@ -220,21 +276,4 @@ class LotSearch extends Lot
             self::PRICE_ASC  => 'Цена по возрастанию'
         ];
     }
-
-    public function findSuggest(string $query): array
-    {
-        $tQuery = (new Query())->from('{{%organization}}')
-            ->select([
-                '{{%organization}}.id',
-                '{{%organization}}.title',
-                '{{%organization}}.full_title',
-                new Expression("ts_rank({{%organization}}.fts,plainto_tsquery('ru', :q)) as rank"),
-            ])
-            ->where(new Expression("{{%organization}}.fts  @@ plainto_tsquery('ru', :q)", [':q' => $query]))
-            ->limit(10)
-            ->orderBy(['rank' => SORT_DESC]);
-
-        return $tQuery->all();
-    }
-
 }

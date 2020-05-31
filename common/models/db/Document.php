@@ -28,7 +28,7 @@ class Document extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{eiLot.documens}}';
+        return '{{%document}}';
     }
 
     /**

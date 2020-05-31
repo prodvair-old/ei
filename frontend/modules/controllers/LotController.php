@@ -5,15 +5,12 @@ namespace frontend\modules\controllers;
 use common\models\db\Region;
 use common\models\Query\LotsCategory;
 use frontend\modules\models\Category;
-use frontend\modules\models\Menu;
 use Yii;
-use frontend\modules\models\Lot;
+use common\models\db\Lot;
 use frontend\modules\models\LotSearch;
-use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * LotController implements the CRUD actions for Lot model.
@@ -51,7 +48,6 @@ class LotController extends Controller
             'lots'          => $lots,
             'queryCategory' => 0,
             'type'          => 'bankrupt',
-            'pages'         => $searchModel->pages,
             'regionList'    => $regionList,
         ]);
     }
@@ -65,7 +61,8 @@ class LotController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'lot' => $this->findModel($id),
+            'type'  => 'bankrupt'
         ]);
     }
 
@@ -94,14 +91,21 @@ class LotController extends Controller
         return $result;
     }
 
-    public function actionTest()
+    /**
+     * Finds the Lot model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Lot|null
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
     {
-        $searchModel = new LotSearch();
-        $res = $searchModel->findSuggest(Yii::$app->request->queryParams[ 'search' ]);
+        $model = Lot::findOne($id);
 
-        echo "<pre>";
-        var_dump($res);
-        echo "</pre>";
-        die;
+        if ($model !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

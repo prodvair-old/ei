@@ -38,8 +38,8 @@ class Torg extends ActiveRecord
 
     // тип имущества
     const PROPERTY_BANKRUPT = 1;
-    const PROPERTY_ARRESTED = 2;
-    const PROPERTY_ZALOG = 3;
+    const PROPERTY_ZALOG = 2;
+    const PROPERTY_ARRESTED = 3;
     const PROPERTY_MUNICIPAL = 4;
 
     // тип предложения
@@ -142,14 +142,44 @@ class Torg extends ActiveRecord
     }
 
     /**
+     * Получить информацию о лотах
+     * @param $currentLot
+     * @return array|ActiveRecord[]
+     */
+    public function getOtherLots($currentLot)
+    {
+        return $this->hasMany(Lot::className(), ['torg_id' => 'id'])
+            ->andFilterWhere(['!=', Lot::tableName() . '.id', $currentLot])
+            ->all();
+    }
+
+    /**
      * Получить информацию о должнике
      * @return yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
      */
     public function getBankrupt()
     {
-        if ($this->property != self::PROPERTY_BANKRUPT)
-            return null;
-        return $this->hasOne(Bankrupt::className(), ['id' => 'bankrupt_id'])
+//        if ($this->property != self::PROPERTY_BANKRUPT)
+//            return null;
+        return $this->hasOne(Organization::className(), ['parent_id' => 'bankrupt_id'])
+//            ->andFilterWhere(['=', Organization::tableName() . '.model', Bankrupt::INT_CODE])
+//        return $this->hasOne(Etp::className(), ['id' => 'etp_id'])
+//        return $this->hasOne(Bankrupt::className(), ['id' => 'bankrupt_id'])
+            ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
+    }
+
+    public function getBankruptEtp() {
+        return $this->hasOne(Etp::className(), ['id' => 'etp_id'])
+            ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
+    }
+
+    public function getBankruptProfile()
+    {
+
+//        if ($this->property != self::PROPERTY_BANKRUPT)
+//            return null;
+        return $this->hasOne(Profile::className(), ['parent_id' => 'bankrupt_id'])
             ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
 
@@ -182,8 +212,6 @@ class Torg extends ActiveRecord
 //            $torg_debtor = TorgDebtor::findOne(['torg_id' =>$this->id]);
 //            return Organization::find(['model' => Etp::INT_CODE, 'parent_id' => $torg_debtor->etp_id]);
 
-//        if ($this->property != self::PROPERTY_BANKRUPT)
-//            return null;
         return $this->hasOne(Organization::className(), ['parent_id' => 'etp_id'])
             ->andFilterWhere(['=', Organization::tableName() . '.model', Etp::INT_CODE])
             ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
@@ -216,8 +244,6 @@ class Torg extends ActiveRecord
 //        return $this->hasOne(Owner::className(), ['id' => 'owner_id'])
 //            ->viaTable(TorgPledge::tableName(), ['torg_id' => 'id']);
 
-        //        if ($this->property != self::PROPERTY_ZALOG)
-//            return null;
         return $this->hasOne(Organization::className(), ['parent_id' => 'owner_id'])
 //            ->andFilterWhere(['=', Organization::tableName() . '.model', Owner::INT_CODE])
             ->viaTable(TorgPledge::tableName(), ['torg_id' => 'id']);
@@ -242,6 +268,22 @@ class Torg extends ActiveRecord
      */
     public function getDocuments()
     {
-        return $this->hasMany(Document::className(), ['model' => self::INT_CODE, 'parent_id' => $this->id]);
+        return $this->hasMany(Document::className(), ['parent_id' => 'id'])
+            ->andOnCondition(['=', Document::tableName() . '.model', self::INT_CODE]);
+    }
+
+//    public function getDoc()
+//    {
+//        return $this->hasOne(Document::className(), ['parent_id' => 'id']);
+//    }
+
+    /**
+     * @return array
+     */
+    public static function getTypeList()
+    {
+        $result[ '0' ] = 'Все Типы';
+        $result += Lookup::items('TorgProperty');
+        return $result;
     }
 }

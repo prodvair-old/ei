@@ -77,6 +77,7 @@ class Casefile extends ActiveRecord
      */
     public function getDocuments()
     {
-        return $this->hasMany(Document::className(), ['model' => self::INT_CODE, 'parent_id' => $this->id]);
+        return $this->hasMany(Document::className(), ['parent_id' => 'id'])
+            ->andOnCondition(['=', Document::tableName() . '.model', self::INT_CODE]);
     }
 }

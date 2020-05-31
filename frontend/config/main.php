@@ -45,6 +45,7 @@ return [
     'formatter' => [
       'decimalSeparator' => '.',
       'thousandSeparator' => ' ',
+      'language' => 'ru-RU',
       'currencyCode' => 'RUB',
     ],
     'request' => [
@@ -160,8 +161,8 @@ return [
         '/wish-list-edit'   => 'lot/wish_list',
 
         '/lot/list' => '/lot/lot/index', //TODO
-        '/lot/test' => '/lot/lot/test',
-        '/lot/list/old' => '/LotOld/lot-old/index',
+        '/lot/view/<id:\d+>' => '/lot/lot/view', //TODO
+
         '/lot/load-sub-categories' => '/lot/lot/load-sub-categories',
 
         '/<type>'                                     => 'lot/index',
