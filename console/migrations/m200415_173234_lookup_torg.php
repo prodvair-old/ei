@@ -18,8 +18,8 @@ class m200415_173234_lookup_torg extends Migration
         // имущество
         $this->insert(self::TABLE_PROPERTY, ['id' => self::TORG_PROPERTY, 'name' => 'TorgProperty']);
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Банкротное',    'code' => 1, 'property_id' => self::TORG_PROPERTY, 'position' => 1]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Залоговое',     'code' => 2, 'property_id' => self::TORG_PROPERTY, 'position' => 2]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Арестованное',  'code' => 3, 'property_id' => self::TORG_PROPERTY, 'position' => 3]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Арестованное',  'code' => 2, 'property_id' => self::TORG_PROPERTY, 'position' => 2]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Залоговое',     'code' => 3, 'property_id' => self::TORG_PROPERTY, 'position' => 3]);
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Муниципальное', 'code' => 4, 'property_id' => self::TORG_PROPERTY, 'position' => 4]);
 
         // тип предложения

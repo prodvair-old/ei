@@ -13,6 +13,7 @@ class m200415_172026_torg extends Migration
     {
         $this->createTable(self::TABLE, [
             'id'           => $this->bigPrimaryKey(),
+            'msg_id'       => $this->string()->notNull(),
             
             'property'     => $this->smallInteger()->notNull(),
             'description'  => $this->text(),

@@ -13,8 +13,12 @@ use common\models\db\Category;
 
 Select2Asset::register($this);
 
+$data = Category::jsonItems($model->new_categories);
+
 $script = <<<JS
-$(document).ready(function() { $('#lot-new_categories').select2(); });
+$(document).ready(function() { $('#lot-new_categories').select2(
+    {data: $data}
+); });
 JS;
 $this->registerJS($script);
 ?>
@@ -22,10 +26,7 @@ $this->registerJS($script);
 <?= $form->field($model, 'status')->dropdownList(Lookup::items(Property::LOT_STATUS, true)) ?>
 <?= $form->field($model, 'reason')->dropdownList(Lookup::items(Property::LOT_REASON, true)) ?>
 
-<?= $form->field($model, 'new_categories')->dropDownList(Category::items(), [
-        'multiple'=>'multiple',
-    ]             
-); ?>
+<?= $form->field($model, 'new_categories')->dropdownList([], ['multiple' => 'multiple']) ?>
 
 <div class='form-group'>
     <?= Html::submitButton(Yii::t('app', 'Save'), [

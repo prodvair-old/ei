@@ -5,6 +5,9 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use common\models\db\Category;
+use backend\modules\admin\assets\Select2Asset;
+use backend\modules\admin\assets\LoadMoreAsset;
 
 $columns = require __DIR__ . '/lot_columns.php';
 
@@ -13,49 +16,35 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $url = Url::to(['lot/more']);
 
-$script = <<< JS
-$('body').on('click', '.btn.search-submit', function(){ $("#lot-grid").yiiGridView("applyFilter"); });
-$('body').on('click', '.btn.load-more',  function(){
-    var that = $(this);
-    var offset = that.attr('data-offset');
-    var lot_index = $('.lot-index');
-    var lot_grid = lot_index.find('#lot-grid');
-    var filter = lot_grid.find('.filters');
-    var spinner = $('.lot-spinner');
-    
-    spinner.show();
+$this->registerJs('var load_more_url="' . $url . '";', yii\web\View::POS_HEAD);
 
-    $.ajax({
-        url: '$url',
-        data: (filter.find('.form-control').serialize() + '&offset=' + offset),
-        success: function(response) {
-            if (response.count) {
-                lot_grid.append(response.content);
-                that.attr('data-offset', offset + response.count);
-            } else
-                that.attr('disabled','disabled');
-            spinner.hide();
-        }
-    });
-});
+LoadMoreAsset::register($this);
+
+Select2Asset::register($this);
+
+$lot_search = Yii::$app->request->get('LotSearch');
+$data = Category::jsonItems([$lot_search['category_id']], true);
+
+$script = <<<JS
+$(document).ready(function() { $('#lot-category_id').select2(
+    {data: $data}
+); });
 JS;
-
-$this->registerJs($script, yii\web\View::POS_READY);
+$this->registerJS($script);
 ?>
-
-<p>
-    <?= Html::a(Yii::$app->params['icons']['plus'] . ' ' . Yii::t('app', 'Add'), ['create'], ['class' => 'btn btn-success']) ?>
-
-    <?= Html::submitButton(Yii::t('app', 'Find'), ['class' => 'btn btn-primary search-submit']) ?>
-</p>
 
 <div class='row'>
     <div class='col-lg-12'>
-        <div class='box box-primary lot-index table-responsive'>
-            <div class='box-body'>
+        <div class='box model-index table-responsive'>
+            <div class='box-header'>
+                <?= Html::a(Yii::$app->params['icons']['plus'] . ' ' . Yii::t('app', 'Add'), ['create'], ['class' => 'btn btn-success']) ?>
 
+                <?= Html::submitButton(Yii::t('app', 'Find'), ['class' => 'btn btn-primary search-submit']) ?>
+            </div>
+
+            <div class='box-body'>
                 <?= GridView::widget([
-                    'id' => 'lot-grid',
+                    'id' => 'model-grid',
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
                     'filterOnFocusOut' => false,
@@ -63,17 +52,18 @@ $this->registerJs($script, yii\web\View::POS_READY);
                     'options' => ['class' => false],
                     'columns' => $columns,
                 ]); ?>
+            </div>
 
+            <div class='box-footer'>
+                <p class='model-spinner' style='display: none;'>
+                    <i class="fa fa-spinner fa-spin fa-fw"></i>
+                </p>
+
+                <?= Html::submitButton(Yii::t('app', 'More'), [
+                    'class' => 'btn btn-primary load-more',
+                    'data-offset' => $dataProvider->getCount(),
+                ]) ?>
             </div>
         </div>
     </div>
 </div>
-
-<p class='lot-spinner' style='display: none;'>
-    <i class="fa fa-spinner fa-spin fa-fw"></i>
-</p>
-
-<?= Html::submitButton(Yii::t('app', 'More'), [
-    'class' => 'btn btn-primary load-more',
-    'data-offset' => $dataProvider->getCount(),
-]) ?>

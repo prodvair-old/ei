@@ -20,6 +20,7 @@ class Bankrupt extends BaseAgent
 {
     // внутренний код модели используемый в составном ключе
     const INT_CODE = 4;
+    protected $int_code = 4;
 
     /**
      * {@inheritdoc}

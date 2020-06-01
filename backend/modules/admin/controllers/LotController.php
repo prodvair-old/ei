@@ -132,7 +132,6 @@ class LotController extends Controller
 
     /**
      * Deletes an existing model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      */
@@ -150,7 +149,7 @@ class LotController extends Controller
      * Finds the model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Post the loaded model
+     * @return the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function findModel($id)

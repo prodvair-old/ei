@@ -19,7 +19,8 @@ class Manager extends BaseAgent
 {
     // внутренний код модели используемый в составном ключе
     const INT_CODE = 3;
-
+    protected $int_code = 3;
+     
     /**
      * {@inheritdoc}
      */

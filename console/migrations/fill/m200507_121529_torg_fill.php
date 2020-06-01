@@ -89,6 +89,7 @@ class m200507_121529_torg_fill extends Migration
             // Torg
             $t = [
                 'id'           => $torg_id,
+                'msg_id'       => ($row['msgId'] ?: date('dmy', $created_at) . '/' . $torg_id . '/0'),
                 'property'     => $property,
                 'description'  => $row['description'],
                 'started_at'   => ($row['startDate'] ? (strtotime($row['startDate'])? strtotime($row['startDate']) : null) : null),
@@ -138,7 +139,7 @@ class m200507_121529_torg_fill extends Migration
             }
         }
 
-        $this->batchInsert(self::TABLE, ['id', 'property', 'description', 'started_at', 'end_at', 'completed_at', 'published_at', 'offer', 'created_at', 'updated_at'], $torgs);
+        $this->batchInsert(self::TABLE, ['id', 'msg_id', 'property', 'description', 'started_at', 'end_at', 'completed_at', 'published_at', 'offer', 'created_at', 'updated_at'], $torgs);
         if ($links['debtor'])
             $this->batchInsert('{{%torg_debtor}}', ['torg_id', 'etp_id', 'bankrupt_id', 'manager_id', 'case_id'], $links['debtor']);
         if ($links['pledge'])

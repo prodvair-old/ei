@@ -4,6 +4,7 @@ use yii\db\Migration;
 use common\models\db\Lot;
 use common\models\db\Place;
 use console\traits\Keeper;
+use console\traits\District;
 
 /**
  * Class m200508_063129_lot_fill
@@ -11,6 +12,7 @@ use console\traits\Keeper;
 class m200508_063129_lot_fill extends Migration
 {
     use Keeper;
+    use District;
     
     const TABLE = '{{%lot}}';
     const LIMIT = 10000;
@@ -152,7 +154,7 @@ class m200508_063129_lot_fill extends Migration
             if ($this->validateAndKeep($lot, $lots, $l) && $row['regionId']) {
 
                 $city     = isset($row['city']) && $row['city'] ? $row['city'] : '';
-                $district = isset($row['district']) && $row['district'] ? $row['district'] : '';
+                $district = $this->districtConvertor($row['district']);
                 $address = (isset($obj->address) ? $obj->address->city . ', ' . $obj->address->region . ', ' . $obj->address->street : '');
                 $address  = isset($row['address']) && $row['address'] ? $row['address'] : $address;
                 $geo_lat  = (isset($obg->address->geo_lat) && $obg->address->geo_lat ? $obg->address->geo_lat : null);
@@ -164,7 +166,7 @@ class m200508_063129_lot_fill extends Migration
                     'parent_id'   => $lot_id,
                     'city'        => $city,
                     'region_id'   => $row['regionId'],
-                    'district'    => $district,
+                    'district_id' => $district,
                     'address'     => $address,
                     'geo_lat'     => $geo_lat,
                     'geo_lon'     => $geo_lon,
@@ -178,7 +180,7 @@ class m200508_063129_lot_fill extends Migration
         }
         
         $this->batchInsert(self::TABLE, ['id', 'torg_id', 'title', 'description', 'start_price', 'step', 'step_measure', 'deposit', 'deposit_measure', 'status', 'reason', 'info', 'created_at', 'updated_at'], $lots);
-        $this->batchInsert('{{%place}}', ['model', 'parent_id', 'city', 'region_id', 'district', 'address', 'geo_lat', 'geo_lon', 'created_at', 'updated_at'], $places);
+        $this->batchInsert('{{%place}}', ['model', 'parent_id', 'city', 'region_id', 'district_id', 'address', 'geo_lat', 'geo_lon', 'created_at', 'updated_at'], $places);
     }
 
     private function convert($status)

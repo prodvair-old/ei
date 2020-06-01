@@ -14,19 +14,19 @@ class m200410_120002_place extends Migration
     public function up()
     {
         $this->createTable(self::TABLE, [
-            'id'         => $this->bigPrimaryKey(),
-            'model'      => $this->smallInteger()->notNull(),
-            'parent_id'  => $this->bigInteger()->notNull(),
+            'id'          => $this->bigPrimaryKey(),
+            'model'       => $this->smallInteger()->notNull(),
+            'parent_id'   => $this->bigInteger()->notNull(),
             
-            'city'       => $this->string()->notNull(),
-            'region_id'  => $this->integer(),
-            'district'   => $this->string()->notNull(),
-            'address'    => $this->text()->notNull(),
-            'geo_lat'    => $this->string(),
-            'geo_lon'    => $this->string(),
+            'city'        => $this->string()->notNull(),
+            'region_id'   => $this->integer(),
+            'district_id' => $this->integer(),
+            'address'     => $this->text()->notNull(),
+            'geo_lat'     => $this->string(),
+            'geo_lon'     => $this->string(),
 
-            'created_at' => $this->integer()->notNull(),
-            'updated_at' => $this->integer()->notNull(),
+            'created_at'  => $this->integer()->notNull(),
+            'updated_at'  => $this->integer()->notNull(),
         ]);
         
         $this->createIndex('idx-place-model-parent_id', self::TABLE, ['model', 'parent_id'], true);
@@ -35,8 +35,8 @@ class m200410_120002_place extends Migration
 		$this->addCommentOnColumn(self::TABLE, 'parent_id', 'ID в соответствующей модели, например в Organization');
         
 		$this->addCommentOnColumn(self::TABLE, 'city', 'Город');
-		$this->addCommentOnColumn(self::TABLE, 'region_id', 'Код региона');
-		$this->addCommentOnColumn(self::TABLE, 'district', 'Округ');
+		$this->addCommentOnColumn(self::TABLE, 'region_id', 'Регион');
+		$this->addCommentOnColumn(self::TABLE, 'district_id', 'Округ');
 		$this->addCommentOnColumn(self::TABLE, 'address', 'Полный адрес');
 		$this->addCommentOnColumn(self::TABLE, 'geo_lat', 'Широта');
 		$this->addCommentOnColumn(self::TABLE, 'geo_lon', 'Долгота');
