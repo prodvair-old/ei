@@ -14,7 +14,7 @@ return [
     ],
     [
         'attribute' => 'title',
-        'options' => ['style' => 'width:25%;'],
+        'options' => ['style' => 'width:20%;'],
     ],
     [
         'attribute' => 'status',
@@ -43,12 +43,12 @@ return [
 
     [
         'attribute' => 'category_id',
-        'filter' => Category::items(),
+        'filter' => '<select id="lot-category_id" class="form-control" name="LotSearch[category_id]"></select>',
         'value' => function($data) {
             $c = count($data->categories);
             return $c > 0 ? ($data->categories[0]->name . ($c > 1 ? ' (+' . ($c-1) . ')' : '')) : '-';
         },
-        'options' => ['style' => 'width:15%;'],
+        'options' => ['style' => 'width:20%;'],
     ],
     [
         'attribute' => 'start_price',

@@ -28,14 +28,14 @@ class m200527_102010_document extends Migration
             'updated_at' => $this->integer()->notNull(),
         ]);
 
-       $this->createIndex('idx-document-model-parent_id', self::TABLE, ['model', 'parent_id'], true);
+        $this->createIndex('idx-document-model-parent_id', self::TABLE, ['model', 'parent_id'], true);
 
 		$this->addCommentOnColumn(self::TABLE, 'model', 'Код модели, например Casefile::INT_CODE');
-		$this->addCommentOnColumn(self::TABLE, 'parent_id', 'ID в соответствующей модели, например в CaseFile, Torg? Lot');
+		$this->addCommentOnColumn(self::TABLE, 'parent_id', 'ID в соответствующей модели, например в Casefile, Torg, Lot');
         
 		$this->addCommentOnColumn(self::TABLE, 'name', 'Наименование документа');
 		$this->addCommentOnColumn(self::TABLE, 'ext', 'Расширение файла документа');
-		$this->addCommentOnColumn(self::TABLE, 'url', 'Ссыдка на документ');
+		$this->addCommentOnColumn(self::TABLE, 'url', 'Ссылка на документ');
     }
 
     /**

@@ -26,7 +26,11 @@ $this->registerJS($script);
 <?= $form->field($model, 'status')->dropdownList(Lookup::items(Property::LOT_STATUS, true)) ?>
 <?= $form->field($model, 'reason')->dropdownList(Lookup::items(Property::LOT_REASON, true)) ?>
 
-<?= $form->field($model, 'new_categories')->dropdownList([], ['multiple' => 'multiple']) ?>
+<div class='form-group field-lot-new_categories has-success'>
+    <label class='control-label' for='lot-new_categories'><?= $model->getAttributeLabel('new_categories') ?></label>
+    <select id='lot-new_categories' class='form-control' name='Lot[new_categories][]' multiple='multiple'></select>
+    <div class='help-block'></div>
+</div>
 
 <div class='form-group'>
     <?= Html::submitButton(Yii::t('app', 'Save'), [
