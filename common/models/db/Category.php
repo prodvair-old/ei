@@ -30,6 +30,7 @@ class Category extends ActiveRecord
     public $model_count;        
     
     const ROOT = 0;
+    const MAX_NAME_LENGTH = 64;
 
     private static $offset = [
         Torg::PROPERTY_BANKRUPT  => 10000, 
@@ -122,6 +123,33 @@ class Category extends ActiveRecord
     }
     
     /**
+     * Json array of categories names with ID as index.
+     * 
+     * @param array $selected items ID
+     * @param 
+     * @return string
+     */
+    public static function jsonItems($selected, $first = false)
+    {
+        $a = [];
+        if ($first)
+            $a[] = ['text' => 'Категории', 'children' => [['id' => 1, 'text' => 'Все категории']]];
+        foreach(self::find()->where(['depth' => 1])->orderBy('lft ASC')->all() as $node)
+        {
+            $b = [];
+            $b['text'] = $node->name;
+            $b['children'] = [];
+            foreach($node->children()->all() as $child) {
+                $b['children'][] = in_array($child->id, $selected)
+                    ? ['id' => $child->id, 'text' => $child->name, 'selected' => true]
+                    : ['id' => $child->id, 'text' => $child->name];
+            }
+            $a[] = $b;
+        }
+        return json_encode($a);
+    }
+
+    /**
      * Get Category by slug.
      * @param string $slug
      * @return Category | false
@@ -154,9 +182,12 @@ class Category extends ActiveRecord
      */
     public function getPrettyName($plain = false)
     {
-        $indentation = str_repeat('-', $this->depth * 3);
+        $indentation = $this->depth == 1 ? '----' : '';
+        mb_internal_encoding('UTF-8');
         return $plain
-            ? $indentation . ' ' . $this->name
+            ? $indentation . (mb_strlen($this->name) > self::MAX_NAME_LENGTH
+                ? mb_substr($this->name, 0, self::MAX_NAME_LENGTH) . ' ...'
+                : $this->name)
             : '<span class="branch">' . $indentation . '</span>' . ' ' . $this->name;
     }
 

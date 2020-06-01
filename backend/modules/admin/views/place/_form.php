@@ -28,7 +28,11 @@ use common\models\db\Region;
     </div>
 </div>
 
-<?= $form->field($model, 'address')->textArea(['maxlength' => true]) ?>
+<div class='row'>
+    <div class='col-sm-12'>
+        <?= $form->field($model, 'address')->textArea(['maxlength' => true]) ?>
+    </div>
+</div>
 
 <div class='row'>
     <div class='col-sm-4 col-md-offset-4'>

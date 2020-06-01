@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\assets;
+namespace backend\modules\admin\assets;
 
 use yii\web\AssetBundle;
 
@@ -13,12 +13,11 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.css',
+        'https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic',
     ];
     public $js = [
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
-        BowerAssets::class
     ];
 }

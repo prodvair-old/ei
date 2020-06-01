@@ -11,6 +11,7 @@ use sergmoro1\lookup\models\Lookup;
  * Торг, аукцион по продаже лотов.
  *
  * @var integer $id
+ * @var string  $msg_id
  * @var integer $property
  * @var text    $description
  * @var string  $started_at
@@ -74,11 +75,12 @@ class Torg extends ActiveRecord
     public function rules()
     {
         return [
-            ['property', 'required'],
+            [['msg_id', 'property'], 'required'],
+            ['msg_id', 'string', 'max' => 255],
             [['property', 'offer'], 'integer'],
             ['property', 'in', 'range' => self::getProperties()],
             ['offer', 'in', 'range' => self::getOffers()],
-            [['description', 'etp_id', 'started_at', 'end_at', 'completed_at', 'published_at', 'created_at', 'updated_at'], 'safe'],
+            [['description', 'started_at', 'end_at', 'completed_at', 'published_at', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -88,7 +90,7 @@ class Torg extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'etp_id'       => Yii::t('app', 'Etp'),
+            'msg_id'       => Yii::t('app', 'Message'),
             'property'     => Yii::t('app', 'Property'),
             'description'  => Yii::t('app', 'Description'),
             'started_at'   => Yii::t('app', 'Start'),
@@ -129,6 +131,17 @@ class Torg extends ActiveRecord
     }
 
     /**
+     * Get short title
+     * @return string
+     */
+    public function getShortTitle() {
+        mb_internal_encoding('UTF-8');
+        return mb_strlen($this->description) > self::SHORT_TITLE_LENGTH
+            ? mb_substr($this->description, 0, self::SHORT_TITLE_LENGTH) . '...'
+            : $this->description;
+    }
+
+    /**
      * Получить информацию о лотах
      * @return yii\db\ActiveQuery
      */
@@ -156,7 +169,7 @@ class Torg extends ActiveRecord
         if ($this->property == self::PROPERTY_ZALOG)
             return null;
         return $this->hasOne(Manager::className(), ['id' => 'manager_id'])
-            ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
+            ->viaTable(TorgDrawish::tableName(), ['torg_id' => 'id']);
     }
     
     /**
@@ -170,8 +183,6 @@ class Torg extends ActiveRecord
             return null;
         $torg_debtor = TorgDebtor::find()->select(['etp_id'])->where(['torg_id' =>$this->id]);
         return Organization::findOne(['model' => Etp::INT_CODE, 'parent_id' => $torg_debtor->etp_id]);
-        //return $this->hasOne(Organization::className(), ['id' => 'etp_id'])
-            //->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
     
     /**
@@ -218,5 +229,23 @@ class Torg extends ActiveRecord
         return Document::find()
             ->where(['model' => self::INT_CODE, 'parent_id' => $this->id])
             ->all();
+    }
+
+    /**
+     * Получить ответственного за торг.
+     * 
+     * @return yii\db\ActiveRecord
+     */
+    public function getResponsible()
+    {
+        switch($this->property) { 
+            case self::PROPERTY_BANKRUPT:
+                return $this->getBankrupt();
+            case self::PROPERTY_ARRESTED:
+            case self::PROPERTY_MUNICIPAL:
+                return $this->getManager();
+            case self::PROPERTY_ZALOG:
+                return $this->getUser();
+        }
     }
 }

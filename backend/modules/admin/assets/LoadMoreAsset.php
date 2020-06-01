@@ -1,24 +1,22 @@
 <?php
 
-namespace backend\assets;
+namespace backend\modules\admin\assets;
 
 use yii\web\AssetBundle;
 
 /**
- * Main backend application asset bundle.
+ * Load more model asset.
  */
-class AppAsset extends AssetBundle
+class LoadMoreAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css',
     ];
     public $js = [
+        'js/load_more.min.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
-        BowerAssets::class
     ];
 }

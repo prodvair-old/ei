@@ -24,5 +24,9 @@ return [
             'default' => '<i class="fa fa-file-o"></i>',
             'empty' => '<i class="fa fa-question"></i>',
         ],
+        'plus'   => '<i class="fa fa-plus"></i>',
+        'pencil' => '<i class="fa fa-pencil"></i>',
+        'trash'  => '<i class="fa fa-trash"></i>',
+        'lot'    => '<i class="fa fa-plus-square"></i>',
     ],
 ];

@@ -6,7 +6,7 @@
 use yii\helpers\Html;
 use backend\models\UserAccess;
 
-backend\assets\AppAsset::register($this);
+backend\modules\admin\assets\AppAsset::register($this);
 dmstr\web\AdminLteAsset::register($this);
 ?>
 

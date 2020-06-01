@@ -8,14 +8,14 @@ use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
 
-use common\models\db\Lot;
-use common\models\db\Place;
-use backend\modules\admin\models\LotSearch;
+use common\models\db\Torg;
+use common\models\db\TorgDrawish;
+use backend\modules\admin\models\TorgSearch;
 
 /**
- * LotController implements the CRUD actions for Lot model.
+ * TorgController implements the CRUD actions for Torg model.
  */
-class LotController extends Controller
+class TorgController extends Controller
 {
     private $_model;
 
@@ -52,7 +52,7 @@ class LotController extends Controller
         //if (!Yii::$app->user->can('index'))
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
-        $searchModel = new LotSearch();
+        $searchModel = new TorgSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->get());
 
         return $this->render('index', [
@@ -84,19 +84,28 @@ class LotController extends Controller
      */
     public function actionCreate()
     {
+        //if (!Yii::$app->user->can('createTorg')) {
+            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
-        if (Yii::$app->user->can('createLot')) {
-            $model = new Lot();
+        $model = new Torg();
+        $drawish = new TorgDrawish();
 
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('create', [
-                    'model' => $model,
-                ]);
+        if ($model->load(Yii::$app->request->post()) && $drawish->load(Yii::$app->request->post())) {
+            $isValid = $model->validate();
+            $isValid = $drawish->validate() && $isValid;
+            if ($isValid) {
+                $model->save(false);
+                $drawish->save(false);
+                if ($model->next_step)
+                    return $this->redirect(['create/lot', 'torg_id' => $model->id]);
+                else
+                    return $this->redirect(['update', 'id' => $model->id]);
             }
-        } else
-            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        }
+        return $this->render('create', [
+            'model'   => $model,
+            'drawish' => $drawish,
+        ]);
     }
 
     /**
@@ -112,21 +121,24 @@ class LotController extends Controller
         //if (!Yii::$app->user->can('update', ['lot' => $model]))
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
         
-        $place = $model->place;
-        if (!$place)
-            $place = new Place();
+        if (!($model->property == Torg::PROPERTY_ZALOG))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', Yii::t('app', 'Updated successfully.'));
+        $model = new Torg();
+        $drawish = new TorgDrawish();
+
+        if ($model->load(Yii::$app->request->post()) && $drawish->load(Yii::$app->request->post())) {
+            $isValid = $model->validate();
+            $isValid = $drawish->validate() && $isValid;
+            if ($isValid) {
+                $model->save(false);
+                $drawish->save(false);
+                return $this->redirect(['update', 'id' => $model->id]);
+            }
         }
-
-        if ($place->load(Yii::$app->request->post()) && $place->save()) {
-            Yii::$app->session->setFlash('success', Yii::t('app', 'Updated successfully.'));
-        }
-
         return $this->render('update', [
             'model' => $model,
-            'place' => $place,
+            'drawish' => $drawish,
         ]);
     }
 
@@ -137,12 +149,12 @@ class LotController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::$app->user->can('delete')) {
-            $model = $this->findModel($id);
-            $model->delete();
-            return $this->redirect(['index']);
-        } else
+        if (!Yii::$app->user->can('delete'))
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+
+        $model = $this->findModel($id);
+        $model->delete();
+        return $this->redirect(['index']);
     }
 
     /**
@@ -156,7 +168,7 @@ class LotController extends Controller
     {
         if ($this->_model === null) 
         {
-            if ($this->_model = Lot::findOne($id))
+            if ($this->_model = Torg::findOne($id))
             {
                 return $this->_model;
             } else {
@@ -166,14 +178,14 @@ class LotController extends Controller
     }
 
     /**
-     * Getting a pool of lots that meet the conditions.
+     * Getting a pool of models that meet the conditions.
      * @return json array {count: integer, content: string}
      * @throws ForbiddenHttpException if this is not an ajax request
      */
 	public function actionMore()
 	{
 		if(Yii::$app->getRequest()->isAjax) {
-            $searchModel = new LotSearch();
+            $searchModel = new TorgSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->get(), Yii::$app->request->get('offset'));
 
             return $this->asJson([

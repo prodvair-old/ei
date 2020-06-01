@@ -4,33 +4,19 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\grid\GridView;
-use common\models\db\Category;
-use backend\modules\admin\assets\Select2Asset;
 use backend\modules\admin\assets\LoadMoreAsset;
+use yii\grid\GridView;
 
-$columns = require __DIR__ . '/lot_columns.php';
+$columns = require __DIR__ . '/torg_columns.php';
 
-$this->title = Yii::t('app', 'Lots');
+$this->title = Yii::t('app', 'Auctions');
 $this->params['breadcrumbs'][] = $this->title;
 
-$url = Url::to(['lot/more']);
+$url = Url::to(['torg/more']);
 
 $this->registerJs('var load_more_url="' . $url . '";', yii\web\View::POS_HEAD);
 
 LoadMoreAsset::register($this);
-
-Select2Asset::register($this);
-
-$lot_search = Yii::$app->request->get('LotSearch');
-$data = Category::jsonItems([$lot_search['category_id']], true);
-
-$script = <<<JS
-$(document).ready(function() { $('#lot-category_id').select2(
-    {data: $data}
-); });
-JS;
-$this->registerJS($script);
 ?>
 
 <div class='row'>
@@ -56,7 +42,7 @@ $this->registerJS($script);
 
             <div class='box-footer'>
                 <p class='model-spinner' style='display: none;'>
-                    <i class="fa fa-spinner fa-spin fa-fw"></i>
+                    <i class='fa fa-spinner fa-spin fa-fw'></i>
                 </p>
 
                 <?= Html::submitButton(Yii::t('app', 'More'), [
