@@ -24,11 +24,12 @@ class TestController extends Controller
 {
     public function actionIndex() 
     {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $client = new \yii\httpclient\Client(['baseUrl' => 'http://sofifa.com/leagues?hl=en-US']);
+        $response = $client->createRequest()
+            ->send();
 
-        $lots = Lots::find()->count();
-
-        return $lots;
+        var_dump('client: ', $client);
+        var_dump('response: ', $response);
     }
 
     public function actionAddress()

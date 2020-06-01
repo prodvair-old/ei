@@ -14,7 +14,7 @@ class m200528_090002_place_alter extends Migration
         $this->addColumn(self::TABLE, 'district_id', $this->integer());
 
         $db = \Yii::$app->db;
-        $command = $db->createCommand('UPDATE place, district SET district_id = district.id WHERE place.district = district.name');
+        $command = $db->createCommand('UPDATE place SET district_id = (SELECT district.id FROM district WHERE place.district = district.name)');
         $result = $command->execute();
 
         $this->dropColumn(self::TABLE, 'district');
