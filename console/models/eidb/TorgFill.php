@@ -51,6 +51,7 @@ class TorgFill extends Module
             // Torg
             $t = [
                 'id'           => $torg_id,
+                'msg_id'       => ($row['msgId'] ?: date('dmy', $created_at) . '/' . $torg_id . '/0'),
                 'property'     => $property,
                 'description'  => $row['description'],
                 'started_at'   => ($row['startDate'] ? (strtotime($row['startDate'])? strtotime($row['startDate']) : null) : null),
@@ -126,10 +127,10 @@ class TorgFill extends Module
             $result['torg']         = $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
             $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')-> execute();
         } else {
-            $result['torg_drawish'] = $db->createCommand('TRUNCATE TABLE {{%torg_drawish}}')->execute();
-            $result['torg_pledge']  = $db->createCommand('TRUNCATE TABLE {{%torg_pledge}}')->execute();
-            $result['torg_debtor']  = $db->createCommand('TRUNCATE TABLE {{%torg_debtor}}')->execute();
-            $result['torg']         = $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
+            $result['torg_drawish'] = $db->createCommand('TRUNCATE TABLE {{%torg_drawish}} CASCADE')->execute();
+            $result['torg_pledge']  = $db->createCommand('TRUNCATE TABLE {{%torg_pledge}} CASCADE')->execute();
+            $result['torg_debtor']  = $db->createCommand('TRUNCATE TABLE {{%torg_debtor}} CASCADE')->execute();
+            $result['torg']         = $db->createCommand('TRUNCATE TABLE '. self::TABLE.' CASCADE')->execute();
         }
 
         return $result;

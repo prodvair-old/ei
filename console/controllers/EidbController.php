@@ -21,6 +21,42 @@ use console\models\eidb\LotImageFill;
  */
 class EidbController extends Controller
 {
+    // Полный парсинг
+    // php yii eidb
+    public function actionIndex($step = 100)
+    {
+        echo "\nЗапуск парсера! ---------------\n";
+        $this->actionSro($step);
+        $this->actionManager($step);
+        $this->actionBankrupt($step);
+        $this->actionEtp($step);
+        $this->actionOwner($step);
+        $this->actionCasefile($step);
+        $this->actionTorg($step);
+        $this->actionLot($step);
+        $this->actionLotCategory($step);
+        $this->actionLotPrice($step);
+        echo "\nЗавершение работы! ------------\n";
+    }
+    // Полное удаление
+    // php yii eidb/del
+    public function actionDel($step = 100)
+    {
+        echo "\nЗапуск парсера! ---------------\n";
+        $this->actionLotPriceDel($step);
+        $this->actionLotCategoryDel($step);
+        $this->actionLotDel($step);
+        $this->actionTorgDel($step);
+        $this->actionCasefileDel($step);
+        $this->actionOwnerDel($step);
+        $this->actionEtpDel($step);
+        $this->actionBankruptDel($step);
+        $this->actionManagerDel($step);
+        $this->actionSroDel($step);
+        echo "\nЗавершение работы! ------------\n";
+    }
+
+
     // СРО
     // php yii eidb/sro
     public function actionSro($step = 100) 

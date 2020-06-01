@@ -164,7 +164,7 @@ class LotFill extends Module
             $result['lot']  = $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
             $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')-> execute();
         } else {
-            $result['lot']  = $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
+            $result['lot']  = $db->createCommand('TRUNCATE TABLE '. self::TABLE.' CASCADE')->execute();
         }
 
         return $result;
