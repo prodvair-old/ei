@@ -87,20 +87,19 @@ return [
             'username' => 'bankrupt',
             'password' => 'bankrupt',
             'charset'  => 'utf8',
-/*
             'tablePrefix' => 'eidb"."',
+            /*
             'emulatePrepare' => false,
             'schemaMap' => [
                 'pgsql'=> [
                     'class'=>'yii\db\pgsql\Schema',
                     'defaultSchema' => 'eidb' //specify your schema here
                 ]
-            ],
+            ],*/
             // Schema cache options (for production environment)
             'enableSchemaCache' => false,
             'schemaCacheDuration' => 6,
             'schemaCache' => 'cache',
-*/
         ],
         'obj' => [
             'class' => 'yii\db\Connection',
