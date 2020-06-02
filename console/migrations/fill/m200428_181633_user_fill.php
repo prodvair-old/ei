@@ -100,7 +100,7 @@ class m200428_181633_user_fill extends Migration
                 // Place
                 $city = isset($obj->contacts->city) ? $obj->contacts->city : '';
                 $region_id = isset($obj->contacts->region) ? $obj->contacts->region : null;
-                $district = isset($obj->contacts->district) ? $this->districtConvertor($obj->contacts->district) : 0;
+                $district = isset($obj->contacts->district) ? $this->districtConvertor($obj->contacts->district) : null;
                 $address = isset($obj->contacts->address) ? $obj->contacts->address : $city;
                 $geo_lat  = (isset($obg->contacts->geo_lat) && $obg->contacts->geo_lat ? $obg->contacts->geo_lat : null);
                 $geo_lon  = (isset($obg->contacts->geo_lon) && $obg->contacts->geo_lon ? $obg->contacts->geo_lon : null);

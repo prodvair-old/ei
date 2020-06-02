@@ -69,6 +69,8 @@ class Lot extends ActiveRecord
     public $new_categories = [];
     private $_old_categories;
     
+    public static function getIntCode() { return self::INT_CODE; }
+    
     /**
      * {@inheritdoc}
      */

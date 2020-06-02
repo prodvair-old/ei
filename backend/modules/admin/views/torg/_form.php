@@ -1,8 +1,8 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $model common\models\db\Lot */
-/* @var $place common\models\db\Place */
+/* @var $model common\models\db\Torg */
+/* @var $pladge common\models\db\TorgPledge */
 
 use yii\widgets\ActiveForm;
 
@@ -25,8 +25,6 @@ use yii\widgets\ActiveForm;
                 
                 </div>
             </div>
-        </div>
-        <div class='lot-status col-lg-4'>
             <div class='box box-primary'>
                 <div class='box-header'>
                     <h3 class='box-title'><?= Yii::t('app', 'Date') ?></h3>
@@ -40,19 +38,34 @@ use yii\widgets\ActiveForm;
                 
                 </div>
             </div>
+        </div>
+        <div class='lot-status col-lg-4'>
             <div class='box box-primary'>
                 <div class='box-header'>
                     <h3 class='box-title'><?= Yii::t('app', 'Publisher') ?></h3>
                 </div>
                 <div class='box-body'>
 
-                    <?= $this->render('_publisher', [
+                    <?= $this->render('/torg-pledge/_form', [
+                        'form'  => $form,
+                        'model' => $pledge,
+                    ]) ?>
+                
+                </div>
+            </div>
+            <div class='box box-primary'>
+                <div class='box-header'>
+                    <h3 class='box-title'><?= Yii::t('app', 'Document') ?></h3>
+                </div>
+                <div class='box-body'>
+
+                    <?= $this->render('_document', [
                         'model' => $model,
                     ]) ?>
                 
                 </div>
             </div>
-        </div>
+       </div>
     </div>
 
 <?php ActiveForm::end(); ?>

@@ -79,4 +79,17 @@ class Owner extends ActiveRecord
             'updated_at'  => Yii::t('app', 'Modified'),
         ];
     }
+
+    /**
+     * Get Owner list.
+     * 
+     * @return array of Owner titles with ID as index
+     */
+    public static function items()
+    {
+        $a = [];
+        foreach(self::find()->all() as $owner)
+            $a[$owner->id] = $owner->organization->title;
+        return $a;
+    }
 }

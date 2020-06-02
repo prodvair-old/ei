@@ -89,7 +89,7 @@ class m200507_121529_torg_fill extends Migration
             // Torg
             $t = [
                 'id'           => $torg_id,
-                'msg_id'       => ($row['msgId'] ?: date('dmy', $created_at) . '/' . $torg_id . '/0'),
+                'msg_id'       => ($row['msgId'] ?:  'u/' . $torg_id . '/' . date('dmy', $created_at)),
                 'property'     => $property,
                 'description'  => $row['description'],
                 'started_at'   => ($row['startDate'] ? (strtotime($row['startDate'])? strtotime($row['startDate']) : null) : null),
@@ -124,6 +124,7 @@ class m200507_121529_torg_fill extends Migration
                             'user_id'  => $row['publisherId'],
                         ];
                         $torg_pledge = new TorgPledge($tp);
+                        $torg_pledge->scenario = TorgPledge::SCENARIO_MIGRATION;
                         $this->validateAndKeep($torg_pledge, $links['pledge'], $tp);
                     }
                 } else {

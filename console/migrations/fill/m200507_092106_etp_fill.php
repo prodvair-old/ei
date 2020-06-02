@@ -66,7 +66,9 @@ class m200507_092106_etp_fill extends Migration
                     'created_at' => $created_at,
                     'updated_at' => $updated_at,
                 ];
+
                 $organization = new Organization($o);
+                $organization->scenario = $organization::SCENARIO_MIGRATION;
                 
                 $this->validateAndKeep($organization, $organizations, $o);
                 

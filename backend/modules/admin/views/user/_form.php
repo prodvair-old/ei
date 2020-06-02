@@ -1,8 +1,8 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $model common\models\db\Lot */
-/* @var $place common\models\db\Place */
+/* @var $model common\models\db\Torg */
+/* @var $pladge common\models\db\TorgPledge */
 
 use yii\widgets\ActiveForm;
 
@@ -12,40 +12,28 @@ use yii\widgets\ActiveForm;
 
     <div class='row'>
         <div class='lot-common col-lg-8'>
-            <div class='box'>
-                <div class='box-body'>
-
-                    <?= $this->render('_torg', [
-                        'torg'  => $torg,
-                    ]) ?>
-                
-                </div>
-                 <div class='box-footer text-right'>
-                    <?= Yii::t('app', 'About torg') ?>
-                </div>
-           </div>
             <div class='box box-primary'>
                 <div class='box-header'>
-                    <h3 class='box-title'><?= Yii::t('app', 'Common') ?></h3>
+                    <h3 class='box-title'><?= Yii::t('app', 'Profile') ?></h3>
                 </div>
                 <div class='box-body'>
 
-                    <?= $this->render('_form_common', [
+                    <?= $this->render('_form_profile', [
                         'form'  => $form,
-                        'model' => $model,
+                        'model' => $profile,
                     ]) ?>
                 
                 </div>
             </div>
             <div class='box box-primary'>
                 <div class='box-header'>
-                    <h3 class='box-title'><?= Yii::t('app', 'Address') ?></h3>
+                    <h3 class='box-title'><?= Yii::t('app', 'Notification') ?></h3>
                 </div>
                 <div class='box-body'>
 
-                    <?= $this->render('/place/_form', [
+                    <?= $this->render('_form_notification', [
                         'form'  => $form,
-                        'model' => $place,
+                        'model' => $notification,
                     ]) ?>
                 
                 </div>
@@ -54,11 +42,11 @@ use yii\widgets\ActiveForm;
         <div class='lot-status col-lg-4'>
             <div class='box box-primary'>
                 <div class='box-header'>
-                    <h3 class='box-title'><?= Yii::t('app', 'State') ?></h3>
+                    <h3 class='box-title'><?= Yii::t('app', 'Right') ?></h3>
                 </div>
                 <div class='box-body'>
 
-                    <?= $this->render('_form_state', [
+                    <?= $this->render('_form_status', [
                         'form'  => $form,
                         'model' => $model,
                     ]) ?>
@@ -77,19 +65,7 @@ use yii\widgets\ActiveForm;
                 
                 </div>
             </div>
-            <div class='box box-primary'>
-                <div class='box-header'>
-                    <h3 class='box-title'><?= Yii::t('app', 'Document') ?></h3>
-                </div>
-                <div class='box-body'>
-
-                    <?= $this->render('_document', [
-                        'model' => $model,
-                    ]) ?>
-                
-                </div>
-            </div>
-        </div>
+       </div>
     </div>
 
 <?php ActiveForm::end(); ?>

@@ -19,6 +19,9 @@ use yii\behaviors\TimestampBehavior;
  */
 class Notification extends ActiveRecord
 {
+    // сценарии
+    const SCENARIO_CREATE = 'notification_create';
+
     /**
      * {@inheritdoc}
      */
@@ -45,7 +48,7 @@ class Notification extends ActiveRecord
     public function rules()
     {
         return [
-            ['user_id', 'required'],
+            ['user_id', 'required', 'except' => self::SCENARIO_CREATE],
             [['new_picture', 'new_report', 'price_reduction'], 'boolean'],
             [['new_picture', 'new_report', 'price_reduction'], 'default', 'value' => false],
             [['created_at', 'updated_at'], 'safe'],
