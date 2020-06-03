@@ -42,10 +42,10 @@ use sergmoro1\lookup\models\Lookup;
                             class="float-right"><?= Lookup::item('LotStatus', $lot->status) ?></span></li>
                 <li class="clearfix">Шаг
                     <span class="float-right">
-                        <?= ($lot->step_measure == 1) ? $lot->step . '% (' . Yii::$app->formatter->asCurrency((($lot->start_price / 100) * $lot->step)) . ')' : Yii::$app->formatter->asCurrency($lot->step) ?>                    </span>
+                        <?= ($lot->step_measure == 1) ? round($lot->step, 2) . '% (' . Yii::$app->formatter->asCurrency((($lot->start_price / 100) * $lot->step)) . ')' : Yii::$app->formatter->asCurrency($lot->step) ?>                    </span>
                 </li>
                 <li class="clearfix">Задаток<span
-                            class="float-right"><?= ($lot->deposit_measure == 1) ? $lot->deposit . '% (' . Yii::$app->formatter->asCurrency((($lot->start_price / 100) * $lot->deposit)) . ')' : Yii::$app->formatter->asCurrency($lot->deposit) ?></span>
+                            class="float-right"><?= ($lot->deposit_measure == 1) ? round($lot->deposit, 2) . '% (' . Yii::$app->formatter->asCurrency((($lot->start_price / 100) * $lot->deposit)) . ')' : Yii::$app->formatter->asCurrency($lot->deposit) ?></span>
                 </li>
                 <li class="clearfix">Тип торгов <span
                             class="float-right text-<?= ($lot->torg->offer == Torg::OFFER_AUCTION_OPEN) ? 'success' : 'primary' ?>"><?= ($lot->torg->offer == Torg::OFFER_AUCTION_OPEN) ? 'Открытый аукцион' : ' Публичное предложение'; ?></span>

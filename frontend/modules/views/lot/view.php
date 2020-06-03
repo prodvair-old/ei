@@ -133,7 +133,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                     <div class="content-wrapper">
 
                         <div id="desc" class="detail-header mb-30">
-                            <h1 class="h4" itemprop="name"><?= Yii::$app->params[ 'h1' ] ?></h1>
+                            <h1 class="h4" itemprop="name"><?= $lot->title ?></h1>
 
                             <div class="d-flex flex-row align-items-sm-center mb-20">
                                 <div class="mr-10 font-lg text-muted">
@@ -228,15 +228,13 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                         </div>
 
-                        <!--                        --><? // if($lot['info']['address']['geo_lat'] && $isCategory): ?>
-                        <!--                            <div-->
-                        <!--                                id="map-lot"-->
-                        <!--                                data-lat="-->
-                        <? //=$lot['info']['address']['geo_lat'];?><!--"-->
-                        <!--                                data-lng="-->
-                        <? //=$lot['info']['address']['geo_lon'];?><!--">-->
-                        <!--                            </div>-->
-                        <!--                        --><? // endif; ?>
+                        <? if ($lot->place->geo_lat && $lot->place->geo_lon): ?>
+                            <div
+                                    id="map-lot"
+                                    data-lat="<?= $lot->place->geo_lat; ?>"
+                                    data-lng="<?= $lot->place->geo_lon; ?>">
+                            </div>
+                        <? endif; ?>
 
 
                         <div class="sidebar-mobile mb-40">
@@ -286,14 +284,26 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                                     class="elegent-icon-check_alt2 text-primary"></i> </span>
                                         <h6>Должник</h6>
                                         <ul class="ul">
-                                            <li>
-                                                <a href="<?= Url::to(['doljnik/list']) ?>/<?= $lot->torg->bankruptProfile->id ?>"
-                                                   target="_blank"
-                                                   itemprop="brand"><?= $lot->torg->bankruptProfile->getFullName() ?></a>
-                                            </li>
-                                            <li>ИНН: <span
-                                                        class="text-list-name"><?= $lot->torg->bankruptProfile->inn ?></span>
-                                            </li>
+                                            <?php if ($lot->torg->bankruptProfile->id) : ?>
+                                                <li>
+                                                    <a href="<?= Url::to(['doljnik/list']) ?>/<?= $lot->torg->bankruptProfile->id ?>"
+                                                       target="_blank"
+                                                       itemprop="brand"><?= $lot->torg->bankruptProfile->getFullName() ?></a>
+                                                </li>
+                                                <li>ИНН: <span
+                                                            class="text-list-name"><?= $lot->torg->bankruptProfile->inn ?></span>
+                                                </li>
+                                            <?php else: ?>
+                                                <li>
+                                                    <a href="<?= Url::to(['doljnik/list']) ?>/<?= $lot->torg->bankrupt->id ?>"
+                                                       target="_blank"
+                                                       itemprop="brand"><?= $lot->torg->bankrupt->title ?></a>
+                                                </li>
+                                                <li>ИНН: <span
+                                                            class="text-list-name"><?= $lot->torg->bankrupt->inn ?></span>
+                                                </li>
+                                            <?php endif; ?>
+
                                             <li>
                                                 Адрес: <span
                                                         class="text-list-name"><?= $lot->place->address; ?></span>
@@ -343,6 +353,30 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                         </ul>
                                     </li>
                                 <? } ?>
+
+                                <? if ($lot->torg->owner !== null) { ?>
+                                    <li>
+                                        <span class="icon-font"><i
+                                                    class="elegent-icon-check_alt2 text-primary"></i> </span>
+                                        <h6>Банк</h6>
+                                        <ul class="ul">
+                                            <li>
+                                                <a href="/<?= $lot->torg->owner->website ?>"><?= $lot->torg->owner->title ?></a>
+                                            </li>
+                                            <li>E-mail: <span
+                                                        class="text-list-name"><?= $lot->torg->owner->email ?></span>
+                                            </li>
+                                            <li>ИНН: <span class="text-list-name"><?= $lot->torg->owner->inn ?></span>
+                                            </li>
+                                            <li>ОГРН: <span class="text-list-name"><?= $lot->torg->owner->ogrn ?></span>
+                                            </li>
+                                            <li>Адрес: <span
+                                                        class="text-list-name"><?= $lot->torg->owner->place->address ?></span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                <? } ?>
+
                             </ul>
 
                             <div class="mb-50"></div>
@@ -662,20 +696,21 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                         <? if ($lot->torg->description) { ?>
                             <div id="torg" class="detail-header mb-30">
                                 <h5 class="mt-30">Информация о торге</h5>
-                                <p class="long-text"><?=$lot->torg->description?></p>
+                                <p class="long-text"><?= $lot->torg->description ?></p>
                                 <a href="#torg" class="open-text-js">Подробнее</a>
                                 <div class="mb-50"></div>
                             </div>
                         <? } ?>
 
-<!--                        TODO-->
-<!--                        --><?// if ($lot->info['torgReason'] || $lot->torg->info['rules']) { ?>
-<!--                            <div id="roles" class="detail-header mb-30">-->
-<!--                                <h5 class="mt-30">Правила подачи заявок</h5>-->
-<!--                                <p class="long-text">--><?//=($lot->torg->typeId == 1)? $lot->torg->info['rules'] : $lot->info['torgReason'] ?><!--</p>-->
-<!--                                <a href="#roles" class="open-text-js">Подробнее</a>-->
-<!--                            </div>-->
-<!--                        --><?// } ?>
+                        <!--                        TODO-->
+                        <!--                        --><? // if ($lot->info['torgReason'] || $lot->torg->info['rules']) { ?>
+                        <!--                            <div id="roles" class="detail-header mb-30">-->
+                        <!--                                <h5 class="mt-30">Правила подачи заявок</h5>-->
+                        <!--                                <p class="long-text">-->
+                        <? //=($lot->torg->typeId == 1)? $lot->torg->info['rules'] : $lot->info['torgReason'] ?><!--</p>-->
+                        <!--                                <a href="#roles" class="open-text-js">Подробнее</a>-->
+                        <!--                            </div>-->
+                        <!--                        --><? // } ?>
 
                     </div>
 

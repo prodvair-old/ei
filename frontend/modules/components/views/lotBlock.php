@@ -8,6 +8,21 @@ use frontend\components\NumberWords;
 $priceClass = 'text-secondary';
 $lotOrganizatioun = '';
 
+if ($lot->torg->property == 1) {
+    $lotType = 'Банкротное имущество';
+    $lotTypeClass = 'lot__bankrupt';
+} else if ($lot->torg->property == 2){
+    $lotType = 'Арестованное имущество';
+    $lotTypeClass = 'lot__arest';
+} else if ($lot->torg->property == 3){
+    $lotType = 'Имущество организации';
+    $lotTypeClass = 'lot__zalog';
+    $lotOrganizatioun = $lot->torg->owner->title;
+} else if ($lot->torg->property == 4){
+    $lotType = 'Муниципально имущество';
+    $lotTypeClass = 'lot__municipal';
+}
+
 ?>
 <?= ($type == 'grid') ? '<div class="col">' : '' ?>
 
@@ -31,9 +46,8 @@ $lotOrganizatioun = '';
         <?= ($type == 'long') ? '<div>' : '' ?>
         <figcaption class="content">
             <ul class="item-meta lot-block__info">
-                <!--                <span class="--><? //= $lotTypeClass ?><!--"><li>-->
-                <? //= $lotType ?><!--</li></span>-->
-                <!--                --><? //= ($lotOrganizatioun)? "<li>$lotOrganizatioun</li>" : '' ?>
+                <span class="<?= $lotTypeClass ?>"><li><?= $lotType ?></li></span>
+<!--                --><?//= ($lotOrganizatioun)? "<li>$lotOrganizatioun</li>" : '' ?>
             </ul>
             <hr>
             <h3 class="lot-block__title <?= (!empty($lot->archive)) ? ($lot->archive) ? 'text-muted' : '' : '' ?>"
