@@ -15,7 +15,8 @@ use sergmoro1\lookup\models\Lookup;
     </div>
     <div class='col-sm-4'>
         <?= $form->field($model, 'property')->dropdownList(Lookup::items(Property::TORG_PROPERTY, true), [
-            'prompt' => Yii::t('app', 'Select'),
+            //'prompt' => Yii::t('app', 'Select'),
+            'disabled' => 'disabled',
         ]); ?>
     </div>
     <div class='col-sm-4'>

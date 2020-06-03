@@ -160,12 +160,14 @@ class LotController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::$app->user->can('delete')) {
-            $model = $this->findModel($id);
-            $model->delete();
-            return $this->redirect(['index']);
-        } else
+        if (!Yii::$app->user->can('delete'))
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+
+        $model = $this->findModel($id);
+
+        $model->delete();
+
+        return $this->redirect(['index']);
     }
 
     /**

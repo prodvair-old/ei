@@ -80,7 +80,8 @@ class Torg extends ActiveRecord
     public function rules()
     {
         return [
-            [['property', 'started_at'], 'required'],
+            [['property'], 'required'],
+            [['started_at'], 'required', 'except' => self::SCENARIO_MIGRATION],
             ['msg_id', 'required', 'on' => self::SCENARIO_MIGRATION],
             ['offer', 'required', 'except' => self::SCENARIO_MIGRATION],
             ['msg_id', 'string', 'max' => 255],
@@ -270,15 +271,46 @@ class Torg extends ActiveRecord
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
      
             if (!$this->msg_id)
+                // если поле не заполнено, сформировать уникальное значение
                 $this->msg_id = 'u/' . $this->torg_id . '/' . date('dmy', $this->created_at);
             
             return true;
         }
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterDelete()
+    {
+        parent::afterDelete();
+
+        foreach($this->lots as $lot)
+            $lot->delete();
+        foreach($this->documents as $document)
+            $document->delete();
+        $model = null;
+        switch ($this->property) {
+            case self::PROPERTY_BANKRUPT:
+                $model = TorgDebtor::findOne(['torg_id' => $this->id]);
+                break;
+            case self::PROPERTY_ZALOG:
+                $model = TorgPledge::findOne(['torg_id' => $this->id]);
+                break;
+            case self::PROPERTY_ARRESTED:
+            case self::PROPERTY_MUNICIPAL:
+                $model = TorgDrawish::findOne(['torg_id' => $this->id]);
+        }
+        if ($model)
+            $model->delete();
     }
 }

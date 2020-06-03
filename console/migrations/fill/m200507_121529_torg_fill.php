@@ -102,6 +102,7 @@ class m200507_121529_torg_fill extends Migration
                 'updated_at'   => $updated_at,
             ];
             $torg = new Torg($t);
+            $torg->scenario = Torg::SCENARIO_MIGRATION;
             
             if ($this->validateAndKeep($torg, $torgs, $t)) {
                 if ($property == Torg::PROPERTY_BANKRUPT) {

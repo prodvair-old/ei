@@ -23,7 +23,7 @@ class UserSearch extends User
     public function search($params)
     {
         $query = User::find()
-            ->select(['user.id', 'username', 'role', 'status', 'first_name', 'last_name'])
+            ->select('user.id, username, role, status, first_name, last_name')
             ->leftJoin('{{%profile}}', 'profile.parent_id=user.id AND model=' .self::INT_CODE)
             ->asArray();
 

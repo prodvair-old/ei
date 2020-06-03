@@ -133,7 +133,7 @@ class Category extends ActiveRecord
     {
         $a = [];
         if ($first)
-            $a[] = ['text' => 'Категории', 'children' => [['id' => 1, 'text' => 'Все категории']]];
+            $a[] = ['text' => 'Категории', 'children' => [['id' => 0, 'text' => 'Все категории']]];
         foreach(self::find()->where(['depth' => 1])->orderBy('lft ASC')->all() as $node)
         {
             $b = [];

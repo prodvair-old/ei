@@ -12,16 +12,16 @@ use yii\widgets\ActiveForm;
 
     <div class='row'>
         <div class='lot-common col-lg-8'>
-            <div class='box'>
+            <div class='box box-info'>
+                 <div class='box-header'>
+                    <h3 class='box-title'><?= Yii::t('app', 'Torg') ?></h3>
+                </div>
                 <div class='box-body'>
 
                     <?= $this->render('_torg', [
                         'torg'  => $torg,
                     ]) ?>
                 
-                </div>
-                 <div class='box-footer text-right'>
-                    <?= Yii::t('app', 'About torg') ?>
                 </div>
            </div>
             <div class='box box-primary'>

@@ -121,7 +121,7 @@ class m200430_070745_manager_fill extends Migration
                         'updated_at' => $updated_at,
                     ];
                     $organization = new Organization($o);
-                    $organization->scenario = $organization::SCENARIO_MIGRATION;
+                    $organization->scenario = Organization::SCENARIO_MIGRATION;
 
                     $this->validateAndKeep($organization, $organizations, $o);
 

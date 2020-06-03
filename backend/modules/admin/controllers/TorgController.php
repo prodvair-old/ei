@@ -88,6 +88,7 @@ class TorgController extends Controller
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $model = new Torg();
+        $model->property = Torg::PROPERTY_ZALOG;
         $pledge = new TorgPledge();
         $pledge->scenario = TorgPledge::SCENARIO_CREATE;
 
@@ -125,10 +126,10 @@ class TorgController extends Controller
         //if (!Yii::$app->user->can('update', ['lot' => $model]))
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
         
+        // Торг может быть отредактирован только для залогового имущества
         if (!($model->property == Torg::PROPERTY_ZALOG))
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
-        // Торг может быть отредактирован только для залогового имущества
         $pledge = new TorgPledge();
 
         $pledge = $model->torgPledge;
