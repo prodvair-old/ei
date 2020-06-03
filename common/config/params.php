@@ -27,6 +27,6 @@ return [
         'plus'   => '<i class="fa fa-plus"></i>',
         'pencil' => '<i class="fa fa-pencil"></i>',
         'trash'  => '<i class="fa fa-trash"></i>',
-        'lot'    => '<i class="fa fa-plus-square"></i>',
+        'lot'    => '<i class="fa fa-money"></i>',
     ],
 ];

@@ -30,6 +30,9 @@ use sergmoro1\lookup\Lookup;
  */
 class Organization extends ActiveRecord
 {
+    // сценарии
+    const SCENARIO_MIGRATION = 'organization_migration';
+    
     // внутренний код модели используемый в составном ключе
     const INT_CODE              = 2;
     
@@ -92,10 +95,9 @@ class Organization extends ActiveRecord
             ['activity', 'default', 'value' => self::ACTIVITY_SIMPLE],
             ['inn', 'match', 'pattern' => '/\d{10,12}/', 'skipOnEmpty' => true],
             ['ogrn', 'match', 'pattern' => '/\d{10,15}/', 'skipOnEmpty' => true],
-            [['title', 'full_title', 'reg_number', 'phone', 'website'], 'string', 'max' => 255],
-            ['email', 'string'],
-            // ['email', 'email'],
-            //['website', 'url'],
+            [['title', 'full_title', 'reg_number', 'phone', 'email', 'website'], 'string', 'max' => 255],
+            ['email', 'email', 'except' => self::SCENARIO_MIGRATION],
+            ['website', 'url', 'except' => self::SCENARIO_MIGRATION],
             ['status', 'in', 'range' => self::getStatuses()],
             ['status', 'default', 'value' => self::STATUS_WAITING],
             [['created_at', 'updated_at'], 'safe'],

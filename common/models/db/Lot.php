@@ -69,6 +69,8 @@ class Lot extends ActiveRecord
     public $new_categories = [];
     private $_old_categories;
     
+    public static function getIntCode() { return self::INT_CODE; }
+    
     /**
      * {@inheritdoc}
      */
@@ -227,7 +229,7 @@ class Lot extends ActiveRecord
      */
     public function getObservers()
     {
-        return $this->hasMany(WishList::className(), ['lotId' => 'id']);
+        return $this->hasMany(WishList::className(), ['lot_id' => 'id']);
     }
 
     /**
@@ -284,13 +286,11 @@ class Lot extends ActiveRecord
     /**
      * Получить документы по лоту.
      * 
-     * @return array yii\db\ActiveRecord
+     * @return array yii\db\ActiveQuery
      */
     public function getDocuments()
     {
-        return Document::find()
-            ->where(['model' => self::INT_CODE, 'parent_id' => $this->id])
-            ->all();
+        return $this->hasMany(Documents::className(), ['id' => 'parent_id'])->where(['model' => self::INT_CODE]);
     }
 
     /**
@@ -318,6 +318,13 @@ class Lot extends ActiveRecord
     public function afterDelete()
     {
         parent::afterDelete();
+
         LotCategory::updateOneToMany($this->id, $this->_old_categories, []);
+        foreach($this->observers as $observer)
+            $observer->delete();
+        foreach($this->prices as $price)
+            $price->delete();
+        foreach($this->documents as $document)
+            $document->delete();
     }
 }

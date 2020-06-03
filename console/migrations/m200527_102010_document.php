@@ -19,7 +19,7 @@ class m200527_102010_document extends Migration
             'model'        => $this->smallInteger()->notNull(),
             'parent_id'    => $this->bigInteger()->notNull(),
 
-            'name'       => $this->string()->notNull(),
+            'name'       => $this->text()->notNull(),
             'ext'        => $this->string(),
             'url'        => $this->string()->notNull(),
             'hash'       => $this->string(),
@@ -28,7 +28,7 @@ class m200527_102010_document extends Migration
             'updated_at' => $this->integer()->notNull(),
         ]);
 
-        $this->createIndex('idx-document-model-parent_id', self::TABLE, ['model', 'parent_id'], true);
+        $this->createIndex('idx-document-model-parent_id', self::TABLE, ['model', 'parent_id']);
 
 		$this->addCommentOnColumn(self::TABLE, 'model', 'Код модели, например Casefile::INT_CODE');
 		$this->addCommentOnColumn(self::TABLE, 'parent_id', 'ID в соответствующей модели, например в Casefile, Torg, Lot');

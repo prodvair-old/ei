@@ -14,26 +14,26 @@ use yii\widgets\ActiveForm;
         <div class='lot-common col-lg-8'>
             <div class='box box-primary'>
                 <div class='box-header'>
-                    <h3 class='box-title'><?= Yii::t('app', 'Common') ?></h3>
+                    <h3 class='box-title'><?= Yii::t('app', 'Profile') ?></h3>
                 </div>
                 <div class='box-body'>
 
-                    <?= $this->render('_form_common', [
+                    <?= $this->render('_form_profile', [
                         'form'  => $form,
-                        'model' => $model,
+                        'model' => $profile,
                     ]) ?>
                 
                 </div>
             </div>
             <div class='box box-primary'>
                 <div class='box-header'>
-                    <h3 class='box-title'><?= Yii::t('app', 'Date') ?></h3>
+                    <h3 class='box-title'><?= Yii::t('app', 'Notification') ?></h3>
                 </div>
                 <div class='box-body'>
 
-                    <?= $this->render('_form_date', [
+                    <?= $this->render('_form_notification', [
                         'form'  => $form,
-                        'model' => $model,
+                        'model' => $notification,
                     ]) ?>
                 
                 </div>
@@ -42,24 +42,24 @@ use yii\widgets\ActiveForm;
         <div class='lot-status col-lg-4'>
             <div class='box box-primary'>
                 <div class='box-header'>
-                    <h3 class='box-title'><?= Yii::t('app', 'Publisher') ?></h3>
+                    <h3 class='box-title'><?= Yii::t('app', 'Rights') ?></h3>
                 </div>
                 <div class='box-body'>
 
-                    <?= $this->render('/torg-pledge/_form', [
+                    <?= $this->render('_form_status', [
                         'form'  => $form,
-                        'model' => $pledge,
+                        'model' => $model,
                     ]) ?>
                 
                 </div>
             </div>
             <div class='box box-primary'>
                 <div class='box-header'>
-                    <h3 class='box-title'><?= Yii::t('app', 'Document') ?></h3>
+                    <h3 class='box-title'><?= Yii::t('app', 'Image') ?></h3>
                 </div>
                 <div class='box-body'>
 
-                    <?= $this->render('_document', [
+                    <?= $this->render('_image', [
                         'model' => $model,
                     ]) ?>
                 

@@ -7,8 +7,10 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
+use yii\base\InvalidParamException;
 
 use common\models\db\Lot;
+use common\models\db\Torg;
 use common\models\db\Place;
 use backend\modules\admin\models\LotSearch;
 
@@ -82,21 +84,39 @@ class LotController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($torg_id = null)
     {
 
-        if (Yii::$app->user->can('createLot')) {
-            $model = new Lot();
+        //if (!Yii::$app->user->can('createLot')) {
+            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('create', [
-                    'model' => $model,
-                ]);
+        if (!$torg_id)
+            throw new InvalidParamException(Yii::t('app', 'Torg ID is needed.'));
+
+        $torg  = Torg::findOne($torg_id);
+        $model = new Lot(['torg_id' => $torg_id]);
+        $place = new Place();
+        $place->scenario = Place::SCENARIO_CREATE;
+
+        $post = Yii::$app->request->post();
+        if ($model->load($post) && $place->load($post)) {
+            $isValid = $model->validate();
+            $isValid = $place->validate() && $isValid;
+            if ($isValid) {
+                $model->save(false);
+                $place->model = $model->intCode;
+                $place->parent_id = $model->id;
+                $place->save(false);
+                Yii::$app->session->setFlash('success', Yii::t('app', 'Created successfully.'));
+                return $this->redirect(['update', 'id' => $model->id]);
             }
-        } else
-            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+            'torg'  => $torg,
+            'place' => $place,
+        ]);
     }
 
     /**
@@ -116,16 +136,19 @@ class LotController extends Controller
         if (!$place)
             $place = new Place();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', Yii::t('app', 'Updated successfully.'));
-        }
-
-        if ($place->load(Yii::$app->request->post()) && $place->save()) {
-            Yii::$app->session->setFlash('success', Yii::t('app', 'Updated successfully.'));
+        if ($model->load(Yii::$app->request->post()) && $place->load(Yii::$app->request->post())) {
+            $isValid = $model->validate();
+            $isValid = $place->validate() && $isValid;
+            if ($isValid) {
+                $model->save(false);
+                $place->save(false);
+                Yii::$app->session->setFlash('success', Yii::t('app', 'Updated successfully.'));
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
+            'torg'  => $model->torg,
             'place' => $place,
         ]);
     }
@@ -137,12 +160,14 @@ class LotController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::$app->user->can('delete')) {
-            $model = $this->findModel($id);
-            $model->delete();
-            return $this->redirect(['index']);
-        } else
+        if (!Yii::$app->user->can('delete'))
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+
+        $model = $this->findModel($id);
+
+        $model->delete();
+
+        return $this->redirect(['index']);
     }
 
     /**

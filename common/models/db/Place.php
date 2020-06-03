@@ -24,6 +24,9 @@ use common\interfaces\PlaceInterface;
  */
 class Place extends ActiveRecord implements PlaceInterface
 {
+    // сценарии
+    const SCENARIO_CREATE = 'place_create';
+
     /**
      * {@inheritdoc}
      */
@@ -50,7 +53,8 @@ class Place extends ActiveRecord implements PlaceInterface
     public function rules()
     {
         return [
-            [['model', 'parent_id', 'address'], 'required'],
+            [['model', 'parent_id'], 'required', 'except' => self::SCENARIO_CREATE],
+            ['address', 'required'],
             [['model', 'parent_id', 'region_id', 'district_id'], 'integer'],
             [['city'], 'string', 'max' => 255],
             ['address', 'string', 'max' => 512],

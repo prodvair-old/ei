@@ -8,14 +8,15 @@ use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
 
-use common\models\db\Torg;
-use common\models\db\TorgPledge;
-use backend\modules\admin\models\TorgSearch;
+use common\models\db\User;
+use common\models\db\Profile;
+use common\models\db\Notification;
+use backend\modules\admin\models\UserSearch;
 
 /**
- * TorgController implements the CRUD actions for Torg model.
+ * UserController implements the CRUD actions for User model.
  */
-class TorgController extends Controller
+class UserController extends Controller
 {
     private $_model;
 
@@ -52,7 +53,7 @@ class TorgController extends Controller
         //if (!Yii::$app->user->can('index'))
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
-        $searchModel = new TorgSearch();
+        $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->get());
 
         return $this->render('index', [
@@ -78,42 +79,6 @@ class TorgController extends Controller
     }
 
     /**
-     * Creates a new model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        //if (!Yii::$app->user->can('createTorg')) {
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
-
-        $model = new Torg();
-        $model->property = Torg::PROPERTY_ZALOG;
-        $pledge = new TorgPledge();
-        $pledge->scenario = TorgPledge::SCENARIO_CREATE;
-
-        if ($model->load(Yii::$app->request->post()) && $pledge->load(Yii::$app->request->post())) {
-            $isValid = $model->validate();
-            $isValid = $pledge->validate() && $isValid;
-            if ($isValid) {
-                $model->save(false);
-                $pledge->torg_id = $model->id;
-                $pledge->save(false);
-                if ($pledge->next_step)
-                    return $this->redirect(['create/lot', 'torg_id' => $model->id]);
-                else {
-                    Yii::$app->session->setFlash('success', Yii::t('app', 'Created successfully.'));
-                    return $this->redirect(['update', 'id' => $model->id]);
-                }
-            }
-        }
-        return $this->render('create', [
-            'model'   => $model,
-            'pledge' => $pledge,
-        ]);
-    }
-
-    /**
      * Updates an existing model.
      * If the update was successful, a success message flashes.
      * @param integer $id
@@ -123,31 +88,40 @@ class TorgController extends Controller
     {
         $model = $this->findModel($id);
         
-        //if (!Yii::$app->user->can('update', ['lot' => $model]))
+        //if (!Yii::$app->user->can('update', ['user' => $model]))
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
         
-        // Торг может быть отредактирован только для залогового имущества
-        if (!($model->property == Torg::PROPERTY_ZALOG))
-            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
-
-        $pledge = new TorgPledge();
-
-        $pledge = $model->torgPledge;
-        if (!$pledge)
-            $pledge = new TorgPledge();
-
-        if ($model->load(Yii::$app->request->post()) && $pledge->load(Yii::$app->request->post())) {
+        $profile = $model->profile;
+        if (!$profile) {
+            $profile = new Profile();
+            $profile->scenario = Profile::SCENARIO_CREATE;
+        }
+        $notification = $model->notification;
+        if (!$notification) {
+            $notification = new Notification();
+            $notification->scenario = Notification::SCENARIO_CREATE;
+        }
+        
+        $post = Yii::$app->request->post();
+        if ($model->load($post) && $profile->load($post) && $notification->load($post)) {
             $isValid = $model->validate();
-            $isValid = $pledge->validate() && $isValid;
+            $isValid = $profile->validate() && $isValid;
+            $isValid = $notification->validate() && $isValid;
             if ($isValid) {
                 $model->save(false);
-                $pledge->save(false);
+                $profile->model = $model->intCode;
+                $profile->parent_id = $model->id;
+                $profile->save(false);
+                $notification->user_id = $model->id;
+                $notification->save(false);
                 Yii::$app->session->setFlash('success', Yii::t('app', 'Updated successfully.'));
             }
         }
+        
         return $this->render('update', [
             'model' => $model,
-            'pledge' => $pledge,
+            'profile' => $profile,
+            'notification' => $notification,
         ]);
     }
 
@@ -177,7 +151,7 @@ class TorgController extends Controller
     {
         if ($this->_model === null) 
         {
-            if ($this->_model = Torg::findOne($id))
+            if ($this->_model = User::findOne($id))
             {
                 return $this->_model;
             } else {
@@ -187,23 +161,15 @@ class TorgController extends Controller
     }
 
     /**
-     * Getting a pool of models that meet the conditions.
-     * @return json array {count: integer, content: string}
+     * Fill in user items for dropdown list.
+     * $search string a part of username or profile.first_name or profile.last_name)
+     * @return json array of {id: integer, text: string}
      * @throws ForbiddenHttpException if this is not an ajax request
      */
-	public function actionMore()
+	public function actionFillin($search = '', $type)
 	{
-		if(Yii::$app->getRequest()->isAjax) {
-            $searchModel = new TorgSearch();
-            $dataProvider = $searchModel->search(Yii::$app->request->get(), Yii::$app->request->get('offset'));
-
-            return $this->asJson([
-                'count' => $dataProvider->getCount(),
-                'content' => $this->renderAjax('more', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel,
-                ])
-            ]);
+		if (Yii::$app->getRequest()->isAjax) {
+            return $this->asJson(['results' => User::getItems($search)]);
 		} else
 			throw new ForbiddenHttpException('Only ajax request suitable.');
 	}

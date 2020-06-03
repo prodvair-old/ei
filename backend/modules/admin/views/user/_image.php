@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $model common\models\db\Lot */
+/* @var $model common\models\db\User */
 /* @var $form yii\widgets\ActiveForm */
 
 use sergmoro1\uploader\widgets\Uploader;
@@ -10,5 +10,6 @@ use sergmoro1\uploader\widgets\Uploader;
 <?= Uploader::widget([
     'model'         => $model,
     'draggable'     => true,
-    'appendixView'  => '/lot/appendix.php',
+    'appendixView'  => '/user/appendix.php',
+    'secure'        => false,
 ]) ?>

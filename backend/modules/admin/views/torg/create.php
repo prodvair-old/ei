@@ -1,17 +1,15 @@
 <?php
+
 /* @var $this yii\web\View */
-/* @var $model common\models\Post */
+/* @var $model common\models\db\Torg */
+/* @var $pledge common\models\db\TorgPledge */
 
-use sergmoro1\blog\Module;
-
-$this->title = Module::t('core', 'Add');
-$this->params['breadcrumbs'][] = ['label' => Module::t('core', 'Posts'), 'url' => ['index']];
+$this->title = Yii::t('app', 'Create') . ' ' . Yii::t('app', 'auction');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Auctions'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="post-create">
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>
+<?= $this->render('_form', [
+    'model' => $model,
+    'pledge' => $pledge,
+]) ?>

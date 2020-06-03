@@ -27,6 +27,10 @@ use common\interfaces\ProfileInterface;
  */
 class Profile extends ActiveRecord implements ProfileInterface
 {
+    // сценарии
+    const SCENARIO_MIGRATION = 'profile_migration';
+    const SCENARIO_CREATE = 'profile_create';
+
     // значения перечислимых переменных
     const GENDER_MALE     = 1;
     const GENDER_FEMALE   = 2;
@@ -63,13 +67,15 @@ class Profile extends ActiveRecord implements ProfileInterface
     public function rules()
     {
         return [
-            [['model', 'parent_id', 'first_name'], 'required'],
-            ['inn', 'match', 'pattern' => '/\d{10,12}/'],
+            [['model', 'parent_id'], 'required', 'except' => self::SCENARIO_CREATE],
+            [['first_name'], 'required'],
+            ['inn', 'match', 'pattern' => '/^\d{10,12}$/', 'message' => 'ИНН должен содержать 10 или 12 цифр.'],
             [['activity', 'gender'], 'integer'],
             ['gender', 'in', 'range' => self::getGenderVariants()],
             ['gender', 'default', 'value' => null],
             ['activity', 'in', 'range' => self::getActivities()],
             ['activity', 'default', 'value' => self::ACTIVITY_SIMPLE],
+			['birthday', 'date', 'except' => self::SCENARIO_MIGRATION, 'format' => 'php:d.m.Y', 'timestampAttribute' => 'birthday'],
             ['birthday', 'default', 'value' => null],
             ['phone', 'match', 'pattern' => '/^\+7 \d\d\d-\d\d\d-\d\d-\d\d$/',
                 'message' => 'Номер должен состоять ровно из 10 цифр.'],

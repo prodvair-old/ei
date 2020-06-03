@@ -2,6 +2,9 @@
 
 namespace common\models\traits;
 
+use common\models\db\Place;
+use common\models\db\Organization;
+
 trait Company
 {
     /**
