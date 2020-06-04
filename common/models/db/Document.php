@@ -4,6 +4,7 @@ namespace common\models\db;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use common\traits\ShortPart;
 
 /**
  * Document model
@@ -21,6 +22,10 @@ use yii\behaviors\TimestampBehavior;
  */
 class Document extends ActiveRecord
 {
+    use ShortPart;
+    
+    const SHORT_NAME_LENGTH = 25;
+    
     /**
      * {@inheritdoc}
      */

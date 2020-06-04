@@ -53,7 +53,7 @@ class TorgSearch extends Torg
         }
        
         // adjust the query by adding the filters
-        $query->andFilterWhere(['id' => $this->id])
+        $query->andFilterWhere(['torg.id' => $this->id])
             ->andFilterWhere(['like', 'msg_id', $this->msg_id])
             ->andFilterWhere(['property' => $this->property])
             ->andFilterWhere(['offer' => $this->offer]);

@@ -244,13 +244,11 @@ class Torg extends ActiveRecord
     /**
      * Получить документы по торгу.
      * 
-     * @return yii\db\ActiveRecord
+     * @return yii\db\ActiveQuery
      */
     public function getDocuments()
     {
-        return Document::find()
-            ->where(['model' => self::INT_CODE, 'parent_id' => $this->id])
-            ->all();
+        return $this->hasMany(Document::className(), ['parent_id' => 'id'])->where(['model' => self::INT_CODE]);
     }
 
     /**

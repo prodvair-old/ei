@@ -10,6 +10,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\behaviors\SluggableBehavior;
 
 use creocoder\nestedsets\NestedSetsBehavior;
+use common\traits\ShortPart;
 
 /**
  * Caterory model class (Nested Set)
@@ -148,7 +149,7 @@ class Category extends ActiveRecord
         }
         return json_encode($a);
     }
-    
+
     /**
      * Get Category by slug.
      * @param string $slug
