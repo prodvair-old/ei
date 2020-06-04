@@ -52,7 +52,7 @@ class BankruptFill extends Module
             ];
             $bankrupt = new Bankrupt($b);
             
-            if (Keeper::alidateAndKeep($bankrupt, $bankrupts, $b)) {
+            if (Keeper::validateAndKeep($bankrupt, $bankrupts, $b)) {
                 
                 $city     = isset($row['city']) && $row['city'] ? $row['city'] : '';
                 $district = DistrictConsole::districtConvertor($row['district']);
@@ -79,7 +79,7 @@ class BankruptFill extends Module
                     ];
                     $profile = new Profile($p);
                     
-                    Keeper::alidateAndKeep($profile, $profiles, $p);
+                    Keeper::validateAndKeep($profile, $profiles, $p);
                     
                     // Place
                     $p = [
@@ -96,7 +96,7 @@ class BankruptFill extends Module
                     ];
                     $place = new Place($p);
 
-                    Keeper::alidateAndKeep($place, $places, $p);
+                    Keeper::validateAndKeep($place, $places, $p);
                     
                 } else {
                     // Organization
@@ -118,7 +118,7 @@ class BankruptFill extends Module
                     ];
                     $organization = new Organization($o);
                     
-                    Keeper::alidateAndKeep($organization, $organizations, $o);
+                    Keeper::validateAndKeep($organization, $organizations, $o);
 
                     // Place
                     $p = [
@@ -135,7 +135,7 @@ class BankruptFill extends Module
                     ];
                     $place = new Place($p);
                     
-                    Keeper::alidateAndKeep($place, $places, $p);
+                    Keeper::validateAndKeep($place, $places, $p);
                 }
             }
         }
