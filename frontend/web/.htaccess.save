@@ -1,0 +1,35 @@
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www.ei.ru$ [NC]
+RewriteRule ^(.*)$ https://ei.ru/$1 [R=301,L]
+
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.php\ HTTP/
+RewriteRule ^index\.php$ https://ei.ru/ [R=301,L]
+
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.html\ HTTP/
+RewriteRule ^index\.html$ https://ei.ru/ [R=301,L]
+
+RewriteCond %{REQUEST_URI} !\?
+RewriteCond %{REQUEST_URI} !\&amp;
+RewriteCond %{REQUEST_URI} !\=
+RewriteCond %{REQUEST_URI} !\.
+RewriteCond %{REQUEST_URI} ![^\/]$
+RewriteRule ^(.*)\/$ /$1 [R=301,L]
+
+Redirect 301 /arbitr-list https://ei.ru/arbitrazhnye-upravlyayushchie
+Redirect 301 /doljnik-list https://ei.ru/dolzhniki
+
+Redirect 301 /transport_i_tekhnika          https://ei.ru/bankrupt/transport-i-tehnika
+Redirect 301 /nedvizhimost                  https://ei.ru/bankrupt/nedvizhimost
+Redirect 301 /oborudovanie                  https://ei.ru/bankrupt/oborudovanie
+Redirect 301 /selskoe_hozyajstvo            https://ei.ru/bankrupt/selskoe-hozyaystvo
+Redirect 301 /imushchestvennyj_kompleks     https://ei.ru/bankrupt/imushchestvennyy-kompleks
+Redirect 301 /tovarno-materialnye_cennosti  https://ei.ru/bankrupt/tovarno-materialnye-cennosti
+Redirect 301 /debitorskaya_zadolzhennost    https://ei.ru/bankrupt/debitorskaya-zadolzhennost
+Redirect 301 /cennye_bumagi_nma_doli_v_ustavnyh_kapitalah  https://ei.ru/bankrupt/cennye-bumagi-nma-doli-v-ustavnyh-kapitalah
+Redirect 301 /syre                          https://ei.ru/bankrupt/syre
+Redirect 301 /prochee                       https://ei.ru/bankrupt/prochee
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule . index.php
