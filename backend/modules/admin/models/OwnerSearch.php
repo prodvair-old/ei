@@ -24,8 +24,8 @@ class OwnerSearch extends Owner
     {
         $query = Owner::find()
             ->select('owner.id, title, email, phone, website, status, activity')
-            ->innerJoin('{{%organization}}', '`organization`.`parent_id`=`owner`.`id` AND organization.model=' .self::INT_CODE)
-            ->innerJoin('{{%place}}', '`place`.`parent_id`=`owner`.`id` AND place.model=' .self::INT_CODE)
+            ->innerJoin('{{%organization}}', '"organization"."parent_id"="owner"."id" AND "organization"."model"=' . self::INT_CODE)
+            ->innerJoin('{{%place}}', '"place"."parent_id"="owner"."id" AND "place"."model"=' . self::INT_CODE)
             ->asArray();
 
         $dataProvider = new ActiveDataProvider([
