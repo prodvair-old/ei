@@ -17,6 +17,9 @@ return [
     [
         'attribute' => 'msg_id',
         'options' => ['style' => 'width:10%;'],
+        'value' => function($data) {
+            return strlen($data['msg_id']) > 12 ? substr($data['msg_id'], 0, 11) . '...' : $data['msg_id'];
+        },
     ],
     [
         'attribute' => 'property',
@@ -50,8 +53,12 @@ return [
     ],
     [
         'header' => Yii::t('app', 'Lots count'),
+        'format' => 'raw',
         'value' => function($data) {
-            return $data['lot_count'];
+            return $data['lot_count'] . ($data['property_id'] == Torg::PROPERTY_ZALOG
+                ? ' ' . Html::a('<i class="fa fa-plus"></i>', ['lot/create', 'torg_id' => $data['id']], ['title' => Yii::t('app', 'Add lot')])
+                : ''
+            );
         },
         'options' => ['style' => 'width:5%;'],
     ],
@@ -67,14 +74,9 @@ return [
 
     [
         'class' => 'yii\grid\ActionColumn',
-        'template' => ('{view}{update}{delete} {lot}'), 
+        'template' => '{view}{update}{delete}', 
         'options' => ['style' => 'width:6%'],
         'buttons' => [
-            'lot' => function ($url, $model) {
-                return $model['property_id'] == Torg::PROPERTY_ZALOG
-                    ? Html::a(Yii::$app->params['icons']['lot'], Url::to(['lot/create', 'torg_id' => $model['id']]), ['title' => Yii::t('app', 'Add lot')])
-                    : '';
-            },
             'update' => function ($url, $model) {
                 return $model['property_id'] == Torg::PROPERTY_ZALOG
                     ? Html::a(Yii::$app->params['icons']['pencil'], $url)

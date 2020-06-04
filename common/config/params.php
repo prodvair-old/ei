@@ -25,8 +25,8 @@ return [
             'empty' => '<i class="fa fa-question"></i>',
         ],
         'plus'   => '<i class="fa fa-plus"></i>',
-        'pencil' => '<i class="fa fa-pencil"></i>',
-        'trash'  => '<i class="fa fa-trash"></i>',
+        'pencil' => '<i class="glyphicon glyphicon-pencil"></i>',
+        'trash'  => '<i class="glyphicon glyphicon-trash"></i>',
         'lot'    => '<i class="fa fa-money"></i>',
     ],
 ];

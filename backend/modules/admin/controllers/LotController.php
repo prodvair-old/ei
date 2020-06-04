@@ -13,12 +13,15 @@ use common\models\db\Lot;
 use common\models\db\Torg;
 use common\models\db\Place;
 use backend\modules\admin\models\LotSearch;
+use backend\modules\admin\traits\TrExtractor;
 
 /**
  * LotController implements the CRUD actions for Lot model.
  */
 class LotController extends Controller
 {
+    use TrExtractor;
+    
     private $_model;
 
     public function behaviors()
@@ -203,10 +206,10 @@ class LotController extends Controller
 
             return $this->asJson([
                 'count' => $dataProvider->getCount(),
-                'content' => $this->renderAjax('more', [
+                'content' => $this->getTr($this->renderAjax('more', [
                     'dataProvider' => $dataProvider,
                     'searchModel' => $searchModel,
-                ])
+                ]))
             ]);
 		} else
 			throw new ForbiddenHttpException('Only ajax request suitable.');
