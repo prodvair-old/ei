@@ -2,17 +2,16 @@
 namespace console\models\eidb;
 
 use Yii;
-use yii\base\Module;
 
 use console\traits\Keeper;
-use console\traits\District;
+use console\traits\DistrictConsole;
 
 use common\models\db\Manager;
 use common\models\db\Profile;
 use common\models\db\Place;
 use common\models\db\Organization;
 
-class ManagerFill extends Module
+class ManagerFill
 {
     const TABLE = '{{%manager}}';
     const OLD_TABLE = 'managers';
@@ -62,7 +61,7 @@ class ManagerFill extends Module
             if (Keeper::validateAndKeep($manager, $managers, $m)) {
                 
                 $city     = isset($row['city']) && $row['city'] ? $row['city'] : '';
-                $district = District::districtConvertor($row['district']);
+                $district = DistrictConsole::districtConvertor($row['district']);
                 $address  = isset($row['address']) && $row['address'] ? $row['address'] : '';
                 $geo_lat  = (isset($obg->address->geo_lat) && $obg->address->geo_lat ? $obg->address->geo_lat : null);
                 $geo_lon  = (isset($obg->address->geo_lon) && $obg->address->geo_lon ? $obg->address->geo_lon : null);

@@ -5,7 +5,7 @@ use Yii;
 use yii\base\Module;
 
 use console\traits\Keeper;
-use console\traits\District;
+use console\traits\DistrictConsole;
 
 use common\models\db\Etp;
 use common\models\db\Place;
@@ -77,7 +77,7 @@ class EtpFill extends Module
                 Keeper::validateAndKeep($organization, $organizations, $o);
                 
                 $city     = isset($row['city']) && $row['city'] ? $row['city'] : '';
-                $district = District::districtConvertor($row['district']);
+                $district = DistrictConsole::districtConvertor($row['district']);
                 $address  = isset($row['address']) && $row['address'] ? $row['address'] : '-';
                 
                 // Place
