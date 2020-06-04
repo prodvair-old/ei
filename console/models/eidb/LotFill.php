@@ -5,6 +5,7 @@ use Yii;
 use yii\base\Module;
 
 use console\traits\Keeper;
+use console\traits\DistrictConsole;
 
 use common\models\db\Lot;
 use common\models\db\Place;
@@ -119,7 +120,7 @@ class LotFill extends Module
             if (Keeper::validateAndKeep($lot, $lots, $l) && $row['regionId']) {
 
                 $city     = isset($row['city']) && $row['city'] ? $row['city'] : '';
-                $district = isset($row['district']) && $row['district'] ? $row['district'] : '';
+                $district = DistrictConsole::districtConvertor($row['district']);
                 $address = (isset($obj->address) ? $obj->address->city . ', ' . $obj->address->region . ', ' . $obj->address->street : '');
                 $address  = isset($row['address']) && $row['address'] ? $row['address'] : $address;
                 $geo_lat  = (isset($obg->address->geo_lat) && $obg->address->geo_lat ? $obg->address->geo_lat : null);
@@ -131,7 +132,7 @@ class LotFill extends Module
                     'parent_id'   => $lot_id,
                     'city'        => $city,
                     'region_id'   => $row['regionId'],
-                    'district'    => $district,
+                    'district_id' => $district,
                     'address'     => $address,
                     'geo_lat'     => $geo_lat,
                     'geo_lon'     => $geo_lon,
@@ -147,7 +148,7 @@ class LotFill extends Module
         $result = [];
 
         $result['lot']      = Yii::$app->db->createCommand()->batchInsert(self::TABLE, ['id', 'torg_id', 'title', 'description', 'start_price', 'step', 'step_measure', 'deposit', 'deposit_measure', 'status', 'reason', 'info', 'created_at', 'updated_at'], $lots)->execute();
-        $result['place']    = Yii::$app->db->createCommand()->batchInsert('{{%place}}', ['model', 'parent_id', 'city', 'region_id', 'district', 'address', 'geo_lat', 'geo_lon', 'created_at', 'updated_at'], $places)->execute();
+        $result['place']    = Yii::$app->db->createCommand()->batchInsert('{{%place}}', ['model', 'parent_id', 'city', 'region_id', 'district_id', 'address', 'geo_lat', 'geo_lon', 'created_at', 'updated_at'], $places)->execute();
             
         return $result;
     }
