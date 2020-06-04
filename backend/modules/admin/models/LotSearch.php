@@ -29,6 +29,7 @@ class LotSearch extends Lot
             ->select('lot.id, title, '.
                 'lookup_status.name AS status, lookup_reason.name AS reason, lookup_property.name AS property, '.
                 'category.name as category_name, start_price, torg.end_at')
+            ->distinct(false)
             ->innerJoin('{{%torg}}', 'lot.torg_id=torg.id')
             ->innerJoin('{{%lot_category}}', 'lot.id=lot_category.lot_id')
             ->innerJoin('{{%category}}', 'lot_category.category_id=category.id')

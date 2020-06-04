@@ -132,23 +132,23 @@ class Category extends ActiveRecord
     public static function jsonItems($selected, $first = false)
     {
         $a = [];
-        if ($first)
-            $a[] = ['text' => 'Категории', 'children' => [['id' => 0, 'text' => 'Все категории']]];
-        foreach(self::find()->where(['depth' => 1])->orderBy('lft ASC')->all() as $node)
+        foreach(self::find()->orderBy('lft ASC')->all() as $node)
         {
-            $b = [];
-            $b['text'] = $node->name;
-            $b['children'] = [];
-            foreach($node->children()->all() as $child) {
-                $b['children'][] = in_array($child->id, $selected)
-                    ? ['id' => $child->id, 'text' => $child->name, 'selected' => true]
-                    : ['id' => $child->id, 'text' => $child->name];
+            if ($node->depth == 1) {
+                if ($b['children'])
+                    $a[] = $b;
+                $b = [];
+                $b['text'] = $node->name;
+                $b['children'] = [];
+            } else {
+                $b['children'][] = in_array($node->id, $selected)
+                    ? ['id' => $node->id, 'text' => $node->name, 'selected' => true]
+                    : ['id' => $node->id, 'text' => $node->name];
             }
-            $a[] = $b;
         }
         return json_encode($a);
     }
-
+    
     /**
      * Get Category by slug.
      * @param string $slug
