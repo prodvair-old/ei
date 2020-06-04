@@ -51,7 +51,7 @@ class TorgFill extends Module
             // Torg
             $t = [
                 'id'           => $torg_id,
-                'msg_id'       => ($row['msgId'] ?: date('dmy', $created_at) . '/' . $torg_id . '/0'),
+                'msg_id'       => ($row['msgId'] ?:  'u/' . $torg_id . '/' . date('dmy', $created_at)),
                 'property'     => $property,
                 'description'  => $row['description'],
                 'started_at'   => ($row['startDate'] ? (strtotime($row['startDate'])? strtotime($row['startDate']) : null) : null),
@@ -64,6 +64,7 @@ class TorgFill extends Module
                 'updated_at'   => $updated_at,
             ];
             $torg = new Torg($t);
+            $torg->scenario = Torg::SCENARIO_MIGRATION;
             
             if (Keeper::validateAndKeep($torg, $torgs, $t)) {
                 if ($property == Torg::PROPERTY_BANKRUPT) {
@@ -86,6 +87,7 @@ class TorgFill extends Module
                             'user_id'  => $row['publisherId'],
                         ];
                         $torg_pledge = new TorgPledge($tp);
+                        $torg_pledge->scenario = TorgPledge::SCENARIO_MIGRATION;
                         Keeper::validateAndKeep($torg_pledge, $links['pledge'], $tp);
                     }
                 } else {
@@ -103,7 +105,7 @@ class TorgFill extends Module
 
         $result = [];
 
-        $result['torg'] = Yii::$app->db->createCommand()->batchInsert(self::TABLE, ['id', 'property', 'description', 'started_at', 'end_at', 'completed_at', 'published_at', 'offer', 'created_at', 'updated_at'], $torgs)->execute();
+        $result['torg'] = Yii::$app->db->createCommand()->batchInsert(self::TABLE, ['id', 'msg_id', 'property', 'description', 'started_at', 'end_at', 'completed_at', 'published_at', 'offer', 'created_at', 'updated_at'], $torgs)->execute();
         if ($links['debtor'])
             $result['torg_debtor']  = Yii::$app->db->createCommand()->batchInsert('{{%torg_debtor}}', ['torg_id', 'etp_id', 'bankrupt_id', 'manager_id', 'case_id'], $links['debtor'])->execute();
         if ($links['pledge'])
