@@ -17,7 +17,7 @@ class ManagerFill extends Module
     const TABLE = '{{%manager}}';
     const OLD_TABLE = 'managers';
 
-    private $agentConvertor = [1 => 2, 3 => 1];
+    private static $agentConvertor = [1 => 2, 3 => 1];
     
     public function getData($limit, $offset)
     {
