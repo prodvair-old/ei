@@ -20,7 +20,7 @@ return [
         'attribute' => 'status',
         'filter' => Lookup::items(Property::LOT_STATUS, true),
         'value' => function($data) {
-            return Lookup::item(Property::LOT_STATUS, $data->status, true);
+            return $data['status'];
         },
         'options' => ['style' => 'width:10%;'],
     ],
@@ -28,7 +28,7 @@ return [
         'attribute' => 'reason',
         'filter' => Lookup::items(Property::LOT_REASON, true),
         'value' => function($data) {
-            return Lookup::item(Property::LOT_REASON, $data->reason, true);
+            return $data['reason'];
         },
         'options' => ['style' => 'width:10%;'],
     ],
@@ -36,7 +36,7 @@ return [
         'attribute' => 'property',
         'filter' => Lookup::items(Property::TORG_PROPERTY, true),
         'value' => function($data) {
-            return Lookup::item(Property::TORG_PROPERTY, $data->torg->property, true);
+            return $data['property'];
         },
         'options' => ['style' => 'width:10%;'],
     ],
@@ -45,8 +45,7 @@ return [
         'attribute' => 'category_id',
         'filter' => '<select id="lot-category_id" class="form-control" name="LotSearch[category_id]"></select>',
         'value' => function($data) {
-            $c = count($data->categories);
-            return $c > 0 ? ($data->categories[0]->name . ($c > 1 ? ' (+' . ($c-1) . ')' : '')) : '-';
+            return $data['category_name'];
         },
         'options' => ['style' => 'width:20%;'],
     ],
@@ -57,7 +56,7 @@ return [
     [
         'attribute' => 'end_at',
         'value' => function($data) {
-            return date('d.m.y', $data->torg->end_at);
+            return date('d.m.y', $data['end_at']);
         },
         'options' => ['style' => 'width:9%;'],
     ],

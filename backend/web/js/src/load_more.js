@@ -1,5 +1,5 @@
 /**
- * Search line on demand.
+ * Search on demand.
  * Loading the next pool of models.
  * 
  * @param string load_more_url
@@ -51,8 +51,10 @@ $(document).ready(function() {
         var offset = that.attr('data-offset');
         var model_index = $('.model-index');
         var model_grid = model_index.find('#model-grid');
+        var model_table_body = model_grid.find('table tbody');
+        var summary = model_grid.find('.summary b');
         var filter = model_grid.find('.filters');
-        var spinner = $('.model-spinner');
+        var spinner = model_index.find('.model-spinner');
         
         spinner.show();
 
@@ -61,8 +63,9 @@ $(document).ready(function() {
             data: (filter.find('.form-control').serialize() + '&offset=' + offset),
             success: function(response) {
                 if (response.count) {
-                    model_grid.append(response.content);
-                    that.attr('data-offset', offset + response.count);
+                    model_table_body.append(response.content);
+                    summary.text(Number(summary.text()) + Number(response.count));
+                    that.attr('data-offset', Number(offset) + Number(response.count));
                 } else
                     that.attr('disabled','disabled');
                 spinner.hide();

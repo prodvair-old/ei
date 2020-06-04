@@ -2,6 +2,7 @@
 
 namespace common\models\db;
 
+use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -15,6 +16,13 @@ use yii\db\ActiveRecord;
  */
 class TorgPledge extends ActiveRecord
 {
+    // сценарии
+    const SCENARIO_MIGRATION = 'torg_pledge_migration';
+    const SCENARIO_CREATE = 'torg_pledge_create';
+
+    /** @var $add_lot boolean on a next step */
+    public $add_lot = false;
+    
     /**
      * {@inheritdoc}
      */
@@ -29,14 +37,22 @@ class TorgPledge extends ActiveRecord
     public function rules()
     {
         return [
-            [['torg_id'], 'required'],
+            [['torg_id'], 'required', 'except' => self::SCENARIO_CREATE],
             [['torg_id'], 'integer'],
-            ['owner_id', 'required', 'when' => function ($model) {
-                return is_null($model->user_id);
-            }],
-            ['user_id', 'required', 'when' => function ($model) {
-                return is_null($model->owner_id);
-            }],
+            [['owner_id', 'user_id'], 'required', 'except' => self::SCENARIO_MIGRATION],
+            ['add_lot', 'boolean'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'owner_id' => Yii::t('app', 'Owner'),
+            'user_id'  => Yii::t('app', 'User'),
+            'add_lot'  => Yii::t('app', 'Add a lot after saving'),
         ];
     }
 }

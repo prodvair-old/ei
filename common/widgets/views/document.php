@@ -3,6 +3,8 @@
 /* @var $model yii\db\ActiveRecord */
 /* @var $title string */
 
+$icons = Yii::$app->params['icons']['file'];
+
 ?>
 <div class="tab-pane active" id="timeline">
     <ul class="timeline timeline-inverse">
@@ -11,17 +13,16 @@
                 <?= $title ?>
             </span>
         </li>
-        <?php foreach ($model->documents as $document):
-            $icon = isset(Yii::$app->partams['icons']['file'][$document->ext])
-                ? Yii::$app->params['icons']['file'][$document->ext]
-                : Yii::$app->params['icons']['file']['default'];
-        ?>
+        <?php foreach ($model->documents as $document): ?>
             <li>
-                <?= $icon ?>
+                <?= isset($icons[$document->ext]) ? $icons[$document->ext] : $icons['default'] ?>
                 <div class="timeline-item">
-                    <a href="<?= $document->url ?>" class="btn" target="_blank" download><?= $document->name ?></a>
+                    <a href="<?= $document->url ?>" class="btn" target="_blank" download title="<?= $document->name ?>">
+                        <?= $document->shortPart ?>
+                    </a>
                 </div>
             </li>
         <?php endforeach; ?>
     </ul>
 </div>
+

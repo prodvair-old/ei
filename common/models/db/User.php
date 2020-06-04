@@ -44,6 +44,8 @@ class User extends ActiveRecord implements IdentityInterface
     const ROLE_AGENT      = 3;
     const ROLE_USER       = 4;
 
+    public static function getIntCode() { return self::INT_CODE; }
+
     /**
      * {@inheritdoc}
      */
@@ -321,11 +323,10 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Получить профиль
      * 
-     * @return yii\db\ActiveRecord
+     * @return yii\db\ActiveQuery
      */
-    public function getProfile()
-    {
-        return Profile::findOne(['model' => self::INT_CODE, 'parent_id' => $this->id]);
+    public function getProfile() {
+        return $this->hasOne(Profile::className(), ['parent_id' => 'id'])->where(['model' => self::INT_CODE]);
     }
 
     /**
@@ -356,4 +357,30 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasMany(Lot::className(), ['id' => 'user_id'])
             ->viaTable(WishList::tableName(), ['lot_id' => 'id']);
     }
+
+    /**
+     * Getting user items for dropdown list.
+     * $search string a part of User name
+     * @return array of [id: integer, text: string]
+     */
+	public static function getItems($search = '')
+	{
+        $users = self::find()
+            ->select(['user.id', 'username', 'first_name', 'last_name'])
+            ->leftJoin('{{%profile}}', ['profile.parent_id' => 'user.id', 'model' => self::INT_CODE])
+            ->where(['status' => self::STATUS_ACTIVE])
+            ->asArray()
+            ->all();
+        $a = [];
+        foreach($users as $user)
+            if (!$search || !(stripos($user['username'] . $user['first_name'] . $user['last_name'], $search) === false))
+                $a[] = [
+                    'id' => $user['id'], 
+                    'text' => (($user['last_name'] || $user['first_name'])
+                        ? $user['last_name'] . ' ' . $user['first_name'] 
+                        : $user['username']
+                    ),
+                ];
+        return $a;
+	}
 }

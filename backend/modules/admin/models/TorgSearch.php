@@ -6,6 +6,8 @@ use Yii;
 use yii\data\ActiveDataProvider;
 
 use common\models\db\Torg;
+use common\components\IntCode;
+use common\components\Property;
 
 class TorgSearch extends Torg
 {
@@ -21,8 +23,16 @@ class TorgSearch extends Torg
     public function search($params, $offset = 0)
     {
         $query = Torg::find()
+            ->select('torg.id, msg_id, '.
+                'torg.property AS property_id, '.
+                'lookup_property.name AS property, lookup_offer.name AS offer, '.
+                'started_at, end_at'
+            )
+            ->innerJoin('{{%lookup}} AS lookup_property', 'property=lookup_property.code AND lookup_property.property_id='. Property::TORG_PROPERTY)
+            ->innerJoin('{{%lookup}} AS lookup_offer', 'offer=lookup_offer.code AND lookup_offer.property_id='. Property::TORG_OFFER)
             ->limit(Yii::$app->params['recordsPerPage'])
-            ->offset($offset);
+            ->offset($offset)
+            ->asArray();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -43,7 +53,7 @@ class TorgSearch extends Torg
         }
        
         // adjust the query by adding the filters
-        $query->andFilterWhere(['d' => $this->id])
+        $query->andFilterWhere(['torg.id' => $this->id])
             ->andFilterWhere(['like', 'msg_id', $this->msg_id])
             ->andFilterWhere(['property' => $this->property])
             ->andFilterWhere(['offer' => $this->offer]);

@@ -33,6 +33,9 @@ use sergmoro1\lookup\models\Lookup;
  */
 class Torg extends ActiveRecord
 {
+    // сценарии
+    const SCENARIO_MIGRATION = 'torg_migration';
+    
     // внутренний код модели используемый в составном ключе
     const INT_CODE = 7;
 
@@ -48,6 +51,8 @@ class Torg extends ActiveRecord
     const OFFER_AUCTION_OPEN = 3;
     const OFFER_CONTEST      = 4;
     const OFFER_CONTEST_OPEN = 5;
+
+    const SHORT_TITLE_LENGTH = 20;
 
     /**
      * {@inheritdoc}
@@ -75,12 +80,21 @@ class Torg extends ActiveRecord
     public function rules()
     {
         return [
-            [['msg_id', 'property'], 'required'],
+            [['property'], 'required'],
+            [['started_at'], 'required', 'except' => self::SCENARIO_MIGRATION],
+            ['msg_id', 'required', 'on' => self::SCENARIO_MIGRATION],
+            ['offer', 'required', 'except' => self::SCENARIO_MIGRATION],
             ['msg_id', 'string', 'max' => 255],
             [['property', 'offer'], 'integer'],
             ['property', 'in', 'range' => self::getProperties()],
             ['offer', 'in', 'range' => self::getOffers()],
-            [['description', 'started_at', 'end_at', 'completed_at', 'published_at', 'created_at', 'updated_at'], 'safe'],
+			['started_at', 'datetime', 'except' => self::SCENARIO_MIGRATION, 'format' => 'php:d.m.Y', 'timestampAttribute' => 'started_at'],
+			['end_at', 'datetime', 'except' => self::SCENARIO_MIGRATION, 'format' => 'php:d.m.Y', 'timestampAttribute' => 'end_at'],
+			['completed_at', 'date', 'except' => self::SCENARIO_MIGRATION, 'format' => 'php:d.m.Y', 'timestampAttribute' => 'completed_at'],
+			['published_at', 'date', 'except' => self::SCENARIO_MIGRATION, 'format' => 'php:d.m.Y', 'timestampAttribute' => 'published_at'],
+            [['end_at', 'completed_at', 'published_at'], 'default', 'value' => null],
+            [['end_at', 'completed_at', 'published_at'], 'safe', 'on' => self::SCENARIO_MIGRATION],
+            [['description', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -93,8 +107,8 @@ class Torg extends ActiveRecord
             'msg_id'       => Yii::t('app', 'Message'),
             'property'     => Yii::t('app', 'Property'),
             'description'  => Yii::t('app', 'Description'),
-            'started_at'   => Yii::t('app', 'Start'),
-            'end_at'       => Yii::t('app', 'End'),
+            'started_at'   => Yii::t('app', 'Start at'),
+            'end_at'       => Yii::t('app', 'End at'),
             'completed_at' => Yii::t('app', 'Completed'),
             'published_at' => Yii::t('app', 'Published'),
             'offer'        => Yii::t('app', 'Offer'),
@@ -198,6 +212,14 @@ class Torg extends ActiveRecord
     }
 
     /**
+     * Получить связи залогодержателя
+     * @return yii\db\ActiveRecord
+     */
+    public function getTorgPledge() {
+        return TorgPledge::findOne(['torg_id' => $this->id]);
+    }
+
+    /**
      * Получить информацию о залогодержателе
      * @return yii\db\ActiveQuery
      */
@@ -222,13 +244,11 @@ class Torg extends ActiveRecord
     /**
      * Получить документы по торгу.
      * 
-     * @return yii\db\ActiveRecord
+     * @return yii\db\ActiveQuery
      */
     public function getDocuments()
     {
-        return Document::find()
-            ->where(['model' => self::INT_CODE, 'parent_id' => $this->id])
-            ->all();
+        return $this->hasMany(Document::className(), ['parent_id' => 'id'])->where(['model' => self::INT_CODE]);
     }
 
     /**
@@ -247,5 +267,48 @@ class Torg extends ActiveRecord
             case self::PROPERTY_ZALOG:
                 return $this->getUser();
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+     
+            if (!$this->msg_id)
+                // если поле не заполнено, сформировать уникальное значение
+                $this->msg_id = 'u/' . $this->torg_id . '/' . date('dmy', $this->created_at);
+            
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterDelete()
+    {
+        parent::afterDelete();
+
+        foreach($this->lots as $lot)
+            $lot->delete();
+        foreach($this->documents as $document)
+            $document->delete();
+        $model = null;
+        switch ($this->property) {
+            case self::PROPERTY_BANKRUPT:
+                $model = TorgDebtor::findOne(['torg_id' => $this->id]);
+                break;
+            case self::PROPERTY_ZALOG:
+                $model = TorgPledge::findOne(['torg_id' => $this->id]);
+                break;
+            case self::PROPERTY_ARRESTED:
+            case self::PROPERTY_MUNICIPAL:
+                $model = TorgDrawish::findOne(['torg_id' => $this->id]);
+        }
+        if ($model)
+            $model->delete();
     }
 }

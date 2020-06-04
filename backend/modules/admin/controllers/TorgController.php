@@ -9,14 +9,17 @@ use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
 
 use common\models\db\Torg;
-use common\models\db\TorgDrawish;
+use common\models\db\TorgPledge;
 use backend\modules\admin\models\TorgSearch;
+use backend\modules\admin\traits\TrExtractor;
 
 /**
  * TorgController implements the CRUD actions for Torg model.
  */
 class TorgController extends Controller
 {
+    use TrExtractor;
+    
     private $_model;
 
     public function behaviors()
@@ -88,23 +91,28 @@ class TorgController extends Controller
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $model = new Torg();
-        $drawish = new TorgDrawish();
+        $model->property = Torg::PROPERTY_ZALOG;
+        $pledge = new TorgPledge();
+        $pledge->scenario = TorgPledge::SCENARIO_CREATE;
 
-        if ($model->load(Yii::$app->request->post()) && $drawish->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $pledge->load(Yii::$app->request->post())) {
             $isValid = $model->validate();
-            $isValid = $drawish->validate() && $isValid;
+            $isValid = $pledge->validate() && $isValid;
             if ($isValid) {
                 $model->save(false);
-                $drawish->save(false);
-                if ($model->next_step)
+                $pledge->torg_id = $model->id;
+                $pledge->save(false);
+                if ($pledge->next_step)
                     return $this->redirect(['create/lot', 'torg_id' => $model->id]);
-                else
+                else {
+                    Yii::$app->session->setFlash('success', Yii::t('app', 'Created successfully.'));
                     return $this->redirect(['update', 'id' => $model->id]);
+                }
             }
         }
         return $this->render('create', [
             'model'   => $model,
-            'drawish' => $drawish,
+            'pledge' => $pledge,
         ]);
     }
 
@@ -121,24 +129,28 @@ class TorgController extends Controller
         //if (!Yii::$app->user->can('update', ['lot' => $model]))
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
         
+        // Торг может быть отредактирован только для залогового имущества
         if (!($model->property == Torg::PROPERTY_ZALOG))
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
-        $model = new Torg();
-        $drawish = new TorgDrawish();
+        $pledge = new TorgPledge();
 
-        if ($model->load(Yii::$app->request->post()) && $drawish->load(Yii::$app->request->post())) {
+        $pledge = $model->torgPledge;
+        if (!$pledge)
+            $pledge = new TorgPledge();
+
+        if ($model->load(Yii::$app->request->post()) && $pledge->load(Yii::$app->request->post())) {
             $isValid = $model->validate();
-            $isValid = $drawish->validate() && $isValid;
+            $isValid = $pledge->validate() && $isValid;
             if ($isValid) {
                 $model->save(false);
-                $drawish->save(false);
-                return $this->redirect(['update', 'id' => $model->id]);
+                $pledge->save(false);
+                Yii::$app->session->setFlash('success', Yii::t('app', 'Updated successfully.'));
             }
         }
         return $this->render('update', [
             'model' => $model,
-            'drawish' => $drawish,
+            'pledge' => $pledge,
         ]);
     }
 
@@ -190,10 +202,10 @@ class TorgController extends Controller
 
             return $this->asJson([
                 'count' => $dataProvider->getCount(),
-                'content' => $this->renderAjax('more', [
+                'content' => $this->getTr($this->renderAjax('more', [
                     'dataProvider' => $dataProvider,
                     'searchModel' => $searchModel,
-                ])
+                ]))
             ]);
 		} else
 			throw new ForbiddenHttpException('Only ajax request suitable.');

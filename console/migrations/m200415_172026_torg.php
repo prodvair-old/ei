@@ -29,8 +29,8 @@ class m200415_172026_torg extends Migration
             'updated_at'   => $this->integer()->notNull(),
         ]);
         
+        $this->createIndex('idx-torg-msg_id', self::TABLE, 'msg_id');
         $this->createIndex('idx-torg-published_at', self::TABLE, 'published_at');
-
 
 		$this->addCommentOnColumn(self::TABLE, 'property', 'Тип имущества - должник, залог, арестованное, муниципальное');
 		$this->addCommentOnColumn(self::TABLE, 'description', 'Описание');

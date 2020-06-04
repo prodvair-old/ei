@@ -2,29 +2,28 @@
 
 namespace common\models\traits;
 
+use common\models\db\Place;
+use common\models\db\Organization;
+
 trait Company
 {
     /**
-     * Get organization
-     * @return ActiveRecord | null
+     * Get organization.
+     * 
+     * @return yii\db\ActiveQuery
      */
     public function getOrganization()
     {
-        return Organization::findOne([
-            'model'     => self::INT_CODE, 
-            'parent_id' => $this->id,
-        ]);
+        return $this->hasOne(Organization::className(), ['parent_id' => 'id'])->where(['model' => $this->intCode]);
     }
 
     /**
-     * Get place
-     * @return ActiveRecord | null
+     * Get place.
+     * 
+     * @return yii\db\ActiveQuery
      */
     public function getPlace()
     {
-        return Place::findOne([
-            'model'     => self::INT_CODE, 
-            'parent_id' => $this->id,
-        ]);
+        return $this->hasOne(Place::className(), ['parent_id' => 'id'])->where(['model' => $this->intCode]);
     }
 }

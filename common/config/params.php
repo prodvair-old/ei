@@ -16,7 +16,7 @@ return [
         'user' => '<i class="fa fa-user"></i>',
         'file' => [
             'doc'  => '<i class="fa fa-file-word-o"></i>',
-            'docs' => '<i class="fa fa-file-word-o"></i>',
+            'docx' => '<i class="fa fa-file-word-o"></i>',
             'xls'  => '<i class="fa fa-file-excel-o"></i>',
             'xlsx' => '<i class="fa fa-file-excel-o"></i>',
             'pdf'  => '<i class="fa fa-file-pdf-o"></i>',
@@ -25,8 +25,8 @@ return [
             'empty' => '<i class="fa fa-question"></i>',
         ],
         'plus'   => '<i class="fa fa-plus"></i>',
-        'pencil' => '<i class="fa fa-pencil"></i>',
-        'trash'  => '<i class="fa fa-trash"></i>',
-        'lot'    => '<i class="fa fa-plus-square"></i>',
+        'pencil' => '<i class="glyphicon glyphicon-pencil"></i>',
+        'trash'  => '<i class="glyphicon glyphicon-trash"></i>',
+        'lot'    => '<i class="fa fa-money"></i>',
     ],
 ];
