@@ -3,24 +3,15 @@
 /* @var $model yii\db\ActiveRecord */
 /* @var $title string */
 
+$icons = Yii::$app->params['icons']['file'];
 ?>
-<div class="tab-pane active" id="timeline">
-    <ul class="timeline timeline-inverse">
-        <li class="time-label">
-            <span class="bg-red">
-                <?= $title ?>
-            </span>
-        </li>
-        <?php foreach ($model->documents as $document):
-            $icon = isset(Yii::$app->partams['icons']['file'][$document->ext])
-                ? Yii::$app->params['icons']['file'][$document->ext]
-                : Yii::$app->params['icons']['file']['default'];
-        ?>
+<div>
+    <h4><?= $title ?></h4>
+    <ul>
+        <?php foreach($model->documents as $document): ?>
             <li>
-                <?= $icon ?>
-                <div class="timeline-item">
-                    <a href="<?= $document->url ?>" class="btn" target="_blank" download><?= $document->name ?></a>
-                </div>
+                <?= isset($icons[$document->ext]) ? $icons[$document->ext] : $icons['default'] ?>
+                <a href="<?= $document->url ?>" class="btn" target="_blank" download><?= $document->name ?></a>
             </li>
         <?php endforeach; ?>
     </ul>
