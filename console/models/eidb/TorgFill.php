@@ -106,13 +106,21 @@ class TorgFill extends Module
         $result = [];
 
         $result['torg'] = Yii::$app->db->createCommand()->batchInsert(self::TABLE, ['id', 'msg_id', 'property', 'description', 'started_at', 'end_at', 'completed_at', 'published_at', 'offer', 'created_at', 'updated_at'], $torgs)->execute();
-        if ($links['debtor'])
+        if ($links['debtor']) {
             $result['torg_debtor']  = Yii::$app->db->createCommand()->batchInsert('{{%torg_debtor}}', ['torg_id', 'etp_id', 'bankrupt_id', 'manager_id', 'case_id'], $links['debtor'])->execute();
-        if ($links['pledge'])
+        } else {
+            $result['torg_debtor'] = 0;
+        }
+        if ($links['pledge']) {
             $result['torg_pledge']  = Yii::$app->db->createCommand()->batchInsert('{{%torg_pledge}}', ['torg_id', 'owner_id', 'user_id'], $links['pledge'])->execute();
-        if ($links['drawish'])
+        } else {
+            $result['torg_pledge'] = 0;
+        }
+        if ($links['drawish']) {
             $result['torg_drawish'] = Yii::$app->db->createCommand()->batchInsert('{{%torg_drawish}}', ['torg_id', 'manager_id'], $links['drawish'])->execute();
-            
+        } else {
+            $result['torg_drawish'] = 0;
+        }
         return $result;
     }
 
