@@ -6,7 +6,7 @@ use yii\console\Exception;
 
 trait District
 {
-    private $district = [
+    private static $district = [
         'Центральный'       => 1,
         'Северо-Западный'   => 2,
         'Южный'             => 3,
