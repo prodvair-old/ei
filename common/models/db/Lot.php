@@ -223,6 +223,16 @@ class Lot extends ActiveRecord
     }
 
     /**
+     * Проверка, не устарел ли Лот
+     * 
+     * @return yii\db\ActiveQuery
+     */
+    public function archived()
+    {
+        return $this->status == self::STATUS_COMPLETED && $this->torg->end_at > time();
+    }
+
+    /**
      * Получить список ID подписчиков
      * 
      * @return yii\db\ActiveQuery
