@@ -290,7 +290,7 @@ class Lot extends ActiveRecord
      */
     public function getDocuments()
     {
-        return $this->hasMany(Documents::className(), ['id' => 'parent_id'])->where(['model' => self::INT_CODE]);
+        return $this->hasMany(Document::className(), ['parent_id' => 'id'])->where(['model' => self::INT_CODE]);
     }
 
     /**

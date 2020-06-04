@@ -16,7 +16,7 @@ return [
         'user' => '<i class="fa fa-user"></i>',
         'file' => [
             'doc'  => '<i class="fa fa-file-word-o"></i>',
-            'docs' => '<i class="fa fa-file-word-o"></i>',
+            'docx' => '<i class="fa fa-file-word-o"></i>',
             'xls'  => '<i class="fa fa-file-excel-o"></i>',
             'xlsx' => '<i class="fa fa-file-excel-o"></i>',
             'pdf'  => '<i class="fa fa-file-pdf-o"></i>',
