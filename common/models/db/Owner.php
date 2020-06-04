@@ -2,6 +2,7 @@
 
 namespace common\models\db;
 
+use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use sergmoro1\uploader\behaviors\HaveFileBehavior;
@@ -26,6 +27,8 @@ class Owner extends ActiveRecord
     
     // внутренний код модели используемый в составном ключе
     const INT_CODE = 13;
+
+    public static function getIntCode() { return self::INT_CODE; }
 
     /**
      * {@inheritdoc}
