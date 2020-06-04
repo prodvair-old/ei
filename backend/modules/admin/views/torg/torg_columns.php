@@ -16,18 +16,21 @@ return [
     ],
     [
         'attribute' => 'msg_id',
-        'options' => ['style' => 'width:10%;'],
+        'options' => ['style' => 'width:15%'],
         'value' => function($data) {
             return strlen($data['msg_id']) > 12 ? substr($data['msg_id'], 0, 11) . '...' : $data['msg_id'];
         },
     ],
     [
         'attribute' => 'property',
+        'format' => 'raw',
         'filter' => Lookup::items(Property::TORG_PROPERTY, true),
         'value' => function($data) {
-            return $data['property'];
+            return $data['property'] . ($data['property_id'] == Torg::PROPERTY_ZALOG
+                ? ' ' . Html::a('<i class="fa fa-plus"></i>', ['lot/create', 'torg_id' => $data['id']], ['title' => Yii::t('app', 'Add lot')])
+                : ''
+            );
         },
-        'options' => ['style' => 'width:15%;'],
     ],
     [
         'attribute' => 'offer',
@@ -35,7 +38,6 @@ return [
         'value' => function($data) {
             return $data['offer'];
         },
-        'options' => ['style' => 'width:15%;'],
     ],
     [
         'attribute' => 'started_at',
@@ -49,27 +51,6 @@ return [
         'value' => function($data) {
             return date('d.m.Y', $data['end_at']);
         },
-        'options' => ['style' => 'width:7%;'],
-    ],
-    [
-        'header' => Yii::t('app', 'Lots count'),
-        'format' => 'raw',
-        'value' => function($data) {
-            return $data['lot_count'] . ($data['property_id'] == Torg::PROPERTY_ZALOG
-                ? ' ' . Html::a('<i class="fa fa-plus"></i>', ['lot/create', 'torg_id' => $data['id']], ['title' => Yii::t('app', 'Add lot')])
-                : ''
-            );
-        },
-        'options' => ['style' => 'width:5%;'],
-    ],
-    [
-        'header' => Yii::t('app', 'Publisher'),
-        'value' => function($data) {
-            $company = $data['bankrupt_company'] . $data['owner_company'] . $data['other_company'];
-            $person = $data['bankrupt_person'] . $data['owner_person'] . $data['other_person'];
-            return $company . ($company && $person ? ', ' . $person : $person);
-        },
-        'options' => ['style' => 'width:5%;'],
     ],
 
     [
