@@ -25,13 +25,12 @@ use sergmoro1\lookup\Lookup;
  * @var integer $status
  * @var integer $created_at
  * @var integer $updated_at
- * 
- * @property Place $place
  */
 class Organization extends ActiveRecord
 {
     // сценарии
     const SCENARIO_MIGRATION = 'organization_migration';
+    const SCENARIO_CREATE = 'organization_create';
     
     // внутренний код модели используемый в составном ключе
     const INT_CODE              = 2;
@@ -87,7 +86,7 @@ class Organization extends ActiveRecord
     public function rules()
     {
         return [
-            [['model', 'parent_id'], 'required'], // , 'title', 'inn'
+            [['model', 'parent_id'], 'required', 'except' => self::SCENARIO_CREATE], // , 'title', 'inn'
             [['model', 'parent_id', 'activity'], 'integer'],
             ['model', 'in', 'range' => self::getTypes()],
             ['model', 'default', 'value' => self::TYPE_NOMATTER],
@@ -111,7 +110,7 @@ class Organization extends ActiveRecord
     {
         return [
             'title'       => Yii::t('app', 'Title'),
-            'ownership'   => Yii::t('app', 'Ownership'),
+            'activity'    => Yii::t('app', 'Activity'),
             'inn'         => Yii::t('app', 'INN'),
             'ogrn'        => Yii::t('app', 'OGRN'),
             'reg_number'  => Yii::t('app', 'Reg number'),
@@ -169,13 +168,5 @@ class Organization extends ActiveRecord
             self::ACTIVITY_SIMPLE,
             self::ACTIVITY_STRATEGIC,
         ];
-    }
-
-    /**
-     * Получить информацию о месте
-     * @return yii\db\ActiveRecord
-     */
-    public function getPlace() {
-        return Place::findOne(['model' => $this->model, 'parent_id' => $this->id]);
     }
 }

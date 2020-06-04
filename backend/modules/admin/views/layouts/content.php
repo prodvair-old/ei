@@ -5,7 +5,9 @@ use yiister\adminlte\widgets\FlashAlert;
 <div class="content-wrapper">
     <section class="content-header">
         <h1><?= $this->title ?></h1>
-        <?= FlashAlert::widget() ?>
+        <p>
+            <?= FlashAlert::widget() ?>
+        </p>
         <?php if (isset($this->params['breadcrumbs'])): ?>
             <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
         <?php endif; ?>

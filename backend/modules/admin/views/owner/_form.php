@@ -14,45 +14,45 @@ use yii\widgets\ActiveForm;
         <div class='lot-common col-lg-8'>
             <div class='box box-primary'>
                 <div class='box-header'>
-                    <h3 class='box-title'><?= Yii::t('app', 'Profile') ?></h3>
+                    <h3 class='box-title'><?= Yii::t('app', 'Common') ?></h3>
                 </div>
                 <div class='box-body'>
 
-                    <?= $this->render('/profile/_form', [
-                        'form'  => $form,
-                        'model' => $profile,
-                    ]) ?>
-                
-                </div>
-            </div>
-            <div class='box box-primary'>
-                <div class='box-header'>
-                    <h3 class='box-title'><?= Yii::t('app', 'Notification') ?></h3>
-                </div>
-                <div class='box-body'>
-
-                    <?= $this->render('_form_notification', [
-                        'form'  => $form,
-                        'model' => $notification,
-                    ]) ?>
-                
-                </div>
-            </div>
-        </div>
-        <div class='lot-status col-lg-4'>
-            <div class='box box-primary'>
-                <div class='box-header'>
-                    <h3 class='box-title'><?= Yii::t('app', 'Rights') ?></h3>
-                </div>
-                <div class='box-body'>
-
-                    <?= $this->render('_form_status', [
+                    <?= $this->render('_form_common', [
                         'form'  => $form,
                         'model' => $model,
                     ]) ?>
                 
                 </div>
             </div>
+            <div class='box box-primary'>
+                <div class='box-header'>
+                    <h3 class='box-title'><?= Yii::t('app', 'Organization') ?></h3>
+                </div>
+                <div class='box-body'>
+
+                    <?= $this->render('/organization/_form', [
+                        'form'  => $form,
+                        'model' => $organization,
+                    ]) ?>
+                
+                </div>
+            </div>
+            <div class='box box-primary'>
+                <div class='box-header'>
+                    <h3 class='box-title'><?= Yii::t('app', 'Place') ?></h3>
+                </div>
+                <div class='box-body'>
+
+                    <?= $this->render('/place/_form', [
+                        'form'  => $form,
+                        'model' => $place,
+                    ]) ?>
+                
+                </div>
+            </div>
+        </div>
+        <div class='lot-status col-lg-4'>
             <div class='box box-primary'>
                 <div class='box-header'>
                     <h3 class='box-title'><?= Yii::t('app', 'Image') ?></h3>

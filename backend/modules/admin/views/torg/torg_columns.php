@@ -12,7 +12,14 @@ use common\models\db\Torg;
 return [
     [
         'attribute' => 'id',
-        'options' => ['style' => 'width:5%;'],
+        'format' => 'raw',
+        'options' => ['style' => 'width:7%;'],
+        'value' => function($data) {
+             return $data['id'] . ' ' . ($data['property_id'] == Torg::PROPERTY_ZALOG
+                ? ' ' . Html::a('<i class="fa fa-plus"></i>', ['lot/create', 'torg_id' => $data['id']], ['title' => Yii::t('app', 'Add lot')])
+                : ''
+            );
+        }
     ],
     [
         'attribute' => 'msg_id',
@@ -23,13 +30,9 @@ return [
     ],
     [
         'attribute' => 'property',
-        'format' => 'raw',
         'filter' => Lookup::items(Property::TORG_PROPERTY, true),
         'value' => function($data) {
-            return $data['property'] . ($data['property_id'] == Torg::PROPERTY_ZALOG
-                ? ' ' . Html::a('<i class="fa fa-plus"></i>', ['lot/create', 'torg_id' => $data['id']], ['title' => Yii::t('app', 'Add lot')])
-                : ''
-            );
+            return $data['property'];
         },
     ],
     [
