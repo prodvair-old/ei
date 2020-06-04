@@ -73,6 +73,8 @@ class EidbController extends Controller
         $limit  = $step;
         $offset = $dataCount[0]['count'];
 
+        $data = null;
+
         while ($data !== false) {
             $data   = SroFill::getData($limit, $offset);
 
@@ -128,6 +130,8 @@ class EidbController extends Controller
 
         $limit  = $step;
         $offset = $dataCount[0]['count'];
+
+        $data = null;
 
         while ($data !== false) {
             $data = ManagerFill::getData($limit, $offset);
@@ -189,6 +193,8 @@ class EidbController extends Controller
         $limit  = $step;
         $offset = $dataCount[0]['count'];
 
+        $data = null;
+
         while ($data !== false) {
             $data = BankruptFill::getData($limit, $offset);
 
@@ -247,6 +253,8 @@ class EidbController extends Controller
         $limit  = $step;
         $offset = $dataCount[0]['count'];
 
+        $data = null;
+
         while ($data !== false) {
             $data = EtpFill::getData($limit, $offset);
 
@@ -302,6 +310,8 @@ class EidbController extends Controller
 
         $limit  = $step;
         $offset = $dataCount[0]['count'];
+
+        $data = null;
 
         while ($data !== false) {
 
@@ -360,6 +370,8 @@ class EidbController extends Controller
         $limit  = $step;
         $offset = $dataCount[0]['count'];
 
+        $data = null;
+
         while ($data !== false) {
             $data = CasefileFill::getData($limit, $offset);
 
@@ -411,6 +423,8 @@ class EidbController extends Controller
 
         $limit  = $step;
         $offset = $dataCount[0]['count'];
+        
+        $data = null;
 
         while ($data !== false) {
             $data = TorgFill::getData($limit, $offset);
@@ -470,6 +484,8 @@ class EidbController extends Controller
         $limit  = $step;
         $offset = $dataCount[0]['count'];
 
+        $data = null;
+
         while ($data !== false) {
             $data = LotFill::getData($limit, $offset);
 
@@ -524,6 +540,8 @@ class EidbController extends Controller
         $limit  = $step;
         $offset = $dataCount[0]['count'];
 
+        $data = null;
+
         while ($data !== false) {
             $data = LotCategoryFill::getData($limit, $offset);
 
@@ -576,6 +594,8 @@ class EidbController extends Controller
         $limit  = $step;
         $offset = $dataCount[0]['count'];
 
+        $data = null;
+
         while ($data !== false) {
             $data = LotPriceFill::getData($limit, $offset);
 
@@ -627,6 +647,8 @@ class EidbController extends Controller
 
         $limit  = $step;
         $offset = $dataCount[0]['count'];
+
+        $data = null;
 
         while ($data !== false) {
             $data = LotImageFill::getData($limit, $offset);
