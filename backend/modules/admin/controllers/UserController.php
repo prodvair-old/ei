@@ -91,16 +91,13 @@ class UserController extends Controller
         //if (!Yii::$app->user->can('update', ['user' => $model]))
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
         
-        $profile = $model->profile;
-        if (!$profile) {
-            $profile = new Profile();
-            $profile->scenario = Profile::SCENARIO_CREATE;
-        }
-        $notification = $model->notification;
-        if (!$notification) {
-            $notification = new Notification();
-            $notification->scenario = Notification::SCENARIO_CREATE;
-        }
+        $profile = isset($model->profile)
+            ? $model->profile
+            : new Profile(['model' => User::INT_CODE, 'parent_id' => $model->id]);
+
+        $notification = isset($model->notification)
+            ? $model->notification
+            : new Notification(['user_id' => $model->id]);
         
         $post = Yii::$app->request->post();
         if ($model->load($post) && $profile->load($post) && $notification->load($post)) {
@@ -109,10 +106,7 @@ class UserController extends Controller
             $isValid = $notification->validate() && $isValid;
             if ($isValid) {
                 $model->save(false);
-                $profile->model = $model->intCode;
-                $profile->parent_id = $model->id;
                 $profile->save(false);
-                $notification->user_id = $model->id;
                 $notification->save(false);
                 Yii::$app->session->setFlash('success', Yii::t('app', 'Updated successfully.'));
             }
