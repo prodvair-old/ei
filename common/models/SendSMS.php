@@ -7,6 +7,7 @@ use yii\base\Model;
 class SendSMS extends Model
 { 
   const TOKEN = '8EEEBF95-6CCB-5936-F951-ED0AA3E73C7A';
+  const FROM = 'ei.ru torgi';
 
   private $totalCost;
   private $totalSMS;
@@ -40,9 +41,10 @@ class SendSMS extends Model
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array(
-        "api_id" => self::TOKEN,
-        "to" => $this->phone, // До 100 штук до раз
-        "msg" => $this->message, // Если приходят крякозябры, то уберите iconv и оставьте только "Привет!",
+        "api_id"  => self::TOKEN,
+        "to"      => $this->phone, // До 100 штук до раз
+        "from"    => self::FROM,
+        "msg"     => $this->message, // Если приходят крякозябры, то уберите iconv и оставьте только "Привет!",
         /*
         // Если вы хотите отправлять разные тексты на разные номера, воспользуйтесь этим кодом. В этом случае to и msg нужно убрать.
         "multi" => array( // до 100 штук за раз
@@ -144,10 +146,11 @@ class SendSMS extends Model
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
     curl_setopt($ch, CURLOPT_POSTFIELDS, array(
-        "api_id" => self::TOKEN,
-        "to" => $this->phone,
-        "msg" => $this->message, // Если приходят крякозябры, то уберите iconv и оставьте только "Привет!",
-        "json" => 1 // Для получения более развернутого ответа от сервера
+        "api_id"  => self::TOKEN,
+        "to"      => $this->phone,
+        "from"    => self::FROM,
+        "msg"     => $this->message, // Если приходят крякозябры, то уберите iconv и оставьте только "Привет!",
+        "json"    => 1 // Для получения более развернутого ответа от сервера
     ));
     $body = curl_exec($ch);
     curl_close($ch);
