@@ -121,12 +121,15 @@ return [
 
         '/profile/setting'       => 'user/setting',
         '/profile/setting_image' => 'user/setting_image',
+        '/profile/edit-phone'    => 'user/edit-phone',
+        '/profile/get-code'      => 'user/get-code',
 
         '/profile/favorite'      => 'user/wish_list',
 
         '/profile/lots'          => 'user/lots',
         '/profile/get-arrest-bankrupt' => 'user/get-arrest-bankrupt',
         '/profile/lots/<id:\d+>' => 'user/edit-lot',
+
 
         '/profile/lots/import'   => 'user/import-lots',
         '/profile/lots/zalog-image-del'   => 'user/lot-images-del',

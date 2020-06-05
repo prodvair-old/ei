@@ -4,7 +4,7 @@ namespace console\traits;
 
 use yii\console\Exception;
 
-trait District
+trait DistrictConsole
 {
     private static $district = [
         'Центральный'       => 1,
@@ -23,7 +23,7 @@ trait District
     public function districtConvertor($name)
     {
         return $name
-            ? (isset($this->district[$name]) ? $this->district[$name] : 0)
+            ? (isset(self::$district[$name]) ? self::$district[$name] : 0)
             : 0;
     }
 }

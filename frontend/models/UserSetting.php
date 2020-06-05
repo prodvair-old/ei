@@ -22,6 +22,7 @@ class UserSetting extends User
 //    public $city;
 //    public $address;
     public $avatar;
+    public $phoneCode;
     public $passport_img;
 //    public $email;
 //    public $phone;
@@ -46,9 +47,10 @@ class UserSetting extends User
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
             // ['email', 'unique', 'targetAttribute' => 'username', 'targetClass' => User::className(), 'message' => 'Такой пользователь уже зарегистрирован.'],
-
+            
             ['phone', 'required'],
             ['phone', 'string'],
+            ['phoneCode', 'string'],
 
             [['old_photo', 'old_passport'], 'string'],
 
