@@ -6,14 +6,12 @@ function timer(time) {
     } else {
       $(".phone-time").html(time);
     }
-    console.log(time, time <= 0);
     if (time <= 0) {
       setTimeout(function () {
         if ($(".phone-time").html() <= 0) {
           $(".resend-code").removeClass("d-none");
         }
       }, 1500);
-      console.log("end");
       clearInterval(timeinterval);
     }
   }
