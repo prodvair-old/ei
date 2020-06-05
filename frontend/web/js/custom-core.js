@@ -60,10 +60,14 @@ jQuery(function ($) {
   $(".code_mask").mask("9-9-9-9");
   if (typeof edit_phone != undefined) {
     $(".resend-code").on("click", function (e) {
+      e.preventDefault();
+      $(".loader").hide();
       $.ajax({
         url: "/profile/get-code",
         type: "GET",
         success: function (res) {
+          $(".loader").hide();
+          toastr.success("Код отправлен");
           console.log(res);
           timer(60);
         },
@@ -71,7 +75,6 @@ jQuery(function ($) {
           $(".phone-form-error").html("Серверная ошибка");
         },
       });
-      e.preventDefault();
     });
   }
 

@@ -408,8 +408,10 @@ class UserController extends Controller
   public function actionGetCode() {
     $code = rand(1000, 9999);
 
+    $post = Yii::$app->request->post();
     $session = Yii::$app->session;
     $session->set('userCode', $code);
+    $session->set('userPhone', $post['UserEditPhone']['phone']);
 
     return $code;
   }
@@ -428,12 +430,13 @@ class UserController extends Controller
         if ($model->load(Yii::$app->request->post())) {
           if (str_replace('-', '', $model->code) == $session->get('userCode')) {
             $model_user = $this->findModel(Yii::$app->user->id);
-            $model_user->phone = $model->phone;
+            $model_user->phone = $session->get('userPhone');
 
             if ($model_user->save()) {
               $result = true;
               $mess = 'Успешно';
               $session->remove('userCode');
+              $session->remove('userPhone');
             }
           } else {
             $mess = "Не верный код";

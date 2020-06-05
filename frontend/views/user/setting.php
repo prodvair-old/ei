@@ -283,7 +283,18 @@ $this->params['breadcrumbs'][] = [
             
                             <div class="flex-md-grow-1 bg-primary-light">
                                 <?=$form->field($model_phone, 'phone')->textInput(['class' => 'form-control phone_mask', 'placeholder' => 'Новый номер телефона', 'required' => true])->label(false);?>
-                                <?=Html::submitButton('Изменить', ['class' => 'btn btn-primary btn-wide'])?>
+                                <div class="d-flex">
+                                    <?=Html::submitButton('Изменить', ['class' => 'btn btn-primary btn-wide'])?>
+                                    <div class="loader">
+                                        <div class='sk-wave'>
+                                            <div class='sk-rect sk-rect-1'></div>
+                                            <div class='sk-rect sk-rect-2'></div>
+                                            <div class='sk-rect sk-rect-3'></div>
+                                            <div class='sk-rect sk-rect-4'></div>
+                                            <div class='sk-rect sk-rect-5'></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         <?php ActiveForm::end(); ?>
 
@@ -301,19 +312,29 @@ $this->params['breadcrumbs'][] = [
                             <h4>Подтвердите номер</h4>
                             <p>На ваш телефон придёт SMS с кодом подтверждения: <span class="phone-time">00</span> секунд.
                                 <a href="#" class="resend-code d-none">Повторить</a>
-                                <?=$form->field($model_phone, 'phone_hide')->textInput(['class' => 'form-control phone_visible', 'readonly' => true])->label(false);?>
+                                <?=$form->field($model_phone, 'phone')->textInput(['class' => 'form-control phone_visible', 'readonly' => true])->label(false);?>
                             </p>
                             <a class="back-to-tab" href="#phoneEditModel-phone">Изменить номер</a>
                         </div>
     
                         <div class="form-body">
         
-                            <span class="phone-form-error tab-external-link block mt-25 text-danger"></span>
+                            <span class="code-form-error block mt-25 text-danger"></span>
             
                             <div class="flex-md-grow-1 bg-primary-light">
-                                <?=$form->field($model_phone, 'phone')->hiddenInput(['class' => 'form-control phone_hide', 'readonly' => true])->label(false);?>
                                 <?=$form->field($model_phone, 'code')->textInput(['class' => 'form-control code_mask', 'placeholder' => '_ _ _ _'])->label(false);?>
-                                <?=Html::submitButton('Подтвердить', ['class' => 'btn btn-primary btn-wide'])?>
+                                <div class="d-flex">
+                                    <?=Html::submitButton('Подтвердить', ['class' => 'btn btn-primary btn-wide'])?>
+                                    <div class="loader">
+                                        <div class='sk-wave'>
+                                            <div class='sk-rect sk-rect-1'></div>
+                                            <div class='sk-rect sk-rect-2'></div>
+                                            <div class='sk-rect sk-rect-3'></div>
+                                            <div class='sk-rect sk-rect-4'></div>
+                                            <div class='sk-rect sk-rect-5'></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -339,17 +360,19 @@ $this->params['breadcrumbs'][] = [
 
 <?php
 $js = <<<JS
+$('.loader').hide();
 $('#phone-edit-form').on('beforeSubmit', function(){
     var data = $(this).serialize();
-    console.log(data);
+    $('.loader').show();
     $.ajax({
         url: '/profile/get-code',
         type: 'POST',
         data: data,
         success: function(res){
+            $('.loader').hide();
+            toastr.success('Код отправлен');
             console.log(res);
             phone = $('.phone_mask').val()
-            $('.phone_hide').val(phone);
             phone = phone.substring(0, phone.length - 5) + "**-**";
             $('.phone_visible').val(phone);
             $('#phoneEditModel-phone').removeClass('active');
@@ -357,7 +380,7 @@ $('#phone-edit-form').on('beforeSubmit', function(){
             timer(60)
         },
         error: function(res){
-            $('.phone-form-error').html('Серверная ошибка');
+            toastr.error('Серверная ошибка');
         }
     });
     return false;
@@ -371,22 +394,26 @@ $('.back-to-tab').on('click', function (e) {
 });
 $('#code-check-form').on('beforeSubmit', function(){
     var data = $(this).serialize();
+    $('.loader').show();
     $.ajax({
         url: '/profile/edit-phone',
         type: 'POST',
         data: data,
         success: function(res){
+            $('.loader').hide();
             if (res.result) {
+                toastr.success(res.error);
                 $('#phoneEditModel-code').removeClass('active');
                 $('#phoneEditModel-code').removeClass('show');
                 $('#phoneEditModel-ready').addClass('active show');
                 $('.phone-ready').val($('.phone_mask').val());
             } else {
-                $('.phone-form-error').html(res.mess);
+                toastr.warning(res.error);
             }
         },
         error: function(res){
-            $('.phone-form-error').html('Серверная ошибка');
+            $('.loader').hide();
+            toastr.error('Серверная ошибка');
         }
     });
     return false;
