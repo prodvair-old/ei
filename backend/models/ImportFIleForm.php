@@ -51,12 +51,14 @@ class ImportFIleForm extends Model
 
                 if ($cad = $this->getCadastre((string)$sheetData[$baseRow]['D'])) {
                     $whereCad[] = ['like', 'lotPropName', $cad];
+                    $whereF[] = ['like', 'lotPropName', $cad];
                 }
                 if ($vin = $this->getVin((string)$sheetData[$baseRow]['D'])) {
                     $whereCad[] = ['like', 'lotPropName', $vin];
+                    $whereF[] = ['like', 'lotPropName', $vin];
                 }
 
-                $whereF = $whereFirst = $whereSecond = $whereCad;
+                $whereFirst = $whereSecond = $whereCad;
 
                 // ----------------------------
                 $whereS     = ['or'];
@@ -74,7 +76,7 @@ class ImportFIleForm extends Model
                     $orWhere[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').' '.mb_substr($names[2],0,1,'UTF-8')];
                     $orWhere[] = ['like', 'lotPropName', $names[0].' '.mb_substr($names[1],0,1,'UTF-8').mb_substr($names[2],0,1,'UTF-8')];
                 }
-                $whereF = $whereS[] = $orWhere;
+                $whereF[] = $whereS[] = $orWhere;
                 // ----------------------------
 
                 $whereSecond[]  = $whereS;
