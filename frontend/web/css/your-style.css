@@ -5,8 +5,20 @@
 * Created:        10/09/2019 
 -------------------------------------------------------------------*/
 
-
 /** 
  * Add your style here 
- */ 
+ */
 
+#edit_phone {
+  position: absolute;
+  top: 12%;
+  right: 30px;
+}
+
+.code_mask {
+  border: none;
+  text-align: center;
+  font-size: 2rem;
+  color: #999;
+  margin-bottom: 25px;
+}
