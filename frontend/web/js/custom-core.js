@@ -58,7 +58,7 @@ jQuery(function ($) {
   });
 
   // Phone editor
-  $(".phone_mask").mask("+7(999)999-99-99");
+  $(".phone_mask").mask("+7 (999) 999-99-99");
   $(".code_mask").mask("9-9-9-9");
   if (typeof edit_phone != undefined) {
     $(".resend-code").on("click", function (e) {
