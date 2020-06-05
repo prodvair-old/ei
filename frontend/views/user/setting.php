@@ -299,7 +299,7 @@ $this->params['breadcrumbs'][] = [
 
                         <div class="form-header">
                             <h4>Подтвердите номер</h4>
-                            <p>На ваш телефон придёт код подтверждения: <span class="phone-time">00</span>
+                            <p>На ваш телефон придёт SMS с кодом подтверждения: <span class="phone-time">00</span> секунд.
                                 <a href="#" class="resend-code d-none">Повторить</a>
                                 <?=$form->field($model_phone, 'phone_hide')->textInput(['class' => 'form-control phone_visible', 'readonly' => true])->label(false);?>
                             </p>
@@ -354,7 +354,7 @@ $('#phone-edit-form').on('beforeSubmit', function(){
             $('.phone_visible').val(phone);
             $('#phoneEditModel-phone').removeClass('active');
             $('#phoneEditModel-code').addClass('active show');
-            timer(10)
+            timer(60)
         },
         error: function(res){
             $('.phone-form-error').html('Серверная ошибка');
@@ -376,7 +376,6 @@ $('#code-check-form').on('beforeSubmit', function(){
         type: 'POST',
         data: data,
         success: function(res){
-            console.log(res);
             if (res.result) {
                 $('#phoneEditModel-code').removeClass('active');
                 $('#phoneEditModel-code').removeClass('show');
