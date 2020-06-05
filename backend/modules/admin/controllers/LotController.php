@@ -98,8 +98,7 @@ class LotController extends Controller
 
         $torg  = Torg::findOne($torg_id);
         $model = new Lot(['torg_id' => $torg_id]);
-        $place = new Place();
-        $place->scenario = Place::SCENARIO_CREATE;
+        $place = new Place(['model' => Lot::INT_CODE, 'parent_id' => $model->id]);
 
         $post = Yii::$app->request->post();
         if ($model->load($post) && $place->load($post)) {
@@ -107,8 +106,6 @@ class LotController extends Controller
             $isValid = $place->validate() && $isValid;
             if ($isValid) {
                 $model->save(false);
-                $place->model = $model->intCode;
-                $place->parent_id = $model->id;
                 $place->save(false);
                 Yii::$app->session->setFlash('success', Yii::t('app', 'Created successfully.'));
                 return $this->redirect(['update', 'id' => $model->id]);
@@ -135,11 +132,12 @@ class LotController extends Controller
         //if (!Yii::$app->user->can('update', ['lot' => $model]))
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
         
-        $place = $model->place;
-        if (!$place)
-            $place = new Place(['model' => Place::INT_CODE, 'parent_id' => $model->id]);
+        $place = isset($model->place)
+            ? $model->place
+            : new Place(['model' => Lot::INT_CODE, 'parent_id' => $model->id]);
 
-        if ($model->load(Yii::$app->request->post()) && $place->load(Yii::$app->request->post())) {
+        $post = Yii::$app->request->post();
+        if ($model->load($post) && $place->load($post)) {
             $isValid = $model->validate();
             $isValid = $place->validate() && $isValid;
             if ($isValid) {

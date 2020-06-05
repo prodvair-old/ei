@@ -102,10 +102,10 @@ class OwnerController extends Controller
             $isValid = $place->validate() && $isValid;
             if ($isValid) {
                 $model->save(false);
-                $organization->model = $model->intCode;
+                $organization->model = Owner::INT_CODE;
                 $organization->parent_id = $model->id;
                 $organization->save(false);
-                $place->model = $model->intCode;
+                $place->model = Owner::INT_CODE;
                 $place->parent_id = $model->id;
                 $place->save(false);
                 Yii::$app->session->setFlash('success', Yii::t('app', 'Created successfully.'));
