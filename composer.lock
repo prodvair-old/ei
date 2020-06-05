@@ -2865,16 +2865,16 @@
         },
         {
             "name": "sergmoro1/yii2-uploader",
-            "version": "v2.0.6",
+            "version": "v2.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sergmoro1/yii2-uploader.git",
-                "reference": "2456405e7cdf0167443ed84a7133a32a07988880"
+                "reference": "9ce2f68585eb867086f59e1ae364f4f960c0819e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sergmoro1/yii2-uploader/zipball/2456405e7cdf0167443ed84a7133a32a07988880",
-                "reference": "2456405e7cdf0167443ed84a7133a32a07988880",
+                "url": "https://api.github.com/repos/sergmoro1/yii2-uploader/zipball/9ce2f68585eb867086f59e1ae364f4f960c0819e",
+                "reference": "9ce2f68585eb867086f59e1ae364f4f960c0819e",
                 "shasum": ""
             },
             "require": {
@@ -2915,7 +2915,7 @@
                 "upload",
                 "yii2"
             ],
-            "time": "2020-06-05T06:56:47+00:00"
+            "time": "2020-06-05T07:20:27+00:00"
         },
         {
             "name": "setasign/fpdi",

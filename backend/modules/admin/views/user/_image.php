@@ -11,5 +11,6 @@ use sergmoro1\uploader\widgets\Uploader;
     'model'         => $model,
     'draggable'     => true,
     'appendixView'  => '/user/appendix.php',
+    'cropAllowed'   => true,
     'secure'        => false,
 ]) ?>
