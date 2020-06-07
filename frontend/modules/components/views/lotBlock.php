@@ -1,9 +1,13 @@
 <?php
 
 use common\models\db\Lot;
-use frontend\components\NumberWords;
+use common\models\db\Torg;
+use sergmoro1\lookup\models\Lookup;
+use yii\helpers\Html;
 
 /* @var $lot Lot */
+/* @var $url */
+/* @var $type */
 
 $priceClass = 'text-secondary';
 $lotOrganizatioun = '';
@@ -11,14 +15,14 @@ $lotOrganizatioun = '';
 if ($lot->torg->property == 1) {
     $lotType = 'Банкротное имущество';
     $lotTypeClass = 'lot__bankrupt';
-} else if ($lot->torg->property == 2){
+} else if ($lot->torg->property == 2) {
     $lotType = 'Арестованное имущество';
     $lotTypeClass = 'lot__arest';
-} else if ($lot->torg->property == 3){
+} else if ($lot->torg->property == 3) {
     $lotType = 'Имущество организации';
     $lotTypeClass = 'lot__zalog';
     $lotOrganizatioun = $lot->torg->owner->title;
-} else if ($lot->torg->property == 4){
+} else if ($lot->torg->property == 4) {
     $lotType = 'Муниципально имущество';
     $lotTypeClass = 'lot__municipal';
 }
@@ -27,27 +31,36 @@ if ($lot->torg->property == 1) {
 <?= ($type == 'grid') ? '<div class="col">' : '' ?>
 
 <figure class="tour-<?= $type ?>-item-01" itemscope itemtype="http://schema.org/Product">
-    <!--    <a href="javascript:void()">-->
-    <a href="lot/view/<?= $lot->id ?>">
+    <a href="<?= $url . '/' . $lot->id ?>">
 
         <?= ($type == 'long') ? '<div class="d-flex flex-column flex-sm-row">' : '' ?>
-
         <?= ($type == 'long') ? '<div>' : '' ?>
 
-        <!--        --><? //= $lot->getImage('thumb') ?>
+        <?php
+        $image = $lot->getImage('thumb');
+        if ($image) : ?>
+            <div class="image image-galery">
+                <?php
+                while ($image) {
+                    echo Html::img($image, ['alt' => 'Images']);
+                    $image = $lot->getNextImage('thumb');
+                }
+                ?>
+                <div class="image-galery__control"></div>
+            </div>
+        <?php else : ?>
+            <div class="image image-galery">
+                <img src="img/img.svg"/>
+                <div class="image-galery__control"></div>
+            </div>
+        <?php endif; ?>
 
-        <div class="image image-galery">
-            <img src="<?= $lot->getImage('thumb') ?>" onError="this.src='img/img.svg'"/>
-            <div class="image-galery__control"></div>
-
-        </div>
         <?= ($type == 'long') ? '</div>' : '' ?>
 
         <?= ($type == 'long') ? '<div>' : '' ?>
         <figcaption class="content">
             <ul class="item-meta lot-block__info">
                 <span class="<?= $lotTypeClass ?>"><li><?= $lotType ?></li></span>
-<!--                --><?//= ($lotOrganizatioun)? "<li>$lotOrganizatioun</li>" : '' ?>
             </ul>
             <hr>
             <h3 class="lot-block__title <?= (!empty($lot->archive)) ? ($lot->archive) ? 'text-muted' : '' : '' ?>"
@@ -55,38 +68,17 @@ if ($lot->torg->property == 1) {
 
             <hr>
             <ul class="item-meta lot-block__info">
-                <li><?= $lot->torg->bankrupt->title ?></li>
-                <li><?= $lot->id ?></li>
-                <!--                <li>--><? //= $lot->torg->etp->title ?><!--</li>-->
                 <li><?= Yii::$app->formatter->asDate($lot->torg->published_at, 'long') ?></li>
-                <li>
-                    <div class="rating-item rating-sm rating-inline clearfix">
-                        <!-- <div class="rating-icons">
-                            <input type="hidden" class="rating" data-filled="rating-icon ri-star rating-rated" data-empty="rating-icon ri-star-empty" data-fractions="2" data-readonly value="4.5"/>
-                        </div> -->
-                        <!--                        <p class="rating-text font600 text-muted font-12 letter-spacing-1">-->
-                        <? //=NumberWords::widget(['number' => $lot->viewsCount, 'words' => ['просмотр', 'просмотра', 'просмотров']]) ?><!--</p>-->
-                    </div>
-                </li>
-                <li>
-                    <!--                    <div --><? //=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="wish-star" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star" data-id="'.$lot->id.'" data-type="'.$lot->torg->type.'"'?>
-                    <!--                        <img src="img/star-->
-                    <? //=($lot->getWishId(\Yii::$app->user->id))? '' : '-o' ?><!--.svg" alt="">-->
-                    <!--                    </div>-->
-                </li>
             </ul>
-            <!--            --><? // if ($lot->torg->type == 'zalog') { ?>
-            <!--                <hr>-->
-            <!--                <ul class="item-meta lot-block__info">-->
-            <!--                    <li>-->
-            <!--                        Организация: <span class="-->
-            <? //=($lot->archive)? 'text-muted' : '' ?><!--"> -->
-            <? //= isset($lot->torg->owner) ? $lot->torg->owner->title : '' ?><!--</span>-->
-            <!--                    </li>-->
-            <!--                </ul>-->
-            <!--            --><? // } ?>
+            <? if ($lot->torg->property == Torg::PROPERTY_ZALOG) : ?>
+                <hr>
+                <ul class="item-meta lot-block__info">
+                    <li>
+                        Организация: <span> <?= isset($lot->torg->owner) ? $lot->torg->owner->title : '' ?></span>
+                    </li>
+                </ul>
+            <? endif; ?>
             <hr>
-
             <ul class="item-meta lot-block__info">
                 Категория:&nbsp;
                 <?php foreach ($lot->categories as $item) : ?>
@@ -94,6 +86,11 @@ if ($lot->torg->property == 1) {
                         <span itemprop="category">   <?= $item->name ?></span>
                     </li>
                 <?php endforeach; ?>
+            </ul>
+            <hr>
+            <ul class="item-meta lot-block__info">
+                Топ торгов:&nbsp;
+                <li><span itemprop="category"> <?= Lookup::item('TorgOffer', $lot->torg->offer) ?></span></li>
             </ul>
             <hr>
             <p class="mt-3"><span

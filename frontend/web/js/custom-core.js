@@ -111,13 +111,7 @@ jQuery(function($) {
 	}
 
 	$(".chosen-type-select").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, type) {
-		// lotType = type.selected;
-		// $('.card-search-form').attr('action', '/'+lotType+'/lot-list');
-
-		console.log('chosen-type-select');
 		$("#search-lot-form").submit();
-
-		// filterParams();
 	});
 	
 	function filterParams() {

@@ -2,45 +2,42 @@
 
 /* @var $this yii\web\View */
 
-use yii\helpers\Url;
-use yii\helpers\ArrayHelper;
-use frontend\components\LotBlock;
-use frontend\components\SearchForm;
-use frontend\components\LotDetailSidebar;
 
-use common\models\Query\Settings;
+use common\models\db\Owner;
+use frontend\modules\components\SearchForm;
 use common\models\Query\LotsCategory;
 use common\models\Query\Regions;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 
-
-$this->title = Yii::$app->params['title'];
+$this->title = Yii::$app->params[ 'title' ];
 $regions = Regions::find()->orderBy('id ASC')->all();
 $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
 ?>
 
+<div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03"
+     style="background-image:url('img/01.jpg'); background-position: top  center;">
 
+    <div class="overlay-holder bottom"></div>
 
-<div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03" style="background-image:url('img/01.jpg'); background-position: top  center;">
+    <div class="hero-inner">
 
-  <div class="overlay-holder bottom"></div>
+        <div class="container pt5">
 
-  <div class="hero-inner">
+            <h1>
+                <!-- <span class="font700 main-page__title">Единый информатор<br><span class="main-page__subtitle">Полный каталог реализуемого имущества организаций, должников и банков России</span> </span></h1> -->
+                <span class="font700 main-page__title">Имущество организаций России<br></span>
+            </h1>
+            <p class="main-page__subtitle">Агрегатор банкротных и арестованных торгов, имущества банков, лизинговых
+                компаний, залоговое имущество</p>
 
-    <div class="container pt5">
+            <!-- </span><span class="font200">торгов<span class="block"> <span class="font700">по</span> банкротству</span></span> -->
+            <?= SearchForm::widget(['type' => 'bankrupt', 'url' => 'all']) ?>
 
-        <h1>
-            <!-- <span class="font700 main-page__title">Единый информатор<br><span class="main-page__subtitle">Полный каталог реализуемого имущества организаций, должников и банков России</span> </span></h1> -->
-            <span class="font700 main-page__title">Имущество организаций России<br></span>
-        </h1>
-            <p class="main-page__subtitle">Агрегатор банкротных и арестованных торгов, имущества банков, лизинговых компаний, залоговое имущество</p> 
-                
-        <!-- </span><span class="font200">торгов<span class="block"> <span class="font700">по</span> банкротству</span></span> -->
-      <?= SearchForm::widget(['type' => 'bankrupt', 'url' => 'all']) ?>
+        </div>
 
     </div>
-
-  </div>
 
 </div>
 
@@ -54,17 +51,17 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     <hr>
                     <ul>
                         <li><a href="/all/lot-list"> Все имущество <!--<span>1999</span>--></a></li>
-                        <li><a href="/bankrupt/lot-list" itemprop="https://schema.org/itemOffered"> Банкротное имущество <!--<span>1999</span>--></a></li>
-                        <li><a href="/arrest/lot-list" itemprop="https://schema.org/itemOffered"> Арестованное имущество <!--<span>1999</span>--></a></li>
-                        <li><a href="/municipal/lot-list" itemprop="https://schema.org/itemOffered"> Муниципальное имущество <!--<span>1999</span>--></a></li>
-                        <li><a href="/caterpillar/lot-list" itemprop="https://schema.org/itemOffered">Caterpillar<!--<span>1999</span>--></a></li>
-                        <!-- <li><a href="/portal-da">Portal Da</a></li> -->
-                        <li><a href="/open-bank/lot-list" itemprop="https://schema.org/itemOffered">Банк Открытие<!--<span>1999</span>--></a></li>
-                        <li><a href="/gilfondrt/lot-list" itemprop="https://schema.org/itemOffered">ГЖФ при Президенте РТ<!--<span>1999</span>--></a></li>
-                        <li><a href="/greentau/lot-list" itemprop="https://schema.org/itemOffered">Гринтау<!--<span>1999</span>--></a></li>
-                        <li><a href="/rosselkhozbank/lot-list" itemprop="https://schema.org/itemOffered">Россельхозбанк<!--<span>1999</span>--></a></li>
-                        <li><a href="/sberbank/lot-list" itemprop="https://schema.org/itemOffered">Сберабанк<!--<span>1999</span>--></a></li>
-                        <li><a href="/cdtrf/lot-list" itemprop="https://schema.org/itemOffered">Центр дистанционных торгов<!--<span>1999</span>--></a></li>
+                        <li><a href="/bankrupt/lot-list" itemprop="https://schema.org/itemOffered"> Банкротное имущество
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/arrest/lot-list" itemprop="https://schema.org/itemOffered"> Арестованное имущество
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/municipal/lot-list" itemprop="https://schema.org/itemOffered"> Муниципальное
+                                имущество <!--<span>1999</span>--></a></li>
+                        <?php $ownerList = Owner::getOrganizationList(); ?>
+                        <?php foreach ($ownerList as $key => $item) : ?>
+                            <li><a href="<?= Url::to(['zalog/lot-list', 'LotSearch[owner]' => $key]) ?>"
+                                   itemprop="https://schema.org/itemOffered"><?= $item ?></a></li>
+                        <?php endforeach; ?>
                     </ul>
                 </div>
             </div>
@@ -74,7 +71,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     <hr>
                     <ul>
                         <?php foreach ($lotsCategory as $category) {
-                            echo '<li><a href="/all/'.$category['translit_name'].'" itemprop="category">'.$category['name'].'   <!--<span>1999</span>--></a></li>';
+                            echo '<li><a href="/all/' . $category[ 'translit_name' ] . '" itemprop="category">' . $category[ 'name' ] . '   <!--<span>1999</span>--></a></li>';
                         } ?>
                     </ul>
                 </div>
@@ -85,19 +82,28 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     <hr>
                     <ul>
                         <li><a href="/all/lot-list"> Россия <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=77"> Москва <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=50"> Московская область <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=78"> Санкт-Петербург <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=47"> Ленинградская область <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=23"> Краснодарский край <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=66"> Свердловская область <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=16"> Республика Татарстан <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=52"> Нижегородская область <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=61"> Ростовская область <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?SearchLot%5Bregion%5D=74"> Челябинская область <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=77"> Москва <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=50"> Московская область
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=78"> Санкт-Петербург
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=47"> Ленинградская область
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=23"> Краснодарский край
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=66"> Свердловская область
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=16"> Республика Татарстан
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=52"> Нижегородская область
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=61"> Ростовская область
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=74"> Челябинская область
+                                <!--<span>1999</span>--></a></li>
                         <li><a href="/all/lot-list"> Другие регионы <!--<span>1999</span>--></a></li>
                         <? //foreach ($regions as $region) {
-                           // echo '<li><a href="/all/lot-list?SearchLot%5Bregion%5D='.$region['id'].'"> '.$region['name'].' <!--<span>1999</span>--></a></li>';
+                        // echo '<li><a href="/all/lot-list?LotSearch%5Bregion%5D='.$region['id'].'"> '.$region['name'].' <!--<span>1999</span>--></a></li>';
                         //} ?>
                     </ul>
                 </div>
@@ -109,107 +115,111 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
 
 <section class="pt-0 pb-0">
 
-  <div class="container">
+    <div class="container">
 
-    <div class="clear mb-50"></div>
+        <div class="clear mb-50"></div>
 
-    <div class="row cols-1 cols-sm-2 cols-lg-4 gap-10 mb-20">
+        <div class="row cols-1 cols-sm-2 cols-lg-4 gap-10 mb-20">
 
-      <div class="col">
+            <div class="col">
 
-        <figure style="background-color: #234559;" class="category__item">
-          <a href="/bankrupt/lot-list">
-            <div class="image">
-              <img src="http://www.femak-kazan.com/wp-content/uploads/2018/06/bigstock-Chemical-Plant-Structure-47755258-400x400.jpg" alt="image" />
+                <figure style="background-color: #234559;" class="category__item">
+                    <a href="/bankrupt/lot-list">
+                        <div class="image">
+                            <img src="http://www.femak-kazan.com/wp-content/uploads/2018/06/bigstock-Chemical-Plant-Structure-47755258-400x400.jpg"
+                                 alt="image"/>
+                        </div>
+                        <figcaption class="content">
+                            <div class="content__wrapper">
+                                <h6>Банкротное<br>имущество</h6>
+                                <!-- <p><? //$lotsBankruptCount ?> лотов</p> -->
+                            </div>
+                        </figcaption>
+                    </a>
+                </figure>
+
             </div>
-            <figcaption class="content">
-              <div class="content__wrapper">
-                <h6>Банкротное<br>имущество</h6>
-                <!-- <p><? //$lotsBankruptCount ?> лотов</p> -->
-              </div>
-            </figcaption>
-          </a>
-        </figure>
 
-      </div>
-
-      <div class="col">
+            <div class="col">
 
 
-        <figure class="category__item" style="background-color: #005639;">
-          <a href="/arrest/lot-list">
-            <div class="image">
-              <img src="https://cdn-st4.rtr-vesti.ru/vh/pictures/bq/142/045/9.jpg" alt="image" />
+                <figure class="category__item" style="background-color: #005639;">
+                    <a href="/arrest/lot-list">
+                        <div class="image">
+                            <img src="https://cdn-st4.rtr-vesti.ru/vh/pictures/bq/142/045/9.jpg" alt="image"/>
+                        </div>
+                        <figcaption class="content">
+                            <div class="content__wrapper">
+                                <h6>Арестованное <br>имущество</h6>
+                                <!-- <p><? //$lotsArrestCount ?> лотов</p> -->
+                                <div>
+                        </figcaption>
+                    </a>
+                </figure>
+
             </div>
-            <figcaption class="content">
-              <div class="content__wrapper">
-                <h6>Арестованное <br>имущество</h6>
-                <!-- <p><? //$lotsArrestCount ?> лотов</p> -->
-                <div>
-            </figcaption>
-          </a>
-        </figure>
 
-      </div>
+            <div class="col">
 
-      <div class="col">
+                <figure class="category__item" style="background-color:#2b8ac6;">
+                    <a href="/zalog/lot-list">
+                        <div class="image">
+                            <img src="https://images.unsplash.com/photo-1513496335913-a9aab0fc1318?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80"
+                                 alt="image"/>
+                        </div>
+                        <figcaption class="content">
+                            <div class="content__wrapper">
+                                <h6>Имущество организаций</h6>
+                                <!-- <p ><? // $lotsZalogCount ?> лотов</p> -->
+                            </div>
+                        </figcaption>
+                    </a>
+                </figure>
 
-        <figure class="category__item" style="background-color:#2b8ac6;">
-            <a href="/zalog/lot-list">
-                <div class="image">
-                <img src="https://images.unsplash.com/photo-1513496335913-a9aab0fc1318?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="image"/>
-                </div>
-                <figcaption class="content">
-                    <div class="content__wrapper">
-                    <h6>Имущество организаций</h6>
-                    <!-- <p ><?// $lotsZalogCount ?> лотов</p> -->
+            </div>
+
+            <div class="col">
+                <figure class="category__item" style="background-color: #555e63;">
+                    <div href="/bankrupt/debitorskaya-zadolzhennost">
+                        <div class="image">
+                            <img src="https://cdn.govexec.com/media/img/upload/2015/09/03/090415EIG_personnel_files/open-graph.jpg"
+                                 alt="image"/>
+                        </div>
+                        <figcaption class="content">
+                            <div class="content__wrapper">
+                                <h6>Реестры</h6>
+                                <ul class="category__links">
+                                    <li><a href="/arbitrazhnye-upravlyayushchie">Арбитражные управляющие
+                                            <!--<span>1999</span>--></a></li>
+                                    <li><a href="/dolzhniki">Должники<!--<span>1999</span>--></a></li>
+                                    <li><a href="/sro">СРО<!--<span>1999</span>--></a></li>
+                                </ul>
+                            </div>
+                        </figcaption>
                     </div>
-                </figcaption>
-            </a>
-        </figure>
-        
-    </div>
+                </figure>
 
-      <div class="col">
-        <figure class="category__item" style="background-color: #555e63;">
-          <div href="/bankrupt/debitorskaya-zadolzhennost">
-            <div class="image">
-              <img src="https://cdn.govexec.com/media/img/upload/2015/09/03/090415EIG_personnel_files/open-graph.jpg" alt="image" />
             </div>
-            <figcaption class="content">
-              <div class="content__wrapper">
-                <h6>Реестры</h6>
-                <ul class="category__links">
-                  <li><a href="/arbitrazhnye-upravlyayushchie">Арбитражные управляющие<!--<span>1999</span>--></a></li>
-                  <li><a href="/dolzhniki">Должники<!--<span>1999</span>--></a></li>
-                  <li><a href="/sro">СРО<!--<span>1999</span>--></a></li>
-                </ul>
-              </div>
-            </figcaption>
-          </div>
-        </figure>
 
-      </div>
+        </div>
 
-    </div>
-
-    <!-- <div class="section-title">
+        <!-- <div class="section-title">
             <h2><span><span>Горячие</span> Предложения Дня</span></h2>
         </div>
         
         <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30">
 
             <? //foreach ($lots as $lot) { echo LotBlock::widget(['lot' => $lot]); }
-            ?>
+        ?>
             
         </div>
 
         <div class="clear mb-100"></div> -->
 
 
-    <div class="clear mb-100"></div>
+        <div class="clear mb-100"></div>
 
-  </div>
+    </div>
 
 </section>
 

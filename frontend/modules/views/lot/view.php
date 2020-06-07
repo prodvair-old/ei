@@ -2,96 +2,28 @@
 
 use common\models\db\Lot;
 use common\models\db\Torg;
-use sergmoro1\lookup\models\Lookup;
 use yii\widgets\Breadcrumbs;
-use yii\widgets\LinkPager;
-use yii\bootstrap\ActiveForm;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
-
 use frontend\components\NumberWords;
-use frontend\components\LotDetailSidebar;
+use frontend\modules\components\LotDetailSidebar;
 use frontend\modules\components\LotBlock;
 use frontend\components\Darwin;
 use frontend\components\ServiceLotFormWidget;
-
 use frontend\models\UserAccess;
-use frontend\models\ViewPage;
+use ymaker\social\share\widgets\SocialShare;
 
-use common\models\Query\WishList;
-use common\models\Query\Lot\Lots;
 
 /* @var $lot Lot */
-
-$view = new ViewPage();
-
-//$view->page_type = "lot_".$lot->torg->type;
-//$view->page_id = $lot->id;
-
-//$view->check();
+/* @var $type */
 
 $dateSend = floor(($lot->torg->end_at - time()) / (60 * 60 * 24));
-
-// switch ($lot->torg->type) {
-//     case 'bankrupt':
-//         $otherJoin = ['torg.bankrupt'];
-//         $otherWhere = ['bankrupt.id'=>$lot->torg->bankrupt->id];
-//         break;
-//     case 'arrest':
-//         $otherJoin = ['torg'];
-//         $otherWhere = ['torg.id'=>$lot->torg->id];
-//         break;
-//     case 'zalog':
-//         $otherJoin = ['torg.owner'];
-//         $otherWhere = ['owner.id'=>$lot->torg->owner->id];
-//         break;
-// }
-
-// $otherLots = Lots::find()->joinWith($otherJoin)->alias('lot')->where($otherWhere)->andWhere(['!=', 'lot.id', $lot->id])->all();
 $otherLots = null;
 
 $this->registerJsVar('lotType', $lot->torg->property, $position = yii\web\View::POS_HEAD);
 $this->title = $lot->title;
 $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
-
-//$isCategory =
-//    $lot->category->categoryId == '1061' ||
-//    $lot->category->categoryId == '1063' ||
-//    $lot->category->categoryId == '1064' ||
-//    $lot->category->categoryId == '1068' ||
-//    $lot->category->categoryId == '1083' ||
-//    $lot->category->categoryId == '1102' ||
-//    $lot->category->categoryId == '1102';
-//
-//foreach ($lot->info as $key => $value) {
-//    if (
-//        $value != null &&
-//        $key != 'address' &&
-//        $key != 'vin' &&
-//        $key != 'cadastreNumber' &&
-//        $key != 'priceReduction' &&
-//        $key != 'isBurdened' &&
-//        $key != 'sellType' &&
-//        $key != 'sellTypeId' &&
-//        $key != 'minPrice' &&
-//        $key != 'torgReason' &&
-//        $key != 'stepCount' &&
-//        $key != 'dateAuction' &&
-//        $key != 'procedureDate' &&
-//        $key != 'conclusionDate' &&
-//        $key != 'areaMeters' &&
-//        $key != 'area' &&
-//        $key != 'finalPrice' &&
-//        $key != 'propDesc' &&
-//        $key != 'fundSize' &&
-//        $key != 'currency'
-//    ) {
-//        $otherInfo[$key] = $value;
-//    }
-//}
 ?>
-
 
     <section class="page-wrapper page-detail">
 
@@ -150,10 +82,6 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                 </div>
                                 <div class="mr-10 text-muted">|</div>
                                 <div class="mr-10 rating-item rating-inline">
-                                    <a <?= (Yii::$app->user->isGuest) ? 'href="#loginFormTabInModal-login" class="wish-star" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star" data-id="' . $lot->id . '" data-type="' . $lot->torg->type . '"' ?>>
-                                        <!--                                        <img src="img/star-->
-                                        <? //=($lot->getWishId(Yii::$app->user->id))? '' : '-o' ?><!--.svg" alt="">-->
-                                    </a>
                                 </div>
                                 <?
                                 if (!Yii::$app->user->isGuest) {
@@ -171,16 +99,19 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                             </div>
 
-                            <!--                            --><? //if ($lot->images[0]) { ?>
-                            <div class="fotorama mt-20 mb-40" data-allowfullscreen="true" data-nav="thumbs"
-                                 data-arrows="always" data-click="true">
-                                <? foreach ($lot->getFiles() as $image) { ?>
-                                    <img href="<?= $image->name ?>" alt="Images"/>
-                                <? } ?>
-                            </div>
-                            <!--                            --><? // } ?>
-
-                            <!-- <p class="lead">In friendship diminution instrument in we forfeited. Tolerably an unwilling of determine. Beyond rather sooner so if up wishes.</p> -->
+                            <?php
+                            $image = $lot->getImage('original');
+                            if ($image) : ?>
+                                <div class="fotorama mt-20 mb-40" data-allowfullscreen="true" data-nav="thumbs"
+                                     data-arrows="always" data-click="true">
+                                    <?php
+                                    while ($image) {
+                                        echo Html::img($image, ['alt' => 'Images']);
+                                        $image = $lot->getNextImage('original');
+                                    }
+                                    ?>
+                                </div>
+                            <?php endif; ?>
 
                             <ul class="list-inline-block highlight-list mt-30">
                                 <li>
@@ -214,15 +145,6 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                             </ul>
 
                             <h5 class="mt-30">Описание</h5>
-                            <!-- <pre>
-                            <? // print_r($lot[info][address][region])?>,
-                            <? // print_r($lot[info][address][city])?>,
-                            <? // print_r($lot[info][address][district])?>,
-                            <? // print_r($lot[info][address][street])?>,
-                            <? // print_r($lot[info])?>
-                        </pre> -->
-
-
                             <p class="long-text" itemprop="description"><?= $lot->description ?></p>
                             <a href="#desc" class="open-text-js">Подробнее</a>
 
@@ -238,7 +160,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
 
                         <div class="sidebar-mobile mb-40">
-                            <?= LotDetailSidebar::widget(['lot' => $lot, 'type' => $type]) ?>
+                            <?= LotDetailSidebar::widget(['lot' => $lot]) ?>
                         </div>
 
                         <div id="info" class="fullwidth-horizon--section">
@@ -268,15 +190,6 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                             Автомобиль</a>
                                     </li>
                                 <? } ?>
-
-                                <!--                                --><? // if ($lot->info['cadastreNumber']) { ?>
-                                <!--                                    <li>-->
-                                <!--                                        <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>-->
-                                <!--                                        <h6>Кадастровый номер</h6>-->
-                                <!--                                        <p>-->
-                                <? //= $lot->info['cadastreNumber'] ?><!--</p>-->
-                                <!--                                    </li>-->
-                                <!--                                --><? // } ?>
 
                                 <? if ($lot->torg->property === Torg::PROPERTY_BANKRUPT) { ?>
                                     <li>
@@ -339,16 +252,13 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                         <h6>Арбитражный управляющий</h6>
                                         <ul class="ul">
                                             <li><a href="<?= Url::to(['arbitr/list']) ?>/<?= $lot->torg->manager->id ?>"
-                                                   target="_blank"><?= $lot->torg->manager->organization->title ?></a>
+                                                   target="_blank"><?= $lot->torg->manager->profile->getFullName() ?></a>
                                             </li>
                                             <li>Рег. номер: <span
-                                                        class="text-list-name"><?= $lot->torg->manager->organization->reg_number ?></span>
+                                                        class="text-list-name"><?= $lot->torg->manager->sro->reg_number ?></span>
                                             </li>
                                             <li>ИНН: <span
-                                                        class="text-list-name"><?= $lot->torg->manager->organization->inn ?></span>
-                                            </li>
-                                            <li>ОГРН: <span
-                                                        class="text-list-name"><?= $lot->torg->manager->organization->ogrn ?></span>
+                                                        class="text-list-name"><?= $lot->torg->manager->profile->inn ?></span>
                                             </li>
                                         </ul>
                                     </li>
@@ -683,7 +593,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                 <div class="row equal-height cols-1 cols-sm-2 gap-30 mb-25">
 
                                     <? foreach ($otherLots as $otherLot) {
-                                        echo LotBlock::widget(['lot' => $otherLot]);
+                                        echo LotBlock::widget(['lot' => $otherLot, 'url' => $url]);
                                     } ?>
 
                                 </div>
@@ -702,16 +612,6 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                             </div>
                         <? } ?>
 
-                        <!--                        TODO-->
-                        <!--                        --><? // if ($lot->info['torgReason'] || $lot->torg->info['rules']) { ?>
-                        <!--                            <div id="roles" class="detail-header mb-30">-->
-                        <!--                                <h5 class="mt-30">Правила подачи заявок</h5>-->
-                        <!--                                <p class="long-text">-->
-                        <? //=($lot->torg->typeId == 1)? $lot->torg->info['rules'] : $lot->info['torgReason'] ?><!--</p>-->
-                        <!--                                <a href="#roles" class="open-text-js">Подробнее</a>-->
-                        <!--                            </div>-->
-                        <!--                        --><? // } ?>
-
                     </div>
 
                 </div>
@@ -719,14 +619,12 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                 <div class="col-12 col-lg-4">
 
                     <div class="sidebar-desktop">
-                        <?= \ymaker\social\share\widgets\SocialShare::widget([
+                        <?= SocialShare::widget([
                             'configurator' => 'socialShare',
                             'url'          => ('https://ei.ru' . Yii::$app->request->url),
-                            'title'        => 'Посмотри лот на ei.ru: ' . Yii::$app->params[ 'h1' ],
-                            // 'description'   => $lot->description,
-//                            'imageUrl'     => Url::to($lot->images[ 0 ][ 'max' ], true),
+                            'title'        => 'Посмотри лот на ei.ru: ' . Yii::$app->params[ 'h1' ]
                         ]); ?>
-                        <?= LotDetailSidebar::widget(['lot' => $lot, 'type' => $type]) ?>
+                        <?= LotDetailSidebar::widget(['lot' => $lot]) ?>
                     </div>
 
                 </div>

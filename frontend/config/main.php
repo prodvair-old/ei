@@ -77,12 +77,12 @@ return [
       'showScriptName' => false,
       //'suffix' => '.html',
       'rules' => [
-        '' => 'site/index',
+        '/' => 'site/index',
 
         '/test'    => 'test/index',
         '/test/str'    => 'test/str',
         '/test/del-lots'    => 'test/del-lots',
-        
+
         '/about'    => 'pages/about',
         '/license'  => 'pages/license',
         '/policy'   => 'pages/policy',
@@ -145,7 +145,7 @@ return [
         '/profile/lot-status'    => 'user/lot-status',
 
         '/wishlist/unsubscribe' => 'wishlist/unsubscribe',
-        
+
         '/lots-arrest-<limit:\d+>.xlsx' => 'lots/arrest',
         '/arbitrs-<limit:\d+>.xlsx' => 'lots/arbitrs',
 
@@ -160,16 +160,18 @@ return [
         '/load-category'    => 'lot/load_category',
         '/wish-list-edit'   => 'lot/wish_list',
 
-        '/lot/list' => '/lot/lot/index', //TODO
-        '/lot/view/<id:\d+>' => '/lot/lot/view', //TODO
-
         '/lot/load-sub-categories' => '/lot/lot/load-sub-categories',
 
-        '/<type>'                                     => 'lot/index',
-        '/<type>/<category>'                          => 'lot/search',
-        '/<type>/<category>/<subcategory>'            => 'lot/search',
-        '/<type>/<category>/<subcategory>/<id:\d+>'   => 'lot/page',
-        '/<type>/<category>/<subcategory>/<region>'   => 'lot/search',
+        '/<type>'                     => 'lot/lot/index',
+        '/<type>/<category>'          => 'lot/lot/index',
+        '/<type>/<category>/<id:\d+>' => '/lot/lot/view',
+
+
+//        '/<type>'                                     => 'lot/index',
+//        '/<type>/<category>'                          => 'lot/search',
+//        '/<type>/<category>/<subcategory>'            => 'lot/search',
+//        '/<type>/<category>/<subcategory>/<id:\d+>'   => 'lot/page',
+//        '/<type>/<category>/<subcategory>/<region>'   => 'lot/search',
       ]
     ],
     /*

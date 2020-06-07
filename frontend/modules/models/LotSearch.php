@@ -102,11 +102,11 @@ class LotSearch extends Lot
      * @param array $params
      *
      * @return ActiveDataProvider
+     * @throws \yii\base\InvalidConfigException
      */
     public function search($params)
     {
         $query = Lot::find()
-//            ->select(['lot.id', 'lot.title', 'lot.start_price', 'torg.published_at']);
             ->select(['lot.*', 'torg.published_at']);
 
         // add conditions that should always apply here
@@ -119,10 +119,17 @@ class LotSearch extends Lot
 
         $this->load($params);
 
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
         $query->joinWith(['torg', 'categories']);
 
         if (!$this->andArchived) {
-            $query->andFilterWhere(['!=', Lot::tableName() . '.status', Lot::STATUS_ARCHIVED]);
+            $query->andFilterWhere(['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED]);
+            $query->andFilterWhere(['>', Torg::tableName() . '.end_at', time()]);
         }
 
         if ($this->startApplication) {
@@ -142,8 +149,14 @@ class LotSearch extends Lot
 
         if ($this->type == Torg::PROPERTY_BANKRUPT) {
             $query->joinWith(['torg.bankrupt']);
+        } elseif ($this->type == Torg::PROPERTY_ZALOG) {
+            $query->joinWith(['torg.owner']);
         }
 
+        if ($this->owner) {
+            $query->andFilterWhere(['IN', Organization::tableName() . '.id', $this->owner]);
+        }
+        
         if ($this->bankruptName) {
             $fullName = explode(' ', $this->bankruptName);
             $query->joinWith(['torg.bankruptProfile']);
@@ -152,33 +165,20 @@ class LotSearch extends Lot
             $query->andFilterWhere(['=', Profile::tableName() . '.middle_name', $fullName[ 2 ]]);
         }
 
-        if ($this->type == Torg::PROPERTY_ZALOG) {
-            $query->joinWith(['torg.owner']);
-        }
         if ($this->region) {
             $query->joinWith(['place']);
+            $query->andFilterWhere(['IN', Place::tableName() . '.region_id', $this->region]);
         }
         if ($this->efrsb) {
             $query->joinWith(['torg.bankruptEtp']);
             $query->andFilterWhere(['=', Etp::tableName() . '.efrsb_id', $this->efrsb]);
         }
 
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }
-
         $query->andFilterWhere(['>=', 'start_price', $this->minPrice])
             ->andFilterWhere(['<=', 'start_price', $this->maxPrice]);
 
-
         if ($this->subCategory) {
             $query->andFilterWhere(['IN', Category::tableName() . '.id', $this->subCategory]);
-        }
-
-        if ($this->region) {
-            $query->andFilterWhere(['IN', Place::tableName() . '.region_id', $this->region]);
         }
 
         if ($this->mainCategory) {
@@ -196,9 +196,6 @@ class LotSearch extends Lot
             $query->andFilterWhere(['=', Torg::tableName() . '.property', $this->type]);
         }
 
-//        echo "<pre>";
-//        var_dump(\Yii::$app->formatter->asTimestamp($this->torgStartDate));
-//        echo "</pre>";
         if ($this->torgStartDate) {
             $this->torgStartDate = \Yii::$app->formatter->asTimestamp($this->torgStartDate);
         }

@@ -205,6 +205,17 @@ class Lot extends ActiveRecord
     }
 
     /**
+     * Получить информацию о регионе
+     * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getRegion()
+    {
+        return $this->hasOne(Region::className(), ['id' => 'region_id'])
+            ->viaTable(Place::tableName(),['place.parent_id' => 'id']);
+    }
+
+    /**
      * Получить информацию о торге
      * @return yii\db\ActiveQuery
      */

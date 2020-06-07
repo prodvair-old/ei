@@ -1,7 +1,6 @@
 <?php
 
 use common\models\db\Lot;
-use kartik\daterange\DateRangePicker;
 use sergmoro1\lookup\models\Lookup;
 use yii\widgets\Breadcrumbs;
 use frontend\modules\models\Category;
@@ -19,6 +18,7 @@ use frontend\modules\components\LotBlock;
 /* @var $regionList [] \common\models\db\Region */
 
 /* @var $type */
+/* @var $url */
 /* @var $lots Lot */
 
 $this->title = Yii::$app->params[ 'title' ];
@@ -38,7 +38,6 @@ if ($model->mainCategory) {
 
 $traderList = [];
 
-$this->registerJsVar('lotType', $type, $position = yii\web\View::POS_HEAD);
 $this->registerJsVar('lotType', $type, $position = yii\web\View::POS_HEAD);
 $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\View::POS_HEAD);
 ?>
@@ -111,9 +110,6 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                 <aside class="sidebar-wrapper pv">
 
                     <div class="search-box mb-30">
-                        <!-- <div class="secondary-search-box mb-30"> -->
-
-                        <!-- <h4 class="">Поиск</h4> -->
 
                         <div class="row">
 
@@ -122,7 +118,6 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                                     <?= $form->field($model, 'search')->textInput([
                                         'class'       => 'form-control search-form-control',
                                         'placeholder' => 'Поиск: Машина, Квартира...',
-                                        // 'value' =>
                                     ])->label('Поиск'); ?>
                                 </div>
                             </div>
@@ -188,17 +183,12 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
                         <div class="sidebar-box sidebar-box__collaps <?= ($model->minPrice || $model->maxPrice) ? '' : 'collaps' ?>">
 
-                            <!-- <div class="box-title">
-                              <h5>Цена</h5>
-                            </div> -->
                             <label class="control-label sidebar-box__label">Цена</label>
                             <div class="box-content">
                                 <div class="row">
                                     <div class="col-6"><?= $form->field($model, 'minPrice')->textInput(['class' => 'lot__price-min form-control', 'placeholder' => 'Цена от'])->label(false); ?></div>
                                     <div class="col-6"><?= $form->field($model, 'maxPrice')->textInput(['class' => 'lot__price-max form-control', 'placeholder' => 'Цена до'])->label(false); ?></div>
                                 </div>
-
-                                <!-- <div class="mb-10"></div> -->
                             </div>
 
                         </div>
@@ -225,23 +215,23 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
                         <?php endif; ?>
 
-                        <div class="sidebar-box sidebar-box__collaps
-                        <?= ($model->owner) ? '' : 'collaps' ?>">
-
-                            <label class="control-label sidebar-box__label">Организации</label>
-                            <div class="box-content">
-                                <?= $form->field($model, 'owner')->dropDownList(
-                                    Owner::getOrganizationList(),
-                                    [
-                                        'class'            => 'chosen-the-basic form-control',
-                                        'prompt'           => 'Все организации',
-                                        'data-placeholder' => 'Все организации',
-                                        'multiple'         => true
-                                    ]
-                                )
-                                    ->label(false); ?>
+                        <?php if ($model->type == Torg::PROPERTY_ZALOG) : ?>
+                            <div class="sidebar-box sidebar-box__collaps <?= ($model->owner) ? '' : 'collaps' ?>">
+                                <label class="control-label sidebar-box__label">Организации</label>
+                                <div class="box-content">
+                                    <?= $form->field($model, 'owner')->dropDownList(
+                                        Owner::getOrganizationList(),
+                                        [
+                                            'class'            => 'chosen-the-basic form-control',
+                                            'prompt'           => 'Все организации',
+                                            'data-placeholder' => 'Все организации',
+                                            'multiple'         => true
+                                        ]
+                                    )
+                                        ->label(false); ?>
+                                </div>
                             </div>
-                        </div>
+                        <?php endif; ?>
 
                         <div class="sidebar-box sidebar-box__collaps <?= ($model->tradeType) ? '' : 'collaps' ?>">
 
@@ -312,11 +302,6 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                                     <label>Начало торгов</label>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <!--                                            --><? //= $form->field($model, 'torgStartDate')->textInput(
-                                            //                                                ['class' => 'form-control', 'placeholder' => 'От']
-                                            //                                            )->label(false)->widget(DateRangePicker::classname(), [
-                                            //                                                'useWithAddon' => true
-                                            //                                            ]); ?>
 
                                         </div>
                                         <div class="col-md-6">
@@ -383,10 +368,6 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                                         $model->getSortMap(), [
                                         'class'            => 'chosen-sort-select form-control sortSelect',
                                         'data-placeholder' => 'Сортировка по',
-//                                        'tabindex'         => '2',
-//                                        'options'          => [
-//                                            'dateDESC' => ['Selected' => true]
-//                                        ]
                                     ])
                                         ->label(false); ?>
                                 </div>
@@ -400,7 +381,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                     <div id="load_list" class="tour-long-item-wrapper-01 load-list">
                         <? if (count($lots) > 0) {
                             foreach ($lots as $lot) {
-                                echo LotBlock::widget(['lot' => $lot, 'type' => 'long']);
+                                echo LotBlock::widget(['lot' => $lot, 'type' => 'long', 'url' => $url]);
                             }
                         } else {
                             echo "<div class='p-15 font-bold'>По данному запросу не удалось найти лоты</div>";
@@ -431,17 +412,24 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
             offset = offset + 15;
             i = 0;
 
+            let url;
+            if (location.href.indexOf('?', location.search) === -1) {
+                url = location.href + '?LotSearch[offset]=' + offset
+            } else {
+                url = location.href + '&LotSearch[offset]=' + offset
+            }
+
             $.ajax({
                 type: "GET",
-                url: '/lot/list' + location.search + '&LotSearch[offset]=' + offset,
+                url: url,
                 data: $(this).serialize(),
                 success: function (data) {
                     $('#load_list').append(data);
-                    console.log('success request');
+                    console.log('lots load success');
                     i = 2000;
                 },
                 error: function (result) {
-                    console.log('error!!!');
+                    console.log('lots load error');
                     console.log(result);
                 }
             });
