@@ -2,6 +2,7 @@
 
 namespace common\models\db;
 
+use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use sergmoro1\uploader\behaviors\HaveFileBehavior;
@@ -26,6 +27,8 @@ class Owner extends ActiveRecord
     
     // внутренний код модели используемый в составном ключе
     const INT_CODE = 13;
+
+    public static function getIntCode() { return self::INT_CODE; }
 
     /**
      * {@inheritdoc}
@@ -78,5 +81,18 @@ class Owner extends ActiveRecord
             'created_at'  => Yii::t('app', 'Created'),
             'updated_at'  => Yii::t('app', 'Modified'),
         ];
+    }
+
+    /**
+     * Get Owner list.
+     * 
+     * @return array of Owner titles with ID as index
+     */
+    public static function items()
+    {
+        $a = [];
+        foreach(self::find()->all() as $owner)
+            $a[$owner->id] = $owner->organization->title;
+        return $a;
     }
 }

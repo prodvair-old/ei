@@ -63,4 +63,16 @@ class Region extends ActiveRecord
             'created_at' => Yii::t('app', 'Created'),
         ];
     }
+
+    /**
+     * Get list of items.
+     * @return array id => name pairs
+     */
+    public static function items()
+    {
+        $a = [];
+        foreach(self::find()->select(['id', 'name'])->all() as $model)
+            $a[$model->id] = $model->name;
+        return $a;
+    }
 }

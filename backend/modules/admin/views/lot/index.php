@@ -2,75 +2,66 @@
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
-use yii\helpers\ArrayHelper;
-
 use common\models\db\Category;
-use sergmoro1\lookup\models\Lookup;
+use backend\modules\admin\assets\Select2Asset;
+use backend\modules\admin\assets\LoadMoreAsset;
+
+$columns = require __DIR__ . '/lot_columns.php';
 
 $this->title = Yii::t('app', 'Lots');
 $this->params['breadcrumbs'][] = $this->title;
+
+$url = Url::to(['lot/more']);
+
+$this->registerJs('var load_more_url="' . $url . '";', yii\web\View::POS_HEAD);
+
+LoadMoreAsset::register($this);
+
+Select2Asset::register($this);
+
+$lot_search = Yii::$app->request->get('LotSearch');
+$data = Category::jsonItems([$lot_search['category_id']], true);
+
+$script = <<<JS
+$(document).ready(function() { $('#lot-category_id').select2(
+    {data: $data}
+); });
+JS;
+$this->registerJS($script);
 ?>
 
-<p>
-	<?= Html::a(Yii::$app->params['icons']['plus'] . ' ' . Yii::t('app', 'Add'), ['create'], ['class' => 'btn btn-success']) ?>
-</p>
+<div class='row'>
+    <div class='col-lg-12'>
+        <div class='box model-index table-responsive'>
+            <div class='box-header'>
+                <?= Html::submitButton(Yii::t('app', 'Find'), ['class' => 'btn btn-primary search-submit']) ?>
+            </div>
 
-<div class='lot-index table-responsive'>
+            <div class='box-body'>
+                <?= GridView::widget([
+                    'id' => 'model-grid',
+                    'dataProvider' => $dataProvider,
+                    'filterModel' => $searchModel,
+                    'filterOnFocusOut' => false,
+                    'layout' => "{items}\n{summary}",
+                    'options' => ['class' => false],
+                    'columns' => $columns,
+                ]); ?>
+            </div>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'layout' => "{items}\n{summary}\n{pager}",
-        'options' => ['class' => false],
-        'columns' => [
-            'id',
-            'title',
-            [
-                'attribute' => 'status',
-                'filter' => Lookup::items('LotStatus'),
-                'value' => function($data) {
-                    return Lookup::item('LotStatus', $data->status);
-                }
-            ],
-            [
-                'attribute' => 'reason',
-                'filter' => Lookup::items('LotReason'),
-                'value' => function($data) {
-                    return Lookup::item('LotReason', $data->reason);
-                }
-            ],
-            [
-                'header' => 'property',
-                'value' => function($data) {
-                    return Lookup::item('TorgProperty', $data->torg->property);
-                }
-            ],
-            'start_price',
-            [
-                'attribute' => 'category_id',
-                'filter' => Category::items(),
-                'value' => function($data) {
-                    $a = [];
-                    foreach ($data->categories as $category)
-                        $a[] = $category->name;
-                    return implode(', ', $a);
-                }
-            ],
-            [
-                'header' => 'end_at',
-                'value' => function($data) {
-                    return date('d.m.y', $data->torg->end_at);
-                },
-                'options' => ['style' => 'width:9%;'],
-            ],
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}{update}{delete}', 
-                'options' => ['style' => 'width:6%;'],
-            ],
-        ],
-    ]); ?>
+            <div class='box-footer'>
+                <p class='model-spinner' style='display: none;'>
+                    <i class="fa fa-spinner fa-spin fa-fw"></i>
+                </p>
 
+                <?= Html::submitButton(Yii::t('app', 'More'), [
+                    'class' => 'btn btn-primary load-more',
+                    'data-offset' => $dataProvider->getCount(),
+                ]) ?>
+            </div>
+        </div>
+    </div>
 </div>

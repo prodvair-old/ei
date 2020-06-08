@@ -17,13 +17,15 @@ class AppAsset extends AssetBundle
 
         'css/data_picker.css',
         'css/custom.min.css',
+        'css/your-style.css?v1.0',
         'https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css'
     ];
     public $js = [
         'js/jquery-2.2.4.min.js',
+        'https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.js',
         'js/plugins.js',
         'js/costom-plugins/toast.js',
-        'js/custom-core.js?v=1.02',
+        'js/custom-core.js?v=1.03',
         'https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js',
         'http://api-maps.yandex.ru/2.1-stable/?load=package.standard&lang=ru-RU',
         'https://cdn.jsdelivr.net/npm/vue/dist/vue.js',

@@ -15,10 +15,12 @@ use common\models\Query\Lot\Lots;
 use common\models\Query\Lot\LotsAll;
 use common\models\Query\Zalog\LotsZalogUpdate;
 use common\models\Query\Arrest\LotsArrest;
+use common\models\SendSMS;
 
 use arogachev\excel\import\advanced\Importer;
 
 use frontend\models\UserSetting;
+use frontend\models\UserEditPhone;
 use frontend\models\UploadZalogLotImage;
 use frontend\models\ZalogLotCategorySet;
 use frontend\models\ImportZalog;
@@ -393,14 +395,78 @@ class UserController extends Controller
 
         $model = $this->findModel(Yii::$app->user->id);
         $model_image = new UserSetting();
+        $model_phone = new UserEditPhone();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->setting(Yii::$app->user->id);
         }
 
-        return $this->render('setting', ['model' => $model, 'model_image' => $model_image]);
+        return $this->render('setting', ['model' => $model, 'model_image' => $model_image, 'model_phone' => $model_phone]);
     } else {
         return $this->goHome();
+    }
+  }
+  public function actionGetCode() {
+    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    $code = rand(1000, 9999);
+
+    $post = Yii::$app->request->post();
+    $session = Yii::$app->session;
+    $session->set('userCode', $code);
+    $session->set('userPhone', $post['UserEditPhone']['phone']);
+
+    $model = new SendSMS();
+
+    $model->phone = preg_replace('/[^0-9]/', '', $post['UserEditPhone']['phone']);
+    $model->message = "Vash kod: $code";
+
+    $result = false;
+    $mess = 'Ошибка сервера';
+
+    if ($model->check()) {
+      if ($response = $model->send()) {
+        if ($response['status']) {
+          $result = true;
+        }
+        $mess = $response['text'];
+      }
+    }
+
+    return ['result' => $result, 'mess' => $mess];
+  }
+  public function actionEditPhone()
+  {
+    if (!Yii::$app->user->isGuest && Yii::$app->request->isAjax) {
+      Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+      $result = false;
+      $mess = 'Серверная ошибка';
+      $session = Yii::$app->session;
+
+      if ($session->has('userCode')) {
+        $model = new UserEditPhone();
+
+        if ($model->load(Yii::$app->request->post())) {
+          if (str_replace('-', '', $model->code) == $session->get('userCode')) {
+            $model_user = $this->findModel(Yii::$app->user->id);
+            $model_user->phone = $session->get('userPhone');
+
+            if ($model_user->save()) {
+              $result = true;
+              $mess = 'Успешно';
+              $session->remove('userCode');
+              $session->remove('userPhone');
+            }
+          } else {
+            $mess = "Не верный код";
+          }
+        }
+      } else {
+        $mess = "Время истекло";
+      }
+      return ['result' => $result, 'error' => $mess];
+    } else {
+      return $this->goHome();
     }
   }
   public function actionSetting_image()

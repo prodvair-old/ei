@@ -13,6 +13,7 @@ class m200415_172026_torg extends Migration
     {
         $this->createTable(self::TABLE, [
             'id'           => $this->bigPrimaryKey(),
+            'msg_id'       => $this->string()->notNull(),
             
             'property'     => $this->smallInteger()->notNull(),
             'description'  => $this->text(),
@@ -28,7 +29,8 @@ class m200415_172026_torg extends Migration
             'updated_at'   => $this->integer()->notNull(),
         ]);
         
-		$this->addForeignKey('fk-torg-etp', self::TABLE, 'etp_id', '{{%etp}}', 'id', 'restrict', 'restrict');
+        $this->createIndex('idx-torg-msg_id', self::TABLE, 'msg_id');
+        $this->createIndex('idx-torg-published_at', self::TABLE, 'published_at');
 
 		$this->addCommentOnColumn(self::TABLE, 'property', 'Тип имущества - должник, залог, арестованное, муниципальное');
 		$this->addCommentOnColumn(self::TABLE, 'description', 'Описание');
@@ -41,7 +43,6 @@ class m200415_172026_torg extends Migration
 
     public function down()
     {
-		$this->dropForeignKey('fk-torg-etp', self::TABLE);
         $this->dropTable(self::TABLE);
     }
 }

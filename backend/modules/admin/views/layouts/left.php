@@ -14,12 +14,12 @@ $user = common\models\db\User::findOne(['username' => 'sergey@vorst.ru']);
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="https://ei.ru<?= $user->avatar ?>" class="img-circle" alt="User Image"/>
+                <?= $user->getAvatar(['class' => 'img-circle']) ?>
             </div>
             <div class="pull-left info">
                 <p><?= $user->getFullName() ?></p>
 
-                <a href="#"><?= Lookup::item('UserRole', $user->group) ?></a>
+                <a href="#"><?= Lookup::item('UserRole', $user->role) ?></a>
             </div>
         </div>
 
@@ -32,51 +32,51 @@ $user = common\models\db\User::findOne(['username' => 'sergey@vorst.ru']);
                 'items' => [
                     ['label' => 'Главная', 'url' => ['site/index'], 'icon' => 'home'],
                     [
-                        'label' => 'Лоты', 
-                        'url' => ['lots/index'], 
-                        'icon' => 'table',
+                        'label' => Yii::t('app', 'Auctions'), 
+                        'url' => ['torg/index'], 
+                        'icon' => 'gavel',
                         'options' => ['class' => 'treeview'],
                         'items' => [
                             [
-                                'label' => 'Список лотов',
-                                'url' => ['lots/index'],
+                                'label' => Yii::t('app', 'List'),
+                                'url' => ['torg/index'],
                                 'icon' => 'list-ul',
                             ],
                             [
-                                'label' => 'Импортировать лот',
-                                'url' => ['lots/import'],
-                                'icon' => 'download',
-                            ],
-                            [
-                                'label' => 'Добавить лот',
-                                'url' => ['lots/create'],
+                                'label' => Yii::t('app', 'Add'),
+                                'url' => ['torg/create'],
                                 'icon' => 'plus',
                             ],
                         ]
 
                     ],
                     [
-                        'label' => 'Организации', 
-                        'url' => ['owners/index'], 
-                        'icon' => 'table',
+                        'label' => Yii::t('app', 'Lots'), 
+                        'url' => ['lot/index'], 
+                        'icon' => 'money',
+                    ],
+                    [
+                        'label' => Yii::t('app', 'Owners'), 
+                        'url' => ['owner/index'], 
+                        'icon' => 'bank',
                         'options' => ['class' => 'treeview'],
                         'items' => [
                             [
-                                'label' => 'Список организации',
-                                'url' => ['owners/index'],
+                                'label' => Yii::t('app', 'List'),
+                                'url' => ['owner/index'],
                                 'icon' => 'list-ul',
                             ],
                             [
-                                'label' => 'Добавить организацию',
-                                'url' => ['owners/create'],
+                                'label' => Yii::t('app', 'Add'),
+                                'url' => ['owner/create'],
                                 'icon' => 'plus',
                             ],
                         ]
 
                     ],
                     [
-                        'label' => 'Пользователи', 
-                        'url' => ['users/index'], 
+                        'label' => Yii::t('app', 'Users'), 
+                        'url' => ['user/index'], 
                         'icon' => 'users',
 
                     ],

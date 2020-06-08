@@ -7,6 +7,7 @@ use yii\helpers\Url;
 use frontend\components\ProfileMenu;
 
 $name = Yii::$app->user->identity->getFullName();
+$this->registerJsVar('lotType', false, $position = yii\web\View::POS_HEAD);
 
 $this->title = "Настройка профиля – $name";
 $this->params['breadcrumbs'][] = [
@@ -151,7 +152,8 @@ $this->params['breadcrumbs'][] = [
                                             
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-group mb-0">
-                                                    <?= $form->field($model, 'phone')->textInput(['class' => 'form-control'])->label('Номер телефона') ?>
+                                                    <?= $form->field($model, 'phone')->textInput(['class' => 'form-control phone-ready', 'readonly' => true])->label('Номер телефона') ?>
+                                                    <a href="#phoneEditModel-phone" id="edit_phone" class="tab-external-link block mt-25" data-toggle="modal" data-target="#phoneEditModel" data-backdrop="static" data-keyboard="false" >Изменить</a>
                                                 </div>
                                             </div>
                                             
@@ -245,7 +247,183 @@ $this->params['breadcrumbs'][] = [
 
 </section>
 
+<!-- start phone form modal -->
+<div class="modal fade modal-with-tabs form-login-modal" id="phoneEditModel" aria-labelledby="modalWIthTabsLabel" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content shadow-lg">
+        <div class="pt-4 pr-4 ml-auto">
+          <button type="button" class="close" data-dismiss="modal" aria-labelledby="Close">
+            <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
+          </button>
+        </div>
+
+        <nav class="d-none">
+          <ul class="nav external-link-navs clearfix">
+            <li><a class="active" data-toggle="tab" href="#phoneEditModel-phone">Телефон</a></li>
+            <li><a data-toggle="tab" href="#phoneEditModel-code">Код </a></li>
+            <li><a data-toggle="tab" href="#phoneEditModel-ready">Готово </a></li>
+          </ul>
+        </nav>
+
+        
+
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="phoneEditModel-phone">
+
+                <div class="form-login">
+
+                    <div class="form-header">
+                        <h4>Изменить номер телефона</h4>
+                    </div>
+    
+                    <div class="form-body">
+                        <?php $form = ActiveForm::begin(['action' => Url::to(['/profile/get-code']), 'id' => 'phone-edit-form']); ?>
+        
+                            <span class="phone-form-error tab-external-link block mt-25 text-danger"></span>
+            
+                            <div class="flex-md-grow-1 bg-primary-light">
+                                <?=$form->field($model_phone, 'phone')->textInput(['class' => 'form-control phone_mask', 'placeholder' => 'Новый номер телефона', 'required' => true])->label(false);?>
+                                <div class="d-flex">
+                                    <?=Html::submitButton('Изменить', ['class' => 'btn btn-primary btn-wide'])?>
+                                    <div class="loader">
+                                        <div class='sk-wave'>
+                                            <div class='sk-rect sk-rect-1'></div>
+                                            <div class='sk-rect sk-rect-2'></div>
+                                            <div class='sk-rect sk-rect-3'></div>
+                                            <div class='sk-rect sk-rect-4'></div>
+                                            <div class='sk-rect sk-rect-5'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php ActiveForm::end(); ?>
+
+                    </div>
+                </div>
+        
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade in" id="phoneEditModel-code">
+
+                <div class="form-login">
+                    <?php $form = ActiveForm::begin(['action' => Url::to(['/profile/get-code']), 'id' => 'code-check-form']); ?>
+
+                        <div class="form-header">
+                            <h4>Подтвердите номер</h4>
+                            <p>На ваш телефон придёт SMS с кодом подтверждения: <span class="phone-time">00</span> секунд.
+                                <a href="#" class="resend-code d-none">Повторить</a>
+                                <?=$form->field($model_phone, 'phone')->textInput(['class' => 'form-control phone_visible', 'readonly' => true])->label(false);?>
+                            </p>
+                            <a class="back-to-tab" href="#phoneEditModel-phone">Изменить номер</a>
+                        </div>
+    
+                        <div class="form-body">
+        
+                            <span class="code-form-error block mt-25 text-danger"></span>
+            
+                            <div class="flex-md-grow-1 bg-primary-light">
+                                <?=$form->field($model_phone, 'code')->textInput(['class' => 'form-control code_mask', 'placeholder' => '_ _ _ _'])->label(false);?>
+                                <div class="d-flex">
+                                    <?=Html::submitButton('Подтвердить', ['class' => 'btn btn-primary btn-wide'])?>
+                                    <div class="loader">
+                                        <div class='sk-wave'>
+                                            <div class='sk-rect sk-rect-1'></div>
+                                            <div class='sk-rect sk-rect-2'></div>
+                                            <div class='sk-rect sk-rect-3'></div>
+                                            <div class='sk-rect sk-rect-4'></div>
+                                            <div class='sk-rect sk-rect-5'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    <?php ActiveForm::end(); ?>
+                </div>
+        
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade in" id="phoneEditModel-ready">
+                <div class="form-body">
+                    <div class="success-icon-text">
+                        <span class="icon-font  text-success"><i class="elegent-icon-check_alt2"></i></span>
+                        <h4 class="text-uppercase letter-spacing-1">Успешно изменено!</h4>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- end phone form modal -->
+
 <?php
+$js = <<<JS
+$('.loader').hide();
+$('#phone-edit-form').on('beforeSubmit', function(){
+    var data = $(this).serialize();
+    $('.loader').show();
+    $.ajax({
+        url: '/profile/get-code',
+        type: 'POST',
+        data: data,
+        success: function(res){
+            $('.loader').hide();
+            if (res.result) {
+                toastr.success('Код отправлен');
+                phone = $('.phone_mask').val()
+                phone = phone.substring(0, phone.length - 5) + "**-**";
+                $('.phone_visible').val(phone);
+                $('#phoneEditModel-phone').removeClass('active');
+                $('#phoneEditModel-code').addClass('active show');
+                timer(60)
+            } else {
+                toastr.warning(res.mess);
+            }
+        },
+        error: function(res){
+            toastr.error('Серверная ошибка');
+        }
+    });
+    return false;
+});
+$('.back-to-tab').on('click', function (e) {
+    e.preventDefault();
+    $('.tab-pane').removeClass('active');
+    $('.tab-pane').removeClass('show');
+    $(".resend-code").addClass("d-none");
+    $($(this).attr('href')).addClass('active show');
+});
+$('#code-check-form').on('beforeSubmit', function(){
+    var data = $(this).serialize();
+    $('.loader').show();
+    $.ajax({
+        url: '/profile/edit-phone',
+        type: 'POST',
+        data: data,
+        success: function(res){
+            $('.loader').hide();
+            if (res.result) {
+                toastr.success(res.error);
+                $('#phoneEditModel-code').removeClass('active');
+                $('#phoneEditModel-code').removeClass('show');
+                $('#phoneEditModel-ready').addClass('active show');
+                $('.phone-ready').val($('.phone_mask').val());
+            } else {
+                toastr.warning(res.error);
+            }
+        },
+        error: function(res){
+            $('.loader').hide();
+            toastr.error('Серверная ошибка');
+        }
+    });
+    return false;
+});
+JS;
+
+$this->registerJs($js);
 $this->registerJsFile( '/js/cssworld.ru-xcal.js', $options = ['position' => yii\web\View::POS_HEAD], $key = 'date_picker' );
 $this->registerCssFile('/css/cssworld.ru-xcal.css');
 ?>

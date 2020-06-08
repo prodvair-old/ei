@@ -7,6 +7,7 @@ use common\models\db\Profile;
 use common\models\db\Place;
 use common\models\db\Notification;
 use console\traits\Keeper;
+use console\traits\District;
 
 /**
  * Class m200428_181633_user_fill
@@ -14,14 +15,15 @@ use console\traits\Keeper;
 class m200428_181633_user_fill extends Migration
 {
     use Keeper;
+    use District;
     
     const TABLE = '{{%user}}';
 
     private static $group = [
-        'superAdmin' => User::GROUP_ADMIN, 
-        'manager'    => User::GROUP_MANAGER, 
-        'agent'      => User::GROUP_AGENT, 
-        'user'       => User::GROUP_USER,
+        'superAdmin' => User::ROLE_ADMIN, 
+        'manager'    => User::ROLE_MANAGER, 
+        'agent'      => User::ROLE_AGENT, 
+        'user'       => User::ROLE_USER,
     ];
 
     public function safeUp()
@@ -62,7 +64,7 @@ class m200428_181633_user_fill extends Migration
                 'auth_key'      => $row['auth_key'],
                 'password_hash' => $row['password'],
                 'status'        => ($row['status'] ? 1 : 2),
-                'group'         => self::getGroup($row['role']),
+                'role'          => self::getRole($row['role']),
                 'created_at'    => $created_at,
                 'updated_at'    => $updated_at,
             ];
@@ -98,7 +100,7 @@ class m200428_181633_user_fill extends Migration
                 // Place
                 $city = isset($obj->contacts->city) ? $obj->contacts->city : '';
                 $region_id = isset($obj->contacts->region) ? $obj->contacts->region : null;
-                $district = isset($obj->contacts->district) ? $obj->contacts->district : '';
+                $district = isset($obj->contacts->district) ? $this->districtConvertor($obj->contacts->district) : null;
                 $address = isset($obj->contacts->address) ? $obj->contacts->address : $city;
                 $geo_lat  = (isset($obg->contacts->geo_lat) && $obg->contacts->geo_lat ? $obg->contacts->geo_lat : null);
                 $geo_lon  = (isset($obg->contacts->geo_lon) && $obg->contacts->geo_lon ? $obg->contacts->geo_lon : null);
@@ -108,7 +110,7 @@ class m200428_181633_user_fill extends Migration
                         'parent_id'   => $user_id,
                         'city'        => $city,
                         'region_id'   => $region_id,
-                        'district'    => $district,
+                        'district_id' => $district,
                         'address'     => ($address ?: '-'),
                         'geo_lat'     => $geo_lat,
                         'geo_lon'     => $geo_lon,
@@ -135,9 +137,9 @@ class m200428_181633_user_fill extends Migration
                 }
             }
         }
-        $this->batchInsert(self::TABLE, ['id', 'username', 'email', 'auth_key', 'password_hash', 'status', 'group', 'created_at', 'updated_at'], $users);
+        $this->batchInsert(self::TABLE, ['id', 'username', 'email', 'auth_key', 'password_hash', 'status', 'role', 'created_at', 'updated_at'], $users);
         $this->batchInsert('{{%profile}}', ['model', 'parent_id', 'activity', 'inn', 'gender', 'birthday', 'phone', 'first_name', 'last_name', 'middle_name', 'created_at', 'updated_at'], $profiles);
-        $this->batchInsert('{{%place}}', ['model', 'parent_id', 'city', 'region_id', 'district', 'address', 'geo_lat', 'geo_lon', 'created_at', 'updated_at'], $places);
+        $this->batchInsert('{{%place}}', ['model', 'parent_id', 'city', 'region_id', 'district_id', 'address', 'geo_lat', 'geo_lon', 'created_at', 'updated_at'], $places);
         $this->batchInsert('{{%notification}}', ['user_id', 'new_picture', 'new_report', 'price_reduction', 'created_at', 'updated_at'], $notifications);
     }
 
@@ -161,9 +163,9 @@ class m200428_181633_user_fill extends Migration
 
     /**
      * @param string $role
-     * @return integer group ID
+     * @return integer role ID
      */
-    public static function getGroup($role)
+    public static function getRole($role)
     {
         return self::$group[$role];
     }

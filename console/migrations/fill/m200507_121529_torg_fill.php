@@ -89,6 +89,7 @@ class m200507_121529_torg_fill extends Migration
             // Torg
             $t = [
                 'id'           => $torg_id,
+                'msg_id'       => ($row['msgId'] ?:  'u/' . $torg_id . '/' . date('dmy', $created_at)),
                 'property'     => $property,
                 'description'  => $row['description'],
                 'started_at'   => ($row['startDate'] ? (strtotime($row['startDate'])? strtotime($row['startDate']) : null) : null),
@@ -101,6 +102,7 @@ class m200507_121529_torg_fill extends Migration
                 'updated_at'   => $updated_at,
             ];
             $torg = new Torg($t);
+            $torg->scenario = Torg::SCENARIO_MIGRATION;
             
             if ($this->validateAndKeep($torg, $torgs, $t)) {
                 if ($property == Torg::PROPERTY_BANKRUPT) {
@@ -116,13 +118,14 @@ class m200507_121529_torg_fill extends Migration
                         $this->validateAndKeep($torg_debtor, $links['debtor'], $td);
                     }
                 } elseif ($property == Torg::PROPERTY_ZALOG) {
-                    if ($row['bankruptId'] || $row['publisherId']) {
+                    if ($row['ownerId'] || $row['publisherId']) {
                         $tp = [
                             'torg_id'  => $torg_id,
-                            'owner_id' => $row['bankruptId'],
+                            'owner_id' => $row['ownerId'],
                             'user_id'  => $row['publisherId'],
                         ];
                         $torg_pledge = new TorgPledge($tp);
+                        $torg_pledge->scenario = TorgPledge::SCENARIO_MIGRATION;
                         $this->validateAndKeep($torg_pledge, $links['pledge'], $tp);
                     }
                 } else {
@@ -138,7 +141,7 @@ class m200507_121529_torg_fill extends Migration
             }
         }
 
-        $this->batchInsert(self::TABLE, ['id', 'property', 'description', 'started_at', 'end_at', 'completed_at', 'published_at', 'offer', 'created_at', 'updated_at'], $torgs);
+        $this->batchInsert(self::TABLE, ['id', 'msg_id', 'property', 'description', 'started_at', 'end_at', 'completed_at', 'published_at', 'offer', 'created_at', 'updated_at'], $torgs);
         if ($links['debtor'])
             $this->batchInsert('{{%torg_debtor}}', ['torg_id', 'etp_id', 'bankrupt_id', 'manager_id', 'case_id'], $links['debtor']);
         if ($links['pledge'])

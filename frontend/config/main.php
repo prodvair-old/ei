@@ -82,14 +82,14 @@ return [
         '/test'    => 'test/index',
         '/test/str'    => 'test/str',
         '/test/del-lots'    => 'test/del-lots',
-
+        
         '/about'    => 'pages/about',
         '/license'  => 'pages/license',
         '/policy'   => 'pages/policy',
         '/contact'  => 'pages/contact',
         '/faq'      => 'pages/faq',
         '/sitemap'  => 'pages/sitemap',
-
+        
         // '/tariffs'     => 'pay/tariffs',
         // '/tariffs/pay' => 'pay/payments',
 
@@ -99,7 +99,7 @@ return [
         '/service/specialist'  => 'services/specialist',
         '/service/lot'         => 'services/lot',
 
-
+        
         '/login'      => 'site/login',
         '/logout'     => 'site/logout',
         '/signup'     => 'site/signup',
@@ -127,12 +127,15 @@ return [
 
         '/profile/setting'       => 'user/setting',
         '/profile/setting_image' => 'user/setting_image',
+        '/profile/edit-phone'    => 'user/edit-phone',
+        '/profile/get-code'      => 'user/get-code',
 
         '/profile/favorite'      => 'user/wish_list',
 
         '/profile/lots'          => 'user/lots',
         '/profile/get-arrest-bankrupt' => 'user/get-arrest-bankrupt',
         '/profile/lots/<id:\d+>' => 'user/edit-lot',
+
 
         '/profile/lots/import'   => 'user/import-lots',
         '/profile/lots/zalog-image-del'   => 'user/lot-images-del',
@@ -145,7 +148,7 @@ return [
         '/profile/lot-status'    => 'user/lot-status',
 
         '/wishlist/unsubscribe' => 'wishlist/unsubscribe',
-
+        
         '/lots-arrest-<limit:\d+>.xlsx' => 'lots/arrest',
         '/arbitrs-<limit:\d+>.xlsx' => 'lots/arbitrs',
 

@@ -3,6 +3,8 @@
 namespace common\models\db;
 
 use Yii;
+use yii\helpers\Url;
+use yii\helpers\Html;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use yii\base\NotSupportedException;
@@ -20,7 +22,7 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
  * @var string  $password_reset_token
  * @var string  $email
  * @var integer $status
- * @var integer $group
+ * @var integer $role
  * @var integer $created_at
  * @var integer $updated_at
  * 
@@ -32,15 +34,17 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
 class User extends ActiveRecord implements IdentityInterface
 {
     // внутренний код модели используемый в составном ключе
-    const INT_CODE          = 1;
+    const INT_CODE        = 1;
     
-    const STATUS_ACTIVE     = 1;
-    const STATUS_ARCHIVED   = 2;
+    const STATUS_ACTIVE   = 1;
+    const STATUS_ARCHIVED = 2;
 
-    const GROUP_ADMIN       = 1;
-    const GROUP_MANAGER     = 2;
-    const GROUP_AGENT       = 3;
-    const GROUP_USER        = 4;
+    const ROLE_ADMIN      = 1;
+    const ROLE_MANAGER    = 2;
+    const ROLE_AGENT      = 3;
+    const ROLE_USER       = 4;
+
+    public static function getIntCode() { return self::INT_CODE; }
 
     /**
      * {@inheritdoc}
@@ -78,11 +82,11 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['username', 'email'], 'required'],
-            [['status', 'group'], 'integer'],
+            [['status', 'role'], 'integer'],
             ['status', 'default', 'value' => self::STATUS_ARCHIVED],
             ['status', 'in', 'range' => self::getStatuses()],
-            ['group', 'default', 'value' => self::GROUP_USER],
-            ['group', 'in', 'range' => self::getGroups()],
+            ['role', 'default', 'value' => self::ROLE_USER],
+            ['role', 'in', 'range' => self::getRoles()],
             [['username', 'email', 'password_hash', 'password_reset_token'], 'string', 'max' => 255],
             ['username', 'unique', 'targetClass' => '\common\models\db\User', 'message' => Yii::t('app', 'This username has already been taken.')],
             ['email', 'email'],
@@ -100,7 +104,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             'username'   => Yii::t('app', 'Username'),
             'email'      => Yii::t('app', 'Email'),
-            'group'      => Yii::t('app', 'Group'),
+            'role'       => Yii::t('app', 'Role'),
             'status'     => Yii::t('app', 'Status'),
             'created_at' => Yii::t('app', 'Created'),
             'updated_at' => Yii::t('app', 'Modified'),
@@ -122,12 +126,12 @@ class User extends ActiveRecord implements IdentityInterface
      * Get groups
      * @return array
      */
-    public static function getGroups() {
+    public static function getRoles() {
         return [
-            self::GROUP_ADMIN, 
-            self::GROUP_MANAGER, 
-            self::GROUP_AGENT,
-            self::GROUP_USER,
+            self::ROLE_ADMIN, 
+            self::ROLE_MANAGER, 
+            self::ROLE_AGENT,
+            self::ROLE_USER,
         ];
     }
 
@@ -296,7 +300,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getAvatarImage()
     {
-        return $this->getImage('thumb');
+        return $image = $this->getImage('thumb') ?: Yii::getAlias('@uploader/site/user.png');
     }
 
     /**
@@ -312,18 +316,17 @@ class User extends ActiveRecord implements IdentityInterface
         if($image = $this->getAvatarImage()) {
             return Html::img($image, $htmlOptions);
         } else {
-            return $icon ?: (isset(Yii::$app->params['icons']['user']) ? Yii::$app->params['icons']['user'] : '');
+            return $icon ? (isset(Yii::$app->params['icons']['user']) ? Yii::$app->params['icons']['user'] : '') : '';
         }
     }
 
     /**
      * Получить профиль
      * 
-     * @return yii\db\ActiveRecord
+     * @return yii\db\ActiveQuery
      */
-    public function getProfile()
-    {
-        return Profile::findOne(['model' => self::INT_CODE, 'parent_id' => $this->id]);
+    public function getProfile() {
+        return $this->hasOne(Profile::className(), ['parent_id' => 'id'])->where(['model' => self::INT_CODE]);
     }
 
     /**
@@ -354,4 +357,30 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasMany(Lot::className(), ['id' => 'user_id'])
             ->viaTable(WishList::tableName(), ['lot_id' => 'id']);
     }
+
+    /**
+     * Getting user items for dropdown list.
+     * $search string a part of User name
+     * @return array of [id: integer, text: string]
+     */
+	public static function getItems($search = '')
+	{
+        $users = self::find()
+            ->select(['user.id', 'username', 'first_name', 'last_name'])
+            ->leftJoin('{{%profile}}', ['profile.parent_id' => 'user.id', 'model' => self::INT_CODE])
+            ->where(['status' => self::STATUS_ACTIVE])
+            ->asArray()
+            ->all();
+        $a = [];
+        foreach($users as $user)
+            if (!$search || !(stripos($user['username'] . $user['first_name'] . $user['last_name'], $search) === false))
+                $a[] = [
+                    'id' => $user['id'], 
+                    'text' => (($user['last_name'] || $user['first_name'])
+                        ? $user['last_name'] . ' ' . $user['first_name'] 
+                        : $user['username']
+                    ),
+                ];
+        return $a;
+	}
 }

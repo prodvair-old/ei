@@ -10,6 +10,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\behaviors\SluggableBehavior;
 
 use creocoder\nestedsets\NestedSetsBehavior;
+use common\traits\ShortPart;
 
 /**
  * Caterory model class (Nested Set)
@@ -30,6 +31,7 @@ class Category extends ActiveRecord
     public $model_count;        
     
     const ROOT = 0;
+    const MAX_NAME_LENGTH = 64;
 
     private static $offset = [
         Torg::PROPERTY_BANKRUPT  => 10000, 
@@ -122,6 +124,33 @@ class Category extends ActiveRecord
     }
     
     /**
+     * Json array of categories names with ID as index.
+     * 
+     * @param array $selected items ID
+     * @param 
+     * @return string
+     */
+    public static function jsonItems($selected, $first = false)
+    {
+        $a = [];
+        foreach(self::find()->orderBy('lft ASC')->all() as $node)
+        {
+            if ($node->depth == 1) {
+                if ($b['children'])
+                    $a[] = $b;
+                $b = [];
+                $b['text'] = $node->name;
+                $b['children'] = [];
+            } else {
+                $b['children'][] = in_array($node->id, $selected)
+                    ? ['id' => $node->id, 'text' => $node->name, 'selected' => true]
+                    : ['id' => $node->id, 'text' => $node->name];
+            }
+        }
+        return json_encode($a);
+    }
+
+    /**
      * Get Category by slug.
      * @param string $slug
      * @return Category | false
@@ -154,9 +183,12 @@ class Category extends ActiveRecord
      */
     public function getPrettyName($plain = false)
     {
-        $indentation = str_repeat('-', $this->depth * 3);
+        $indentation = $this->depth == 1 ? '----' : '';
+        mb_internal_encoding('UTF-8');
         return $plain
-            ? $indentation . ' ' . $this->name
+            ? $indentation . (mb_strlen($this->name) > self::MAX_NAME_LENGTH
+                ? mb_substr($this->name, 0, self::MAX_NAME_LENGTH) . ' ...'
+                : $this->name)
             : '<span class="branch">' . $indentation . '</span>' . ' ' . $this->name;
     }
 

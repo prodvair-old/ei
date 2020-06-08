@@ -30,24 +30,24 @@ $user = common\models\db\User::findOne(['username' => 'sergey@vorst.ru']);
 
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="https://ei.ru<?= $user->avatar ?>" class="user-image" alt="User Image"/>
+                        <?= $user->getAvatar(['class' => 'user-image']) ?>
                         <span class="hidden-xs"><?= $user->getFullName() ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="<?= $user->avatar ?>" class="img-circle" alt="User Image"/>
+                            <?= $user->getAvatar(['class' => 'img-circle'], true) ?>
                             <p>
                                 <?= $user->getFullName() ?>
-                                <small><?= Lookup::item('UserRole', $user->group) ?></small>
+                                <small><?= Lookup::item('UserRole', $user->role) ?></small>
                             </p>
                         </li>
                         <!-- Menu Body -->
                         <li class="user-body">
-                            <div class="col-xs-<?= $user->group == User::GROUP_ADMIN ? '6' : '12' ?> text-center">
+                            <div class="col-xs-<?= $user->role == User::ROLE_ADMIN ? '6' : '12' ?> text-center">
                                 <a href="<?= Url::to(['historys/index']) ?>">История</a>
                             </div>
-                            <?php if ($user->group == User::GROUP_ADMIN): ?>
+                            <?php if ($user->role == User::ROLE_ADMIN): ?>
                             <div class="col-xs-4 text-center">
                                 <a href="<?= Url::to(['historys/all']) ?>">Журнал</a>
                             </div>

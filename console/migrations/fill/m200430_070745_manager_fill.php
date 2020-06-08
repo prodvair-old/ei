@@ -6,6 +6,7 @@ use common\models\db\Profile;
 use common\models\db\Place;
 use common\models\db\Organization;
 use console\traits\Keeper;
+use console\traits\District;
 
 /**
  * Class m200430_070745_manager_fill
@@ -13,9 +14,12 @@ use console\traits\Keeper;
 class m200430_070745_manager_fill extends Migration
 {
     use Keeper;
+    use District;
     
     const TABLE = '{{%manager}}';
-
+    
+    private $agentConvertor = [1 => 2, 3 => 1];
+    
     public function safeUp()
     {
         // получение менеджеров из существующего справочника
@@ -31,19 +35,18 @@ class m200430_070745_manager_fill extends Migration
         $organizations = [];
         $places = [];
         
-        $convertor = [1 => 2, 3 => 1];
         // добавление управляющих торгами
         foreach($rows as $row) {
 
             $manager_id = $row['id'];
             $created_at = strtotime($row['createdAt']);
             $updated_at = strtotime($row['updatedAt']);
-            $agent = $row['typeId'];
+            $agent = $this->agentConvertor[$row['typeId']];
             $obj = json_decode($row['info']);
             
             $m = [
                 'id'         => $manager_id,
-                'agent'      => $convertor[$agent],
+                'agent'      => $agent,
                 'created_at' => $created_at,
                 'updated_at' => $updated_at,
             ];
@@ -56,7 +59,7 @@ class m200430_070745_manager_fill extends Migration
             if ($this->validateAndKeep($manager, $managers, $m)) {
                 
                 $city     = isset($row['city']) && $row['city'] ? $row['city'] : '';
-                $district = isset($row['district']) && $row['district'] ? $row['district'] : '';
+                $district = $this->districtConvertor($row['district']);
                 $address  = isset($row['address']) && $row['address'] ? $row['address'] : '';
                 $geo_lat  = (isset($obg->address->geo_lat) && $obg->address->geo_lat ? $obg->address->geo_lat : null);
                 $geo_lon  = (isset($obg->address->geo_lon) && $obg->address->geo_lon ? $obg->address->geo_lon : null);
@@ -88,7 +91,7 @@ class m200430_070745_manager_fill extends Migration
                         'parent_id'   => $manager_id,
                         'city'        => $city,
                         'region_id'   => $row['regionId'],
-                        'district'    => $district,
+                        'district_id' => $district,
                         'address'     => $address,
                         'geo_lat'     => $geo_lat,
                         'geo_lon'     => $geo_lon,
@@ -118,21 +121,22 @@ class m200430_070745_manager_fill extends Migration
                         'updated_at' => $updated_at,
                     ];
                     $organization = new Organization($o);
-                    
+                    $organization->scenario = Organization::SCENARIO_MIGRATION;
+
                     $this->validateAndKeep($organization, $organizations, $o);
 
                     // Place
                     $p = [
-                        'model'      => Manager::INT_CODE,
-                        'parent_id'  => $manager_id,
-                        'city'       => $city,
-                        'region_id'  => $row['regionId'],
-                        'district'   => $district,
-                        'address'    => $address,
-                        'geo_lat'    => $geo_lat,
-                        'geo_lon'    => $geo_lon,
-                        'created_at' => $created_at,
-                        'updated_at' => $updated_at,
+                        'model'       => Manager::INT_CODE,
+                        'parent_id'   => $manager_id,
+                        'city'        => $city,
+                        'region_id'   => $row['regionId'],
+                        'district_id' => $district,
+                        'address'     => $address,
+                        'geo_lat'     => $geo_lat,
+                        'geo_lon'     => $geo_lon,
+                        'created_at'  => $created_at,
+                        'updated_at'  => $updated_at,
                     ];
                     $place = new Place($p);
                     
@@ -144,7 +148,7 @@ class m200430_070745_manager_fill extends Migration
         $this->batchInsert('{{%manager_sro}}', ['manager_id', 'sro_id'], $manager_sro);
         $this->batchInsert('{{%profile}}', ['model', 'parent_id', 'activity', 'inn', 'gender', 'birthday', 'phone', 'first_name', 'last_name', 'middle_name', 'created_at', 'updated_at'], $profiles);
         $this->batchInsert('{{%organization}}', ['model', 'parent_id', 'activity', 'title', 'full_title', 'inn', 'ogrn', 'reg_number', 'email', 'phone', 'website', 'status', 'created_at', 'updated_at'], $organizations);
-        $this->batchInsert('{{%place}}', ['model', 'parent_id', 'city', 'region_id', 'district', 'address', 'geo_lat', 'geo_lon', 'created_at', 'updated_at'], $places);
+        $this->batchInsert('{{%place}}', ['model', 'parent_id', 'city', 'region_id', 'district_id', 'address', 'geo_lat', 'geo_lon', 'created_at', 'updated_at'], $places);
     }
 
     public function safeDown()

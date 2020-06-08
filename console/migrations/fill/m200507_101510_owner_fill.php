@@ -5,6 +5,7 @@ use common\models\db\Owner;
 use common\models\db\Organization;
 use common\models\db\Place;
 use console\traits\Keeper;
+use console\traits\District;
 
 /**
  * Class m200507_101510_owner_fill
@@ -12,6 +13,7 @@ use console\traits\Keeper;
 class m200507_101510_owner_fill extends Migration
 {
     use Keeper;
+    use District;
     
     const TABLE = '{{%owner}}';
 
@@ -66,25 +68,26 @@ class m200507_101510_owner_fill extends Migration
                     'updated_at' => $updated_at,
                 ];
                 $organization = new Organization($o);
+                $organization->scenario = Organization::SCENARIO_MIGRATION;
                 
                 $this->validateAndKeep($organization, $organizations, $o);
                 
                 $city     = isset($row['city']) && $row['city'] ? $row['city'] : '';
-                $district = isset($row['district']) && $row['district'] ? $row['district'] : '';
+                $district = $this->districtConvertor($row['district']);
                 $address  = isset($row['address']) && $row['address'] ? $row['address'] : '-';
                 
                 // Place
                 $p = [
-                    'model'      => Organization::TYPE_OWNER,
-                    'parent_id'  => $owner_id,
-                    'city'       => $city,
-                    'region_id'  => $row['regionId'],
-                    'district'   => $district,
-                    'address'    => $address,
-                    'geo_lat'    => null,
-                    'geo_lon'    => null,
-                    'created_at' => $created_at,
-                    'updated_at' => $updated_at,
+                    'model'       => Organization::TYPE_OWNER,
+                    'parent_id'   => $owner_id,
+                    'city'        => $city,
+                    'region_id'   => $row['regionId'],
+                    'district_id' => $district,
+                    'address'     => $address,
+                    'geo_lat'     => null,
+                    'geo_lon'     => null,
+                    'created_at'  => $created_at,
+                    'updated_at'  => $updated_at,
                 ];
                 $place = new Place($p);
                 
@@ -93,7 +96,7 @@ class m200507_101510_owner_fill extends Migration
         }
         $this->batchInsert(self::TABLE, ['id', 'slug', 'description', 'created_at', 'updated_at'], $owners);
         $this->batchInsert('{{%organization}}', ['model', 'parent_id', 'activity', 'title', 'full_title', 'inn', 'ogrn', 'reg_number', 'email', 'phone', 'website', 'status', 'created_at', 'updated_at'], $organizations);
-        $this->batchInsert('{{%place}}', ['model', 'parent_id', 'city', 'region_id', 'district', 'address', 'geo_lat', 'geo_lon', 'created_at', 'updated_at'], $places);
+        $this->batchInsert('{{%place}}', ['model', 'parent_id', 'city', 'region_id', 'district_id', 'address', 'geo_lat', 'geo_lon', 'created_at', 'updated_at'], $places);
     }
 
     public function safeDown()

@@ -4,6 +4,7 @@ namespace common\models\db;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use common\traits\ShortPart;
 
 /**
  * Document model
@@ -21,7 +22,9 @@ use yii\behaviors\TimestampBehavior;
  */
 class Document extends ActiveRecord
 {
-    private static $model_convertor = [1 => 6, 2 => 7, 3 => 4];
+    use ShortPart;
+    
+    const SHORT_NAME_LENGTH = 25;
     
     /**
      * {@inheritdoc}
@@ -50,6 +53,7 @@ class Document extends ActiveRecord
     {
         return [
             [['model', 'parent_id', 'url'], 'required'],
+            [['model', 'parent_id'], 'integer'],
             [['name', 'ext', 'url', 'hash'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
         ];
@@ -67,23 +71,6 @@ class Document extends ActiveRecord
             'hash'        => Yii::t('app', 'Hash'),
             'created_at'  => Yii::t('app', 'Created'),
             'updated_at'  => Yii::t('app', 'Modified'),
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function fields()
-    {
-        return [
-            'model' => function($model) { return self::$model_convertor[$model->tableTypeId]; },
-            'parent_id' => 'tableId',
-            'name',
-            'ext' => 'format',
-            'url',
-            'hash',
-            'created_at',
-            'updated_at',
         ];
     }
 }

@@ -15,7 +15,7 @@ use common\interfaces\PlaceInterface;
  * @var integer $parent_id
  * @var string  $city
  * @var integer $region_id
- * @var string  $district
+ * @var integer $district_id
  * @var text    $address
  * @var string  $geo_lat
  * @var string  $geo_lon
@@ -24,6 +24,9 @@ use common\interfaces\PlaceInterface;
  */
 class Place extends ActiveRecord implements PlaceInterface
 {
+    // сценарии
+    const SCENARIO_CREATE = 'place_create';
+
     /**
      * {@inheritdoc}
      */
@@ -50,11 +53,12 @@ class Place extends ActiveRecord implements PlaceInterface
     public function rules()
     {
         return [
-            [['model', 'parent_id', 'address'], 'required'],
-            [['model', 'parent_id', 'region_id'], 'integer'],
-            [['city', 'district'], 'string', 'max' => 255],
+            [['model', 'parent_id'], 'required', 'except' => self::SCENARIO_CREATE],
+            ['address', 'required'],
+            [['model', 'parent_id', 'region_id', 'district_id'], 'integer'],
+            [['city'], 'string', 'max' => 255],
             ['address', 'string', 'max' => 512],
-            [['geo_lat', 'geo_lon'], 'string', 'max' => 16],
+            [['geo_lat', 'geo_lon'],'match', 'pattern' => '/^\d{1,3}\.\d{4,10}$/'],
             [['created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -65,14 +69,14 @@ class Place extends ActiveRecord implements PlaceInterface
     public function attributeLabels()
     {
         return [
-            'city'       => Yii::t('app', 'City'),
-            'region_id'  => Yii::t('app', 'Region'),
-            'district'   => Yii::t('app', 'District'),
-            'address'    => Yii::t('app', 'Address'),
-            'geo_lat'    => Yii::t('app', 'Latitude'),
-            'geo_lon'    => Yii::t('app', 'Longitude'),
-            'created_at' => Yii::t('app', 'Created'),
-            'updated_at' => Yii::t('app', 'Modified'),
+            'city'        => Yii::t('app', 'City'),
+            'region_id'   => Yii::t('app', 'Region'),
+            'district_id' => Yii::t('app', 'District'),
+            'address'     => Yii::t('app', 'Address'),
+            'geo_lat'     => Yii::t('app', 'Latitude'),
+            'geo_lon'     => Yii::t('app', 'Longitude'),
+            'created_at'  => Yii::t('app', 'Created'),
+            'updated_at'  => Yii::t('app', 'Modified'),
         ];
     }
 

@@ -1,9 +1,7 @@
 <?php
-
 namespace common\models\db;
 
 use Yii;
-use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use sergmoro1\lookup\models\Lookup;
@@ -13,41 +11,45 @@ use sergmoro1\lookup\models\Lookup;
  * Торг, аукцион по продаже лотов.
  *
  * @var integer $id
+ * @var string  $msg_id
  * @var integer $property
- * @var text $description
- * @var string $started_at
- * @var string $end_at
- * @var string $completed_at
- * @var string $published_at
+ * @var text    $description
+ * @var string  $started_at
+ * @var string  $end_at
+ * @var string  $completed_at
+ * @var string  $published_at
  * @var integer $offer
  * @var integer $created_at
  * @var integer $updated_at
- *
- * @property Lot[] $lots
+ * 
+ * @property Lot[]    $lots
  * @property Bankrupt $bankrupt
- * @property Manager $manager
- * @property Owner $owner
- * @property User $user
- * @property Etp $etp
+ * @property Manager  $manager
+ * @property Owner    $owner
+ * @property User     $user
+ * @property Etp      $etp
  * @property Casefile $case
  * @property Document[] $documents
  */
 class Torg extends ActiveRecord
 {
+    // сценарии
+    const SCENARIO_MIGRATION = 'torg_migration';
+
     // внутренний код модели используемый в составном ключе
     const INT_CODE = 7;
 
     // тип имущества
-    const PROPERTY_BANKRUPT = 1;
-    const PROPERTY_ARRESTED = 2;
-    const PROPERTY_ZALOG = 3;
+    const PROPERTY_BANKRUPT  = 1;
+    const PROPERTY_ARRESTED  = 2;
+    const PROPERTY_ZALOG     = 3;
     const PROPERTY_MUNICIPAL = 4;
 
     // тип предложения
-    const OFFER_PUBLIC = 1;
-    const OFFER_AUCTION = 2;
+    const OFFER_PUBLIC       = 1;
+    const OFFER_AUCTION      = 2;
     const OFFER_AUCTION_OPEN = 3;
-    const OFFER_CONTEST = 4;
+    const OFFER_CONTEST      = 4;
     const OFFER_CONTEST_OPEN = 5;
 
     /**
@@ -69,14 +71,18 @@ class Torg extends ActiveRecord
             ],
         ];
     }
-
+    
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            ['property', 'required'],
+            [['property'], 'required'],
+            [['started_at'], 'required', 'except' => self::SCENARIO_MIGRATION],
+            ['msg_id', 'required', 'on' => self::SCENARIO_MIGRATION],
+            ['offer', 'required', 'except' => self::SCENARIO_MIGRATION],
+            ['msg_id', 'string', 'max' => 255],
             [['property', 'offer'], 'integer'],
             ['property', 'in', 'range' => self::getProperties()],
             ['offer', 'in', 'range' => self::getOffers()],
@@ -90,11 +96,11 @@ class Torg extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'etp_id'       => Yii::t('app', 'Etp'),
+            'msg_id'       => Yii::t('app', 'Message'),
             'property'     => Yii::t('app', 'Property'),
             'description'  => Yii::t('app', 'Description'),
-            'started_at'   => Yii::t('app', 'Start'),
-            'end_at'       => Yii::t('app', 'End'),
+            'started_at'   => Yii::t('app', 'Start at'),
+            'end_at'       => Yii::t('app', 'End at'),
             'completed_at' => Yii::t('app', 'Completed'),
             'published_at' => Yii::t('app', 'Published'),
             'offer'        => Yii::t('app', 'Offer'),
@@ -107,8 +113,7 @@ class Torg extends ActiveRecord
      * Get property types
      * @return array
      */
-    public static function getProperties()
-    {
+    public static function getProperties() {
         return [
             self::PROPERTY_BANKRUPT,
             self::PROPERTY_ARRESTED,
@@ -121,16 +126,25 @@ class Torg extends ActiveRecord
      * Get offer types
      * @return array
      */
-    public static function getOffers()
-    {
+    public static function getOffers() {
         return [
             self::OFFER_PUBLIC,
             self::OFFER_AUCTION,
             self::OFFER_AUCTION_OPEN,
             self::OFFER_CONTEST,
             self::OFFER_CONTEST_OPEN,
-
         ];
+    }
+
+    /**
+     * Get short title
+     * @return string
+     */
+    public function getShortTitle() {
+        mb_internal_encoding('UTF-8');
+        return mb_strlen($this->description) > self::SHORT_TITLE_LENGTH
+            ? mb_substr($this->description, 0, self::SHORT_TITLE_LENGTH) . '...'
+            : $this->description;
     }
 
     /**
@@ -266,5 +280,66 @@ class Torg extends ActiveRecord
         $result[ '0' ] = 'Все Типы';
         $result += Lookup::items('TorgProperty');
         return $result;
+    }
+
+    /**
+     * Получить ответственного за торг.
+     *
+     * @return yii\db\ActiveRecord
+     */
+    public function getResponsible()
+    {
+        switch($this->property) {
+            case self::PROPERTY_BANKRUPT:
+                return $this->getBankrupt();
+            case self::PROPERTY_ARRESTED:
+            case self::PROPERTY_MUNICIPAL:
+                return $this->getManager();
+            case self::PROPERTY_ZALOG:
+                return $this->getUser();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+
+            if (!$this->msg_id)
+                // если поле не заполнено, сформировать уникальное значение
+                $this->msg_id = 'u/' . $this->torg_id . '/' . date('dmy', $this->created_at);
+
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterDelete()
+    {
+        parent::afterDelete();
+
+        foreach($this->lots as $lot)
+            $lot->delete();
+        foreach($this->documents as $document)
+            $document->delete();
+        $model = null;
+        switch ($this->property) {
+            case self::PROPERTY_BANKRUPT:
+                $model = TorgDebtor::findOne(['torg_id' => $this->id]);
+                break;
+            case self::PROPERTY_ZALOG:
+                $model = TorgPledge::findOne(['torg_id' => $this->id]);
+                break;
+            case self::PROPERTY_ARRESTED:
+            case self::PROPERTY_MUNICIPAL:
+                $model = TorgDrawish::findOne(['torg_id' => $this->id]);
+        }
+        if ($model)
+            $model->delete();
     }
 }

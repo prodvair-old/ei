@@ -11,11 +11,11 @@ class m180116_073647_user_alter extends Migration
 
     public function safeUp()
     {
-        $this->addColumn(self::TABLE, 'group', $this->smallInteger());
+        $this->addColumn(self::TABLE, 'role', $this->smallInteger());
     }
 
     public function safeDown()
     {
-        $this->dropColumn(self::TABLE, 'group');
+        $this->dropColumn(self::TABLE, 'role');
     }
 }
