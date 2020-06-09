@@ -136,8 +136,8 @@ class ReportController extends Controller
      */
     public function actionDelete($id)
     {
-        if (!Yii::$app->user->can('delete'))
-            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        //if (!Yii::$app->user->can('delete'))
+            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $model = $this->findModel($id);
 
