@@ -8,19 +8,15 @@ use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
 
+use common\models\db\Report;
 use common\models\db\Lot;
-use common\models\db\Torg;
-use common\models\db\Place;
-use backend\modules\admin\models\LotSearch;
-use backend\modules\admin\traits\TrExtractor;
+use backend\modules\admin\models\ReportSearch;
 
 /**
- * LotController implements the CRUD actions for Lot model.
+ * ReportController implements the CRUD actions for Report model.
  */
-class LotController extends Controller
+class ReportController extends Controller
 {
-    use TrExtractor;
-    
     private $_model;
 
     public function behaviors()
@@ -56,7 +52,7 @@ class LotController extends Controller
         //if (!Yii::$app->user->can('index'))
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
-        $searchModel = new LotSearch();
+        $searchModel = new ReportSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->get());
 
         return $this->render('index', [
@@ -84,35 +80,28 @@ class LotController extends Controller
     /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'update' page.
-     * @param integer | null $torg_id for that the lot created
+     * @param integer $lot_id for that the report created
      * @return mixed
      */
-    public function actionCreate($torg_id)
+    public function actionCreate($lot_id)
     {
 
-        //if (!Yii::$app->user->can('createLot')) {
+        //if (!Yii::$app->user->can('createReport')) {
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
-        $torg  = Torg::findOne($torg_id);
-        $model = new Lot(['torg_id' => $torg_id]);
-        $place = new Place(['model' => Lot::INT_CODE, 'parent_id' => $model->id]);
+        $lot  = Lot::findOne($lot_id);
+        $user = \common\models\db\User::findOne(['username' => 'sergey@vorst.ru']);
+        //$model = new Report(['user_id' => Yii::$app->user->id, 'lot_id' => $lot->id]);
+        $model = new Report(['user_id' => $user->id, 'lot_id' => $lot->id]);
 
-        $post = Yii::$app->request->post();
-        if ($model->load($post) && $place->load($post)) {
-            $isValid = $model->validate();
-            $isValid = $place->validate() && $isValid;
-            if ($isValid) {
-                $model->save(false);
-                $place->save(false);
-                Yii::$app->session->setFlash('success', Yii::t('app', 'Created successfully.'));
-                return $this->redirect(['update', 'id' => $model->id]);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Created successfully.'));
+            return $this->redirect(['update', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
-            'torg'  => $torg,
-            'place' => $place,
+            'lot'   => $lot,
         ]);
     }
 
@@ -129,25 +118,14 @@ class LotController extends Controller
         //if (!Yii::$app->user->can('update', ['model' => $model]))
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
         
-        $place = isset($model->place)
-            ? $model->place
-            : new Place(['model' => Lot::INT_CODE, 'parent_id' => $model->id]);
-
         $post = Yii::$app->request->post();
-        if ($model->load($post) && $place->load($post)) {
-            $isValid = $model->validate();
-            $isValid = $place->validate() && $isValid;
-            if ($isValid) {
-                $model->save(false);
-                $place->save(false);
-                Yii::$app->session->setFlash('success', Yii::t('app', 'Updated successfully.'));
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Updated successfully.'));
         }
 
         return $this->render('update', [
             'model' => $model,
-            'torg'  => $model->torg,
-            'place' => $place,
+            'lot'   => $model->lot,
         ]);
     }
 
@@ -179,7 +157,7 @@ class LotController extends Controller
     {
         if ($this->_model === null) 
         {
-            if ($this->_model = Lot::findOne($id))
+            if ($this->_model = Report::findOne($id))
             {
                 return $this->_model;
             } else {
@@ -187,26 +165,4 @@ class LotController extends Controller
             }
         }
     }
-
-    /**
-     * Getting a pool of lots that meet the conditions.
-     * @return json array {count: integer, content: string}
-     * @throws ForbiddenHttpException if this is not an ajax request
-     */
-	public function actionMore()
-	{
-		if(Yii::$app->getRequest()->isAjax) {
-            $searchModel = new LotSearch();
-            $dataProvider = $searchModel->search(Yii::$app->request->get(), Yii::$app->request->get('offset'));
-
-            return $this->asJson([
-                'count' => $dataProvider->getCount(),
-                'content' => $this->getTr($this->renderAjax('more', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel,
-                ]))
-            ]);
-		} else
-			throw new ForbiddenHttpException('Only ajax request suitable.');
-	}
 }

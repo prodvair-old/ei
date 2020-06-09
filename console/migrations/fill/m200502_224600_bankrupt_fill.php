@@ -18,20 +18,43 @@ class m200502_224600_bankrupt_fill extends Migration
     
     const TABLE = '{{%bankrupt}}';
 
+    const LIMIT = 5000;
+
     public function safeUp()
     {
-        // получение менеджеров из существующего справочника
         $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
+        
         $select = $db->createCommand(
-            'SELECT * FROM "eiLot".bankrupts ORDER BY "bankrupts".id'
+            'SELECT count(id) FROM "eiLot".bankrupts'
         );
-        $rows = $select->queryAll();
+        $result = $select->queryAll();
+        
+        $offset = 0;
+    
+        while ($offset < $result[0]['count']) {
+
+            $this->insertPoole($db, $offset);
+
+            $offset = $offset + self::LIMIT;
+
+            $sleep = rand(1, 3);
+            sleep($sleep);
+        }
+    }
+
+    private function insertPoole($db, $offset)
+    {
+        $query = $db->createCommand(
+            'SELECT * FROM  "eiLot".bankrupts ORDER BY "bankrupts".id ASC LIMIT ' . self::LIMIT . ' OFFSET ' . $offset
+        );
+
+        $rows = $query->queryAll();
         
         $bankrupts = [];
         $profiles = [];
         $organizations = [];
         $places = [];
-        
+
         // добавление банкротов
         foreach($rows as $row) {
 

@@ -3,6 +3,7 @@
  * Определение колонок для табличного вывода Лотов - lot/index, lot/more.
  */
 
+use yii\helpers\Html;
 use common\components\Property;
 use sergmoro1\lookup\models\Lookup;
 use common\models\db\Category;
@@ -10,7 +11,12 @@ use common\models\db\Category;
 return [
     [
         'attribute' => 'id',
-        'options' => ['style' => 'width:5%;'],
+        'options' => ['style' => 'width:8%;'],
+        'format' => 'raw',
+        'value' => function($data) {
+             return $data['id'] . ' ' .
+                Html::a('<i class="fa fa-plus"></i>', ['report/create', 'lot_id' => $data['id']], ['title' => Yii::t('app', 'Add report')]);
+        }
     ],
     [
         'attribute' => 'title',

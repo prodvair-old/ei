@@ -22,4 +22,5 @@ class Property {
     const SUM_MEASURE           = 10;
     const LOT_STATUS            = 11;
     const LOT_REASON            = 12;
+    const REPORT_STATUS         = 13;
 }

@@ -72,7 +72,7 @@ class TorgController extends Controller
     public function actionView($id = 0)
     {
         $model = $this->findModel($id);
-        //if (!Yii::$app->user->can('viewPost', ['lot' => $model]))
+        //if (!Yii::$app->user->can('viewPost', ['model' => $model]))
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         return $this->render('view', [
@@ -126,7 +126,7 @@ class TorgController extends Controller
     {
         $model = $this->findModel($id);
         
-        //if (!Yii::$app->user->can('update', ['lot' => $model]))
+        //if (!Yii::$app->user->can('update', ['model' => $model]))
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
         
         // Торг может быть отредактирован только для залогового имущества

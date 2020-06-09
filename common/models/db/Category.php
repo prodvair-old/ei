@@ -126,11 +126,10 @@ class Category extends ActiveRecord
     /**
      * Json array of categories names with ID as index.
      * 
-     * @param array $selected items ID
-     * @param 
+     * @param array $selected items IDs
      * @return string
      */
-    public static function jsonItems($selected, $first = false)
+    public static function jsonItems($selected)
     {
         $a = [];
         foreach(self::find()->orderBy('lft ASC')->all() as $node)

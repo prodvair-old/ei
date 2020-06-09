@@ -70,7 +70,7 @@ class UserController extends Controller
     public function actionView($id = 0)
     {
         $model = $this->findModel($id);
-        //if (!Yii::$app->user->can('viewPost', ['lot' => $model]))
+        //if (!Yii::$app->user->can('viewPost', ['model' => $model]))
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         return $this->render('view', [
@@ -88,7 +88,7 @@ class UserController extends Controller
     {
         $model = $this->findModel($id);
         
-        //if (!Yii::$app->user->can('update', ['user' => $model]))
+        //if (!Yii::$app->user->can('update', ['model' => $model]))
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
         
         $profile = isset($model->profile)

@@ -70,7 +70,7 @@ class OwnerController extends Controller
     public function actionView($id = 0)
     {
         $model = $this->findModel($id);
-        //if (!Yii::$app->user->can('viewPost', ['lot' => $model]))
+        //if (!Yii::$app->user->can('viewPost', ['model' => $model]))
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         return $this->render('view', [
@@ -86,7 +86,7 @@ class OwnerController extends Controller
     public function actionCreate()
     {
 
-        //if (!Yii::$app->user->can('createLot')) {
+        //if (!Yii::$app->user->can('createOwner')) {
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $model = new Owner();
