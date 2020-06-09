@@ -22,14 +22,20 @@ class ReportSearch extends Report
 
     public function search($params, $offset = 0)
     {
+        $join = [];
+        $join['user'] = '"report"."user_id"="user.id"';
+        $join['profile'] = '"report"."user_id"="profile"."parent_id" AND model='. IntCode::USER;
+        if ($this->db->driverName === 'mysql') {
+            $join['user'] = str_replace('"', '', $join['user']);
+            $join['profile'] = str_replace('"', '', $join['profile']);
+        }
         $query = Report::find()
-            ->select('report.id, lot.id, report.title, lookup_status.name AS status, lookup_property.name AS property, cost, '.
+            ->select('report.id, lot.id as lot_id, report.title, lookup_status.name AS status, lookup_property.name AS property, cost, '.
                 'user.username, profile.first_name, profile.last_name')
             ->innerJoin('{{%lot}}', 'report.lot_id=lot.id')
             ->innerJoin('{{%torg}}', 'lot.torg_id=torg.id')
-            ->innerJoin('{{%user}}', 'report.user_id=user.id')
-            ->innerJoin('{{%profile}}', 'report.user_id=parent_id AND model='. IntCode::USER)
-            ->innerJoin('{{%lot_category}}', 'lot.id=lot_category.lot_id')
+            ->innerJoin('{{%user}}', $join['user'])
+            ->innerJoin('{{%profile}}', $join['profile'])
             ->innerJoin('{{%lookup}} AS lookup_status', 'report.status=lookup_status.code AND lookup_status.property_id='. Property::REPORT_STATUS)
             ->innerJoin('{{%lookup}} AS lookup_property', 'torg.property=lookup_property.code AND lookup_property.property_id='. Property::TORG_PROPERTY)
             ->limit(Yii::$app->params['recordsPerPage'])

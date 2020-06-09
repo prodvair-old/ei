@@ -44,7 +44,7 @@ $this->registerJs($script);
                             'attribute' => 'lot_id',
                             'format' => 'raw',
                             'value' => function($data) {
-                                return Html($data['lot_id'], ['lot/view', 'id' => $data['lot_id']]);
+                                return Html::a($data['lot_id'], ['lot/view', 'id' => $data['lot_id']]);
                             },
                         ],
                         'title',
