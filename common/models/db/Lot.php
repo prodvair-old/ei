@@ -5,6 +5,7 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\behaviors\TimestampBehavior;
+use common\traits\ShortPart;
 use sergmoro1\uploader\behaviors\HaveFileBehavior;
 use sergmoro1\lookup\models\Lookup;
 
@@ -23,7 +24,8 @@ use sergmoro1\lookup\models\Lookup;
  * @var integer $deposit_measure
  * @var integer $status
  * @var integer $reason
- * @var info    $text
+ * @var string  $url
+ * @var text    $info
  * @var integer $created_at
  * @var integer $updated_at
  * 
@@ -37,6 +39,11 @@ use sergmoro1\lookup\models\Lookup;
  */
 class Lot extends ActiveRecord
 {
+    use ShortPart;
+    
+    // сценарии
+    const SCENARIO_MIGRATION = 'lot_migration';
+
     // внутренний код модели используемый в составном ключе
     const INT_CODE = 6;
 
@@ -125,6 +132,7 @@ class Lot extends ActiveRecord
             ['status', 'default', 'value' => self::STATUS_IN_PROGRESS],
             ['reason', 'in', 'range' => self::getReasons()],
             ['reason', 'default', 'value' => self::REASON_NO_MATTER],
+            ['url', 'url', 'defaultScheme' => 'http', 'except' => self::SCENARIO_MIGRATION],
             [['description', 'info', 'new_categories', 'created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -145,6 +153,7 @@ class Lot extends ActiveRecord
             'deposit_measure'  => Yii::t('app', 'Deposit measure'),
             'status'           => Yii::t('app', 'Status'),
             'reason'           => Yii::t('app', 'Reason'),
+            'url'              => Yii::t('app', 'Source'),
             'new_categories'   => Yii::t('app', 'Categories'),
             'created_at'       => Yii::t('app', 'Created'),
             'updated_at'       => Yii::t('app', 'Modified'),
@@ -198,10 +207,7 @@ class Lot extends ActiveRecord
      * @return string
      */
     public function getShortTitle() {
-        mb_internal_encoding('UTF-8');
-        return mb_strlen($this->title) > self::SHORT_TITLE_LENGTH
-            ? mb_substr($this->title, 0, self::SHORT_TITLE_LENGTH) . '...'
-            : $this->title;
+        return $this->getShortPart(self::SHORT_TITLE_LENGTH, 'title');
     }
 
     /**
@@ -279,7 +285,7 @@ class Lot extends ActiveRecord
      */
     public function getPrices()
     {
-        return $this->hasMany(LotPrice::className(), ['lotId' => 'id']);
+        return $this->hasMany(LotPrice::className(), ['lot_id' => 'id']);
     }
 
     /**

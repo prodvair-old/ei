@@ -56,6 +56,11 @@ $user = common\models\db\User::findOne(['username' => 'sergey@vorst.ru']);
                         'icon' => 'money',
                     ],
                     [
+                        'label' => Yii::t('app', 'Reports'), 
+                        'url' => ['report/index'], 
+                        'icon' => 'book',
+                    ],
+                    [
                         'label' => Yii::t('app', 'Owners'), 
                         'url' => ['owner/index'], 
                         'icon' => 'bank',

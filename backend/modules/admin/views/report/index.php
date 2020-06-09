@@ -6,11 +6,11 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-use common\components\Property;
 use sergmoro1\lookup\models\Lookup;
+use common\components\Property;
 use common\components\Name;
 
-$this->title = Yii::t('app', 'Users');
+$this->title = Yii::t('app', 'Reports');
 $this->params['breadcrumbs'][] = $this->title;
 
 $script = <<<JS
@@ -40,24 +40,31 @@ $this->registerJs($script);
                             'attribute' => 'id',
                             'options' => ['style' => 'width:6%'],
                         ],
-                        'username',
+                        [
+                            'attribute' => 'lot_id',
+                            'format' => 'raw',
+                            'value' => function($data) {
+                                return Html($data['lot_id'], ['lot/view', 'id' => $data['lot_id']]);
+                            },
+                        ],
+                        'title',
+                        'cost',
                         [
                             'attribute' => 'status',
-                            'filter' => Lookup::items(Property::USER_STATUS, true),
+                            'filter' => Lookup::items(Property::REPORT_STATUS, true),
                             'value' => function($data) {
-                                return Lookup::item(Property::USER_STATUS, $data['status'], true);
+                                return $data['status'];
                             },
                         ],
                         [
-                            'attribute' => 'role',
-                            'filter' => Lookup::items(Property::USER_ROLE, true),
+                            'header' => Yii::t('app', 'Property'),
                             'value' => function($data) {
-                                return Lookup::item(Property::USER_ROLE, $data['role'], true);
+                                return $data['property'];
                             },
                         ],
+                        'username',
                         [
-                            'attribute' => 'full_name',
-                            'filter' => true,
+                            'header' => Yii::t('app', 'Full name'),
                             'value' => function($data) {
                                 return Name::getFull($data['first_name'], $data['last_name']);
                             },

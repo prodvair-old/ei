@@ -23,7 +23,7 @@ LoadMoreAsset::register($this);
 Select2Asset::register($this);
 
 $lot_search = Yii::$app->request->get('LotSearch');
-$data = Category::jsonItems([$lot_search['category_id']], true);
+$data = Category::jsonItems([$lot_search['category_id']]);
 
 $script = <<<JS
 $(document).ready(function() { $('#lot-category_id').select2(

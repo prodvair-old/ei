@@ -6,7 +6,6 @@ use Yii;
 use yii\data\ActiveDataProvider;
 
 use common\models\db\Torg;
-use common\components\IntCode;
 use common\components\Property;
 
 class TorgSearch extends Torg
