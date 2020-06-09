@@ -370,14 +370,17 @@ $('#phone-edit-form').on('beforeSubmit', function(){
         data: data,
         success: function(res){
             $('.loader').hide();
-            toastr.success('Код отправлен');
-            console.log(res);
-            phone = $('.phone_mask').val()
-            phone = phone.substring(0, phone.length - 5) + "**-**";
-            $('.phone_visible').val(phone);
-            $('#phoneEditModel-phone').removeClass('active');
-            $('#phoneEditModel-code').addClass('active show');
-            timer(60)
+            if (res.result) {
+                toastr.success('Код отправлен');
+                phone = $('.phone_mask').val()
+                phone = phone.substring(0, phone.length - 5) + "**-**";
+                $('.phone_visible').val(phone);
+                $('#phoneEditModel-phone').removeClass('active');
+                $('#phoneEditModel-code').addClass('active show');
+                timer(60)
+            } else {
+                toastr.warning(res.mess);
+            }
         },
         error: function(res){
             toastr.error('Серверная ошибка');

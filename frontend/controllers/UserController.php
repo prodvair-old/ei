@@ -15,6 +15,7 @@ use common\models\Query\Lot\Lots;
 use common\models\Query\Lot\LotsAll;
 use common\models\Query\Zalog\LotsZalogUpdate;
 use common\models\Query\Arrest\LotsArrest;
+use common\models\SendSMS;
 
 use arogachev\excel\import\advanced\Importer;
 
@@ -406,6 +407,7 @@ class UserController extends Controller
     }
   }
   public function actionGetCode() {
+    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
     $code = rand(1000, 9999);
 
     $post = Yii::$app->request->post();
@@ -413,7 +415,24 @@ class UserController extends Controller
     $session->set('userCode', $code);
     $session->set('userPhone', $post['UserEditPhone']['phone']);
 
-    return $code;
+    $model = new SendSMS();
+
+    $model->phone = preg_replace('/[^0-9]/', '', $post['UserEditPhone']['phone']);
+    $model->message = "Vash kod: $code";
+
+    $result = false;
+    $mess = 'Ошибка сервера';
+
+    if ($model->check()) {
+      if ($response = $model->send()) {
+        if ($response['status']) {
+          $result = true;
+        }
+        $mess = $response['text'];
+      }
+    }
+
+    return ['result' => $result, 'mess' => $mess];
   }
   public function actionEditPhone()
   {
