@@ -23,7 +23,7 @@ class ReportSearch extends Report
     public function search($params, $offset = 0)
     {
         $join = [];
-        $join['user'] = '"report"."user_id"="user.id"';
+        $join['user'] = '"report"."user_id"="user"."id"';
         $join['profile'] = '"report"."user_id"="profile"."parent_id" AND model='. IntCode::USER;
         if ($this->db->driverName === 'mysql') {
             $join['user'] = str_replace('"', '', $join['user']);
