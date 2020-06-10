@@ -14,6 +14,7 @@ class m200416_134224_lot extends Migration
         $this->createTable(self::TABLE, [
             'id'               => $this->bigPrimaryKey(),
             'torg_id'          => $this->bigInteger()->notNull(),
+            'msg_id'           => $this->string()->notNull(),
             
             'title'            => $this->text()->notNull(),
             'description'      => $this->text()->notNull(),
