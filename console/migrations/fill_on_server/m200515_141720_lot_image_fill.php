@@ -10,6 +10,10 @@ use sergmoro1\uploader\behaviors\ImageTransformationBehavior;
 
 /**
  * Class m200515_141720_lot_image_fill
+ * Перенос изображений
+ * 
+ * Изображения считываются с url адресов и сохраняются на диске.
+ * Запускается только на сервере для боевой версии.
  */
 class m200515_141720_lot_image_fill extends Migration
 {
@@ -40,7 +44,6 @@ class m200515_141720_lot_image_fill extends Migration
     
     public function safeUp()
     {
-/*
         $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
         
         $select = $db->createCommand(
@@ -60,12 +63,10 @@ class m200515_141720_lot_image_fill extends Migration
             $sleep = rand(1, 3);
             sleep($sleep);
         }
-*/
     }
 
     public function safeDown()
     {
-/*
         $db = \Yii::$app->db;
         if ($this->db->driverName === 'mysql') {
             $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
@@ -78,7 +79,6 @@ class m200515_141720_lot_image_fill extends Migration
             FileHelper::removeDirectory(Yii::getAlias('@console/runtime/queue'));
         $dir = Yii::getAlias('@absolute') . Yii::getAlias('@uploader') . '/lot';
         FileHelper::removeDirectory($dir);
-*/
     }
 
     private function insertPoole($db, $offset)

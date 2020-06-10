@@ -5,6 +5,9 @@ use common\models\db\Document;
 
 /**
  * Class m200527_115910_document_fill
+ * 
+ * Документов возможно перенести одним запросом, поэтому
+ * миграция может выполняться только на сервере, когда и источник и цель в одной БД.
  */
 class m200527_115910_document_fill extends Migration
 {
@@ -13,7 +16,7 @@ class m200527_115910_document_fill extends Migration
     public function safeUp()
     {
         $db = \Yii::$app->db;
-/*        
+        
         $command = $db->createCommand(
             'INSERT INTO ' . self::TABLE . ' (model, parent_id, name, ext, url, hash, created_at, updated_at) '.
             'SELECT 
@@ -30,7 +33,6 @@ class m200527_115910_document_fill extends Migration
              WHERE "tableId" NOTNULL'
         );
         $result = $command->execute();
-*/
     }
 
     public function safeDown()
