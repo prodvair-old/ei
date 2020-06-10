@@ -52,6 +52,8 @@ class Torg extends ActiveRecord
     const OFFER_CONTEST      = 4;
     const OFFER_CONTEST_OPEN = 5;
 
+    const SHORT_TITLE_LENGTH = 20;
+    
     /**
      * {@inheritdoc}
      */
@@ -232,6 +234,13 @@ class Torg extends ActiveRecord
             return null;
         return $this->hasOne(Casefile::className(), ['id' => 'case_id'])
             ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
+    }
+
+    /**
+     */
+    public function getTorgPledge()
+    {
+        return $this->hasOne(TorgPledge::className(), ['torg_id' => 'id']);
     }
 
     /**
