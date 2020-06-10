@@ -64,6 +64,18 @@ use yii\widgets\ActiveForm;
                 
                 </div>
             </div>
+            <div class='box box-primary'>
+                <div class='box-header'>
+                    <h3 class='box-title'><?= Yii::t('app', 'Document') ?></h3>
+                </div>
+                <div class='box-body'>
+
+                    <?= $this->render('_doc', [
+                        'model' => $model,
+                    ]) ?>
+                
+                </div>
+            </div>
         </div>
     </div>
 

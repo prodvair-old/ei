@@ -75,6 +75,7 @@ class Lot extends ActiveRecord
 
     public $new_categories = [];
     private $_old_categories;
+    private $_old_files;
     
     public static function getIntCode() { return self::INT_CODE; }
     
@@ -317,6 +318,20 @@ class Lot extends ActiveRecord
         parent::afterFind();
         $this->_old_categories = ArrayHelper::getColumn(LotCategory::find()->where(['lot_id' => $this->id])->all(), 'category_id');
         $this->new_categories = $this->_old_categories;
+        foreach($this->files as $file)
+            $this->_old_files[] = $file->name;
+    }
+
+    /**
+     * Проверка на новые файлы, прикрепленные к Лоту.
+     */
+    public function areThereAnyNewFiles()
+    {
+        foreach($this->files as $file) {
+            if (!in_array($file->name, $this->_old_files))
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -326,6 +341,8 @@ class Lot extends ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
         LotCategory::updateOneToMany($this->id, $this->_old_categories, $this->new_categories);
+        if ($this->areThereAnyNewFiles())
+            $this->trigger(self::EVENT_NEW_PICTURE);
     }
 
     /**

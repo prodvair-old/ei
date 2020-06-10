@@ -38,8 +38,6 @@ class ReportSearch extends Report
             ->innerJoin('{{%profile}}', $join['profile'])
             ->innerJoin('{{%lookup}} AS lookup_status', 'report.status=lookup_status.code AND lookup_status.property_id='. Property::REPORT_STATUS)
             ->innerJoin('{{%lookup}} AS lookup_property', 'torg.property=lookup_property.code AND lookup_property.property_id='. Property::TORG_PROPERTY)
-            ->limit(Yii::$app->params['recordsPerPage'])
-            ->offset($offset)
             ->asArray();
 
         $dataProvider = new ActiveDataProvider([

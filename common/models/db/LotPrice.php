@@ -65,4 +65,23 @@ class LotPrice extends ActiveRecord
             'updated_at' => Yii::t('app', 'Modified'),
         ];
     }
+
+    /**
+     * Получить Лот, которому принадлежит цена.
+     */
+    public function getLot()
+    {
+        return $this->hasOne(Lot::className(), ['id' => 'lot_id']);
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert,$changedAttributes)
+    {
+        parent::afterSave($insert,$changedAttributes);
+        if ($insert) {
+            $this->lot->trigger(Lot::EVENT_PRICE_REDUCTION);
+        }
+    }
 }
