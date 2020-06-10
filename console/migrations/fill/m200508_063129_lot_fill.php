@@ -83,7 +83,7 @@ class m200508_063129_lot_fill extends Migration
         );
         $result = $select->queryAll();
         
-        $offset = 40000; //382000;
+        $offset = 0;
    
         // добавление информации по лотам
         while ($offset < $result[0]['count']) {
@@ -134,7 +134,7 @@ class m200508_063129_lot_fill extends Migration
             $l = [
                 'id'                => $lot_id,
                 'torg_id'           => $row['torgId'],
-                'ordinal_number'    => $row['lotNumber'],
+                'ordinal_number'    => ($row['lotNumber'] ?: 1),
 
                 'title'             => $row['title'],
                 'description'       => $row['description'],

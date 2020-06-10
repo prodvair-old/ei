@@ -13,7 +13,7 @@ class m200527_115910_document_fill extends Migration
     public function safeUp()
     {
         $db = \Yii::$app->db;
-        
+/*        
         $command = $db->createCommand(
             'INSERT INTO ' . self::TABLE . ' (model, parent_id, name, ext, url, hash, created_at, updated_at) '.
             'SELECT 
@@ -30,6 +30,7 @@ class m200527_115910_document_fill extends Migration
              WHERE "tableId" NOTNULL'
         );
         $result = $command->execute();
+*/
     }
 
     public function safeDown()
