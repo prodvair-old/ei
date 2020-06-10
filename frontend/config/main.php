@@ -14,6 +14,11 @@ return [
   'name' => 'Единый агрегатор торгов',
   'sourceLanguage' => 'ru-RU',
   'controllerNamespace' => 'frontend\controllers',
+  'modules' => [
+      'lot' => [
+          'class' => 'frontend\modules\Lot',
+      ],
+  ],
   'components' => [
     'socialShare' => [
       'class' => \ymaker\social\share\configurators\Configurator::class,
@@ -40,6 +45,7 @@ return [
     'formatter' => [
       'decimalSeparator' => '.',
       'thousandSeparator' => ' ',
+      'language' => 'ru-RU',
       'currencyCode' => 'RUB',
     ],
     'request' => [
@@ -71,7 +77,7 @@ return [
       'showScriptName' => false,
       //'suffix' => '.html',
       'rules' => [
-        '' => 'site/index',
+        '/' => 'site/index',
 
         '/test'    => 'test/index',
         '/test/str'    => 'test/str',
@@ -156,13 +162,19 @@ return [
         '/map'              => 'lot/map',
         '/load-category'    => 'lot/load_category',
         '/wish-list-edit'   => 'lot/wish_list',
-        
-        '/<type>'                                     => 'lot/index',
-        '/<type>/<category>'                          => 'lot/search',
-        '/<type>/<category>/<subcategory>'            => 'lot/search',
-        '/<type>/<category>/<subcategory>/<id:\d+>'   => 'lot/page',
-        '/<type>/<category>/<subcategory>/<region>'   => 'lot/search',
 
+        '/lot/load-sub-categories' => '/lot/lot/load-sub-categories',
+
+        '/<type>'                     => 'lot/lot/index',
+        '/<type>/<category>'          => 'lot/lot/index',
+        '/<type>/<category>/<id:\d+>' => '/lot/lot/view',
+
+
+//        '/<type>'                                     => 'lot/index',
+//        '/<type>/<category>'                          => 'lot/search',
+//        '/<type>/<category>/<subcategory>'            => 'lot/search',
+//        '/<type>/<category>/<subcategory>/<id:\d+>'   => 'lot/page',
+//        '/<type>/<category>/<subcategory>/<region>'   => 'lot/search',
       ]
     ],
     /*

@@ -10,9 +10,9 @@ namespace common\models\db;
  * @var integer $agent
  * @var integer $created_at
  * @var integer $updated_at
- * 
- * @property Place        $place
- * @property Profile      $profile
+ *
+ * @property Place $place
+ * @property Profile $profile
  * @property Organization $organization
  */
 class Manager extends BaseAgent
@@ -29,11 +29,26 @@ class Manager extends BaseAgent
         return '{{%manager}}';
     }
 
+//    /**
+//     * Получить СРО
+//     * @return ActiveQuery
+//     */
+//    public function getSro()
+//    {
+//        return $this->hasOne(Organization::className(), ['model' => Organization::TYPE_SRO, 'parent_id' => 'sro_id'])
+//            ->viaTable(ManagerSro::tableName(), ['manager_id' => 'id']);
+//    }
+
     /**
      * Получить СРО
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
      */
-    public function getSro() {
-        return $this->hasOne(Organization::className(), ['model' => Organization::TYPE_SRO, 'parent_id' => 'sro_id'])
+    public function getSro()
+    {
+        return $this->hasOne(Organization::className(), ['parent_id' => 'sro_id'])
+            ->andOnCondition(['=', Organization::tableName() . '.model', Organization::TYPE_SRO])
             ->viaTable(ManagerSro::tableName(), ['manager_id' => 'id']);
-    }}
+    }
+}
+

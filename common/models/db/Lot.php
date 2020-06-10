@@ -3,7 +3,6 @@ namespace common\models\db;
 
 use Yii;
 use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
 use yii\behaviors\TimestampBehavior;
 
 use common\models\db\Torg;
@@ -80,9 +79,9 @@ class Lot extends ActiveRecord
     public $new_categories = [];
     private $_old_categories;
     private $_old_images;
-    
+
     public static function getIntCode() { return self::INT_CODE; }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -221,11 +220,22 @@ class Lot extends ActiveRecord
 
     /**
      * Получить информацию о месте
-     * @return yii\db\ActiveRecord
+     * @return yii\db\ActiveQuery
      */
     public function getPlace()
     {
-        return Place::findOne(['model' => self::INT_CODE, 'parent_id' => $this->id]);
+        return $this->hasOne(Place::className(), ['parent_id' => 'id'])->andOnCondition(['place.model' => self::INT_CODE]);
+    }
+
+    /**
+     * Получить информацию о регионе
+     * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getRegion()
+    {
+        return $this->hasOne(Region::className(), ['id' => 'region_id'])
+            ->viaTable(Place::tableName(),['place.parent_id' => 'id']);
     }
 
     /**
@@ -239,7 +249,7 @@ class Lot extends ActiveRecord
 
     /**
      * Проверка, не устарел ли Лот
-     * 
+     *
      * @return yii\db\ActiveQuery
      */
     public function archived()
@@ -289,7 +299,7 @@ class Lot extends ActiveRecord
 
     /**
      * Получить историю снижения цены по Лоту
-     * 
+     *
      * @return yii\db\ActiveQuery
      */
     public function getPrices()
@@ -299,7 +309,7 @@ class Lot extends ActiveRecord
 
     /**
      * Получить категории, к которым принадлежит Лот
-     * 
+     *
      * @return yii\db\ActiveQuery
      */
     public function getCategories()
@@ -310,12 +320,13 @@ class Lot extends ActiveRecord
 
     /**
      * Получить документы по лоту.
-     * 
-     * @return array yii\db\ActiveQuery
+     *
+     * @return yii\db\ActiveQuery
      */
     public function getDocuments()
     {
-        return $this->hasMany(Document::className(), ['parent_id' => 'id'])->where(['model' => self::INT_CODE]);
+        return $this->hasMany(Document::className(), ['parent_id' => 'id'])
+            ->andOnCondition(['=', Document::tableName() . '.model', self::INT_CODE]);
     }
 
     /**
@@ -369,5 +380,10 @@ class Lot extends ActiveRecord
             $price->delete();
         foreach($this->documents as $document)
             $document->delete();
+    }
+    
+    public function getInfo()
+    {
+        return json_decode($this->info, true);
     }
 }

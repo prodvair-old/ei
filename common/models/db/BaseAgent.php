@@ -77,8 +77,8 @@ class BaseAgent extends ActiveRecord implements ProfileInterface, PlaceInterface
      * @return ActiveRecord || null
      */
     public function getProfile() {
-        return $this->agent == self::AGENT_PERSON 
-            ? Profile::findOne(['model' => $this->int_code, 'parent_id' => $this->id]) 
+        return $this->agent == self::AGENT_PERSON
+            ? Profile::findOne(['model' => static::INT_CODE, 'parent_id' => $this->id])
             : null;
     }
 
@@ -87,9 +87,11 @@ class BaseAgent extends ActiveRecord implements ProfileInterface, PlaceInterface
      * @return ActiveRecord || null
      */
     public function getOrganization() {
-        return $this->agent == self::AGENT_ORGANIZATION 
-            ? Organization::findOne(['model' => $this->int_code, 'parent_id' => $this->id])
-            : null;
+//        return $this->agent == self::AGENT_ORGANIZATION
+//            ? Organization::findOne(['model' => static::INT_CODE, 'parent_id' => $this->id])
+//            : null;
+
+        return Organization::findOne(['model' => static::INT_CODE, 'parent_id' => $this->id]);
     }
 
     /**
@@ -98,7 +100,7 @@ class BaseAgent extends ActiveRecord implements ProfileInterface, PlaceInterface
      */
     public function getPlace()
     {
-        return Place::findOne(['model' => $this->int_code, 'parent_id' => $this->id]);
+        return Place::findOne(['model' => static::INT_CODE, 'parent_id' => $this->id]);
     }
 
     /**
@@ -107,9 +109,9 @@ class BaseAgent extends ActiveRecord implements ProfileInterface, PlaceInterface
      */
     public function getFullName() {
         if ($this->agent == self::AGENT_PERSON)
-            return isset($this->profile) ? $this->profile->fullName : '';
+            return $this->profile->fullName;
         else
-            return isset($this->organization) ? $this->organization->title : '';
+            return $this->organization->title;
     }
 
     /**

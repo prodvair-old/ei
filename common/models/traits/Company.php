@@ -2,28 +2,47 @@
 
 namespace common\models\traits;
 
-use common\models\db\Place;
 use common\models\db\Organization;
+use yii\helpers\ArrayHelper;
 
 trait Company
 {
     /**
-     * Get organization.
-     * 
-     * @return yii\db\ActiveQuery
+     * Get organization
+     * @return ActiveRecord | null
      */
     public function getOrganization()
     {
-        return $this->hasOne(Organization::className(), ['parent_id' => 'id'])->where(['model' => $this->intCode]);
+        return Organization::findOne([
+            'model'     => self::INT_CODE,
+            'parent_id' => $this->id,
+        ]);
     }
 
     /**
-     * Get place.
-     * 
-     * @return yii\db\ActiveQuery
+     * @return Organization[]
+     */
+    public static function getOrganizationList()
+    {
+        $res = (new \yii\db\Query())
+            ->select(['id', 'title'])
+            ->from(Organization::tableName())
+            ->where(['model' => self::INT_CODE])
+            ->orderBy(['title' => SORT_ASC])
+            ->all();
+
+        return ArrayHelper::map($res, 'id', 'title');
+    }
+
+    /**
+     * Get place
+     * @return ActiveRecord | null
      */
     public function getPlace()
     {
-        return $this->hasOne(Place::className(), ['parent_id' => 'id'])->where(['model' => $this->intCode]);
+        return Place::findOne([
+            'model'     => self::INT_CODE,
+            'parent_id' => $this->id,
+        ]);
     }
 }

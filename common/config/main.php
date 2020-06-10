@@ -87,8 +87,8 @@ return [
             'username' => 'bankrupt',
             'password' => 'bankrupt',
             'charset'  => 'utf8',
+/*
             'tablePrefix' => 'eidb"."',
-            /*
             'emulatePrepare' => false,
             'schemaMap' => [
                 'pgsql'=> [
@@ -96,12 +96,13 @@ return [
                     'defaultSchema' => 'eidb' //specify your schema here
                 ]
             ],
-            */
             // Schema cache options (for production environment)
-            'enableSchemaCache' => false,
-            'schemaCacheDuration' => 6,
+            'enableSchemaCache' => true,
+            'schemaCacheDuration' => 3600,
             'schemaCache' => 'cache',
+
         ],
+*/
         'obj' => [
             'class' => 'yii\db\Connection',
             'dsn'      => 'pgsql:host=localhost;dbname=uds',
