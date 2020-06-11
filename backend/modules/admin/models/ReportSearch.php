@@ -35,7 +35,7 @@ class ReportSearch extends Report
             ->innerJoin('{{%lot}}', 'report.lot_id=lot.id')
             ->innerJoin('{{%torg}}', 'lot.torg_id=torg.id')
             ->innerJoin('{{%user}}', $join['user'])
-            ->innerJoin('{{%profile}}', $join['profile'])
+            ->leftJoin('{{%profile}}', $join['profile'])
             ->innerJoin('{{%lookup}} AS lookup_status', 'report.status=lookup_status.code AND lookup_status.property_id='. Property::REPORT_STATUS)
             ->innerJoin('{{%lookup}} AS lookup_property', 'torg.property=lookup_property.code AND lookup_property.property_id='. Property::TORG_PROPERTY)
             ->asArray();
@@ -59,7 +59,7 @@ class ReportSearch extends Report
         // adjust the query by adding the filters
         $query->andFilterWhere(['report.id' => $this->id])
             ->andFilterWhere(['like', 'title',  $this->title])
-            ->andFilterWhere(['status' => $this->status]);
+            ->andFilterWhere(['report.status' => $this->status]);
         
         return $dataProvider;
     }
