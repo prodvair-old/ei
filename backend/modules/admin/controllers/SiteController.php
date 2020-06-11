@@ -7,6 +7,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
 use common\models\form\LoginForm;
+use common\models\db\Param;
 
 /**
  * Site controller
@@ -97,7 +98,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->render('index', [
+            'statistic' => Param::getDefs('statistic'),
+        ]);
     }
 
     /**
@@ -109,6 +112,8 @@ class SiteController extends Controller
      */
     public function actionLogin($link = null)
     {
+        $this->layout = 'main-login';
+        
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -119,7 +124,7 @@ class SiteController extends Controller
             if ($link) {
                 return $this->redirect([$link['to'] . '/' .$link['page'], 'id' => $link['id']]);
             } else {
-                return $this->goHome();
+                return $this->redirect(['site/index']);
             }
         } else {
             return $this->render('login', [
@@ -137,7 +142,7 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->goHome();
+        return $this->redirect(['site/login']);
     }
 
     /**

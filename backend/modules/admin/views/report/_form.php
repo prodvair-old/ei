@@ -54,23 +54,11 @@ use yii\widgets\ActiveForm;
             </div>
             <div class='box box-primary'>
                 <div class='box-header'>
-                    <h3 class='box-title'><?= Yii::t('app', 'Image') ?></h3>
+                    <h3 class='box-title'><?= Yii::t('app', 'Image') . ' & ' . Yii::t('app', 'Document')?></h3>
                 </div>
                 <div class='box-body'>
 
-                    <?= $this->render('_image', [
-                        'model' => $model,
-                    ]) ?>
-                
-                </div>
-            </div>
-            <div class='box box-primary'>
-                <div class='box-header'>
-                    <h3 class='box-title'><?= Yii::t('app', 'Document') ?></h3>
-                </div>
-                <div class='box-body'>
-
-                    <?= $this->render('_doc', [
+                    <?= $this->render('_image_doc', [
                         'model' => $model,
                     ]) ?>
                 

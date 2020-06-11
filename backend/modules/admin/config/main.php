@@ -12,7 +12,7 @@ return [
     'controllerNamespace' => 'backend\modules\admin\controllers',
     'bootstrap' => ['log'],
     'language' => 'ru-RU',
-    'name' => 'Панель управления - Единый информатор',
+    'name' => 'Единый информатор',
     'sourceLanguage' => 'ru-RU',
     'components' => [
 /*
