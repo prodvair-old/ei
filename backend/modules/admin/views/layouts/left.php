@@ -3,8 +3,7 @@
 use yii\bootstrap\Nav;
 use sergmoro1\lookup\models\Lookup;
 
-$user = common\models\db\User::findOne(['username' => 'sergey@vorst.ru']);
-//$user = Yii::$app->user->identity;
+$user = Yii::$app->user->identity;
 ?>
 
 <aside class="main-sidebar">
@@ -30,7 +29,7 @@ $user = common\models\db\User::findOne(['username' => 'sergey@vorst.ru']);
                 'activeCssClass' => 'active menu-open',
                 'activateParents'=>true,
                 'items' => [
-                    ['label' => 'Главная', 'url' => ['site/index'], 'icon' => 'home'],
+                    ['label' => Yii::t('app', 'Dashboard'), 'url' => ['site/index'], 'icon' => 'home'],
                     [
                         'label' => Yii::t('app', 'Auctions'), 
                         'url' => ['torg/index'], 

@@ -61,7 +61,7 @@ $user = common\models\db\User::findOne(['username' => 'sergey@vorst.ru']);
                             <div class="pull-right">
                                 <?= Html::a(
                                     'Выйти',
-                                    ['/site/logout'],
+                                    ['site/logout'],
                                     ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']
                                 ) ?>
                             </div>
