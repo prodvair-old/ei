@@ -10,8 +10,7 @@ use common\models\db\User;
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-$user = common\models\db\User::findOne(['username' => 'sergey@vorst.ru']);
-//$user = Yii::$app->user->identity;
+$user = Yii::$app->user->identity;
 ?>
 
 <header class="main-header">

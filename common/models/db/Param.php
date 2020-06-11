@@ -16,10 +16,10 @@ class Param extends ActiveRecord
 {
     private static $defaults = [
         'statistic' => [
-            'torg'   => ['color' => 'aqua', 'icon' => 'gavel', 'value' => 'n/a'],
-            'lot'    => ['color' => 'red', 'icon' => 'money', 'value' => 'n/a'],
-            'report' => ['color' => 'green', 'icon' => 'book', 'value' => 'n/a'],
-            'user'   => ['color' => 'yellow', 'icon' => 'user', 'value' => 'n/a'],
+            'torg'     => ['color' => 'aqua', 'icon' => 'gavel', 'value' => 'n/a'],
+            'lot'      => ['color' => 'red', 'icon' => 'money', 'value' => 'n/a'],
+            'document' => ['color' => 'green', 'icon' => 'word', 'value' => 'n/a'],
+            'report'   => ['color' => 'yellow', 'icon' => 'book', 'value' => 'n/a'],
         ],
     ];
     
