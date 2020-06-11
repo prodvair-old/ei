@@ -18,6 +18,8 @@ use sergmoro1\lookup\models\Lookup;
  * @var string  $title
  * @var text    $content
  * @var float   $cost
+ * @var integer $attraction
+ * @var integer $risk
  * @var integer $status
  * @var integer $created_at
  * @var integer $updated_at
@@ -73,6 +75,7 @@ class Report extends ActiveRecord
             ['cost', 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*\.?\d{0,2}\s*$/'],
             ['status', 'in', 'range' => self::getStatuses()],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
+            [['attraction', 'risk'], 'integer', 'min' => 1, 'max' => 10],
             [['created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -89,6 +92,8 @@ class Report extends ActiveRecord
             'content'    => Yii::t('app', 'Content'),
             'cost'       => Yii::t('app', 'Cost'),
             'status'     => Yii::t('app', 'Status'),
+            'attraction' => Yii::t('app', 'Attraction'),
+            'risk'       => Yii::t('app', 'Risk'),
             'created_at' => Yii::t('app', 'Created'),
             'updated_at' => Yii::t('app', 'Modified'),
         ];
@@ -115,11 +120,22 @@ class Report extends ActiveRecord
 
 
     /**
-     * Получить информацию о лоте
+     * Получить информацию о лоте, для которого создан отчет.
      * @return yii\db\ActiveQuery
      */
     public function getLot()
     {
         return $this->hasOne(Lot::className(), ['id' => 'lot_id']);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert,$changedAttributes)
+    {
+        parent::afterSave($insert,$changedAttributes);
+        if ($insert) {
+            $this->lot->trigger(Lot::EVENT_NEW_REPORT);
+        }
     }
 }

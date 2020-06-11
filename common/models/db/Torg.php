@@ -35,7 +35,7 @@ class Torg extends ActiveRecord
 {
     // сценарии
     const SCENARIO_MIGRATION = 'torg_migration';
-    
+
     // внутренний код модели используемый в составном ключе
     const INT_CODE = 7;
 
@@ -53,7 +53,7 @@ class Torg extends ActiveRecord
     const OFFER_CONTEST_OPEN = 5;
 
     const SHORT_TITLE_LENGTH = 20;
-
+    
     /**
      * {@inheritdoc}
      */
@@ -88,13 +88,7 @@ class Torg extends ActiveRecord
             [['property', 'offer'], 'integer'],
             ['property', 'in', 'range' => self::getProperties()],
             ['offer', 'in', 'range' => self::getOffers()],
-			['started_at', 'datetime', 'except' => self::SCENARIO_MIGRATION, 'format' => 'php:d.m.Y', 'timestampAttribute' => 'started_at'],
-			['end_at', 'datetime', 'except' => self::SCENARIO_MIGRATION, 'format' => 'php:d.m.Y', 'timestampAttribute' => 'end_at'],
-			['completed_at', 'date', 'except' => self::SCENARIO_MIGRATION, 'format' => 'php:d.m.Y', 'timestampAttribute' => 'completed_at'],
-			['published_at', 'date', 'except' => self::SCENARIO_MIGRATION, 'format' => 'php:d.m.Y', 'timestampAttribute' => 'published_at'],
-            [['end_at', 'completed_at', 'published_at'], 'default', 'value' => null],
-            [['end_at', 'completed_at', 'published_at'], 'safe', 'on' => self::SCENARIO_MIGRATION],
-            [['description', 'created_at', 'updated_at'], 'safe'],
+            [['description', 'etp_id', 'started_at', 'end_at', 'completed_at', 'published_at', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -163,48 +157,79 @@ class Torg extends ActiveRecord
     {
         return $this->hasMany(Lot::className(), ['torg_id' => 'id']);
     }
-    
+
+    /**
+     * Получить информацию о других лотах торга
+     * @param $currentLot
+     * @return array|ActiveRecord[]
+     */
+    public function getOtherLots($currentLot)
+    {
+        return $this->hasMany(Lot::className(), ['torg_id' => 'id'])
+            ->andFilterWhere(['!=', Lot::tableName() . '.id', $currentLot])
+            ->all();
+    }
+
     /**
      * Получить информацию о должнике
      * @return yii\db\ActiveQuery
+     * @throws InvalidConfigException
      */
-    public function getBankrupt() {
-        if ($this->property != self::PROPERTY_BANKRUPT)
-            return null;
-        return $this->hasOne(Bankrupt::className(), ['id' => 'bankrupt_id'])
+    public function getBankrupt()
+    {
+//        if ($this->property != self::PROPERTY_BANKRUPT)
+//            return null;
+        return $this->hasOne(Organization::className(), ['parent_id' => 'bankrupt_id'])
+            ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
+    }
+
+    public function getBankruptEtp() {
+        return $this->hasOne(Etp::className(), ['id' => 'etp_id'])
+            ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
+    }
+
+    public function getBankruptProfile()
+    {
+        return $this->hasOne(Profile::className(), ['parent_id' => 'bankrupt_id'])
             ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
 
     /**
      * Получить информацию об управляющем
      * @return yii\db\ActiveQuery
+     * @throws InvalidConfigException
      */
-    public function getManager() {
+    public function getManager()
+    {
         if ($this->property == self::PROPERTY_ZALOG)
             return null;
         return $this->hasOne(Manager::className(), ['id' => 'manager_id'])
-            ->viaTable(TorgDrawish::tableName(), ['torg_id' => 'id']);
+            ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
-    
+
     /**
      * Получить эдектронную торговую площадку (ETP)
-     * 
-     * @return yii\db\ActiveRecord
+     *
+     * @return \yii\db\ActiveQuery
+     * @throws InvalidConfigException
      */
     public function getEtp()
     {
-        if ($this->property != self::PROPERTY_BANKRUPT)
-            return null;
-        $torg_debtor = TorgDebtor::find()->select(['etp_id'])->where(['torg_id' =>$this->id]);
-        return Organization::findOne(['model' => Etp::INT_CODE, 'parent_id' => $torg_debtor->etp_id]);
+//        if ($this->property != self::PROPERTY_BANKRUPT)
+//            return null;
+        return $this->hasOne(Organization::className(), ['parent_id' => 'etp_id'])
+            ->andFilterWhere(['=', Organization::tableName() . '.model', Etp::INT_CODE])
+            ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
-    
+
     /**
      * Получить дело по торгу
      *
      * @return yii\db\ActiveQuery
+     * @throws InvalidConfigException
      */
-    public function getCasefile() {
+    public function getCase()
+    {
         if ($this->property != self::PROPERTY_BANKRUPT)
             return null;
         return $this->hasOne(Casefile::className(), ['id' => 'case_id'])
@@ -212,29 +237,33 @@ class Torg extends ActiveRecord
     }
 
     /**
-     * Получить связи залогодержателя
-     * @return yii\db\ActiveRecord
      */
-    public function getTorgPledge() {
-        return TorgPledge::findOne(['torg_id' => $this->id]);
+    public function getTorgPledge()
+    {
+        return $this->hasOne(TorgPledge::className(), ['torg_id' => 'id']);
     }
 
     /**
      * Получить информацию о залогодержателе
      * @return yii\db\ActiveQuery
+     * @throws InvalidConfigException
      */
-    public function getOwner() {
-        if ($this->property != self::PROPERTY_ZALOG)
-            return null;
-        return $this->hasOne(Owner::className(), ['id' => 'owner_id'])
+    public function getOwner()
+    {
+//        if ($this->property != self::PROPERTY_ZALOG)
+//            return null;
+        return $this->hasOne(Organization::className(), ['parent_id' => 'owner_id'])
+            ->andFilterWhere(['=', Organization::tableName() . '.model', Owner::INT_CODE])
             ->viaTable(TorgPledge::tableName(), ['torg_id' => 'id']);
     }
 
     /**
      * Получить информацию о собственнике залога
      * @return yii\db\ActiveQuery
+     * @throws InvalidConfigException
      */
-    public function getUser() {
+    public function getUser()
+    {
         if ($this->property != self::PROPERTY_ZALOG)
             return null;
         return $this->hasOne(User::className(), ['id' => 'user_id'])
@@ -243,22 +272,33 @@ class Torg extends ActiveRecord
 
     /**
      * Получить документы по торгу.
-     * 
+     *
      * @return yii\db\ActiveQuery
      */
     public function getDocuments()
     {
-        return $this->hasMany(Document::className(), ['parent_id' => 'id'])->where(['model' => self::INT_CODE]);
+        return $this->hasMany(Document::className(), ['parent_id' => 'id'])
+            ->andOnCondition(['=', Document::tableName() . '.model', self::INT_CODE]);
+    }
+
+    /**
+     * @return array
+     */
+    public static function getTypeList()
+    {
+        $result[ '0' ] = 'Все Типы';
+        $result += Lookup::items('TorgProperty');
+        return $result;
     }
 
     /**
      * Получить ответственного за торг.
-     * 
+     *
      * @return yii\db\ActiveRecord
      */
     public function getResponsible()
     {
-        switch($this->property) { 
+        switch($this->property) {
             case self::PROPERTY_BANKRUPT:
                 return $this->getBankrupt();
             case self::PROPERTY_ARRESTED:
@@ -275,11 +315,11 @@ class Torg extends ActiveRecord
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
-     
+
             if (!$this->msg_id)
                 // если поле не заполнено, сформировать уникальное значение
                 $this->msg_id = 'u/' . $this->torg_id . '/' . date('dmy', $this->created_at);
-            
+
             return true;
         }
         return false;

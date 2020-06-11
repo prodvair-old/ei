@@ -15,14 +15,16 @@ class m200608_082600_report extends Migration
     public function safeUp()
     {
         $this->createTable(self::TABLE, [
-            'id'          => $this->bigPrimaryKey(),
-            'user_id'     => $this->bigInteger()->notNull(),
-            'lot_id'      => $this->bigInteger()->notNull(),
+            'id'         => $this->bigPrimaryKey(),
+            'user_id'    => $this->bigInteger()->notNull(),
+            'lot_id'     => $this->bigInteger()->notNull(),
 
-            'title'       => $this->text()->notNull(),
-            'content'     => $this->text(),
-            'cost'        => $this->decimal(10, 2)->notNull(),
-            'status'      => $this->smallInteger(),
+            'title'      => $this->text()->notNull(),
+            'content'    => $this->text(),
+            'cost'       => $this->decimal(10, 2)->notNull(),
+            'status'     => $this->smallInteger(),
+            'attraction' => $this->smallInteger()->notNull(),
+            'risk'       => $this->smallInteger()->notNull(),
             
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
@@ -40,6 +42,8 @@ class m200608_082600_report extends Migration
 		$this->addCommentOnColumn(self::TABLE, 'content', 'Содержание');
 		$this->addCommentOnColumn(self::TABLE, 'cost', 'Стоимость');
 		$this->addCommentOnColumn(self::TABLE, 'status', 'Статус');
+		$this->addCommentOnColumn(self::TABLE, 'attraction', 'Оценка привлекательности актива');
+		$this->addCommentOnColumn(self::TABLE, 'risk', 'Оценка риска приобретения актива');
     }
 
     /**

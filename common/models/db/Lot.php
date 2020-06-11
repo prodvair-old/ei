@@ -2,9 +2,11 @@
 namespace common\models\db;
 
 use Yii;
-use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
+use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+
+use common\models\db\Torg;
 use common\traits\ShortPart;
 use sergmoro1\uploader\behaviors\HaveFileBehavior;
 use sergmoro1\lookup\models\Lookup;
@@ -15,6 +17,7 @@ use sergmoro1\lookup\models\Lookup;
  *
  * @var integer $id
  * @var integer $torg_id
+ * @var integer $ordinal_number
  * @var string  $title
  * @var text    $description
  * @var float   $start_price
@@ -23,6 +26,7 @@ use sergmoro1\lookup\models\Lookup;
  * @var float   $deposit
  * @var integer $deposit_measure
  * @var integer $status
+ * @var integer $status_changed_at
  * @var integer $reason
  * @var string  $url
  * @var text    $info
@@ -75,9 +79,10 @@ class Lot extends ActiveRecord
 
     public $new_categories = [];
     private $_old_categories;
-    
+    private $_old_images;
+
     public static function getIntCode() { return self::INT_CODE; }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -123,6 +128,10 @@ class Lot extends ActiveRecord
     {
         return [
             [['torg_id', 'title', 'start_price', 'deposit'], 'required'],
+            ['ordinal_number', 'integer'],
+            ['ordinal_number', 'default', 'value' => function ($model, $attribute) { 
+                return Torg::find()->where(['id' => $model->torg_id])->count() + 1; 
+            }],
             ['start_price', 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*\.?\d{0,2}\s*$/'],
             [['step', 'deposit'], 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*\.?\d{0,4}\s*$/'],
             [['step', 'deposit'], 'default', 'value' => 0],
@@ -133,7 +142,7 @@ class Lot extends ActiveRecord
             ['reason', 'in', 'range' => self::getReasons()],
             ['reason', 'default', 'value' => self::REASON_NO_MATTER],
             ['url', 'url', 'defaultScheme' => 'http', 'except' => self::SCENARIO_MIGRATION],
-            [['description', 'info', 'new_categories', 'created_at', 'updated_at'], 'safe'],
+            [['description', 'info', 'new_categories', 'status_changed_at', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -212,11 +221,22 @@ class Lot extends ActiveRecord
 
     /**
      * Получить информацию о месте
-     * @return yii\db\ActiveRecord
+     * @return yii\db\ActiveQuery
      */
     public function getPlace()
     {
-        return Place::findOne(['model' => self::INT_CODE, 'parent_id' => $this->id]);
+        return $this->hasOne(Place::className(), ['parent_id' => 'id'])->andOnCondition(['place.model' => self::INT_CODE]);
+    }
+
+    /**
+     * Получить информацию о регионе
+     * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getRegion()
+    {
+        return $this->hasOne(Region::className(), ['id' => 'region_id'])
+            ->viaTable(Place::tableName(),['place.parent_id' => 'id']);
     }
 
     /**
@@ -230,7 +250,7 @@ class Lot extends ActiveRecord
 
     /**
      * Проверка, не устарел ли Лот
-     * 
+     *
      * @return yii\db\ActiveQuery
      */
     public function archived()
@@ -280,7 +300,7 @@ class Lot extends ActiveRecord
 
     /**
      * Получить историю снижения цены по Лоту
-     * 
+     *
      * @return yii\db\ActiveQuery
      */
     public function getPrices()
@@ -290,7 +310,7 @@ class Lot extends ActiveRecord
 
     /**
      * Получить категории, к которым принадлежит Лот
-     * 
+     *
      * @return yii\db\ActiveQuery
      */
     public function getCategories()
@@ -301,12 +321,13 @@ class Lot extends ActiveRecord
 
     /**
      * Получить документы по лоту.
-     * 
-     * @return array yii\db\ActiveQuery
+     *
+     * @return yii\db\ActiveQuery
      */
     public function getDocuments()
     {
-        return $this->hasMany(Document::className(), ['parent_id' => 'id'])->where(['model' => self::INT_CODE]);
+        return $this->hasMany(Document::className(), ['parent_id' => 'id'])
+            ->andOnCondition(['=', Document::tableName() . '.model', self::INT_CODE]);
     }
 
     /**
@@ -317,6 +338,22 @@ class Lot extends ActiveRecord
         parent::afterFind();
         $this->_old_categories = ArrayHelper::getColumn(LotCategory::find()->where(['lot_id' => $this->id])->all(), 'category_id');
         $this->new_categories = $this->_old_categories;
+        foreach($this->files as $file) {
+            if ($this->isImage($file->type))
+                $this->_old_images[] = $file->name;
+        }
+    }
+
+    /**
+     * Проверка на новые фото, прикрепленные к Лоту.
+     */
+    public function areThereAnyNewImages()
+    {
+        foreach($this->files as $file) {
+            if ($this->isImage($file->type) && !in_array($file->name, $this->_old_images))
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -326,6 +363,8 @@ class Lot extends ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
         LotCategory::updateOneToMany($this->id, $this->_old_categories, $this->new_categories);
+        if ($this->areThereAnyNewImages())
+            $this->trigger(self::EVENT_NEW_PICTURE);
     }
 
     /**
@@ -342,5 +381,10 @@ class Lot extends ActiveRecord
             $price->delete();
         foreach($this->documents as $document)
             $document->delete();
+    }
+    
+    public function getInfo()
+    {
+        return json_decode($this->info, true);
     }
 }

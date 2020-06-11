@@ -1,25 +1,8 @@
-function timer(time) {
-  function updateTime() {
-    time = time - 1;
-    if (time < 10) {
-      $(".phone-time").html("0" + time);
-    } else {
-      $(".phone-time").html(time);
-    }
-    if (time <= 0) {
-      setTimeout(function () {
-        if ($(".phone-time").html() <= 0) {
-          $(".resend-code").removeClass("d-none");
-        }
-      }, 1500);
-      clearInterval(timeinterval);
-    }
-  }
+jQuery(function($) {
 
-  var timeinterval = setInterval(updateTime, 1000);
-}
-jQuery(function ($) {
-  "use strict";
+
+
+	"use strict";
 
   var $window = $(window);
 
@@ -176,88 +159,73 @@ jQuery(function ($) {
     filterParams();
   }
 
-  $(".chosen-type-select")
-    .chosen({ disable_search_threshold: 10, allow_single_deselect: true })
-    .change(function (e, type) {
-      lotType = type.selected;
+	$(".chosen-type-select").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, type) {
+		$("#search-lot-form").submit();
+	});
 
-      $(".card-search-form").attr("action", "/" + lotType + "/lot-list");
+	function filterParams() {
+		if (lotType == 'arrest') {
+			$('.bankrupt-type').hide();
+			$('.zalog-type').hide();
+		} else if (lotType == 'bankrupt') {
+			$('.bankrupt-type').show();
+			$('.zalog-type').hide();
+		} else if (lotType == 'zalog') {
+			$('.zalog-type').show();
+			$('.bankrupt-type').hide();
+		} else if (lotType == 'all') {
+			$('.bankrupt-type').show();
+			$('.zalog-type').show();
+		}
+	}
 
-      filterParams();
-    });
+	$(".chosen-category-select").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, id) {
+		if (id.selected == 0) {
+			$('#searchlot-subcategory').prop('disabled', true).trigger("chosen:updated");
+		} else {
+			$("#searchlot-subcategory").load("/load-category", {'id': id.selected}, function(data){
+				if (data == '<option value="0">Все подкатегории</option>') {
+					$("#searchlot-subcategory").prop('disabled', true).trigger("chosen:updated");
+				} else {
+					$("#searchlot-subcategory").prop('disabled', false).trigger("chosen:updated");
+				}
+			});
+		}
 
-  function filterParams() {
-    if (lotType) {
-      if (lotType == "arrest") {
-        $(".bankrupt-type").hide();
-        $(".zalog-type").hide();
-      } else if (lotType == "bankrupt") {
-        $(".bankrupt-type").show();
-        $(".zalog-type").hide();
-      } else if (lotType == "zalog") {
-        $(".zalog-type").show();
-        $(".bankrupt-type").hide();
-      } else if (lotType == "all") {
-        $(".bankrupt-type").show();
-        $(".zalog-type").show();
-      }
-    }
-  }
+	});
 
-  $(".chosen-category-select")
-    .chosen({ disable_search_threshold: 10, allow_single_deselect: true })
-    .change(function (e, id) {
-      if (id.selected == 0) {
-        $("#searchlot-subcategory")
-          .prop("disabled", true)
-          .trigger("chosen:updated");
-      } else {
-        $("#searchlot-subcategory").load(
-          "/load-category",
-          { id: id.selected },
-          function (data) {
-            if (data == '<option value="0">Все подкатегории</option>') {
-              $("#searchlot-subcategory")
-                .prop("disabled", true)
-                .trigger("chosen:updated");
-            } else {
-              $("#searchlot-subcategory")
-                .prop("disabled", false)
-                .trigger("chosen:updated");
-            }
-          }
-        );
-      }
-    });
+	$(".chosen-category-select-lot").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, id) {
+		if (id.selected == 0) {
+			$('#searchlot-subcategory').prop('disabled', true).trigger("chosen:updated");
+		} else {
+			$("#searchlot-subcategory").load("/lot/load-sub-categories", {'id': id.selected}, function(data){
+				if (data == '<option value="0">Все подкатегории</option>') {
+					$("#searchlot-subcategory").prop('disabled', true).trigger("chosen:updated");
+				} else {
+					$("#searchlot-subcategory").prop('disabled', false).trigger("chosen:updated");
+				}
+			});
+		}
 
-  $(".chosen-zalog-category-select")
-    .chosen({ disable_search_threshold: 10, allow_single_deselect: true })
-    .change(function (e, id) {
-      var lotId = $(this).data("lotid");
-      var lotType = $(this).data("lottype");
-
-      if (id.selected == 0) {
-        $(".subcategory-" + lotId + "-load")
-          .prop("disabled", true)
-          .trigger("chosen:updated");
-      } else {
-        $(".subcategory-" + lotId + "-load").load(
-          "/load-category",
-          { id: id.selected, type: lotType },
-          function (data) {
-            if (data == '<option value="0">Все подкатегории</option>') {
-              $(".subcategory-" + lotId + "-load")
-                .prop("disabled", true)
-                .trigger("chosen:updated");
-            } else {
-              $(".subcategory-" + lotId + "-load")
-                .prop("disabled", false)
-                .trigger("chosen:updated");
-            }
-          }
-        );
-      }
-    });
+	});
+	
+	$(".chosen-zalog-category-select").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, id) {
+		var lotId = $(this).data('lotid');
+		var lotType = $(this).data('lottype');
+		
+		if (id.selected == 0) {
+			$('.subcategory-'+lotId+'-load').prop('disabled', true).trigger("chosen:updated");
+		} else {
+			$(".subcategory-"+lotId+"-load").load("/load-category", {'id': id.selected, 'type': lotType}, function(data){
+				if (data == '<option value="0">Все подкатегории</option>') {
+					$(".subcategory-"+lotId+"-load").prop('disabled', true).trigger("chosen:updated");	
+				} else {
+					$(".subcategory-"+lotId+"-load").prop('disabled', false).trigger("chosen:updated");
+				}
+			});
+		}
+		
+	});
 
   $(".chosen-zalog-subcategory-select")
     .chosen({ disable_search_threshold: 10, allow_single_deselect: true })
@@ -660,3 +628,4 @@ jQuery(function ($) {
 
   // backToTop.tooltip('show');
 });
+

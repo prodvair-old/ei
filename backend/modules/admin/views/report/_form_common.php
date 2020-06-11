@@ -15,6 +15,25 @@ use sergmoro1\lookup\models\Lookup;
 
 <?= $form->field($model, 'title')->textArea(['maxlength' => true]) ?>
 
+<div class='row'>
+    <div class='col-sm-6'>
+        <?= $form->field($model, 'attraction')->widget(\yii\jui\SliderInput::classname(), [
+            'clientOptions' => [
+                'min' => 1,
+                'max' => 10,
+            ],
+        ]) ?>
+    </div>
+    <div class='col-sm-6'>
+        <?= $form->field($model, 'risk')->widget(\yii\jui\SliderInput::classname(), [
+            'clientOptions' => [
+                'min' => 1,
+                'max' => 10,
+            ],
+        ]) ?>
+    </div>
+</div>
+
 <?= $form->field($model, 'content')->widget(Widget::className(), [
     'settings' => [
         'lang' => 'ru',
@@ -37,6 +56,7 @@ use sergmoro1\lookup\models\Lookup;
         'imagemanager' => 'vova07\imperavi\bundles\ImageManagerAsset',              
     ],
 ]); ?>
+
 
 <div class='form-group'>
     <?= Html::submitButton(Yii::t('app', 'Save'), [

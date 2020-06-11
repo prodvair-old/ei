@@ -362,6 +362,7 @@ foreach ($lot->info as $key => $value) {
                                 <li>Адрес: <span class="text-list-name"><?= $lot->torg->owner->city.', '.$lot->torg->owner->address ?></span></li>
                                 </ul>
                             </li>
+                            </li>
                             <? } ?>
 
                             <? if ($lot->torg->publisher !== null && $lot->torg->typeId == 2) { ?>
