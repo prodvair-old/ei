@@ -7,19 +7,22 @@ use yii\db\ActiveRecord;
 
 /**
  * Param model
- * Параметры приложения.
+ * Application parameters are stored in a JSON array with the specified names.
+ * Default values must be defined, in case,
+ * if the {{%param}} table does not contain the corresponding name.
  * 
- * @var string $ыid
- * @var text   $defs
+ * @var string $sid название массива
+ * @var text   $defs JSON определение массива
  */
 class Param extends ActiveRecord
 {
+    // default arrays definition
     private static $defaults = [
         'statistic' => [
-            'torg'     => ['color' => 'aqua', 'icon' => 'gavel', 'value' => 'n/a'],
-            'lot'      => ['color' => 'red', 'icon' => 'money', 'value' => 'n/a'],
-            'document' => ['color' => 'green', 'icon' => 'word', 'value' => 'n/a'],
-            'report'   => ['color' => 'yellow', 'icon' => 'book', 'value' => 'n/a'],
+            'torgs'     => ['color' => 'aqua', 'icon' => 'gavel', 'value' => 'n/a'],
+            'lots'      => ['color' => 'red', 'icon' => 'money', 'value' => 'n/a'],
+            'documents' => ['color' => 'green', 'icon' => 'file-word-o', 'value' => 'n/a'],
+            'users'     => ['color' => 'yellow', 'icon' => 'users', 'value' => 'n/a'],
         ],
     ];
     
@@ -55,7 +58,9 @@ class Param extends ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * Get array by name.
+     * @param string $name
+     * @return array with structure and values as defaults.
      */
     public function getDefs($name)
     {
