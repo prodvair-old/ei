@@ -132,18 +132,18 @@ class Category extends ActiveRecord
     public static function jsonItems($selected)
     {
         $a = [];
-        foreach(self::find()->orderBy('lft ASC')->all() as $node)
+        foreach(self::find()->orderBy('lft ASC')->asArray()->all() as $node)
         {
-            if ($node->depth == 1) {
+            if ($node['depth'] == 1) {
                 if ($b['children'])
                     $a[] = $b;
                 $b = [];
-                $b['text'] = $node->name;
+                $b['text'] = $node['name'];
                 $b['children'] = [];
             } else {
-                $b['children'][] = in_array($node->id, $selected)
-                    ? ['id' => $node->id, 'text' => $node->name, 'selected' => true]
-                    : ['id' => $node->id, 'text' => $node->name];
+                $b['children'][] = in_array($node['id'], $selected)
+                    ? ['id' => $node['id'], 'text' => $node['name'], 'selected' => true]
+                    : ['id' => $node['id'], 'text' => $node['name']];
             }
         }
         return json_encode($a);

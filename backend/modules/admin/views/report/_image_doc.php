@@ -12,7 +12,6 @@ use sergmoro1\uploader\widgets\Uploader;
     'model'         => $model,
     'draggable'     => true,
     'appendixView'  => '/lot/appendix.php',
-    'secure'        => false,
     'allowedTypes'    => ['image/jpg', 'image/jpeg', 'image/png', 'application/pdf', 'application/zip', 'application/msword', 'application/excel'],
     'allowedTypesReg' => '/[image|application]\\/[jpg|jpeg|png|pdf|zip|msword|excel]/i',
 ]) ?>
