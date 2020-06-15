@@ -18,15 +18,15 @@ class m200415_172026_torg extends Migration
             'property'     => $this->smallInteger()->notNull(),
             'description'  => $this->text(),
             
-            'started_at'   => $this->integer(),
-            'end_at'       => $this->integer(),
-            'completed_at' => $this->integer(),
-            'published_at' => $this->integer(),
+            'started_at'   => $this->bigInteger(),
+            'end_at'       => $this->bigInteger(),
+            'completed_at' => $this->bigInteger(),
+            'published_at' => $this->bigInteger(),
             
             'offer'        => $this->smallInteger()->notNull(),
 
-            'created_at'   => $this->integer()->notNull(),
-            'updated_at'   => $this->integer()->notNull(),
+            'created_at'   => $this->bigInteger()->notNull(),
+            'updated_at'   => $this->bigInteger()->notNull(),
         ]);
         
         $this->createIndex('idx-torg-msg_id', self::TABLE, 'msg_id');
