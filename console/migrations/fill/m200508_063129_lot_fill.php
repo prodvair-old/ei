@@ -134,7 +134,7 @@ class m200508_063129_lot_fill extends Migration
             $l = [
                 'id'                => $lot_id,
                 'torg_id'           => $row['torgId'],
-                'ordinal_number'    => ($row['lotNumber'] ?: 1),
+                'ordinal_number'    => ($row['lotNumber'] ? $row['lotNumber'] : 1),
 
                 'title'             => $row['title'],
                 'description'       => $row['description'],

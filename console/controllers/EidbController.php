@@ -12,6 +12,7 @@ use console\models\eidb\OwnerFill;
 use console\models\eidb\CasefileFill;
 use console\models\eidb\TorgFill;
 use console\models\eidb\LotFill;
+use console\models\eidb\LotStatusFill;
 use console\models\eidb\LotCategoryFill;
 use console\models\eidb\LotPriceFill;
 use console\models\eidb\LotImageFill;
@@ -520,6 +521,47 @@ class EidbController extends Controller
         echo "\n lot            := ".$data['lot'];
         echo "\n place          := ".$data['place'];
 
+        echo "\n\nЗавершено.\n";
+    }
+
+    // Лот Статус
+    // php yii eidb/lot-status
+    public function actionLotStatus($step = 100) 
+    {
+        echo "Начало парсинга таблицы: 'eidb.lot' - Статусы\n";
+        echo "\nШаг := ".$step."\n";
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
+        
+        $select = $db->createCommand(
+            'SELECT count("pheLotId") FROM "bailiff".purchaselots WHERE "pheLotIsNotUpdated" = 0'  
+        );
+        $dataCount = $select->queryAll();
+
+        $limit  = $step;
+        $offset = $dataCount[0]['count'];
+
+        $data = null;
+
+        while ($data !== false) {
+            $data = LotStatusFill::getData($limit, $offset);
+
+            if ($data !== false) {
+                echo "\n\n------------------------";
+                echo "\n lot            := ".$data['lot'];
+                echo "\n place          := ".$data['place'];
+            } else {
+                echo "\n\nКонец даннх";
+            }
+
+            $offset = $offset + $step;
+        }
+
+        $select = \Yii::$app->db->createCommand(
+            'SELECT count("pheLotId") FROM "bailiff".purchaselots WHERE "pheLotIsNotUpdated" = 0'
+        );
+        $count = $select->queryAll();
+
+        echo "\n\nЗаписей до ".$dataCount[0]['count']." после ".$count[0]['count'];
         echo "\n\nЗавершено.\n";
     }
 

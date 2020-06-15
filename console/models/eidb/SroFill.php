@@ -5,6 +5,7 @@ use Yii;
 use yii\base\Module;
 
 use console\traits\Keeper;
+use console\traits\DistrictConsole;
 
 use common\models\db\Sro;
 use common\models\db\Organization;
@@ -71,21 +72,21 @@ class SroFill extends Module
                 Keeper::validateAndKeep($organization, $organizations, $o);
                 
                 $city     = isset($row['city']) && $row['city'] ? $row['city'] : '';
-                $district = isset($row['district']) && $row['district'] ? $row['district'] : '';
+                $district = DistrictConsole::districtConvertor($row['district']);
                 $address  = isset($row['address']) && $row['address'] ? $row['address'] : '-';
                 
                 // Place
                 $p = [
-                    'model'      => Organization::TYPE_SRO,
-                    'parent_id'  => $sro_id,
-                    'city'       => $city,
-                    'region_id'  => $row['regionId'],
-                    'district'   => $district,
-                    'address'    => $address,
-                    'geo_lat'    => (isset($obj->address->geo_lat) ? $obj->address->geo_lat : null),
-                    'geo_lon'    => (isset($obj->address->geo_lon) ? $obj->address->geo_lon : null),
-                    'created_at' => $created_at,
-                    'updated_at' => $updated_at,
+                    'model'       => Organization::TYPE_SRO,
+                    'parent_id'   => $sro_id,
+                    'city'        => $city,
+                    'region_id'   => $row['regionId'],
+                    'district_id' => $district,
+                    'address'     => $address,
+                    'geo_lat'     => (isset($obj->address->geo_lat) ? $obj->address->geo_lat : null),
+                    'geo_lon'     => (isset($obj->address->geo_lon) ? $obj->address->geo_lon : null),
+                    'created_at'  => $created_at,
+                    'updated_at'  => $updated_at,
                 ];
                 $place = new Place($p);
                 
@@ -96,7 +97,7 @@ class SroFill extends Module
         return [
             'sro' =>            Yii::$app->db->createCommand()->batchInsert(self::TABLE, ['id', 'efrsb_id', 'created_at', 'updated_at'], $all_sro)->execute(),
             'organization' =>   Yii::$app->db->createCommand()->batchInsert('{{%organization}}', ['model', 'parent_id', 'activity', 'title', 'full_title', 'inn', 'ogrn', 'reg_number', 'email', 'phone', 'website', 'status', 'created_at', 'updated_at'], $organizations)->execute(),
-            'place' =>          Yii::$app->db->createCommand()->batchInsert('{{%place}}', ['model', 'parent_id', 'city', 'region_id', 'district', 'address', 'geo_lat', 'geo_lon', 'created_at', 'updated_at'], $places)->execute()
+            'place' =>          Yii::$app->db->createCommand()->batchInsert('{{%place}}', ['model', 'parent_id', 'city', 'region_id', 'district_id', 'address', 'geo_lat', 'geo_lon', 'created_at', 'updated_at'], $places)->execute()
         ];
     }
     
