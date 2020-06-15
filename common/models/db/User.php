@@ -42,7 +42,8 @@ class User extends ActiveRecord implements IdentityInterface
     const ROLE_ADMIN      = 1;
     const ROLE_MANAGER    = 2;
     const ROLE_AGENT      = 3;
-    const ROLE_USER       = 4;
+    const ROLE_ARBITRATOR = 4;
+    const ROLE_USER       = 5;
 
     public static function getIntCode() { return self::INT_CODE; }
 
