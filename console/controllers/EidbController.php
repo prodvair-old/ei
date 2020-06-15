@@ -531,32 +531,33 @@ class EidbController extends Controller
         echo "Начало парсинга таблицы: 'eidb.lot' - Статусы\n";
         echo "\nШаг := ".$step."\n";
         $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
-        
+        // var_dump($db);
         $select = $db->createCommand(
             'SELECT count("pheLotId") FROM "bailiff".purchaselots WHERE "pheLotIsNotUpdated" = 0'  
         );
         $dataCount = $select->queryAll();
 
         $limit  = $step;
-        $offset = $dataCount[0]['count'];
-
+        $offset = 0;
         $data = null;
 
-        while ($data !== false) {
-            $data = LotStatusFill::getData($limit, $offset);
+        if ($dataCount[0]['count']) {
+            while ($data !== false) {
+                $data = LotStatusFill::getData($limit, $offset);
 
-            if ($data !== false) {
-                echo "\n\n------------------------";
-                echo "\n lot            := ".$data['lot'];
-                echo "\n place          := ".$data['place'];
+                if ($data !== false) {
+                    echo "\n\n------------------------";
+                    echo "\n lot-update     := ".$data['lotsCount'];
             } else {
-                echo "\n\nКонец даннх";
-            }
+                    echo "\n\nКонец даннх";
+                }
 
-            $offset = $offset + $step;
+                $offset = $offset + $step;
+            }
         }
 
-        $select = \Yii::$app->db->createCommand(
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
+        $select = $db->createCommand(
             'SELECT count("pheLotId") FROM "bailiff".purchaselots WHERE "pheLotIsNotUpdated" = 0'
         );
         $count = $select->queryAll();

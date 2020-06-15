@@ -81,6 +81,7 @@ class LotStatusFill extends Module
         }
         
         $lotsCount = 0;
+        $errors = [];
 
         foreach($rows as $row)
         {
@@ -88,20 +89,23 @@ class LotStatusFill extends Module
             $msg_id = $row['pheLotNumberInEFRSB'];
             $a = self::convert($row['pheLotStatus']);
             
-            $lot = Lot::find()->joinWith('torg')->where(['torg.msg_id' => $msg_id, 'ordinal_number' => $ordinal_number])->findOne();
+            $lot = Lot::find()->joinWith('torg')->where(['torg.msg_id' => $msg_id, 'ordinal_number' => $ordinal_number])->one();
 
             if (isset($lot)) {
-                $lot->status = $row->pheLotStatus;
-                $lot->status_changed_at = $row->pheLotUpdateDateTime;
-                $lot->url = (isset($row->pheLotUrl) ? $row->pheLotUrl : null);
+                $lot->status = $a[0];
+                $lot->status_changed_at = ($row['pheLotUpdateDateTime'])? $row['pheLotUpdateDateTime'] : $row['pheLotAddedDateTime'];
+                $lot->reason = $a[1];
+                $lot->url = (isset($row['pheLotUrl']) ? $row['pheLotUrl'] : null);
 
                 if ($row->pheLotName) {
-                    $lot->title      = $row->pheLotName;
+                    $lot->title      = $row['pheLotName'];
                 }
 
                 if ($lot->validate()) {
                     $lot->update();
                     $lotsCount++;
+                } else {
+                    $errors[] = $lot->errors;
                 }
             }
         }
@@ -109,6 +113,10 @@ class LotStatusFill extends Module
         $result = [];
 
         $result['lotsCount'] = $lotsCount;
+
+        if ($errors) {
+            $result['errors'] = $errors;
+        }
             
         return $result;
     }
