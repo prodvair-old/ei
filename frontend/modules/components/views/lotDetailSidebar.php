@@ -35,10 +35,11 @@ use sergmoro1\lookup\models\Lookup;
                 </li>
                 <li class="clearfix">ЭТП <span class="float-right"><?= $lot->torg->etp->title ?></span></li>
                 <li class="clearfix">Номер сообщения в ЕФРСБ <span
-                            class="float-right"><?= $lot->torg->bankruptEtp->efrsb_id ?></span></li>
-                <? if ($lot->torg->etp->website) : ?>
+                            class="float-right"><?= $lot->torg->msg_id ?></span></li>
+                <li class="clearfix">Номер лота<span class="float-right"><?= $lot->ordinal_number ?></span></li>
+                <? if ($lot->url) : ?>
                     <li class="clearfix border-top">
-                        <a href="//<?= $lot->torg->etp->website ?>" target="_blank" rel="nofollow">Ссылка на торги</a>
+                        <a href="<?= $lot->url ?>" target="_blank" rel="nofollow">Ссылка на торги</a>
                     </li>
                 <? endif; ?>
 

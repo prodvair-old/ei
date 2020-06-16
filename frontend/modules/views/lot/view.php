@@ -238,9 +238,10 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                                             href="<?= Url::to(['sro/list']) ?>/"
                                                             target="_blank"><?= $lot->torg->manager->sro->title ?></a></span>
                                             </li>
-                                            <li>Адрес суда: <span
-                                                        class="text-list-name"><?= $lot->torg->manager->sro->place->address ?></span>
-                                            </li>
+                                            <!--                                            <li>Адрес суда: <span-->
+                                            <!--                                                        class="text-list-name">-->
+                                            <? //= $lot->torg->manager->sro->place->address ?><!--</span>-->
+                                            <!--                                            </li>-->
                                         </ul>
                                     </li>
                                 <? } ?>
@@ -280,9 +281,10 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                             </li>
                                             <li>ОГРН: <span class="text-list-name"><?= $lot->torg->owner->ogrn ?></span>
                                             </li>
-                                            <li>Адрес: <span
-                                                        class="text-list-name"><?= $lot->torg->owner->place->address ?></span>
-                                            </li>
+                                            <!--                                            <li>Адрес: <span-->
+                                            <!--                                                        class="text-list-name">-->
+                                            <? //= $lot->torg->owner->place->address ?><!--</span>-->
+                                            <!--                                            </li>-->
                                         </ul>
                                     </li>
                                 <? } ?>
@@ -293,8 +295,8 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                         </div>
 
-
-                        <?php if ($lot->torg->offer == Torg::OFFER_PUBLIC) { ?>
+                        <?php $prices = $lot->prices; ?>
+                        <?php if ($lot->torg->offer == Torg::OFFER_PUBLIC && $prices) : ?>
 
                             <div id="price-history" class="fullwidth-horizon-sticky-section">
 
@@ -357,90 +359,67 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                                     </div>
 
-                                    <?php
-
-                                    $prices = $lot->prices;
-
-                                    if ($prices) : ?>
-                                        <?php foreach ($prices as $key => $value) : ?>
-                                            <?php $date = time(); ?>
-                                            <div class="item-text-long <?= (($value->started_at <= $date) && $value->end_at >= $date) ? '' : 'sold-out' ?>">
-
-                                                <div class="row align-items-center">
-
-                                                    <div class="col-12 col-sm-6">
-
-                                                        <div class="col-inner mb-10 mb-sm-0">
-
-                                                            <div class="row gap-10 align-items-center">
-
-                                                                <div class="col-6">
-                                                                    <span class="font-sm">Начало</span>
-                                                                    <strong class="d-block"><?= Yii::$app->formatter->asDate($value->started_at, 'long') ?></strong>
-                                                                </div>
-
-                                                                <div class="col-6 text-right text-sm-left">
-                                                                    <span class="font-sm">Конец</span>
-                                                                    <strong class="d-block"><?= Yii::$app->formatter->asDate($value->end_at, 'long') ?></strong>
-                                                                </div>
-
-                                                            </div>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="col-12 col-sm-6">
-
-                                                        <div class="col-inner">
-
-                                                            <div class="row gap-10 align-items-center">
-
-                                                                <div class="col-6 text-left text-sm-center">
-                                                                    <span class="font-sm">Цена </span>
-                                                                    <strong class="d-block"><?= Yii::$app->formatter->asCurrency($value->price) ?></strong>
-                                                                </div>
-
-                                                                <div class="col-6 text-left  text-sm-right">
-                                                                    <span class="font-sm">Задаток</span>
-                                                                    <strong class="d-block"><?= ($lot->deposit_measure == 1) ? Yii::$app->formatter->asCurrency((($value->price / 100) * $lot->deposit)) : Yii::$app->formatter->asCurrency($lot->deposit) ?></strong>
-                                                                </div>
-
-                                                            </div>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-                                        <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <div class="item-text-long">
+                                    <?php foreach ($prices as $key => $value) : ?>
+                                        <?php $date = time(); ?>
+                                        <div class="item-text-long <?= (($value->started_at <= $date) && $value->end_at >= $date) ? '' : 'sold-out' ?>">
 
                                             <div class="row align-items-center">
 
-                                                <div class="col-7 col-sm-9">
-                                                    <strong class="text-primary">Этапы снижения цены в данной момент
-                                                        находятся в обработке</strong>
+                                                <div class="col-12 col-sm-6">
+
+                                                    <div class="col-inner mb-10 mb-sm-0">
+
+                                                        <div class="row gap-10 align-items-center">
+
+                                                            <div class="col-6">
+                                                                <span class="font-sm">Начало</span>
+                                                                <strong class="d-block"><?= Yii::$app->formatter->asDate($value->started_at, 'long') ?></strong>
+                                                            </div>
+
+                                                            <div class="col-6 text-right text-sm-left">
+                                                                <span class="font-sm">Конец</span>
+                                                                <strong class="d-block"><?= Yii::$app->formatter->asDate($value->end_at, 'long') ?></strong>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
                                                 </div>
 
-                                                <div class="col-5 col-sm-3">
-                                                    <a href="#" class="btn btn-primary btn-block btn-sm mt-3">Задать
-                                                        вопрос</a>
+                                                <div class="col-12 col-sm-6">
+
+                                                    <div class="col-inner">
+
+                                                        <div class="row gap-10 align-items-center">
+
+                                                            <div class="col-6 text-left text-sm-center">
+                                                                <span class="font-sm">Цена </span>
+                                                                <strong class="d-block"><?= Yii::$app->formatter->asCurrency($value->price) ?></strong>
+                                                            </div>
+
+                                                            <div class="col-6 text-left  text-sm-right">
+                                                                <span class="font-sm">Задаток</span>
+                                                                <strong class="d-block"><?= ($lot->deposit_measure == 1) ? Yii::$app->formatter->asCurrency((($value->price / 100) * $lot->deposit)) : Yii::$app->formatter->asCurrency($lot->deposit) ?></strong>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
                                                 </div>
+
                                             </div>
 
                                         </div>
-                                    <?php endif; ?>
+                                    <?php endforeach; ?>
                                 </div>
 
                                 <div class="mb-50"></div>
 
                             </div>
 
-                        <? } ?>
+                        <? endif; ?>
 
                         <?= Darwin::widget() ?>
 
@@ -619,6 +598,13 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                 <div class="col-12 col-lg-4">
 
                     <div class="sidebar-desktop">
+                        <div class="box-content mb-10">
+                            <ul class="border-top mt-20 pt-15">
+                                <li class="clearfix"> Дата и время актуализации<span
+                                            class="float-right"><?= Yii::$app->formatter->asDatetime($lot->status_changed_at) ?></span>
+                                </li>
+                            </ul>
+                        </div>
                         <?= SocialShare::widget([
                             'configurator' => 'socialShare',
                             'url'          => ('https://ei.ru' . Yii::$app->request->url),
