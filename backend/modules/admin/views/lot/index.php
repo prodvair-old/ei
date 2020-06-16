@@ -9,7 +9,7 @@ use common\models\db\Category;
 use backend\modules\admin\assets\Select2Asset;
 use backend\modules\admin\assets\LoadMoreAsset;
 
-$columns = require __DIR__ . '/lot_columns.php';
+$columns = require __DIR__ . '/_columns.php';
 
 $this->title = Yii::t('app', 'Lots');
 $this->params['breadcrumbs'][] = $this->title;
