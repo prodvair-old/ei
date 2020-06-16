@@ -282,6 +282,33 @@ class Torg extends ActiveRecord
     }
 
     /**
+     * Calculate - at what stage of the auction (Torg).
+     *
+     * @param integer $torg_id
+     * @return integer count of auctions for bankrupt property or 0 for others
+     */
+    public static function getStage($torg_id)
+    {
+        $select =
+            // select count of torgs by the casefile
+            'select count(torg_debtor.torg_id) as stage '. 
+            'from eidb.torg_debtor ' .
+            'where case_id = ('.
+                // select casefile of the torg
+                'select torg_debtor.case_id from eidb.torg '. 
+                'inner join eidb.torg_debtor on (torg.id=torg_debtor.torg_id) '.
+                'where torg.id=:id'.
+            ')';
+
+        $db = Yii::$app->db;
+        if ($db->driverName === 'mysql')
+            $select = str_replace('eidb.', '', $select);
+        $command = $db->createCommand($select);
+        $command->bindValue(':id', $torg_id);
+        return $command->queryScalar();
+    }
+
+    /**
      * @return array
      */
     public static function getTypeList()

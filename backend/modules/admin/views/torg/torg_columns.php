@@ -55,6 +55,12 @@ return [
             return date('d.m.Y', $data['end_at']);
         },
     ],
+    [
+        'header' => Yii::t('app', 'Stage'),
+        'value' => function($data) {
+            return $data['property_id'] == Torg::PROPERTY_BANKRUPT ? Torg::getStage($data['id']) : 1;
+        },
+    ],
 
     [
         'class' => 'yii\grid\ActionColumn',
