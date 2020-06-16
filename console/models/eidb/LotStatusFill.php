@@ -4,16 +4,12 @@ namespace console\models\eidb;
 use Yii;
 use yii\base\Module;
 
-use console\traits\Keeper;
-use console\traits\DistrictConsole;
-
 use common\models\db\Lot;
-use common\models\db\Place;
 
-class LotFill extends Module
+class LotStatusFill extends Module
 {
     const TABLE = '{{%lot}}';
-    const OLD_TABLE = 'lots';
+    const OLD_TABLE = 'purchaselots';
 
     private static $status_convertor = [
         "подводятся итоги (приостановлены) " => [Lot::STATUS_SUSPENDED, LOT::REASON_SUMMARIZING],
@@ -76,7 +72,7 @@ class LotFill extends Module
         // получение менеджеров из существующего справочника
         $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
         $select = $db->createCommand(
-            'SELECT * FROM "eiLot".'.self::OLD_TABLE.' ORDER BY "'.self::OLD_TABLE.'".id ASC LIMIT '.$limit.' OFfSET '.$offset
+            'SELECT * FROM "bailiff".'.self::OLD_TABLE.' WHERE  "'.self::OLD_TABLE.'"."pheLotIsNotUpdated" = 0 ORDER BY "'.self::OLD_TABLE.'"."pheLotId" ASC LIMIT '.$limit.' OFfSET '.$offset
         );
         $rows = $select->queryAll();
 
@@ -84,94 +80,44 @@ class LotFill extends Module
             return false;
         }
         
-        $lots = [];
-        $places = [];
+        $lotsCount = 0;
+        $errors = [];
 
         foreach($rows as $row)
         {
-            $lot_id = $row['id'];
-
-            $created_at = strtotime($row['createdAt']);
-            $updated_at = strtotime($row['updatedAt']);
-            $obj = json_decode($row['info']);
-            $a = self::convert($row['status']);
+            $ordinal_number = $row['pheLotNumber'];
+            $msg_id = $row['pheLotNumberInEFRSB'];
+            $a = self::convert($row['pheLotStatus']);
             
-            // Lot
-            $l = [
-                'id'                => $lot_id,
-                'torg_id'           => $row['torgId'],
-                'ordinal_number'    => ($row['lotNumber'] ? $row['lotNumber'] : 1),
+            $lot = Lot::find()->joinWith('torg')->where(['torg.msg_id' => $msg_id, 'ordinal_number' => $ordinal_number])->one();
 
-                'title'             => $row['title'],
-                'description'       => $row['description'],
-                'start_price'       => $row['startPrice'],
-                'step'              => round(($row['step'] ? : 0), 4),
-                'step_measure'      => ($row['stepTypeId'] ?: Lot::MEASURE_PERCENT),
-                'deposit'           => round(($row['deposit'] ?: 0), 4),
-                'deposit_measure'   => ($row['depositTypeId'] ?: Lot::MEASURE_PERCENT),
-                'status'            => $a[0],
-                'status_changed_at' => $updated_at,
-                'reason'            => $a[1],
-                'url'               => (isset($obj->etpLotUrl) ? $obj->etpLotUrl : null),
-                'info'              => json_encode(isset($obj->vin) ? ['vin' => $obj->vin] : []),
+            if (isset($lot)) {
+                $lot->status = $a[0];
+                $lot->status_changed_at = ($row['pheLotUpdateDateTime'])? $row['pheLotUpdateDateTime'] : $row['pheLotAddedDateTime'];
+                $lot->reason = $a[1];
+                $lot->url = (isset($row['pheLotUrl']) ? $row['pheLotUrl'] : null);
 
-                'created_at'        => $created_at,
-                'updated_at'        => $updated_at,
-            ];
-            $lot = new Lot($l);
-            $lot->scenario = Lot::SCENARIO_MIGRATION;
-            
-            if (Keeper::validateAndKeep($lot, $lots, $l) && $row['regionId']) {
+                if ($row->pheLotName) {
+                    $lot->title      = $row['pheLotName'];
+                }
 
-                $city     = isset($row['city']) && $row['city'] ? $row['city'] : '';
-                $district = DistrictConsole::districtConvertor($row['district']);
-                $address = (isset($obj->address) ? $obj->address->city . ', ' . $obj->address->region . ', ' . $obj->address->street : '');
-                $address  = isset($row['address']) && $row['address'] ? $row['address'] : $address;
-                $geo_lat  = (isset($obg->address->geo_lat) && $obg->address->geo_lat ? $obg->address->geo_lat : null);
-                $geo_lon  = (isset($obg->address->geo_lon) && $obg->address->geo_lon ? $obg->address->geo_lon : null);
-
-                // Place
-                $p = [
-                    'model'       => Lot::INT_CODE,
-                    'parent_id'   => $lot_id,
-                    'city'        => $city,
-                    'region_id'   => $row['regionId'],
-                    'district_id' => $district,
-                    'address'     => $address,
-                    'geo_lat'     => $geo_lat,
-                    'geo_lon'     => $geo_lon,
-                    'created_at'  => $created_at,
-                    'updated_at'  => $updated_at,
-                ];
-                $place = new Place($p);
-
-                Keeper::validateAndKeep($place, $places, $p);
+                if ($lot->validate()) {
+                    $lot->update();
+                    $lotsCount++;
+                } else {
+                    $errors[] = $lot->errors;
+                }
             }
         }
         
         $result = [];
 
-        $result['lot']      = Yii::$app->db->createCommand()->batchInsert(self::TABLE, ['id', 'torg_id', 'ordinal_number', 'title', 'description', 'start_price', 'step', 'step_measure', 'deposit', 'deposit_measure', 'status', 'status_changed_at', 'reason', 'url', 'info', 'created_at', 'updated_at'], $lots)->execute();
-        $result['place']    = Yii::$app->db->createCommand()->batchInsert('{{%place}}', ['model', 'parent_id', 'city', 'region_id', 'district_id', 'address', 'geo_lat', 'geo_lon', 'created_at', 'updated_at'], $places)->execute();
-            
-        return $result;
-    }
+        $result['lotsCount'] = $lotsCount;
 
-    public function remove()
-    {
-        $db = \Yii::$app->db;
-        $result = [];
-
-        $result['place']    = $db->createCommand('DELETE FROM {{%place}} WHERE model=' . Lot::INT_CODE)->execute();
-
-        if (Yii::$app->db->driverName === 'mysql') {
-            $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
-            $result['lot']  = $db->createCommand('TRUNCATE TABLE '. self::TABLE)->execute();
-            $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')-> execute();
-        } else {
-            $result['lot']  = $db->createCommand('TRUNCATE TABLE '. self::TABLE.' CASCADE')->execute();
+        if ($errors) {
+            $result['errors'] = $errors;
         }
-
+            
         return $result;
     }
 
