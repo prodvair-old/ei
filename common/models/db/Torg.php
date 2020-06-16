@@ -287,10 +287,12 @@ class Torg extends ActiveRecord
      *
      * @param integer $torg_id
      * @param integer $property
-     * @return integer count of auctions for bankrupt property or 1 for others
+     * @return integer count of auctions for bankrupt property or empty string for others
      */
     public static function getStage($torg_id, $property)
     {
+        if ($property != self::PROPERTY_BANKRUPT)
+            return '';
         $select =
             // select count of torgs by the casefile
             'select count(torg_debtor.torg_id) as stage '. 
@@ -307,7 +309,7 @@ class Torg extends ActiveRecord
             $select = str_replace('eidb.', '', $select);
         $command = $db->createCommand($select);
         $command->bindValue(':id', $torg_id);
-        return ($stage = $command->queryScalar()) ? $stage : 1;
+        return $command->queryScalar();
     }
 
     /**
