@@ -170,8 +170,7 @@ class LotSearch extends Lot
             $query->andFilterWhere(['IN', Place::tableName() . '.region_id', $this->region]);
         }
         if ($this->efrsb) {
-            $query->joinWith(['torg.bankruptEtp']);
-            $query->andFilterWhere(['=', Etp::tableName() . '.efrsb_id', $this->efrsb]);
+            $query->andFilterWhere(['ilike', Torg::tableName() . '.msg_id', $this->efrsb, false]);
         }
 
         $query->andFilterWhere(['>=', 'start_price', $this->minPrice])
