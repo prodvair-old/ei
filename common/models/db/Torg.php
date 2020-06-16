@@ -5,6 +5,7 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use sergmoro1\lookup\models\Lookup;
+use common\components\IntCode;
 
 /**
  * Torg model
@@ -285,10 +286,13 @@ class Torg extends ActiveRecord
      * Calculate - at what stage of the auction (Torg).
      *
      * @param integer $torg_id
-     * @return integer count of auctions for bankrupt property or 0 for others
+     * @param integer $property
+     * @return integer count of auctions for bankrupt property or empty string for others
      */
-    public static function getStage($torg_id)
+    public static function getStage($torg_id, $property)
     {
+        if ($property != self::PROPERTY_BANKRUPT)
+            return '';
         $select =
             // select count of torgs by the casefile
             'select count(torg_debtor.torg_id) as stage '. 

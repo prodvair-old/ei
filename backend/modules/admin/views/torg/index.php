@@ -7,7 +7,7 @@ use yii\helpers\Html;
 use backend\modules\admin\assets\LoadMoreAsset;
 use yii\grid\GridView;
 
-$columns = require __DIR__ . '/torg_columns.php';
+$columns = require __DIR__ . '/_columns.php';
 
 $this->title = Yii::t('app', 'Auctions');
 $this->params['breadcrumbs'][] = $this->title;
