@@ -16,7 +16,7 @@ return [
         'options' => ['style' => 'width:7%;'],
         'value' => function($data) {
              return $data['id'] . ' ' . ($data['property_id'] == Torg::PROPERTY_ZALOG
-                ? ' ' . Html::a('<i class="fa fa-plus"></i>', ['lot/create', 'torg_id' => $data['id']], ['title' => Yii::t('app', 'Add lot')])
+                ? ' ' . Html::a('<i class="fa fa-money"></i>', ['lot/create', 'torg_id' => $data['id']], ['title' => Yii::t('app', 'Add lot')])
                 : ''
             );
         }
