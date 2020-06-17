@@ -384,32 +384,6 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Getting user items for dropdown list.
-     * $search string a part of User name
-     * @return array of [id: integer, text: string]
-     */
-	public static function getItems($search = '')
-	{
-        $users = self::find()
-            ->select(['user.id', 'username', 'first_name', 'last_name'])
-            ->leftJoin('{{%profile}}', ['profile.parent_id' => 'user.id', 'model' => self::INT_CODE])
-            ->where(['status' => self::STATUS_ACTIVE])
-            ->asArray()
-            ->all();
-        $a = [];
-        foreach($users as $user)
-            if (!$search || !(stripos($user['username'] . $user['first_name'] . $user['last_name'], $search) === false))
-                $a[] = [
-                    'id' => $user['id'], 
-                    'text' => (($user['last_name'] || $user['first_name'])
-                        ? $user['last_name'] . ' ' . $user['first_name'] 
-                        : $user['username']
-                    ),
-                ];
-        return $a;
-	}
-
-    /**
      * Get ID of an arbitration manager.
      * @return integer
      */

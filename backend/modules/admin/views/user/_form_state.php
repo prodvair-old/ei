@@ -5,6 +5,7 @@
 /* @var $manager common\models\db\Manager */
 /* @var $form yii\widgets\ActiveForm */
 
+use yii\helpers\Url;
 use yii\helpers\Html;
 use common\components\Property;
 use sergmoro1\lookup\models\Lookup;
@@ -13,12 +14,26 @@ use backend\modules\admin\assets\Select2Asset;
 
 Select2Asset::register($this);
 
-$data = Manager::jsonItems([$model->manager_id]);
-
+$url = Url::to(['manager/fillin']);
+$selected = $model->manager_id ?: 0;
+$default = $selected 
+    ? [$model->manager->id => ($model->manager->fullName . ' ' . $model->manager->profile->inn)]
+    : [];
 $script = <<<JS
-$(document).ready(function() { $('#user-manager_id').select2(
-    {data: $data}
-); });
+$(document).ready(function() { 
+    $('#user-manager_id').select2({
+        ajax: {
+            url: '$url',
+            data: function (params) {
+                var query = {
+                    search: params.term,
+                    selected: $selected
+                };
+                return query;
+            }
+        }
+    });
+});
 JS;
 $this->registerJS($script);?>
 
@@ -30,7 +45,7 @@ $this->registerJS($script);?>
     'prompt' => Yii::t('app', 'Select'),
 ]); ?>
 
-<?= $form->field($model, 'manager_id')->dropdownList([], [
+<?= $form->field($model, 'manager_id')->dropdownList($default, [
     'prompt' => Yii::t('app', 'Select'),
 ]); ?>
 
