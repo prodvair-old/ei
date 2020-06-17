@@ -48,7 +48,7 @@ return [
     ],
 
     [
-        'attribute' => 'category_id',
+        'header' => Yii::t('app', 'Category'),
         'filter' => '<select id="lot-category_id" class="form-control" name="LotSearch[category_id]"></select>',
         'value' => function($data) {
             return $data['category_name'];
