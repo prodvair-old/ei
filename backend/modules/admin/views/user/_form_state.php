@@ -15,9 +15,9 @@ use backend\modules\admin\assets\Select2Asset;
 Select2Asset::register($this);
 
 $url = Url::to(['manager/fillin']);
-$selected = $model->manager_id ?: 0;
-$default = $selected 
-    ? [$model->manager->id => ($model->manager->fullName . ' ' . $model->manager->profile->inn)]
+$manager_id = $model->manager_id ?: 0;
+$selected = $manager_id 
+    ? [$manager_id => ($model->manager->fullName . ' ' . $model->manager->profile->inn)]
     : [];
 $script = <<<JS
 $(document).ready(function() { 
@@ -27,7 +27,7 @@ $(document).ready(function() {
             data: function (params) {
                 var query = {
                     search: params.term,
-                    selected: $selected
+                    selected: $manager_id
                 };
                 return query;
             }
@@ -45,7 +45,7 @@ $this->registerJS($script);?>
     'prompt' => Yii::t('app', 'Select'),
 ]); ?>
 
-<?= $form->field($model, 'manager_id')->dropdownList($default, [
+<?= $form->field($model, 'manager_id')->dropdownList($selected, [
     'prompt' => Yii::t('app', 'Select'),
 ]); ?>
 
