@@ -166,18 +166,4 @@ class UserController extends Controller
             }
         }
     }
-
-    /**
-     * Fill in user items for dropdown list.
-     * $search string a part of username or profile.first_name or profile.last_name)
-     * @return json array of {id: integer, text: string}
-     * @throws ForbiddenHttpException if this is not an ajax request
-     */
-	public function actionFillin($search = '', $type)
-	{
-		if (Yii::$app->getRequest()->isAjax) {
-            return $this->asJson(['results' => User::getItems($search)]);
-		} else
-			throw new ForbiddenHttpException('Only ajax request suitable.');
-	}
 }

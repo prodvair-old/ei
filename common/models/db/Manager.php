@@ -2,6 +2,7 @@
 
 namespace common\models\db;
 
+use Yii;
 use common\components\IntCode;
 
 /**
@@ -44,26 +45,40 @@ class Manager extends BaseAgent
 
     /**
      * Getting manager items for dropdown list.
-     * $search string a part of Manager full name
+     * 
+     * @param string  $search a part of item
+     * @param integer $selected item
      * @return array of [id: integer, text: string]
      */
-	public static function jsonItems($selected)
+	public static function getItems($search = '', $selected = 0)
 	{
-        $managers = self::find()
-            ->select(['manager.id', 'inn', 'full_name' => 'CONCAT_WS(" ", first_name, middle_name, last_name)'])
+        $query = self::find()
+            ->select(['manager.id', 'inn', 'full_name' => "CONCAT_WS(' ', last_name, first_name, middle_name)"])
             ->innerJoin('{{%profile}}', 'manager.id=profile.parent_id AND model='. IntCode::MANAGER)
             ->where(['manager.agent' => self::AGENT_PERSON])
-            ->orderBy('full_name')
-            ->asArray()
-            ->all();
+            ->andWhere(['not like', 'first_name', '-'])
+            ->orderBy('full_name');
+        if ($search)
+            $query->andFilterWhere(['or',
+                ['like', 'first_name', $search],
+                ['like', 'middle_name', $search],
+                ['like', 'last_name', $search],
+                ['like', 'inn', $search]
+            ]);
+        else
+            $query->limit(10);
+        
+        $managers = $query->asArray()->all();
+        
         $a = [];
+        $a[] = ['id' => 0, 'text' => Yii::t('app', 'Select')];
         foreach($managers as $manager)
             $a[] = [
                 'id' => $manager['id'], 
                 'text' => ($manager['full_name'] . ' ' . $manager['inn']),
-                'selected' => in_array($manager['id'], $selected),
+                'selected' => ($manager['id'] == $selected),
             ];
-        return json_encode($a);
+        return $a;
 	}
 }
 
