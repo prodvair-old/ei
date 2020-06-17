@@ -15,7 +15,7 @@ return [
         'format' => 'raw',
         'value' => function($data) {
              return $data['id'] . ' ' .
-                Html::a('<i class="fa fa-plus"></i>', ['report/create', 'lot_id' => $data['id']], ['title' => Yii::t('app', 'Add report')]);
+                Html::a('<i class="fa fa-book"></i>', ['report/create', 'lot_id' => $data['id']], ['title' => Yii::t('app', 'Add report')]);
         }
     ],
     [
