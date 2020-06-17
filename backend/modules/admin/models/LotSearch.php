@@ -6,6 +6,7 @@ use Yii;
 use yii\data\ActiveDataProvider;
 
 use common\models\db\Lot;
+use common\models\db\User;
 use common\models\db\Category;
 use common\components\Property;
 
@@ -30,7 +31,19 @@ class LotSearch extends Lot
                 'lookup_status.name AS status, lookup_reason.name AS reason, lookup_property.name AS property, '.
                 'category.name as category_name, start_price, torg.end_at')
             ->distinct(false)
-            ->innerJoin('{{%torg}}', 'lot.torg_id=torg.id')
+            ->innerJoin('{{%torg}}', 'lot.torg_id=torg.id');
+
+        $user = Yii::$app->user;
+
+        // bankrupt property, arbitration manager
+        if ($user->identity->role == User::ROLE_ARBITRATOR && ($manager_id = $user->identity->getManagerId()))
+            $query->innerJoin('{{%torg_debtor}}', 'torg.id=torg_debtor.torg_id AND torg_debtor.manager_id=' . $manager_id);
+
+        // pledge (zalog) property, ordinary user
+        if ($user->identity->role == User::ROLE_AGENT)
+            $query->innerJoin('{{%torg_pledge}}', 'torg.id=torg_pledge.torg_id AND torg_pledge.user_id=' . $user->id);
+
+        $query
             ->innerJoin('{{%lot_category}}', 'lot.id=lot_category.lot_id')
             ->innerJoin('{{%category}}', 'lot_category.category_id=category.id')
             ->innerJoin('{{%lookup}} AS lookup_status', 'lot.status=lookup_status.code AND lookup_status.property_id='. Property::LOT_STATUS)

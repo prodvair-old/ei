@@ -11,6 +11,7 @@ use yii\web\ForbiddenHttpException;
 use common\models\db\User;
 use common\models\db\Profile;
 use common\models\db\Notification;
+use common\models\db\Arbitrator;
 use backend\modules\admin\models\UserSearch;
 
 /**
@@ -87,10 +88,14 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $arbitrator = $model->arbitrator
+            ? $model->arbitrator
+            : new Arbitrator(['user_id' => $model->id]);
+        $model->manager_id = $arbitrator->manager_id;
         
         //if (!Yii::$app->user->can('update', ['model' => $model]))
             //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
-        
+
         $profile = isset($model->profile)
             ? $model->profile
             : new Profile(['model' => User::INT_CODE, 'parent_id' => $model->id]);
@@ -108,6 +113,13 @@ class UserController extends Controller
                 $model->save(false);
                 $profile->save(false);
                 $notification->save(false);
+                if ($model->manager_id) {
+                    $arbitrator->manager_id = $model->manager_id;
+                    $arbitrator->save();
+                } elseif ($model->arbitrator) {
+                    $model->arbitrator->delete();
+                }
+                    
                 Yii::$app->session->setFlash('success', Yii::t('app', 'Updated successfully.'));
             }
         }
@@ -116,6 +128,7 @@ class UserController extends Controller
             'model' => $model,
             'profile' => $profile,
             'notification' => $notification,
+            'manager' => $model->manager,
         ]);
     }
 

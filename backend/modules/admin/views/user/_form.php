@@ -1,8 +1,10 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $model common\models\db\Torg */
-/* @var $pladge common\models\db\TorgPledge */
+/* @var $model common\models\db\User */
+/* @var $profile common\models\db\Profile */
+/* @var $notification common\models\db\Notification */
+/* @var $manager common\models\db\Manager */
 
 use yii\widgets\ActiveForm;
 
@@ -42,13 +44,14 @@ use yii\widgets\ActiveForm;
         <div class='lot-status col-lg-4'>
             <div class='box box-primary'>
                 <div class='box-header'>
-                    <h3 class='box-title'><?= Yii::t('app', 'Rights') ?></h3>
+                    <h3 class='box-title'><?= Yii::t('app', 'State') ?></h3>
                 </div>
                 <div class='box-body'>
 
-                    <?= $this->render('_form_status', [
-                        'form'  => $form,
-                        'model' => $model,
+                    <?= $this->render('_form_state', [
+                        'form'    => $form,
+                        'model'   => $model,
+                        'manager' => $manager,
                     ]) ?>
                 
                 </div>
