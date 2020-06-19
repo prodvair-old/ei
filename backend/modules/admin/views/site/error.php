@@ -23,19 +23,11 @@ $this->title = $name;
             </p>
 
             <p>
-                Извините но произошла ошибка. Вернитесь на <a href='<?= Yii::$app->homeUrl ?>'>Главную</a> и продолжайте работу.
+                <?= Yii::t('app', 'Sorry, but an error occurred. If you believe that the error is significant, please let us know by email : {email}', [
+                    'email' => Yii::$app->params['email']['support'],
+                ]) ?>
             </p>
 
-            <!-- <form class='search-form'>
-                <div class='input-group'>
-                    <input type="text" name="search" class='form-control' placeholder="Search"/>
-
-                    <div class="input-group-btn">
-                        <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </form> -->
         </div>
     </div>
 

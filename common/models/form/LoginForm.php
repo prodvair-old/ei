@@ -14,13 +14,6 @@ use common\models\db\User;
  */
 class LoginForm extends Model
 {
-    public $roles = [
-        User::ROLE_ADMIN,
-        User::ROLE_MANAGER,
-        User::ROLE_AGENT,
-        User::ROLE_USER,
-    ];
-    
     public $username;
     public $password;
     public $rememberMe = true;
@@ -37,26 +30,9 @@ class LoginForm extends Model
             [['username', 'password'], 'required'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
-            // registered user should also belongs to group
-            ['username', 'allowedUserGroups', 'params' => ['roles' => $this->roles]],
+            // password is validated by validatePassword()
+            ['password', 'validatePassword'],
         ];
-    }
-
-    /**
-     * Validates the User group.
-     *
-     * @param string $attribute the attribute currently being validated
-     * @param array $params the additional name-value pairs given in the rule
-     */
-    public function allowedUserGroups($attribute, $params)
-    {
-        if(!($user = $this->getUser()))
-            // user has not registered yet
-            return;
-        if ($params['roles'] && !in_array($user->role, $params['roles'])) {
-            $this->addError($attribute, 
-                Module::t('core', 'You are registered, but you belong to a role that is not allowed to enter this part of the site.'));
-        }
     }
 
     /**
@@ -69,6 +45,23 @@ class LoginForm extends Model
             'password'   => Yii::t('app', 'Password'),
             'rememberMe' => Yii::t('app', 'Remember me'),
         ];
+    }
+
+    /**
+     * Validates the password.
+     * This method serves as the inline validation for password.
+     *
+     * @param string $attribute the attribute currently being validated
+     * @param array $params the additional name-value pairs given in the rule
+     */
+    public function validatePassword($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            $user = $this->getUser();
+            if (!$user || !$user->validatePassword($this->password)) {
+                $this->addError($attribute, 'Не верный логин или пароль.');
+            }
+        }
     }
 
     /**

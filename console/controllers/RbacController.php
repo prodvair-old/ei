@@ -2,7 +2,11 @@
 namespace console\controllers;
  
 use yii\console\Controller;
-use console\rbac\UserGroupRule;
+use console\rbac\UserRoleRule;
+use console\rbac\OwnProfileRule;
+use console\rbac\OwnReportRule;
+use console\rbac\OwnTorgRule;
+use console\rbac\OwnLotRule;
  
 class RbacController extends Controller
 {
@@ -16,16 +20,28 @@ class RbacController extends Controller
         
         // Simple, based on action{$NAME} permissions
         $index  = $auth->createPermission('index');
+        $view   = $auth->createPermission('view');
         $create = $auth->createPermission('create');
         $update = $auth->createPermission('update');
         $delete = $auth->createPermission('delete');
  
         $auth->add($index);
+        $auth->add($view);
         $auth->add($create);
         $auth->add($update);
         $auth->add($delete);
 
         // User
+
+        $viewUser = $auth->createPermission('viewUser');
+        $updateUser = $auth->createPermission('updateUser');
+        $deleteUser = $auth->createPermission('deleteUser');
+        $indexUser = $auth->createPermission('indexUser');
+
+        $auth->add($viewUser);
+        $auth->add($updateUser);
+        $auth->add($deleteUser);
+        $auth->add($indexUser);
 
         $ownProfile = new OwnProfileRule();
         $auth->add($ownProfile);
@@ -38,8 +54,13 @@ class RbacController extends Controller
         $updateOwnProfile->ruleName = $ownProfile->name;
         $auth->add($updateOwnProfile);
 
-        $auth->addChild($viewOwnProfile, $view);
-        $auth->addChild($updateOwnProfile, $update);
+        $auth->addChild($viewOwnProfile, $viewUser);
+        $auth->addChild($updateOwnProfile, $updateUser);
+
+        $auth->addChild($viewUser, $view);
+        $auth->addChild($updateUser, $update);
+        $auth->addChild($deleteUser, $delete);
+        $auth->addChild($indexUser, $index);
         
         // Report
 
@@ -47,6 +68,16 @@ class RbacController extends Controller
         $auth->add($ownReport);
 
         $createReport = $auth->createPermission('createReport');
+        $viewReport = $auth->createPermission('viewReport');
+        $updateReport = $auth->createPermission('updateReport');
+        $deleteReport = $auth->createPermission('deleteReport');
+        $indexReport = $auth->createPermission('indexReport');
+
+        $auth->add($createReport);
+        $auth->add($viewReport);
+        $auth->add($updateReport);
+        $auth->add($deleteReport);
+        $auth->add($indexReport);
 
         $viewOwnReport = $auth->createPermission('viewOwnReport');
         $viewOwnReport->ruleName = $ownReport->name;
@@ -60,13 +91,14 @@ class RbacController extends Controller
         $deleteOwnReport->ruleName = $ownReport->name;
         $auth->add($deleteOwnReport);
 
-        $auth->addChild($viewOwnReport, $view);
-        $auth->addChild($updateOwnReport, $update);
-        $auth->addChild($deleteOwnReport, $delete);
-
-        $indexReport = $auth->createPermission('indexReport');
+        $auth->addChild($viewOwnReport, $viewReport);
+        $auth->addChild($updateOwnReport, $updateReport);
+        $auth->addChild($deleteOwnReport, $deleteReport);
 
         $auth->addChild($createReport, $create);
+        $auth->addChild($viewReport, $view);
+        $auth->addChild($updateReport, $update);
+        $auth->addChild($deleteReport, $delete);
         $auth->addChild($indexReport, $index);
 
         // Torg
@@ -77,6 +109,14 @@ class RbacController extends Controller
         $createTorg = $auth->createPermission('createTorg');
         $viewTorg = $auth->createPermission('viewTorg');
         $updateTorg = $auth->createPermission('updateTorg');
+        $deleteTorg = $auth->createPermission('deleteTorg');
+        $indexTorg = $auth->createPermission('indexTorg');
+
+        $auth->add($createTorg);
+        $auth->add($viewTorg);
+        $auth->add($updateTorg);
+        $auth->add($deleteTorg);
+        $auth->add($indexTorg);
 
         $viewOwnTorg = $auth->createPermission('viewOwnTorg');
         $viewOwnTorg->ruleName = $ownTorg->name;
@@ -90,15 +130,14 @@ class RbacController extends Controller
         $deleteOwnTorg->ruleName = $ownTorg->name;
         $auth->add($deleteOwnTorg);
 
-        $auth->addChild($viewOwnTorg, $view);
-        $auth->addChild($updateOwnTorg, $update);
-        $auth->addChild($deleteOwnTorg, $delete);
-
-        $indexTorg = $auth->createPermission('indexTorg');
+        $auth->addChild($viewOwnTorg, $viewTorg);
+        $auth->addChild($updateOwnTorg, $updateTorg);
+        $auth->addChild($deleteOwnTorg, $deleteTorg);
 
         $auth->addChild($createTorg, $create);
         $auth->addChild($viewTorg, $view);
         $auth->addChild($updateTorg, $update);
+        $auth->addChild($deleteTorg, $delete);
         $auth->addChild($indexTorg, $index);
 
         // Lot
@@ -109,6 +148,14 @@ class RbacController extends Controller
         $createLot = $auth->createPermission('createLot');
         $viewLot = $auth->createPermission('viewLot');
         $updateLot = $auth->createPermission('updateLot');
+        $deleteLot = $auth->createPermission('deleteLot');
+        $indexLot = $auth->createPermission('indexLot');
+
+        $auth->add($createLot);
+        $auth->add($viewLot);
+        $auth->add($updateLot);
+        $auth->add($deleteLot);
+        $auth->add($indexLot);
 
         $viewOwnLot = $auth->createPermission('viewOwnLot');
         $viewOwnLot->ruleName = $ownLot->name;
@@ -122,25 +169,34 @@ class RbacController extends Controller
         $deleteOwnLot->ruleName = $ownLot->name;
         $auth->add($deleteOwnLot);
 
-        $auth->addChild($viewOwnLot, $view);
-        $auth->addChild($updateOwnLot, $update);
-        $auth->addChild($deleteOwnLot, $delete);
-
-        $indexLot = $auth->createPermission('indexLot');
+        $auth->addChild($viewOwnLot, $viewLot);
+        $auth->addChild($updateOwnLot, $updateLot);
+        $auth->addChild($deleteOwnLot, $deleteLot);
 
         $auth->addChild($createLot, $create);
         $auth->addChild($viewLot, $view);
         $auth->addChild($updateLot, $update);
+        $auth->addChild($deleteLot, $delete);
         $auth->addChild($indexLot, $index);
 
         // Owner
 
+        $createOwner = $auth->createPermission('createOwner');
         $viewOwner = $auth->createPermission('viewOwner');
         $updateOwner = $auth->createPermission('updateOwner');
+        $deleteOwner = $auth->createPermission('deleteOwner');
         $indexOwner = $auth->createPermission('indexOwner');
 
+        $auth->add($createOwner);
+        $auth->add($viewOwner);
+        $auth->add($updateOwner);
+        $auth->add($deleteOwner);
+        $auth->add($indexOwner);
+
+        $auth->addChild($createOwner, $create);
         $auth->addChild($viewOwner, $view);
         $auth->addChild($updateOwner, $update);
+        $auth->addChild($deleteOwner, $delete);
         $auth->addChild($indexOwner, $index);
 
         // Roles
@@ -152,9 +208,9 @@ class RbacController extends Controller
         $user->ruleName  = $role->name;
         $auth->add($user);
 
-        $arbitration_manager = $auth->createRole('arbitrator');
-        $arbitration_manager->ruleName  = $role->name;
-        $auth->add($arbitration_manager);
+        $arbitrator = $auth->createRole('arbitrator');
+        $arbitrator->ruleName  = $role->name;
+        $auth->add($arbitrator);
 
         $agent = $auth->createRole('agent');
         $agent->ruleName  = $role->name;
@@ -165,7 +221,7 @@ class RbacController extends Controller
         $auth->add($manager);
 
         $admin = $auth->createRole('admin');
-        $admin->ruleName  = $group->name;
+        $admin->ruleName  = $role->name;
         $auth->add($admin);
  
         // User
@@ -187,12 +243,21 @@ class RbacController extends Controller
         $auth->addChild($arbitrator, $indexLot);
 
         // Agent
-        $auth->addChild($user, $createTorg);
-        $auth->addChild($user, $deleteOwnTorg);
-        $auth->addChild($user, $createLot);
-        $auth->addChild($user, $deleteOwnLot);
+        $auth->addChild($agent, $createTorg);
+        $auth->addChild($agent, $viewOwnTorg);
+        $auth->addChild($agent, $updateOwnTorg);
+        $auth->addChild($agent, $deleteOwnTorg);
+        $auth->addChild($agent, $indexTorg);
+        $auth->addChild($agent, $createLot);
+        $auth->addChild($agent, $viewOwnLot);
+        $auth->addChild($agent, $updateOwnLot);
+        $auth->addChild($agent, $deleteOwnLot);
+        $auth->addChild($agent, $indexLot);
 
         // Manager
+        $auth->addChild($manager, $viewReport);
+        $auth->addChild($manager, $updateReport);
+        $auth->addChild($manager, $deleteReport);
         $auth->addChild($manager, $viewTorg);
         $auth->addChild($manager, $updateTorg);
         $auth->addChild($manager, $indexTorg);
@@ -204,17 +269,33 @@ class RbacController extends Controller
         $auth->addChild($manager, $indexOwner);
 
         // Admin
+        $auth->addChild($admin, $viewUser);
+        $auth->addChild($admin, $updateUser);
+        $auth->addChild($admin, $deleteUser);
+        $auth->addChild($admin, $indexUser);
+
+        $auth->addChild($admin, $createOwner);
+        $auth->addChild($admin, $deleteOwner);
+
+        $auth->addChild($admin, $deleteTorg);
+
+        $auth->addChild($admin, $deleteLot);
+
         $auth->addChild($admin, $create);
+        $auth->addChild($admin, $view);
         $auth->addChild($admin, $update);
         $auth->addChild($admin, $delete);
         $auth->addChild($admin, $index);
 
         // Arbitrator can all that can User
         $auth->addChild($arbitrator, $user);
-        // Agent can all that can Arbitrator
-        $auth->addChild($agent, $arbitrator);
+        // Agent can all that can User
+        $auth->addChild($agent, $user);
         // Manager can all that can User
         $auth->addChild($manager, $user);
+        
+        // Admin can all that can Arbitrator
+        $auth->addChild($admin, $arbitrator);
         // Admin can all that can Agent
         $auth->addChild($admin, $agent);
         // Admin can all that can Manager

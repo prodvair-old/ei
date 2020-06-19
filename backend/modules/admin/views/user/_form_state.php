@@ -35,7 +35,8 @@ $(document).ready(function() {
     });
 });
 JS;
-$this->registerJS($script);?>
+$this->registerJS($script);
+?>
 
 <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 <?= $form->field($model, 'status')->dropdownList(Lookup::items(Property::USER_STATUS, true), [

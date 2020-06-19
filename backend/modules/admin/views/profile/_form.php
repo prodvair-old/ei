@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $model common\models\db\Torg */
+/* @var $model common\models\db\Profile */
 /* @var $form yii\widgets\ActiveForm */
 
 use yii\helpers\Html;
