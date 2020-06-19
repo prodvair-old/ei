@@ -19,7 +19,6 @@ class m200619_102622_search_queries extends Migration
             'title'             => $this->string()->notNull(),
             'description'       => $this->text()->notNull(),
             'url'               => $this->text()->notNull(),
-            'url_query'         => $this->text()->notNull(),
             'search_date'       => $this->integer()->notNull(),
             'search_lot_count'  => $this->integer()->notNull()->defaultValue(0),
             'send_email'        => $this->boolean()->defaultValue(true),
@@ -35,7 +34,6 @@ class m200619_102622_search_queries extends Migration
         $this->addCommentOnColumn(self::TABLE, 'title', 'Название');
         $this->addCommentOnColumn(self::TABLE, 'title', 'Описание');
         $this->addCommentOnColumn(self::TABLE, 'url', 'Полная ссылка');
-        $this->addCommentOnColumn(self::TABLE, 'url_query', 'GET запрос');
 		$this->addCommentOnColumn(self::TABLE, 'search_date', 'Дата последнего поиска');
 		$this->addCommentOnColumn(self::TABLE, 'search_lot_count', 'Количество найденных лотов');
     }

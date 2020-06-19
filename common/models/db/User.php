@@ -392,4 +392,13 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return ($model = Arbitrator::findOne(['user_id' => $this->id])) ? $model->manager_id : null;
     }
+    
+    /**
+     * Get search queries those user saved
+     * @return yii\db\ActiveQuery
+     */
+    public function getSearchQueries()
+    {
+        return $this->hasOne(SearchQueries::className(), ['user_id' => 'id']);
+    }
 }

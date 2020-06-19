@@ -14,7 +14,6 @@ use yii\behaviors\TimestampBehavior;
  * @var string $title
  * @var string $description
  * @var string $url
- * @var string $url_query
  * @var integer $search_date
  * @var integer $search_lot_count
  * @var boolean $send_email
@@ -55,7 +54,7 @@ class SearchQueries extends ActiveRecord
             ['user_id', 'required', 'except' => self::SCENARIO_CREATE],
             [['title','description', 'url', 'url_query', 'search_date', 'search_lot_count'], 'required'],
             ['title', 'string', 'max' => 255],
-            [['description', 'url', 'url_query'], 'string'],
+            [['description', 'url'], 'string'],
             [['search_date', 'search_lot_count'], 'integer'],
             ['search_lot_count', 'default', 'value' => 0],
             ['send_email', 'boolean'],
@@ -74,12 +73,21 @@ class SearchQueries extends ActiveRecord
             'title'             => Yii::t('app', 'Название'),
             'description'       => Yii::t('app', 'Описание'),
             'url'               => Yii::t('app', 'Полная ссылка'),
-            'url_query'         => Yii::t('app', 'GET запрос'),
             'search_date'       => Yii::t('app', 'Дата последнего поиска'),
             'search_lot_count'  => Yii::t('app', 'Количество найденных лотов'),
             'send_email'        => Yii::t('app', 'Send Email'),
             'created_at'        => Yii::t('app', 'Created'),
             'updated_at'        => Yii::t('app', 'Modified'),
         ];
+    }
+
+    public function getQueryJson()
+    {
+      $query = null;
+
+      parse_url($this->url);
+      parse_str($parts['query'], $query);
+
+      return $query;
     }
 }
