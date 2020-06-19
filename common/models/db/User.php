@@ -28,7 +28,7 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
  * 
  * @property Notification $notification
  * @property Profile $profile
- * @property Lot[] $lots
+ * @property Lot[] $wishLots
  * @property Arbitrator $arbitrator
  * @property Manager $manager
  * @property sergmoro1\uploader\models\OneFile[] $files
@@ -374,14 +374,44 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Get wishlist of lots
+     * Get lots by wishList
      * 
      * @return yii\db\ActiveQuery
      */
-    public function getLots()
+    public function getWishLots()
     {
         return $this->hasMany(Lot::className(), ['id' => 'user_id'])
             ->viaTable(WishList::tableName(), ['lot_id' => 'id']);
+    }
+
+    /**
+     * Get wishLots count
+     * 
+     * @return integer
+     */
+    public function getWishLotCount()
+    {
+        return $this->getWishLots()->asArray()->count();
+    }
+
+    /**
+     * Get reports
+     * 
+     * @return yii\db\ActiveQuery
+     */
+    public function getReports()
+    {
+        return $this->hasMany(Report::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * Get reports count
+     * 
+     * @return integer
+     */
+    public function getReportCount()
+    {
+        return $this->getReports()->asArray()->count();
     }
 
     /**
@@ -391,5 +421,14 @@ class User extends ActiveRecord implements IdentityInterface
     public function getManagerId()
     {
         return ($model = Arbitrator::findOne(['user_id' => $this->id])) ? $model->manager_id : null;
+    }
+    
+    /**
+     * Get search queries those user saved
+     * @return yii\db\ActiveQuery
+     */
+    public function getSearchQueries()
+    {
+        return $this->hasOne(SearchQueries::className(), ['user_id' => 'id']);
     }
 }
