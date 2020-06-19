@@ -8,41 +8,43 @@ use common\components\Property;
 use common\models\db\User;
 
 ?>
-<div class="box-header with-border">
-    <h3 class="box-title"><?= Yii::t('app', 'About Me') ?></h3>
+<div class='box-header with-border'>
+    <h3 class='box-title'><?= Yii::t('app', 'About Me') ?></h3>
 </div>
-<div class="box-body">
-    <strong><?= Yii::t('app', 'Activity') ?></strong>
-    <p class="text-muted">
-        <?= Lookup::item(Property::PERSON_ACTIVITY, $model->profile->activity, true) ?>
-    </p>
+<div class='box-body'>
+    <?php if(isset($model->profile)): ?>
+        <strong><?= Yii::t('app', 'Activity') ?></strong>
+        <p class='text-muted'>
+            <?= Lookup::item(Property::PERSON_ACTIVITY, $model->profile->activity, true) ?>
+        </p>
+    <?php endif; ?>
 
     <strong><?= Yii::t('app', 'Status') ?></strong>
-    <p class="text-muted">
+    <p class='text-muted'>
         <?= Lookup::item(Property::USER_STATUS, $model->status, true) ?>
     </p>
 
-    <hr>
+    <?php if(isset($model->notification)): ?>
+        <hr>
+        <strong><?= Yii::t('app', 'Notifications') ?></strong>
+        <p>
+            <i class='fa fa-<?= $model->notification->new_picture ? 'check-' : '' ?>square-o margin-r-5'></i>
+            <?= $model->notification->getAttributeLabel('new_picture') ?>
+        </p>
+        <p>
+            <i class='fa fa-<?= $model->notification->new_report ? 'check-' : '' ?>square-o margin-r-5'></i>
+            <?= $model->notification->getAttributeLabel('new_report') ?>
+        </p>
+        <p>
+            <i class='fa fa-<?= $model->notification->price_reduction ? 'check-' : '' ?>square-o margin-r-5'></i>
+            <?= $model->notification->getAttributeLabel('price_reduction') ?>
+        </p>
+    <?php endif; ?>
 
-    <strong><?= Yii::t('app', 'Notifications') ?></strong>
-
-    <p>
-        <i class="fa fa-<?= $model->notification->new_picture ? 'check-' : '' ?>square-o margin-r-5"></i>
-        <?= $model->notification->getAttributeLabel('new_picture') ?>
-    </p>
-    <p>
-        <i class="fa fa-<?= $model->notification->new_report ? 'check-' : '' ?>square-o margin-r-5"></i>
-        <?= $model->notification->getAttributeLabel('new_report') ?>
-    </p>
-    <p>
-        <i class="fa fa-<?= $model->notification->price_reduction ? 'check-' : '' ?>square-o margin-r-5"></i>
-        <?= $model->notification->getAttributeLabel('price_reduction') ?>
-    </p>
-
-    <hr>
-
-    <strong><i class="fa fa-phone margin-r-5"></i> <?= Yii::t('app', 'Phone') ?></strong>
-
-    <p class="text-muted"><?= ($phone = $model->profile->phone) ?: Yii::t('app', 'not defined') ?></p>
+    <?php if(isset($model->profile)): ?>
+        <hr>
+        <strong><i class='fa fa-phone margin-r-5'></i> <?= Yii::t('app', 'Phone') ?></strong>
+        <p class='text-muted'><?= ($phone = $model->profile->phone) ?: Yii::t('app', 'not defined') ?></p>
+    <?php endif; ?>
 
 </div>

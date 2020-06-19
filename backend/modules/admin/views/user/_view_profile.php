@@ -9,7 +9,9 @@ use common\components\Property;
 ?>
 <div class='box-body box-profile'>
     <?= $model->getAvatar(['class' => 'profile-user-img img-responsive img-circle']) ?>
-    <h3 class='profile-username text-center'><?= $model->fullName ?></h3>
+    <h3 class='profile-username text-center'>
+        <?= mb_strlen(($full_name = $model->fullName), 'UTF-8') > 20 ? '<small>' . $full_name . '</small>' : $full_name ?>
+    </h3>
     <p class='text-muted text-center'><?= Lookup::item(Property::USER_ROLE, $model->role, true) ?></p>
 
     <ul class='list-group list-group-unbordered'>
