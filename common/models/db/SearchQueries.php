@@ -81,7 +81,12 @@ class SearchQueries extends ActiveRecord
         ];
     }
 
-    public function getQueryJson()
+    /**
+     * Query parser
+     *
+     * @return array parsing GET parameters from a link
+     */
+    public function getQueryParser()
     {
       $query = null;
 
