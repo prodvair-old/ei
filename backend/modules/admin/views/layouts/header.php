@@ -55,7 +55,11 @@ $user = Yii::$app->user->identity;
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="http://ei.ru/profile" class="btn btn-default btn-flat">Профиль</a>
+                                <?= Html::a(
+                                    'Профиль',
+                                    ['user/view', 'id' => Yii::$app->user->id],
+                                    ['class' => 'btn btn-default btn-flat']
+                                ) ?>
                             </div>
                             <div class="pull-right">
                                 <?= Html::a(
