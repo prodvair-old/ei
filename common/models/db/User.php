@@ -47,6 +47,7 @@ class User extends ActiveRecord implements IdentityInterface
     const ROLE_ARBITRATOR = 4;
     const ROLE_USER       = 5;
 
+    /** @var integer arbitration manager ID */
     public $manager_id;
 
     /**
@@ -229,7 +230,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Проверить, нужно ли отправлять уведомление о событии
+     * Checking whether to send  the message about an event
      * 
      * @param string $name of event
      * @return boolean
@@ -263,7 +264,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function validatePassword($password)
     {
-        return Yii::$app->security->validatePassword($password, $this->password);
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
 
     /**

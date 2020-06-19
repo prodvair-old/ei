@@ -22,13 +22,13 @@ class UserSearch extends User
 
     public function search($params)
     {
-        $join = [];
-        $join['profile'] = '"profile"."parent_id"="user"."id" AND model='. self::INT_CODE;
+        $on = [];
+        $on['profile'] = '"profile"."parent_id"="user"."id" AND model='. self::INT_CODE;
         if ($this->db->driverName === 'mysql')
-            $join['profile'] = str_replace('"', '', $join['profile']);
+            $on['profile'] = str_replace('"', '', $on['profile']);
         $query = User::find()
             ->select('user.id, username, role, status, first_name, last_name')
-            ->leftJoin('{{%profile}}', $join['profile'])
+            ->leftJoin('{{%profile}}', $on['profile'])
             ->asArray();
 
         $dataProvider = new ActiveDataProvider([

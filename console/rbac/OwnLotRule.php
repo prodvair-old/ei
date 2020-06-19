@@ -1,15 +1,19 @@
 <?php
 namespace console\rbac;
 
+use Yii;
 use yii\rbac\Rule;
-use common\models\User;
+use common\models\db\User;
+use common\models\db\Arbitrator;
 
 /**
- * Checks if comment.user_id matches current User Id
+ * Admin and Manager can work with lots (Lot), but 
+ * Agent can only lots (Lot) that created itself and 
+ * Arbitrator only lots that was assigned for him.
  */
-class OwnAnswerRule extends Rule
+class OwnLotRule extends Rule
 {
-    public $name = 'ownAnswer';
+    public $name = 'ownLot';
 
     /**
      * @param string|integer $user the user ID.
@@ -19,9 +23,12 @@ class OwnAnswerRule extends Rule
      */
     public function execute($user_id, $item, $params)
     {
-        // model = comment
-        return isset($params['model']) && !(strpos(get_class($params['model']), 'Comment') === false)
-            ? $params['model']->user_id == $user_id 
-            : false;
+        if (isset($params['model']) && !(strpos(get_class($params['model']), 'Lot') === false)) {
+            if (Yii::$app->user->identity->role == User::ROLE_AGENT)
+                return $params['model']->torg->pledge->user_id == $user_id;
+            if (Yii::$app->user->identity->role == User::ROLE_ARBITRATOR)
+                return $params['model']->torg->debtor->manager_id == Arbitrator::getManagerIdBy($user_id);
+        } else
+            return false;
     }
 }

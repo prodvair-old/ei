@@ -238,6 +238,17 @@ class Torg extends ActiveRecord
     }
 
     /**
+     * Get Debtor link
+     * @return yii\db\ActiveQuery
+     */
+    public function getDebtor()
+    {
+        return $this->hasOne(TorgDebtor::className(), ['torg_id' => 'id']);
+    }
+    
+    /**
+     * Get Pledge link
+     * @return yii\db\ActiveQuery
      */
     public function getTorgPledge()
     {

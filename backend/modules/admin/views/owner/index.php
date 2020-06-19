@@ -23,6 +23,8 @@ $this->registerJs($script);
     <div class='col-lg-12'>
         <div class='box model-index table-responsive'>
             <div class='box-header'>
+                <?= Html::a(Yii::$app->params['icons']['plus'] . ' ' . Yii::t('app', 'Add'), ['create'], ['class' => 'btn btn-success']) ?>
+
                 <?= Html::submitButton(Yii::t('app', 'Find'), ['class' => 'btn btn-primary search-submit']) ?>
             </div>
 
