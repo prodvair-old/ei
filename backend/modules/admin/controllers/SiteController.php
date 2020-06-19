@@ -22,13 +22,15 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'only' => ['login', 'signup', 'logout', 'index', 'image-upload', 'file-upload', 'get-files', 'get-images', 'delete-file'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'index', 'error'],
+                        'actions' => ['login', 'signup'],
                         'allow' => true,
+                        'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -114,10 +116,6 @@ class SiteController extends Controller
     {
         $this->layout = 'main-login';
         
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
         $model = new LoginForm();
         
         if ($model->load(Yii::$app->request->post()) && $model->login()) {

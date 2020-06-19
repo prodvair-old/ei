@@ -20,5 +20,13 @@ class Arbitrator extends ActiveRecord
     {
         return '{{%arbitrator}}';
     }
+
+    /**
+     * Get Manager ID by User ID
+     */
+    public static function getManagerIdBy($user_id)
+    {
+        return ($arbitrator = self::findOne($user_id)) ? $arbitrator->manager_id : 0;
+    }
 }
 
