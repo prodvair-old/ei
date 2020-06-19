@@ -30,7 +30,13 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
  			'baseUrl' => 'https://ei',
-       ],
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\PhpManager',
+            'defaultRoles' => ['user', 'arbitrator', 'agent', 'manager', 'admin'],
+            'itemFile' => __DIR__ . '/../../console/rbac/items.php',
+            'ruleFile' => __DIR__ . '/../../console/rbac/rules.php',
+        ],
         'log' => [
             'targets' => [
                 [

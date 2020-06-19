@@ -5,6 +5,7 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use sergmoro1\lookup\models\Lookup;
+use common\components\IntCode;
 
 /**
  * Torg model
@@ -237,6 +238,17 @@ class Torg extends ActiveRecord
     }
 
     /**
+     * Get Debtor link
+     * @return yii\db\ActiveQuery
+     */
+    public function getDebtor()
+    {
+        return $this->hasOne(TorgDebtor::className(), ['torg_id' => 'id']);
+    }
+    
+    /**
+     * Get Pledge link
+     * @return yii\db\ActiveQuery
      */
     public function getTorgPledge()
     {
@@ -279,6 +291,36 @@ class Torg extends ActiveRecord
     {
         return $this->hasMany(Document::className(), ['parent_id' => 'id'])
             ->andOnCondition(['=', Document::tableName() . '.model', self::INT_CODE]);
+    }
+
+    /**
+     * Calculate - at what stage of the auction (Torg).
+     *
+     * @param integer $torg_id
+     * @param integer $property
+     * @return integer count of auctions for bankrupt property or empty string for others
+     */
+    public static function getStage($torg_id, $property)
+    {
+        if ($property != self::PROPERTY_BANKRUPT)
+            return '';
+        $select =
+            // select count of torgs by the casefile
+            'select count(torg_debtor.torg_id) as stage '. 
+            'from eidb.torg_debtor ' .
+            'where case_id = ('.
+                // select casefile of the torg
+                'select torg_debtor.case_id from eidb.torg '. 
+                'inner join eidb.torg_debtor on (torg.id=torg_debtor.torg_id) '.
+                'where torg.id=:id'.
+            ')';
+
+        $db = Yii::$app->db;
+        if ($db->driverName === 'mysql')
+            $select = str_replace('eidb.', '', $select);
+        $command = $db->createCommand($select);
+        $command->bindValue(':id', $torg_id);
+        return $command->queryScalar();
     }
 
     /**

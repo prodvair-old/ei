@@ -11,6 +11,7 @@ use yii\web\ForbiddenHttpException;
 use common\models\db\User;
 use common\models\db\Profile;
 use common\models\db\Notification;
+use common\models\db\Arbitrator;
 use backend\modules\admin\models\UserSearch;
 
 /**
@@ -50,8 +51,8 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        //if (!Yii::$app->user->can('index'))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('indexUser'))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->get());
@@ -70,8 +71,8 @@ class UserController extends Controller
     public function actionView($id = 0)
     {
         $model = $this->findModel($id);
-        //if (!Yii::$app->user->can('viewPost', ['model' => $model]))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('viewUser', ['model' => $model]))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         return $this->render('view', [
             'model' => $model,
@@ -87,9 +88,14 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        
-        //if (!Yii::$app->user->can('update', ['model' => $model]))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+
+        if (!Yii::$app->user->can('updateUser', ['model' => $model]))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+
+        $arbitrator = $model->arbitrator
+            ? $model->arbitrator
+            : new Arbitrator(['user_id' => $model->id]);
+        $model->manager_id = $arbitrator->manager_id;
         
         $profile = isset($model->profile)
             ? $model->profile
@@ -108,6 +114,13 @@ class UserController extends Controller
                 $model->save(false);
                 $profile->save(false);
                 $notification->save(false);
+                if ($model->manager_id) {
+                    $arbitrator->manager_id = $model->manager_id;
+                    $arbitrator->save();
+                } elseif ($model->arbitrator) {
+                    $model->arbitrator->delete();
+                }
+                    
                 Yii::$app->session->setFlash('success', Yii::t('app', 'Updated successfully.'));
             }
         }
@@ -116,6 +129,7 @@ class UserController extends Controller
             'model' => $model,
             'profile' => $profile,
             'notification' => $notification,
+            'manager' => $model->manager,
         ]);
     }
 
@@ -126,7 +140,7 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        if (!Yii::$app->user->can('delete'))
+        if (!Yii::$app->user->can('deleteUser'))
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $model = $this->findModel($id);
@@ -153,18 +167,4 @@ class UserController extends Controller
             }
         }
     }
-
-    /**
-     * Fill in user items for dropdown list.
-     * $search string a part of username or profile.first_name or profile.last_name)
-     * @return json array of {id: integer, text: string}
-     * @throws ForbiddenHttpException if this is not an ajax request
-     */
-	public function actionFillin($search = '', $type)
-	{
-		if (Yii::$app->getRequest()->isAjax) {
-            return $this->asJson(['results' => User::getItems($search)]);
-		} else
-			throw new ForbiddenHttpException('Only ajax request suitable.');
-	}
 }

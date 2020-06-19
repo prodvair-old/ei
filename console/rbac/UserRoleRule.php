@@ -15,14 +15,14 @@ class UserRoleRule extends Rule
             $role = Yii::$app->user->identity->role;
             if ($item->name === 'admin') {
                 return $role == User::ROLE_ADMIN;
-            } elseif ($item->name === 'agent') {
-                 return $role == User::ROLE_ADMIN || $ROLE == User::ROLE_AGENT;
             } elseif ($item->name === 'manager') {
-                 return $role == User::ROLE_ADMIN || $ROLE == User::ROLE_MANAGER;
+                 return $role == User::ROLE_ADMIN || $role == User::ROLE_MANAGER;
+            } elseif ($item->name === 'agent') {
+                 return $role == User::ROLE_ADMIN || $role == User::ROLE_AGENT;
             } elseif ($item->name === 'arbitrator') {
-                 return $role == User::ROLE_ADMIN || $ROLE == User::ROLE_AGENT || User::ROLE_ARBITRATOR;
+                 return $role == User::ROLE_ADMIN || $role == User::ROLE_ARBITRATOR;
             } elseif ($item->name === 'user') {
-                 return $role == User::ROLE_ADMIN || $ROLE == User::ROLE_MANAGER || $ROLE == User::ROLE_AGENT || User::ROLE_ARBITRATOR || User::ROLE_USER;
+                 return in_array($role, [User::ROLE_ADMIN, User::ROLE_MANAGER, User::ROLE_AGENT, User::ROLE_ARBITRATOR, User::ROLE_USER]);
             }
         }
         return false;

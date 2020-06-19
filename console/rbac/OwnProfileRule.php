@@ -18,8 +18,8 @@ class OwnProfileRule extends Rule
      */
     public function execute($user_id, $item, $params)
     {
-        return isset($params['user'])
-            ? $params['user']->id == $user_id
+        return isset($params['model']) && !(strpos(get_class($params['model']), 'User') === false)
+            ? $params['model']->id == $user_id
             : false;
     }
 }

@@ -3,14 +3,17 @@ namespace console\rbac;
 
 use Yii;
 use yii\rbac\Rule;
-use common\models\User;
+use common\models\db\User;
+use common\models\db\Arbitrator;
 
 /**
- * Checks if comment.post_id matches for Posts Ids of current User
+ * Admin and Manager can work with auctions (Torg), but 
+ * Agent can only auctions (Torg) that created itself and 
+ * Arbitrator only auctions that was assigned for him.
  */
-class OwnCommentRule extends Rule
+class OwnTorgRule extends Rule
 {
-    public $name = 'ownComment';
+    public $name = 'ownTorg';
 
     /**
      * @param string|integer $user_id the user ID.
@@ -20,11 +23,12 @@ class OwnCommentRule extends Rule
      */
     public function execute($user_id, $item, $params)
     {
-        // admin can reply for all comments 
-        if(!isset($params['comment']) || Yii::$app->user->identity->group == User::GROUP_ADMIN)
-            return true;
-        return $params['comment']->model == 1    
-            ? in_array($params['comment']->parent_id, $params['comment']->getUserPosts($user_id))
-            : true;
+        if (isset($params['model']) && !(strpos(get_class($params['model']), 'Torg') === false)) {
+            if (Yii::$app->user->identity->role == User::ROLE_AGENT)
+                return $params['model']->pledge->user_id == $user_id;
+            if (Yii::$app->user->identity->role == User::ROLE_ARBITRATOR)
+                return $params['model']->debtor->manager_id == Arbitrator::getManagerIdBy($user_id);
+        } else
+            return false;
     }
 }

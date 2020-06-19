@@ -22,17 +22,17 @@ class OwnerSearch extends Owner
 
     public function search($params)
     {
-        $join = [];
-        $join['organization'] = '"organization"."parent_id"="owner"."id" AND "organization"."model"=' . self::INT_CODE;
-        $join['place'] = '"place"."parent_id"="owner"."id" AND "place"."model"=' . self::INT_CODE;
+        $on = [];
+        $on['organization'] = '"organization"."parent_id"="owner"."id" AND "organization"."model"=' . self::INT_CODE;
+        $on['place'] = '"place"."parent_id"="owner"."id" AND "place"."model"=' . self::INT_CODE;
         if ($this->db->driverName === 'mysql') {
-            $join['organization'] = str_replace('"', '', $join['organization']);
-            $join['place'] = str_replace('"', '', $join['place']);
+            $on['organization'] = str_replace('"', '', $on['organization']);
+            $on['place'] = str_replace('"', '', $on['place']);
         }
         $query = Owner::find()
             ->select('owner.id, title, email, phone, website, status, activity')
-            ->innerJoin('{{%organization}}', $join['organization'])
-            ->innerJoin('{{%place}}', $join['place'])
+            ->innerJoin('{{%organization}}', $on['organization'])
+            ->innerJoin('{{%place}}', $on['place'])
             ->asArray();
 
         $dataProvider = new ActiveDataProvider([

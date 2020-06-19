@@ -29,6 +29,8 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
  * @property Notification $notification
  * @property Profile $profile
  * @property Lot[] $lots
+ * @property Arbitrator $arbitrator
+ * @property Manager $manager
  * @property sergmoro1\uploader\models\OneFile[] $files
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -45,7 +47,8 @@ class User extends ActiveRecord implements IdentityInterface
     const ROLE_ARBITRATOR = 4;
     const ROLE_USER       = 5;
 
-    public static function getIntCode() { return self::INT_CODE; }
+    /** @var integer arbitration manager ID */
+    public $manager_id;
 
     /**
      * {@inheritdoc}
@@ -83,7 +86,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['username', 'email'], 'required'],
-            [['status', 'role'], 'integer'],
+            [['status', 'role', 'manager_id'], 'integer'],
             ['status', 'default', 'value' => self::STATUS_ARCHIVED],
             ['status', 'in', 'range' => self::getStatuses()],
             ['role', 'default', 'value' => self::ROLE_USER],
@@ -107,6 +110,7 @@ class User extends ActiveRecord implements IdentityInterface
             'email'      => Yii::t('app', 'Email'),
             'role'       => Yii::t('app', 'Role'),
             'status'     => Yii::t('app', 'Status'),
+            'manager_id' => Yii::t('app', 'Arbitration manager'),
             'created_at' => Yii::t('app', 'Created'),
             'updated_at' => Yii::t('app', 'Modified'),
         ];
@@ -132,6 +136,7 @@ class User extends ActiveRecord implements IdentityInterface
             self::ROLE_ADMIN, 
             self::ROLE_MANAGER, 
             self::ROLE_AGENT,
+            self::ROLE_ARBITRATOR,
             self::ROLE_USER,
         ];
     }
@@ -225,7 +230,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Проверить, нужно ли отправлять уведомление о событии
+     * Checking whether to send  the message about an event
      * 
      * @param string $name of event
      * @return boolean
@@ -259,7 +264,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function validatePassword($password)
     {
-        return Yii::$app->security->validatePassword($password, $this->password);
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
 
     /**
@@ -322,16 +327,35 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Получить профиль
+     * Get Profile
      * 
      * @return yii\db\ActiveQuery
      */
     public function getProfile() {
-        return $this->hasOne(Profile::className(), ['parent_id' => 'id'])->where(['model' => self::INT_CODE]);
+        return $this->hasOne(Profile::className(), ['parent_id' => 'id'])->andOnCondition(['model' => self::INT_CODE]);
     }
 
     /**
-     * Получить полное имя или  username 
+     * Get Arbitrator
+     * 
+     * @return yii\db\ActiveQuery
+     */
+    public function getArbitrator() {
+        return $this->hasOne(Arbitrator::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * Get Arbitration Manager
+     * 
+     * @return yii\db\ActiveQuery
+     */
+    public function getManager() {
+        return $this->hasOne(Manager::className(), ['id' => 'manager_id'])
+            ->viaTable(Arbitrator::tableName(), ['user_id' => 'id']);
+    }
+
+    /**
+     * Get full name or username 
      * 
      * @return string
      */
@@ -341,7 +365,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Уведомления, заказанные пользователем
+     * Get notifications those user subscribed
      * @return yii\db\ActiveQuery
      */
     public function getNotification()
@@ -350,7 +374,8 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Получить понравившиеся лоты
+     * Get wishlist of lots
+     * 
      * @return yii\db\ActiveQuery
      */
     public function getLots()
@@ -360,28 +385,11 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Getting user items for dropdown list.
-     * $search string a part of User name
-     * @return array of [id: integer, text: string]
+     * Get ID of an arbitration manager.
+     * @return integer
      */
-	public static function getItems($search = '')
-	{
-        $users = self::find()
-            ->select(['user.id', 'username', 'first_name', 'last_name'])
-            ->leftJoin('{{%profile}}', ['profile.parent_id' => 'user.id', 'model' => self::INT_CODE])
-            ->where(['status' => self::STATUS_ACTIVE])
-            ->asArray()
-            ->all();
-        $a = [];
-        foreach($users as $user)
-            if (!$search || !(stripos($user['username'] . $user['first_name'] . $user['last_name'], $search) === false))
-                $a[] = [
-                    'id' => $user['id'], 
-                    'text' => (($user['last_name'] || $user['first_name'])
-                        ? $user['last_name'] . ' ' . $user['first_name'] 
-                        : $user['username']
-                    ),
-                ];
-        return $a;
-	}
+    public function getManagerId()
+    {
+        return ($model = Arbitrator::findOne(['user_id' => $this->id])) ? $model->manager_id : null;
+    }
 }
