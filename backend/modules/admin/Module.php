@@ -2,6 +2,8 @@
 
 namespace backend\modules\admin;
 
+use Yii;
+
 /**
  * Admin module definition class
  * Личный кабинет для зарегистрированных пользователей.

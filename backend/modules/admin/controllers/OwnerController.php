@@ -50,8 +50,8 @@ class OwnerController extends Controller
      */
     public function actionIndex()
     {
-        //if (!Yii::$app->user->can('index'))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('indexOwner'))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $searchModel = new OwnerSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->get());
@@ -70,8 +70,8 @@ class OwnerController extends Controller
     public function actionView($id = 0)
     {
         $model = $this->findModel($id);
-        //if (!Yii::$app->user->can('viewPost', ['model' => $model]))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('viewOwner'))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         return $this->render('view', [
             'model' => $model,
@@ -85,9 +85,8 @@ class OwnerController extends Controller
      */
     public function actionCreate()
     {
-
-        //if (!Yii::$app->user->can('createOwner')) {
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('createOwner'))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $model = new Owner();
         $organization = new Organization();
@@ -130,8 +129,8 @@ class OwnerController extends Controller
     {
         $model = $this->findModel($id);
         
-        //if (!Yii::$app->user->can('update', ['lot' => $model]))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('updateOwner'))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
         
         $organization = isset($model->organization)
             ? $model->organization
@@ -166,7 +165,7 @@ class OwnerController extends Controller
      */
     public function actionDelete($id)
     {
-        if (!Yii::$app->user->can('delete'))
+        if (!Yii::$app->user->can('deleteOwner'))
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $model = $this->findModel($id);

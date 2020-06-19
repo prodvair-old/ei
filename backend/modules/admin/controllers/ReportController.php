@@ -49,8 +49,8 @@ class ReportController extends Controller
      */
     public function actionIndex()
     {
-        //if (!Yii::$app->user->can('index'))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('indexReport'))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $searchModel = new ReportSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->get());
@@ -69,8 +69,8 @@ class ReportController extends Controller
     public function actionView($id = 0)
     {
         $model = $this->findModel($id);
-        //if (!Yii::$app->user->can('viewPost', ['model' => $model]))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('viewReport', ['model' => $model]))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         return $this->render('view', [
             'model' => $model,
@@ -86,8 +86,8 @@ class ReportController extends Controller
     public function actionCreate($lot_id)
     {
 
-        //if (!Yii::$app->user->can('createReport')) {
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('createReport'))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $lot  = Lot::findOne($lot_id);
         $user = \common\models\db\User::findOne(['username' => 'sergey@vorst.ru']);
@@ -115,8 +115,8 @@ class ReportController extends Controller
     {
         $model = $this->findModel($id);
         
-        //if (!Yii::$app->user->can('update', ['model' => $model]))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('updateReport', ['model' => $model]))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
         
         $post = Yii::$app->request->post();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -136,8 +136,8 @@ class ReportController extends Controller
      */
     public function actionDelete($id)
     {
-        //if (!Yii::$app->user->can('delete'))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('deleteReport'))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $model = $this->findModel($id);
 

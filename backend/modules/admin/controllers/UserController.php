@@ -51,8 +51,8 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        //if (!Yii::$app->user->can('index'))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('indexUser'))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->get());
@@ -71,8 +71,8 @@ class UserController extends Controller
     public function actionView($id = 0)
     {
         $model = $this->findModel($id);
-        //if (!Yii::$app->user->can('viewPost', ['model' => $model]))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('viewUser', ['model' => $model]))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         return $this->render('view', [
             'model' => $model,
@@ -88,14 +88,15 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+
+        if (!Yii::$app->user->can('updateUser', ['model' => $model]))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+
         $arbitrator = $model->arbitrator
             ? $model->arbitrator
             : new Arbitrator(['user_id' => $model->id]);
         $model->manager_id = $arbitrator->manager_id;
         
-        //if (!Yii::$app->user->can('update', ['model' => $model]))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
-
         $profile = isset($model->profile)
             ? $model->profile
             : new Profile(['model' => User::INT_CODE, 'parent_id' => $model->id]);
@@ -139,7 +140,7 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        if (!Yii::$app->user->can('delete'))
+        if (!Yii::$app->user->can('deleteUser'))
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $model = $this->findModel($id);

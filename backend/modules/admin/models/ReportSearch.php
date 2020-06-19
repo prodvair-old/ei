@@ -6,6 +6,7 @@ use Yii;
 use yii\data\ActiveDataProvider;
 
 use common\models\db\Report;
+use common\models\db\User;
 use common\components\IntCode;
 use common\components\Property;
 
@@ -22,27 +23,32 @@ class ReportSearch extends Report
 
     public function search($params, $offset = 0)
     {
-        $join = [];
-        $join['user'] = '"report"."user_id"="user"."id"';
-        $join['profile'] = '"report"."user_id"="profile"."parent_id" AND model='. IntCode::USER;
+        $on = [];
+        $on['user'] = '"report"."user_id"="user"."id"';
+        $on['profile'] = '"report"."user_id"="profile"."parent_id" AND model='. IntCode::USER;
         if ($this->db->driverName === 'mysql') {
-            $join['user'] = str_replace('"', '', $join['user']);
-            $join['profile'] = str_replace('"', '', $join['profile']);
+            $on['user'] = str_replace('"', '', $on['user']);
+            $on['profile'] = str_replace('"', '', $on['profile']);
         }
         $query = Report::find()
             ->select('report.id, lot.id as lot_id, report.title, lookup_status.name AS status, lookup_property.name AS property, cost, '.
                 'user.username, profile.first_name, profile.last_name')
             ->innerJoin('{{%lot}}', 'report.lot_id=lot.id')
             ->innerJoin('{{%torg}}', 'lot.torg_id=torg.id')
-            ->innerJoin('{{%user}}', $join['user'])
-            ->leftJoin('{{%profile}}', $join['profile'])
+            ->innerJoin('{{%user}}', $on['user'])
+            ->leftJoin('{{%profile}}', $on['profile'])
             ->innerJoin('{{%lookup}} AS lookup_status', 'report.status=lookup_status.code AND lookup_status.property_id='. Property::REPORT_STATUS)
             ->innerJoin('{{%lookup}} AS lookup_property', 'torg.property=lookup_property.code AND lookup_property.property_id='. Property::TORG_PROPERTY)
             ->asArray();
 
+        if (Yii::$app->user->identity->role <> User::ROLE_ADMIN)
+            $query->where(['user_id' => Yii::$app->user->id]);
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => false,
+            'pagination' => [
+                'pageSize' => Yii::$app->params['recordsPerPage'],
+            ],
             'sort' => [
                 'attributes' => [
                     'id',

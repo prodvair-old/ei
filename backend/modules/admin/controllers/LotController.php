@@ -53,8 +53,8 @@ class LotController extends Controller
      */
     public function actionIndex()
     {
-        //if (!Yii::$app->user->can('index'))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('indexLot'))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $searchModel = new LotSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->get());
@@ -73,8 +73,8 @@ class LotController extends Controller
     public function actionView($id = 0)
     {
         $model = $this->findModel($id);
-        //if (!Yii::$app->user->can('viewPost', ['model' => $model]))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('viewLot', ['model' => $model]))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         return $this->render('view', [
             'model' => $model,
@@ -90,8 +90,8 @@ class LotController extends Controller
     public function actionCreate($torg_id)
     {
 
-        //if (!Yii::$app->user->can('createLot')) {
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('createLot'))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $torg  = Torg::findOne($torg_id);
         $model = new Lot(['torg_id' => $torg_id]);
@@ -126,8 +126,8 @@ class LotController extends Controller
     {
         $model = $this->findModel($id);
         
-        //if (!Yii::$app->user->can('update', ['model' => $model]))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('updateLot', ['model' => $model]))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
         
         $place = isset($model->place)
             ? $model->place
@@ -158,7 +158,7 @@ class LotController extends Controller
      */
     public function actionDelete($id)
     {
-        if (!Yii::$app->user->can('delete'))
+        if (!Yii::$app->user->can('deleteLot'))
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $model = $this->findModel($id);

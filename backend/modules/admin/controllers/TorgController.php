@@ -52,8 +52,8 @@ class TorgController extends Controller
      */
     public function actionIndex()
     {
-        //if (!Yii::$app->user->can('index'))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('indexTorg'))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $searchModel = new TorgSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->get());
@@ -72,8 +72,8 @@ class TorgController extends Controller
     public function actionView($id = 0)
     {
         $model = $this->findModel($id);
-        //if (!Yii::$app->user->can('viewPost', ['model' => $model]))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('viewTorg', ['model' => $model]))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         return $this->render('view', [
             'model' => $model,
@@ -87,8 +87,8 @@ class TorgController extends Controller
      */
     public function actionCreate()
     {
-        //if (!Yii::$app->user->can('createTorg')) {
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('createTorg'))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $model = new Torg();
         $model->property = Torg::PROPERTY_ZALOG;
@@ -126,10 +126,10 @@ class TorgController extends Controller
     {
         $model = $this->findModel($id);
         
-        //if (!Yii::$app->user->can('update', ['model' => $model]))
-            //throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
+        if (!Yii::$app->user->can('update', ['model' => $model]))
+            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
         
-        // Торг может быть отредактирован только для залогового имущества
+        // auction (Torg) can be edited only for the pledge (zalog) property
         if (!($model->property == Torg::PROPERTY_ZALOG))
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
@@ -161,7 +161,7 @@ class TorgController extends Controller
      */
     public function actionDelete($id)
     {
-        if (!Yii::$app->user->can('delete'))
+        if (!Yii::$app->user->can('deleteTorg'))
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $model = $this->findModel($id);
