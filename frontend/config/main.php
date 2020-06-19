@@ -47,6 +47,7 @@ return [
       'thousandSeparator' => ' ',
       'language' => 'ru-RU',
       'currencyCode' => 'RUB',
+      'datetimeFormat' => 'php:Y.m.d H:i:s',
     ],
     'request' => [
       'csrfParam' => '_csrf-frontend',

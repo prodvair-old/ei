@@ -127,10 +127,10 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                                     <?= $form->field($model, 'type')->dropDownList(
                                         Torg::getTypeList(), [
                                         'class'            => 'chosen-type-select form-control form-control-sm',
-                                        'data-placeholder' => 'Выберите тип лота',
+                                        'data-placeholder' => 'Выберите тип имущества',
                                         'tabindex'         => '2',
                                     ])
-                                        ->label('Тип лота'); ?>
+                                        ->label('Тип имущества'); ?>
                                 </div>
                             </div>
 
