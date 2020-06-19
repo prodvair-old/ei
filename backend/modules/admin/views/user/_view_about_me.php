@@ -12,19 +12,19 @@ use common\models\db\User;
     <h3 class="box-title"><?= Yii::t('app', 'About Me') ?></h3>
 </div>
 <div class="box-body">
-    <strong><i class="fa fa-circle margin-r-5"></i> <?= Yii::t('app', 'Activity') ?></strong>
+    <strong><?= Yii::t('app', 'Activity') ?></strong>
     <p class="text-muted">
         <?= Lookup::item(Property::PERSON_ACTIVITY, $model->profile->activity, true) ?>
     </p>
 
-    <strong><i class="fa fa-circle<?= $model->status == User::STATUS_ACTIVE ? '' : '-o' ?> margin-r-5"></i> <?= Yii::t('app', 'Status') ?></strong>
+    <strong><?= Yii::t('app', 'Status') ?></strong>
     <p class="text-muted">
         <?= Lookup::item(Property::USER_STATUS, $model->status, true) ?>
     </p>
 
     <hr>
 
-    <strong><i class="fa fa-mail-reply margin-r-5"></i> <?= Yii::t('app', 'Notifications') ?></strong>
+    <strong><?= Yii::t('app', 'Notifications') ?></strong>
 
     <p>
         <i class="fa fa-<?= $model->notification->new_picture ? 'check-' : '' ?>square-o margin-r-5"></i>
