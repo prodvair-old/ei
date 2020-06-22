@@ -9,19 +9,19 @@ $user = Yii::$app->user->identity;
 <aside class="main-sidebar">
 
     <section class="sidebar">
+        <?php if(!($guest = Yii::$app->user->isGuest)): ?>
+            <!-- Sidebar user panel -->
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <?= $user->getAvatar(['class' => 'img-circle']) ?>
+                </div>
+                <div class="pull-left info">
+                    <p><?= $user->getFullName() ?></p>
 
-        <!-- Sidebar user panel -->
-        <div class="user-panel">
-            <div class="pull-left image">
-                <?= $user->getAvatar(['class' => 'img-circle']) ?>
+                    <a href="#"><?= Lookup::item('UserRole', $user->role) ?></a>
+                </div>
             </div>
-            <div class="pull-left info">
-                <p><?= $user->getFullName() ?></p>
-
-                <a href="#"><?= Lookup::item('UserRole', $user->role) ?></a>
-            </div>
-        </div>
-
+        <?php endif; ?>
         <?=\yiister\adminlte\widgets\Menu::widget(
             [
                 'encodeLabels' => false,
@@ -29,9 +29,11 @@ $user = Yii::$app->user->identity;
                 'activeCssClass' => 'active menu-open',
                 'activateParents'=>true,
                 'items' => [
-                    ['label' => Yii::t('app', 'Dashboard'), 'url' => ['site/index'], 'icon' => 'home'],
+                    ['label' => Yii::t('app', 'Dashboard'), 'url' => ['site/index'], 'icon' => 'home', 'visible' => !$guest],
+                    ['label' => Yii::t('app', 'Login'), 'url' => ['site/login'], 'icon' => 'sign-in', 'visible' => $guest],
                     [
                         'label' => Yii::t('app', 'Auctions'), 
+                        'visible' => !$guest,
                         'url' => ['torg/index'], 
                         'icon' => 'gavel',
                         'options' => ['class' => 'treeview'],
@@ -53,17 +55,20 @@ $user = Yii::$app->user->identity;
                         'label' => Yii::t('app', 'Lots'), 
                         'url' => ['lot/index'], 
                         'icon' => 'money',
+                        'visible' => !$guest,
                     ],
                     [
                         'label' => Yii::t('app', 'Reports'), 
                         'url' => ['report/index'], 
                         'icon' => 'book',
+                        'visible' => !$guest,
                     ],
                     [
                         'label' => Yii::t('app', 'Owners'), 
                         'url' => ['owner/index'], 
                         'icon' => 'bank',
                         'options' => ['class' => 'treeview'],
+                        'visible' => !$guest,
                         'items' => [
                             [
                                 'label' => Yii::t('app', 'List'),
@@ -76,13 +81,12 @@ $user = Yii::$app->user->identity;
                                 'icon' => 'plus',
                             ],
                         ]
-
                     ],
                     [
                         'label' => Yii::t('app', 'Users'), 
                         'url' => ['user/index'], 
                         'icon' => 'users',
-
+                        'visible' => !$guest,
                     ],
                 ],
             ]
