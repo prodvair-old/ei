@@ -26,51 +26,52 @@ $user = Yii::$app->user->identity;
         <div class="navbar-custom-menu">
 
             <ul class="nav navbar-nav">
-
-                <li class="dropdown user user-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <?= $user->getAvatar(['class' => 'user-image']) ?>
-                        <span class="hidden-xs"><?= $user->getFullName() ?></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <!-- User image -->
-                        <li class="user-header">
-                            <?= $user->getAvatar(['class' => 'img-circle'], true) ?>
-                            <p>
-                                <?= $user->getFullName() ?>
-                                <small><?= Lookup::item('UserRole', $user->role) ?></small>
-                            </p>
-                        </li>
-                        <!-- Menu Body -->
-                        <li class="user-body">
-                            <div class="col-xs-<?= $user->role == User::ROLE_ADMIN ? '6' : '12' ?> text-center">
-                                <a href="<?= Url::to(['historys/index']) ?>">История</a>
-                            </div>
-                            <?php if ($user->role == User::ROLE_ADMIN): ?>
-                            <div class="col-xs-4 text-center">
-                                <a href="<?= Url::to(['historys/all']) ?>">Журнал</a>
-                            </div>
-                            <?php endif; ?>
-                        </li>
-                        <!-- Menu Footer-->
-                        <li class="user-footer">
-                            <div class="pull-left">
-                                <?= Html::a(
-                                    'Профиль',
-                                    ['user/view', 'id' => Yii::$app->user->id],
-                                    ['class' => 'btn btn-default btn-flat']
-                                ) ?>
-                            </div>
-                            <div class="pull-right">
-                                <?= Html::a(
-                                    'Выйти',
-                                    ['site/logout'],
-                                    ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']
-                                ) ?>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
+                <?php if (!Yii::$app->user->isGuest): ?>
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <?= $user->getAvatar(['class' => 'user-image']) ?>
+                            <span class="hidden-xs"><?= $user->getFullName() ?></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <?= $user->getAvatar(['class' => 'img-circle'], true) ?>
+                                <p>
+                                    <?= $user->getFullName() ?>
+                                    <small><?= Lookup::item('UserRole', $user->role) ?></small>
+                                </p>
+                            </li>
+                            <!-- Menu Body -->
+                            <li class="user-body">
+                                <div class="col-xs-<?= $user->role == User::ROLE_ADMIN ? '6' : '12' ?> text-center">
+                                    <a href="<?= Url::to(['historys/index']) ?>">История</a>
+                                </div>
+                                <?php if ($user->role == User::ROLE_ADMIN): ?>
+                                <div class="col-xs-4 text-center">
+                                    <a href="<?= Url::to(['historys/all']) ?>">Журнал</a>
+                                </div>
+                                <?php endif; ?>
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <?= Html::a(
+                                        'Профиль',
+                                        ['user/view', 'id' => Yii::$app->user->id],
+                                        ['class' => 'btn btn-default btn-flat']
+                                    ) ?>
+                                </div>
+                                <div class="pull-right">
+                                    <?= Html::a(
+                                        'Выйти',
+                                        ['site/logout'],
+                                        ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']
+                                    ) ?>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
     </nav>

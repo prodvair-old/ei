@@ -306,7 +306,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getAvatarImage()
     {
-        return $image = $this->getImage('thumb') ?: Yii::getAlias('@host/uploads/site/user.png');
+        return $image = $this->getImage('thumb') ?: Yii::getAlias('@host') . Yii::getAlias('@uploader/site/user.png');
     }
 
     /**
