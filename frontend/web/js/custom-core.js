@@ -1,10 +1,75 @@
-jQuery(function($) {
-
-
-
-	"use strict";
+jQuery(function ($) {
+  "use strict";
 
   var $window = $(window);
+  // save search start->
+  $(".save-lot-search-js").on("click", function (e) {
+    e.preventDefault();
+
+    $.ajax({
+      url: "/lot/save-search",
+      type: "GET",
+      data: {
+        url: document.location.href,
+      },
+      success: function (res) {
+        if (res) {
+          toastr.success("Поиск сохранён");
+        } else {
+          toastr.warning("не удалось сохранить поиск");
+        }
+      },
+      error: function (res) {
+        console.log(res);
+        toastr.error("Ошибка при сохранении поиска");
+      },
+    });
+  });
+  $(".search-preset-box__check input").on("change", function (e) {
+    $.ajax({
+      url: "/profile/search-preset-change",
+      type: "GET",
+      data: {
+        id: $(this).data("id"),
+        send_email: $(this).is(":checked"),
+      },
+      success: function (res) {
+        if (res) {
+          toastr.success("Успешно изменено");
+        } else {
+          toastr.warning("Не удалось изменить");
+        }
+      },
+      error: function (res) {
+        console.log(res);
+        toastr.error("Ошибка при изменении");
+      },
+    });
+  });
+  $(".search-preset-box__del-js").on("click", function (e) {
+    e.preventDefault();
+    var presetId = $(this).data("id");
+    $.ajax({
+      url: "/profile/search-preset-del",
+      type: "GET",
+      data: {
+        id: presetId,
+      },
+      success: function (res) {
+        if (res) {
+          $(".search-preset-box-" + presetId).addClass("del");
+          toastr.success("Успешно удалено");
+        } else {
+          toastr.warning("Не удалось удаленть");
+        }
+      },
+      error: function (res) {
+        console.log(res);
+        toastr.error("Ошибка при удалении");
+      },
+    });
+  });
+  // save search <-end
 
   /**
    * Main Menu Slide Down Effect
@@ -159,73 +224,108 @@ jQuery(function($) {
     filterParams();
   }
 
-	$(".chosen-type-select").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, type) {
-		$("#search-lot-form").submit();
-	});
+  $(".chosen-type-select")
+    .chosen({ disable_search_threshold: 10, allow_single_deselect: true })
+    .change(function (e, type) {
+      $("#search-lot-form").submit();
+    });
 
-	function filterParams() {
-		if (lotType == 'arrest') {
-			$('.bankrupt-type').hide();
-			$('.zalog-type').hide();
-		} else if (lotType == 'bankrupt') {
-			$('.bankrupt-type').show();
-			$('.zalog-type').hide();
-		} else if (lotType == 'zalog') {
-			$('.zalog-type').show();
-			$('.bankrupt-type').hide();
-		} else if (lotType == 'all') {
-			$('.bankrupt-type').show();
-			$('.zalog-type').show();
-		}
-	}
+  function filterParams() {
+    if (lotType == "arrest") {
+      $(".bankrupt-type").hide();
+      $(".zalog-type").hide();
+    } else if (lotType == "bankrupt") {
+      $(".bankrupt-type").show();
+      $(".zalog-type").hide();
+    } else if (lotType == "zalog") {
+      $(".zalog-type").show();
+      $(".bankrupt-type").hide();
+    } else if (lotType == "all") {
+      $(".bankrupt-type").show();
+      $(".zalog-type").show();
+    }
+  }
 
-	$(".chosen-category-select").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, id) {
-		if (id.selected == 0) {
-			$('#searchlot-subcategory').prop('disabled', true).trigger("chosen:updated");
-		} else {
-			$("#searchlot-subcategory").load("/load-category", {'id': id.selected}, function(data){
-				if (data == '<option value="0">Все подкатегории</option>') {
-					$("#searchlot-subcategory").prop('disabled', true).trigger("chosen:updated");
-				} else {
-					$("#searchlot-subcategory").prop('disabled', false).trigger("chosen:updated");
-				}
-			});
-		}
+  $(".chosen-category-select")
+    .chosen({ disable_search_threshold: 10, allow_single_deselect: true })
+    .change(function (e, id) {
+      if (id.selected == 0) {
+        $("#searchlot-subcategory")
+          .prop("disabled", true)
+          .trigger("chosen:updated");
+      } else {
+        $("#searchlot-subcategory").load(
+          "/load-category",
+          { id: id.selected },
+          function (data) {
+            if (data == '<option value="0">Все подкатегории</option>') {
+              $("#searchlot-subcategory")
+                .prop("disabled", true)
+                .trigger("chosen:updated");
+            } else {
+              $("#searchlot-subcategory")
+                .prop("disabled", false)
+                .trigger("chosen:updated");
+            }
+          }
+        );
+      }
+    });
 
-	});
+  $(".chosen-category-select-lot")
+    .chosen({ disable_search_threshold: 10, allow_single_deselect: true })
+    .change(function (e, id) {
+      if (id.selected == 0) {
+        $("#searchlot-subcategory")
+          .prop("disabled", true)
+          .trigger("chosen:updated");
+      } else {
+        $("#searchlot-subcategory").load(
+          "/lot/load-sub-categories",
+          { id: id.selected },
+          function (data) {
+            if (data == '<option value="0">Все подкатегории</option>') {
+              $("#searchlot-subcategory")
+                .prop("disabled", true)
+                .trigger("chosen:updated");
+            } else {
+              $("#searchlot-subcategory")
+                .prop("disabled", false)
+                .trigger("chosen:updated");
+            }
+          }
+        );
+      }
+    });
 
-	$(".chosen-category-select-lot").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, id) {
-		if (id.selected == 0) {
-			$('#searchlot-subcategory').prop('disabled', true).trigger("chosen:updated");
-		} else {
-			$("#searchlot-subcategory").load("/lot/load-sub-categories", {'id': id.selected}, function(data){
-				if (data == '<option value="0">Все подкатегории</option>') {
-					$("#searchlot-subcategory").prop('disabled', true).trigger("chosen:updated");
-				} else {
-					$("#searchlot-subcategory").prop('disabled', false).trigger("chosen:updated");
-				}
-			});
-		}
+  $(".chosen-zalog-category-select")
+    .chosen({ disable_search_threshold: 10, allow_single_deselect: true })
+    .change(function (e, id) {
+      var lotId = $(this).data("lotid");
+      var lotType = $(this).data("lottype");
 
-	});
-	
-	$(".chosen-zalog-category-select").chosen({disable_search_threshold: 10, allow_single_deselect: true}).change( function(e, id) {
-		var lotId = $(this).data('lotid');
-		var lotType = $(this).data('lottype');
-		
-		if (id.selected == 0) {
-			$('.subcategory-'+lotId+'-load').prop('disabled', true).trigger("chosen:updated");
-		} else {
-			$(".subcategory-"+lotId+"-load").load("/load-category", {'id': id.selected, 'type': lotType}, function(data){
-				if (data == '<option value="0">Все подкатегории</option>') {
-					$(".subcategory-"+lotId+"-load").prop('disabled', true).trigger("chosen:updated");	
-				} else {
-					$(".subcategory-"+lotId+"-load").prop('disabled', false).trigger("chosen:updated");
-				}
-			});
-		}
-		
-	});
+      if (id.selected == 0) {
+        $(".subcategory-" + lotId + "-load")
+          .prop("disabled", true)
+          .trigger("chosen:updated");
+      } else {
+        $(".subcategory-" + lotId + "-load").load(
+          "/load-category",
+          { id: id.selected, type: lotType },
+          function (data) {
+            if (data == '<option value="0">Все подкатегории</option>') {
+              $(".subcategory-" + lotId + "-load")
+                .prop("disabled", true)
+                .trigger("chosen:updated");
+            } else {
+              $(".subcategory-" + lotId + "-load")
+                .prop("disabled", false)
+                .trigger("chosen:updated");
+            }
+          }
+        );
+      }
+    });
 
   $(".chosen-zalog-subcategory-select")
     .chosen({ disable_search_threshold: 10, allow_single_deselect: true })
@@ -628,4 +728,3 @@ jQuery(function($) {
 
   // backToTop.tooltip('show');
 });
-

@@ -25,7 +25,7 @@ class m200619_102622_search_queries extends Migration
             'updated_at'        => $this->integer()->notNull(),
         ]);
 
-        $this->createIndex('idx-search_queries-user_id',   self::TABLE, 'user_id', true);
+        $this->createIndex('idx-search_queries-user_id',   self::TABLE, 'user_id');
         
         $this->addForeignKey('fk-search_queries-user', self::TABLE, 'user_id', '{{%user}}', 'id', 'restrict', 'restrict');
 

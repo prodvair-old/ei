@@ -98,9 +98,9 @@ return [
             ],
 */
             // Schema cache options (for production environment)
-            'enableSchemaCache' => true,
-            'schemaCacheDuration' => 3600,
-            'schemaCache' => 'cache',
+            // 'enableSchemaCache' => true,
+            // 'schemaCacheDuration' => 3600,
+            // 'schemaCache' => 'cache',
         ],
         'obj' => [
             'class' => 'yii\db\Connection',
