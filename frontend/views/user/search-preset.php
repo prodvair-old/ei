@@ -116,7 +116,7 @@ $this->registerJsVar( 'lotType', '', $position = yii\web\View::POS_HEAD );
                                   <a href="<?=$searchQuerу->url?>" class="search-preset-box__title">
                                     <h5><?=$searchQuerу->defs?></h5>
                                   </a>
-                                  <span class="text-muted"><?=Yii::$app->formatter->asDate($searchQuerу->created_at, 'dd.MM.yyyy')?></span>
+                                  <span class="text-muted">Последний поиск: <?=Yii::$app->formatter->asDate($searchQuerу->seached_at, 'dd.MM.yyyy')?></span>
                                   </div>
                                   <div class="search-preset-box__right">
                                     <div class="search-preset-box__check">
