@@ -11,8 +11,9 @@ $link = Yii::$app->params['frontLink'] . '/profile/search-preset?token=' . $user
 <div class='notification'>
     <p>Добрый день, <?= Html::encode($user->getFullName()) ?>,</p>
 
-    <p>По вашему запросу "<?=$searchQuery->defs?>" добавлены новые лоты. Количество: <?=$count?></p>
-
+    <p>По вашему запросу "<?=$searchQuery->defs?>" добавлены новые лоты.</p>
+    <hr>
+    <p><h4><small>Количество лотов:</small> <?=$count?></h4></p>
     <ul style="list-style-type: none; padding: 0 20px;">
         <?php foreach ($lots as $lot): ?>
             <li style="border: 1px solid #e5e5e5; padding: 20px; margin: 20px 0;">
