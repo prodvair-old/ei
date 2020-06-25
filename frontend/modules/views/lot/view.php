@@ -421,8 +421,6 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                         <? endif; ?>
 
-                        <?= Darwin::widget() ?>
-
                         <? if ($lot->torg->case) { ?>
                             <? if ($lot->torg->case->documents) { ?>
 

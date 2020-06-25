@@ -5,6 +5,7 @@ namespace frontend\modules\controllers;
 use common\models\db\Region;
 use frontend\modules\models\Category;
 use Yii;
+use common\models\db\SearchQueries;
 use common\models\db\Lot;
 use frontend\modules\models\LotSearch;
 use yii\helpers\ArrayHelper;
@@ -305,5 +306,16 @@ class LotController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionSaveSearch()
+    {
+        $searchSave = new SearchQueries();
+
+        $searchSave->user_id    = Yii::$app->user->id;
+        $searchSave->url        = Yii::$app->request->queryParams['url'];
+        $searchSave->getFirstSave();
+
+        return $searchSave->save();
     }
 }

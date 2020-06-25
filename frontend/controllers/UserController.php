@@ -16,6 +16,7 @@ use common\models\Query\Lot\LotsAll;
 use common\models\Query\Zalog\LotsZalogUpdate;
 use common\models\Query\Arrest\LotsArrest;
 use common\models\SendSMS;
+use common\models\db\SearchQueries;
 
 use arogachev\excel\import\advanced\Importer;
 
@@ -123,272 +124,6 @@ class UserController extends Controller
       return $this->goHome();
     }
   }
-  public function actionGetArrestBankrupt()
-  {
-    if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role == 'agent') {
-      $modelImport = new importFIleForm();
-
-      if(Yii::$app->request->post()){
-        ini_set('memory_limit', '1024M');
-        $modelImport->fileImport = \yii\web\UploadedFile::getInstance($modelImport,'fileImport');
-        
-        if($modelImport->fileImport && $modelImport->validate()){
-          $where = $modelImport->excel();
-
-          $lots = LotsArrest::find()->where($where)->all();
-
-          if ($lots[0] != null) {
-          
-            header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-
-            Excel::export([
-                'models' => $lots,
-                'columns' => [
-                    'lotId:text',
-                    [
-                        'attribute' => 'lotUrl',
-                        'header' => 'Ссылка на лот',
-                        'format' => 'text',
-                        'value' => function($model) {
-                            return 'https://ei.ru/'.$model->lotUrl;
-                        },
-                    ],
-                    'torgs.trgNotificationUrl:text',
-                    'lotPropName:text',
-                    'lotTorgReason:text',
-                    'torgs.trgBidAuctionDate:datetime',
-                    'torgs.trgBidFormName:text',
-                    'torgs.trgPublished:datetime',
-                    'lotWinnerName:text',
-                    'lotContractPrice:text',
-                    'lotStartPrice:text',
-                    'lotCadastre:text',
-                    'lotVin:text',
-                    'lotKladrLocationName:text',
-                    [
-                        'attribute' => 'lotCategory',
-                        'header' => 'Категория лота',
-                        'format' => 'text',
-                        'value' => function($model) {
-                            return $model->lotCategory[0];
-                        },
-                    ],
-                    'lot_archive:boolean',
-                ],
-                'headers' => [
-                    'lotId' => 'ID лота',
-                    'torgs.trgNotificationUrl' => 'Ссылка на извещение',
-                    'lotPropName' => 'Описание',
-                    'lotTorgReason' => 'Основания реализации торгов',
-                    'torgs.trgBidAuctionDate' => 'Дата и время проведения торгов',
-                    'torgs.trgBidFormName' => 'Форма торгов',
-                    'torgs.trgPublished' => 'Дата публикации',
-                    'lotWinnerName' => 'Победитель',
-                    'lotContractPrice' => 'Цена предложенное победителем',
-                    'lotCadastre' => 'Кадастровый номер',
-                    'lotVin' => 'VIN номер',
-                    'lotKladrLocationName' => 'Адрес',
-                    'lot_archive' => 'В архиве',
-                ],
-            ]);
-          } else {
-            Yii::$app->params['exelParseResult']['status'] = 'Не удалось найти данные';
-          }
-
-        } else {
-          Yii::$app->getSession()->setFlash('error','Error');
-        }
-      }
-
-      return $this->render('get-arrest', [
-        'modelImport' => $modelImport,
-      ]);
-
-    } else {
-      return $this->goHome();
-    }
-  }
-  public function actionImportLots()
-  {
-      if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role == 'agent') {
-        $modelImport = new ImportZalog();
-
-        if(Yii::$app->request->post()){
-          $modelImport->fileImport = \yii\web\UploadedFile::getInstance($modelImport,'fileImport');
-          if($modelImport->fileImport && $modelImport->validate()){
-            // try {
-              if ($modelImport->fileImport->getExtension() === 'xml') {
-                $result = $modelImport->xml();
-              } else {
-                $result = $modelImport->excel();
-              }
-            // } catch (\Throwable $th) {
-            //   var_dump()
-            //   Yii::$app->getSession()->setFlash('error','Error');
-            // }
-          } else {
-            Yii::$app->getSession()->setFlash('error','Error');
-          }
-        }
-
-        if ($result['check']) {
-          $lotsQuery = LotsAll::find()->where($result['where']);
-    
-          $lotsCount = clone $lotsQuery;
-          $pages = new Pagination(['totalCount' => $lotsCount->count(), 'pageSize' => 20]);
-
-          $lots = $lotsQuery->offset($pages->offset)->limit($pages->limit)->all();
-        }
-
-
-      return $this->render('import-lots', [
-        'modelImport' => $modelImport,
-        'loadCount' => $result['loadCount'],
-        'pages' => $pages,
-        'lots' => $lots
-      ]);
-    } else {
-      return $this->goHome();
-    }
-  }
-
-  public function actionAddLot()
-  {
-    if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role == 'agent') {
-      $model = new LotsZalog();
-      $modelImages = new UploadZalogLotImage();
-      $modelCategorys = new ZalogLotCategorySet();
-
-      if ($model->load(Yii::$app->request->post())) {
-
-        $model->contactPersonId     = Yii::$app->user->id;
-        $model->ownerId             = Yii::$app->user->identity->ownerId;
-        
-        $modelCategorys->categorys    = $model->categoryIds;
-        $modelCategorys->subCategorys = $model->subCategory;
-
-        switch ($model->tradeType) {
-          case 'Аукцион':
-              $model->tradeTipeId = 0;
-            break;
-          case 'Публичное предложение':
-              $model->tradeTipeId = 1;
-            break;
-          case 'продажа':
-              $model->tradeTipeId = 2;
-            break;
-          default: 
-              $model->tradeTipeId = 3;
-            break;
-        }
-
-        if ($model->validate()) {
-
-          if ($model->save()) {
-
-            $files = UploadedFile::getInstances($model, 'images');
-
-            if ($files) {
-              $modelImages->images = $files;
-              $modelImages->lotId  = $model->id;
-
-              $modelImages->uploadImages();
-            }
-            // $modelImages->uploadImages();
-          
-            
-            $modelCategorys->lotId        = $model->id;
-
-            var_dump($modelCategorys->validate());
-            var_dump($modelCategorys->errors);
-
-            // $modelCategorys->setCategory();
-
-            if ($modelCategorys->setCategory()) {
-              return $this->redirect(['user/edit-lot', 'id'=> $model->id]);
-            }
-
-          }
-
-          Yii::$app->getSession()->setFlash('success', 'Success');
-        }
-      }
-
-      return $this->render('add-lot', [
-        'model' => $model,
-      ]);
-    } else {
-      return $this->goHome();
-    }
-  }
-
-  public function actionEditLot($id)
-  {
-    if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role == 'agent') {
-      $model = LotsZalog::findOne($id);
-      $modelImages = new UploadZalogLotImage();
-      $modelCategorys = new ZalogLotCategorySet();
-
-      if ($model->load(Yii::$app->request->post())) {
-
-        $model->contactPersonId     = Yii::$app->user->id;
-        $model->ownerId             = Yii::$app->user->identity->ownerId;
-        
-        $modelCategorys->categorys    = $model->categoryIds;
-        $modelCategorys->subCategorys = $model->subCategory;
-
-        switch ($model->tradeType) {
-          case 'Аукцион':
-              $model->tradeTipeId = 0;
-            break;
-          case 'Публичное предложение':
-              $model->tradeTipeId = 1;
-            break;
-          case 'продажа':
-              $model->tradeTipeId = 2;
-            break;
-          default: 
-              $model->tradeTipeId = 3;
-            break;
-        }
-
-        if ($model->validate()) {
-
-          if ($model->update()) {
-
-            $files = UploadedFile::getInstances($model, 'images');
-
-            if ($files) {
-              $modelImages->images = $files;
-              $modelImages->lotId  = $model->id;
-
-              $modelImages->uploadImages();
-            }
-            // $modelImages->uploadImages();
-          
-            
-            $modelCategorys->lotId        = $model->id;
-
-            // $modelCategorys->setCategory();
-
-            if ($modelCategorys->setCategory()) {
-              return $this->redirect(['user/edit-lot', 'id'=> $model->id]);
-            }
-
-          }
-
-          Yii::$app->getSession()->setFlash('success', 'Success');
-        }
-      }
-
-      return $this->render('edit-lot', [
-        'model' => $model,
-      ]);
-    } else {
-      return $this->goHome();
-    }
-  }
-
   public function actionSetting()
   {
     if (!Yii::$app->user->isGuest) {
@@ -504,113 +239,39 @@ class UserController extends Controller
     }
   }
 
-  public function actionLotImages()
+  public function actionSearchPreset()
   {
     if (!Yii::$app->user->isGuest) {
 
-      Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+      $searchQueriesCount = SearchQueries::find()->where(['user_id' => Yii::$app->user->id])->count();
+      $pages = new Pagination(['totalCount' => $searchQueriesCount, 'pageSize' => 15]);
 
-      $model = new UploadZalogLotImage();
+      $searchQueries = SearchQueries::find()->where(['user_id' => Yii::$app->user->id])->offset($pages->offset)->limit($pages->limit)->orderBy('id DESC')->all();
 
-      if (Yii::$app->request->isPost) {
-
-        $files = UploadedFile::getInstances($model, 'images');
-
-        if ($model->load(Yii::$app->request->post())) {
-          $model->images = $files;
-
-          return $model->uploadImages();
-        }
-      }
-
-      return false;
+      return $this->render('search-preset', ['searchQueriesCount' => $searchQueriesCount, 'pages' => $pages, 'searchQueries' => $searchQueries]);
     } else {
       return $this->goHome();
     }
   }
-  public function actionLotImagesDel()
+
+  public function actionSearchPresetChange()
   {
-    if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role == 'agent') {
+    if (!Yii::$app->user->isGuest) {
+      $searchQueries = SearchQueries::findOne(['id' => Yii::$app->request->queryParams['id']]);
 
-      Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+      $searchQueries->send_email = (Yii::$app->request->queryParams['send_email'] === 'true')? true: false;
 
-      $data = Yii::$app->request->get();
-
-      $lot = LotsZalog::findOne($data['id']);
-
-      $images = [];
-
-      if ($lot->images) {
-        foreach ($lot->images as $image) {
-          if ($image['min'] != $data['image']['min'] || $image['max'] != $data['image']['max']) {
-            $images[] = $image;
-          }
-        }
-
-        $lot->images = $images;
-        return $lot->save();
-      }
-      
-
-      return false;
+      return $searchQueries->update();
     } else {
       return $this->goHome();
     }
   }
-  public function actionLotCategory()
+  public function actionSearchPresetDel()
   {
     if (!Yii::$app->user->isGuest) {
+      $searchQueries = SearchQueries::findOne(['id' => Yii::$app->request->queryParams['id']]);
 
-      Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
-      $model = new ZalogLotCategorySet();
-
-      if ($model->load(Yii::$app->request->post())) {
-        return $model->setCategory();
-      }
-
-      return false;
-    } else {
-      return $this->goHome();
-    }
-  }
-  public function actionLotRemove()
-  {
-    if (!Yii::$app->user->isGuest) {
-
-      Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
-      $get = Yii::$app->request->get();
-
-      if ($get['lotId']) {
-        $lot = LotsAll::findOne((int)$get['lotId']);
-        return $lot->delete();
-      }
-
-      return false;
-    } else {
-      return $this->goHome();
-    }
-  }
-  public function actionLotStatus()
-  {
-    if (!Yii::$app->user->isGuest) {
-
-      Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-      
-      $get = Yii::$app->request->get();
-
-      if ($get['lotId']) {
-          $lot = LotsAll::findOne((int)$get['lotId']);
-
-          if ($lot->category != null) {
-              $lot->published = !$lot->published;
-              $lot->update();
-              return ['status' => $lot->published, 'url' => $lot->url];
-          }
-      }
-
-      return false;
+      return $searchQueries->delete();
     } else {
       return $this->goHome();
     }

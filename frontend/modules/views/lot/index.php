@@ -35,7 +35,6 @@ if ($model->mainCategory) {
     $lotsSubcategory += $leaves;
     $subcategoryCheck = false;
 }
-
 $traderList = [];
 
 $this->registerJsVar('lotType', $type, $position = yii\web\View::POS_HEAD);
@@ -105,9 +104,8 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
             <aside class="col-12 col-lg-4">
 
-                <?php $form = ActiveForm::begin(['id' => 'search-lot-form', 'action' => $url, 'method' => 'GET']); ?>
-
                 <aside class="sidebar-wrapper pv">
+                <?php $form = ActiveForm::begin(['id' => 'search-lot-form', 'action' => $url, 'method' => 'GET']); ?>
 
                     <div class="search-box mb-30">
 
@@ -341,7 +339,9 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                         <?php endif; ?>
 
                         <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
-
+                        <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="btn btn-block text-primary" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="save-lot-search-js btn btn-block text-primary"'?>>
+                            Сохранить поиск
+                        </a>
                     </div>
                     <?php ActiveForm::end(); ?>
                     <div class="sidebar-box__text"><?= Yii::$app->params[ 'text' ] ?></div>

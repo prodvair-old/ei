@@ -133,6 +133,10 @@ return [
 
         '/profile/favorite'      => 'user/wish_list',
 
+        '/profile/search-preset'        => 'user/search-preset',
+        '/profile/search-preset-change' => 'user/search-preset-change',
+        '/profile/search-preset-del'    => 'user/search-preset-del',
+        
         '/profile/lots'          => 'user/lots',
         '/profile/get-arrest-bankrupt' => 'user/get-arrest-bankrupt',
         '/profile/lots/<id:\d+>' => 'user/edit-lot',
@@ -165,6 +169,7 @@ return [
         '/wish-list-edit'   => 'lot/wish_list',
 
         '/lot/load-sub-categories' => '/lot/lot/load-sub-categories',
+        '/lot/save-search'         => '/lot/lot/save-search',
 
         '/<type>'                     => 'lot/lot/index',
         '/<type>/<category>'          => 'lot/lot/index',
