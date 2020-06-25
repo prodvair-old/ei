@@ -24,11 +24,9 @@ class m200415_173234_lookup_torg extends Migration
 
         // тип предложения
         $this->insert(self::TABLE_PROPERTY, ['id' => self::TORG_OFFER, 'name' => 'TorgOffer']);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Публичное',        'code' => 1, 'property_id' => self::TORG_OFFER, 'position' => 1]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Аукцион',          'code' => 2, 'property_id' => self::TORG_OFFER, 'position' => 2]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Аукцион открытый', 'code' => 3, 'property_id' => self::TORG_OFFER, 'position' => 3]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Конкурс',          'code' => 4, 'property_id' => self::TORG_OFFER, 'position' => 4]);
-        $this->insert(self::TABLE_LOOKUP, ['name' => 'Конкурс открытый', 'code' => 5, 'property_id' => self::TORG_OFFER, 'position' => 5]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Публичное предложение', 'code' => 1, 'property_id' => self::TORG_OFFER, 'position' => 1]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Аукцион',               'code' => 2, 'property_id' => self::TORG_OFFER, 'position' => 2]);
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Конкурс',               'code' => 3, 'property_id' => self::TORG_OFFER, 'position' => 3]);
     }
 
     public function safeDown()
