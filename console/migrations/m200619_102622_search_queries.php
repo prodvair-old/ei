@@ -16,26 +16,24 @@ class m200619_102622_search_queries extends Migration
         $this->createTable(self::TABLE, [
             'id'                => $this->bigPrimaryKey(),
             'user_id'           => $this->bigInteger()->notNull(),
-            'title'             => $this->string()->notNull(),
-            'description'       => $this->text()->notNull(),
+            'defs'              => $this->text()->notNull(),
             'url'               => $this->text()->notNull(),
-            'search_date'       => $this->integer()->notNull(),
-            'search_lot_count'  => $this->integer()->notNull()->defaultValue(0),
+            'seached_at'        => $this->integer()->notNull(),
+            'last_count'        => $this->integer()->notNull()->defaultValue(0),
             'send_email'        => $this->boolean()->defaultValue(true),
             'created_at'        => $this->integer()->notNull(),
             'updated_at'        => $this->integer()->notNull(),
         ]);
 
-        $this->createIndex('idx-search_queries-user_id',   self::TABLE, 'user_id', true);
+        $this->createIndex('idx-search_queries-user_id',   self::TABLE, 'user_id');
         
         $this->addForeignKey('fk-search_queries-user', self::TABLE, 'user_id', '{{%user}}', 'id', 'restrict', 'restrict');
 
         $this->addCommentOnColumn(self::TABLE, 'user_id', 'Пользователь');
-        $this->addCommentOnColumn(self::TABLE, 'title', 'Название');
-        $this->addCommentOnColumn(self::TABLE, 'title', 'Описание');
+        $this->addCommentOnColumn(self::TABLE, 'defs', 'Определения поиска');
         $this->addCommentOnColumn(self::TABLE, 'url', 'Полная ссылка');
-		$this->addCommentOnColumn(self::TABLE, 'search_date', 'Дата последнего поиска');
-		$this->addCommentOnColumn(self::TABLE, 'search_lot_count', 'Количество найденных лотов');
+		$this->addCommentOnColumn(self::TABLE, 'seached_at', 'Дата последнего поиска');
+		$this->addCommentOnColumn(self::TABLE, 'last_count', 'Количество найденных лотов');
     }
 
     /**

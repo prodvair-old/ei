@@ -23,7 +23,7 @@ use frontend\components\ResetPasswordWidget;
 
 $setting = Settings::find()->orderBy('id ASC')->all();
 $lotsCategory = LotsCategory::find()->where(['!=', 'translit_name', 'lot-list'])->orderBy('id ASC')->all();
-$owners = OwnerProperty::find()->orderBy('name ASC')->all();
+// $owners = OwnerProperty::find()->orderBy('name ASC')->all();
 
 $bankruptLotsCategoryMenu = $arrestLotsCategoryMenu = null;
 

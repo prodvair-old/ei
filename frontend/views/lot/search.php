@@ -38,6 +38,7 @@ foreach ($lots[0] as $key => $value) {
 
 }
 
+
 // if ($type == 'bankrupt') {
 //   $traderLabel = 'Торговые площадки';
 //   $traderPlaceholder = 'Все торговые площадки';
@@ -148,7 +149,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
               <div class="col-12">
                 <div class="">
                   <?= $form->field($model, 'search')->textInput([
-                    'class' => 'form-control search-form-control',
+                    'class' => 'form-control search-form-control ',
                     'placeholder' => 'Поиск: Машина, Квартира...',
                     // 'value' => 
                   ])->label('Поиск'); ?>
@@ -180,7 +181,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                   <?= $form->field($model, 'category')->dropDownList(
                     $lotsCategorys,
                     [
-                      'class' => 'chosen-category-select form-control form-control-sm',
+                      'class' => 'chosen-category-select form-control form-control-sm select-search',
                       'data-placeholder' => 'Все категории',
                     ]
                   )
@@ -193,7 +194,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                   <?= $form->field($model, 'subCategory')->dropDownList(
                     $lotsSubcategory,
                     [
-                      'class' => 'chosen-the-basic subcategory-load form-control form-control-sm',
+                      'class' => 'chosen-the-basic subcategory-load form-control form-control-sm ',
                       'data-placeholder' => 'Все подкатегории',
                       'disabled' => $subcategoryCheck,
                       'multiple' => true,
@@ -209,7 +210,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                   <?= $form->field($model, 'region')->dropDownList(
                     $regionList,
                     [
-                      'class' => 'chosen-the-basic form-control form-control-sm',
+                      'class' => 'chosen-the-basic form-control form-control-sm select-search',
                       'data-placeholder' => 'Все регионы',
                       'tabindex' => '2',
                       'multiple' => true
@@ -342,10 +343,10 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
 
           <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>        
 
-         
-          
-
           </div>
+          <?php ActiveForm::end(); ?>
+          <?php $form = ActiveForm::begin(['id' => 'save-search-form', 'method' => 'POST']); ?>
+            <?= //$form->field($modelSaveSearch, 'url')->hiddenInput(['value' => ])->label(false)?>
           <?php ActiveForm::end(); ?>
           <div class= "sidebar-box__text"><?= Yii::$app->params['text'] ?></div>
         </aside>

@@ -89,3 +89,137 @@
     transform: scaleY(1);
   }
 }
+
+.toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.toggle input {
+  display: none;
+}
+label.toggle-item {
+  width: 48px;
+  background: #2e394d;
+  height: 26px;
+  display: inline-block;
+  position: relative;
+  transition: all 0.3s ease;
+  transform-origin: 20% center;
+  cursor: pointer;
+}
+label.toggle-item:before {
+  display: block;
+  transition: all 0.2s ease;
+  width: 21px;
+  height: 21px;
+  top: 3px;
+  left: 3px;
+  border: 2px solid #88cf8f;
+}
+.normal label {
+  background: #af4c4c;
+  /* border: 0.5px solid rgba(117, 117, 117, 0.31); */
+  /* /* box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.2),
+    0 -3px 4px rgba(0, 0, 0, 0.15); */
+}
+.normal label:before {
+  content: "";
+  position: absolute;
+  border: none;
+  width: 20px;
+  height: 20px;
+  box-shadow: inset 0.5px -1px 1px rgba(0, 0, 0, 0.35);
+  background: #fff;
+}
+.normal label:after {
+  content: "";
+  position: absolute;
+  background: transparent;
+  position: absolute;
+  height: 100%;
+  top: 0;
+  width: 100%;
+  left: 0;
+  z-index: 0;
+  box-shadow: inset 0px 2px 4px -2px rgba(0, 0, 0, 0.2),
+    0px 1px 2px 0px rgba(151, 151, 151, 0.2);
+}
+
+.normal-input:checked + label {
+  background: #077751;
+}
+.normal-input:checked + label:before {
+  left: 24px;
+}
+
+.search-preset-box {
+  width: 100%;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #e5e5e5;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.search-preset-box.del {
+  display: none;
+}
+
+.search-preset-box__right {
+  max-width: 250px;
+  width: 250px;
+  display: flex !important;
+}
+.search-preset-box__title {
+  display: block;
+  padding-right: 30px;
+}
+.search-preset-box__title:hover h5 {
+  color: #077751;
+}
+
+.search-preset-box__check {
+  max-width: 200px;
+  width: 200px;
+  display: flex;
+  align-items: center;
+}
+
+.search-preset-box__check span {
+  display: block;
+  margin-right: 20px;
+}
+
+.search-preset-box__del {
+  display: flex;
+  align-items: center;
+  height: 20px;
+  font-size: 20px;
+  margin-top: 2px;
+  margin-left: 30px;
+}
+
+.search-preset-box__count {
+  position: absolute;
+  left: -10px;
+  top: -10px;
+  height: 25px;
+  min-width: 25px;
+  border-radius: 15px;
+  padding: 0 5px;
+  background-color: #077751;
+  line-height: 25px;
+  text-align: center;
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .search-preset-box {
+    flex-wrap: wrap;
+  }
+  .search-preset-box__count {
+    left: 20px;
+  }
+}

@@ -60,6 +60,8 @@ class LotSearch extends Lot
 
     public $competedApplication;
 
+    public $publishedDate;
+
     public $torgStartDate;
 
     public $torgEndDate;
@@ -81,7 +83,7 @@ class LotSearch extends Lot
                 'integer'],
             [['title', 'description', 'minPrice', 'maxPrice', 'mainCategory', 'type',
                 'subCategory', 'etp', 'owner', 'tradeType', 'search', 'sortBy', 'haveImage', 'region',
-                'offset', 'efrsb', 'bankruptName', 'torgStartDate', 'torgEndDate', 'andArchived',
+                'offset', 'efrsb', 'bankruptName', 'publishedDate', 'torgStartDate', 'torgEndDate', 'andArchived',
                 'startApplication', 'competedApplication'], 'safe'],
             [['start_price', 'step', 'deposit'], 'number'],
         ];
@@ -104,7 +106,7 @@ class LotSearch extends Lot
      * @return ActiveDataProvider
      * @throws \yii\base\InvalidConfigException
      */
-    public function search($params)
+    public function search($params, $limit = 15)
     {
         $query = Lot::find()
             ->select(['lot.*', 'torg.published_at']);
@@ -195,6 +197,10 @@ class LotSearch extends Lot
             $query->andFilterWhere(['=', Torg::tableName() . '.property', $this->type]);
         }
 
+        if ($this->publishedDate) {
+            $this->publishedDate = \Yii::$app->formatter->asTimestamp($this->publishedDate);
+        }
+
         if ($this->torgStartDate) {
             $this->torgStartDate = \Yii::$app->formatter->asTimestamp($this->torgStartDate);
         }
@@ -202,9 +208,13 @@ class LotSearch extends Lot
             $this->torgEndDate = \Yii::$app->formatter->asTimestamp($this->torgEndDate);
         }
 
+        $query->andFilterWhere(['>=', Torg::tableName() . '.published_at', $this->publishedDate]);
         $query->andFilterWhere(['IN', Torg::tableName() . '.offer', $this->tradeType]);
         $query->andFilterWhere(['BETWEEN', Torg::tableName() . '.started_at', $this->torgStartDate, $this->torgEndDate]);
 
+        if ($this->publishedDate) { //TODO
+            $this->publishedDate = \Yii::$app->formatter->asDate($this->publishedDate, 'long');
+        }
         if ($this->torgStartDate) { //TODO
             $this->torgStartDate = \Yii::$app->formatter->asDate($this->torgStartDate, 'long');
         }
@@ -253,7 +263,7 @@ class LotSearch extends Lot
         }
 
         $query->offset($this->offset)
-            ->limit(15);
+            ->limit($limit);
 
         return $dataProvider;
     }
