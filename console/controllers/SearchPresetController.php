@@ -24,7 +24,7 @@ class SearchPresetController extends Controller
         $check = true;
 
         while ($check !== false) {
-            $searchQueries = SearchQueries::find()->where(['send_email' => true])->limit($limit)->offset($offset)->all();
+            $searchQueries = SearchQueries::find()->limit($limit)->offset($offset)->all();
 
             if (!isset($searchQueries[0])) {
                 $check = false;
@@ -56,7 +56,7 @@ class SearchPresetController extends Controller
                     if (!empty($items = Category::find()->where(['slug' => $data['path'][1], 'depth' => 1])->one())) {
                         $searchModel->mainCategory[] = $items->id;
                     }
-                    $dataProvider = $searchModel->search($data['query'], 200);
+                    $dataProvider = $searchModel->search($data['query'], 1000);
 
                     $lots = $dataProvider->getModels();
 
@@ -65,7 +65,7 @@ class SearchPresetController extends Controller
                     $searchQuery->last_count = $last_count;
                     $searchQuery->seached_at = strtotime((new \DateTime())->format('Y-m-d H:i:s'));;
                     
-                    if ($last_count > 0 && $searchQuery->update()) {
+                    if ($last_count > 0 && $searchQuery->update() && $searchQuery->send_email == true) {
                         $user = User::findOne(['id' => $searchQuery->user_id]);
 
                         Yii::$app->mailer_support->compose(['html' => 'search-preset-html'], [
