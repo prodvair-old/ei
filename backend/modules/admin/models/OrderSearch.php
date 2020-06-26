@@ -26,13 +26,22 @@ class OrderSearch extends Order
 
     public function search($params, $offset = 0)
     {
+        $on = [];
+        $on['lot'] = '"order"."lot_id"="lot"."id"';
+        $on['user'] = '"order"."user_id"="user"."id"';
+        $on['profile'] = '"user"."id"="profile"."parent_id" AND profile.model='. USER::INT_CODE;
+        if ($this->db->driverName === 'mysql') {
+            $on['lot'] = str_replace('"', '', $on['lot']);
+            $on['user'] = str_replace('"', '', $on['user']);
+            $on['profile'] = str_replace('"', '', $on['profile']);
+        }
         $query = Order::find()
             ->select('order.id, lot_id, user_id, title, username, first_name, last_name, phone, bid_price, order.created_at')
             ->distinct(false)
-            ->innerJoin('{{%lot}}', 'order.lot_id=lot.id')
+            ->innerJoin('{{%lot}}', $on['lot'])
             ->innerJoin('{{%torg}}', 'lot.torg_id=torg.id')
-            ->innerJoin('{{%user}}', 'order.user_id=user.id')
-            ->leftJoin('{{%profile}}', 'user.id=profile.parent_id AND profile.model=' . User::INT_CODE);
+            ->innerJoin('{{%user}}', $on['user'])
+            ->leftJoin('{{%profile}}', $on['profile']);
 
         $user = Yii::$app->user;
 
