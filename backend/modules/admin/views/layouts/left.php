@@ -64,6 +64,12 @@ $user = Yii::$app->user->identity;
                         'visible' => !$guest,
                     ],
                     [
+                        'label' => Yii::t('app', 'Orders'), 
+                        'url' => ['order/index'], 
+                        'icon' => 'shopping-cart',
+                        'visible' => !$guest,
+                    ],
+                    [
                         'label' => Yii::t('app', 'Owners'), 
                         'url' => ['owner/index'], 
                         'icon' => 'bank',

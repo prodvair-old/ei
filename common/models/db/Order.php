@@ -6,18 +6,19 @@ use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * WishList model
- * Favorite lots.
+ * Order model
+ * Lot orders with a bid price.
  *
  * @var integer $id
  * @var integer $lot_id
  * @var integer $user_id
+ * @var float   $bid_price
  * @var integer $created_at
  * 
  * @property User $user
  * @property Lot  $lot
  */
-class WishList extends ActiveRecord
+class Order extends ActiveRecord
 {
 
     /**
@@ -25,7 +26,7 @@ class WishList extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%wish_list}}';
+        return '{{%order}}';
     }
 
     /**
@@ -47,8 +48,9 @@ class WishList extends ActiveRecord
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [
-            'lot_id'  => Yii::t('app', 'Lot'),
-            'user_id' => Yii::t('app', 'User'),
+            'lot_id'    => Yii::t('app', 'Id'),
+            'user_id'   => Yii::t('app', 'User'),
+            'bid_price' => Yii::t('app', 'Bid price'),
         ]);
     }
 

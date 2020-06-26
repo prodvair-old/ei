@@ -15,6 +15,7 @@ class m200421_050742_wish_list extends Migration
     public function safeUp()
     {
         $this->createTable(self::TABLE, [
+            'id'         => $this->bigPrimaryKey(),
             'lot_id'     => $this->bigInteger()->notNull(),
             'user_id'    => $this->bigInteger()->notNull(),
 
