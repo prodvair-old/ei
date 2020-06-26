@@ -206,6 +206,25 @@ return [
             'deleteLot',
         ],
     ],
+    'deleteOrder' => [
+        'type' => 2,
+        'children' => [
+            'delete',
+        ],
+    ],
+    'indexOrder' => [
+        'type' => 2,
+        'children' => [
+            'index',
+        ],
+    ],
+    'deleteOwnOrder' => [
+        'type' => 2,
+        'ruleName' => 'ownOrder',
+        'children' => [
+            'deleteOrder',
+        ],
+    ],
     'createOwner' => [
         'type' => 2,
         'children' => [
@@ -247,6 +266,8 @@ return [
             'updateOwnReport',
             'deleteOwnReport',
             'indexReport',
+            'deleteOwnOrder',
+            'indexOrder',
         ],
     ],
     'arbitrator' => [
@@ -310,6 +331,7 @@ return [
             'deleteOwner',
             'deleteTorg',
             'deleteLot',
+            'deleteOrder',
             'create',
             'view',
             'update',
