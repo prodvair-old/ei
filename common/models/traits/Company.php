@@ -3,6 +3,7 @@
 namespace common\models\traits;
 
 use common\models\db\Organization;
+use common\models\db\Place;
 use yii\helpers\ArrayHelper;
 
 trait Company
@@ -36,7 +37,7 @@ trait Company
 
     /**
      * Get place
-     * @return ActiveRecord | null
+     * @return Place
      */
     public function getPlace()
     {

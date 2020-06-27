@@ -112,16 +112,6 @@ return [
 
         '/404'  => 'site/error',
 
-        '/arbitrazhnye-upravlyayushchie'                => 'arbitr/list',
-        '/arbitrazhnye-upravlyayushchie/<arb_id:\d+>'   => 'arbitr/arbitr_page',
-
-        '/sro'              => 'sro/list',
-        '/sro/<sro_id:\d+>' => 'sro/sro-page',
-
-        '/dolzhniki'                    => 'doljnik/list',
-        '/dolzhniki/<bnkr_id:\d+>'      => 'doljnik/doljnik_page',
-
-
         '/profile'               => 'user/index',
 
         '/profile/notification'  => 'profile/notification',
@@ -170,6 +160,15 @@ return [
 
         '/lot/load-sub-categories' => '/lot/lot/load-sub-categories',
         '/lot/save-search'         => '/lot/lot/save-search',
+
+        '/arbitr/list'     => '/lot/arbitr/index',
+        '/arbitr/<id:\d+>' => '/lot/arbitr/view',
+
+        '/bankrupt/list'     => '/lot/bankrupt/index',
+        '/bankrupt/<id:\d+>' => '/lot/bankrupt/view',
+
+        '/sro/list'     => '/lot/sro/index',
+        '/sro/<id:\d+>' => '/lot/sro/view',
 
         '/<type>'                     => 'lot/lot/index',
         '/<type>/<category>'          => 'lot/lot/index',

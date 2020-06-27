@@ -252,6 +252,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                                     class="elegent-icon-check_alt2 text-primary"></i> </span>
                                         <h6>Арбитражный управляющий</h6>
                                         <ul class="ul">
+                                            <?= $lot->torg->id ?>
                                             <li><a href="<?= Url::to(['arbitr/list']) ?>/<?= $lot->torg->manager->id ?>"
                                                    target="_blank"><?= $lot->torg->manager->profile->getFullName() ?></a>
                                             </li>
@@ -431,16 +432,12 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                                             <?
                                             switch ($document->ext) {
+                                                case 'docs':
                                                 case 'doc':
                                                     $icon = '<i class="far fa-file-word"></i>';
                                                     break;
-                                                case 'docs':
-                                                    $icon = '<i class="far fa-file-word"></i>';
-                                                    break;
-                                                case 'xls':
-                                                    $icon = '<i class="far fa-file-excel"></i>';
-                                                    break;
                                                 case 'xlsx':
+                                                case 'xls':
                                                     $icon = '<i class="far fa-file-excel"></i>';
                                                     break;
                                                 case 'pdf':
@@ -479,16 +476,12 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                                         <?
                                         switch ($document->ext) {
+                                            case 'docs':
                                             case 'doc':
                                                 $icon = '<i class="far fa-file-word"></i>';
                                                 break;
-                                            case 'docs':
-                                                $icon = '<i class="far fa-file-word"></i>';
-                                                break;
-                                            case 'xls':
-                                                $icon = '<i class="far fa-file-excel"></i>';
-                                                break;
                                             case 'xlsx':
+                                            case 'xls':
                                                 $icon = '<i class="far fa-file-excel"></i>';
                                                 break;
                                             case 'pdf':
@@ -524,10 +517,8 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                                         <?
                                         switch ($document->ext) {
-                                            case 'doc':
-                                                $icon = '<i class="far fa-file-word"></i>';
-                                                break;
                                             case 'docs':
+                                            case 'doc':
                                                 $icon = '<i class="far fa-file-word"></i>';
                                                 break;
                                             case 'xls':
