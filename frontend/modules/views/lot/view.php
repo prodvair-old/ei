@@ -12,6 +12,7 @@ use frontend\components\Darwin;
 use frontend\components\ServiceLotFormWidget;
 use frontend\models\UserAccess;
 use ymaker\social\share\widgets\SocialShare;
+use common\models\db\WishList;
 
 
 /* @var $lot Lot */
@@ -19,6 +20,8 @@ use ymaker\social\share\widgets\SocialShare;
 
 $dateSend = floor(($lot->torg->end_at - time()) / (60 * 60 * 24));
 $otherLots = null;
+$wishListCheck = WishList::find()->where(['lot_id' => $lot->id, 'user_id' => \Yii::$app->user->id])->one();
+$wishListAll = WishList::find()->where(['lot_id' => $lot->id])->count();
 
 $this->registerJsVar('lotType', $lot->torg->property, $position = yii\web\View::POS_HEAD);
 $this->title = $lot->title;
@@ -82,6 +85,10 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                 </div>
                                 <div class="mr-10 text-muted">|</div>
                                 <div class="mr-10 rating-item rating-inline">
+                                    <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="wish-star  d-flex" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star d-flex" data-id="'.$lot->id.'"'?>>
+                                        <span class="pr-5"> <?=$wishListAll?> </span>
+                                        <img src="img/star<?=($wishListCheck->lot_id)? '' : '-o' ?>.svg" alt="">
+                                    </a>
                                 </div>
                                 <?
                                 if (!Yii::$app->user->isGuest) {
@@ -640,4 +647,4 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
 <?php
 $this->registerJsFile('js/custom-multiply-.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-');
-$this->registerJsFile('js/custom-core.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-core'); ?>
+?>

@@ -2,6 +2,7 @@
 
 use common\models\db\Lot;
 use common\models\db\Torg;
+use common\models\db\WishList;
 use sergmoro1\lookup\models\Lookup;
 use yii\helpers\Html;
 
@@ -27,11 +28,14 @@ if ($lot->torg->property == 1) {
     $lotTypeClass = 'lot__municipal';
 }
 
+$wishListCheck = WishList::find()->where(['lot_id' => $lot->id, 'user_id' => \Yii::$app->user->id])->one();
+$wishListAll = WishList::find()->where(['lot_id' => $lot->id])->count();
+
 ?>
 <?= ($type == 'grid') ? '<div class="col">' : '' ?>
 
 <figure class="tour-<?= $type ?>-item-01" itemscope itemtype="http://schema.org/Product">
-    <a href="<?= $url . '/' . $lot->id ?>">
+    <a href="<?= $url . '/' . $lot->id ?>" target="_blank">
 
         <?= ($type == 'long') ? '<div class="d-flex flex-column flex-sm-row">' : '' ?>
         <?= ($type == 'long') ? '<div>' : '' ?>
@@ -69,6 +73,12 @@ if ($lot->torg->property == 1) {
             <hr>
             <ul class="item-meta lot-block__info">
                 <li><?= Yii::$app->formatter->asDate($lot->torg->published_at, 'long') ?></li>
+                <li>
+                    <div <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="wish-star  d-flex" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star d-flex" data-id="'.$lot->id.'"'?>>
+                        <span class="pr-5"> <?=$wishListAll?> </span>
+                        <img src="img/star<?=($wishListCheck->lot_id)? '' : '-o' ?>.svg" alt="">
+                    </div>
+                </li>
             </ul>
             <? if ($lot->torg->property == Torg::PROPERTY_ZALOG) : ?>
                 <hr>

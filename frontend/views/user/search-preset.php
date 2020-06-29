@@ -99,14 +99,16 @@ $this->registerJsVar( 'lotType', '', $position = yii\web\View::POS_HEAD );
                     
                     <div class="form-draft-payment">
                     
-                        <h3 class="heading-title"><span>Мои <span class="font200"> cохранённые поиски</span></span></h3>
+                        <h3 class="heading-title"><span>Мои <span class="font200"> поисковые отслеживания</span></span></h3>
                         
                         <div class="clear"></div>
 
-                        <div class="mb-50"></div>
-
-
+                        <div class="mb-30"></div>
                         <div class="row" id="">
+                            <div class="offset-md-8 col-md-4 d-none d-md-block search-preset-sender">
+                                Получать письма
+                                <div class="mb-15"></div>
+                            </div>
                             <?php if ($searchQueries[0]) {
                                 foreach ($searchQueries as $searchQuerу) { 
                               ?>
@@ -120,7 +122,7 @@ $this->registerJsVar( 'lotType', '', $position = yii\web\View::POS_HEAD );
                                   </div>
                                   <div class="search-preset-box__right">
                                     <div class="search-preset-box__check">
-                                      <span>Поличать письма</span>
+                                      <span class="d-md-none">Получать письма</span>
                                       <div class="toggle normal">
                                         
                                         <input id="normal-<?=$searchQuerу->id?>" class="normal-input" data-id="<?=$searchQuerу->id?>" type="checkbox" <?=$searchQuerу->send_email ? 'checked' : ''?>/>

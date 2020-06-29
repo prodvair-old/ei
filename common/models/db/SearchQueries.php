@@ -151,12 +151,16 @@ class SearchQueries extends ActiveRecord
      * 
      * @return array parsing GET parameters from a link
      */
-    public function getQueryParser()
+    public function getQueryParser($fullPath = false)
     {
       $query = null;
 
       $parts = parse_url($this->url);
-      $path = explode("/", substr($parts['path'],1));
+      if (!$fullPath) {
+        $path = explode("/", substr($parts['path'],1));
+      } else {
+        $path = $parts;
+      }
       parse_str($parts['query'], $query);
 
       return ['query' => $query, 'path' => $path];

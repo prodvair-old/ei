@@ -14,10 +14,11 @@ use common\models\User;
  */
 class SearchPresetController extends Controller
 {
-    // php yii search-preset/init
-    public function init($step = 100, $delay = 'y', $sort = 'new') 
+    // php yii search-preset
+    public function actionIndex($step = 100, $delay = 'y', $sort = 'new') 
     {
         $searchQueriesCount = SearchQueries::find()->count();
+        echo "Начало работы \n";
 
         $limit  = $step;
         $offset = 0;
@@ -25,8 +26,10 @@ class SearchPresetController extends Controller
 
         while ($check !== false) {
             $searchQueries = SearchQueries::find()->limit($limit)->offset($offset)->all();
+            echo "\nПолучен поисковой запрос \n";
 
             if (!isset($searchQueries[0])) {
+                echo "Поисковой запрос пуст \n";
                 $check = false;
             } else {
                 foreach ($searchQueries as $searchQuery) {
@@ -59,14 +62,17 @@ class SearchPresetController extends Controller
                     $dataProvider = $searchModel->search($data['query'], 1000);
 
                     $lots = $dataProvider->getModels();
+                    echo "Выполнен поиск новых лотов\n";
 
                     $last_count = count($lots);
+                    echo "Найдено лотов: $last_count\n";
 
                     $searchQuery->last_count = $last_count;
-                    $searchQuery->seached_at = strtotime((new \DateTime())->format('Y-m-d H:i:s'));;
-                    
-                    if ($last_count > 0 && $searchQuery->update() && $searchQuery->send_email == true) {
+                    $searchQuery->seached_at = strtotime((new \DateTime())->format('Y-m-d H:i:s'));
+
+                    if ($searchQuery->update() && $last_count > 0 && $searchQuery->send_email == true) {
                         $user = User::findOne(['id' => $searchQuery->user_id]);
+                        echo "Отправка сообщения\n";
 
                         Yii::$app->mailer_support->compose(['html' => 'search-preset-html'], [
                             'user'          => $user, 
@@ -79,11 +85,12 @@ class SearchPresetController extends Controller
                             ->setSubject('Новые лоты по вашим запросам')
                             ->send();
                     }
-                    
                 }
             }
 
             $offset = $offset + $step;
         }
+        echo "\nКонец работы \n";
+
     }
 }  

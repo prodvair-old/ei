@@ -7,6 +7,7 @@ use frontend\modules\models\Category;
 use Yii;
 use common\models\db\SearchQueries;
 use common\models\db\Lot;
+use common\models\db\WishList;
 use frontend\modules\models\LotSearch;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -314,8 +315,31 @@ class LotController extends Controller
 
         $searchSave->user_id    = Yii::$app->user->id;
         $searchSave->url        = Yii::$app->request->queryParams['url'];
+        $searchSave->send_email = (Yii::$app->request->queryParams['send_email'] === 'true')? true: false;
         $searchSave->getFirstSave();
 
         return $searchSave->save();
+    }
+
+    public function actionWishListEdit()
+    {
+        if (!Yii::$app->user->isGuest) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            
+            $wishListCheck = WishList::find()->where(['lot_id' => Yii::$app->request->queryParams['lotId'], 'user_id' => \Yii::$app->user->id])->one();
+
+            if ($wishListCheck->lot_id) {
+                return ['method' => 'delete', 'status' => $wishListCheck->delete()];
+            } else {
+                $wishList = new WishList();
+
+                $wishList->lot_id   = Yii::$app->request->queryParams['lotId'];
+                $wishList->user_id  = \Yii::$app->user->id;
+
+                return ['method' => 'save', 'status' => $wishList->save()];
+            }
+        } else {
+            return $this->goHome();
+        }
     }
 }
