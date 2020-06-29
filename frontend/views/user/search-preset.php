@@ -104,7 +104,7 @@ $this->registerJsVar( 'lotType', '', $position = yii\web\View::POS_HEAD );
                         <div class="clear"></div>
 
                         <div class="mb-30"></div>
-                        <div class="row" id="">
+                        <div class="row search-preset-list" id="">
                             <?php if ($searchQueries[0]) { ?>
                                 <div class="offset-md-8 col-md-4 d-none d-md-block search-preset-sender">
                                     Получать письма
@@ -133,13 +133,11 @@ $this->registerJsVar( 'lotType', '', $position = yii\web\View::POS_HEAD );
                                     </div>
                                     </div>
                                 <? } 
-                            } else { ?>
-                                <div class='p-15 search-preset__info'>
-                                    <h3>Как сохранить поиск?</h3>
-                                    <p>На странице <a href="<?=Url::to(['all/lot-list'])?>" class="text-dark"><u>поисковой выдачи</u></a> после фильтрации нажмите <span class="text-primary">"Cохранить поиск"</span>.</p>
-                                </div>
-                            <? } ?>
-                          
+                            } ?>
+                            <div class="p-15 search-preset__info <?=$searchQueries[0] ? '' : 'active'?>">
+                                <h3>Как сохранить поиск?</h3>
+                                <p>На странице <a href="<?=Url::to(['all/lot-list'])?>" class="text-dark"><u>поисковой выдачи</u></a> после фильтрации нажмите <span class="text-primary">"Cохранить поиск"</span>.</p>
+                            </div>
 
                             <div class="pager-innner">
                         

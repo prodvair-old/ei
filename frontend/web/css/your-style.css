@@ -192,11 +192,14 @@ label.toggle-item:before {
   text-align: center;
 }
 .search-preset__info {
-  display: flex;
+  display: none;
   align-items: center;
   flex-direction: column;
   width: 100%;
   padding: 15px;
+}
+.search-preset__info.active {
+  display: flex;
 }
 
 .search-preset__info a:hover {
