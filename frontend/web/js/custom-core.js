@@ -5,12 +5,12 @@ jQuery(function ($) {
   // save search start->
   $(".save-lot-search-js").on("click", function (e) {
     e.preventDefault();
-
     $.ajax({
       url: "/lot/save-search",
       type: "GET",
       data: {
         url: document.location.href,
+        send_email: $("#search-preset-agree").is(":checked"),
       },
       success: function (res) {
         if (res) {
