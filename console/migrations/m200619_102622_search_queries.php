@@ -17,6 +17,7 @@ class m200619_102622_search_queries extends Migration
             'id'                => $this->bigPrimaryKey(),
             'user_id'           => $this->bigInteger()->notNull(),
             'defs'              => $this->text()->notNull(),
+            'descripton'        => $this->text(),
             'url'               => $this->text()->notNull(),
             'seached_at'        => $this->integer()->notNull(),
             'last_count'        => $this->integer()->notNull()->defaultValue(0),
@@ -31,6 +32,7 @@ class m200619_102622_search_queries extends Migration
 
         $this->addCommentOnColumn(self::TABLE, 'user_id', 'Пользователь');
         $this->addCommentOnColumn(self::TABLE, 'defs', 'Определения поиска');
+        $this->addCommentOnColumn(self::TABLE, 'descripton', 'Описание');
         $this->addCommentOnColumn(self::TABLE, 'url', 'Полная ссылка');
 		$this->addCommentOnColumn(self::TABLE, 'seached_at', 'Дата последнего поиска');
 		$this->addCommentOnColumn(self::TABLE, 'last_count', 'Количество найденных лотов');

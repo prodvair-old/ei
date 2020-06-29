@@ -176,12 +176,34 @@ label.toggle-item:before {
   display: block;
   padding-right: 30px;
 }
+.search-preset-box__desc {
+  font-size: 13px;
+  line-height: 16px;
+  max-height: 31px;
+  overflow: hidden;
+  padding-right: 30px;
+  margin-top: 5px;
+}
 .search-preset-box__title:hover h5 {
   color: #077751;
 }
 
 .search-preset-sender {
   text-align: center;
+}
+.search-preset__info {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 15px;
+}
+
+.search-preset__info a:hover {
+  color: #077751!important;
+}
+.search-preset__info a:hover u {
+  text-decoration: none!important;
 }
 
 .search-preset-box__check {
@@ -226,6 +248,9 @@ label.toggle-item:before {
   }
   .search-preset-box__count {
     left: 20px;
+  }
+  .search-preset-box__desc {
+    padding-right: 0;
   }
   .search-preset-box__check {
     justify-content: flex-start;

@@ -105,37 +105,40 @@ $this->registerJsVar( 'lotType', '', $position = yii\web\View::POS_HEAD );
 
                         <div class="mb-30"></div>
                         <div class="row" id="">
-                            <div class="offset-md-8 col-md-4 d-none d-md-block search-preset-sender">
-                                Получать письма
-                                <div class="mb-15"></div>
-                            </div>
-                            <?php if ($searchQueries[0]) {
-                                foreach ($searchQueries as $searchQuerу) { 
-                              ?>
-                                <div class="search-preset-box search-preset-box-<?=$searchQuerу->id?> col-12">
-                                  <?=$searchQuerу->last_count ? '<span class="search-preset-box__count">'.$searchQuerу->last_count.'</span>' : ''?>
-                                  <div class="search-preset-box__left">
-                                  <a href="<?=$searchQuerу->url?>" class="search-preset-box__title">
-                                    <h5><?=$searchQuerу->defs?></h5>
-                                  </a>
-                                  <span class="text-muted">Последний поиск: <?=Yii::$app->formatter->asDate($searchQuerу->seached_at, 'dd.MM.yyyy')?></span>
-                                  </div>
-                                  <div class="search-preset-box__right">
-                                    <div class="search-preset-box__check">
-                                      <span class="d-md-none">Получать письма</span>
-                                      <div class="toggle normal">
-                                        
-                                        <input id="normal-<?=$searchQuerу->id?>" class="normal-input" data-id="<?=$searchQuerу->id?>" type="checkbox" <?=$searchQuerу->send_email ? 'checked' : ''?>/>
-                                        <label class="toggle-item" for="normal-<?=$searchQuerу->id?>"></label>
-                                      </div>
-                                    </div>
-                                    <a href="#" class="search-preset-box__del search-preset-box__del-js" data-id="<?=$searchQuerу->id?>"><i class="far fa-trash-alt"></i></a>
-                                  </div>
+                            <?php if ($searchQueries[0]) { ?>
+                                <div class="offset-md-8 col-md-4 d-none d-md-block search-preset-sender">
+                                    Получать письма
+                                    <div class="mb-15"></div>
                                 </div>
-                            <? } 
-                            } else {
-                                echo "<div class='p-15 font-bold'>Пока нет сохранённых поисков</div>";
-                            } ?>
+                                <? foreach ($searchQueries as $searchQuerу) { ?>
+                                    <div class="search-preset-box search-preset-box-<?=$searchQuerу->id?> col-12">
+                                    <?=$searchQuerу->last_count ? '<span class="search-preset-box__count">'.$searchQuerу->last_count.'</span>' : ''?>
+                                    <div class="search-preset-box__left">
+                                    <a href="<?=$searchQuerу->url?>" class="search-preset-box__title">
+                                        <h5><?=$searchQuerу->defs?></h5>
+                                    </a>
+                                    <p class="search-preset-box__desc text-muted"><?=$searchQuerу->descripton?></p>
+                                    <span class="text-muted">Последний поиск: <?=Yii::$app->formatter->asDate($searchQuerу->seached_at, 'dd.MM.yyyy')?></span>
+                                    </div>
+                                    <div class="search-preset-box__right">
+                                        <div class="search-preset-box__check">
+                                        <span class="d-md-none">Получать письма</span>
+                                        <div class="toggle normal">
+                                            
+                                            <input id="normal-<?=$searchQuerу->id?>" class="normal-input" data-id="<?=$searchQuerу->id?>" type="checkbox" <?=$searchQuerу->send_email ? 'checked' : ''?>/>
+                                            <label class="toggle-item" for="normal-<?=$searchQuerу->id?>"></label>
+                                        </div>
+                                        </div>
+                                        <a href="#" class="search-preset-box__del search-preset-box__del-js" data-id="<?=$searchQuerу->id?>"><i class="far fa-trash-alt"></i></a>
+                                    </div>
+                                    </div>
+                                <? } 
+                            } else { ?>
+                                <div class='p-15 search-preset__info'>
+                                    <h3>Как сохранить поиск?</h3>
+                                    <p>На странице <a href="<?=Url::to(['all/lot-list'])?>" class="text-dark"><u>поисковой выдачи</u></a> после фильтрации нажмите <span class="text-primary">"Cохранить поиск"</span>.</p>
+                                </div>
+                            <? } ?>
                           
 
                             <div class="pager-innner">
