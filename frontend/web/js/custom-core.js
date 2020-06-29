@@ -83,6 +83,7 @@ jQuery(function ($) {
   $(".search-preset-box__del-js").on("click", function (e) {
     e.preventDefault();
     var presetId = $(this).data("id");
+    var list = $('.search-preset-list');
     $.ajax({
       url: "/profile/search-preset-del",
       type: "GET",
@@ -92,6 +93,11 @@ jQuery(function ($) {
       success: function (res) {
         if (res) {
           $(".search-preset-box-" + presetId).addClass("del");
+          var count = list.children('.search-preset-box').length - list.children('.search-preset-box.del').length;
+          if (count === 0) {
+            $('.search-preset-sender').removeClass('d-md-block');
+            $('.search-preset__info').addClass('active');
+          }
           toastr.success("Успешно удалено");
         } else {
           toastr.warning("Не удалось удаленть");
