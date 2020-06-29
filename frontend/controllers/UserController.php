@@ -29,7 +29,7 @@ use frontend\models\zalog\FilterLots;
 use frontend\models\arrestBankrupt\importFIleForm;
 
 use common\models\User;
-use common\models\Query\WishList;
+use common\models\db\WishList;
 
 /**
  * User controller
@@ -228,10 +228,10 @@ class UserController extends Controller
   {
     if (!Yii::$app->user->isGuest) {
 
-      $wishCount = WishList::find()->where(['userId' => Yii::$app->user->id])->count();
+      $wishCount = WishList::find()->where(['user_id' => Yii::$app->user->id])->count();
       $pages = new Pagination(['totalCount' => $wishCount, 'pageSize' => 6]);
 
-      $wishList = WishList::find()->where(['userId' => Yii::$app->user->id])->offset($pages->offset)->limit($pages->limit)->orderBy('id DESC')->all();
+      $wishList = WishList::find()->where(['user_id' => Yii::$app->user->id])->offset($pages->offset)->limit($pages->limit)->orderBy('id DESC')->all();
 
       return $this->render('wish_list', ['wishCount' => $wishCount, 'pages' => $pages, 'wishList' => $wishList]);
     } else {

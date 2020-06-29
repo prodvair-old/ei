@@ -2,6 +2,40 @@ jQuery(function ($) {
   "use strict";
 
   var $window = $(window);
+  // wish list start->
+  $(".wish-js").on("click", function (e) {
+    e.preventDefault();
+    var lotId   = $(this).data("id"),
+        star    = $(this).children("img"),
+        number  = $(this).children("span"),
+        item    = $(this).parents(".col");
+
+    console.log($(this).children('img'));
+    $.ajax({
+      url: "/wish-list-edit",
+      type: "GET",
+      data: {
+        lotId,
+      },
+      success: function (data) {
+        var num = number.html();
+
+        if (data["method"] === 'save') {
+          star.attr("src", "img/star.svg");
+          number.html(Number(num) + 1);
+          toastr.success("Лот добавлен в избранное");
+        } else if (data["method"] === 'delete') {
+          star.attr("src", "img/star-o.svg");
+          number.html(Number(num) - 1);
+          toastr.success("Лот удалён из избранных");
+          item.fadeOut();
+        }
+      },
+    }).fail(function () {
+      toastr.error("Произошла ошибка");
+    });
+  });
+  // wish list <-end
   // save search start->
   $(".save-lot-search-js").on("click", function (e) {
     e.preventDefault();

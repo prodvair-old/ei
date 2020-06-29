@@ -133,6 +133,7 @@ return [
 
         '/profile/favorite'      => 'user/wish_list',
 
+
         '/profile/search-preset'        => 'user/search-preset',
         '/profile/search-preset-change' => 'user/search-preset-change',
         '/profile/search-preset-del'    => 'user/search-preset-del',
@@ -166,7 +167,7 @@ return [
 
         '/map'              => 'lot/map',
         '/load-category'    => 'lot/load_category',
-        '/wish-list-edit'   => 'lot/wish_list',
+        '/wish-list-edit'   => 'lot/lot/wish-list-edit',
 
         '/lot/load-sub-categories' => '/lot/lot/load-sub-categories',
         '/lot/save-search'         => '/lot/lot/save-search',
