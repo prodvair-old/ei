@@ -339,10 +339,11 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                         <?php endif; ?>
 
                         <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
-                        <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="btn btn-block text-primary" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="save-lot-search-js btn btn-block text-primary"'?>>
-                            Сохранить поиск
+                        <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="save-lot-search-js btn btn-outline-primary btn-block"'?>>
+                            <i class="ion-android-notifications"></i>
+                            Отслеживать поиск
                         </a>
-                        <div class="custom-control custom-checkbox d-flex justify-content-center">
+                        <!-- <div class="custom-control custom-checkbox d-flex justify-content-center">
                             <div class="form-group field-competedApplication">
                                 <?= Html::checkbox('search-preset-agree', true, [
                                     'class'    => 'custom-control-input',
@@ -351,7 +352,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                                 ]) ?>
                                 <label class="custom-control-label" for="search-preset-agree">Получать уведомления по новым лотам</label>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                     <?php ActiveForm::end(); ?>
