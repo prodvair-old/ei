@@ -44,7 +44,7 @@ class LotsMunicipal extends Module
 
             return true;
         } else {
-            if ($lot->lotBidNumber != null && $lot->lotNum != null && $lot->lotPropDesc != null && $lot->lotStartSalePrice != null) {
+            if ($lot->lotBidNumber != null && $lot->lotNum != null && $lot->lotStartSalePrice != null) {
 
                 // Торг
                 if (!$torg = Torgs::find()->where(['oldId' => $lot->torgs->trgId, 'typeId' => 4])->one()) {
@@ -245,7 +245,7 @@ class LotsMunicipal extends Module
                 $newLot->msgId          = $lot->lotBidNumber;
                 $newLot->lotNumber      = $lot->lotNum;
                 $newLot->title          = GetInfoFor::mb_ucfirst(GetInfoFor::title((($lot->lotPropDesc)? $lot->lotPropDesc : $lot->lotPropName)));
-                $newLot->description    = GetInfoFor::mb_ucfirst($lot->lotPropDesc);
+                $newLot->description    = GetInfoFor::mb_ucfirst($lot->lotPropDesc ? $lot->lotPropDesc : $lot->lotWorkList);
                 $newLot->startPrice     = $lot->lotStartSalePrice;
                 $newLot->step           = $lot->lotPriceStep;
                 $newLot->stepTypeId     = 2;
