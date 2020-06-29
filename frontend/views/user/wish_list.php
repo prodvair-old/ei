@@ -126,7 +126,7 @@ $this->registerJsVar( 'lotType', '', $position = yii\web\View::POS_HEAD );
                                             $t = 'all';
                                             break;
                                     }
-                                    echo LotBlock::widget(['lot' => $wish->lot, 'url' => $t.'/'.$wish->lot->categories[0]->slug]); 
+                                    echo LotBlock::widget(['lot' => $wish->lot, 'url' => $t.'/'.($wish->lot->categories[0]->slug ? $wish->lot->categories[0]->slug : 'lot-list')]); 
                                 } 
                             } else {
                                 echo "<div class='p-15 font-bold'>Пока нет избранных лотов по арестованному имуществу</div>";
