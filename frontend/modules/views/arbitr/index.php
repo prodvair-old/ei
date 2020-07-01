@@ -70,7 +70,40 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                         'placeholder' => 'Например: Иванов Иван',
                                         'tabindex'    => '2',
                                     ])
-                                        ->label('Найти'); ?>
+                                        ->label('ФИО'); ?>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="col-inner">
+                                    <?= $form->field($searchModel, 'inn')->textInput([
+                                        'class'       => 'form-control form-control-sm',
+                                        'placeholder' => 'Например: 742403257984',
+                                        'tabindex'    => '2',
+                                    ])
+                                        ->label('Инн'); ?>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="col-inner">
+                                    <?= $form->field($searchModel, 'regNumber')->textInput([
+                                        'class'       => 'form-control form-control-sm',
+                                        'placeholder' => 'Например: 0007',
+                                        'tabindex'    => '2',
+                                    ])
+                                        ->label('Рег.номер'); ?>
+                                </div>
+                            </div>
+
+                            <div class="box-content col-12">
+                                <div class="custom-control custom-checkbox">
+                                    <?= $form->field($searchModel, 'torgsIsActive')->checkbox([
+                                        'class'    => 'custom-control-input',
+                                        'value'    => '1',
+                                        'id'       => 'andArchived',
+                                        'template' => '{input}<label class="custom-control-label" for="andArchived">Активные торги</label>'
+                                    ]) ?>
                                 </div>
                             </div>
 

@@ -90,15 +90,22 @@ class Manager extends BaseAgent
             ->andOnCondition(['place.model' => static::INT_CODE]);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getProfileRel()
     {
         return $this->hasOne(Profile::className(), ['parent_id' => 'id'])
             ->andOnCondition(['profile.model' => static::INT_CODE]);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
+     */
     public function getTorg()
     {
-        return $this->hasOne(Torg::className(), ['id' => 'torg_id'])
+        return $this->hasMany(Torg::className(), ['id' => 'torg_id'])
             ->viaTable(TorgDebtor::tableName(), ['manager_id' => 'id']);
     }
 }

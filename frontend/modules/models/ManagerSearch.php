@@ -2,6 +2,7 @@
 
 namespace frontend\modules\models;
 
+use common\models\db\Organization;
 use common\models\db\Place;
 use common\models\db\Profile;
 use yii\base\Model;
@@ -16,6 +17,12 @@ class ManagerSearch extends Manager
 
     public $search;
 
+    public $inn;
+
+    public $regNumber;
+
+    public $torgsIsActive;
+
     public $offset;
 
     private $totalCount;
@@ -27,7 +34,7 @@ class ManagerSearch extends Manager
     public function rules()
     {
         return [
-            [['search', 'offset'], 'safe'],
+            [['search', 'inn', 'regNumber', 'torgsIsActive', 'offset'], 'safe'],
         ];
     }
 
@@ -67,9 +74,7 @@ class ManagerSearch extends Manager
             return $dataProvider;
         }
 
-        $query->joinWith(['profileRel', 'placeRel']);
-//        $query->leftJoin(Profile::tableName(), 'profile.parent_id = manager.id AND profile.model = ' . Manager::INT_CODE);
-//        $query->leftJoin(Place::tableName(), 'place.parent_id = manager.id AND place.model = ' . Manager::INT_CODE);
+        $query->joinWith(['profileRel', 'placeRel', 'sro']);
 
         $fullName = null;
 
@@ -89,6 +94,18 @@ class ManagerSearch extends Manager
             if(isset($fullName[2])) {
                 $query->andFilterWhere(['ilike', Profile::tableName() . '.middle_name', $fullName[2]]);
             }
+        }
+
+        if($this->inn) {
+            $query->andFilterWhere(['=', Profile::tableName() . '.inn', $this->inn]);
+        }
+
+        if($this->regNumber) {
+            $query->andFilterWhere(['=', Organization::tableName() . '.reg_number', $this->regNumber]);
+        }
+
+        if($this->torgsIsActive) {
+            $query->andFilterWhere(['=', Organization::tableName() . '.reg_number', $this->regNumber]);
         }
 
         // grid filtering conditions

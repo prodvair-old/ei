@@ -199,7 +199,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                         <ul class="ul">
                                             <?php if ($lot->torg->bankruptProfile->id) : ?>
                                                 <li>
-                                                    <a href="<?= Url::to(['doljnik/list']) ?>/<?= $lot->torg->bankruptProfile->id ?>"
+                                                    <a href="<?= Url::to(['/bankrupt']) ?>/<?= $lot->torg->bankruptProfile->id ?>"
                                                        target="_blank"
                                                        itemprop="brand"><?= $lot->torg->bankruptProfile->getFullName() ?></a>
                                                 </li>
@@ -208,7 +208,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                                 </li>
                                             <?php else: ?>
                                                 <li>
-                                                    <a href="<?= Url::to(['doljnik/list']) ?>/<?= $lot->torg->bankrupt->id ?>"
+                                                    <a href="<?= Url::to(['/bankrupt']) ?>/<?= $lot->torg->bankrupt->id ?>"
                                                        target="_blank"
                                                        itemprop="brand"><?= $lot->torg->bankrupt->title ?></a>
                                                 </li>
@@ -235,7 +235,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                                         class="text-list-name"><?= $lot->torg->case->reg_number ?></span>
                                             </li>
                                             <li>Арбитражный суд: <span class="text-list-name"><a
-                                                            href="<?= Url::to(['sro/list']) ?>/"
+                                                            href="<?= Url::to(['/sro']) ?>/<?= $lot->torg->manager->sro->parent_id ?>"
                                                             target="_blank"><?= $lot->torg->manager->sro->title ?></a></span>
                                             </li>
                                             <!--                                            <li>Адрес суда: <span-->
@@ -252,8 +252,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                                     class="elegent-icon-check_alt2 text-primary"></i> </span>
                                         <h6>Арбитражный управляющий</h6>
                                         <ul class="ul">
-                                            <?= $lot->torg->id ?>
-                                            <li><a href="<?= Url::to(['arbitr/list']) ?>/<?= $lot->torg->manager->id ?>"
+                                            <li><a href="<?= Url::to(['/arbitr']) ?>/<?= $lot->torg->manager->id ?>"
                                                    target="_blank"><?= $lot->torg->manager->profile->getFullName() ?></a>
                                             </li>
                                             <li>Рег. номер: <span

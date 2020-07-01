@@ -10,7 +10,7 @@ use yii\helpers\Url;
 										
     <figure class="tour-grid-item-01">
 
-        <a href="<?=Url::to(['/sro'])?>/<?= $sro->id?>">
+        <a href="<?=Url::to(['/sro'])?>/<?= $sro->organizationRel->parent_id?>">
                    
             <figcaption class="content">
                 <h5><?=$sro->organizationRel->title?></h5>

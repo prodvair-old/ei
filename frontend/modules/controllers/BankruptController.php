@@ -2,6 +2,7 @@
 
 namespace frontend\modules\controllers;
 
+use common\models\db\Lot;
 use Yii;
 use common\models\db\Bankrupt;
 use frontend\modules\models\BankruptSearch;
@@ -45,8 +46,16 @@ class BankruptController extends Controller
      */
     public function actionView($id)
     {
+        $bankruptLots = Lot::find()
+            ->joinWith(['categories', 'torg.debtor deb'])
+            ->andOnCondition(['deb.bankrupt_id' => $id])
+            ->limit(15)
+            ->orderBy(['torg.published_at' => SORT_DESC])
+            ->all();
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'bankruptLots' => $bankruptLots,
         ]);
     }
 

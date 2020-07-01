@@ -5,8 +5,6 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
@@ -159,7 +157,7 @@ AppAsset::register($this);
                     </li>
                   <?php } else { ?>
                     <li class="d-block d-sm-block">
-                      <a href="<?= Url::to(['user/wish_list']) ?>" class="vertival-center">
+                      <a href="<?= Url::to(['/user/wish_list']) ?>" class="vertival-center">
                         <div class="image header-avatar">
                           <img class="setting-image-tag" src="<?= isset(Yii::$app->user->identity->avatar) ? Yii::$app->user->identity->avatar : 'img/image-man/01.jpg' ?>" alt="Image" />
                         </div>

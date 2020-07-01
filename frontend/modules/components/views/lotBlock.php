@@ -89,7 +89,7 @@ if ($lot->torg->property == 1) {
             </ul>
             <hr>
             <ul class="item-meta lot-block__info">
-                Топ торгов:&nbsp;
+                Тип торгов:&nbsp;
                 <li><span itemprop="category"> <?= Lookup::item('TorgOffer', $lot->torg->offer) ?></span></li>
             </ul>
             <hr>

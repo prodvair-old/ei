@@ -75,7 +75,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
                             <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-20">
                                 <div class="mr-15 font-lg">
-                                    <?=$model->id?>
+                                    <?=$model->organizationRel->parent_id?>
                                 </div>
                                 <div class="mr-15 text-muted">|</div>
                                 <div class="mr-15 rating-item rating-inline">
