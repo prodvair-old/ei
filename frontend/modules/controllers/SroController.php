@@ -2,6 +2,12 @@
 
 namespace frontend\modules\controllers;
 
+use common\models\db\Casefile;
+use common\models\db\Lot;
+use common\models\db\Manager;
+use common\models\db\ManagerSro;
+use common\models\db\Torg;
+use common\models\db\TorgDebtor;
 use Yii;
 use common\models\db\Sro;
 use frontend\modules\models\SroSearch;
@@ -46,8 +52,34 @@ class SroController extends Controller
      */
     public function actionView($id)
     {
+        $managersInSroQuery = Manager::find()
+            ->select('manager.id')
+            ->innerJoin(ManagerSro::tableName(), 'manager_sro.manager_id = manager.id')
+            ->where(['manager_sro.sro_id' => $id]);
+
+        $caseCount = Casefile::find()
+            ->innerJoin(TorgDebtor::tableName(), 'torg_debtor.case_id = casefile.id')
+            ->innerJoin(Torg::tableName(), 'torg.id = torg_debtor.torg_id')
+            ->where(['in', TorgDebtor::tableName() . '.manager_id', $managersInSroQuery])
+            ->count('casefile.id');
+
+        $lotCount = Lot::find()
+            ->joinWith(['torg.debtor deb'])
+            ->where(['in', 'deb.manager_id', $managersInSroQuery])
+            ->count('lot.id');
+
+        $arbitrs = $managersInSroQuery
+            ->limit(15)
+            ->all();
+
+        $arbitrCount = $managersInSroQuery->count('manager.id');
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model'       => $this->findModel($id),
+            'caseCount'   => $caseCount,
+            'arbitrs'     => $arbitrs,
+            'arbitrCount' => $arbitrCount,
+            'lotCount'    => $lotCount,
         ]);
     }
 

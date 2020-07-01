@@ -75,6 +75,17 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                 </div>
                             </div>
 
+                            <div class="box-content col-12">
+                                <div class="custom-control custom-checkbox">
+                                    <?= $form->field($searchModel, 'torgsIsActive')->checkbox([
+                                        'class'    => 'custom-control-input',
+                                        'value'    => '1',
+                                        'id'       => 'torgsIsActive',
+                                        'template' => '<div class="col-md-8">{input}<label class="custom-control-label" for="torgsIsActive">Активные торги</label></div>'
+                                    ]) ?>
+                                </div>
+                            </div>
+
                             <div class="col-12">
                                 <div class="col-inner ph-20 pv-15">
                                     <?= Html::submitButton('<i class="ion-android-search"></i> Поиск',

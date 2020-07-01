@@ -46,4 +46,14 @@ class Bankrupt extends BaseAgent
         return $this->hasOne(Organization::className(), ['parent_id' => 'id'])
             ->andOnCondition(['organization.model' => static::INT_CODE]);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getTorg()
+    {
+        return $this->hasMany(Torg::className(), ['id' => 'torg_id'])
+            ->viaTable(TorgDebtor::tableName(), ['bankrupt_id' => 'id']);
+    }
 }

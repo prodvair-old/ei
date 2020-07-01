@@ -1,13 +1,21 @@
 <?php
 
+use common\models\db\Casefile;
+use common\models\db\Lot;
+use common\models\db\Manager;
 use common\models\db\Sro;
 use yii\widgets\Breadcrumbs;
-use frontend\components\arbitrs\ArbitrBlock;
+use frontend\modules\components\ArbitrBlock;
 
 /** @var $model Sro */
+/** @var $lots Lot[] */
+/** @var $lotCount Lot count */
+/** @var $caseCount Casefile count */
+/** @var $arbitrs Manager[] */
+/** @var $arbitrCount Manager count */
 
 $this->title = $model->organizationRel->title;
-$this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
+$this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 ?>
 
     <section class="page-wrapper page-detail">
@@ -22,12 +30,12 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
                         <nav aria-label="breadcrumb">
                             <?= Breadcrumbs::widget([
-                                'itemTemplate' => '<li class="breadcrumb-item">{link}</li>',
-                                'encodeLabels' => false,
-                                'tag' => 'ol',
+                                'itemTemplate'       => '<li class="breadcrumb-item">{link}</li>',
+                                'encodeLabels'       => false,
+                                'tag'                => 'ol',
                                 'activeItemTemplate' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-                                'homeLink' => ['label' => '<i class="fas fa-home"></i>', 'url' => '/'],
-                                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                                'homeLink'           => ['label' => '<i class="fas fa-home"></i>', 'url' => '/'],
+                                'links'              => isset($this->params[ 'breadcrumbs' ]) ? $this->params[ 'breadcrumbs' ] : [],
                             ]) ?>
                         </nav>
 
@@ -75,11 +83,11 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
                             <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-20">
                                 <div class="mr-15 font-lg">
-                                    <?=$model->organizationRel->parent_id?>
+                                    <?= $model->organizationRel->parent_id ?>
                                 </div>
                                 <div class="mr-15 text-muted">|</div>
                                 <div class="mr-15 rating-item rating-inline">
-                                    <p class="rating-text font400 text-muted font-12 letter-spacing-1"><?=$model->organizationRel->reg_number?> </p>
+                                    <p class="rating-text font400 text-muted font-12 letter-spacing-1"><?= $model->organizationRel->reg_number ?> </p>
                                 </div>
                             </div>
 
@@ -96,22 +104,26 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
                                         <li>
                                             <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                            <h6><span class="font400">Рег.номер  </span><?=$model->organizationRel->reg_number ?></h6>
+                                            <h6>
+                                                <span class="font400">Рег.номер  </span><?= $model->organizationRel->reg_number ?>
+                                            </h6>
                                         </li>
 
                                         <li>
                                             <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                            <h6><span class="font400">ИНН </span><?=$model->organizationRel->inn ?></h6>
+                                            <h6><span class="font400">ИНН </span><?= $model->organizationRel->inn ?>
+                                            </h6>
                                         </li>
 
                                         <li>
                                             <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                            <h6><span class="font400">ОГРН </span><?=$model->organizationRel->ogrn ?></h6>
+                                            <h6><span class="font400">ОГРН </span><?= $model->organizationRel->ogrn ?>
+                                            </h6>
                                         </li>
 
                                         <li>
                                             <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                            <h6><span class="font400">Адрес </span><?=$model->place->address ?></h6>
+                                            <h6><span class="font400">Адрес </span><?= $model->place->address ?></h6>
                                         </li>
 
                                     </ul>
@@ -128,20 +140,22 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
                                     <ul class="list-icon-absolute what-included-list mb-30">
 
-<!--                                        <li>-->
-<!--                                            <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>-->
-<!--                                            <h6><span class="font400">Дел в управлении </span>--><?//=$countCases?><!--</h6>-->
-<!--                                        </li>-->
-<!---->
-<!--                                        <li>-->
-<!--                                            <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>-->
-<!--                                            <h6><span class="font400">Лотов по банкротному имуществу </span>--><?//=$lotsBankruptCount?><!--</h6>-->
-<!--                                        </li>-->
-<!---->
-<!--                                        <li>-->
-<!--                                            <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>-->
-<!--                                            <h6><span class="font400">Количество арбитражных управляющих </span>--><?//=count($arbitrs)?><!--</h6>-->
-<!--                                        </li>-->
+                                        <li>
+                                            <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                                            <h6><span class="font400">Дел в управлении </span><?= $caseCount ?></h6>
+                                        </li>
+                                        <li>
+                                            <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                                            <h6>
+                                                <span class="font400">Лотов по банкротному имуществу </span><?= $lotCount ?>
+                                            </h6>
+                                        </li>
+                                        <li>
+                                            <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                                            <h6>
+                                                <span class="font400">Количество арбитражных управляющих </span><?= $arbitrCount ?>
+                                            </h6>
+                                        </li>
 
                                     </ul>
 
@@ -152,22 +166,24 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         </div>
 
 
-<!--                        --><?// if ($arbitrs[0] != null) { ?>
-<!---->
-<!--                            <div id="other-lot" class="fullwidth-horizon--section">-->
-<!---->
-<!--                                <h4 class="heading-title">Арбитражные управляющие <span class="font400">СРО</span></h4>-->
-<!---->
-<!--                                <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-30 mb-25">-->
-<!---->
-<!--                                    --><?//foreach ($arbitrs as $arbitr) { echo arbitrBlock::widget(['arbitr' => $arbitr]); }?>
-<!---->
-<!--                                </div>-->
-<!---->
-<!--                                <div class="mb-50"></div>-->
-<!---->
-<!--                            </div>-->
-<!--                        --><?// } ?>
+                        <? if ($arbitrs) { ?>
+
+                            <div id="other-lot" class="fullwidth-horizon--section">
+
+                                <h4 class="heading-title">Арбитражные управляющие <span class="font400">СРО</span></h4>
+
+                                <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-30 mb-25">
+
+                                    <? foreach ($arbitrs as $arbitr) {
+                                        echo arbitrBlock::widget(['arbitr' => $arbitr]);
+                                    } ?>
+
+                                </div>
+
+                                <div class="mb-50"></div>
+
+                            </div>
+                        <? } ?>
 
                     </div>
 
@@ -180,6 +196,6 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
     </section>
 
 <?php
-$this->registerJsFile( 'js/custom-multiply-.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-' );
-$this->registerJsFile( 'js/custom-core.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-core' );
+$this->registerJsFile('js/custom-multiply-.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-');
+$this->registerJsFile('js/custom-core.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-core');
 ?>
