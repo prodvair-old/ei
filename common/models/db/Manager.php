@@ -80,5 +80,33 @@ class Manager extends BaseAgent
             ];
         return $a;
 	}
+
+    /**
+     * @return \yii\db\ActiveQuery|\yii\db\ActiveRecord
+     */
+    public function getPlaceRel()
+    {
+        return $this->hasOne(Place::className(), ['parent_id' => 'id'])
+            ->andOnCondition(['place.model' => static::INT_CODE]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProfileRel()
+    {
+        return $this->hasOne(Profile::className(), ['parent_id' => 'id'])
+            ->andOnCondition(['profile.model' => static::INT_CODE]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getTorg()
+    {
+        return $this->hasMany(Torg::className(), ['id' => 'torg_id'])
+            ->viaTable(TorgDebtor::tableName(), ['manager_id' => 'id']);
+    }
 }
 

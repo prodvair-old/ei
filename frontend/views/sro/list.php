@@ -11,7 +11,7 @@ use yii\helpers\Url;
 use common\models\Query\LotsCategory;
 use common\models\Query\Regions;
 
-use frontend\components\sro\sroBlock;
+use frontend\components\sro\SroBlock;
 
 $this->title = Yii::$app->params['title'];
 $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
@@ -114,7 +114,7 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                     </div>
                     
                     <div class="row equal-height cols-1 cols-sm-2 gap-20 mb-25 load-list">
-                        <?foreach ($sros as $sro) { echo sroBlock::widget(['sro' => $sro]); }?>
+                        <?foreach ($sros as $sro) { echo SroBlock::widget(['sro' => $sro]); }?>
                     </div>
                     
                     <div class="pager-wrappper mt-40">
