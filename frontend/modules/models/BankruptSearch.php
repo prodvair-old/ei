@@ -4,6 +4,7 @@ namespace frontend\modules\models;
 
 use common\models\db\Organization;
 use common\models\db\Profile;
+use common\models\db\Torg;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\db\Bankrupt;
@@ -20,6 +21,8 @@ class BankruptSearch extends Bankrupt
 
     public $offset;
 
+    public $torgsIsActive;
+
     private $totalCount;
 
     /**
@@ -28,7 +31,7 @@ class BankruptSearch extends Bankrupt
     public function rules()
     {
         return [
-            [['search', 'offset'], 'safe'],
+            [['search', 'torgsIsActive', 'offset'], 'safe'],
         ];
     }
 
@@ -103,6 +106,11 @@ class BankruptSearch extends Bankrupt
 
                 $query->orWhere(new AndCondition($condition));
             }
+        }
+
+        if($this->torgsIsActive) {
+            $query->joinWith(['torg']);
+            $query->andFilterWhere(['>', Torg::tableName() . '.completed_at', time()]);
         }
 
         $query->orderBy([

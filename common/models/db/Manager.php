@@ -108,5 +108,12 @@ class Manager extends BaseAgent
         return $this->hasMany(Torg::className(), ['id' => 'torg_id'])
             ->viaTable(TorgDebtor::tableName(), ['manager_id' => 'id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getArbitrator() {
+        return $this->hasOne(Arbitrator::className(), ['manager_id' => 'id']);
+    }
 }
 

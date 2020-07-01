@@ -101,8 +101,8 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                     <?= $form->field($searchModel, 'torgsIsActive')->checkbox([
                                         'class'    => 'custom-control-input',
                                         'value'    => '1',
-                                        'id'       => 'andArchived',
-                                        'template' => '{input}<label class="custom-control-label" for="andArchived">Активные торги</label>'
+                                        'id'       => 'torgsIsActive',
+                                        'template' => '<div class="col-md-8">{input}<label class="custom-control-label" for="torgsIsActive">Активные торги</label></div>'
                                     ]) ?>
                                 </div>
                             </div>
@@ -144,28 +144,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                     </div>
 
                     <div id="load_list" class="row equal-height cols-1 cols-sm-2 gap-20 mb-25 load-list">
-                        <? foreach ($model as $arbitr) : ?>
-                            <div class="col">
-
-                                <figure class="tour-grid-item-01">
-
-                                    <a href="<?= Url::to(['/arbitr']) ?>/<?= $arbitr->id ?>">
-
-                                        <figcaption class="content">
-                                            <h5><?= $arbitr->profileRel->fullName ?></h5>
-                                            <ul class="item-meta">
-                                                <li>
-                                                    <i class="elegent-icon-pin_alt text-warning"></i> <?= $arbitr->placeRel->address ?>
-                                                </li>
-                                            </ul>
-                                        </figcaption>
-
-                                    </a>
-
-                                </figure>
-
-                            </div>
-                        <?php endforeach; ?>
+                        <?= $this->render('block', ['model' => $model]) ?>
                     </div>
 
                 </div>

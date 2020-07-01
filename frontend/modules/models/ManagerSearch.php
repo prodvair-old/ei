@@ -3,11 +3,11 @@
 namespace frontend\modules\models;
 
 use common\models\db\Organization;
-use common\models\db\Place;
 use common\models\db\Profile;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\db\Manager;
+use common\models\db\Torg;
 
 /**
  * ManagerSearch represents the model behind the search form of `common\models\db\Manager`.
@@ -74,7 +74,7 @@ class ManagerSearch extends Manager
             return $dataProvider;
         }
 
-        $query->joinWith(['profileRel', 'placeRel', 'sro']);
+        $query->joinWith(['profileRel', 'placeRel', 'sro', 'arbitrator']);
 
         $fullName = null;
 
@@ -105,7 +105,8 @@ class ManagerSearch extends Manager
         }
 
         if($this->torgsIsActive) {
-            $query->andFilterWhere(['=', Organization::tableName() . '.reg_number', $this->regNumber]);
+            $query->joinWith(['torg']);
+            $query->andFilterWhere(['>', Torg::tableName() . '.completed_at', time()]);
         }
 
         // grid filtering conditions

@@ -1,10 +1,15 @@
 <?php
 
+use common\models\db\Casefile;
+use common\models\db\Lot;
 use common\models\db\Manager;
+use frontend\modules\components\LotBlock;
 use yii\widgets\Breadcrumbs;
 use yii\helpers\Url;
 
 /** @var $model Manager */
+/** @var $lots Lot[] */
+/** @var $caseCount Casefile count */
 
 $this->title = $model->getFullName();
 $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
@@ -74,6 +79,10 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                         <div id="desc" class="detail-header mb-30">
                             <span class="text-muted">Арбитражный управляющий</span>
+                            <?php if ($model->arbitrator) : ?>
+                                <span class="elegent-icon-check_alt2" data-toggle="tooltip"
+                                      title="Арбитражный управляющий верифицирован"></span>
+                            <?php endif; ?>
                             <h1 class="h3 mt-2"><?= $this->title ?></h1>
                             <hr>
                             <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-20">
@@ -139,6 +148,18 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                                     <ul class="list-icon-absolute what-included-list mb-30">
 
+                                        <li>
+                                            <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                                            <h6><span class="font400">Дел в управлении </span><?= $caseCount ?></h6>
+                                        </li>
+
+                                        <li>
+                                            <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
+                                            <h6>
+                                                <span class="font400">Количество опубликованных лотов </span><?= $lotsCount ?>
+                                            </h6>
+                                        </li>
+
                                     </ul>
 
                                     <div class="mb-50"></div>
@@ -146,6 +167,26 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                 </div>
                             </div>
                         </div>
+
+                        <?php if ($lots) : ?>
+
+                            <div id="other-lot" class="fullwidth-horizon--section">
+
+                                <h4 class="heading-title">Лоты <span class="font400">Арбитражного управляющего</span>
+                                </h4>
+
+                                <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-30 mb-25">
+
+                                    <?php foreach ($lots as $item) {
+                                        echo LotBlock::widget(['lot' => $item, 'url' => '/banrkupt/lot-list']);
+                                    } ?>
+
+                                </div>
+
+                                <div class="mb-50"></div>
+
+                            </div>
+                        <? endif; ?>
 
                     </div>
 

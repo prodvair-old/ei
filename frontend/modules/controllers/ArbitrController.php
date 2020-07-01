@@ -2,6 +2,10 @@
 
 namespace frontend\modules\controllers;
 
+use common\models\db\Casefile;
+use common\models\db\Lot;
+use common\models\db\Torg;
+use common\models\db\TorgDebtor;
 use Yii;
 use common\models\db\Manager;
 use frontend\modules\models\ManagerSearch;
@@ -25,7 +29,7 @@ class ArbitrController extends Controller
         $model = $dataProvider->getModels();
 
         if (Yii::$app->request->isAjax) {
-            return $this->renderPartial('viewAjax', [
+            return $this->renderPartial('block', [
                 'model' => $model,
             ]);
         }
@@ -45,8 +49,29 @@ class ArbitrController extends Controller
      */
     public function actionView($id)
     {
+        $lots = Lot::find()
+            ->joinWith(['categories', 'torg.debtor deb'], true, 'INNER JOIN')
+            ->andOnCondition(['deb.manager_id' => $id])
+            ->limit(15)
+            ->orderBy(['torg.published_at' => SORT_DESC])
+            ->all();
+
+        $lotsCount = Lot::find()
+            ->joinWith(['categories', 'torg.debtor deb'])
+            ->andOnCondition(['deb.manager_id' => $id])
+            ->count('lot.id');
+
+        $caseCount = Casefile::find()
+            ->innerJoin(TorgDebtor::tableName(), 'torg_debtor.case_id = casefile.id')
+            ->innerJoin(Torg::tableName(), 'torg.id = torg_debtor.torg_id')
+            ->where(['torg_debtor.manager_id' => $id])
+            ->count();
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model'     => $this->findModel($id),
+            'lots'      => $lots,
+            'lotsCount' => $lotsCount,
+            'caseCount' => $caseCount,
         ]);
     }
 
