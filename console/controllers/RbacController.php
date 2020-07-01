@@ -7,6 +7,7 @@ use console\rbac\OwnProfileRule;
 use console\rbac\OwnReportRule;
 use console\rbac\OwnTorgRule;
 use console\rbac\OwnLotRule;
+use console\rbac\OwnOrderRule;
  
 class RbacController extends Controller
 {
@@ -179,6 +180,26 @@ class RbacController extends Controller
         $auth->addChild($deleteLot, $delete);
         $auth->addChild($indexLot, $index);
 
+        // Order
+
+        $ownOrder = new OwnOrderRule();
+        $auth->add($ownOrder);
+
+        $deleteOrder = $auth->createPermission('deleteOrder');
+        $indexOrder = $auth->createPermission('indexOrder');
+
+        $auth->add($deleteOrder);
+        $auth->add($indexOrder);
+
+        $deleteOwnOrder = $auth->createPermission('deleteOwnOrder');
+        $deleteOwnOrder->ruleName = $ownOrder->name;
+        $auth->add($deleteOwnOrder);
+
+        $auth->addChild($deleteOwnOrder, $deleteOrder);
+
+        $auth->addChild($deleteOrder, $delete);
+        $auth->addChild($indexOrder, $index);
+
         // Owner
 
         $createOwner = $auth->createPermission('createOwner');
@@ -233,6 +254,8 @@ class RbacController extends Controller
         $auth->addChild($user, $updateOwnReport);
         $auth->addChild($user, $deleteOwnReport);
         $auth->addChild($user, $indexReport);
+        $auth->addChild($user, $deleteOwnOrder);
+        $auth->addChild($user, $indexOrder);
 
         // Arbitration manager
         $auth->addChild($arbitrator, $viewOwnTorg);
@@ -280,6 +303,8 @@ class RbacController extends Controller
         $auth->addChild($admin, $deleteTorg);
 
         $auth->addChild($admin, $deleteLot);
+
+        $auth->addChild($admin, $deleteOrder);
 
         $auth->addChild($admin, $create);
         $auth->addChild($admin, $view);

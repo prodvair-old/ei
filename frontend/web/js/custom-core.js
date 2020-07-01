@@ -2,15 +2,49 @@ jQuery(function ($) {
   "use strict";
 
   var $window = $(window);
+  // wish list start->
+  $(".wish-js").on("click", function (e) {
+    e.preventDefault();
+    var lotId   = $(this).data("id"),
+        star    = $(this).children("img"),
+        number  = $(this).children("span"),
+        item    = $(this).parents(".col");
+
+    console.log($(this).children('img'));
+    $.ajax({
+      url: "/wish-list-edit",
+      type: "GET",
+      data: {
+        lotId,
+      },
+      success: function (data) {
+        var num = number.html();
+
+        if (data["method"] === 'save') {
+          star.attr("src", "img/star.svg");
+          number.html(Number(num) + 1);
+          toastr.success("Лот добавлен в избранное");
+        } else if (data["method"] === 'delete') {
+          star.attr("src", "img/star-o.svg");
+          number.html(Number(num) - 1);
+          toastr.success("Лот удалён из избранных");
+          item.fadeOut();
+        }
+      },
+    }).fail(function () {
+      toastr.error("Произошла ошибка");
+    });
+  });
+  // wish list <-end
   // save search start->
   $(".save-lot-search-js").on("click", function (e) {
     e.preventDefault();
-
     $.ajax({
       url: "/lot/save-search",
       type: "GET",
       data: {
         url: document.location.href,
+        send_email: $("#search-preset-agree").is(":checked"),
       },
       success: function (res) {
         if (res) {
@@ -49,6 +83,7 @@ jQuery(function ($) {
   $(".search-preset-box__del-js").on("click", function (e) {
     e.preventDefault();
     var presetId = $(this).data("id");
+    var list = $('.search-preset-list');
     $.ajax({
       url: "/profile/search-preset-del",
       type: "GET",
@@ -58,6 +93,11 @@ jQuery(function ($) {
       success: function (res) {
         if (res) {
           $(".search-preset-box-" + presetId).addClass("del");
+          var count = list.children('.search-preset-box').length - list.children('.search-preset-box.del').length;
+          if (count === 0) {
+            $('.search-preset-sender').removeClass('d-md-block');
+            $('.search-preset__info').addClass('active');
+          }
           toastr.success("Успешно удалено");
         } else {
           toastr.warning("Не удалось удаленть");

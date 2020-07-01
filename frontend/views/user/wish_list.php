@@ -6,7 +6,7 @@ use yii\widgets\LinkPager;
 
 use common\models\Query\Lot\Lots;
 
-use frontend\components\LotBlock;
+use frontend\modules\components\LotBlock;
 use frontend\components\ProfileMenu;
 
 $name = Yii::$app->user->identity->getFullName();
@@ -107,8 +107,27 @@ $this->registerJsVar( 'lotType', '', $position = yii\web\View::POS_HEAD );
 
 
                         <div data-count="<?= $wishCount?>" class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list" id="">
-                            <?php if ($wishList[0]->lots) {
-                                foreach ($wishList as $wish) { echo LotBlock::widget(['lot' => $wish->lots]); } 
+                            <?php if (isset($wishList[0])) {
+                                foreach ($wishList as $wish) { 
+                                    switch ($wish->lot->torg->property) {
+                                        case '1':
+                                            $t = 'bankrupt';
+                                            break;
+                                        case '2':
+                                            $t = 'arrest';
+                                            break;
+                                        case '3':
+                                            $t = 'zalog';
+                                            break;
+                                        case '4':
+                                            $t = 'municipal';
+                                            break;
+                                        default:
+                                            $t = 'all';
+                                            break;
+                                    }
+                                    echo LotBlock::widget(['lot' => $wish->lot, 'url' => $t.'/'.($wish->lot->categories[0]->slug ? $wish->lot->categories[0]->slug : 'lot-list')]); 
+                                } 
                             } else {
                                 echo "<div class='p-15 font-bold'>Пока нет избранных лотов по арестованному имуществу</div>";
                             } ?>

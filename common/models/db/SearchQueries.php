@@ -13,6 +13,7 @@ use frontend\modules\models\Category;
  * @var integer $id
  * @var integer $user_id
  * @var string $defs
+ * @var string $descripton
  * @var string $url
  * @var integer $seached_at
  * @var integer $last_count
@@ -53,7 +54,7 @@ class SearchQueries extends ActiveRecord
         return [
             ['user_id', 'required', 'except' => self::SCENARIO_CREATE],
             [['user_id', 'defs', 'url', 'seached_at'], 'required'],
-            [['defs', 'url'], 'string'],
+            [['defs', 'url', 'descripton'], 'string'],
             [['last_count'], 'integer'],
             ['last_count', 'default', 'value' => 0],
             ['send_email', 'boolean'],
@@ -69,7 +70,8 @@ class SearchQueries extends ActiveRecord
     {
         return [
             'user_id'       => Yii::t('app', 'Пользователь'),
-            'defs'          => Yii::t('app', 'Описание'),
+            'defs'          => Yii::t('app', 'Определения поиска'),
+            'descripton'    => Yii::t('app', 'Описание'),
             'url'           => Yii::t('app', 'Полная ссылка'),
             'seached_at'    => Yii::t('app', 'Дата последнего поиска'),
             'last_count'    => Yii::t('app', 'Количество найденных лотов'),
@@ -129,15 +131,73 @@ class SearchQueries extends ActiveRecord
             $data['query'][ 'LotSearch' ][ 'mainCategory' ] = 0;
 
             $defs .= ' - '.$cat->name;
-        } 
+        }
 
         if ($data['query']['LotSearch']['search']) {
             $defs .= ' - <span class="font200">'.$data['query']['LotSearch']['search'].'</span>';
         }
 
+        $descripton = '';
+
+        if ($data['query']['LotSearch']['region']) {
+            $regionNames = '';
+            foreach ($data['query']['LotSearch']['region'] as $regionId) {
+                $region = Region::findOne(['id' => $regionId]);
+                $regionNames .= ($regionNames ? ', ' : '').$region->name;
+            }
+            $descripton .= 'Регион: '.$regionNames.'; ';
+        }
+
+        if ($data['query']['LotSearch']['minPrice']) {
+            $descripton .= 'Цена мин.: '.$data['query']['LotSearch']['minPrice'].'; ';
+        }
+        if ($data['query']['LotSearch']['maxPrice']) {
+            $descripton .= 'Цена макс.: '.$data['query']['LotSearch']['maxPrice'].'; ';
+        }
+
+        if ($data['query']['LotSearch']['tradeType']) {
+            switch ($data['query']['LotSearch']['tradeType']) {
+                case '1':
+                    $tradeType = 'Публичное предложение';
+                    break;
+                case '2':
+                    $tradeType = 'Открытый аукцион';
+                    break;
+                case '3':
+                    $tradeType = 'Аукцион';
+                    break;
+                case '4':
+                    $tradeType = 'Открытый конкурс';
+                    break;
+                case '5':
+                    $tradeType = 'Конкурс';
+                    break;
+            }
+            $descripton .= 'Тип торгов: '.$tradeType.'; ';
+        }
+
+        if ($data['query']['LotSearch']['etp']) {
+            $etpNames = '';
+            foreach ($data['query']['LotSearch']['etp'] as $etpId) {
+                $etp = Etp::findOne(['id' => $etpId]);
+                $etpNames .= ($etpNames ? ', ' : '').$etp->organization->title;
+            }
+            $descripton .= 'Торговые площадки: '.$etpNames.'; ';
+        }
+
+        if ($data['query']['LotSearch']['subCategory']) {
+            $subCategoryNames = '';
+            foreach ($data['query']['LotSearch']['subCategory'] as $subCategoryId) {
+                $subCategory = Category::findOne(['id' => $subCategoryId]);
+                $subCategoryNames .= ($subCategoryNames ? ', ' : '').$subCategory->name;
+            }
+            $descripton .= 'Под категории: '.$subCategoryNames.'; ';
+        }
+
         $date = strtotime((new \DateTime())->format('Y-m-d H:i:s'));
 
-        $this->defs = $defs;
+        $this->defs       = $defs;
+        $this->descripton = $descripton;
         $this->last_count = 0;
         $this->seached_at = $date;
         $this->created_at = $date;
@@ -151,12 +211,16 @@ class SearchQueries extends ActiveRecord
      * 
      * @return array parsing GET parameters from a link
      */
-    public function getQueryParser()
+    public function getQueryParser($fullPath = false)
     {
       $query = null;
 
       $parts = parse_url($this->url);
-      $path = explode("/", substr($parts['path'],1));
+      if (!$fullPath) {
+        $path = explode("/", substr($parts['path'],1));
+      } else {
+        $path = $parts;
+      }
       parse_str($parts['query'], $query);
 
       return ['query' => $query, 'path' => $path];

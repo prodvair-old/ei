@@ -8,7 +8,7 @@ use yii\helpers\Url;
   <ul>
     <!-- <li <?= ($page == 'profile') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/index']) ?>">Профиль</a></li> -->
     <li <?= ($page == 'wishlist') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/wish_list']) ?>">Избранные</a></li>
-    <li <?= ($page == 'search-preset') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/search-preset']) ?>">Сохранённые поиски</a></li>
+    <li <?= ($page == 'search-preset') ? 'class="active"' : '' ?>><a href="<?= Url::to(['user/search-preset']) ?>">Поисковые отслеживания</a></li>
     <?php if (Yii::$app->user->identity->role !== 'user') { ?>
       <?php if (Yii::$app->user->identity->role == 'agent') { ?>
         <li><a href="<?= Yii::$app->params['backLink'].'/login?token='.Yii::$app->user->identity->auth_key ?>&link[to]=find&link[page]=arrest" target="_blank">Расширенный поиск имущества</a></li>
