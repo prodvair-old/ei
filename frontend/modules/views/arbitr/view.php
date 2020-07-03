@@ -178,7 +178,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                 <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-30 mb-25">
 
                                     <?php foreach ($lots as $item) {
-                                        echo LotBlock::widget(['lot' => $item, 'url' => '/banrkupt/lot-list']);
+                                        echo LotBlock::widget(['lot' => $item, 'type' => 'long', 'url' => '/banrkupt/lot-list']);
                                     } ?>
 
                                 </div>
