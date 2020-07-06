@@ -12,7 +12,7 @@ use yii\widgets\Menu;
 
 use common\models\Query\Settings;
 use common\models\Query\LotsCategory;
-use common\models\Query\Zalog\OwnerProperty;
+use common\models\db\Owner;
 
 use frontend\components\LoginWidget;
 use frontend\components\SignupWidget;
@@ -21,12 +21,12 @@ use frontend\components\ResetPasswordWidget;
 
 $setting = Settings::find()->orderBy('id ASC')->all();
 $lotsCategory = LotsCategory::find()->where(['!=', 'translit_name', 'lot-list'])->orderBy('id ASC')->all();
-$owners = OwnerProperty::find()->orderBy('name ASC')->all();
+$owners = Owner::find()->orderBy('slug ASC')->all();
 
 $bankruptLotsCategoryMenu = $arrestLotsCategoryMenu = null;
 
 foreach ($owners as $owner) {
-  $ownersMenu[] = ['label' => $owner->name, 'url' => ['/'. $owner->linkForEi]];
+  $ownersMenu[] = ['label' => $owner->slug, 'url' => ['/'. $owner->organization->title]];
 }
 
 foreach ($lotsCategory as $value) {

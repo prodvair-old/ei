@@ -8,6 +8,7 @@ use common\models\db\Torg;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use common\models\db\Owner;
 use common\models\db\Etp;
 use frontend\modules\components\LotBlock;
@@ -20,6 +21,11 @@ use frontend\modules\components\LotBlock;
 /* @var $type */
 /* @var $url */
 /* @var $lots Lot */
+
+
+$mapGET                    = Yii::$app->request->get()['LotSearch'];
+$mapGET['type']            = $model->type;
+$mapGET['mainCategory']    = $model->mainCategory;
 
 $this->title = Yii::$app->params[ 'title' ];
 $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
@@ -384,8 +390,10 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                                         ->label(false); ?>
                                 </div>
                                 <?php ActiveForm::end(); ?>
-
                             </div>
+                        </div>
+                        <div class="sort-box">
+                            <a href="<?=Url::to(['lot/map', 'MapSearch' => $mapGET])?>" class="btn btn-primary btn-block mr-30">На карте</a>
                         </div>
                     </div>
 

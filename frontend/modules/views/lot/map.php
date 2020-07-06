@@ -9,12 +9,12 @@ use common\models\db\Torg;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use common\models\db\Owner;
 use common\models\db\Etp;
 
 $lotsSubcategory[ 0 ] = 'Все подкатегории';
 $subcategoryCheck = true;
-
 
 if ($model->mainCategory) {
     $subCategories = Category::findOne(['id' => $model->mainCategory]);
@@ -59,7 +59,7 @@ $this->registerJsVar('lotType', $model->type, $position = yii\web\View::POS_HEAD
         <div class="map__filter active">
             <div class="map__filter__close"></div>
             <aside class="sidebar-wrapper">
-            <?php $form = ActiveForm::begin(['id' => 'search-map-lot-form', 'action' => $url, 'method' => 'POST']); ?>
+            <?php $form = ActiveForm::begin(['id' => 'search-map-lot-form','action' => $url, 'method' => 'POST', 'options' => ['class' => 'save-preset-js']]); ?>
 
                 <div class="search-box">
 
@@ -293,21 +293,7 @@ $this->registerJsVar('lotType', $model->type, $position = yii\web\View::POS_HEAD
                     <?php endif; ?>
 
                     <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
-                    <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="save-lot-search-js btn btn-outline-primary btn-block"'?>>
-                        <i class="ion-android-notifications"></i>
-                        Отслеживать поиск
-                    </a>
-                    <!-- <div class="custom-control custom-checkbox d-flex justify-content-center">
-                        <div class="form-group field-competedApplication">
-                            <?= Html::checkbox('search-preset-agree', true, [
-                                'class'    => 'custom-control-input',
-                                'id'       => 'search-preset-agree',
-                                'template' => '{input}'
-                            ]) ?>
-                            <label class="custom-control-label" for="search-preset-agree">Получать уведомления по новым лотам</label>
-                        </div>
-                    </div> -->
-
+                    <a href="<?=Url::to(['/all', 'LotSearch' => Yii::$app->request->get()['MapSearch']])?>" class="btn btn-outline-primary btn-block mb-30 mr-20">Обычный поиск</a>
                 </div>
                 <?php ActiveForm::end(); ?>
                 <div class="sidebar-box__text"><?= Yii::$app->params[ 'text' ] ?></div>
