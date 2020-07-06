@@ -27,6 +27,7 @@
 	},
 	"dependencies": {
 		"@nuxtjs/toast": "^3.3.0",
-		"gulp-sourcemaps": "^2.6.5"
+		"gulp-sourcemaps": "^2.6.5",
+		"jquery-serializejson": "^2.9.0"
 	}
 }

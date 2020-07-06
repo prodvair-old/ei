@@ -11,6 +11,7 @@ use common\components\IntCode;
  *
  * @var integer $id
  * @var integer $agent
+ * @var string  $reg_number
  * @var integer $created_at
  * @var integer $updated_at
  *
@@ -29,6 +30,26 @@ class Manager extends BaseAgent
     public static function tableName()
     {
         return '{{%manager}}';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return array_merge(parent::rules(), [
+            ['reg_number', 'string'],
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return array_merge(parent::attributeLabels(), [
+            'reg_number' => Yii::t('app', 'Registration number'),
+        ]);
     }
 
     /**

@@ -47,6 +47,7 @@ class m200430_070745_manager_fill extends Migration
             $m = [
                 'id'         => $manager_id,
                 'agent'      => $agent,
+                'reg_number' => $row['regnum'],
                 'created_at' => $created_at,
                 'updated_at' => $updated_at,
             ];
@@ -144,7 +145,7 @@ class m200430_070745_manager_fill extends Migration
                 }
             }
         }
-        $this->batchInsert(self::TABLE, ['id', 'agent', 'created_at', 'updated_at'], $managers);
+        $this->batchInsert(self::TABLE, ['id', 'agent', 'reg_number', 'created_at', 'updated_at'], $managers);
         $this->batchInsert('{{%manager_sro}}', ['manager_id', 'sro_id'], $manager_sro);
         $this->batchInsert('{{%profile}}', ['model', 'parent_id', 'activity', 'inn', 'gender', 'birthday', 'phone', 'first_name', 'last_name', 'middle_name', 'created_at', 'updated_at'], $profiles);
         $this->batchInsert('{{%organization}}', ['model', 'parent_id', 'activity', 'title', 'full_title', 'inn', 'ogrn', 'reg_number', 'email', 'phone', 'website', 'status', 'created_at', 'updated_at'], $organizations);

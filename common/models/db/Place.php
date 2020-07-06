@@ -58,7 +58,8 @@ class Place extends ActiveRecord implements PlaceInterface
             [['model', 'parent_id', 'region_id', 'district_id'], 'integer'],
             [['city'], 'string', 'max' => 255],
             ['address', 'string', 'max' => 512],
-            [['geo_lat', 'geo_lon'],'match', 'pattern' => '/^\d{1,3}\.\d{4,10}$/'],
+            [['geo_lat', 'geo_lon'],'string'],
+            // [['geo_lat', 'geo_lon'],'match', 'pattern' => '/^\d{1,5}\.\d{0,10}$/'],
             [['created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -86,5 +87,10 @@ class Place extends ActiveRecord implements PlaceInterface
     public function getAddress()
     {
         return $this->address;
+    }
+
+    public function getLot()
+    {
+        return $this->hasOne(Lot::className(), ['id' => 'parent_id']);
     }
 }

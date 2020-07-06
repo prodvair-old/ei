@@ -13,10 +13,11 @@ class m200410_135404_manager extends Migration
     public function up()
     {
         $this->createTable(self::TABLE, [
-            'id'           => $this->bigPrimaryKey(),
-            'agent'        => $this->smallInteger()->notNull(),
-            'created_at'   => $this->integer()->notNull(),
-            'updated_at'   => $this->integer()->notNull(),
+            'id'         => $this->bigPrimaryKey(),
+            'agent'      => $this->smallInteger()->notNull(),
+            'reg_number' => $this->string(),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull(),
         ]);
         
 		$this->addCommentOnColumn(self::TABLE, 'agent', 'Агент - персона или организация');

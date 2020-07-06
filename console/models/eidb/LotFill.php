@@ -95,14 +95,13 @@ class LotFill extends Module
             $updated_at = strtotime($row['updatedAt']);
             $obj = json_decode($row['info']);
             $a = self::convert($row['status']);
-            
             // Lot
             $l = [
                 'id'                => $lot_id,
                 'torg_id'           => $row['torgId'],
                 'ordinal_number'    => ($row['lotNumber'] ? $row['lotNumber'] : 1),
 
-                'title'             => $row['title'],
+                'title'             => $row['title'] ? $row['title'] : $row['description'],
                 'description'       => $row['description'],
                 'start_price'       => $row['startPrice'],
                 'step'              => round(($row['step'] ? : 0), 4),
@@ -127,8 +126,9 @@ class LotFill extends Module
                 $district = DistrictConsole::districtConvertor($row['district']);
                 $address = (isset($obj->address) ? $obj->address->city . ', ' . $obj->address->region . ', ' . $obj->address->street : '');
                 $address  = isset($row['address']) && $row['address'] ? $row['address'] : $address;
-                $geo_lat  = (isset($obg->address->geo_lat) && $obg->address->geo_lat ? $obg->address->geo_lat : null);
-                $geo_lon  = (isset($obg->address->geo_lon) && $obg->address->geo_lon ? $obg->address->geo_lon : null);
+                
+                $geo_lat  = (isset($obj->address->geo_lat) && $obj->address->geo_lat ? $obj->address->geo_lat : null);
+                $geo_lon  = (isset($obj->address->geo_lon) && $obj->address->geo_lon ? $obj->address->geo_lon : null);
 
                 // Place
                 $p = [
