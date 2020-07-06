@@ -165,7 +165,12 @@ return [
 
         '/get-arrest-bankrupt'  => 'lots/arrest-bankrupt',
 
-        '/map'              => 'lot/map',
+        // '/map'              => 'lot/map',
+        '/map'              => 'lot/lot/map',
+        '/map-ajax'         => 'lot/lot/map-ajax',
+        '/map-lot-ajax'     => 'lot/lot/map-lot-ajax',
+        '/map-filter-ajax'  => 'lot/lot/map-filter-ajax',
+        
         '/load-category'    => 'lot/load_category',
         '/wish-list-edit'   => 'lot/lot/wish-list-edit',
 
