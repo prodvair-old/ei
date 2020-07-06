@@ -260,7 +260,7 @@ jQuery(function ($) {
       $("#sort-lot-form").submit();
     });
 
-  if (lotType) {
+  if (typeof lotType !== "undefined") {
     filterParams();
   }
 

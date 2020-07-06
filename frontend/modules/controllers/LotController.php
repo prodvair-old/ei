@@ -315,7 +315,7 @@ class LotController extends Controller
 
         $searchSave->user_id    = Yii::$app->user->id;
         $searchSave->url        = Yii::$app->request->queryParams['url'];
-        $searchSave->send_email = (Yii::$app->request->queryParams['send_email'] === 'true')? true: false;
+        // $searchSave->send_email = (Yii::$app->request->queryParams['send_email'] === 'true')? true: false;
         $searchSave->getFirstSave();
 
         return $searchSave->save();

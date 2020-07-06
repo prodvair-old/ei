@@ -135,8 +135,8 @@ $this->registerJsVar( 'lotType', '', $position = yii\web\View::POS_HEAD );
                                 <? } 
                             } ?>
                             <div class="p-15 search-preset__info <?=$searchQueries[0] ? '' : 'active'?>">
-                                <h3>Как сохранить поиск?</h3>
-                                <p>На странице <a href="<?=Url::to(['all/lot-list'])?>" class="text-dark"><u>поисковой выдачи</u></a> после фильтрации нажмите <span class="text-primary">"Cохранить поиск"</span>.</p>
+                                <h3>Как отслеживать поиск?</h3>
+                                <p>На странице <a href="<?=Url::to(['all/lot-list'])?>" class="text-dark"><u>поисковой выдачи</u></a> после фильтрации нажмите <span class="text-primary">"Отслеживать поиск"</span>.</p>
                             </div>
 
                             <div class="pager-innner">
