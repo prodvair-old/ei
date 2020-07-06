@@ -135,7 +135,7 @@ gulp.task("code", function () {
 });
 
 gulp.task("watch", function () {
-  gulp.watch("frontend/web/sass/**/*.sass", gulp.parallel("styles"));
+  // gulp.watch("frontend/web/sass/**/*.sass", gulp.parallel("styles"));
   gulp.watch(
     ["frontend/web/js/_custom.js", "frontend/web/js/map.js"],
     gulp.parallel("scripts")
@@ -151,7 +151,7 @@ gulp.task("watch", function () {
 
 gulp.task(
   "default",
-  gulp.parallel("styles", "scripts", "browser-sync", "watch")
+  gulp.parallel("scripts", "browser-sync", "watch")
 );
 gulp.task(
   "max",

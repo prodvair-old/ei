@@ -54,14 +54,20 @@
 }
 .map__container {
   position: relative;
-  z-index: 90;
+  z-index: 3;
 }
-
+.map__preload {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 30px;
+  z-index: 2;
+}
 .map__filter {
   position: absolute;
   left: -50vw;
   top: 65px;
-  z-index: 99;
+  z-index: 4;
   background-color: #ffffff;
   padding: 20px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
@@ -173,6 +179,7 @@
 
 .map__panel__content__block__info {
   position: relative;
+  width: 100%;
 }
 .map__panel__content__block__info-type {
   width: fit-content;
@@ -183,7 +190,8 @@
   margin-top: 10px;
   margin-bottom: 10px;
   max-height: 50px;
-  overflow-y: hidden;
+  max-width: 100%;
+  overflow: hidden;
 }
 .map__panel__content__block__info__text {
   color: #232323;

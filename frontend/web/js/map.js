@@ -57,7 +57,9 @@ ymaps.modules.define("Panel", ["util.augment", "collection.Item"], function (
         <div class="map__panel">
           <div class="map__panel__content"></div>
           <div class="map__panel__close"></div>
-        </div>`
+          <div class="spinner-wrapper map__lot__preload"><div class="spinner"></div>Загрузка лотов...</div>
+        </div>
+        <div class="map__preload"><div class="spinner-wrapper"><div class="spinner"></div></div></div>`
       ).appendTo(parentDomContainer);
 
       this._$content = $(".map__panel__content");
@@ -85,6 +87,7 @@ ymaps.modules.define("Panel", ["util.augment", "collection.Item"], function (
       }
     },
     _onClose: function () {
+      $(".map__placemark").removeClass("active");
       $(".map__panel").removeClass("active");
       setTimeout(function () {
         $(".map__panel__content").html("");
@@ -110,9 +113,7 @@ ymaps.modules.define("Panel", ["util.augment", "collection.Item"], function (
 var createChipsLayout = function (calculateSize, eventClass) {
   // Создадим макет метки.
   var Chips = ymaps.templateLayoutFactory.createClass(
-    '<div class="map__placemark ' +
-      eventClass +
-      '">{{ properties.geoObjects.length }}</div>',
+    '<div class="map__placemark {% if state.hover %}hover{% endif %} {% if properties.isActive %}active{% endif %}">{{ properties.geoObjects.length }}</div>',
     {
       build: function () {
         Chips.superclass.build.call(this);
@@ -205,113 +206,65 @@ ymaps.ready(["Panel"]).then(function () {
   map.geoObjects.add(collection);
   // Подпишемся на событие клика по коллекцииx
 
-  collection.events
-    .add("click", function (e) {
-      // Получим ссылку на геообъект, по которому кликнул пользователь.
-      var target = e.get("target"),
-        geoObjects = target.properties.get("geoObjects"),
-        geo = target.geometry.getCoordinates();
-      // Зададим контент боковой панели.
-      panel._onFilterClose();
-      panel.clearContent();
-      var lotIds = [];
+  collection.events.add("click", function (e) {
+    // Получим ссылку на геообъект, по которому кликнул пользователь.
+    var target = e.get("target"),
+      geoObjects = target.properties.get("geoObjects"),
+      geo = target.geometry.getCoordinates();
+    // Зададим контент боковой панели.
+    panel._onFilterClose();
+    panel.clearContent();
+    var lotIds = [];
 
-      if (geoObjects) {
-        geoObjects.map(function (item, index) {
-          lotIds[index] = item.properties.get("balloonContent");
-        });
-      } else {
-        lotIds[0] = target.properties.get("balloonContent");
-      }
+    if (geoObjects) {
+      geoObjects.map(function (item, index) {
+        lotIds[index] = item.properties.get("balloonContent");
+      });
+    } else {
+      lotIds[0] = target.properties.get("balloonContent");
+    }
 
-      state.ids = lotIds;
-      state.offset = 0;
-      state.stopLoad = false;
+    $(".map__placemark").removeClass("active");
+    target.properties.set("isActive", true);
 
-      getLots();
-      // Переместим центр карты по координатам метки с учётом заданных отступов.
-      // map.panTo([Number(geo[0]), Number(geo[1])], { useMapMargin: true });
-    })
-    .add("mouseenter", function (e) {
-      // Ссылку на объект, вызвавший событие,
-      // можно получить из поля 'target'.
-      if (e.get("target").options._name === "cluster") {
-        zoomSize = 1.6;
-      } else {
-        zoomSize = 1.4;
-      }
+    state.ids = lotIds;
+    state.offset = 0;
+    state.stopLoad = false;
 
-      e.get("target").options.set(
-        "iconLayout",
-        createChipsLayout(function (zoom) {
-          // Минимальный размер метки будет 8px, а максимальный 200px.
-          // Размер метки будет расти с квадратичной зависимостью от уровня зума.
-          return Math.min(Math.pow(zoom, zoomSize) + 2, 100);
-        }, "hover")
-      );
-    })
-    .add("mouseleave", function (e) {
-      if (e.get("target").options._name === "cluster") {
-        zoomSize = 1.6;
-      } else {
-        zoomSize = 1.4;
-      }
+    getLots();
+    // Переместим центр карты по координатам метки с учётом заданных отступов.
+    // map.panTo([Number(geo[0]), Number(geo[1])], { useMapMargin: true });
+  });
 
-      e.get("target").options.set(
-        "iconLayout",
-        createChipsLayout(function (zoom) {
-          // Минимальный размер метки будет 8px, а максимальный 200px.
-          // Размер метки будет расти с квадратичной зависимостью от уровня зума.
-          return Math.min(Math.pow(zoom, zoomSize) + 2, 100);
-        }, "")
-      );
-    });
-
-  map.events
-    .add("boundschange", function (e) {
-      if (
-        e.get("newZoom") !== e.get("oldZoom") &&
-        e.get("newZoom") < e.get("oldZoom")
-      ) {
-        if (e.get("newZoom") >= 7) {
-          clusterer.removeAll();
-          stateMarker.offset = 0;
-          stateMarker.stopLoad = true;
-
-          stateMarker.geo = e.get("newBounds");
-          getPlacemark(true);
-        } else {
-          clusterer.removeAll();
-        }
-      } else if (
-        e.get("newBounds")[0][0] !== e.get("oldBounds")[0][0] ||
-        e.get("newBounds")[0][1] !== e.get("oldBounds")[0][1] ||
-        e.get("newBounds")[1][0] !== e.get("oldBounds")[1][0] ||
-        e.get("newBounds")[1][1] !== e.get("oldBounds")[1][1]
-      ) {
+  map.events.add("boundschange", function (e) {
+    if (
+      e.get("newZoom") !== e.get("oldZoom") &&
+      e.get("newZoom") < e.get("oldZoom")
+    ) {
+      if (e.get("newZoom") >= 7) {
         clusterer.removeAll();
         stateMarker.offset = 0;
         stateMarker.stopLoad = true;
 
         stateMarker.geo = e.get("newBounds");
         getPlacemark(true);
+      } else {
+        clusterer.removeAll();
       }
-    })
-    .add("wheel", function (e) {
-      // if (e.get("target").options._name === "cluster") {
-      //   zoomSize = 1.6;
-      // } else {
-      //   zoomSize = 1.4;
-      // }
-      // e.get("target").options.set(
-      //   "iconLayout",
-      //   createChipsLayout(function (zoom) {
-      //     // Минимальный размер метки будет 8px, а максимальный 200px.
-      //     // Размер метки будет расти с квадратичной зависимостью от уровня зума.
-      //     return Math.min(Math.pow(zoom, zoomSize) + 2, 100);
-      //   }, "active")
-      // );
-    });
+    } else if (
+      e.get("newBounds")[0][0] !== e.get("oldBounds")[0][0] ||
+      e.get("newBounds")[0][1] !== e.get("oldBounds")[0][1] ||
+      e.get("newBounds")[1][0] !== e.get("oldBounds")[1][0] ||
+      e.get("newBounds")[1][1] !== e.get("oldBounds")[1][1]
+    ) {
+      clusterer.removeAll();
+      stateMarker.offset = 0;
+      stateMarker.stopLoad = true;
+
+      stateMarker.geo = e.get("newBounds");
+      getPlacemark(true);
+    }
+  });
 
   stateMarker.geo = map.getBounds();
   stateMarker.clusterer = clusterer;
@@ -320,6 +273,8 @@ ymaps.ready(["Panel"]).then(function () {
 
   $("#search-map-lot-form").on("submit", function (e) {
     e.preventDefault();
+    var newUrl = window.location.pathname + "?" + $(this).serialize();
+    history.pushState("", "", newUrl);
     stateMarker.offset = 0;
     stateMarker.stopLoad = true;
     clusterer.removeAll();
@@ -337,6 +292,7 @@ function getPlacemark(firstLoad) {
   if (!firstLoad) {
     stateMarker.stopLoad = false;
   }
+  $(".map__preload").show();
 
   $.ajax({
     url: "/map-ajax",
@@ -359,6 +315,7 @@ function getPlacemark(firstLoad) {
             {
               balloonContent: item.parent_id,
               hintContent: item.address,
+              isActive: false,
             },
             {
               iconLayout: createChipsLayout(function (zoom) {
@@ -377,6 +334,8 @@ function getPlacemark(firstLoad) {
         if (!stateMarker.stopLoad || firstLoad) {
           getPlacemark(false);
         }
+      } else {
+        $(".map__preload").hide();
       }
     },
   }).fail(function (qwe) {
@@ -386,8 +345,9 @@ function getPlacemark(firstLoad) {
 }
 
 function getLots() {
-  stateMarker.stopLoad = true;
   state.stopLoad = true;
+  $(".map__lot__preload").show();
+
   $.ajax({
     url: "/map-lot-ajax",
     type: "POST",
@@ -398,11 +358,9 @@ function getLots() {
     },
     success: function (res) {
       state.panel.setContent(res);
+      $(".map__lot__preload").hide();
       if (res) {
         state.stopLoad = false;
-        stateMarker.stopLoad = false;
-
-        getPlacemark(false);
       }
     },
   }).fail(function () {

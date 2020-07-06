@@ -347,10 +347,10 @@ class LotController extends Controller
     }
     public function actionMap()
     {
-        $get = Yii::$app->request->get();
         $searchModel = new MapSearch();
 
-        $searchModel->search($get);
+
+        $searchModel->load(Yii::$app->request->get());
 
         Yii::$app->params[ 'title' ] = 'Карта';
 
