@@ -11,6 +11,7 @@ use common\components\IntCode;
  *
  * @var integer $id
  * @var integer $agent
+ * @var string  $reg_number
  * @var integer $created_at
  * @var integer $updated_at
  *
@@ -29,6 +30,26 @@ class Manager extends BaseAgent
     public static function tableName()
     {
         return '{{%manager}}';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return array_merge(parent::rules(), [
+            ['reg_number', 'string'],
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return array_merge(parent::attributeLabels(), [
+            'reg_number' => Yii::t('app', 'Registration number'),
+        ]);
     }
 
     /**
@@ -80,5 +101,40 @@ class Manager extends BaseAgent
             ];
         return $a;
 	}
+
+    /**
+     * @return \yii\db\ActiveQuery|\yii\db\ActiveRecord
+     */
+    public function getPlaceRel()
+    {
+        return $this->hasOne(Place::className(), ['parent_id' => 'id'])
+            ->andOnCondition(['place.model' => static::INT_CODE]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProfileRel()
+    {
+        return $this->hasOne(Profile::className(), ['parent_id' => 'id'])
+            ->andOnCondition(['profile.model' => static::INT_CODE]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getTorg()
+    {
+        return $this->hasMany(Torg::className(), ['id' => 'torg_id'])
+            ->viaTable(TorgDebtor::tableName(), ['manager_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getArbitrator() {
+        return $this->hasOne(Arbitrator::className(), ['manager_id' => 'id']);
+    }
 }
 

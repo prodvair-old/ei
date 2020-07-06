@@ -33,7 +33,9 @@ use sergmoro1\lookup\models\Lookup;
                 <li class="clearfix">Тип торгов <span
                             class="float-right text-<?= ($lot->torg->offer == Torg::OFFER_AUCTION_OPEN) ? 'success' : 'primary' ?>"><?= ($lot->torg->offer == Torg::OFFER_AUCTION_OPEN) ? 'Открытый аукцион' : ' Публичное предложение'; ?></span>
                 </li>
-                <li class="clearfix">ЭТП <span class="float-right"><?= $lot->torg->etp->title ?></span></li>
+                <?php if ($lot->torg->property === Torg::PROPERTY_BANKRUPT) : ?>
+                    <li class="clearfix">ЭТП <span class="float-right"><?= $lot->torg->etp->title ?></span></li>
+                <?php endif; ?>
                 <?php if ($lot->torg->property === Torg::PROPERTY_BANKRUPT) : ?>
                     <li class="clearfix">Номер сообщения в ЕФРСБ <span
                                 class="float-right"><?= $lot->torg->msg_id ?></span></li>

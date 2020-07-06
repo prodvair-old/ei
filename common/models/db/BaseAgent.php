@@ -121,4 +121,11 @@ class BaseAgent extends ActiveRecord implements ProfileInterface, PlaceInterface
     public function getAddress() {
         return $this->place->address;
     }
+
+    public function getInn() {
+        if ($this->agent == self::AGENT_PERSON)
+            return $this->profile->inn;
+        else
+            return $this->organization->inn;
+    }
 }

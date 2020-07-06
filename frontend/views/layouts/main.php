@@ -5,8 +5,6 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
@@ -23,7 +21,7 @@ use frontend\components\ResetPasswordWidget;
 
 $setting = Settings::find()->orderBy('id ASC')->all();
 $lotsCategory = LotsCategory::find()->where(['!=', 'translit_name', 'lot-list'])->orderBy('id ASC')->all();
-// $owners = OwnerProperty::find()->orderBy('name ASC')->all();
+$owners = OwnerProperty::find()->orderBy('name ASC')->all();
 
 $bankruptLotsCategoryMenu = $arrestLotsCategoryMenu = null;
 
@@ -159,7 +157,7 @@ AppAsset::register($this);
                     </li>
                   <?php } else { ?>
                     <li class="d-block d-sm-block">
-                      <a href="<?= Url::to(['user/wish_list']) ?>" class="vertival-center">
+                      <a href="<?= Url::to(['/user/wish_list']) ?>" class="vertival-center">
                         <div class="image header-avatar">
                           <img class="setting-image-tag" src="<?= isset(Yii::$app->user->identity->avatar) ? Yii::$app->user->identity->avatar : 'img/image-man/01.jpg' ?>" alt="Image" />
                         </div>
@@ -208,10 +206,10 @@ AppAsset::register($this);
                             ['label' => 'О нас', 'url' => ['pages/about']],
                             ['label' => 'Контакты', 'url' => ['pages/contact']],
                           ]],
-                          ['label' => 'Реестры', 'url' => ['arbitr/list'], 'items' => [
-                            ['label' => 'Арбитражные управляющие', 'url' => ['arbitr/list']],
-                            ['label' => 'Должники', 'url' => ['doljnik/list']],
-                            ['label' => 'СРО', 'url' => ['sro/list']]
+                          ['label' => 'Реестры', 'url' => ['/lot/arbitr/index'], 'items' => [
+                            ['label' => 'Арбитражные управляющие', 'url' => ['/lot/arbitr/index']],
+                            ['label' => 'Должники', 'url' => ['/lot/bankrupt/index']],
+                            ['label' => 'СРО', 'url' => ['/lot/sro/index']]
                           ]],
                           ['label' => 'Услуги', 'url' => ['services/index'], 'items' => [
                             // ['label' => 'Консультация специалиста', 'url' => ['service/specialist']],
