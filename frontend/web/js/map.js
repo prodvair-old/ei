@@ -203,12 +203,26 @@ ymaps.ready(["Panel"]).then(function () {
       hasBalloon: false,
       clusterize: true,
     }),
-    panel = new ymaps.Panel();
+    panel = new ymaps.Panel(),
+    closeButton = new ymaps.control.Button({
+      data: {
+        url: urlBack,
+      },
+      options: {
+        layout: ymaps.templateLayoutFactory.createClass(
+          `<a href="{{data.url}}" class="map__close"></a>`
+        ),
+      },
+    });
 
   state.panel = panel;
-  map.controls.add(panel, {
-    float: "left",
-  });
+  map.controls
+    .add(panel, {
+      float: "left",
+    })
+    .add(closeButton, {
+      float: "right",
+    });
 
   collection.add(clusterer);
   map.geoObjects.add(collection);
