@@ -2,16 +2,17 @@
 
 use yii;
 use common\models\db\Lot;
+use common\models\db\Region;
+use common\models\db\Torg;
+use common\models\db\Owner;
+use common\models\db\Etp;
 use sergmoro1\lookup\models\Lookup;
 use yii\widgets\Breadcrumbs;
 use frontend\modules\models\Category;
-use common\models\db\Torg;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use common\models\db\Owner;
-use common\models\db\Etp;
 
 $lotsSubcategory[ 0 ] = 'Все подкатегории';
 $subcategoryCheck = true;
@@ -23,14 +24,49 @@ if ($model->mainCategory) {
     $lotsSubcategory += $leaves;
     $subcategoryCheck = false;
 }
-$traderList = [];
+$traderList[ 0 ] = 'Все регионы';
+$traderList = ArrayHelper::map(Region::find()->orderBy(['name' => SORT_ASC])->all(), 'id', 'name');
 
-
-$this->title = Yii::$app->params[ 'title' ];
+$this->title = 'Поиск лотов на карте';
+$this->params[ 'breadcrumbs' ][] = [
+    'label'    => ' Карта лотов',
+    'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
+    'url'      => ["/map"]
+];;
 $this->registerJsVar('lotType', $model->type, $position = yii\web\View::POS_HEAD);
+$this->registerJsVar('urlBack', Url::to(['/all', 'LotSearch' => Yii::$app->request->get()['MapSearch']]), $position = yii\web\View::POS_HEAD);
 
 ?>
 <section class="page-wrapper page-result pb-0">
+    <div class="page-title bg-light d-none d-sm-block mb-0">
+
+        <div class="container">
+
+            <div class="row gap-15 align-items-center">
+
+                <div class="col-12">
+
+                    <nav aria-label="breadcrumb">
+                        <?= Breadcrumbs::widget([
+                            'itemTemplate'       => '<li class="breadcrumb-item">{link}</li>',
+                            'encodeLabels'       => false,
+                            'tag'                => 'ol',
+                            'activeItemTemplate' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
+                            'homeLink'           => ['label' => '<i class="fas fa-home"></i>', 'url' => '/'],
+                            'links'              => isset($this->params[ 'breadcrumbs' ]) ? $this->params[ 'breadcrumbs' ] : [],
+                        ]) ?>
+                    </nav>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="container">
+        <h1 class="h3 mt-40 mb-40 line-125 "><?= $this->title ?></h1>
+    </div>
     <style>
         .search-box {
             -webkit-box-shadow: none;
@@ -79,10 +115,10 @@ $this->registerJsVar('lotType', $model->type, $position = yii\web\View::POS_HEAD
                                 <?= $form->field($model, 'type')->dropDownList(
                                     Torg::getTypeList(), [
                                     'class'            => 'chosen-type-select form-control form-control-sm',
-                                    'data-placeholder' => 'Выберите тип имущества',
+                                    'data-placeholder' => 'Выберите вид имущества',
                                     'tabindex'         => '2',
                                 ])
-                                    ->label('Тип имущества'); ?>
+                                    ->label('Вид имущества'); ?>
                             </div>
                         </div>
 
@@ -145,45 +181,36 @@ $this->registerJsVar('lotType', $model->type, $position = yii\web\View::POS_HEAD
 
                     </div>
 
-                    <?php if ($model->type == Torg::PROPERTY_BANKRUPT) : ?>
-
-                        <div class="sidebar-box  sidebar-box__collaps <?= ($model->etp) ? '' : 'collaps' ?>">
-
-                            <label class="control-label sidebar-box__label">Торговые площадки</label>
-                            <div class="box-content">
-                                <?= $form->field($model, 'etp')->dropDownList(
-                                    Etp::getOrganizationList(),
-                                    [
-                                        'class'            => 'chosen-the-basic form-control',
-                                        'prompt'           => 'Все торговые площадки',
-                                        'data-placeholder' => 'Все торговые площадки',
-                                        'multiple'         => true
-                                    ]
-                                )
-                                    ->label(false); ?>
-                            </div>
-
+                    <div class="sidebar-box  sidebar-box__collaps <?= ($model->type == Torg::PROPERTY_BANKRUPT)? '' : 'd-none'?> bankrupt-js <?= ($model->etp) ? '' : 'collaps' ?>">
+                        <label class="control-label sidebar-box__label">Торговые площадки</label>
+                        <div class="box-content">
+                            <?= $form->field($model, 'etp')->dropDownList(
+                                Etp::getOrganizationList(),
+                                [
+                                    'class'            => 'chosen-the-basic form-control',
+                                    'prompt'           => 'Все торговые площадки',
+                                    'data-placeholder' => 'Все торговые площадки',
+                                    'multiple'         => true
+                                ]
+                            )->label(false); ?>
                         </div>
+                    </div>
 
-                    <?php endif; ?>
 
-                    <?php if ($model->type == Torg::PROPERTY_ZALOG) : ?>
-                        <div class="sidebar-box sidebar-box__collaps <?= ($model->owner) ? '' : 'collaps' ?>">
-                            <label class="control-label sidebar-box__label">Организации</label>
-                            <div class="box-content">
-                                <?= $form->field($model, 'owner')->dropDownList(
-                                    Owner::getOrganizationList(),
-                                    [
-                                        'class'            => 'chosen-the-basic form-control',
-                                        'prompt'           => 'Все организации',
-                                        'data-placeholder' => 'Все организации',
-                                        'multiple'         => true
-                                    ]
-                                )
-                                    ->label(false); ?>
-                            </div>
+                    <div class="sidebar-box sidebar-box__collaps <?= ($model->type == Torg::PROPERTY_ZALOG)? '' : 'd-none'?> zalog-js <?= ($model->owner) ? '' : 'collaps' ?>">
+                        <label class="control-label sidebar-box__label">Организации</label>
+                        <div class="box-content">
+                            <?= $form->field($model, 'owner')->dropDownList(
+                                Owner::getOrganizationList(),
+                                [
+                                    'class'            => 'chosen-the-basic form-control',
+                                    'prompt'           => 'Все организации',
+                                    'data-placeholder' => 'Все организации',
+                                    'multiple'         => true
+                                ]
+                            )->label(false); ?>
                         </div>
-                    <?php endif; ?>
+                    </div>
 
                     <div class="sidebar-box sidebar-box__collaps <?= ($model->tradeType) ? '' : 'collaps' ?>">
 
@@ -229,68 +256,64 @@ $this->registerJsVar('lotType', $model->type, $position = yii\web\View::POS_HEAD
                         </div>
                     </div>
 
-                    <?php if ($model->type == Torg::PROPERTY_BANKRUPT) : ?>
-                        <div class="sidebar-box sidebar-box__collaps <?= ($model->type == Torg::PROPERTY_BANKRUPT) ? '' : 'collaps' ?>">
-                            <label class="control-label  sidebar-box__label">Дополнительные параметры</label>
-                            <div class="box-content col-md-12">
-                                <label>Номер ЕФРСБ</label>
-                                <div>
-                                    <?= $form->field($model, 'efrsb')->textInput(
-                                        ['class' => 'form-control', 'placeholder' => 'Введите номер']
+                    <div class="sidebar-box sidebar-box__collaps <?= ($model->type == Torg::PROPERTY_BANKRUPT)? '' : 'd-none'?> bankrupt-js <?= ($model->type == Torg::PROPERTY_BANKRUPT) ? '' : 'collaps' ?>">
+                        <label class="control-label  sidebar-box__label">Дополнительные параметры</label>
+                        <div class="box-content col-md-12">
+                            <label>Номер ЕФРСБ</label>
+                            <div>
+                                <?= $form->field($model, 'efrsb')->textInput(
+                                    ['class' => 'form-control', 'placeholder' => 'Введите номер']
+                                )->label(false); ?>
+                            </div>
+                        </div>
+                        <div class="box-content col-md-12">
+                            <label>ФИО Должника</label>
+                            <div>
+                                <?= $form->field($model, 'bankruptName')->textInput(
+                                    ['class' => 'form-control', 'placeholder' => 'ФИО']
+                                )->label(false); ?>
+                            </div>
+                        </div>
+                        <div class="box-content col-md-12">
+                            <label>Начало торгов</label>
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                </div>
+                                <div class="col-md-6">
+                                    <?= $form->field($model, 'torgStartDate')->textInput(
+                                        ['class' => 'form-control', 'placeholder' => 'От']
                                     )->label(false); ?>
                                 </div>
-                            </div>
-
-                            <div class="box-content col-md-12">
-                                <label>ФИО Должника</label>
-                                <div>
-                                    <?= $form->field($model, 'bankruptName')->textInput(
-                                        ['class' => 'form-control', 'placeholder' => 'ФИО']
+                                <div class="col-md-6">
+                                    <?= $form->field($model, 'torgEndDate')->textInput(
+                                        ['class' => 'form-control', 'placeholder' => 'До']
                                     )->label(false); ?>
-                                </div>
-                            </div>
-
-                            <div class="box-content col-md-12">
-                                <label>Начало торгов</label>
-                                <div class="row">
-                                    <div class="col-md-12">
-
-                                    </div>
-                                    <div class="col-md-6">
-                                        <?= $form->field($model, 'torgStartDate')->textInput(
-                                            ['class' => 'form-control', 'placeholder' => 'От']
-                                        )->label(false); ?>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <?= $form->field($model, 'torgEndDate')->textInput(
-                                            ['class' => 'form-control', 'placeholder' => 'До']
-                                        )->label(false); ?>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="box-content col-md-12 mt-10">
-                                <div class="custom-control custom-checkbox">
-                                    <?= $form->field($model, 'startApplication')->checkbox([
-                                        'class'    => 'custom-control-input',
-                                        'value'    => '1',
-                                        'id'       => 'startApplication',
-                                        'template' => '{input}<label class="custom-control-label" for="startApplication">Начало приема заявок</label>'
-                                    ]) ?>
-                                </div>
-                            </div>
-                            <div class="box-content col-md-12 mt-10">
-                                <div class="custom-control custom-checkbox">
-                                    <?= $form->field($model, 'competedApplication')->checkbox([
-                                        'class'    => 'custom-control-input',
-                                        'value'    => '1',
-                                        'id'       => 'competedApplication',
-                                        'template' => '{input}<label class="custom-control-label" for="competedApplication">Окончание приема заявок</label>'
-                                    ]) ?>
                                 </div>
                             </div>
                         </div>
-                    <?php endif; ?>
+
+                        <div class="box-content col-md-12 mt-10">
+                            <div class="custom-control custom-checkbox">
+                                <?= $form->field($model, 'startApplication')->checkbox([
+                                    'class'    => 'custom-control-input',
+                                    'value'    => '1',
+                                    'id'       => 'startApplication',
+                                    'template' => '{input}<label class="custom-control-label" for="startApplication">Начало приема заявок</label>'
+                                ]) ?>
+                            </div>
+                        </div>
+                        <div class="box-content col-md-12 mt-10">
+                            <div class="custom-control custom-checkbox">
+                                <?= $form->field($model, 'competedApplication')->checkbox([
+                                    'class'    => 'custom-control-input',
+                                    'value'    => '1',
+                                    'id'       => 'competedApplication',
+                                    'template' => '{input}<label class="custom-control-label" for="competedApplication">Окончание приема заявок</label>'
+                                ]) ?>
+                            </div>
+                        </div>
+                    </div>
 
                     <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
                     <a href="<?=Url::to(['/all', 'LotSearch' => Yii::$app->request->get()['MapSearch']])?>" class="btn btn-outline-primary btn-block mb-30 mr-20">Обычный поиск</a>

@@ -349,7 +349,6 @@ class LotController extends Controller
     {
         $searchModel = new MapSearch();
 
-
         $searchModel->load(Yii::$app->request->get());
 
         Yii::$app->params[ 'title' ] = 'Карта';
@@ -358,8 +357,6 @@ class LotController extends Controller
             'model'         => $searchModel,
             'queryCategory' => 0,
             'type'          => 'bankrupt',
-            'regionList'    => $regionList,
-            'url'           => $url,
         ]);
     }
     public function actionMapAjax()
@@ -369,25 +366,8 @@ class LotController extends Controller
         
         $searchModel = new MapSearch();
 
-
         $dataProvider = $searchModel->search($post);
         $places = $dataProvider->getModels();
-        
-        // $place = Place::find()
-        //     ->select([Place::tableName() .'.geo_lat', Place::tableName() .'.geo_lon', Place::tableName() .'.parent_id'])
-        //     ->joinWith(['lot.torg'])
-        //     ->andFilterWhere([Place::tableName() .'.model' => Lot::INT_CODE])
-        //     ->andFilterWhere(['>=', Place::tableName() . '.geo_lat', $post['north_west_lat']])
-        //     ->andFilterWhere(['>=', Place::tableName() . '.geo_lon', $post['north_west_lon']])
-        //     ->andFilterWhere(['<=', Place::tableName() . '.geo_lat', $post['south_east_lat']])
-        //     ->andFilterWhere(['<=', Place::tableName() . '.geo_lon', $post['south_east_lon']])
-        //     ->andFilterWhere(['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED])
-        //     ->andFilterWhere(['>', Torg::tableName() . '.end_at', time()])
-        //     ->orderBy([Torg::tableName() . '.published_at' => 'DESC', Place::tableName() . '.geo_lat' => 'DESC', Place::tableName() . '.geo_lon' => 'DESC'])
-        //     ->asArray()
-        //     ->limit($post['limit'])
-        //     ->offset($post['offset'])
-        //     ->all();
 
         return $places;
     }
@@ -402,19 +382,5 @@ class LotController extends Controller
             ->all();
 
         return $this->renderAjax("mapLotAjax",['lots'=>$lots]);
-    }
-    public function actionMapFilterAjax()
-    {
-        $post = Yii::$app->request->post();
-
-        $searchModel = new MapSearch();
-
-        return $this->renderAjax("mapFilterAjax",[
-            'model'         => $searchModel,
-            'queryCategory' => 0,
-            'type'          => 'bankrupt',
-            'regionList'    => $regionList,
-            'url'           => $url,
-        ]);
     }
 }

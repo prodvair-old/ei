@@ -29,10 +29,10 @@ class AppAsset extends AssetBundle
         'js/costom-plugins/toast.js',
         'js/custom-core.js?v=1.06',
         'https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js',
-        'https://api-maps.yandex.ru/2.1-stable/?load=package.standard&lang=ru-RU',
+        // 'https://api-maps.yandex.ru/2.1-stable/?load=package.standard&lang=ru-RU',
         'https://cdn.jsdelivr.net/npm/vue/dist/vue.js',
         'js/data_picker.js',
-        // 'https://api-maps.yandex.ru/2.1/?apikey=c779baf7-d09e-4558-9661-55d19272043f&lang=ru_RU',
+        'https://api-maps.yandex.ru/2.1/?apikey=c779baf7-d09e-4558-9661-55d19272043f&lang=ru_RU',
         'js/map.js',
         'js/scripts.min.js?v=2.12',
     ];

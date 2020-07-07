@@ -66,8 +66,8 @@ ymaps.modules.define("Panel", ["util.augment", "collection.Item"], function (
       // При клике по крестику будем скрывать панель.
       $(".map__panel__close").on("click", this._onClose);
       $(".map__panel__filter-btn").on("click", this._onFilter);
-      $(".map__filter__close").on("click", this._onFilterClose);
       $(".map__panel__content").on("scroll", this._loadLots);
+      $(".map__filter__close").on("click", this._onFilterClose);
     },
     clearContent: function () {
       this._$content.html("");
@@ -113,7 +113,17 @@ ymaps.modules.define("Panel", ["util.augment", "collection.Item"], function (
 var createChipsLayout = function (calculateSize, eventClass) {
   // Создадим макет метки.
   var Chips = ymaps.templateLayoutFactory.createClass(
-    '<div class="map__placemark {% if state.hover %}hover{% endif %} {% if properties.isActive %}active{% endif %}">{{ properties.geoObjects.length }}</div>',
+    `<div 
+      class="map__placemark 
+        {% if state.hover %}hover{% endif %} 
+        {% if properties.isActive %}active{% endif %}"
+      style="background-color: 
+        {% if (properties.propertyId == 1) %}#0fa958{% endif %}
+        {% if (properties.propertyId == 2) %}#ff8577{% endif %}
+        {% if (properties.propertyId == 3) %}#404040{% endif %}
+        {% if (properties.propertyId == 4) %}#18a0fb{% endif %}">
+      {{ properties.geoObjects.length }}
+    </div>`,
     {
       build: function () {
         Chips.superclass.build.call(this);
@@ -187,20 +197,32 @@ ymaps.ready(["Panel"]).then(function () {
           [60, 60],
         ],
       },
+    }),
+    collection = new ymaps.GeoObjectCollection(null, {
+      // Запретим появление балуна.
+      hasBalloon: false,
+      clusterize: true,
+    }),
+    panel = new ymaps.Panel(),
+    closeButton = new ymaps.control.Button({
+      data: {
+        url: urlBack,
+      },
+      options: {
+        layout: ymaps.templateLayoutFactory.createClass(
+          `<a href="{{data.url}}" class="map__close"></a>`
+        ),
+      },
     });
 
-  var panel = new ymaps.Panel();
   state.panel = panel;
-
-  map.controls.add(panel, {
-    float: "left",
-  });
-
-  var collection = new ymaps.GeoObjectCollection(null, {
-    // Запретим появление балуна.
-    hasBalloon: false,
-    clusterize: true,
-  });
+  map.controls
+    .add(panel, {
+      float: "left",
+    })
+    .add(closeButton, {
+      float: "right",
+    });
 
   collection.add(clusterer);
   map.geoObjects.add(collection);
@@ -285,6 +307,7 @@ ymaps.ready(["Panel"]).then(function () {
 
   map.events.add("actionbegin", function (e) {
     stateMarker.stopLoad = true;
+    $(".map__preload").hide();
   });
 });
 
@@ -315,6 +338,7 @@ function getPlacemark(firstLoad) {
             {
               balloonContent: item.parent_id,
               hintContent: item.address,
+              propertyId: item.property,
               isActive: false,
             },
             {

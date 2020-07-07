@@ -106,17 +106,38 @@
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
 }
+
+.map__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  margin-top: -1px;
+  cursor: pointer;
+  background-color: #fff;
+  border: 2px solid #077751;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.map__close:hover,
 .map__panel__close:hover,
 .map__filter__close:hover {
   background-color: #077751;
 }
 
+.map__close:hover::after,
+.map__close:hover::before,
 .map__panel__close:hover::after,
 .map__panel__close:hover::before,
 .map__filter__close:hover::after,
 .map__filter__close:hover::before {
   background-color: #fff;
 }
+.map__close::after,
+.map__close::before,
 .map__panel__close::after,
 .map__panel__close::before,
 .map__filter__close::after,
@@ -129,11 +150,13 @@
   width: 15px;
   transition: all 0.3s ease;
 }
+.map__close::after,
 .map__panel__close::after,
 .map__filter__close::after {
   transform: rotateZ(45deg);
 }
 
+.map__close::before,
 .map__panel__close::before,
 .map__filter__close::before {
   transform: rotateZ(-45deg);
