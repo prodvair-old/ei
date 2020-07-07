@@ -114,7 +114,13 @@ class MapSearch extends Place
      */
     public function search($params)
     {
-        $query = Place::find();
+        $query = Place::find()->select([
+            Place::tableName() . '.geo_lat', 
+            Place::tableName() . '.geo_lon', 
+            Place::tableName() . '.parent_id', 
+            Place::tableName() . '.address',
+            Torg::tableName() . '.property',
+            ]);
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -265,7 +271,7 @@ class MapSearch extends Place
         $query->addOrderBy(['torg.published_at' => SORT_DESC]);
 
         $query->offset($this->offset)
-            ->limit($this->limit);
+            ->limit($this->limit)->asArray();
 
         return $dataProvider;
     }

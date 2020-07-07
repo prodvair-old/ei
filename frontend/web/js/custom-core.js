@@ -5,12 +5,12 @@ jQuery(function ($) {
   // wish list start->
   $(".wish-js").on("click", function (e) {
     e.preventDefault();
-    var lotId   = $(this).data("id"),
-        star    = $(this).children("img"),
-        number  = $(this).children("span"),
-        item    = $(this).parents(".col");
+    var lotId = $(this).data("id"),
+      star = $(this).children("img"),
+      number = $(this).children("span"),
+      item = $(this).parents(".col");
 
-    console.log($(this).children('img'));
+    console.log($(this).children("img"));
     $.ajax({
       url: "/wish-list-edit",
       type: "GET",
@@ -20,11 +20,11 @@ jQuery(function ($) {
       success: function (data) {
         var num = number.html();
 
-        if (data["method"] === 'save') {
+        if (data["method"] === "save") {
           star.attr("src", "img/star.svg");
           number.html(Number(num) + 1);
           toastr.success("Лот добавлен в избранное");
-        } else if (data["method"] === 'delete') {
+        } else if (data["method"] === "delete") {
           star.attr("src", "img/star-o.svg");
           number.html(Number(num) - 1);
           toastr.success("Лот удалён из избранных");
@@ -83,7 +83,7 @@ jQuery(function ($) {
   $(".search-preset-box__del-js").on("click", function (e) {
     e.preventDefault();
     var presetId = $(this).data("id");
-    var list = $('.search-preset-list');
+    var list = $(".search-preset-list");
     $.ajax({
       url: "/profile/search-preset-del",
       type: "GET",
@@ -93,10 +93,12 @@ jQuery(function ($) {
       success: function (res) {
         if (res) {
           $(".search-preset-box-" + presetId).addClass("del");
-          var count = list.children('.search-preset-box').length - list.children('.search-preset-box.del').length;
+          var count =
+            list.children(".search-preset-box").length -
+            list.children(".search-preset-box.del").length;
           if (count === 0) {
-            $('.search-preset-sender').removeClass('d-md-block');
-            $('.search-preset__info').addClass('active');
+            $(".search-preset-sender").removeClass("d-md-block");
+            $(".search-preset__info").addClass("active");
           }
           toastr.success("Успешно удалено");
         } else {
@@ -268,6 +270,19 @@ jQuery(function ($) {
     .chosen({ disable_search_threshold: 10, allow_single_deselect: true })
     .change(function (e, type) {
       $("#search-lot-form").submit();
+
+      if (!$(".zalog-js").hasClass("d-none")) {
+        $(".zalog-js").addClass("d-none");
+      }
+      if (!$(".bankrupt-js").hasClass("d-none")) {
+        $(".bankrupt-js").addClass("d-none");
+      }
+
+      if (type.selected === "1") {
+        $(".bankrupt-js").removeClass("d-none");
+      } else if (type.selected === "3") {
+        $(".zalog-js").removeClass("d-none");
+      }
     });
 
   function filterParams() {
@@ -337,6 +352,10 @@ jQuery(function ($) {
         );
       }
     });
+
+  if ($(".map .chosen-category-select-lot").val() === "0") {
+    $(".map .chosen-category-select-lot").val("2").trigger("chosen:updated");
+  }
 
   $(".chosen-zalog-category-select")
     .chosen({ disable_search_threshold: 10, allow_single_deselect: true })
