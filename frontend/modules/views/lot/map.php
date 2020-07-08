@@ -316,7 +316,10 @@ $this->registerJsVar('urlBack', Url::to(['/all', 'LotSearch' => Yii::$app->reque
                     </div>
 
                     <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block', 'name' => 'search']) ?>
-                    <a href="<?=Url::to(['/all', 'LotSearch' => Yii::$app->request->get()['MapSearch']])?>" class="btn btn-outline-primary btn-block mb-30 mr-20">Обычный поиск</a>
+                    <a href="<?=Url::to(['/all', 'LotSearch' => Yii::$app->request->get()['MapSearch']])?>" class="btn btn-outline-primary btn-block mb-30 mr-20">
+                        <i class="fa fa-list"></i>
+                        Обычный поиск
+                    </a>
                 </div>
                 <?php ActiveForm::end(); ?>
                 <div class="sidebar-box__text"><?= Yii::$app->params[ 'text' ] ?></div>

@@ -115,6 +115,7 @@ class MapSearch extends Place
     public function search($params)
     {
         $query = Place::find()->select([
+            Place::tableName() . '.id', 
             Place::tableName() . '.geo_lat', 
             Place::tableName() . '.geo_lon', 
             Place::tableName() . '.parent_id', 
