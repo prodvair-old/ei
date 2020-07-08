@@ -33,40 +33,12 @@ $this->params[ 'breadcrumbs' ][] = [
     'template' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
     'url'      => ["/map"]
 ];;
+Yii::$app->params['isOffFooter'] = true;
 $this->registerJsVar('lotType', $model->type, $position = yii\web\View::POS_HEAD);
 $this->registerJsVar('urlBack', Url::to(['/all', 'LotSearch' => Yii::$app->request->get()['MapSearch']]), $position = yii\web\View::POS_HEAD);
 
 ?>
 <section class="page-wrapper page-result pb-0">
-    <div class="page-title bg-light d-none d-sm-block mb-0">
-
-        <div class="container">
-
-            <div class="row gap-15 align-items-center">
-
-                <div class="col-12">
-
-                    <nav aria-label="breadcrumb">
-                        <?= Breadcrumbs::widget([
-                            'itemTemplate'       => '<li class="breadcrumb-item">{link}</li>',
-                            'encodeLabels'       => false,
-                            'tag'                => 'ol',
-                            'activeItemTemplate' => '<li class="breadcrumb-item active" aria-current="page">{link}</li>',
-                            'homeLink'           => ['label' => '<i class="fas fa-home"></i>', 'url' => '/'],
-                            'links'              => isset($this->params[ 'breadcrumbs' ]) ? $this->params[ 'breadcrumbs' ] : [],
-                        ]) ?>
-                    </nav>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-    <div class="container">
-        <h1 class="h3 mt-40 mb-40 line-125 "><?= $this->title ?></h1>
-    </div>
     <style>
         .search-box {
             -webkit-box-shadow: none;
@@ -316,7 +288,10 @@ $this->registerJsVar('urlBack', Url::to(['/all', 'LotSearch' => Yii::$app->reque
                     </div>
 
                     <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block', 'name' => 'search']) ?>
-                    <a href="<?=Url::to(['/all', 'LotSearch' => Yii::$app->request->get()['MapSearch']])?>" class="btn btn-outline-primary btn-block mb-30 mr-20">Обычный поиск</a>
+                    <a href="<?=Url::to(['/all', 'LotSearch' => Yii::$app->request->get()['MapSearch']])?>" class="btn btn-outline-primary btn-block mb-30 mr-20">
+                        <i class="fa fa-list"></i>
+                        Обычный поиск
+                    </a>
                 </div>
                 <?php ActiveForm::end(); ?>
                 <div class="sidebar-box__text"><?= Yii::$app->params[ 'text' ] ?></div>

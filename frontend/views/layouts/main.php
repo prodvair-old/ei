@@ -19,9 +19,9 @@ use frontend\components\SignupWidget;
 use frontend\components\ResetPasswordWidget;
 
 
-$setting = Settings::find()->orderBy('id ASC')->all();
-$lotsCategory = LotsCategory::find()->where(['!=', 'translit_name', 'lot-list'])->orderBy('id ASC')->all();
-$owners = Owner::find()->orderBy('slug ASC')->all();
+// $setting = Settings::find()->orderBy('id ASC')->all();
+// $lotsCategory = Category::getMainCategoriesList();
+// $owners = Owner::find()->orderBy('slug ASC')->all();
 
 $bankruptLotsCategoryMenu = $arrestLotsCategoryMenu = null;
 
@@ -257,7 +257,7 @@ AppAsset::register($this);
     </div>
     <!-- end Main Wrapper -->
 
-
+    <? if (!Yii::$app->params['isOffFooter']) {?>
     <!-- start Footer Wrapper -->
     <footer class="footer-wrapper light scrollspy-footer">
 
@@ -508,7 +508,7 @@ AppAsset::register($this);
 
     </footer>
     <!-- start Footer Wrapper -->
-
+    <? } ?>
 
 
   </div>

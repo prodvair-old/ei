@@ -1,17 +1,19 @@
 var state = {
-  ids: [],
-  panel: null,
-  limit: 10,
-  offset: 0,
-  stopLoad: false,
-};
-var stateMarker = {
-  geo: [],
-  clusterer: null,
-  limit: 100,
-  offset: 0,
-  stopLoad: false,
-};
+    ids: [],
+    panel: null,
+    limit: 10,
+    offset: 0,
+    stopLoad: false,
+  },
+  stateMarker = {
+    geo: [],
+    isActiveId: null,
+    objectManager: null,
+    limit: 100,
+    offset: 0,
+    stopLoad: false,
+  },
+  stateMap = null;
 // Пример реализации боковой панели на основе наследования от collection.Item.
 // Боковая панель отображает информацию, которую мы ей передали.
 ymaps.modules.define("Panel", ["util.augment", "collection.Item"], function (
@@ -53,7 +55,7 @@ ymaps.modules.define("Panel", ["util.augment", "collection.Item"], function (
       // Создаем HTML-элемент с текстом.
       // По-умолчанию HTML-элемент скрыт.
       this._$control = $(
-        `<div class="map__panel__filter-btn btn btn-primary btn-block mb-10">Фильтр</div>
+        `<div class="map__panel__filter-btn btn btn-primary btn-block mb-10"><i class="fa fa-filter"></i> Фильтр</div>
         <div class="map__panel">
           <div class="map__panel__content"></div>
           <div class="map__panel__close"></div>
@@ -92,6 +94,29 @@ ymaps.modules.define("Panel", ["util.augment", "collection.Item"], function (
       setTimeout(function () {
         $(".map__panel__content").html("");
       }, 500);
+      if (stateMarker.isActiveId) {
+        var state = stateMarker.objectManager.getObjectState(
+          stateMarker.isActiveId
+        );
+        if (!state.isClustered) {
+          stateMarker.objectManager.objects.setObjectOptions(
+            stateMarker.isActiveId,
+            {
+              iconLayout: createChipsLayout(function (zoom) {
+                return Math.min(Math.pow(zoom, 1.4) + 2, 100);
+              }, ""),
+            }
+          );
+        } else {
+          objectManager.clusters.setClusterOptions(objectId, {
+            iconLayout: createChipsLayout(function (zoom) {
+              // Минимальный размер метки будет 8px, а максимальный 200px.
+              // Размер метки будет расти с квадратичной зависимостью от уровня зума.
+              return Math.min(Math.pow(zoom, 1.6) + 2, 100);
+            }, ""),
+          });
+        }
+      }
     },
     _onFilter: function () {
       $(".map__filter").toggleClass("active");
@@ -114,9 +139,9 @@ var createChipsLayout = function (calculateSize, eventClass) {
   // Создадим макет метки.
   var Chips = ymaps.templateLayoutFactory.createClass(
     `<div 
-      class="map__placemark 
-        {% if state.hover %}hover{% endif %} 
-        {% if properties.isActive %}active{% endif %}"
+      class="map__placemark ` +
+      eventClass +
+      `"
       style="background-color: 
         {% if (properties.propertyId == 1) %}#0fa958{% endif %}
         {% if (properties.propertyId == 2) %}#ff8577{% endif %}
@@ -127,7 +152,7 @@ var createChipsLayout = function (calculateSize, eventClass) {
     {
       build: function () {
         Chips.superclass.build.call(this);
-        var map = this.getData().geoObject.getMap();
+        var map = stateMap;
         if (!this.inited) {
           this.inited = true;
           // Получим текущий уровень зума.
@@ -180,23 +205,21 @@ ymaps.ready(["Panel"]).then(function () {
       zoom: 12,
       controls: ["smallMapDefaultSet"],
     }),
-    clusterer = new ymaps.Clusterer({
+    objectManager = new ymaps.ObjectManager({
+      // Чтобы метки начали кластеризоваться, выставляем опцию.
+      clusterize: true,
+      clusterHasBalloon: false,
       clusterDisableClickZoom: true,
-      // Зададим макет метки кластера.
       clusterIconLayout: createChipsLayout(function (zoom) {
         // Минимальный размер метки будет 8px, а максимальный 200px.
         // Размер метки будет расти с квадратичной зависимостью от уровня зума.
         return Math.min(Math.pow(zoom, 1.6) + 2, 100);
       }, ""),
-      // Чтобы метка была кликабельной, переопределим ее активную область.
-      hasBalloon: false,
-      clusterIconShape: {
-        type: "Rectangle",
-        coordinates: [
-          [20, 20],
-          [60, 60],
-        ],
-      },
+      // IconLayout: createChipsLayout(function (zoom) {
+      //   // Минимальный размер метки будет 8px, а максимальный 200px.
+      //   // Размер метки будет расти с квадратичной зависимостью от уровня зума.
+      //   return Math.min(Math.pow(zoom, 1.4) + 2, 100);
+      // }, ""),
     }),
     collection = new ymaps.GeoObjectCollection(null, {
       // Запретим появление балуна.
@@ -215,6 +238,7 @@ ymaps.ready(["Panel"]).then(function () {
       },
     });
 
+  stateMap = map;
   state.panel = panel;
   map.controls
     .add(panel, {
@@ -224,39 +248,124 @@ ymaps.ready(["Panel"]).then(function () {
       float: "right",
     });
 
-  collection.add(clusterer);
+  collection.add(objectManager);
   map.geoObjects.add(collection);
+  stateMarker.geo = map.getBounds();
+  stateMarker.objectManager = objectManager;
+  getPlacemark(true);
+
   // Подпишемся на событие клика по коллекцииx
+  objectManager.objects.events
+    .add("click", function (e) {
+      // Получим ссылку на геообъект, по которому кликнул пользователь.
+      var objectId = e.get("objectId"),
+        object = objectManager.objects.getById(objectId),
+        geo = object.geometry.coordinates,
+        lotIds = [];
+      // Зададим контент боковой панели.
+      panel._onFilterClose();
+      panel.clearContent();
 
-  collection.events.add("click", function (e) {
-    // Получим ссылку на геообъект, по которому кликнул пользователь.
-    var target = e.get("target"),
-      geoObjects = target.properties.get("geoObjects"),
-      geo = target.geometry.getCoordinates();
-    // Зададим контент боковой панели.
-    panel._onFilterClose();
-    panel.clearContent();
-    var lotIds = [];
+      stateMarker.isActiveId = objectId;
+      lotIds[0] = object.properties.lotId;
 
-    if (geoObjects) {
-      geoObjects.map(function (item, index) {
-        lotIds[index] = item.properties.get("balloonContent");
+      $(".map__placemark").removeClass("active");
+      objectManager.objects.setObjectOptions(objectId, {
+        iconLayout: createChipsLayout(function (zoom) {
+          // Минимальный размер метки будет 8px, а максимальный 200px.
+          // Размер метки будет расти с квадратичной зависимостью от уровня зума.
+          return Math.min(Math.pow(zoom, 1.4) + 2, 100);
+        }, "active"),
       });
-    } else {
-      lotIds[0] = target.properties.get("balloonContent");
-    }
 
-    $(".map__placemark").removeClass("active");
-    target.properties.set("isActive", true);
+      state.ids = lotIds;
+      state.offset = 0;
+      state.stopLoad = false;
 
-    state.ids = lotIds;
-    state.offset = 0;
-    state.stopLoad = false;
+      getLots();
+      // Переместим центр карты по координатам метки с учётом заданных отступов.
+      map.panTo([Number(geo[0]), Number(geo[1])], { useMapMargin: true });
+    })
+    .add(["mouseenter", "mouseleave"], function (e) {
+      var objectId = e.get("objectId");
+      if (stateMarker.isActiveId !== objectId) {
+        if (e.get("type") == "mouseenter") {
+          // Метод setObjectOptions позволяет задавать опции объекта "на лету".
+          objectManager.objects.setObjectOptions(objectId, {
+            iconLayout: createChipsLayout(function (zoom) {
+              // Минимальный размер метки будет 8px, а максимальный 200px.
+              // Размер метки будет расти с квадратичной зависимостью от уровня зума.
+              return Math.min(Math.pow(zoom, 1.4) + 2, 100);
+            }, "hover"),
+          });
+        } else {
+          objectManager.objects.setObjectOptions(objectId, {
+            iconLayout: createChipsLayout(function (zoom) {
+              // Минимальный размер метки будет 8px, а максимальный 200px.
+              // Размер метки будет расти с квадратичной зависимостью от уровня зума.
+              return Math.min(Math.pow(zoom, 1.4) + 2, 100);
+            }, ""),
+          });
+        }
+      }
+    });
 
-    getLots();
-    // Переместим центр карты по координатам метки с учётом заданных отступов.
-    // map.panTo([Number(geo[0]), Number(geo[1])], { useMapMargin: true });
-  });
+  objectManager.clusters.events
+    .add("click", function (e) {
+      // Получим ссылку на геообъект, по которому кликнул пользователь.
+      var objectId = e.get("objectId"),
+        cluster = objectManager.clusters.getById(objectId),
+        geo = cluster.geometry.coordinates,
+        lotIds = [];
+
+      // Зададим контент боковой панели.
+      panel._onFilterClose();
+      panel.clearContent();
+      stateMarker.isActiveId = objectId;
+
+      cluster.properties.geoObjects.map(function (item, index) {
+        lotIds[index] = item.properties.lotId;
+      });
+      $(".map__placemark").removeClass("active");
+
+      objectManager.clusters.setClusterOptions(objectId, {
+        iconLayout: createChipsLayout(function (zoom) {
+          // Минимальный размер метки будет 8px, а максимальный 200px.
+          // Размер метки будет расти с квадратичной зависимостью от уровня зума.
+          return Math.min(Math.pow(zoom, 1.6) + 2, 100);
+        }, "active"),
+      });
+
+      state.ids = lotIds;
+      state.offset = 0;
+      state.stopLoad = false;
+
+      getLots();
+      // Переместим центр карты по координатам метки с учётом заданных отступов.
+      map.panTo([Number(geo[0]), Number(geo[1])], { useMapMargin: true });
+    })
+    .add(["mouseenter", "mouseleave"], function (e) {
+      var objectId = e.get("objectId");
+      if (stateMarker.isActiveId !== objectId) {
+        if (e.get("type") == "mouseenter") {
+          objectManager.clusters.setClusterOptions(objectId, {
+            iconLayout: createChipsLayout(function (zoom) {
+              // Минимальный размер метки будет 8px, а максимальный 200px.
+              // Размер метки будет расти с квадратичной зависимостью от уровня зума.
+              return Math.min(Math.pow(zoom, 1.6) + 2, 100);
+            }, "hover"),
+          });
+        } else {
+          objectManager.clusters.setClusterOptions(objectId, {
+            iconLayout: createChipsLayout(function (zoom) {
+              // Минимальный размер метки будет 8px, а максимальный 200px.
+              // Размер метки будет расти с квадратичной зависимостью от уровня зума.
+              return Math.min(Math.pow(zoom, 1.6) + 2, 100);
+            }, ""),
+          });
+        }
+      }
+    });
 
   map.events.add("boundschange", function (e) {
     if (
@@ -264,14 +373,11 @@ ymaps.ready(["Panel"]).then(function () {
       e.get("newZoom") < e.get("oldZoom")
     ) {
       if (e.get("newZoom") >= 7) {
-        clusterer.removeAll();
         stateMarker.offset = 0;
         stateMarker.stopLoad = true;
 
         stateMarker.geo = e.get("newBounds");
         getPlacemark(true);
-      } else {
-        clusterer.removeAll();
       }
     } else if (
       e.get("newBounds")[0][0] !== e.get("oldBounds")[0][0] ||
@@ -279,7 +385,6 @@ ymaps.ready(["Panel"]).then(function () {
       e.get("newBounds")[1][0] !== e.get("oldBounds")[1][0] ||
       e.get("newBounds")[1][1] !== e.get("oldBounds")[1][1]
     ) {
-      clusterer.removeAll();
       stateMarker.offset = 0;
       stateMarker.stopLoad = true;
 
@@ -288,18 +393,13 @@ ymaps.ready(["Panel"]).then(function () {
     }
   });
 
-  stateMarker.geo = map.getBounds();
-  stateMarker.clusterer = clusterer;
-
-  getPlacemark(true);
-
   $("#search-map-lot-form").on("submit", function (e) {
     e.preventDefault();
     var newUrl = window.location.pathname + "?" + $(this).serialize();
+    objectManager.removeAll();
     history.pushState("", "", newUrl);
     stateMarker.offset = 0;
     stateMarker.stopLoad = true;
-    clusterer.removeAll();
     panel._onFilterClose();
     panel._onClose();
     getPlacemark(true);
@@ -320,6 +420,7 @@ function getPlacemark(firstLoad) {
   $.ajax({
     url: "/map-ajax",
     type: "POST",
+    cache: true,
     data: {
       north_west_lat: stateMarker.geo[0][0],
       north_west_lon: stateMarker.geo[0][1],
@@ -333,24 +434,32 @@ function getPlacemark(firstLoad) {
       if (items[0]) {
         // Добавим геообъекты в коллекцию.
         items.map(function (item) {
-          var point = new ymaps.Placemark(
-            [item.geo_lat, item.geo_lon],
-            {
-              balloonContent: item.parent_id,
+          var eventClass = "";
+
+          if (stateMarker.isActiveId == item.id) {
+            eventClass = "active";
+          }
+
+          stateMarker.objectManager.add({
+            type: "Feature",
+            id: item.id,
+            geometry: {
+              type: "Point",
+              coordinates: [item.geo_lat, item.geo_lon],
+            },
+            properties: {
               hintContent: item.address,
               propertyId: item.property,
-              isActive: false,
+              lotId: item.parent_id,
             },
-            {
+            options: {
               iconLayout: createChipsLayout(function (zoom) {
                 // Минимальный размер метки будет 8px, а максимальный 200px.
                 // Размер метки будет расти с квадратичной зависимостью от уровня зума.
                 return Math.min(Math.pow(zoom, 1.4) + 2, 100);
-              }, ""),
-            }
-          );
-
-          stateMarker.clusterer.add(point);
+              }, eventClass),
+            },
+          });
         });
 
         stateMarker.offset = stateMarker.offset + stateMarker.limit;
