@@ -257,7 +257,7 @@ AppAsset::register($this);
     </div>
     <!-- end Main Wrapper -->
 
-
+    <? if (!Yii::$app->params['isOffFooter']) {?>
     <!-- start Footer Wrapper -->
     <footer class="footer-wrapper light scrollspy-footer">
 
@@ -508,7 +508,7 @@ AppAsset::register($this);
 
     </footer>
     <!-- start Footer Wrapper -->
-
+    <? } ?>
 
 
   </div>
