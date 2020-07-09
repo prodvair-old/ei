@@ -355,7 +355,7 @@ jQuery(function ($) {
 
   if (
     $(".map .chosen-category-select-lot").val() === "0" &&
-    ".map .chosen-type-select".val() === "0"
+    $(".map .chosen-type-select").val() === "0"
   ) {
     $(".map .chosen-category-select-lot").val("2").trigger("chosen:updated");
   }

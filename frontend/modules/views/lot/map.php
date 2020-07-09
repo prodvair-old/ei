@@ -230,27 +230,24 @@ $this->registerJsVar('urlBack', Url::to(['/all', 'LotSearch' => Yii::$app->reque
 
                     <div class="sidebar-box sidebar-box__collaps <?= ($model->type == Torg::PROPERTY_BANKRUPT)? '' : 'd-none'?> bankrupt-js <?= ($model->type == Torg::PROPERTY_BANKRUPT) ? '' : 'collaps' ?>">
                         <label class="control-label  sidebar-box__label">Дополнительные параметры</label>
-                        <div class="box-content col-md-12">
-                            <label>Номер ЕФРСБ</label>
+                        <div class="box-content col-md-12 mt-20">
                             <div>
                                 <?= $form->field($model, 'efrsb')->textInput(
                                     ['class' => 'form-control', 'placeholder' => 'Введите номер']
-                                )->label(false); ?>
+                                )->label('Номер ЕФРСБ'); ?>
                             </div>
                         </div>
-                        <div class="box-content col-md-12">
-                            <label>ФИО Должника</label>
+                        <div class="box-content col-md-12 mt-10">
                             <div>
                                 <?= $form->field($model, 'bankruptName')->textInput(
                                     ['class' => 'form-control', 'placeholder' => 'ФИО']
-                                )->label(false); ?>
+                                )->label('ФИО Должника'); ?>
                             </div>
                         </div>
-                        <div class="box-content col-md-12">
-                            <label>Начало торгов</label>
+                        <div class="box-content col-md-12 mt-10">
                             <div class="row">
                                 <div class="col-md-12">
-
+                                    <label class="control-label">Начало торгов</label>
                                 </div>
                                 <div class="col-md-6">
                                     <?= $form->field($model, 'torgStartDate')->textInput(
