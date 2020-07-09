@@ -278,7 +278,7 @@ jQuery(function ($) {
         $(".bankrupt-js").addClass("d-none");
       }
 
-      if (type.selected === "1") {
+      if (type !== null && type.selected === "1") {
         $(".bankrupt-js").removeClass("d-none");
       } else if (type.selected === "3") {
         $(".zalog-js").removeClass("d-none");
