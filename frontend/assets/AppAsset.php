@@ -18,7 +18,7 @@ class AppAsset extends AssetBundle
         'css/data_picker.css',
         'css/custom.min.css',
         'css/your-style.css?v1.3',
-        'css/map.css?v1.1',
+        'css/map.css?v1.04',
         'https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css'
     ];
     public $js = [
@@ -33,7 +33,7 @@ class AppAsset extends AssetBundle
         'https://cdn.jsdelivr.net/npm/vue/dist/vue.js',
         'js/data_picker.js',
         'https://api-maps.yandex.ru/2.1/?apikey=c779baf7-d09e-4558-9661-55d19272043f&lang=ru_RU',
-        'js/map.js?v=1.0',
+        'js/map.js?v=1.04',
         'js/scripts.min.js?v=2.12',
     ];
     public $depends = [
