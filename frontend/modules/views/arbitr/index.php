@@ -3,13 +3,18 @@
 /* @var $this yii\web\View */
 /* @var $model Manager */
 /* @var $searchModel ManagerSearch */
+/* @var $offsetStep */
 
 use common\models\db\Manager;
+use frontend\assets\ScrollAsset;
 use frontend\modules\models\ManagerSearch;
 use yii\widgets\Breadcrumbs;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
-use yii\helpers\Url;
+
+ScrollAsset::register($this);
+$this->registerJsVar('offsetStep', $offsetStep, $position = yii\web\View::POS_END);
+$this->registerJsVar('modelSearchName', 'ManagerSearch', $position = yii\web\View::POS_END);
 
 $this->title = 'Арбитражные управляющие по делам банкротов';
 $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
@@ -156,40 +161,3 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
     </div>
 
 </section>
-
-<script>
-    var offset = 0;
-    var i = 2000;
-
-    $(window).scroll(function () {
-
-        if ($(window).scrollTop() + $(window).height() >= $(document).height() - i) {
-            offset = offset + 15;
-            i = 0;
-
-            let url;
-            if (location.href.indexOf('?', location.search) === -1) {
-                url = location.href + '?ManagerSearch[offset]=' + offset
-            } else {
-                url = location.href + '&ManagerSearch[offset]=' + offset
-            }
-
-            $.ajax({
-                type: "GET",
-                url: url,
-                data: $(this).serialize(),
-                success: function (data) {
-                    $('#load_list').append(data);
-                    console.log('arbitr load success');
-                    i = 2000;
-                },
-                error: function (result) {
-                    console.log('arbitr load error');
-                    console.log(result);
-                }
-            });
-
-        }
-    });
-
-</script>

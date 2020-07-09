@@ -47,29 +47,6 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
         </div>
 
-        <div class="fullwidth-horizon- none--hide">
-
-            <div class="fullwidth-horizon--inner">
-
-                <div class="container">
-
-                    <div class="fullwidth-horizon--item clearfix">
-
-                        <ul id="horizon--nav" class="horizon--nav clearfix">
-                            <li>
-                                <a href="#info">Информация</a>
-                            </li>
-                            <li>
-                                <a href="#stat">Статистика</a>
-                            </li>
-                        </ul>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
         <div class="container pt-30">
 
             <div class="row gap-20 gap-lg-40">

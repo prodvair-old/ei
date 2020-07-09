@@ -2,16 +2,19 @@
 
 /* @var $this yii\web\View */
 /* @var $model Bankrupt */
-
 /* @var $searchModel BankruptSearch */
+/* @var $offsetStep */
 
 use common\models\db\Bankrupt;
+use frontend\assets\ScrollAsset;
 use frontend\modules\models\BankruptSearch;
 use yii\widgets\Breadcrumbs;
-use yii\widgets\LinkPager;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
-use frontend\components\bankrupts\BankruptBlock;
+
+ScrollAsset::register($this);
+$this->registerJsVar('offsetStep', $offsetStep, $position = yii\web\View::POS_END);
+$this->registerJsVar('modelSearchName', 'BankruptSearch', $position = yii\web\View::POS_END);
 
 $this->title = 'База банкротов физических лиц и организаций';
 $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
@@ -135,40 +138,3 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
     </div>
 
 </section>
-
-<script>
-    var offset = 0;
-    var i = 1000;
-
-    $(window).scroll(function () {
-
-        if ($(window).scrollTop() + $(window).height() >= $(document).height() - i) {
-            offset = offset + 15;
-            i = 0;
-
-            let url;
-            if (location.href.indexOf('?', location.search) === -1) {
-                url = location.href + '?BankruptSearch[offset]=' + offset
-            } else {
-                url = location.href + '&BankruptSearch[offset]=' + offset
-            }
-
-            $.ajax({
-                type: "GET",
-                url: url,
-                data: $(this).serialize(),
-                success: function (data) {
-                    $('#load_list').append(data);
-                    console.log('bankrupt load success');
-                    i = 1000;
-                },
-                error: function (result) {
-                    console.log('bankrupt load error');
-                    console.log(result);
-                }
-            });
-
-        }
-    });
-
-</script>
