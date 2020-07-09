@@ -62,9 +62,7 @@ class LotSearch extends Lot
 
     public $publishedDate;
 
-    public $torgStartDate;
-
-    public $torgEndDate;
+    public $torgDateRange;
 
     const NAME_DESC = 'nameDESC',
         NAME_ASC = 'nameASC',
@@ -83,8 +81,8 @@ class LotSearch extends Lot
                 'integer'],
             [['title', 'description', 'minPrice', 'maxPrice', 'mainCategory', 'type',
                 'subCategory', 'etp', 'owner', 'tradeType', 'search', 'sortBy', 'haveImage', 'region',
-                'offset', 'efrsb', 'bankruptName', 'publishedDate', 'torgStartDate', 'torgEndDate', 'andArchived',
-                'startApplication', 'competedApplication'], 'safe'],
+                'offset', 'efrsb', 'bankruptName', 'publishedDate', 'andArchived',
+                'startApplication', 'competedApplication', 'torgDateRange'], 'safe'],
             [['start_price', 'step', 'deposit'], 'number'],
         ];
     }
@@ -106,8 +104,9 @@ class LotSearch extends Lot
      * @return ActiveDataProvider
      * @throws \yii\base\InvalidConfigException
      */
-    public function search($params, $limit = 15)
+    public function search($params)
     {
+        $limit = \Yii::$app->params['defaultPageLimit'];
         $query = Lot::find()
             ->select(['lot.*', 'torg.published_at']);
 
@@ -158,7 +157,7 @@ class LotSearch extends Lot
         if ($this->owner) {
             $query->andFilterWhere(['IN', Organization::tableName() . '.id', $this->owner]);
         }
-        
+
         if ($this->bankruptName) {
             $fullName = explode(' ', $this->bankruptName);
             $query->joinWith(['torg.bankruptProfile']);
@@ -201,25 +200,18 @@ class LotSearch extends Lot
             $this->publishedDate = \Yii::$app->formatter->asTimestamp($this->publishedDate);
         }
 
-        if ($this->torgStartDate) {
-            $this->torgStartDate = \Yii::$app->formatter->asTimestamp($this->torgStartDate);
-        }
-        if ($this->torgEndDate) {
-            $this->torgEndDate = \Yii::$app->formatter->asTimestamp($this->torgEndDate);
+        if ($this->torgDateRange) {
+            $datetime = explode(' - ', $this->torgDateRange);
+            $datetime[ 0 ] = \Yii::$app->formatter->asTimestamp($datetime[ 0 ]);
+            $datetime[ 1 ] = \Yii::$app->formatter->asTimestamp($datetime[ 1 ]);
+            $query->andFilterWhere(['BETWEEN', Torg::tableName() . '.started_at', $datetime[ 0 ], $datetime[ 1 ]]);
         }
 
         $query->andFilterWhere(['>=', Torg::tableName() . '.published_at', $this->publishedDate]);
         $query->andFilterWhere(['IN', Torg::tableName() . '.offer', $this->tradeType]);
-        $query->andFilterWhere(['BETWEEN', Torg::tableName() . '.started_at', $this->torgStartDate, $this->torgEndDate]);
 
         if ($this->publishedDate) { //TODO
             $this->publishedDate = \Yii::$app->formatter->asDate($this->publishedDate, 'long');
-        }
-        if ($this->torgStartDate) { //TODO
-            $this->torgStartDate = \Yii::$app->formatter->asDate($this->torgStartDate, 'long');
-        }
-        if ($this->torgEndDate) { //TODO
-            $this->torgEndDate = \Yii::$app->formatter->asDate($this->torgEndDate, 'long');
         }
 
         if ($this->search) {

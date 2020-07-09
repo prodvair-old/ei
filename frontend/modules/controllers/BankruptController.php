@@ -35,6 +35,7 @@ class BankruptController extends Controller
             'searchModel' => $searchModel,
             'model'       => $model,
             'count'       => $count,
+            'offsetStep'  => Yii::$app->params[ 'defaultPageLimit' ]
         ]);
     }
 
@@ -54,7 +55,7 @@ class BankruptController extends Controller
             ->all();
 
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model'        => $this->findModel($id),
             'bankruptLots' => $bankruptLots,
         ]);
     }

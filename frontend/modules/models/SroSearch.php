@@ -47,6 +47,7 @@ class SroSearch extends Sro
      */
     public function search($params)
     {
+        $limit = \Yii::$app->params['defaultPageLimit'];
         $query = Sro::find();
 
         // add conditions that should always apply here
@@ -77,7 +78,7 @@ class SroSearch extends Sro
         $this->totalCount = $queryForCount->count();
 
         $query->offset($this->offset)
-            ->limit(15);
+            ->limit($limit);
 
         return $dataProvider;
     }

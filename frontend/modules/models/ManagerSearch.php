@@ -56,6 +56,7 @@ class ManagerSearch extends Manager
      */
     public function search($params)
     {
+        $limit = \Yii::$app->params['defaultPageLimit'];
         $query = Manager::find();
 
         // add conditions that should always apply here
@@ -122,7 +123,7 @@ class ManagerSearch extends Manager
         $this->totalCount = $queryForCount->count();
 
         $query->offset($this->offset)
-            ->limit(15);
+            ->limit($limit);
 
         return $dataProvider;
     }
