@@ -390,7 +390,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                             </div>
                         </div>
                         <div class="sort-box">
-                            <a href="<?=Url::to(['lot/map', 'MapSearch' => $mapGET])?>" class="btn btn-primary btn-block mr-30">На карте</a>
+                            <a href="<?=Url::to(['lot/map', 'MapSearch' => $mapGET])?>" class="btn btn-primary btn-block mr-30"><i class="oi oi-map-marker"></i> Поиск на карте</a>
                         </div>
                     </div>
 

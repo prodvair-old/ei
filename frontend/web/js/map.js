@@ -55,11 +55,11 @@ ymaps.modules.define("Panel", ["util.augment", "collection.Item"], function (
       // Создаем HTML-элемент с текстом.
       // По-умолчанию HTML-элемент скрыт.
       this._$control = $(
-        `<div class="map__panel__filter-btn btn btn-primary btn-block mb-10"><i class="fa fa-filter"></i> Фильтр</div>
+        `<div class="map__panel__filter-btn btn btn-primary btn-block mb-10"><i class="fa fa-filter"></i> Фильтры</div>
         <div class="map__panel">
           <div class="map__panel__content"></div>
           <div class="map__panel__close"></div>
-          <div class="spinner-wrapper map__lot__preload"><div class="spinner"></div>Загрузка лотов...</div>
+          <div class="spinner-wrapper map__lot__preload"><div class="spinner"></div></div>
         </div>
         <div class="map__preload"><div class="spinner-wrapper"><div class="spinner"></div></div></div>`
       ).appendTo(parentDomContainer);
