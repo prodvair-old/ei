@@ -13,32 +13,28 @@ use yii\widgets\Menu;
 use common\models\Query\Settings;
 use common\models\Query\LotsCategory;
 use common\models\db\Owner;
+use common\models\db\Category;
+// use frontend\modules\models\Category;
 
 use frontend\components\LoginWidget;
 use frontend\components\SignupWidget;
 use frontend\components\ResetPasswordWidget;
 
 
-// $setting = Settings::find()->orderBy('id ASC')->all();
-// $lotsCategory = Category::getMainCategoriesList();
-// $owners = Owner::find()->orderBy('slug ASC')->all();
+$setting = Settings::find()->orderBy('id ASC')->all();
+$lotsCategory = Category::find()->where(['depth' => 1])->orderBy('id ASC')->all();
+$owners = Owner::find()->orderBy('id ASC')->all();
 
 $bankruptLotsCategoryMenu = $arrestLotsCategoryMenu = null;
 
 foreach ($owners as $owner) {
-  $ownersMenu[] = ['label' => $owner->slug, 'url' => ['/'. $owner->organization->title]];
+  $ownersMenu[] = ['label' => $owner->organization->title, 'url' => ['/'. $owner->slug]];
 }
 
 foreach ($lotsCategory as $value) {
-  if ($value->bankrupt_categorys != null) {
-    $bankruptLotsCategoryMenu[] = ['label' => $value->name, 'url' => ['/bankrupt/' . $value->translit_name]];
-  }
-  if ($value->arrest_categorys != null) {
-    $arrestLotsCategoryMenu[] = ['label' => $value->name, 'url' => ['/arrest/' . $value->translit_name]];
-  }
-  if ($value->arrest_categorys != null) {
-    $municipaltLotsCategoryMenu[] = ['label' => $value->name, 'url' => ['/municipal/' . $value->translit_name]];
-  }
+    $bankruptLotsCategoryMenu[] = ['label' => $value->name, 'url' => ['/bankrupt/' . $value->slug]];
+    $arrestLotsCategoryMenu[] = ['label' => $value->name, 'url' => ['/arrest/' . $value->slug]];
+    $municipaltLotsCategoryMenu[] = ['label' => $value->name, 'url' => ['/municipal/' . $value->slug]];
 }
 
 AppAsset::register($this);

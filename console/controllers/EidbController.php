@@ -17,11 +17,28 @@ use console\models\eidb\LotCategoryFill;
 use console\models\eidb\LotPriceFill;
 use console\models\eidb\LotImageFill;
 
+use yii\helpers\Url;
+use yii\helpers\FileHelper;
+use common\models\db\Lot;
+use console\traits\Keeper;
+use sergmoro1\uploader\models\OneFile;
+use sergmoro1\uploader\behaviors\ImageTransformationBehavior;
+
 /**
  * Eidb controller
  */
 class EidbController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            ['class' => ImageTransformationBehavior::className()],
+        ];
+    }
+
     // Полный парсинг
     // php yii eidb
     public function actionIndex($step = 100)
@@ -694,7 +711,7 @@ class EidbController extends Controller
         $data = null;
 
         while ($data !== false) {
-            $data = LotImageFill::getData($limit, $offset);
+            $data = $this->insertImagePoole($limit, $offset);
 
             if ($data !== false) {
                 echo "\n\n------------------------";
@@ -713,6 +730,94 @@ class EidbController extends Controller
 
         echo "\n\nЗаписей до ".$dataCount[0]['count']." после ".$count[0]['count'];
         echo "\n\nЗавершено.\n";
+    }
+
+    const TABLE = '{{%onefile}}';
+    const OLD_TABLE = 'lots';
+    const LIMIT = 1000;
+    const SITE  = 'https://ei.ru';
+
+    private $contextOptions = [
+        'ssl' => [
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+        ],
+    ];  
+
+    public $sizes;
+
+    public function insertImagePoole($limit, $offset)
+    {
+        // получение менеджеров из существующего справочника
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
+        $select = $db->createCommand(
+            'SELECT id, images, "createdAt", "updatedAt" FROM "eiLot"."'.self::OLD_TABLE.'" WHERE images NOTNULL ORDER BY "'.self::OLD_TABLE.'".id ASC LIMIT '.$limit.' OFfSET '.$offset
+        );
+        $rows = $select->queryAll();
+
+        if (!isset($rows[0])) {
+            return false;
+        }
+        
+        $files = [];
+
+        foreach($rows as $row)
+        {
+            $lot_id = $row['id'];
+
+            $created_at = strtotime($row['createdAt']);
+            $updated_at = strtotime($row['updatedAt']);
+
+            $images = json_decode($row['images']);
+            
+            foreach($images as $image) {
+                $full_file_name = $image->max;
+                $full_file_name = (substr($image->max, 0, 4) == 'http')
+                    ? $image->max
+                    : self::SITE . '/' . $image->max;
+                $a = explode('/', $image->max);
+                $tmp_name = $a[count($a) - 1];
+                $a = explode('.', $tmp_name);
+                $ext = $a[count($a) - 1];
+                $new_name = 'i' . uniqid() . '.' . $ext;
+
+                $headers = get_headers($full_file_name, 0, stream_context_create($this->contextOptions));
+                if (strpos($headers[0], '200')) {
+                    $image = file_get_contents($full_file_name, false, stream_context_create($this->contextOptions));
+
+                    // OneFile
+                    $of = [
+                        'model'      => Lot::className(),
+                        'parent_id'  => $lot_id,
+                        'original'   => $tmp_name,
+                        'name'       => $new_name,
+                        'subdir'     => $lot_id,
+                        'type'       => ('image/' . $ext),
+                        'size'       => strlen($image),
+                        'created_at' => $created_at,
+                        'updated_at' => $updated_at,
+                    ];
+                    $onefile = new OneFile($of);
+                
+                    Keeper::validateAndKeep($onefile, $files, $of);
+
+                    $dir = Yii::getAlias('@absolute') . Yii::getAlias('@uploader') . '/lot/' . $lot_id;
+                    if (!is_dir($dir))
+                        mkdir($dir);
+                    file_put_contents($dir . '/' . $tmp_name, $image);
+                    
+                    $lot = Lot::findOne($lot_id);
+                    $this->sizes = $lot->sizes;
+                    $this->resizeSave($lot->setFilePath($lot_id), $tmp_name, $new_name);
+                }
+            }
+        }
+        
+        $result = [];
+
+        $result['onefile'] = Yii::$app->db->createCommand()->batchInsert(self::TABLE, ['model', 'parent_id', 'original', 'name', 'subdir', 'type', 'size', 'created_at', 'updated_at'], $files)->execute();
+            
+        return $result;
     }
 
     // История снижения цены лотов - удаление

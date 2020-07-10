@@ -126,7 +126,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                 <figure style="background-color: #234559;" class="category__item">
                     <a href="/bankrupt/lot-list">
                         <div class="image">
-                            <img src="http://www.femak-kazan.com/wp-content/uploads/2018/06/bigstock-Chemical-Plant-Structure-47755258-400x400.jpg"
+                            <img src="img/bankrupt.jpg"
                                  alt="image"/>
                         </div>
                         <figcaption class="content">
