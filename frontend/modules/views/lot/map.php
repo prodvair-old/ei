@@ -8,6 +8,7 @@ use common\models\db\Owner;
 use common\models\db\Etp;
 use sergmoro1\lookup\models\Lookup;
 use yii\widgets\Breadcrumbs;
+use kartik\daterange\DateRangePicker;
 use frontend\modules\models\Category;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
@@ -249,15 +250,18 @@ $this->registerJsVar('urlBack', Url::to(['/all', 'LotSearch' => Yii::$app->reque
                                 <div class="col-md-12">
                                     <label class="control-label">Начало торгов</label>
                                 </div>
-                                <div class="col-md-6">
-                                    <?= $form->field($model, 'torgStartDate')->textInput(
-                                        ['class' => 'form-control', 'placeholder' => 'От']
-                                    )->label(false); ?>
-                                </div>
-                                <div class="col-md-6">
-                                    <?= $form->field($model, 'torgEndDate')->textInput(
-                                        ['class' => 'form-control', 'placeholder' => 'До']
-                                    )->label(false); ?>
+                                <div class="col-md-12">
+                                    <?= $form->field($model, 'torgDateRange')->widget(DateRangePicker::classname(), [
+                                        'name'          => 'torgDateRange',
+                                        'value'         => $model->torgDateRange,
+                                        'readonly'      => true,
+                                        'convertFormat' => true,
+                                        'pluginOptions' => [
+                                            'timePicker'          => false,
+                                            'timePicker24Hour'    => false,
+                                            'locale'              => ['format' => 'Y-m-d']
+                                        ]
+                                    ])->label(false); ?>
                                 </div>
                             </div>
                         </div>

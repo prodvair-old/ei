@@ -68,6 +68,8 @@ class MapSearch extends Place
 
     public $torgEndDate;
 
+    public $torgDateRange;
+
     public $model_code;
 
     public $north_west_lat;
@@ -77,6 +79,7 @@ class MapSearch extends Place
     public $south_east_lat;
 
     public $south_east_lon;
+
 
     const LOT_INT_CODE = 6;
 
@@ -91,7 +94,7 @@ class MapSearch extends Place
             [['title', 'description', 'minPrice', 'maxPrice', 'mainCategory', 'type',
                 'subCategory', 'etp', 'owner', 'tradeType', 'search', 'sortBy', 'haveImage', 'region',
                 'offset', 'limit', 'efrsb', 'bankruptName', 'publishedDate', 'torgStartDate', 'torgEndDate', 
-                'andArchived', 'startApplication', 'competedApplication'], 'safe'],
+                'andArchived', 'startApplication', 'competedApplication', 'torgDateRange'], 'safe'],
         ];
     }
 
@@ -182,7 +185,7 @@ class MapSearch extends Place
             $query->andFilterWhere(['=', Lot::tableName() . '.reason', Lot::REASON_APPLICATION]);
         }
 
-        if ($this->etp) {
+        if ($this->etp && $this->type == Torg::PROPERTY_BANKRUPT) {
             $query->joinWith(['lot.torg.etp']);
             $query->andFilterWhere(['IN', Organization::tableName() . '.id', $this->etp]);
         }
@@ -193,11 +196,11 @@ class MapSearch extends Place
             $query->joinWith(['lot.torg.owner']);
         }
 
-        if ($this->owner) {
+        if ($this->owner && $this->type == Torg::PROPERTY_ZALOG) {
             $query->andFilterWhere(['IN', Organization::tableName() . '.id', $this->owner]);
         }
-        
-        if ($this->bankruptName) {
+
+        if ($this->bankruptName && $this->type == Torg::PROPERTY_BANKRUPT) {
             $fullName = explode(' ', $this->bankruptName);
             $query->joinWith(['lot.torg.bankruptProfile']);
             $query->andFilterWhere(['=', Profile::tableName() . '.last_name', $fullName[ 0 ]]);
@@ -208,7 +211,7 @@ class MapSearch extends Place
         if ($this->region) {
             $query->andFilterWhere(['IN', Place::tableName() . '.region_id', $this->region]);
         }
-        if ($this->efrsb) {
+        if ($this->efrsb && $this->type == Torg::PROPERTY_BANKRUPT) {
             $query->andFilterWhere(['ilike', Torg::tableName() . '.msg_id', $this->efrsb, false]);
         }
 
@@ -238,25 +241,18 @@ class MapSearch extends Place
             $this->publishedDate = \Yii::$app->formatter->asTimestamp($this->publishedDate);
         }
 
-        if ($this->torgStartDate) {
-            $this->torgStartDate = \Yii::$app->formatter->asTimestamp($this->torgStartDate);
-        }
-        if ($this->torgEndDate) {
-            $this->torgEndDate = \Yii::$app->formatter->asTimestamp($this->torgEndDate);
+        if ($this->torgDateRange && $this->type == Torg::PROPERTY_BANKRUPT) {
+            $datetime = explode(' - ', $this->torgDateRange);
+            $datetime[ 0 ] = \Yii::$app->formatter->asTimestamp($datetime[ 0 ]);
+            $datetime[ 1 ] = \Yii::$app->formatter->asTimestamp($datetime[ 1 ]);
+            $query->andFilterWhere(['BETWEEN', Torg::tableName() . '.started_at', $datetime[ 0 ], $datetime[ 1 ]]);
         }
 
         $query->andFilterWhere(['>=', Torg::tableName() . '.published_at', $this->publishedDate]);
         $query->andFilterWhere(['IN', Torg::tableName() . '.offer', $this->tradeType]);
-        $query->andFilterWhere(['BETWEEN', Torg::tableName() . '.started_at', $this->torgStartDate, $this->torgEndDate]);
 
         if ($this->publishedDate) { //TODO
             $this->publishedDate = \Yii::$app->formatter->asDate($this->publishedDate, 'long');
-        }
-        if ($this->torgStartDate) { //TODO
-            $this->torgStartDate = \Yii::$app->formatter->asDate($this->torgStartDate, 'long');
-        }
-        if ($this->torgEndDate) { //TODO
-            $this->torgEndDate = \Yii::$app->formatter->asDate($this->torgEndDate, 'long');
         }
 
         if ($this->search) {

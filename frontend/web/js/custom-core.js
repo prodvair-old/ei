@@ -331,12 +331,12 @@ jQuery(function ($) {
     .chosen({ disable_search_threshold: 10, allow_single_deselect: true })
     .change(function (e, id) {
       if (id.selected == 0) {
-        $("#searchlot-subcategory-wrapper").addClass('hidden');
+        $("#searchlot-subcategory-wrapper").addClass("hidden");
         $("#searchlot-subcategory")
           .prop("disabled", true)
           .trigger("chosen:updated");
       } else {
-        $("#searchlot-subcategory-wrapper").removeClass('hidden');
+        $("#searchlot-subcategory-wrapper").removeClass("hidden");
         $("#searchlot-subcategory").load(
           "/lot/load-sub-categories",
           { id: id.selected },
