@@ -97,7 +97,7 @@ class LotStatusFill extends Module
                 $lot->reason = $a[1];
                 $lot->url = (isset($row['pheLotUrl']) ? $row['pheLotUrl'] : null);
 
-                if ($row->pheLotName) {
+                if ($row['pheLotName']) {
                     $lot->title      = $row['pheLotName'];
                 }
 
