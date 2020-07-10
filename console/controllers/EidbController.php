@@ -54,6 +54,10 @@ class EidbController extends Controller
         $this->actionLot($step);
         $this->actionLotCategory($step);
         $this->actionLotPrice($step);
+        $this->actionLotImage($step);
+        $this->actionLotDocumentDel();
+        $this->actionLotDocument($step);
+        $this->actionLotSearchIndex();
         echo "\nЗавершение работы! ------------\n";
     }
     // Полное удаление
@@ -61,6 +65,9 @@ class EidbController extends Controller
     public function actionDel($step = 100)
     {
         echo "\nЗапуск парсера! ---------------\n";
+        $this->actionLotDocumentDel();
+        $this->actionLotSearchIndexDel();
+        $this->actionLotImageDel($step);
         $this->actionLotPriceDel($step);
         $this->actionLotCategoryDel($step);
         $this->actionLotDel($step);
@@ -831,6 +838,163 @@ class EidbController extends Controller
         echo "\n onefile        := ".$data['onefile'];
 
         echo "\n\nЗавершено.\n";
+    }
+
+    // Индексация поиска лотов
+    // php yii eidb/lot-search-index
+    public function actionLotSearchIndex($addColumn = false)
+    {
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
+        $db->createCommand(
+            '
+        DO
+            $$BEGIN
+        CREATE TEXT SEARCH DICTIONARY ispell_ru (
+            template = ispell,
+            dictfile = ru_ru,
+            afffile = ru_ru,
+            stopwords = russian
+        );
+        EXCEPTION
+           WHEN unique_violation THEN
+              NULL;
+        END;$$;
+           '
+        )->execute();
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
+        $db->createCommand(
+            '
+        DO
+        $$BEGIN
+            CREATE TEXT SEARCH CONFIGURATION ru ( COPY = russian );
+        EXCEPTION
+           WHEN unique_violation THEN
+              NULL;
+        END;$$;
+        '
+        )->execute();
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
+        $db->createCommand(
+            'ALTER TEXT SEARCH CONFIGURATION ru
+           ALTER MAPPING
+           FOR word, hword, hword_part
+           WITH ispell_ru, russian_stem;
+           '
+        )->execute();
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
+        $db->createCommand('SET default_text_search_config = \'ru\';')->execute();
+
+        /** ADD tsvector column **/
+        if ($addColumn) {
+            $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
+            $db->createCommand(
+                '
+            ALTER TABLE {{%lot}} ADD COLUMN fts tsvector;
+            '
+            )->execute();
+        }
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
+        $db->createCommand(
+            '
+            UPDATE {{%lot}} SET fts=
+                setweight( coalesce( to_tsvector(\'ru\', [[title]]),\'\'),\'A\') || \' \' ||
+                setweight( coalesce( to_tsvector(\'ru\', [[description]]),\'\'),\'B\') || \' \';
+        '
+        )->execute();
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
+        $db->createCommand('create index fts_index on {{%lot}} using gin (fts);')->execute();
+
+        /**
+         * ---   ADD AUTO FILL fts TRIGGER ON INSERT AND UPDATE NEW RECORD
+         **/
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
+        $db->createCommand(
+            '
+        CREATE OR REPLACE FUNCTION fts_vector_update() RETURNS TRIGGER AS
+        $$
+        BEGIN
+            NEW.fts = setweight(coalesce(to_tsvector(\'ru\', NEW.title), \'\'), \'A\') || \' \' ||
+                      setweight(coalesce(to_tsvector(\'ru\', NEW.description), \'\'), \'B\') || \' \';
+            RETURN NEW;
+        END;
+        $$ LANGUAGE \'plpgsql\';
+        '
+        )->execute();
+
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
+        $db->createCommand(
+            '
+        DO
+        $$BEGIN
+            CREATE TRIGGER lot_fts_insert
+                BEFORE INSERT
+                ON eidb.lot
+                FOR EACH ROW
+            EXECUTE PROCEDURE fts_vector_update();
+        EXCEPTION
+           WHEN unique_violation THEN
+              NULL;
+        END;$$;
+        '
+        )->execute();
+
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
+        $db->createCommand(
+            '
+            DO
+        $$BEGIN
+            CREATE TRIGGER lot_fts_update
+                BEFORE UPDATE
+                ON eidb.lot
+                FOR EACH ROW
+            EXECUTE PROCEDURE fts_vector_update();
+        EXCEPTION
+           WHEN unique_violation THEN
+              NULL;
+        END;$$;
+        '
+        )->execute();
+    }
+    public function actionLotSearchIndxDel() {
+        $db = \Yii::$app->db;
+        $db->createCommand('DROP FUNCTION IF EXISTS fts_vector_update() CASCADE')->execute();
+    }
+
+    /**
+     * php yii eidb/lot-document
+     * 
+     * Документов возможно перенести одним запросом, поэтому
+     * миграция может выполняться только на сервере, когда и источник и цель в одной БД.
+     */
+    public function actionLotDocument() {
+        $db = \Yii::$app->db;
+        
+        $command = $db->createCommand(
+            'INSERT INTO {{%document}} (model, parent_id, name, ext, url, hash, created_at, updated_at) '.
+            'SELECT 
+                 CASE
+                     WHEN "tableTypeId" = 1 THEN 6 
+                     WHEN "tableTypeId" = 2 THEN 7
+                     ELSE 4
+                 END as model, 
+                 CAST("tableId" AS INTEGER) as parent_id,
+                 name, format as ext, url, hash,
+                 CAST(EXTRACT(EPOCH FROM "createdAt") AS INTEGER) as cteated_at,
+                 CAST(EXTRACT(EPOCH FROM "updatedAt") AS INTEGER) as updated_at
+             FROM "eiLot".documents
+             WHERE "tableId" NOTNULL'
+        );
+        $result = $command->execute();
+    }
+
+    public function actionLotDocumentDel() {
+        $db = \Yii::$app->db;
+        if (Yii::$app->db->driverName === 'mysql') {
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 0')-> execute();
+            $db->createCommand('TRUNCATE TABLE {{%document}}')->execute();
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')-> execute();
+        } else
+            $db->createCommand('TRUNCATE TABLE {{%document}} CASCADE')->execute();
     }
 }
 
