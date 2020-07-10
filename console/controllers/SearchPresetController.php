@@ -59,7 +59,9 @@ class SearchPresetController extends Controller
                     if (!empty($items = Category::find()->where(['slug' => $data['path'][1], 'depth' => 1])->one())) {
                         $searchModel->mainCategory[] = $items->id;
                     }
-                    $dataProvider = $searchModel->search($data['query'], 1000);
+                    
+                    \Yii::$app->params['defaultPageLimit'] = 1000;
+                    $dataProvider = $searchModel->search($data['query']);
 
                     $lots = $dataProvider->getModels();
                     echo "Выполнен поиск новых лотов\n";

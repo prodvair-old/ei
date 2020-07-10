@@ -53,5 +53,5 @@ phpunit.phar
 /node_modules
 # /newThames
 package-lock.json
-#composer.lock
+composer.lock
 gulpfile.js
