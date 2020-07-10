@@ -39,7 +39,7 @@ ymaps.modules.define("Panel", ["util.augment", "collection.Item"], function (
       map.margin.addArea({
         top: 0,
         left: 0,
-        width: "250px",
+        width: "150px",
         height: "100%",
       });
     },
@@ -70,6 +70,7 @@ ymaps.modules.define("Panel", ["util.augment", "collection.Item"], function (
       $(".map__panel__filter-btn").on("click", this._onFilter);
       $(".map__panel__content").on("scroll", this._loadLots);
       $(".map__filter__close").on("click", this._onFilterClose);
+      checkFilter();
     },
     clearContent: function () {
       this._$content.html("");
@@ -103,7 +104,7 @@ ymaps.modules.define("Panel", ["util.augment", "collection.Item"], function (
             stateMarker.isActiveId,
             {
               iconLayout: createChipsLayout(function (zoom) {
-                return Math.min(Math.pow(zoom, 1.4) + 2, 100);
+                return Math.min(Math.pow(zoom, 1.4) + 15, 70);
               }, ""),
             }
           );
@@ -112,7 +113,7 @@ ymaps.modules.define("Panel", ["util.augment", "collection.Item"], function (
             iconLayout: createChipsLayout(function (zoom) {
               // Минимальный размер метки будет 8px, а максимальный 200px.
               // Размер метки будет расти с квадратичной зависимостью от уровня зума.
-              return Math.min(Math.pow(zoom, 1.6) + 2, 100);
+              return Math.min(Math.pow(zoom, 1.6) + 20, 70);
             }, ""),
           });
         }
@@ -200,11 +201,17 @@ var createChipsLayout = function (calculateSize, eventClass) {
 
 ymaps.ready(["Panel"]).then(function () {
   var geolocation = ymaps.geolocation;
-  var map = new ymaps.Map("map", {
-      center: [55.755249, 37.617437],
-      zoom: 12,
-      controls: ["smallMapDefaultSet"],
-    }),
+  var map = new ymaps.Map(
+      "map",
+      {
+        center: [55.755249, 37.617437],
+        zoom: 12,
+        controls: ["smallMapDefaultSet"],
+      },
+      {
+        minZoom: 7,
+      }
+    ),
     objectManager = new ymaps.ObjectManager({
       // Чтобы метки начали кластеризоваться, выставляем опцию.
       clusterize: true,
@@ -213,13 +220,8 @@ ymaps.ready(["Panel"]).then(function () {
       clusterIconLayout: createChipsLayout(function (zoom) {
         // Минимальный размер метки будет 8px, а максимальный 200px.
         // Размер метки будет расти с квадратичной зависимостью от уровня зума.
-        return Math.min(Math.pow(zoom, 1.6) + 2, 100);
+        return Math.min(Math.pow(zoom, 1.6) + 20, 70);
       }, ""),
-      // IconLayout: createChipsLayout(function (zoom) {
-      //   // Минимальный размер метки будет 8px, а максимальный 200px.
-      //   // Размер метки будет расти с квадратичной зависимостью от уровня зума.
-      //   return Math.min(Math.pow(zoom, 1.4) + 2, 100);
-      // }, ""),
     }),
     collection = new ymaps.GeoObjectCollection(null, {
       // Запретим появление балуна.
@@ -274,7 +276,7 @@ ymaps.ready(["Panel"]).then(function () {
         iconLayout: createChipsLayout(function (zoom) {
           // Минимальный размер метки будет 8px, а максимальный 200px.
           // Размер метки будет расти с квадратичной зависимостью от уровня зума.
-          return Math.min(Math.pow(zoom, 1.4) + 2, 100);
+          return Math.min(Math.pow(zoom, 1.4) + 15, 70);
         }, "active"),
       });
 
@@ -295,7 +297,7 @@ ymaps.ready(["Panel"]).then(function () {
             iconLayout: createChipsLayout(function (zoom) {
               // Минимальный размер метки будет 8px, а максимальный 200px.
               // Размер метки будет расти с квадратичной зависимостью от уровня зума.
-              return Math.min(Math.pow(zoom, 1.4) + 2, 100);
+              return Math.min(Math.pow(zoom, 1.4) + 15, 70);
             }, "hover"),
           });
         } else {
@@ -303,7 +305,7 @@ ymaps.ready(["Panel"]).then(function () {
             iconLayout: createChipsLayout(function (zoom) {
               // Минимальный размер метки будет 8px, а максимальный 200px.
               // Размер метки будет расти с квадратичной зависимостью от уровня зума.
-              return Math.min(Math.pow(zoom, 1.4) + 2, 100);
+              return Math.min(Math.pow(zoom, 1.4) + 15, 70);
             }, ""),
           });
         }
@@ -332,7 +334,7 @@ ymaps.ready(["Panel"]).then(function () {
         iconLayout: createChipsLayout(function (zoom) {
           // Минимальный размер метки будет 8px, а максимальный 200px.
           // Размер метки будет расти с квадратичной зависимостью от уровня зума.
-          return Math.min(Math.pow(zoom, 1.6) + 2, 100);
+          return Math.min(Math.pow(zoom, 1.6) + 20, 70);
         }, "active"),
       });
 
@@ -352,7 +354,7 @@ ymaps.ready(["Panel"]).then(function () {
             iconLayout: createChipsLayout(function (zoom) {
               // Минимальный размер метки будет 8px, а максимальный 200px.
               // Размер метки будет расти с квадратичной зависимостью от уровня зума.
-              return Math.min(Math.pow(zoom, 1.6) + 2, 100);
+              return Math.min(Math.pow(zoom, 1.6) + 20, 70);
             }, "hover"),
           });
         } else {
@@ -360,7 +362,7 @@ ymaps.ready(["Panel"]).then(function () {
             iconLayout: createChipsLayout(function (zoom) {
               // Минимальный размер метки будет 8px, а максимальный 200px.
               // Размер метки будет расти с квадратичной зависимостью от уровня зума.
-              return Math.min(Math.pow(zoom, 1.6) + 2, 100);
+              return Math.min(Math.pow(zoom, 1.6) + 20, 70);
             }, ""),
           });
         }
@@ -378,6 +380,8 @@ ymaps.ready(["Panel"]).then(function () {
 
         stateMarker.geo = e.get("newBounds");
         getPlacemark(true);
+      } else {
+        objectManager.removeAll();
       }
     } else if (
       e.get("newBounds")[0][0] !== e.get("oldBounds")[0][0] ||
@@ -396,6 +400,7 @@ ymaps.ready(["Panel"]).then(function () {
   $("#search-map-lot-form").on("submit", function (e) {
     e.preventDefault();
     var newUrl = window.location.pathname + "?" + $(this).serialize();
+    checkFilter();
     objectManager.removeAll();
     history.pushState("", "", newUrl);
     stateMarker.offset = 0;
@@ -410,6 +415,22 @@ ymaps.ready(["Panel"]).then(function () {
     $(".map__preload").hide();
   });
 });
+
+function checkFilter() {
+  var btn = $(".map__panel__filter-btn");
+  btn.removeClass("active");
+  $("#search-map-lot-form")
+    .serializeArray()
+    .map(function (item, index) {
+      if (item.name !== "_csrf-frontend") {
+        if (item.value !== "" && item.value !== "0") {
+          if (!btn.hasClass("active")) {
+            btn.addClass("active");
+          }
+        }
+      }
+    });
+}
 
 function getPlacemark(firstLoad) {
   if (!firstLoad) {
@@ -456,7 +477,7 @@ function getPlacemark(firstLoad) {
               iconLayout: createChipsLayout(function (zoom) {
                 // Минимальный размер метки будет 8px, а максимальный 200px.
                 // Размер метки будет расти с квадратичной зависимостью от уровня зума.
-                return Math.min(Math.pow(zoom, 1.4) + 2, 100);
+                return Math.min(Math.pow(zoom, 1.4) + 15, 70);
               }, eventClass),
             },
           });
@@ -469,6 +490,10 @@ function getPlacemark(firstLoad) {
         }
       } else {
         $(".map__preload").hide();
+        stateMarker.stopLoad = true;
+        if (firstLoad) {
+          toastr.warning("Лотов в этой области не найдено");
+        }
       }
     },
   }).fail(function (qwe) {

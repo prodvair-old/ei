@@ -43,7 +43,6 @@ foreach ($lots as $lot) {
     <div class="map__panel__content__block__info-type <?= $lotTypeClass ?>"><?= $lotType ?></div>
         <h3 class="<?= (!empty($lot->archive)) ? ($lot->archive) ? 'text-muted' : '' : '' ?>"><?= $lot->title ?> <?= (!empty($lot->archive)) ? ($lot->archive) ? '<span class="text-primary">(Архив)</span>' : '' : '' ?></h3>
         <div class="map__panel__content__block__info__text">
-            <div class="map__panel__content__block__info__text-trade">Тип тогов:  <?= Lookup::item('TorgOffer', $lot->torg->offer) ?></div>
             <div class="map__panel__content__block__info__text-price text-secondary"><?= Yii::$app->formatter->asCurrency($lot->start_price) ?></div>
             <div class="map__panel__content__block__info__text-date text-muted"><?= Yii::$app->formatter->asDate($lot->torg->published_at, 'long') ?></div>
         </div>

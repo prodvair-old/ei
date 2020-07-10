@@ -328,7 +328,7 @@ class Torg extends ActiveRecord
      */
     public static function getTypeList()
     {
-        $result[ '0' ] = 'Все виды';
+        $result[ '0' ] = 'Все типы';
         $result += Lookup::items('TorgProperty');
         return $result;
     }
