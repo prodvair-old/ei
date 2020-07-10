@@ -203,10 +203,10 @@ label.toggle-item:before {
 }
 
 .search-preset__info a:hover {
-  color: #077751!important;
+  color: #077751 !important;
 }
 .search-preset__info a:hover u {
-  text-decoration: none!important;
+  text-decoration: none !important;
 }
 
 .search-preset-box__check {
@@ -265,4 +265,12 @@ label.toggle-item:before {
     width: 250px;
     margin-top: 15px;
   }
+}
+
+.lot__municipal {
+  font-size: 12px;
+  color: #696969;
+  background: #d5ffd0;
+  padding: 3px 10px !important;
+  border-radius: 5px;
 }
