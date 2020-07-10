@@ -67,7 +67,7 @@ $this->registerJsVar('urlBack', Url::to(['/all', 'LotSearch' => Yii::$app->reque
         <div class="map__filter active">
             <div class="map__filter__close"></div>
             <aside class="sidebar-wrapper">
-            <?php $form = ActiveForm::begin(['id' => 'search-map-lot-form','action' => $url, 'method' => 'POST', 'options' => ['class' => 'save-preset-js']]); ?>
+            <?php $form = ActiveForm::begin(['id' => 'search-map-lot-form', 'enableClientValidation' => false, 'action' => $url, 'method' => 'POST', 'options' => ['class' => 'save-preset-js']]); ?>
 
                 <div class="search-box">
 
