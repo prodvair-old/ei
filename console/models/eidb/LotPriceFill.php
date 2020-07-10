@@ -7,46 +7,61 @@ use yii\base\Module;
 use console\traits\Keeper;
 
 use common\models\db\LotPrice;
+use common\models\db\Torg;
+use common\models\db\Lot;
 
 class LotPriceFill extends Module
 {
     const TABLE = '{{%lot_price}}';
-    const OLD_TABLE = 'lotPriceHistorys';
+    const OLD_TABLE = 'offerreductions';
 
     public function getData($limit, $offset)
     {
         // получение менеджеров из существующего справочника
-        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
-        $select = $db->createCommand(
-            'SELECT * FROM "eiLot"."'.self::OLD_TABLE.'" WHERE "lotId" NOTNULL ORDER BY "'.self::OLD_TABLE.'".id ASC LIMIT '.$limit.' OFfSET '.$offset
-        );
-        $rows = $select->queryAll();
-
-        if (!isset($rows[0])) {
+        $lots = Lot::find()
+            ->joinWith(['torg', 'prices'])
+            ->where([
+                Torg::tableName().'.property' => Torg::PROPERTY_BANKRUPT, 
+                Torg::tableName().'.offer' => Torg::OFFER_PUBLIC,
+                LotPrice::tableName().'.price' => NULL,
+                ])
+            ->limit($limit)
+            ->offset($offset)
+            ->all();
+            
+        if (!isset($lots[0])) {
             return false;
         }
         
         $lot_prices = [];
 
-        foreach($rows as $row)
+        foreach($lots as $lot)
         {
-            $lot_id = $row['lotId'];
 
-            $created_at = strtotime($row['createdAt']);
-            $updated_at = strtotime($row['updatedAt']);
-            
-            // Lot's price history
-            $lp = [
-                'lot_id'     => $lot_id,
-                'price'      => $row['price'],
-                'started_at' => strtotime($row['intervalBegin']),
-                'end_at'     => strtotime($row['intervalEnd']),
-                'created_at' => $created_at,
-                'updated_at' => $updated_at,
-            ];
-            $lot_price = new LotPrice($lp);
-            
-            Keeper::validateAndKeep($lot_price, $lot_prices, $lp);
+            $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
+            $select = $db->createCommand(
+                'SELECT * FROM "bailiff"."'.self::OLD_TABLE.'" WHERE "ofrRdnNumberInEFRSB" = '.$lot->torg->msg_id.' AND "ofrRdnLotNumber" = '.$lot->ordinal_number.' ORDER BY "ofrRdnDateTimeBeginInterval" DESC'
+            );
+            $rows = $select->queryAll();
+
+            if (isset($rows[0])) {
+                foreach ($rows as $row) {
+                    $created_at = strtotime($row['ofrRdnAddedDateTime'],);
+                    $updated_at = strtotime($row['ofrRdnAddedDateTime'],);
+                    // Lot's price history
+                    $lp = [
+                        'lot_id'     => $lot->id,
+                        'price'      => $row['ofrRdnPriceInInterval'],
+                        'started_at' => strtotime($row['ofrRdnDateTimeBeginInterval']),
+                        'end_at'     => strtotime($row['ofrRdnDateTimeEndInterval']),
+                        'created_at' => $created_at,
+                        'updated_at' => $updated_at,
+                    ];
+                    $lot_price = new LotPrice($lp);
+                    
+                    Keeper::validateAndKeep($lot_price, $lot_prices, $lp);
+                }
+            }
         }
         
         $result = [];

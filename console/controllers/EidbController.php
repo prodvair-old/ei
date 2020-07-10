@@ -20,9 +20,12 @@ use console\models\eidb\LotImageFill;
 use yii\helpers\Url;
 use yii\helpers\FileHelper;
 use common\models\db\Lot;
+use common\models\db\Torg;
 use console\traits\Keeper;
 use sergmoro1\uploader\models\OneFile;
 use sergmoro1\uploader\behaviors\ImageTransformationBehavior;
+
+use common\models\db\LotPrice;
 
 /**
  * Eidb controller
@@ -651,29 +654,35 @@ class EidbController extends Controller
     {
         echo "Начало парсинга таблицы: 'eidb.lot_price'\n";
         echo "\nШаг := ".$step."\n";
-        $db     = \Yii::$app->db;
-        
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
         $select = $db->createCommand(
-            'SELECT count(lot_id) FROM "eidb".lot_price' 
+            'SELECT count("ofrRdnId") FROM "bailiff"."offerreductions" '
         );
-        $dataCount = $select->queryAll();
+        $dataCount = Lot::find()
+                ->joinWith(['torg', 'prices'])
+                ->where([
+                    Torg::tableName().'.property' => Torg::PROPERTY_BANKRUPT, 
+                    Torg::tableName().'.offer' => Torg::OFFER_PUBLIC,
+                    LotPrice::tableName().'.price' => NULL,
+                    ])->count();
 
         $limit  = $step;
-        $offset = $dataCount[0]['count'];
-
+        $offset = 0;
         $data = null;
 
-        while ($data !== false) {
-            $data = LotPriceFill::getData($limit, $offset);
+        if ($dataCount) {
+            while ($data !== false) {
+                $data = LotPriceFill::getData($limit, $offset);
 
-            if ($data !== false) {
-                echo "\n\n------------------------";
-                echo "\n lot_price      := ".$data['lot_price'];
-            } else {
-                echo "\n\nКонец даннх";
+                if ($data !== false) {
+                    echo "\n\n------------------------";
+                    echo "\n lot_price      := ".$data['lot_price'];
+                } else {
+                    echo "\n\nКонец даннх";
+                }
+
+                $offset = $offset + $step;
             }
-
-            $offset = $offset + $step;
         }
 
         $select = $db->createCommand(
@@ -681,7 +690,7 @@ class EidbController extends Controller
         );
         $count = $select->queryAll();
 
-        echo "\n\nЗаписей до ".$dataCount[0]['count']." после ".$count[0]['count'];
+        echo "\n\nЗаписей до ".$dataCount." после ".$count[0]['count'];
         echo "\n\nЗавершено.\n";
     }
 
