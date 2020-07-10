@@ -984,7 +984,7 @@ class EidbController extends Controller
              FROM "eiLot".documents
              WHERE "tableId" NOTNULL'
         );
-        $result = $command->execute();
+        print_r($command->execute());
     }
 
     public function actionLotDocumentDel() {
