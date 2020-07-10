@@ -994,7 +994,7 @@ class EidbController extends Controller
             $db->createCommand('TRUNCATE TABLE {{%document}}')->execute();
             $db->createCommand('SET FOREIGN_KEY_CHECKS = 1')-> execute();
         } else
-            $db->createCommand('TRUNCATE TABLE {{%document}} CASCADE')->execute();
+            print_r($db->createCommand('TRUNCATE TABLE {{%document}} CASCADE')->execute());
     }
 }
 
