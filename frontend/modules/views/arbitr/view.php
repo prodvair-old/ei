@@ -44,31 +44,6 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
         </div>
 
-        <div class="fullwidth-horizon- none--hide">
-
-            <div class="fullwidth-horizon--inner">
-
-                <div class="container">
-
-                    <div class="fullwidth-horizon--item clearfix">
-
-                        <ul id="horizon--nav" class="horizon--nav clearfix">
-                            <li>
-                                <a href="#info">Информация</a>
-                            </li>
-                            <li>
-                                <a href="#stat">Статистика</a>
-                            </li>
-                            <?= ($lots_bankrupt[ 0 ] != null) ? '<li><a href="#other-lot">Другие лоты</a></li>' : '' ?>
-
-                        </ul>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
         <div class="container pt-30">
 
             <div class="row gap-20 gap-lg-40">
@@ -91,7 +66,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                 </div>
                                 <div class="mr-15 text-muted">|</div>
                                 <div class="mr-15 rating-item rating-inline">
-                                    <p class="rating-text font400 text-muted font-12 letter-spacing-1"><?= $model->sro->reg_number ?> </p>
+                                    <p class="rating-text font400 text-muted font-12 letter-spacing-1"><?= $model->reg_number ?> </p>
                                 </div>
                             </div>
 
@@ -108,7 +83,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                                         <li>
                                             <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                            <h6><span class="font400">Рег.номер  </span><?= $model->sro->reg_number ?>
+                                            <h6><span class="font400">Рег.номер  </span><?= $model->reg_number ?>
                                             </h6>
                                         </li>
 

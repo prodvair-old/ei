@@ -65,7 +65,7 @@ setweight( coalesce( to_tsvector(\'ru\', [[description]]),\'\'),\'B\') || \' \';
          **/
         $this->getDb()->createCommand(
             '
-        CREATE FUNCTION fts_vector_update() RETURNS TRIGGER AS
+        CREATE OR REPLACE FUNCTION fts_vector_update() RETURNS TRIGGER AS
         $$
         BEGIN
             NEW.fts = setweight(coalesce(to_tsvector(\'ru\', NEW.title), \'\'), \'A\') || \' \' ||

@@ -41,6 +41,7 @@ class SroController extends Controller
             'searchModel' => $searchModel,
             'model'       => $model,
             'count'       => $count,
+            'offsetStep'  => Yii::$app->params[ 'defaultPageLimit' ]
         ]);
     }
 

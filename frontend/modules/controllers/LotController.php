@@ -74,7 +74,7 @@ class LotController extends Controller
 
             unset($queryParams[ 'LotSearch' ][ 'type' ]);
             unset($queryParams[ 'LotSearch' ][ 'mainCategory' ]);
-            return $this->redirect([$url, 'LotSearch' => $queryParams['LotSearch']]);
+            return $this->redirect([$url, 'LotSearch' => $queryParams[ 'LotSearch' ]]);
         }
 
         if ($queryParams[ 'LotSearch' ][ 'type' ] !== null) {
@@ -99,7 +99,7 @@ class LotController extends Controller
             if ($t) {
                 $url = "/$t/$category";
                 unset($queryParams[ 'LotSearch' ][ 'type' ]);
-                return $this->redirect([$url, 'LotSearch' => $queryParams['LotSearch']]);
+                return $this->redirect([$url, 'LotSearch' => $queryParams[ 'LotSearch' ]]);
             }
         }
 
@@ -108,14 +108,14 @@ class LotController extends Controller
             if ($queryParams[ 'LotSearch' ][ 'mainCategory' ] == 0) {
                 $url = "/$type/lot-list";
                 unset($queryParams[ 'LotSearch' ][ 'mainCategory' ]);
-                return $this->redirect([$url, 'LotSearch' => $queryParams['LotSearch']]);
+                return $this->redirect([$url, 'LotSearch' => $queryParams[ 'LotSearch' ]]);
             }
 
             $cat = Category::find()->where(['id' => $queryParams[ 'LotSearch' ][ 'mainCategory' ]])->one();
             if ($cat) {
                 $url = "/$type/$cat->slug";
                 unset($queryParams[ 'LotSearch' ][ 'mainCategory' ]);
-                return $this->redirect([$url, 'LotSearch' => $queryParams['LotSearch']]);
+                return $this->redirect([$url, 'LotSearch' => $queryParams[ 'LotSearch' ]]);
             }
         }
 
@@ -189,6 +189,7 @@ class LotController extends Controller
             'type'          => 'bankrupt',
             'regionList'    => $regionList,
             'url'           => $url,
+            'offsetStep'    => Yii::$app->params[ 'defaultPageLimit' ]
         ]);
     }
 
@@ -316,8 +317,8 @@ class LotController extends Controller
     {
         $searchSave = new SearchQueries();
 
-        $searchSave->user_id    = Yii::$app->user->id;
-        $searchSave->url        = Yii::$app->request->queryParams['url'];
+        $searchSave->user_id = Yii::$app->user->id;
+        $searchSave->url = Yii::$app->request->queryParams[ 'url' ];
         // $searchSave->send_email = (Yii::$app->request->queryParams['send_email'] === 'true')? true: false;
         $searchSave->getFirstSave();
 
@@ -328,16 +329,16 @@ class LotController extends Controller
     {
         if (!Yii::$app->user->isGuest) {
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            
-            $wishListCheck = WishList::find()->where(['lot_id' => Yii::$app->request->queryParams['lotId'], 'user_id' => \Yii::$app->user->id])->one();
+
+            $wishListCheck = WishList::find()->where(['lot_id' => Yii::$app->request->queryParams[ 'lotId' ], 'user_id' => \Yii::$app->user->id])->one();
 
             if ($wishListCheck->lot_id) {
                 return ['method' => 'delete', 'status' => $wishListCheck->delete()];
             } else {
                 $wishList = new WishList();
 
-                $wishList->lot_id   = Yii::$app->request->queryParams['lotId'];
-                $wishList->user_id  = \Yii::$app->user->id;
+                $wishList->lot_id = Yii::$app->request->queryParams[ 'lotId' ];
+                $wishList->user_id = \Yii::$app->user->id;
 
                 return ['method' => 'save', 'status' => $wishList->save()];
             }
@@ -345,6 +346,7 @@ class LotController extends Controller
             return $this->goHome();
         }
     }
+
     public function actionMap()
     {
         $searchModel = new MapSearch();
@@ -359,11 +361,12 @@ class LotController extends Controller
             'type'          => 'bankrupt',
         ]);
     }
+
     public function actionMapAjax()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $post = Yii::$app->request->post();
-        
+
         $searchModel = new MapSearch();
 
         $dataProvider = $searchModel->search($post);
@@ -371,16 +374,17 @@ class LotController extends Controller
 
         return $places;
     }
+
     public function actionMapLotAjax()
     {
         $post = Yii::$app->request->post();
 
         $lots = Lot::find()
-            ->where(['in', 'id', $post['ids']])
-            ->limit($post['limit'])
-            ->offset($post['offset'])
+            ->where(['in', 'id', $post[ 'ids' ]])
+            ->limit($post[ 'limit' ])
+            ->offset($post[ 'offset' ])
             ->all();
 
-        return $this->renderAjax("mapLotAjax",['lots'=>$lots]);
+        return $this->renderAjax("mapLotAjax", ['lots' => $lots]);
     }
 }
