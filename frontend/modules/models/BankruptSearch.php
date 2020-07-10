@@ -53,6 +53,7 @@ class BankruptSearch extends Bankrupt
      */
     public function search($params)
     {
+        $limit = \Yii::$app->params['defaultPageLimit'];
         $query = Bankrupt::find();
 
         // add conditions that should always apply here
@@ -124,7 +125,7 @@ class BankruptSearch extends Bankrupt
         $this->totalCount = $queryForCount->count();
 
         $query->offset($this->offset)
-            ->limit(15);
+            ->limit($limit);
 
         return $dataProvider;
     }

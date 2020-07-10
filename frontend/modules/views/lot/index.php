@@ -1,6 +1,9 @@
 <?php
 
 use common\models\db\Lot;
+use frontend\assets\ScrollAsset;
+use frontend\modules\models\LotSearch;
+use kartik\daterange\DateRangePicker;
 use sergmoro1\lookup\models\Lookup;
 use yii\widgets\Breadcrumbs;
 use frontend\modules\models\Category;
@@ -15,11 +18,12 @@ use frontend\modules\components\LotBlock;
 
 /* @var $this yii\web\View */
 /* @var $queryCategory */
-/* @var $model \frontend\modules\models\LotSearch */
+/* @var $model LotSearch */
 /* @var $regionList [] \common\models\db\Region */
 
 /* @var $type */
 /* @var $url */
+/* @var $offsetStep */
 /* @var $lots Lot */
 
 
@@ -43,8 +47,11 @@ if ($model->mainCategory) {
 }
 $traderList = [];
 
+ScrollAsset::register($this);
 $this->registerJsVar('lotType', $type, $position = yii\web\View::POS_HEAD);
 $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\View::POS_HEAD);
+$this->registerJsVar('offsetStep', $offsetStep, $position = yii\web\View::POS_END);
+$this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::POS_END);
 ?>
 
 <section class="page-wrapper page-result pb-0">
@@ -111,7 +118,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
             <aside class="col-12 col-lg-4">
 
                 <aside class="sidebar-wrapper pv">
-                <?php $form = ActiveForm::begin(['id' => 'search-lot-form', 'action' => $url, 'method' => 'GET']); ?>
+                    <?php $form = ActiveForm::begin(['id' => 'search-lot-form', 'action' => $url, 'method' => 'GET']); ?>
 
                     <div class="search-box mb-30">
 
@@ -151,7 +158,7 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                                 </div>
                             </div>
 
-                            <div class="col-12">
+                            <div class="col-12 <?= ($model->mainCategory) ?? 'hidden' ?>" id="searchlot-subcategory-wrapper">
                                 <div class="col-inner">
                                     <?= $form->field($model, 'subCategory')->dropDownList(
                                         $lotsSubcategory,
@@ -305,15 +312,18 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                                         <div class="col-md-12">
                                             <label class="control-label">Начало торгов</label>
                                         </div>
-                                        <div class="col-md-6">
-                                            <?= $form->field($model, 'torgStartDate')->textInput(
-                                                ['class' => 'form-control', 'placeholder' => 'От']
-                                            )->label(false); ?>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <?= $form->field($model, 'torgEndDate')->textInput(
-                                                ['class' => 'form-control', 'placeholder' => 'До']
-                                            )->label(false); ?>
+                                        <div class="col-md-12">
+                                            <?= $form->field($model, 'torgDateRange')->widget(DateRangePicker::classname(), [
+                                                'name'          => 'torgDateRange',
+                                                'value'         => $model->torgDateRange,
+                                                'readonly'      => true,
+                                                'convertFormat' => true,
+                                                'pluginOptions' => [
+                                                    'timePicker'          => false,
+                                                    'timePicker24Hour'    => false,
+                                                    'locale'              => ['format' => 'Y-m-d']
+                                                ]
+                                            ])->label(false); ?>
                                         </div>
                                     </div>
                                 </div>
@@ -342,17 +352,17 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                         <?php endif; ?>
 
                         <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
-                        <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="save-lot-search-js btn btn-outline-primary btn-block"'?>>
+                        <a <?= (Yii::$app->user->isGuest) ? 'href="#loginFormTabInModal-login" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="save-lot-search-js btn btn-outline-primary btn-block"' ?>>
                             <i class="ion-android-notifications"></i>
                             Отслеживать поиск
                         </a>
                         <!-- <div class="custom-control custom-checkbox d-flex justify-content-center">
                             <div class="form-group field-competedApplication">
                                 <?= Html::checkbox('search-preset-agree', true, [
-                                    'class'    => 'custom-control-input',
-                                    'id'       => 'search-preset-agree',
-                                    'template' => '{input}'
-                                ]) ?>
+                            'class'    => 'custom-control-input',
+                            'id'       => 'search-preset-agree',
+                            'template' => '{input}'
+                        ]) ?>
                                 <label class="custom-control-label" for="search-preset-agree">Получать уведомления по новым лотам</label>
                             </div>
                         </div> -->
@@ -390,7 +400,9 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
                             </div>
                         </div>
                         <div class="sort-box">
-                            <a href="<?=Url::to(['lot/map', 'MapSearch' => $mapGET])?>" class="btn btn-primary btn-block mr-30"><i class="oi oi-map-marker"></i> Поиск на карте</a>
+                            <a href="<?= Url::to(['lot/map', 'MapSearch' => $mapGET]) ?>"
+                               class="btn btn-primary btn-block mr-30"><i class="oi oi-map-marker"></i> Поиск на
+                                карте</a>
                         </div>
                     </div>
 
@@ -419,39 +431,4 @@ $this->registerJsVar('categorySelected', $queryCategory, $position = yii\web\Vie
         console.log("Fiered load after " + performance.now() + " ms");
         document.getElementById('profiling_page_load').innerHTML = 'Страница: ' + (Math.round(performance.now()) / 1000) + ' сек.';
     }, false);
-
-    var offset = 0;
-    var i = 2000;
-
-    $(window).scroll(function () {
-
-        if ($(window).scrollTop() + $(window).height() >= $(document).height() - i) {
-            offset = offset + 15;
-            i = 0;
-
-            let url;
-            if (location.href.indexOf('?', location.search) === -1) {
-                url = location.href + '?LotSearch[offset]=' + offset
-            } else {
-                url = location.href + '&LotSearch[offset]=' + offset
-            }
-
-            $.ajax({
-                type: "GET",
-                url: url,
-                data: $(this).serialize(),
-                success: function (data) {
-                    $('#load_list').append(data);
-                    console.log('lots load success');
-                    i = 2000;
-                },
-                error: function (result) {
-                    console.log('lots load error');
-                    console.log(result);
-                }
-            });
-
-        }
-    });
-
 </script>
