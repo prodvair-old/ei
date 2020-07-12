@@ -2,7 +2,6 @@
 
 namespace frontend\modules\models;
 
-use common\models\db\Arbitrator;
 use common\models\db\Organization;
 use common\models\db\Profile;
 use yii\base\Model;
@@ -24,8 +23,6 @@ class ManagerSearch extends Manager
 
     public $torgsIsActive;
 
-    public $isVerified;
-
     public $offset;
 
     private $totalCount;
@@ -37,7 +34,7 @@ class ManagerSearch extends Manager
     public function rules()
     {
         return [
-            [['search', 'inn', 'regNumber', 'torgsIsActive', 'isVerified', 'offset'], 'safe'],
+            [['search', 'inn', 'regNumber', 'torgsIsActive', 'offset'], 'safe'],
         ];
     }
 
@@ -78,7 +75,7 @@ class ManagerSearch extends Manager
             return $dataProvider;
         }
 
-        $query->joinWith(['profileRel', 'placeRel', 'sro']);
+        $query->joinWith(['profileRel', 'placeRel', 'sro', 'arbitrator']);
 
         $fullName = null;
 
@@ -111,13 +108,6 @@ class ManagerSearch extends Manager
         if($this->torgsIsActive) {
             $query->joinWith(['torg']);
             $query->andFilterWhere(['>', Torg::tableName() . '.completed_at', time()]);
-        }
-
-        if($this->isVerified) {
-            $query->rightJoin(Arbitrator::tableName(), 'arbitrator.manager_id = manager.id');
-        }
-        else {
-            $query->joinWith(['arbitrator']);
         }
 
         // grid filtering conditions

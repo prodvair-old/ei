@@ -2,8 +2,8 @@
 
 use common\models\db\Lot;
 use frontend\assets\ScrollAsset;
-use frontend\modules\components\DateRange;
 use frontend\modules\models\LotSearch;
+use kartik\daterange\DateRangePicker;
 use sergmoro1\lookup\models\Lookup;
 use yii\widgets\Breadcrumbs;
 use frontend\modules\models\Category;
@@ -313,37 +313,20 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                                             <label class="control-label">Начало торгов</label>
                                         </div>
                                         <div class="col-md-12">
-                                            <?= $form->field($model, 'torgDateRange')->widget(DateRange::classname(), [
+                                            <?= $form->field($model, 'torgDateRange')->widget(DateRangePicker::classname(), [
                                                 'name'          => 'torgDateRange',
                                                 'value'         => $model->torgDateRange,
-//                                                'readonly'      => true,
+                                                'readonly'      => true,
                                                 'convertFormat' => true,
-                                                'hideInput' => true,
                                                 'pluginOptions' => [
-                                                    'locale'              => ['format' => 'Y-m-d'],
-                                                ],
-                                                'options' => ['placeholder' => 'Выберите интервал']
+                                                    'timePicker'          => false,
+                                                    'timePicker24Hour'    => false,
+                                                    'locale'              => ['format' => 'Y-m-d']
+                                                ]
                                             ])->label(false); ?>
                                         </div>
                                     </div>
                                 </div>
-
-                                <?php
-//                                // DateRangePicker in a dropdown format (uneditable/hidden input) and uses the preset dropdown.
-//                                // Note that placeholder setting in this case will be displayed when value is null
-//                                // Also the includeMonthsFilter setting will display LAST 3, 6 and 12 MONTHS filters.
-//                                echo '<label class="control-label">Date Range</label>';
-//                                echo '<div class="drp-container">';
-//                                echo DateRangePicker::widget([
-//                                    'name'=>'date_range_2',
-//                                    'presetDropdown'=>true,
-//                                    'convertFormat'=>true,
-//                                    'includeMonthsFilter'=>true,
-//                                    'pluginOptions' => ['locale' => ['format' => 'd-M-y']],
-//                                    'options' => ['placeholder' => 'Select range...']
-//                                ]);
-//                                echo '</div>';
-                                ?>
 
                                 <div class="box-content col-md-12 mt-10">
                                     <div class="custom-control custom-checkbox">

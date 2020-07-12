@@ -67,7 +67,7 @@ if ($lot->price < 500000) {
         
         <div class="form-body">
         
-            <?php $form = ActiveForm::begin(['action'=>Url::to(['/lot/lot_service']), 'id'=>'lot-service-form']); ?>
+            <?php $form = ActiveForm::begin(['action'=>Url::to(['lot/lot_service']), 'id'=>'lot-service-form']); ?>
 
                 <span class="signup-form-error tab-external-link block mt-25 text-danger"></span>
             
