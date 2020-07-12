@@ -328,23 +328,6 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                                     </div>
                                 </div>
 
-                                <?php
-//                                // DateRangePicker in a dropdown format (uneditable/hidden input) and uses the preset dropdown.
-//                                // Note that placeholder setting in this case will be displayed when value is null
-//                                // Also the includeMonthsFilter setting will display LAST 3, 6 and 12 MONTHS filters.
-//                                echo '<label class="control-label">Date Range</label>';
-//                                echo '<div class="drp-container">';
-//                                echo DateRangePicker::widget([
-//                                    'name'=>'date_range_2',
-//                                    'presetDropdown'=>true,
-//                                    'convertFormat'=>true,
-//                                    'includeMonthsFilter'=>true,
-//                                    'pluginOptions' => ['locale' => ['format' => 'd-M-y']],
-//                                    'options' => ['placeholder' => 'Select range...']
-//                                ]);
-//                                echo '</div>';
-                                ?>
-
                                 <div class="box-content col-md-12 mt-10">
                                     <div class="custom-control custom-checkbox">
                                         <?= $form->field($model, 'startApplication')->checkbox([
