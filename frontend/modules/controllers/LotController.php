@@ -2,7 +2,9 @@
 
 namespace frontend\modules\controllers;
 
+use common\models\db\Order;
 use common\models\db\Region;
+use frontend\models\ServiceLotForm;
 use frontend\modules\models\Category;
 use Yii;
 use common\models\db\SearchQueries;
@@ -387,4 +389,28 @@ class LotController extends Controller
 
         return $this->renderAjax("mapLotAjax", ['lots' => $lots]);
     }
+
+    public function actionOrderSave()
+    {
+
+        $model = new Order();
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        if (!Yii::$app->user->isGuest) {
+
+//            echo "<pre>";
+//            var_dump(Yii::$app->request->post()['ServiceLotForm']);
+//            echo "</pre>";
+            $model->user_id = Yii::$app->request->post()['ServiceLotForm']['user_id'];
+            $model->lot_id = Yii::$app->request->post()['ServiceLotForm']['lot_id'];
+//            if ($model->load(Yii::$app->request->post()['ServiceLotForm']) && $model->save(true)) {
+            if ($model->save(true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

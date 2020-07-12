@@ -1,17 +1,17 @@
 <?php
+
+use common\models\db\Lot;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
+use frontend\modules\components\LotBlock;
 
-use common\models\Query\Bankrupt\LotsBankrupt;
-use common\models\Query\Arrest\LotsArrest;
-use common\models\Query\Lot\Lots;
-
-use frontend\components\LotBlock;
+/**
+ * @var $lot Lot
+ * @var $lotType
+ */
 
 $btnName = 'Участвовать через агента';
-
-$lot = Lots::findOne($lotId);
 
 switch ($lotType) {
     case 'arrest':
@@ -33,23 +33,23 @@ switch ($lotType) {
 }
 
 
-if ($lot->price < 500000) {
+if ($lot->start_price < 500000) {
     $agentPrice = 8000;
-} else if ($lot->price < 1000000) {
+} else if ($lot->start_price < 1000000) {
     $agentPrice = 12000;
-} else if ($lot->price < 2000000) {
+} else if ($lot->start_price < 2000000) {
     $agentPrice = 15000;
-} else if ($lot->price < 4000000) {
+} else if ($lot->start_price < 4000000) {
     $agentPrice = 20000;
-} else if ($lot->price < 6000000) {
+} else if ($lot->start_price < 6000000) {
     $agentPrice = 25000;
-} else if ($lot->price < 8000000) {
+} else if ($lot->start_price < 8000000) {
     $agentPrice = 30000;
-} else if ($lot->price < 10000000) {
+} else if ($lot->start_price < 10000000) {
     $agentPrice = 35000;
-} else if ($lot->price < 15000000) {
+} else if ($lot->start_price < 15000000) {
     $agentPrice = 40000;
-} else if ($lot->price < 30000000) {
+} else if ($lot->start_price < 30000000) {
     $agentPrice = 50000;
 } else {
     $agentPrice = 60000;
@@ -59,15 +59,25 @@ if ($lot->price < 500000) {
     
     <div class="form-service">
 
-        <div class="form-header">
-            <h4>Подать заявку на лот №<?=$lotId?>, <span class="font400"><?=$name?></span></h4>
-            <p>Наши опытные специалисты быстро и грамотно подготовят документы для участия в торгах. По статистике мы выигрываем 76% торгов.</p>
-            <?=($logo)? '<img src="http://n.ei.ru'.$logo.'" alt="">': '' ?>
+        <div class="form-header row">
+            <div class="col-md-11">
+                <h4>Подать заявку на лот №<?= $lot->id ?>, <span class="font400"><?= $name ?></span></h4>
+                <p>Наши опытные специалисты быстро и грамотно подготовят документы для участия в торгах. По статистике мы выигрываем 76% торгов.</p>
+                <?=($logo)? '<img src="http://n.ei.ru'.$logo.'" alt="">': '' ?>
+            </div>
+
+
+            <div class="col-md-1">
+                <button type="button" class="close" data-dismiss="modal" aria-labelledby="Close">
+                    <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
+                </button>
+            </div>
         </div>
+
         
         <div class="form-body">
         
-            <?php $form = ActiveForm::begin(['action'=>Url::to(['/lot/lot_service']), 'id'=>'lot-service-form']); ?>
+            <?php $form = ActiveForm::begin(['action'=>Url::to(['/lot/lot/order-save']), 'id'=>'lot-service-form']); ?>
 
                 <span class="signup-form-error tab-external-link block mt-25 text-danger"></span>
             
@@ -84,9 +94,9 @@ if ($lot->price < 500000) {
                         </h6>
 
                         <h4>Стоимость участия в торгах: <span class="text-primary" <?= ($color4)? 'style="color: '.$color4.'!important"' : '' ?>><?=$agentPrice?> руб.!</span></h4>
-                        <?=$form->field($model, 'lotType')->hiddenInput(['value'=>$lotType])->label(false);?>
-                        <?=$form->field($model, 'lotId')->hiddenInput(['value'=>$lotId])->label(false);?>
-                        
+                        <?=$form->field($model, 'lot_id')->hiddenInput(['value'=> $lot->id])->label(false);?>
+                        <?=$form->field($model, 'user_id')->hiddenInput(['value'=> Yii::$app->user->identity->getId()])->label(false);?>
+
                         <ul class="mt-20">
                             <li class="mt-15 pr-20"><h6 class="text-muted">Подадим заявку на торги, которую не отклонят</h6></li>
                             <li class="mt-15 pr-20"><h6 class="text-muted">Участие в торгах без аккредитации на ЭТП</h6></li>
