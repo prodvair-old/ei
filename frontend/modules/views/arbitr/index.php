@@ -112,6 +112,17 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                 </div>
                             </div>
 
+                            <div class="box-content col-12">
+                                <div class="custom-control custom-checkbox">
+                                    <?= $form->field($searchModel, 'isVerified')->checkbox([
+                                        'class'    => 'custom-control-input',
+                                        'value'    => '1',
+                                        'id'       => 'isVerified',
+                                        'template' => '<div class="col-md-8">{input}<label class="custom-control-label" for="isVerified">Только верифицированные</label></div>'
+                                    ]) ?>
+                                </div>
+                            </div>
+
                             <div class="col-12">
                                 <div class="col-inner ph-20 pv-15">
                                     <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click']) ?>

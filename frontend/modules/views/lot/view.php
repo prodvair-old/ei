@@ -8,8 +8,7 @@ use yii\helpers\Url;
 use frontend\components\NumberWords;
 use frontend\modules\components\LotDetailSidebar;
 use frontend\modules\components\LotBlock;
-use frontend\components\Darwin;
-use frontend\components\ServiceLotFormWidget;
+use frontend\modules\components\ServiceLotFormWidget;
 use frontend\models\UserAccess;
 use ymaker\social\share\widgets\SocialShare;
 use common\models\db\WishList;
@@ -622,14 +621,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content shadow-lg">
-
-                <?= ServiceLotFormWidget::widget(['lotId' => $lot->id, 'lotType' => $type]) ?>
-
-                <div class="text-center pb-20">
-                    <button type="button" class="close" data-dismiss="modal" aria-labelledby="Close">
-                        <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
-                    </button>
-                </div>
+                <?= ServiceLotFormWidget::widget(['lot' => $lot, 'lotType' => $type]) ?>
             </div>
         </div>
     </div>
