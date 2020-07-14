@@ -4,7 +4,7 @@ use yii\db\Migration;
 
 /**
  * Class m200625_150700_order
- * Таблица заявок
+ * User that order the Lot. User can bid own price for the Lot.
  */
 class m200625_150700_order extends Migration
 {

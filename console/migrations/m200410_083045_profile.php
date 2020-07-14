@@ -4,8 +4,7 @@ use yii\db\Migration;
 
 /**
  * Class m200410_083045_profile
- * 
- * Профиль Пользователя, Менеджера вообще любой персоны.
+ * User profile, manager profile and anybody else.
  */
 class m200410_083045_profile extends Migration
 {

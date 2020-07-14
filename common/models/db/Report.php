@@ -9,8 +9,7 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
 use sergmoro1\lookup\models\Lookup;
 
 /**
- * Report model
- * Отчет к лоту.
+ * Report for Lot.
  *
  * @var integer $id
  * @var integer $user_id
@@ -29,7 +28,7 @@ use sergmoro1\lookup\models\Lookup;
  */
 class Report extends ActiveRecord
 {
-    // значения перечислимых переменых
+    // values of numerated variables
     const STATUS_ACTIVE   = 1;
     const STATUS_ARCHIVED = 2;
 
@@ -54,7 +53,7 @@ class Report extends ActiveRecord
             ],
 			[
 				'class' => HaveFileBehavior::className(),
-				'file_path' => '/lot/',
+				'file_path' => '/report/',
                 'sizes' => [
                     'original'  => ['width' => 1600, 'height' => 900, 'catalog' => 'original'],
                     'main'      => ['width' => 400,  'height' => 300, 'catalog' => ''],
@@ -120,7 +119,7 @@ class Report extends ActiveRecord
 
 
     /**
-     * Получить информацию о лоте, для которого создан отчет.
+     * Get information about the lot that the report was created for.
      * @return yii\db\ActiveQuery
      */
     public function getLot()

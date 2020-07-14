@@ -13,7 +13,7 @@ use sergmoro1\lookup\models\Lookup;
 
 /**
  * Lot model
- * Информация о лоте.
+ * Lot is a property that belongs to bankrupt debtor or pledge.
  *
  * @var integer $id
  * @var integer $torg_id
@@ -36,6 +36,7 @@ use sergmoro1\lookup\models\Lookup;
  * @property Place $place
  * @property Torg $torg
  * @property WishList[] $observers
+ * @property LotTrace[] $traces
  * @property LotPrice[] $prices
  * @property Category[] $categories
  * @property Document[] $documents
@@ -45,18 +46,19 @@ class Lot extends ActiveRecord
 {
     use ShortPart;
     
-    // сценарии
+    // scenarious
     const SCENARIO_MIGRATION = 'lot_migration';
 
-    // внутренний код модели используемый в составном ключе
+    // internal model code used in the composite key
     const INT_CODE = 6;
 
-    // события
-    const EVENT_NEW_PICTURE     = 'new_picture';     // Добавлено новое фото к лоту
-    const EVENT_NEW_REPORT      = 'new_report';      // Добавлен новый отчет к лоту
-    const EVENT_PRICE_REDUCTION = 'price_reduction'; // Снижена цена на лот
+    // events
+    const EVENT_NEW_PICTURE     = 'new_picture';     // A new photo was added to the Lot
+    const EVENT_NEW_REPORT      = 'new_report';      // A new report was added to the Lot 
+    const EVENT_PRICE_REDUCTION = 'price_reduction'; // Price reduction for the Lot
+    const EVENT_VIEWED          = 'viewed';          // The Lot was viewed
 
-    // значения перечислимых переменых
+    // values of enumerated variables
     const MEASURE_PERCENT    = 1;
     const MEASURE_SUM        = 2;
 
@@ -98,6 +100,7 @@ class Lot extends ActiveRecord
         $this->on(self::EVENT_NEW_PICTURE,     function($event) { $this->notifyObservers($event); });
         $this->on(self::EVENT_NEW_REPORT,      function($event) { $this->notifyObservers($event); });
         $this->on(self::EVENT_PRICE_REDUCTION, function($event) { $this->notifyObservers($event); });
+        $this->on(self::EVENT_VIEWED,          function($event) { $this->saveTrace($event); });
     }
 
     /**
@@ -259,7 +262,7 @@ class Lot extends ActiveRecord
     }
 
     /**
-     * Получить список ID подписчиков
+     * Get observers.
      * 
      * @return yii\db\ActiveQuery
      */
@@ -269,7 +272,7 @@ class Lot extends ActiveRecord
     }
 
     /**
-     * Известить подписчиков о произошедшем событии
+     * Notify observers about an event.
      * 
      * @param array $data as in yii\base\Event
      */
@@ -286,7 +289,7 @@ class Lot extends ActiveRecord
     }
 
     /**
-     * Сохранить информацию о событии в общем списке
+     * Keep information about event in a text file.
      * 
      * @param \yii\base\Event $event
      * @param array $data
@@ -299,7 +302,32 @@ class Lot extends ActiveRecord
     }
 
     /**
-     * Получить историю снижения цены по Лоту
+     * Get traces.
+     * 
+     * @return yii\db\ActiveQuery
+     */
+    public function getTraces()
+    {
+        return $this->hasMany(LotTrace::className(), ['lot_id' => 'id']);
+    }
+
+    /**
+     * Save the trace of the user who viewed the Lot.
+     * 
+     * @param array $data as in yii\base\Event
+     */
+    public function saveTrace($event)
+    {
+        $model = new LotTrace([
+            'lot_id' => $this->id,
+            'ip'     => Yii::$app->getRequest()->getUserIP(),
+        ]);
+        if (!$model->save())
+            throw new yii\db\Exception(); 
+    }
+
+    /**
+     * Get the history of price reduction for a lot.
      *
      * @return yii\db\ActiveQuery
      */
@@ -309,7 +337,7 @@ class Lot extends ActiveRecord
     }
 
     /**
-     * Получить категории, к которым принадлежит Лот
+     * Get the categories that the Lot belongs to.
      *
      * @return yii\db\ActiveQuery
      */
@@ -320,7 +348,7 @@ class Lot extends ActiveRecord
     }
 
     /**
-     * Получить документы по лоту.
+     * Get Lot documents.
      *
      * @return yii\db\ActiveQuery
      */
@@ -345,7 +373,7 @@ class Lot extends ActiveRecord
     }
 
     /**
-     * Проверка на новые фото, прикрепленные к Лоту.
+     * Checking for new photos of the Lot.
      */
     public function areThereAnyNewImages()
     {
@@ -377,6 +405,8 @@ class Lot extends ActiveRecord
         LotCategory::updateOneToMany($this->id, $this->_old_categories, []);
         foreach($this->observers as $observer)
             $observer->delete();
+        foreach($this->views as $view)
+            $view->delete();
         foreach($this->prices as $price)
             $price->delete();
         foreach($this->documents as $document)
