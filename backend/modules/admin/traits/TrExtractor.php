@@ -5,7 +5,8 @@ namespace backend\modules\admin\traits;
 trait TrExtractor
 {
     /**
-     * Извлечь строки из html таблицы.
+     * Get <tr> tags from a table.
+     * @return string
      */
     public function getTr($html)
     {

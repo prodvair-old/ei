@@ -173,7 +173,8 @@ class Lot extends ActiveRecord
     }
 
     /**
-     * Get measure keys
+     * Get measure keys.
+     * 
      * @return array
      */
     public static function getMeasures() {
@@ -184,7 +185,8 @@ class Lot extends ActiveRecord
     }
 
     /**
-     * Get status keys
+     * Get status keys.
+     * 
      * @return array
      */
     public static function getStatuses() {
@@ -200,7 +202,8 @@ class Lot extends ActiveRecord
     }
 
     /**
-     * Get reasons keys
+     * Get reasons keys.
+     * 
      * @return array
      */
     public static function getReasons() {
@@ -215,7 +218,8 @@ class Lot extends ActiveRecord
     }
 
     /**
-     * Get short title
+     * Get short title.
+     * 
      * @return string
      */
     public function getShortTitle() {
@@ -223,7 +227,8 @@ class Lot extends ActiveRecord
     }
 
     /**
-     * Получить информацию о месте
+     * Get Place.
+     * 
      * @return yii\db\ActiveQuery
      */
     public function getPlace()
@@ -232,18 +237,19 @@ class Lot extends ActiveRecord
     }
 
     /**
-     * Получить информацию о регионе
+     * Get Region by Place.
+     * 
      * @return \yii\db\ActiveQuery
-     * @throws \yii\base\InvalidConfigException
      */
     public function getRegion()
     {
         return $this->hasOne(Region::className(), ['id' => 'region_id'])
-            ->viaTable(Place::tableName(),['place.parent_id' => 'id']);
+            ->via('place');
     }
 
     /**
-     * Получить информацию о торге
+     * Get Torg.
+     * 
      * @return yii\db\ActiveQuery
      */
     public function getTorg()
@@ -252,7 +258,7 @@ class Lot extends ActiveRecord
     }
 
     /**
-     * Проверка, не устарел ли Лот
+     * Checking whether the lot Is outdated.
      *
      * @return yii\db\ActiveQuery
      */
@@ -374,6 +380,8 @@ class Lot extends ActiveRecord
 
     /**
      * Checking for new photos of the Lot.
+     *
+     * @return boolean
      */
     public function areThereAnyNewImages()
     {
@@ -413,6 +421,11 @@ class Lot extends ActiveRecord
             $document->delete();
     }
     
+    /**
+     * Decode JSON info.
+     *
+     * @return object
+     */
     public function getInfo()
     {
         return json_decode($this->info, true);

@@ -23,10 +23,10 @@ class m200714_112030_lot_trace extends Migration
             'created_at' => $this->integer()->notNull(),
         ]);
 
-        $this->createIndex('idx-lot_trace-lot_id', self::TABLE, 'lot_id'], true);
-        $this->createIndex('idx-lot_trace-ip', self::TABLE, 'ip'], true);
+        $this->createIndex('idx-lot_trace-lot_id', self::TABLE, 'lot_id');
+        $this->createIndex('idx-lot_trace-ip', self::TABLE, 'ip');
 
-        $this->addForeignKey('fk-lot_trace-lot_id',  self::TABLE, 'lot_id',  '{{%lot}}',  'id', 'restrict', 'restrict');
+        $this->addForeignKey('fk-lot_trace-lot',  self::TABLE, 'lot_id',  '{{%lot}}',  'id', 'restrict', 'restrict');
 
 		$this->addCommentOnColumn(self::TABLE, 'lot_id', 'Лот');
 		$this->addCommentOnColumn(self::TABLE, 'ip', 'IP адрес посетителя');

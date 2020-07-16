@@ -6,8 +6,7 @@ use common\models\db\Document;
 /**
  * Class m200527_115910_document_fill
  * 
- * Документов возможно перенести одним запросом, поэтому
- * миграция может выполняться только на сервере, когда и источник и цель в одной БД.
+ * Migration should be executed on a server only.
  */
 class m200527_115910_document_fill extends Migration
 {
