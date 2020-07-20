@@ -17,12 +17,13 @@ class m200715_090500_lot_trace_fill extends Migration
         $db = \Yii::$app->db;
         
         $command = $db->createCommand(
-            'INSERT INTO ' . self::TABLE . ' (lot__id, ip, created_at) '.
+            'INSERT INTO ' . self::TABLE . ' (lot_id, ip, created_at) '.
             'SELECT 
                  page_id AS lot_id,
                  ip_address AS ip,
-                 CAST(EXTRACT(EPOCH FROM "created_at") AS INTEGER) as cteated_at,
-             FROM site."pageViews"'
+                 CAST(EXTRACT(EPOCH FROM "pageViews".created_at) AS INTEGER) AS cteated_at
+             FROM site."pageViews"
+             INNER JOIN eidb.lot ON ("pageViews".page_id=lot.id)'
         );
         $result = $command->execute();
     }

@@ -7,7 +7,6 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
 use common\models\form\LoginForm;
-use common\models\db\Param;
 
 /**
  * Site controller
@@ -100,9 +99,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index', [
-            'statistic' => Param::getDefs('statistic'),
-        ]);
+        return $this->render('index');
     }
 
     /**
