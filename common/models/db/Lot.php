@@ -227,6 +227,15 @@ class Lot extends ActiveRecord
     }
 
     /**
+     * Get formatted start price.
+     * 
+     * @return string
+     */
+    public function getStartPrice() {
+        return number_format($this->start_price, 0, '', ' ');
+    }
+
+    /**
      * Get Place.
      * 
      * @return yii\db\ActiveQuery
