@@ -70,7 +70,7 @@ class Stat extends ActiveRecord
             if ($user_id = ($user_dependent && in_array(Yii::$app->user->identity->role, [User::ROLE_AGENT, User::ROLE_ARBITRATOR]))
                 ? Yii::$app->user->id : false) {
                 // make user dependent $sid
-                $udsid = $sid . '_' . Yii::$app->user->id;
+                $udsid = $sid . '_' . $user_id;
                 // try to find user dependent row, if not then add a new one with a key = $sid . $user_id
                 if ($next = self::findOne(['sid' => $udsid]))
                     $model = $next;

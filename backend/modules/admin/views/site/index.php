@@ -9,7 +9,7 @@ $this->title = Yii::t('app', 'Dashboard ');
 ?>
 <div class="site-index">
     <div class="row">
-        <?= Stat::widget(['sid' => 'common']) ?>
+        <?= Stat::widget(['sid' => 'common', 'user_dependent' => true]) ?>
     </div>
     <div class="row">
         <div class="col-md-8">

@@ -73,9 +73,9 @@ class StatLotJob extends BaseObject implements \yii\queue\JobInterface
             if ($user->role == User::ROLE_AGENT)
                 $query->innerJoin('{{%torg_pledge}}', 'torg.id=torg_pledge.torg_id AND torg_pledge.user_id=' . $user->id);
             
-            $trace->where(['in', 'lot_trace.lot_id', $query]);
-            $order->where(['in', 'order.lot_id', $query]);
-            $wish->where(['in', 'wish_list.lot_id', $query]);
+            $trace->where(['lot_trace.lot_id' => $query]);
+            $order->where(['order.lot_id' => $query]);
+            $wish->where(['wish_list.lot_id' => $query]);
         }
         
         $vars['trace']['value'] = $trace->scalar();
