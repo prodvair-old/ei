@@ -3,6 +3,8 @@
 /* @var $this yii\web\View */
 /* @var $common JSON array */
 
+use common\models\db\Stat;
+
 ?>
 <?php foreach($common as $name => $var): ?>
     <?php if (!($var['value'] === -1)): ?>
@@ -13,7 +15,7 @@
                 <div class='info-box-content'>
                     <span class='info-box-text'><?= Yii::t('app', $var['caption']) ?></span>
                     <span class='info-box-number'>
-                        <?= is_numeric($var['value']) ? number_format(floor($var['value']), 0, '', ' ') : $var['value'] ?>
+                        <?= Stat::format($var['value']) ?>
                     </span>
                 </div>
             </div>

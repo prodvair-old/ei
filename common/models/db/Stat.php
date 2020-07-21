@@ -61,7 +61,7 @@ class Stat extends ActiveRecord
      * 
      * @param string  $sid
      * @param boolean $user_dependent
-     * @return array with structure and values as defaults.
+     * @return array with structure and values as defaults
      */
     public function getDefs($sid, $user_dependent)
     {
@@ -102,5 +102,16 @@ class Stat extends ActiveRecord
         } else {
             throw new NotFoundHttpException(Yii::t('app', 'The requested model does not exist.'));
         }
+    }
+    
+    /**
+     * Format value.
+     * 
+     * @param string $value
+     * @return string
+     */
+    public static function format($value)
+    {
+        return is_numeric($value) ? number_format(floor($value), 0, '', ' ') : $value;
     }
 }

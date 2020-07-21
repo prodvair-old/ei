@@ -81,7 +81,6 @@ class StatCommonJob extends BaseObject implements \yii\queue\JobInterface
                 ->orWhere(['model' => IntCode::TORG, 'document.parent_id' => $torg]);
         }
 
-
         $vars['auction']['value'] = $torg->count();
         $vars['lot']['value'] = $lot->count();
         $vars['document']['value'] = $document->count();
