@@ -51,7 +51,7 @@ class StatCommonJob extends BaseObject implements \yii\queue\JobInterface
             ->select(['lot.id'])
             ->from('{{%lot}}');
         $document = (new Query())
-            ->select(['model, parent_id'])
+            ->select(['document.id'])
             ->from('{{%document}}');
         $user = (new Query())
             ->select(['user.id'])
