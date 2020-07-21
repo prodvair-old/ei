@@ -66,8 +66,12 @@ class StatCommonJob extends BaseObject implements \yii\queue\JobInterface
 
             // bankrupt property, arbitration manager
             if ($user_model->role == User::ROLE_ARBITRATOR && ($manager_id = $user_model->getManagerId())) {
-                $lot->innerJoin('{{%torg_debtor}}', 'torg.id=torg_debtor.torg_id AND torg_debtor.manager_id=' . $manager_id);
-                $torg->innerJoin('{{%torg_debtor}}', 'torg.id=torg_debtor.torg_id AND torg_debtor.manager_id=' . $manager_id);
+                
+                $lot->innerJoin('{{%torg_debtor}}', 'torg.id=torg_debtor.torg_id AND torg_debtor.manager_id=' . $manager_id)
+                    ->addSelect('torg_debtor.case_id');
+                
+                $torg->innerJoin('{{%torg_debtor}}', 'torg.id=torg_debtor.torg_id AND torg_debtor.manager_id=' . $manager_id)
+                    ->addSelect('torg_debtor.case_id');
             }
             
             // pledge (zalog) property, ordinary user
@@ -76,9 +80,11 @@ class StatCommonJob extends BaseObject implements \yii\queue\JobInterface
                 $torg->innerJoin('{{%torg_pledge}}', 'torg.id=torg_pledge.torg_id AND torg_pledge.user_id=' . $user_model->id);
             }
 
+            
             $document
-                ->where(['model' => IntCode::LOT, 'document.parent_id' => $lot])
-                ->orWhere(['model' => IntCode::TORG, 'document.parent_id' => $torg]);
+                ->where(['model' => IntCode::LOT, 'document.parent_id' => $lot->select('lot.id')])
+                ->orWhere(['model' => IntCode::CASEFILE, 'document.parent_id' => $lot->select('case_id')])
+                ->orWhere(['model' => IntCode::TORG, 'document.parent_id' => $torg->select('case_id')]);
         }
 
         $vars['auction']['value'] = $torg->count();
