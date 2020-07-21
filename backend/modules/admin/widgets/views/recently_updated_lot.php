@@ -1,7 +1,9 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $recently_updated common\models\db\Lot */
+/* @var $models common\models\db\Lot */
+
+use yii\helpers\Url;
 
 ?>
 <div class="box box-primary">
@@ -15,18 +17,18 @@
     <!-- /.box-header -->
     <div class="box-body">
         <ul class="products-list product-list-in-box">
-            <?php foreach($recently_updated as $lot): ?>
+            <?php foreach($models as $lot): ?>
             <li class="item">
                 <div class="product-img">
                     <img src="<?= $lot->getImage('thumb') ?>" alt="<?= $lot->getFileDescription() ?>">
                 </div>
                 <div class="product-info">
-                    <a href="javascript:void(0)" class="product-title">
+                    <a href="<?= Url::to(['lot/view', 'id' => $lot->id]) ?>" class="product-title">
                         <?= $lot->shortTitle ?>
-                        <span class="label label-warning pull-right"><?= $lot->startPrice ?></span>
+                        <span class="label label-success pull-right"><?= $lot->startPrice ?></span>
                     </a>
                     <span class="product-description">
-                        Samsung 32" 1080p 60Hz LED Smart HDTV.
+                        <?= $lot->title ?>
                     </span>
                 </div>
             </li>

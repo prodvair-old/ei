@@ -232,7 +232,20 @@ class Lot extends ActiveRecord
      * @return string
      */
     public function getStartPrice() {
-        return number_format($this->start_price, 0, '', ' ');
+        return number_format($this->start_price, 2, ',', ' ');
+    }
+
+    /**
+     * Get recently updated lots.
+     * 
+     * @param integer $limit
+     * @return array yii\db\ActiveRecord
+     */
+    public function getRecentlyUpdated($limit) {
+        return self::find()
+            ->select(['id', 'title', 'start_price'])
+            ->orderBy(['updated_at' => SORT_DESC])
+            ->limit($limit)->all();
     }
 
     /**

@@ -41,19 +41,44 @@ class StatLotJob extends BaseObject implements \yii\queue\JobInterface
      */
     public static function updateValues($vars, $user_id = false)
     {
-        $vars['trace']['value'] = (new Query())
+        // make common queries if user is an Admin or Manager
+        $trace = (new Query())
             ->select(['count(*) AS trace_count'])
             ->distinct('lot_id')
-            ->from('{{%lot_trace}}')
-            ->scalar();
-        $vars['order']['value'] = (new Query())
+            ->from('{{%lot_trace}}');
+        $order = (new Query())
             ->select(['count(*) AS order_count'])
-            ->from('{{%order}}')
-            ->scalar();
-        $vars['wish']['value'] = (new Query())
+            ->from('{{%order}}');
+        $wish = (new Query())
             ->select(['count(*) AS wish_count'])
-            ->from('{{%wish_list}}')
-            ->scalar();
+            ->from('{{%wish_list}}');
+
+        // add query if user is Agent or Arbitrator
+        if ($user_id) {
+            $query = self::find()
+                ->select('lot.id')
+                ->distinct(false)
+                ->innerJoin('{{%torg}}', 'lot.torg_id=torg.id');
+
+            $user = User::findOne($user_id);
+
+            // bankrupt property, arbitration manager
+            if ($user->identity->role == User::ROLE_ARBITRATOR && ($manager_id = $user->identity->getManagerId()))
+                $query->innerJoin('{{%torg_debtor}}', 'torg.id=torg_debtor.torg_id AND torg_debtor.manager_id=' . $manager_id);
+
+            // pledge (zalog) property, ordinary user
+            if ($user->identity->role == User::ROLE_AGENT)
+                $query->innerJoin('{{%torg_pledge}}', 'torg.id=torg_pledge.torg_id AND torg_pledge.user_id=' . $user->id);
+            
+            $trace->where(['in', 'lot_trace.lot_id', $query]);
+            $order->where(['in', 'order.lot_id', $query]);
+            $whish->where(['in', 'wish.lot_id', $query]);
+        }
+        
+        $vars['trace']['value'] = $trace->scalar();
+        $vars['order']['value'] = $order->scalar();
+        $vars['wish']['value']  = $wish->scalar();
+
         return $vars;
     }
 }
