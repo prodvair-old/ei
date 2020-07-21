@@ -70,18 +70,18 @@ class Stat extends ActiveRecord
             if ($user_id = ($user_dependent && in_array(Yii::$app->user->identity->role, [User::ROLE_AGENT, User::ROLE_ARBITRATOR]))
                 ? Yii::$app->user->id : false) {
                 // make user dependent $sid
-                $sid = $sid . '_' . Yii::$app->user->id;
+                $udsid = $sid . '_' . Yii::$app->user->id;
                 // try to find user dependent row, if not then add a new one with a key = $sid . $user_id
-                if ($next = self::findOne(['sid' => $sid]))
+                if ($next = self::findOne(['sid' => $udsid]))
                     $model = $next;
                 else {
                     // set all values to 'n/a'
                     $vars = Json::decode($model->defs);
-                    foreach($vars as $var)
-                        $var['value'] = 'n/a';
+                    foreach($vars as $key => $var)
+                        $vars[$key]['value'] = 'n/a';
                     // init new model and save it
                     $next = new Stat([
-                        'sid'        => $sid,
+                        'sid'        => $udsid,
                         'defs'       => Json::encode($vars),
                         'duration'   => $model->duration,
                         'updated_at' => $model->updated_at,

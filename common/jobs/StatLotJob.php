@@ -8,6 +8,8 @@ use yii\base\BaseObject;
 use yii\db\Query;
 use yii\web\NotFoundHttpException;
 
+use common\models\db\Lot;
+use common\models\db\User;
 use common\models\db\Stat;
 
 /**
@@ -25,9 +27,10 @@ class StatLotJob extends BaseObject implements \yii\queue\JobInterface
      */
     public function execute($queue)
     {
-        if (!($model = Stat::findOne(['sid' => $this->sid])))
+        $sid = $this->user_id ? $this->sid . '_' . $this->user_id : $this->sid;
+        if (!($model = Stat::findOne(['sid' => $sid])))
             throw new NotFoundHttpException(Yii::t('app', 'The requested model "{sid}" does not exist.', ['sid' => $this->sid]));
-        $model->defs = Json::encode($this->updateValues(Json::decode($model->defs)));
+        $model->defs = Json::encode($this->updateValues(Json::decode($model->defs), $this->user_id));
         $model->updated_at = time();
         $model->save(false);
     }
@@ -55,7 +58,7 @@ class StatLotJob extends BaseObject implements \yii\queue\JobInterface
 
         // add query if user is Agent or Arbitrator
         if ($user_id) {
-            $query = self::find()
+            $query = Lot::find()
                 ->select('lot.id')
                 ->distinct(false)
                 ->innerJoin('{{%torg}}', 'lot.torg_id=torg.id');
@@ -63,16 +66,16 @@ class StatLotJob extends BaseObject implements \yii\queue\JobInterface
             $user = User::findOne($user_id);
 
             // bankrupt property, arbitration manager
-            if ($user->identity->role == User::ROLE_ARBITRATOR && ($manager_id = $user->identity->getManagerId()))
+            if ($user->role == User::ROLE_ARBITRATOR && ($manager_id = $user->getManagerId()))
                 $query->innerJoin('{{%torg_debtor}}', 'torg.id=torg_debtor.torg_id AND torg_debtor.manager_id=' . $manager_id);
 
             // pledge (zalog) property, ordinary user
-            if ($user->identity->role == User::ROLE_AGENT)
+            if ($user->role == User::ROLE_AGENT)
                 $query->innerJoin('{{%torg_pledge}}', 'torg.id=torg_pledge.torg_id AND torg_pledge.user_id=' . $user->id);
             
             $trace->where(['in', 'lot_trace.lot_id', $query]);
             $order->where(['in', 'order.lot_id', $query]);
-            $whish->where(['in', 'wish.lot_id', $query]);
+            $wish->where(['in', 'wish_list.lot_id', $query]);
         }
         
         $vars['trace']['value'] = $trace->scalar();
