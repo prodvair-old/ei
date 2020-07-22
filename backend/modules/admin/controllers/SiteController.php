@@ -21,10 +21,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['login', 'signup', 'error', 'logout', 'index', 'image-upload', 'file-upload', 'get-files', 'get-images', 'delete-file'],
+                'only' => ['login', 'signup', 'logout', 'index', 'image-upload', 'file-upload', 'get-files', 'get-images', 'delete-file'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'signup', 'error'],
+                        'actions' => ['login', 'signup'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],

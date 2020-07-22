@@ -36,18 +36,6 @@ class LotController extends Controller
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-        ];
-    }
-
-    /**
      * List of all models.
      * @return mixed
      */
