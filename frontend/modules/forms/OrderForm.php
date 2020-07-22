@@ -1,7 +1,7 @@
 <?php
 
 
-namespace frontend\modules\models;
+namespace frontend\modules\forms;
 
 
 use common\models\db\Order;

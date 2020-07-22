@@ -35,7 +35,6 @@ class ProfileForm extends Model
             ['email', 'string', 'max' => 255],
 
             ['phone', 'string'],
-            ['phoneCode', 'string'],
 
             [['old_password', 'new_password', 'repeat_password'], 'string', 'min' => 6],
             ['repeat_password', 'compare', 'compareAttribute' => 'new_password', 'message' => "Пароли не совпадают!"],

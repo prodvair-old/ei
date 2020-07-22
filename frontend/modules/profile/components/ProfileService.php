@@ -59,18 +59,32 @@ class ProfileService extends Component
 
         $user->email = $data[ 'email' ];
 
-        $place->city = $data['city'];
-        $place->address = $data['address'];
+        $place->city = $data[ 'city' ];
+        $place->address = $data[ 'address' ];
         $place->parent_id = $user->id;
         $place->model = User::INT_CODE;
 
         $transaction = Yii::$app->db->beginTransaction();
 
         try {
-            if ($model->save() && $user->save() && $place->save() && $this->changePassword($user, $form)) {
-                $transaction->commit();
-                return true;
+            if ($model->save() && $user->save() && $place->save()) {
+                if ($form->new_password != '') {
+                    if ($this->changePassword($user, $form)) {
+                        $transaction->commit();
+                        return true;
+                    }
+                    else {
+                        $transaction->rollBack();
+                        return false;
+                    }
+                } else {
+                    $transaction->commit();
+                    return true;
+                }
             }
+
+            $transaction->rollBack();
+            return false;
 
         } catch (\Exception $e) {
             $transaction->rollBack();

@@ -4,14 +4,11 @@ namespace frontend\modules\controllers;
 
 use common\models\db\Order;
 use common\models\db\Region;
-use frontend\models\ServiceLotForm;
 use frontend\modules\models\Category;
-use frontend\modules\models\OrderForm;
+use frontend\modules\forms\OrderForm;
 use Yii;
 use common\models\db\SearchQueries;
 use common\models\db\Lot;
-use common\models\db\Torg;
-use common\models\db\Place;
 use common\models\db\WishList;
 use frontend\modules\models\LotSearch;
 use frontend\modules\models\MapSearch;
