@@ -29,7 +29,7 @@ use common\components\IntCode;
  * @property Owner    $owner
  * @property User     $user
  * @property Etp      $etp
- * @property Casefile $case
+ * @property Casefile $casefile
  * @property Document[] $documents
  */
 class Torg extends ActiveRecord
@@ -229,7 +229,7 @@ class Torg extends ActiveRecord
      * @return yii\db\ActiveQuery
      * @throws InvalidConfigException
      */
-    public function getCase()
+    public function getCasefile()
     {
         if ($this->property != self::PROPERTY_BANKRUPT)
             return null;

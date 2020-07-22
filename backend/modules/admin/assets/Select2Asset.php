@@ -17,7 +17,7 @@ use yii\web\JqueryAsset;
 
 class Select2Asset extends AssetBundle
 {
-    public $sourcePath = '@bower/select2/dist';
+    public $sourcePath = '@vendor/select2/select2/dist';
 
     public $js = [
         'js/select2.full.min.js',

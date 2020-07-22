@@ -6,8 +6,7 @@ use common\models\db\Document;
 /**
  * Class m200527_115910_document_fill
  * 
- * Документов возможно перенести одним запросом, поэтому
- * миграция может выполняться только на сервере, когда и источник и цель в одной БД.
+ * Migration should be executed on a server only.
  */
 class m200527_115910_document_fill extends Migration
 {
@@ -23,7 +22,7 @@ class m200527_115910_document_fill extends Migration
                  CASE
                      WHEN "tableTypeId" = 1 THEN 6 
                      WHEN "tableTypeId" = 2 THEN 7
-                     ELSE 4
+                     ELSE 5
                  END as model, 
                  CAST("tableId" AS INTEGER) as parent_id,
                  name, format as ext, url, hash,
