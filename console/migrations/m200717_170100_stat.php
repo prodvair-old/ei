@@ -41,8 +41,8 @@ class m200717_170100_stat extends Migration
         ];
         
         $this->batchInsert(self::TABLE, ['sid', 'defs', 'duration', 'updated_at'], [
-            ['common', json_encode($common), 360, time()],
-            ['lot', json_encode($lot), 360, time()],
+            ['common', json_encode($common), 60, time()],
+            ['lot', json_encode($lot), 60, time()],
         ]);
     }
 

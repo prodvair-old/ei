@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $lot JSON array */
+/* @var $lot array of a Stat data */
 
 ?>
 <div class="box box-success">

@@ -57,11 +57,14 @@ class Stat extends ActiveRecord
     }
 
     /**
-     * Get array by string ID.
+     * Get an array from a JSON definition found by a string ID.
+     * String ID can be user dependent. In this case it consists of two parts.
+     * ID plus user_id.
      * 
      * @param string  $sid
      * @param boolean $user_dependent
-     * @return array with structure and values as defaults
+     * @return array with structure and values as defined in migration
+     * @see common/migrations/*_stat.php
      */
     public function getDefs($sid, $user_dependent)
     {
@@ -105,7 +108,7 @@ class Stat extends ActiveRecord
     }
     
     /**
-     * Format value.
+     * If the value is a number, format it otherwise return the value as is.
      * 
      * @param string $value
      * @return string
