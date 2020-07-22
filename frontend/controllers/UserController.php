@@ -6,6 +6,7 @@ use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 use yii\data\Pagination;
 use moonland\phpexcel\Excel;
@@ -29,6 +30,7 @@ use frontend\models\zalog\FilterLots;
 use frontend\models\arrestBankrupt\importFIleForm;
 
 use common\models\User;
+use common\models\db\User as NewUser;
 use common\models\db\WishList;
 
 /**

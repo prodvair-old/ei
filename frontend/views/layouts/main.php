@@ -153,15 +153,15 @@ AppAsset::register($this);
                     </li>
                   <?php } else { ?>
                     <li class="d-block d-sm-block">
-                      <a href="<?= Url::to(['/user/wish_list']) ?>" class="vertival-center">
+                      <a href="<?= Url::to(['/profile/favorite']) ?>" class="vertival-center">
                         <div class="image header-avatar">
-                          <img class="setting-image-tag" src="<?= isset(Yii::$app->user->identity->avatar) ? Yii::$app->user->identity->avatar : 'img/image-man/01.jpg' ?>" alt="Image" />
+                          <?= Yii::$app->user->identity->avatar ?>
                         </div>
                         <div class="ml-15">
                           <?= Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->getFullName() ?>
                           <?php if (!Yii::$app->user->isGuest): ?> 
                                 <p class="head-email lowercase">
-                                    <?= Yii::$app->user->identity->getFirstEmail() ?>
+                                    <?= Yii::$app->user->identity->email ?>
                                 </p>
                           <?php endif; ?>
                         </div>

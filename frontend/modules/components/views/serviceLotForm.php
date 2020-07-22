@@ -104,6 +104,9 @@ if ($lot->start_price < 500000) {
                         </ul>
 
                         <div class=" mt-30">
+                            <?=$form->field($model, 'bid_price')->input('number')->label('Назовите вашу стоимость');?>
+                        </div>
+                        <div class=" mt-10">
                             <?=Html::submitButton($btnName, ['class' => 'btn btn-primary btn-wide', 'style' => 'background: '.$color1.';border-color:'.$color1, 'name' => 'signup-button'])?>
                         </div>
 
