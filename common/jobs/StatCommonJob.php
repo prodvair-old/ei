@@ -25,7 +25,7 @@ class StatCommonJob extends StatJob implements \common\interfaces\StatInterface
             ->select(['lot.id'])
             ->from('{{%lot}}');
         $document = (new Query())
-            ->select(['model, parent_id'])
+            ->select(['document.id'])
             ->from('{{%document}}');
         $user = (new Query())
             ->select(['user.id'])
@@ -54,7 +54,6 @@ class StatCommonJob extends StatJob implements \common\interfaces\StatInterface
                 $torg->innerJoin('{{%torg_pledge}}', 'torg.id=torg_pledge.torg_id AND torg_pledge.user_id=' . $user_model->id);
             }
 
-            
             $document
                 ->where(['model' => IntCode::LOT, 'document.parent_id' => $lot->select('lot.id')])
                 ->orWhere(['model' => IntCode::CASEFILE, 'document.parent_id' => $lot->select('case_id')])
