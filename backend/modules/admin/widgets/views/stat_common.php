@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $common JSON array */
+/* @var $common array of a Stat data */
 
 use common\models\db\Stat;
 
