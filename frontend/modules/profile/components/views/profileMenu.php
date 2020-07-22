@@ -49,7 +49,7 @@ use yii\helpers\Url;
                     <a href="<?= Yii::$app->params[ 'backLink' ] . '/login?token=' . Yii::$app->user->identity->auth_key ?>"
                        target="_blank">Панель управления</a></li>
             <?php } ?>
-            <li><a href="<?= Url::to(['site/logout']) ?>">Выйти</a></li>
+            <li><a href="<?= Url::to(['/site/logout']) ?>">Выйти</a></li>
         </ul>
     </nav>
 

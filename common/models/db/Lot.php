@@ -452,4 +452,8 @@ class Lot extends ActiveRecord
     {
         return json_decode($this->info, true);
     }
+
+    public function getReport() {
+        return $this->hasMany(Report::className(), ['lot_id' => 'id']);
+    }
 }

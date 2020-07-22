@@ -1,7 +1,7 @@
 <?php
 namespace frontend\modules\components;
 
-use frontend\modules\models\OrderForm;
+use frontend\modules\forms\OrderForm;
 use Yii;
 use yii\base\Widget;
 
