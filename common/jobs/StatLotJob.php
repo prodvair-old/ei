@@ -20,21 +20,20 @@ class StatLotJob extends StatJob implements \common\interfaces\StatInterface
     {
         // make common queries if user is an Admin or Manager
         $trace = (new Query())
-            ->select(['count(*) AS trace_count'])
+            ->select(['lot_trace.id'])
             ->distinct('lot_id')
             ->from('{{%lot_trace}}');
         $order = (new Query())
-            ->select(['count(*) AS order_count'])
+            ->select(['order.id'])
             ->from('{{%order}}');
         $wish = (new Query())
-            ->select(['count(*) AS wish_count'])
+            ->select(['wish_list.id'])
             ->from('{{%wish_list}}');
 
         // add query if user is Agent or Arbitrator
         if ($user_id) {
             $query = Lot::find()
                 ->select('lot.id')
-                ->distinct(false)
                 ->innerJoin('{{%torg}}', 'lot.torg_id=torg.id');
 
             $user = User::findOne($user_id);
@@ -52,9 +51,9 @@ class StatLotJob extends StatJob implements \common\interfaces\StatInterface
             $wish->where(['wish_list.lot_id' => $query]);
         }
         
-        $vars['trace']['value'] = $trace->scalar();
-        $vars['order']['value'] = $order->scalar();
-        $vars['wish']['value']  = $wish->scalar();
+        $vars['trace']['value'] = $trace->count();
+        $vars['order']['value'] = $order->count();
+        $vars['wish']['value']  = $wish->count();
 
         return $vars;
     }
