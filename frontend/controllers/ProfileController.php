@@ -6,8 +6,9 @@ use Yii;
 use yii\web\Controller;
 use yii\filters\AccessControl;
 
-use common\models\User;
+use common\models\db\User;
 use frontend\models\user\NotificationForm;
+use yii\web\NotFoundHttpException;
 
 /**
  * User Profile controller.

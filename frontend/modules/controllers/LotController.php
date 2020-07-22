@@ -6,6 +6,7 @@ use common\models\db\Order;
 use common\models\db\Region;
 use frontend\models\ServiceLotForm;
 use frontend\modules\models\Category;
+use frontend\modules\models\OrderForm;
 use Yii;
 use common\models\db\SearchQueries;
 use common\models\db\Lot;
@@ -397,10 +398,13 @@ class LotController extends Controller
 
         if (!Yii::$app->user->isGuest) {
 
+            $form = new OrderForm();
             $model = new Order();
-            $model->user_id = Yii::$app->request->post()['ServiceLotForm']['user_id'];
-            $model->lot_id = Yii::$app->request->post()['ServiceLotForm']['lot_id'];
-            if ($model->save(true)) {
+            $post = Yii::$app->request->post()[ 'OrderForm' ];
+
+            $form->loadFields($model, $post);
+
+            if ($model->save()) {
                 return true;
             }
         }
