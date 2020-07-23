@@ -51,7 +51,7 @@ class Stat extends ActiveRecord
         return [
             'sid'        => Yii::t('app', 'Name'),
             'defs'       => Yii::t('app', 'Definitions'),
-            'duration'     => Yii::t('app', 'duration'),
+            'duration'   => Yii::t('app', 'duration'),
             'updated_at' => Yii::t('app', 'Updated_at'),
         ];
     }

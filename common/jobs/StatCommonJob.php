@@ -39,7 +39,7 @@ class StatCommonJob extends StatJob implements \common\interfaces\StatInterface
             $user_model = User::findOne($user_id);
 
             // bankrupt property, arbitration manager
-            if ($user_model->role == User::ROLE_ARBITRATOR && ($manager_id = $user_model->getManagerId())) {
+            if ($is_arbitrator = ($user_model->role == User::ROLE_ARBITRATOR && ($manager_id = $user_model->getManagerId()))) {
                 
                 $lot->innerJoin('{{%torg_debtor}}', 'torg.id=torg_debtor.torg_id AND torg_debtor.manager_id=' . $manager_id)
                     ->addSelect('torg_debtor.case_id');
@@ -56,9 +56,13 @@ class StatCommonJob extends StatJob implements \common\interfaces\StatInterface
 
             $document
                 ->where(['model' => IntCode::LOT, 'document.parent_id' => $lot->select('lot.id')])
-                ->orWhere(['model' => IntCode::CASEFILE, 'document.parent_id' => $lot->select('case_id')])
-                ->orWhere(['model' => IntCode::TORG, 'document.parent_id' => $torg->select('torg.id')])
-                ->orWhere(['model' => IntCode::CASEFILE, 'document.parent_id' => $torg->select('case_id')]);
+                ->orWhere(['model' => IntCode::TORG, 'document.parent_id' => $torg->select('torg.id')]);
+
+            if ($is_arbitrator) {
+                $document
+                    ->orWhere(['model' => IntCode::CASEFILE, 'document.parent_id' => $lot->select('case_id')])
+                    ->orWhere(['model' => IntCode::CASEFILE, 'document.parent_id' => $torg->select('case_id')]);
+            }
         }
 
         $vars['auction']['value'] = $torg->count();
