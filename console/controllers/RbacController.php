@@ -200,6 +200,17 @@ class RbacController extends Controller
         $auth->addChild($deleteOrder, $delete);
         $auth->addChild($indexOrder, $index);
 
+        // Tariff
+
+        $createTariff = $auth->createPermission('createTariff');
+        $indexTariff = $auth->createPermission('indexTariff');
+
+        $auth->add($createTariff);
+        $auth->add($indexTariff);
+
+        $auth->addChild($createTariff, $create);
+        $auth->addChild($indexTariff, $index);
+
         // Owner
 
         $createOwner = $auth->createPermission('createOwner');
@@ -305,6 +316,9 @@ class RbacController extends Controller
         $auth->addChild($admin, $deleteLot);
 
         $auth->addChild($admin, $deleteOrder);
+
+        $auth->addChild($admin, $createTariff);
+        $auth->addChild($admin, $indexTariff);
 
         $auth->addChild($admin, $create);
         $auth->addChild($admin, $view);

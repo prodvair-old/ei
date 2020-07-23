@@ -1,0 +1,68 @@
+<?php
+namespace common\models\db;
+
+use Yii;
+use yii\db\ActiveRecord;
+use yii\web\NotFoundHttpException;
+use yii\behaviors\TimestampBehavior;
+
+/**
+ * Tariff model
+ * Subscription tariffs.
+ * 
+ * @var integer $id
+ * @var string  $name
+ * @var text    $description
+ * @var integer $fee
+ * @var integer $cteated_at 
+ * @var integer $updated_at last updated 
+ */
+class Tariff extends ActiveRecord
+{
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
+        return '{{%tariff}}';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+            ],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['name', 'fee'], 'required'],
+            [['name'], 'string', 'max' => 255],
+            ['fee', 'integer'],
+            [['description', 'created_at', 'updated_at'], 'safe'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'name'        => Yii::t('app', 'Name'),
+            'description' => Yii::t('app', 'Description'),
+            'fee'         => Yii::t('app', 'Fee'),
+            'created_at'  => Yii::t('app', 'Created'),
+            'updated_at'  => Yii::t('app', 'Modified'),
+        ];
+    }
+}

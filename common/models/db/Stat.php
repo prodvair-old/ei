@@ -38,7 +38,7 @@ class Stat extends ActiveRecord
             [['sid', 'defs'], 'required'],
             [['sid'], 'string', 'max' => 255],
             ['duration', 'integer'],
-            ['duration', 'default', 'value' => 36000],
+            ['duration', 'default', 'value' => 60],
             [['defs', 'updated_at'], 'safe'],
         ];
     }
@@ -51,8 +51,8 @@ class Stat extends ActiveRecord
         return [
             'sid'        => Yii::t('app', 'Name'),
             'defs'       => Yii::t('app', 'Definitions'),
-            'duration'   => Yii::t('app', 'duration'),
-            'updated_at' => Yii::t('app', 'Updated_at'),
+            'duration'   => Yii::t('app', 'Duration'),
+            'updated_at' => Yii::t('app', 'Modified'),
         ];
     }
 

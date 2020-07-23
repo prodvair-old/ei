@@ -16,7 +16,7 @@ class m200722_092905_tariff extends Migration
     public function safeUp()
     {
         $this->createTable(self::TABLE, [
-            'id'          => $this->primaryKey(),,
+            'id'          => $this->primaryKey(),
             'name'        => $this->string()->notNull(),
             'description' => $this->text(),
             'fee'         => $this->integer()->notNull(),

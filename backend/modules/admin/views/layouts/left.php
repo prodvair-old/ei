@@ -94,6 +94,12 @@ $user = Yii::$app->user->identity;
                         'icon' => 'users',
                         'visible' => !$guest,
                     ],
+                    [
+                        'label' => Yii::t('app', 'Tariffs'), 
+                        'url' => ['tariff/index'], 
+                        'icon' => 'rub',
+                        'visible' => !$guest,
+                    ],
                 ],
             ]
         );

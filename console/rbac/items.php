@@ -225,6 +225,18 @@ return [
             'deleteOrder',
         ],
     ],
+    'createTariff' => [
+        'type' => 2,
+        'children' => [
+            'create',
+        ],
+    ],
+    'indexTariff' => [
+        'type' => 2,
+        'children' => [
+            'index',
+        ],
+    ],
     'createOwner' => [
         'type' => 2,
         'children' => [
@@ -332,6 +344,8 @@ return [
             'deleteTorg',
             'deleteLot',
             'deleteOrder',
+            'createTariff',
+            'indexTariff',
             'create',
             'view',
             'update',

@@ -8,14 +8,13 @@ use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
 
-use common\models\db\Report;
-use common\models\db\Lot;
-use backend\modules\admin\models\ReportSearch;
+use common\models\db\Tariff;
+use backend\modules\admin\models\TariffSearch;
 
 /**
- * ReportController implements the CRUD actions for Report model.
+ * TariffController implements the CRUD actions for Tariff model.
  */
-class ReportController extends Controller
+class TariffController extends Controller
 {
     private $_model;
 
@@ -37,10 +36,10 @@ class ReportController extends Controller
      */
     public function actionIndex()
     {
-        if (!Yii::$app->user->can('indexReport'))
+        if (!Yii::$app->user->can('indexTariff'))
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
-        $searchModel = new ReportSearch();
+        $searchModel = new TariffSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->get());
 
         return $this->render('index', [
@@ -50,35 +49,17 @@ class ReportController extends Controller
     }
 
     /**
-     * Displays a single model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id = 0)
-    {
-        $model = $this->findModel($id);
-        if (!Yii::$app->user->can('viewReport', ['model' => $model]))
-            throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
-
-        return $this->render('view', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'update' page.
-     * @param integer $lot_id for that the report created
      * @return mixed
      */
-    public function actionCreate($lot_id)
+    public function actionCreate()
     {
 
-        if (!Yii::$app->user->can('createReport'))
+        if (!Yii::$app->user->can('createTariff'))
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
-        $lot = Lot::findOne($lot_id);
-        $model = new Report(['user_id' => Yii::$app->user->id, 'lot_id' => $lot->id]);
+        $model = new Tariff();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', Yii::t('app', 'Created successfully.'));
@@ -87,7 +68,6 @@ class ReportController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'lot'   => $lot,
         ]);
     }
 
@@ -101,7 +81,7 @@ class ReportController extends Controller
     {
         $model = $this->findModel($id);
         
-        if (!Yii::$app->user->can('updateReport', ['model' => $model]))
+        if (!Yii::$app->user->can('update', ['model' => $model]))
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -110,7 +90,6 @@ class ReportController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'lot'   => $model->lot,
         ]);
     }
 
@@ -121,7 +100,7 @@ class ReportController extends Controller
      */
     public function actionDelete($id)
     {
-        if (!Yii::$app->user->can('deleteReport'))
+        if (!Yii::$app->user->can('delete'))
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $model = $this->findModel($id);
@@ -142,7 +121,7 @@ class ReportController extends Controller
     {
         if ($this->_model === null) 
         {
-            if ($this->_model = Report::findOne($id))
+            if ($this->_model = Tariff::findOne($id))
             {
                 return $this->_model;
             } else {
