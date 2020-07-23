@@ -2,6 +2,7 @@
 
 use common\models\db\Lot;
 use common\models\db\Torg;
+use frontend\modules\components\ReportWidget;
 use yii\widgets\Breadcrumbs;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -84,9 +85,9 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                 </div>
                                 <div class="mr-10 text-muted">|</div>
                                 <div class="mr-10 rating-item rating-inline">
-                                    <a <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="wish-star  d-flex" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star d-flex" data-id="'.$lot->id.'"'?>>
-                                        <span class="pr-5"> <?=$wishListAll?> </span>
-                                        <img src="img/star<?=($wishListCheck->lot_id)? '' : '-o' ?>.svg" alt="">
+                                    <a <?= (Yii::$app->user->isGuest) ? 'href="#loginFormTabInModal-login" class="wish-star  d-flex" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star d-flex" data-id="' . $lot->id . '"' ?>>
+                                        <span class="pr-5"> <?= $wishListAll ?> </span>
+                                        <img src="img/star<?= ($wishListCheck->lot_id) ? '' : '-o' ?>.svg" alt="">
                                     </a>
                                 </div>
                                 <?
@@ -152,6 +153,16 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                             <h5 class="mt-30">Описание</h5>
                             <p class="long-text" itemprop="description"><?= $lot->description ?></p>
+
+                            <? if ($lot->report) {
+                                try {
+                                    echo ReportWidget::widget(['reports' => $lot->report, 'lot' => $lot]);
+                                } catch (\Exception $e) {
+                                    echo (YII_ENV_PROD) ? 'Ошибка загрузки отчетов' : $e->getMessage();
+                                }
+
+                            } ?>
+
                             <a href="#desc" class="open-text-js">Подробнее</a>
 
                         </div>
@@ -231,14 +242,14 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                     </li>
                                 <? } ?>
 
-                                <? if ($lot->torg->case !== null) { ?>
+                                <? if ($lot->torg->casefile !== null) { ?>
                                     <li>
                                         <span class="icon-font"><i
                                                     class="elegent-icon-check_alt2 text-primary"></i> </span>
                                         <h6>Сведения о деле</h6>
                                         <ul class="ul">
                                             <li>Номер дела: <span
-                                                        class="text-list-name"><?= $lot->torg->case->reg_number ?></span>
+                                                        class="text-list-name"><?= $lot->torg->casefile->reg_number ?></span>
                                             </li>
                                             <li>Арбитражный суд: <span class="text-list-name"><a
                                                             href="<?= Url::to(['/sro']) ?>/<?= $lot->torg->manager->sro->parent_id ?>"
@@ -427,13 +438,13 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                         <? endif; ?>
 
-                        <? if ($lot->torg->case) { ?>
-                            <? if ($lot->torg->case->documents) { ?>
+                        <? if ($lot->torg->casefile) { ?>
+                            <? if ($lot->torg->casefile->documents) { ?>
 
                                 <div id="docs" class="fullwidth-horizon--section">
                                     <h5 class="heading-title">Документы по делу должника</h5>
                                     <ul class="list-icon-absolute what-included-list mb-30 long-text">
-                                        <? foreach ($lot->torg->case->documents as $document) { ?>
+                                        <? foreach ($lot->torg->casefile->documents as $document) { ?>
 
                                             <?
                                             switch ($document->ext) {

@@ -1,10 +1,9 @@
 <?php
 namespace frontend\modules\components;
 
+use frontend\modules\forms\OrderForm;
 use Yii;
 use yii\base\Widget;
-
-use frontend\models\ServiceLotForm;
 
 class ServiceLotFormWidget extends Widget
 {
@@ -14,7 +13,7 @@ class ServiceLotFormWidget extends Widget
     public function run()
     {
         if (!Yii::$app->user->isGuest) {
-            $model = new ServiceLotForm();
+            $model = new OrderForm();
 
             return $this->render('serviceLotForm', [
                 'model'   => $model,
