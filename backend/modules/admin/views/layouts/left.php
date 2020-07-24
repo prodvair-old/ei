@@ -95,10 +95,47 @@ $user = Yii::$app->user->identity;
                         'visible' => !$guest,
                     ],
                     [
+                        'label' => Yii::t('app', 'Inbox'), 
+                        'url' => ['invoice/index'],
+                        'icon' => 'inbox',
+                        'options' => ['class' => 'treeview'],
+                        'visible' => !$guest,
+                        'items' => [
+                            [
+                                'label' => Yii::t('app', 'Invoice'),
+                                'url' => ['invoice/index'],
+                                'icon' => 'sticky-note-o',
+                            ],
+                            [
+                                'label' => Yii::t('app', 'Subscription'), 
+                                'url' => ['subscription/index'], 
+                                'icon' => 'ticket',
+                            ],
+                            [
+                                'label' => Yii::t('app', 'Purchase'), 
+                                'url' => ['purchase/index'], 
+                                'icon' => 'book',
+                            ],
+                        ]
+                    ],
+                    [
                         'label' => Yii::t('app', 'Tariffs'), 
                         'url' => ['tariff/index'], 
-                        'icon' => 'rub',
+                        'icon' => 'ticket',
+                        'options' => ['class' => 'treeview'],
                         'visible' => !$guest,
+                        'items' => [
+                            [
+                                'label' => Yii::t('app', 'List'),
+                                'url' => ['tariff/index'],
+                                'icon' => 'list-ul',
+                            ],
+                            [
+                                'label' => Yii::t('app', 'Add'),
+                                'url' => ['tariff/create'],
+                                'icon' => 'plus',
+                            ],
+                        ]
                     ],
                 ],
             ]

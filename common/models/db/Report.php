@@ -28,6 +28,9 @@ use sergmoro1\lookup\models\Lookup;
  */
 class Report extends ActiveRecord
 {
+    // internal model code used in the composite key
+    const INT_CODE = 21;
+
     // values of numerated variables
     const STATUS_ACTIVE   = 1;
     const STATUS_ARCHIVED = 2;

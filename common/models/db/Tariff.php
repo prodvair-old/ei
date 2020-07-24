@@ -19,6 +19,9 @@ use yii\behaviors\TimestampBehavior;
  */
 class Tariff extends ActiveRecord
 {
+    // internal model code used in the composite key
+    const INT_CODE = 22;
+
     /**
      * {@inheritdoc}
      */

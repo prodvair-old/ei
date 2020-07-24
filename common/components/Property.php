@@ -23,4 +23,5 @@ class Property {
     const LOT_STATUS            = 11;
     const LOT_REASON            = 12;
     const REPORT_STATUS         = 13;
+    const PRODUCT_TYPE          = 14;
 }

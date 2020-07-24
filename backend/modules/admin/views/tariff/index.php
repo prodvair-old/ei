@@ -22,7 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'id' => 'model-grid',
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
-                    'filterOnFocusOut' => false,
                     'layout' => "{items}\n{summary}\n{pager}",
                     'options' => ['class' => false],
                     'columns' => [
