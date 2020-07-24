@@ -45,7 +45,7 @@ class m200722_140010_subscription extends Migration
     {
         $this->dropForeignKey('fk-subscription-user', self::TABLE);
         $this->dropForeignKey('fk-subscription-tariff', self::TABLE);
-        $this->droporeignKey('fk-subscription-invoice', self::TABLE);
+        $this->dropForeignKey('fk-subscription-invoice', self::TABLE);
         $this->dropTable(self::TABLE);
     }
 

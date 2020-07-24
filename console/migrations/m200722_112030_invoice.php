@@ -7,15 +7,11 @@ use yii\db\Migration;
  * An invoice for any type of product in the system that can be sold to the end user.
  * 
  * Сначала выписывается счет с определением товара и суммой. 
- * Так как товар может быть любым, определение сохраняется в json массиве. 
+ * Так как товар может быть любым, некоторые поля сохраняются в json массиве. 
  * Если счет оплачен, информация о товаре сохраняется в соответствующей таблице - subscription, purchase.
- * Для suscription поле info будет иметь следующий вид:
+ * Для subscription поле info будет иметь следующий вид:
  * ```php
- * {tariff_id:1, from_at:1534233, till_at:1536300}
- * ``` 
- * Для purchase:
- * ```php
- * {report_id:13}
+ * {from_at:1534233, till_at:1536300}
  * ``` 
  */
 class m200722_112030_invoice extends Migration
@@ -30,6 +26,8 @@ class m200722_112030_invoice extends Migration
         $this->createTable(self::TABLE, [
             'id'         => $this->bigPrimaryKey(),
             'product'    => $this->smallInteger()->notNull(),
+            'parent_id'  => $this->bigInteger()->notNull(),
+            'user_id'    => $this->bigInteger(),
             'info'       => $this->text()->notNull(),
             'sum'        => $this->integer()->notNull(),
             'paid'       => $this->boolean()->defaultValue(false),
@@ -37,8 +35,10 @@ class m200722_112030_invoice extends Migration
             'created_at' => $this->integer()->notNull(),
         ]);
 
-        $this->addCommentOnColumn(self::TABLE, 'product', 'Вид товара - тариф, отчет');
-        $this->addCommentOnColumn(self::TABLE, 'info', 'Определенеие товара в json массиве');
+        $this->addCommentOnColumn(self::TABLE, 'product', 'Вид товара (или Код модели) - тариф, отчет');
+        $this->addCommentOnColumn(self::TABLE, 'parent_id', 'ID в соответствующей модели');
+        $this->addCommentOnColumn(self::TABLE, 'user_id', 'Юзер, запросивший счет');
+        $this->addCommentOnColumn(self::TABLE, 'info', 'Дополнительные параметры товара в json массиве');
         $this->addCommentOnColumn(self::TABLE, 'sum', 'Сумма');
         $this->addCommentOnColumn(self::TABLE, 'paid', 'Оплачен');
     }
@@ -50,5 +50,4 @@ class m200722_112030_invoice extends Migration
     {
         $this->dropTable(self::TABLE);
     }
-
 }

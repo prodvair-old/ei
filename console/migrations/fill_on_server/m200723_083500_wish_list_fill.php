@@ -23,7 +23,8 @@ class m200723_083500_wish_list_fill extends Migration
                  "userId" AS user_id,
                  CAST(EXTRACT(EPOCH FROM "wishList"."createdAt") AS INTEGER) AS cteated_at
              FROM site."wishList"
-             INNER JOIN eidb.lot ON ("wishList"."lotId"=lot.id)'
+             INNER JOIN eidb.user ON ("wishList"."userId"=eidb.user.id)
+             INNER JOIN eidb.lot ON ("wishList"."lotId"=eidb.lot.id)'
         );
         $result = $command->execute();
     }

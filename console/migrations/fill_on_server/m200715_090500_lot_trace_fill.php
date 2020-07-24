@@ -23,7 +23,7 @@ class m200715_090500_lot_trace_fill extends Migration
                  ip_address AS ip,
                  CAST(EXTRACT(EPOCH FROM "pageViews".created_at) AS INTEGER) AS cteated_at
              FROM site."pageViews"
-             INNER JOIN eidb.lot ON ("pageViews".page_id=lot.id)'
+             INNER JOIN eidb.lot ON ("pageViews".page_id=eidb.lot.id)'
         );
         $result = $command->execute();
     }
