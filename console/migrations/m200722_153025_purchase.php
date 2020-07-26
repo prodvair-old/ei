@@ -40,7 +40,7 @@ class m200722_153025_purchase extends Migration
     {
         $this->dropForeignKey('fk-purchase-user', self::TABLE);
         $this->dropForeignKey('fk-purchase-report', self::TABLE);
-        $this->droporeignKey('fk-purchase-invoice', self::TABLE);
+        $this->dropForeignKey('fk-purchase-invoice', self::TABLE);
         $this->dropTable(self::TABLE);
     }
 

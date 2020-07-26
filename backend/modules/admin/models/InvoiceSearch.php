@@ -5,16 +5,16 @@ namespace backend\modules\admin\models;
 use Yii;
 use yii\data\ActiveDataProvider;
 
-use common\models\db\Tariff;
+use common\models\db\Invoice;
 
-class TariffSearch extends Tariff
+class InvoiceSearch extends Invoice
 {
     public function rules()
     {
         // only fields in rules() are searchable
         return [
-            ['id', 'integer'],
-            ['name', 'safe'],
+            [['id', 'product'], 'integer'],
+            ['paid', 'boolean'],
         ];
     }
 
@@ -41,8 +41,9 @@ class TariffSearch extends Tariff
         }
        
         // adjust the query by adding the filters
-        $query->andFilterWhere(['id' => $this->id])
-            ->andFilterWhere(['like', 'name',  $this->name]);
+        $query->andFilterwhere(['id' => $this->id])
+            ->andFilterWhere(['product' => $this->product])
+            ->andFilterWhere(['paid' => $this->paid]);
         
         return $dataProvider;
     }
