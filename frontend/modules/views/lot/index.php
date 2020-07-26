@@ -286,6 +286,16 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                                     ]) ?>
                                 </div>
                             </div>
+                            <div class="box-content">
+                                <div class="custom-control custom-checkbox">
+                                    <?= $form->field($model, 'hasReport')->checkbox([
+                                        'class'    => 'custom-control-input',
+                                        'value'    => '1',
+                                        'id'       => 'hasReport',
+                                        'template' => '{input}<label class="custom-control-label" for="hasReport">Только с отчетом</label>'
+                                    ]) ?>
+                                </div>
+                            </div>
                         </div>
 
                         <?php if ($model->type == Torg::PROPERTY_BANKRUPT) : ?>

@@ -128,6 +128,14 @@ class Report extends ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    /**
      * @inheritdoc
      */
     public function afterSave($insert,$changedAttributes)
