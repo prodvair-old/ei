@@ -6,6 +6,7 @@ use common\models\db\Etp;
 use common\models\db\Organization;
 use common\models\db\Place;
 use common\models\db\Profile;
+use common\models\db\Report;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
@@ -64,6 +65,8 @@ class LotSearch extends Lot
 
     public $torgDateRange;
 
+    public $hasReport;
+
     const NAME_DESC = 'nameDESC',
         NAME_ASC = 'nameASC',
         DATE_DESC = 'dateDESC',
@@ -82,7 +85,7 @@ class LotSearch extends Lot
             [['title', 'description', 'minPrice', 'maxPrice', 'mainCategory', 'type',
                 'subCategory', 'etp', 'owner', 'tradeType', 'search', 'sortBy', 'haveImage', 'region',
                 'offset', 'efrsb', 'bankruptName', 'publishedDate', 'andArchived',
-                'startApplication', 'competedApplication', 'torgDateRange'], 'safe'],
+                'startApplication', 'competedApplication', 'torgDateRange', 'hasReport'], 'safe'],
             [['start_price', 'step', 'deposit'], 'number'],
         ];
     }
@@ -106,7 +109,7 @@ class LotSearch extends Lot
      */
     public function search($params)
     {
-        $limit = \Yii::$app->params['defaultPageLimit'];
+        $limit = \Yii::$app->params[ 'defaultPageLimit' ];
         $query = Lot::find()
             ->select(['lot.*', 'torg.published_at']);
 
@@ -222,6 +225,10 @@ class LotSearch extends Lot
 
         if ($this->haveImage) {
             $query->rightJoin(Onefile::tableName(), 'onefile.parent_id = lot.id AND onefile.model = :lot AND onefile.name IS NOT NULL', ['lot' => Lot::className()]);
+        }
+
+        if ($this->hasReport) {
+            $query->innerJoin(Report::tableName(), 'report.lot_id = lot.id');
         }
 
         if ($this->sortBy) {

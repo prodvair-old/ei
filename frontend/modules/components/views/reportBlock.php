@@ -35,7 +35,7 @@ use yii\helpers\Html;
                         <div class="col-md-12">
                             <div class="row mb-5">
                                 <div class="col-md-5 bg-white mr-5">
-                                    <?= Yii::$app->user->identity->getFullName() ?>
+                                    <?= $report->user->getFullName() ?>
                                 </div>
                                 <div class="col-md-3 bg-white mr-5">
                                     <span>Риски</span>
@@ -55,14 +55,14 @@ use yii\helpers\Html;
                     <div class="row">
                         <div class="col-md-8 bg-white">
                             <?php
-                            $image = $lot->getImage('original');
+                            $image = $report->getImage('original');
                             if ($image) : ?>
                                 <div class="fotorama mt-20 mb-40" data-allowfullscreen="true" data-nav="thumbs"
                                      data-arrows="always" data-click="true">
                                     <?php
                                     while ($image) {
                                         echo Html::img($image, ['alt' => 'Images']);
-                                        $image = $lot->getNextImage('original');
+                                        $image = $report->getNextImage('original');
                                     }
                                     ?>
                                 </div>
