@@ -158,7 +158,8 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                                 </div>
                             </div>
 
-                            <div class="col-12 <?= ($model->mainCategory) ?? 'hidden' ?>" id="searchlot-subcategory-wrapper">
+                            <div class="col-12 <?= ($model->mainCategory) ?? 'hidden' ?>"
+                                id="searchlot-subcategory-wrapper">
                                 <div class="col-inner">
                                     <?= $form->field($model, 'subCategory')->dropDownList(
                                         $lotsSubcategory,
@@ -192,13 +193,18 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
 
                         </div>
 
-                        <div class="sidebar-box sidebar-box__collaps <?= ($model->minPrice || $model->maxPrice) ? '' : 'collaps' ?>">
+                        <div
+                            class="sidebar-box sidebar-box__collaps <?= ($model->minPrice || $model->maxPrice) ? '' : 'collaps' ?>">
 
                             <label class="control-label sidebar-box__label">Цена</label>
                             <div class="box-content">
                                 <div class="row">
-                                    <div class="col-6"><?= $form->field($model, 'minPrice')->textInput(['class' => 'lot__price-min form-control', 'placeholder' => 'Цена от'])->label(false); ?></div>
-                                    <div class="col-6"><?= $form->field($model, 'maxPrice')->textInput(['class' => 'lot__price-max form-control', 'placeholder' => 'Цена до'])->label(false); ?></div>
+                                    <div class="col-6">
+                                        <?= $form->field($model, 'minPrice')->textInput(['class' => 'lot__price-min form-control', 'placeholder' => 'Цена от'])->label(false); ?>
+                                    </div>
+                                    <div class="col-6">
+                                        <?= $form->field($model, 'maxPrice')->textInput(['class' => 'lot__price-max form-control', 'placeholder' => 'Цена до'])->label(false); ?>
+                                    </div>
                                 </div>
                             </div>
 
@@ -206,11 +212,11 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
 
                         <?php if ($model->type == Torg::PROPERTY_BANKRUPT) : ?>
 
-                            <div class="sidebar-box  sidebar-box__collaps <?= ($model->etp) ? '' : 'collaps' ?>">
+                        <div class="sidebar-box  sidebar-box__collaps <?= ($model->etp) ? '' : 'collaps' ?>">
 
-                                <label class="control-label sidebar-box__label">Торговые площадки</label>
-                                <div class="box-content">
-                                    <?= $form->field($model, 'etp')->dropDownList(
+                            <label class="control-label sidebar-box__label">Торговые площадки</label>
+                            <div class="box-content">
+                                <?= $form->field($model, 'etp')->dropDownList(
                                         Etp::getOrganizationList(),
                                         [
                                             'class'            => 'chosen-the-basic form-control',
@@ -220,17 +226,17 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                                         ]
                                     )
                                         ->label(false); ?>
-                                </div>
-
                             </div>
+
+                        </div>
 
                         <?php endif; ?>
 
                         <?php if ($model->type == Torg::PROPERTY_ZALOG) : ?>
-                            <div class="sidebar-box sidebar-box__collaps <?= ($model->owner) ? '' : 'collaps' ?>">
-                                <label class="control-label sidebar-box__label">Организации</label>
-                                <div class="box-content">
-                                    <?= $form->field($model, 'owner')->dropDownList(
+                        <div class="sidebar-box sidebar-box__collaps <?= ($model->owner) ? '' : 'collaps' ?>">
+                            <label class="control-label sidebar-box__label">Организации</label>
+                            <div class="box-content">
+                                <?= $form->field($model, 'owner')->dropDownList(
                                         Owner::getOrganizationList(),
                                         [
                                             'class'            => 'chosen-the-basic form-control',
@@ -240,8 +246,8 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                                         ]
                                     )
                                         ->label(false); ?>
-                                </div>
                             </div>
+                        </div>
                         <?php endif; ?>
 
                         <div class="sidebar-box sidebar-box__collaps <?= ($model->tradeType) ? '' : 'collaps' ?>">
@@ -264,7 +270,8 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
 
                         </div>
 
-                        <div class="sidebar-box sidebar-box__collaps <?= ($model->haveImage || $model->andArchived) ? '' : 'collaps' ?>">
+                        <div
+                            class="sidebar-box sidebar-box__collaps <?= ($model->haveImage || $model->andArchived) ? '' : 'collaps' ?>">
                             <label class="control-label  sidebar-box__label">Другое</label>
                             <div class="box-content">
                                 <div class="custom-control custom-checkbox">
@@ -299,31 +306,32 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                         </div>
 
                         <?php if ($model->type == Torg::PROPERTY_BANKRUPT) : ?>
-                            <div class="sidebar-box sidebar-box__collaps <?= ($model->type == Torg::PROPERTY_BANKRUPT) ? '' : 'collaps' ?>">
-                                <label class="control-label  sidebar-box__label">Дополнительные параметры</label>
-                                <div class="box-content col-md-12 mt-20">
-                                    <div>
-                                        <?= $form->field($model, 'efrsb')->textInput(
+                        <div
+                            class="sidebar-box sidebar-box__collaps <?= ($model->type == Torg::PROPERTY_BANKRUPT) ? '' : 'collaps' ?>">
+                            <label class="control-label  sidebar-box__label">Дополнительные параметры</label>
+                            <div class="box-content col-md-12 mt-20">
+                                <div>
+                                    <?= $form->field($model, 'efrsb')->textInput(
                                             ['class' => 'form-control', 'placeholder' => 'Введите номер']
                                         )->label('Номер ЕФРСБ'); ?>
-                                    </div>
                                 </div>
+                            </div>
 
-                                <div class="box-content col-md-12 mt-10">
-                                    <div>
-                                        <?= $form->field($model, 'bankruptName')->textInput(
+                            <div class="box-content col-md-12 mt-10">
+                                <div>
+                                    <?= $form->field($model, 'bankruptName')->textInput(
                                             ['class' => 'form-control', 'placeholder' => 'ФИО']
                                         )->label('ФИО Должника'); ?>
-                                    </div>
                                 </div>
+                            </div>
 
-                                <div class="box-content col-md-12 mt-10">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <label class="control-label">Начало торгов</label>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <?= $form->field($model, 'torgDateRange')->widget(DateRange::classname(), [
+                            <div class="box-content col-md-12 mt-10">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label class="control-label">Начало торгов</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <?= $form->field($model, 'torgDateRange')->widget(DateRange::classname(), [
                                                 'name'          => 'torgDateRange',
                                                 'value'         => $model->torgDateRange,
 //                                                'readonly'      => true,
@@ -334,35 +342,36 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                                                 ],
                                                 'options' => ['placeholder' => 'Выберите интервал']
                                             ])->label(false); ?>
-                                        </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="box-content col-md-12 mt-10">
-                                    <div class="custom-control custom-checkbox">
-                                        <?= $form->field($model, 'startApplication')->checkbox([
+                            <div class="box-content col-md-12 mt-10">
+                                <div class="custom-control custom-checkbox">
+                                    <?= $form->field($model, 'startApplication')->checkbox([
                                             'class'    => 'custom-control-input',
                                             'value'    => '1',
                                             'id'       => 'startApplication',
                                             'template' => '{input}<label class="custom-control-label" for="startApplication">Начало приема заявок</label>'
                                         ]) ?>
-                                    </div>
                                 </div>
-                                <div class="box-content col-md-12 mt-10">
-                                    <div class="custom-control custom-checkbox">
-                                        <?= $form->field($model, 'competedApplication')->checkbox([
+                            </div>
+                            <div class="box-content col-md-12 mt-10">
+                                <div class="custom-control custom-checkbox">
+                                    <?= $form->field($model, 'competedApplication')->checkbox([
                                             'class'    => 'custom-control-input',
                                             'value'    => '1',
                                             'id'       => 'competedApplication',
                                             'template' => '{input}<label class="custom-control-label" for="competedApplication">Окончание приема заявок</label>'
                                         ]) ?>
-                                    </div>
                                 </div>
                             </div>
+                        </div>
                         <?php endif; ?>
 
                         <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
-                        <a <?= (Yii::$app->user->isGuest) ? 'href="#loginFormTabInModal-login" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="save-lot-search-js btn btn-outline-primary btn-block"' ?>>
+                        <a
+                            <?= (Yii::$app->user->isGuest) ? 'href="#loginFormTabInModal-login" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="save-lot-search-js btn btn-outline-primary btn-block"' ?>>
                             <i class="ion-android-notifications"></i>
                             Отслеживать поиск
                         </a>
@@ -411,11 +420,10 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                         </div>
                         <div class="sort-box">
                             <a href="<?= Url::to(['lot/map', 'MapSearch' => $mapGET]) ?>"
-                               class="btn btn-primary btn-block mr-30"><i class="oi oi-map-marker"></i> Поиск на
+                                class="btn btn-primary btn-block mr-30"><i class="oi oi-map-marker"></i> Поиск на
                                 карте</a>
                         </div>
                     </div>
-
 
                     <div id="load_list" class="tour-long-item-wrapper-01 load-list">
                         <? if (count($lots) > 0) {
@@ -439,6 +447,7 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
 <script>
     window.addEventListener('load', function () {
         console.log("Fiered load after " + performance.now() + " ms");
-        document.getElementById('profiling_page_load').innerHTML = 'Страница: ' + (Math.round(performance.now()) / 1000) + ' сек.';
+        document.getElementById('profiling_page_load').innerHTML = 'Страница: ' + (Math.round(performance
+        .now()) / 1000) + ' сек.';
     }, false);
 </script>

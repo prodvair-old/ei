@@ -4,9 +4,11 @@
 
 
 use common\models\db\Owner;
+use frontend\modules\components\LotBlockSmall;
 use frontend\modules\components\SearchForm;
 use common\models\Query\LotsCategory;
 use common\models\Query\Regions;
+use frontend\modules\models\LotSearch;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -14,10 +16,15 @@ use yii\helpers\Url;
 $this->title = Yii::$app->params[ 'title' ];
 $regions = Regions::find()->orderBy('id ASC')->all();
 $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
+
+Yii::$app->params[ 'defaultPageLimit' ] = 8;
+$LotSearch = new LotSearch();
+
+$newLots= $LotSearch->search();
 ?>
 
 <div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03"
-     style="background-image:url('img/01.jpg'); background-position: top  center;">
+    style="background-image:url('img/01.jpg'); background-position: top  center;">
 
     <div class="overlay-holder bottom"></div>
 
@@ -50,17 +57,19 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     <p class="h4">Секции имущества</p>
                     <hr>
                     <ul>
-                        <li><a href="/all/lot-list"> Все имущество <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list"> Все имущество
+                                <!--<span>1999</span>--></a></li>
                         <li><a href="/bankrupt/lot-list" itemprop="https://schema.org/itemOffered"> Банкротное имущество
                                 <!--<span>1999</span>--></a></li>
                         <li><a href="/arrest/lot-list" itemprop="https://schema.org/itemOffered"> Арестованное имущество
                                 <!--<span>1999</span>--></a></li>
                         <li><a href="/municipal/lot-list" itemprop="https://schema.org/itemOffered"> Муниципальное
-                                имущество <!--<span>1999</span>--></a></li>
+                                имущество
+                                <!--<span>1999</span>--></a></li>
                         <?php $ownerList = Owner::getOrganizationList(); ?>
                         <?php foreach ($ownerList as $key => $item) : ?>
-                            <li><a href="<?= Url::to(['zalog/lot-list', 'LotSearch[owner]' => $key]) ?>"
-                                   itemprop="https://schema.org/itemOffered"><?= $item ?></a></li>
+                        <li><a href="<?= Url::to(['zalog/lot-list', 'LotSearch[owner]' => $key]) ?>"
+                                itemprop="https://schema.org/itemOffered"><?= $item ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
@@ -81,8 +90,10 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     <p class="h4">Регионы</p>
                     <hr>
                     <ul>
-                        <li><a href="/all/lot-list"> Россия <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=77"> Москва <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list"> Россия
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=77"> Москва
+                                <!--<span>1999</span>--></a></li>
                         <li><a href="/all/lot-list?LotSearch%5Bregion%5D=50"> Московская область
                                 <!--<span>1999</span>--></a></li>
                         <li><a href="/all/lot-list?LotSearch%5Bregion%5D=78"> Санкт-Петербург
@@ -101,7 +112,8 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                                 <!--<span>1999</span>--></a></li>
                         <li><a href="/all/lot-list?LotSearch%5Bregion%5D=74"> Челябинская область
                                 <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list"> Другие регионы <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list"> Другие регионы
+                                <!--<span>1999</span>--></a></li>
                         <? //foreach ($regions as $region) {
                         // echo '<li><a href="/all/lot-list?LotSearch%5Bregion%5D='.$region['id'].'"> '.$region['name'].' <!--<span>1999</span>--></a></li>';
                         //} ?>
@@ -110,6 +122,40 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
             </div>
 
         </div>
+    </div>
+</section>
+
+<section class="pt-0 pb-0">
+    <div class="container">
+        <div class="clear mb-50"></div>
+        <h2 class="h3 mt-40 line-125 ">Категории</h2>
+
+        <div class="row">
+            <div class="col-lg-2"></div>
+        </div>
+    </div>
+</section>
+
+<section class="pt-0 pb-0">
+    <div class="container">
+        <div class="clear mb-50"></div>
+        <h2 class="h3 mt-40 line-125 ">Новые лоты</h2>
+
+
+        <div class="row">
+            <? if (count($lots = $newLots->getModels()) > 0) {
+                foreach ($lots as $lot) {
+                    echo LotBlockSmall::widget(['lot' => $lot, 'url' => $url]);
+                }
+            } else {
+                echo "<div class='p-15 font-bold'>По данному запросу не удалось найти лоты</div>";
+            } ?>
+        </div>
+        <div class="d-flex justify-content-center">
+            <a href="/all/lot-list" class="btn btn-primary">Перейти в каталог</a>
+        </div>
+
+        <div class="clear mb-50"></div>
     </div>
 </section>
 
@@ -126,8 +172,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                 <figure style="background-color: #234559;" class="category__item">
                     <a href="/bankrupt/lot-list">
                         <div class="image">
-                            <img src="img/bankrupt.jpg"
-                                 alt="image"/>
+                            <img src="img/bankrupt.jpg" alt="image" />
                         </div>
                         <figcaption class="content">
                             <div class="content__wrapper">
@@ -146,7 +191,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                 <figure class="category__item" style="background-color: #005639;">
                     <a href="/arrest/lot-list">
                         <div class="image">
-                            <img src="https://cdn-st4.rtr-vesti.ru/vh/pictures/bq/142/045/9.jpg" alt="image"/>
+                            <img src="https://cdn-st4.rtr-vesti.ru/vh/pictures/bq/142/045/9.jpg" alt="image" />
                         </div>
                         <figcaption class="content">
                             <div class="content__wrapper">
@@ -165,7 +210,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     <a href="/zalog/lot-list">
                         <div class="image">
                             <img src="https://images.unsplash.com/photo-1513496335913-a9aab0fc1318?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80"
-                                 alt="image"/>
+                                alt="image" />
                         </div>
                         <figcaption class="content">
                             <div class="content__wrapper">
@@ -183,7 +228,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     <div href="/bankrupt/debitorskaya-zadolzhennost">
                         <div class="image">
                             <img src="https://cdn.govexec.com/media/img/upload/2015/09/03/090415EIG_personnel_files/open-graph.jpg"
-                                 alt="image"/>
+                                alt="image" />
                         </div>
                         <figcaption class="content">
                             <div class="content__wrapper">
@@ -191,8 +236,10 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                                 <ul class="category__links">
                                     <li><a href="/arbitrazhnye-upravlyayushchie">Арбитражные управляющие
                                             <!--<span>1999</span>--></a></li>
-                                    <li><a href="/dolzhniki">Должники<!--<span>1999</span>--></a></li>
-                                    <li><a href="/sro">СРО<!--<span>1999</span>--></a></li>
+                                    <li><a href="/dolzhniki">Должники
+                                            <!--<span>1999</span>--></a></li>
+                                    <li><a href="/sro">СРО
+                                            <!--<span>1999</span>--></a></li>
                                 </ul>
                             </div>
                         </figcaption>
