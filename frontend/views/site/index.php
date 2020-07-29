@@ -48,90 +48,60 @@ $newLots= $LotSearch->search();
 
 </div>
 
-<section class="pt-0 pb-0 p-20">
-    <div class="container main-page">
-        <div class="row main-page__category" itemscope itemtype="https://schema.org/AggregateOffer">
-
-            <div class="col-lg-4 main-page__link-item">
-                <div class="main-page__category__block">
-                    <p class="h4">Секции имущества</p>
-                    <hr>
-                    <ul>
-                        <li><a href="/all/lot-list"> Все имущество
-                                <!--<span>1999</span>--></a></li>
-                        <li><a href="/bankrupt/lot-list" itemprop="https://schema.org/itemOffered"> Банкротное имущество
-                                <!--<span>1999</span>--></a></li>
-                        <li><a href="/arrest/lot-list" itemprop="https://schema.org/itemOffered"> Арестованное имущество
-                                <!--<span>1999</span>--></a></li>
-                        <li><a href="/municipal/lot-list" itemprop="https://schema.org/itemOffered"> Муниципальное
-                                имущество
-                                <!--<span>1999</span>--></a></li>
-                        <?php $ownerList = Owner::getOrganizationList(); ?>
-                        <?php foreach ($ownerList as $key => $item) : ?>
-                        <li><a href="<?= Url::to(['zalog/lot-list', 'LotSearch[owner]' => $key]) ?>"
-                                itemprop="https://schema.org/itemOffered"><?= $item ?></a></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-4 main-page__link-item">
-                <div class="main-page__category__block">
-                    <p class="h4">Категории</p>
-                    <hr>
-                    <ul>
-                        <?php foreach ($lotsCategory as $category) {
-                            echo '<li><a href="/all/' . $category[ 'translit_name' ] . '" itemprop="category">' . $category[ 'name' ] . '   <!--<span>1999</span>--></a></li>';
-                        } ?>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-4 main-page__link-item">
-                <div class="main-page__category__block">
-                    <p class="h4">Регионы</p>
-                    <hr>
-                    <ul>
-                        <li><a href="/all/lot-list"> Россия
-                                <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=77"> Москва
-                                <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=50"> Московская область
-                                <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=78"> Санкт-Петербург
-                                <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=47"> Ленинградская область
-                                <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=23"> Краснодарский край
-                                <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=66"> Свердловская область
-                                <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=16"> Республика Татарстан
-                                <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=52"> Нижегородская область
-                                <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=61"> Ростовская область
-                                <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=74"> Челябинская область
-                                <!--<span>1999</span>--></a></li>
-                        <li><a href="/all/lot-list"> Другие регионы
-                                <!--<span>1999</span>--></a></li>
-                        <? //foreach ($regions as $region) {
-                        // echo '<li><a href="/all/lot-list?LotSearch%5Bregion%5D='.$region['id'].'"> '.$region['name'].' <!--<span>1999</span>--></a></li>';
-                        //} ?>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-
 <section class="pt-0 pb-0">
     <div class="container">
         <div class="clear mb-50"></div>
         <h2 class="h3 mt-40 line-125 ">Категории</h2>
 
         <div class="row">
-            <div class="col-lg-2"></div>
+            <div class="col-lg-2 col-sm-4 col-6">
+                <a href="/all/transport-i-tehnika" class="category">
+                    <div class="category__img">
+                        <img src="./img/category/auto.png" alt="">
+                    </div>
+                    <span class="category__name">Транспорт</span>
+                </a>
+            </div>
+            <div class="col-lg-2 col-sm-4 col-6">
+                <a href="/all/transport-i-tehnika" class="category">
+                    <div class="category__img">
+                        <img src="./img/category/build.png" alt="">
+                    </div>
+                    <span class="category__name">Недвижемость</span>
+                </a>
+            </div>
+            <div class="col-lg-2 col-sm-4 col-6">
+                <a href="/all/transport-i-tehnika" class="category">
+                    <div class="category__img">
+                        <img src="./img/category/plant.png" alt="">
+                    </div>
+                    <span class="category__name">Земельные участки</span>
+                </a>
+            </div>
+            <div class="col-lg-2 col-sm-4 col-6">
+                <a href="/all/transport-i-tehnika" class="category">
+                    <div class="category__img">
+                        <img src="./img/category/track.png" alt="">
+                    </div>
+                    <span class="category__name">Спецтехника</span>
+                </a>
+            </div>
+            <div class="col-lg-2 col-sm-4 col-6">
+                <a href="/all/transport-i-tehnika" class="category">
+                    <div class="category__img">
+                        <img src="./img/category/combain.png" alt="">
+                    </div>
+                    <span class="category__name">Сельхоз- техника</span>
+                </a>
+            </div>
+            <div class="col-lg-2 col-sm-4 col-6">
+                <a href="/all/transport-i-tehnika" class="category">
+                    <div class="category__img">
+                        <img src="./img/category/money.png" alt="">
+                    </div>
+                    <span class="category__name">Дебиторская задолженность</span>
+                </a>
+            </div>
         </div>
     </div>
 </section>
@@ -268,6 +238,83 @@ $newLots= $LotSearch->search();
 
     </div>
 
+</section>
+
+<section class="pt-0 pb-0 p-20">
+    <div class="container main-page">
+        <div class="row main-page__category" itemscope itemtype="https://schema.org/AggregateOffer">
+
+            <div class="col-lg-4 main-page__link-item">
+                <div class="main-page__category__block">
+                    <p class="h4">Секции имущества</p>
+                    <hr>
+                    <ul>
+                        <li><a href="/all/lot-list"> Все имущество
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/bankrupt/lot-list" itemprop="https://schema.org/itemOffered"> Банкротное имущество
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/arrest/lot-list" itemprop="https://schema.org/itemOffered"> Арестованное имущество
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/municipal/lot-list" itemprop="https://schema.org/itemOffered"> Муниципальное
+                                имущество
+                                <!--<span>1999</span>--></a></li>
+                        <?php $ownerList = Owner::getOrganizationList(); ?>
+                        <?php foreach ($ownerList as $key => $item) : ?>
+                        <li><a href="<?= Url::to(['zalog/lot-list', 'LotSearch[owner]' => $key]) ?>"
+                                itemprop="https://schema.org/itemOffered"><?= $item ?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 main-page__link-item">
+                <div class="main-page__category__block">
+                    <p class="h4">Категории</p>
+                    <hr>
+                    <ul>
+                        <?php foreach ($lotsCategory as $category) {
+                            echo '<li><a href="/all/' . $category[ 'translit_name' ] . '" itemprop="category">' . $category[ 'name' ] . '   <!--<span>1999</span>--></a></li>';
+                        } ?>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 main-page__link-item">
+                <div class="main-page__category__block">
+                    <p class="h4">Регионы</p>
+                    <hr>
+                    <ul>
+                        <li><a href="/all/lot-list"> Россия
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=77"> Москва
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=50"> Московская область
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=78"> Санкт-Петербург
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=47"> Ленинградская область
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=23"> Краснодарский край
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=66"> Свердловская область
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=16"> Республика Татарстан
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=52"> Нижегородская область
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=61"> Ростовская область
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list?LotSearch%5Bregion%5D=74"> Челябинская область
+                                <!--<span>1999</span>--></a></li>
+                        <li><a href="/all/lot-list"> Другие регионы
+                                <!--<span>1999</span>--></a></li>
+                        <? //foreach ($regions as $region) {
+                        // echo '<li><a href="/all/lot-list?LotSearch%5Bregion%5D='.$region['id'].'"> '.$region['name'].' <!--<span>1999</span>--></a></li>';
+                        //} ?>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </section>
 
 <!-- <div class="bg-white-gradient-top-bottom pt-0 mt-40">

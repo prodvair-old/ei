@@ -110,18 +110,18 @@ gulp.task("styles", function () {
 gulp.task("scripts", function () {
   return (
     gulp
-      .src([
-        "frontend/web/js/_map.js",
-        "frontend/web/js/_custom.js", // Custom scripts. Always at the end
-      ])
-      .pipe(concat("scripts.min.js"))
-      // .pipe(uglify()) // Minify js (opt.)
-      .pipe(gulp.dest("frontend/web/js"))
-      .pipe(
-        browserSync.reload({
-          stream: true,
-        })
-      )
+    .src([
+      "frontend/web/js/_map.js",
+      "frontend/web/js/_custom.js", // Custom scripts. Always at the end
+    ])
+    .pipe(concat("scripts.min.js"))
+    // .pipe(uglify()) // Minify js (opt.)
+    .pipe(gulp.dest("frontend/web/js"))
+    .pipe(
+      browserSync.reload({
+        stream: true,
+      })
+    )
   );
 });
 
@@ -135,7 +135,7 @@ gulp.task("code", function () {
 });
 
 gulp.task("watch", function () {
-  // gulp.watch("frontend/web/sass/**/*.sass", gulp.parallel("styles"));
+  gulp.watch("frontend/web/sass/**/*.sass", gulp.parallel("styles"));
   gulp.watch(
     ["frontend/web/js/_custom.js", "frontend/web/js/map.js"],
     gulp.parallel("scripts")

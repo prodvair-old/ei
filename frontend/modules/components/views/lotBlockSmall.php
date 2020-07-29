@@ -3,6 +3,7 @@
 use common\models\db\Lot;
 use common\models\db\Torg;
 use common\models\db\WishList;
+use common\models\db\Stat;
 use sergmoro1\lookup\models\Lookup;
 use yii\helpers\Html;
 
@@ -37,7 +38,6 @@ if (!$image) {
 
 $wishListCheck = WishList::find()->where(['lot_id' => $lot->id, 'user_id' => \Yii::$app->user->id])->one();
 $wishListAll = WishList::find()->where(['lot_id' => $lot->id])->count();
-
 ?>
 <div class="col-lg-3 col-sm-6 mb-40" itemscope itemtype="http://schema.org/Product">
     <a href="<?= $lotTypeUrl . '/' .((empty( $lot->categories[0]->slug))? 'lot-list' :  $lot->categories[0]->slug ) . '/' . $lot->id ?>"
