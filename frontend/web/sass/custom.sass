@@ -1519,6 +1519,40 @@ label.toggle-item:before
   justify-content: center
   padding: 4px 9px
 
+.lot__block__img__report
+  position: absolute
+  bottom: 15px
+  left: 15px
+  z-index: 3
+  display: flex
+  align-items: center
+  justify-content: center
+  background-color: #219653
+  width: 25px
+  height: 25px
+  border-radius: 50%
+  &::before
+    content: 'Есть отчёт'
+    position: absolute
+    bottom: 2px
+    left: 30px
+    display: block
+    height: 20px
+    background-color: #219653
+    color: #ffffff
+    transform: scaleX(0)
+    transform-origin: left
+    white-space: nowrap
+    font-size: 10px
+    line-height: 20px
+    padding: 0 9px
+    transition: all .3s ease
+  img
+    width: 15px
+    height: 15px
+  &:hover
+    &::before
+      transform: scaleX(1)
 
 .lot__block__img__favorite 
   right: 15px

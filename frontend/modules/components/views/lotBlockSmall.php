@@ -46,6 +46,9 @@ $wishListAll = WishList::find()->where(['lot_id' => $lot->id])->count();
             <div class="lot__block__img__property lot__block__img__property-<?=$lot->torg->property?>"><?= $lotType ?>
             </div>
             <?= (!empty($lot->archive)) ? ($lot->archive) ? '<div class="lot__block__img__archive">Архив</div>' : '' : '' ?>
+            <div class="lot__block__img__report">
+                <img src="./img/check-report.svg" alt="">
+            </div>
             <div
                 <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="lot__block__img__favorite '.$darkClass.'" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js lot__block__img__favorite '.$darkClass.'" data-id="'.$lot->id.'"'?>>
                 <span><?=$wishListAll?></span>
