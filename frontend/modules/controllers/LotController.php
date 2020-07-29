@@ -4,8 +4,11 @@ namespace frontend\modules\controllers;
 
 use common\models\db\Order;
 use common\models\db\Region;
+use common\models\db\Report;
+use frontend\modules\forms\ReportForm;
 use frontend\modules\models\Category;
 use frontend\modules\forms\OrderForm;
+use frontend\modules\components\ReportService;
 use Yii;
 use common\models\db\SearchQueries;
 use common\models\db\Lot;
@@ -269,6 +272,8 @@ class LotController extends Controller
             'url'      => "javascript:void(0)"
         ];
 
+        $model->trigger(Lot::EVENT_VIEWED);
+
         return $this->render('view', [
             'lot'  => $model,
             'type' => 'bankrupt',
@@ -401,12 +406,41 @@ class LotController extends Controller
 
             $form->loadFields($model, $post);
 
-            if ($model->save()) {
-                return true;
-            }
+            return $model->save();
         }
 
         return false;
+    }
+
+    public function actionInvoice() {
+
+        $rs = new ReportService();
+        $form = new ReportForm();
+
+        if(Yii::$app->request->isPost) {
+            $form->load(Yii::$app->request->post());
+
+            if($form->validate()) {
+
+                $res = $rs->invoiceCreate($form->userId, $form->cost, $form->reportId, $form->returnUrl);
+
+                if($res) {
+                    return $this->redirect($rs->getPaymentUrl());
+                }
+            }
+            else {
+                echo "<pre>";
+                var_dump($form->getErrorSummary(true));
+                echo "</pre>";
+            }
+        }
+
+
+
+    }
+
+    public function actionBuy() {
+
     }
 
 }

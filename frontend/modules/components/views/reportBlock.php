@@ -2,10 +2,14 @@
 
 use common\models\db\Lot;
 use common\models\db\Report;
+use frontend\modules\forms\ReportForm;
 use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 
 /* @var $reports Report[] */
 /* @var $lot Lot */
+/* @var $reportForm ReportForm */
 
 ?>
 <style>
@@ -21,6 +25,9 @@ use yii\helpers\Html;
         font-size: 3.2em;
     }
 
+    .cs-blur {
+        filter: blur(10px);
+    }
 </style>
 <div class="col-md-12 mb-30">
     <?php foreach ($reports as $report) : ?>
@@ -57,7 +64,8 @@ use yii\helpers\Html;
                             <?php
                             $image = $report->getImage('original');
                             if ($image) : ?>
-                                <div class="fotorama mt-20 mb-40" data-allowfullscreen="true" data-nav="thumbs"
+                                <div class="fotorama mt-20 mb-40 <?= ($report->isPaid()) ? '' : 'cs-blur' ?>"
+                                     data-allowfullscreen="true" data-nav="thumbs"
                                      data-arrows="always" data-click="true">
                                     <?php
                                     while ($image) {
@@ -78,9 +86,19 @@ use yii\helpers\Html;
                             <div class="col-md-12 mt-20">
                                 <p class="ei-green"><b>Цена: <?= $report->cost ?> руб.</b></p>
                             </div>
+                            <?php $form = ActiveForm::begin(['action' => Url::to(['/lot/lot/invoice']), 'options' => [
+                                'class' => 'invoice-form'
+                            ]]); ?>
+                            <?= $form->field($reportForm, 'reportId')->hiddenInput(['value' => $report->id])->label(false); ?>
+                            <?= $form->field($reportForm, 'cost')->hiddenInput(['value' => $report->cost])->label(false); ?>
+                            <?= $form->field($reportForm, 'userId')->hiddenInput(['value' => Yii::$app->user->identity->getId()])->label(false); ?>
+                            <?= $form->field($reportForm, 'returnUrl')->hiddenInput(['value' => Yii::$app->request->absoluteUrl])->label(false); ?>
                             <div class="col-md-12 mt-20 mb-20">
-                                <a class="btn btn-primary btn-block text-white">Купить отчет</a>
+                                <?= Html::submitButton('Купить отчет', [
+                                    'class' => 'btn btn-primary btn-wide', 'name' => 'invoice-button'
+                                ]) ?>
                             </div>
+                            <?php ActiveForm::end(); ?>
                         </div>
                     </div>
                 </div>
