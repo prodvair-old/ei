@@ -114,9 +114,11 @@ $newLots= $LotSearch->search();
 
         <div class="row">
             <? if (count($lots = $newLots->getModels()) > 0) {
-                foreach ($lots as $lot) {
-                    echo LotBlockSmall::widget(['lot' => $lot, 'url' => $url]);
-                }
+                foreach ($lots as $lot) { ?>
+                <div class="col-lg-3 col-sm-6 mb-40" itemscope itemtype="http://schema.org/Product">
+                    <?= LotBlockSmall::widget(['lot' => $lot, 'url' => $url]) ?>
+                </div>
+            <?  }
             } else {
                 echo "<div class='p-15 font-bold'>По данному запросу не удалось найти лоты</div>";
             } ?>

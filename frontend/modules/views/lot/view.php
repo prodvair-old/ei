@@ -8,7 +8,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use frontend\components\NumberWords;
 use frontend\modules\components\LotDetailSidebar;
-use frontend\modules\components\LotBlock;
+use frontend\modules\components\LotBlockSmall;
 use frontend\modules\components\ServiceLotFormWidget;
 use frontend\models\UserAccess;
 use ymaker\social\share\widgets\SocialShare;
@@ -174,7 +174,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                             <div class="report__head__number">Лот № 551093</div>
                         </div>
                         <div class="report__body row">
-                            <div class="col-lg-6 report__body__expert">
+                            <div class="col-md-6 report__body__expert">
                                 <img src="http://dev.ei.ru/uploads/site/user.png" alt="" class="report__body__expert-img">
                                 <span class="report__body__expert__name">
                                     Никита
@@ -182,7 +182,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                     Карпеев
                                 </span>
                             </div>
-                            <div class="col-lg-6 report__body__diogramm">
+                            <div class="col-md-6 report__body__diogramm">
                                 <div class="report__body__diogramm__green">
                                     <svg class="report__body__diogramm__green-svg" width="70" height="70">
                                         <circle 
@@ -196,6 +196,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                         />
                                         <circle 
                                             class="report__body__diogramm__green-circle" 
+                                            id="green-circle-1"
                                             stroke="#077751" 
                                             stroke-width="5" 
                                             cx="35" 
@@ -215,7 +216,8 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                     </div>
 
                                     <script>
-                                        var circle = document.querySelector('.report__body__diogramm__green-circle');
+                                        // не забывать подтсавлять номер для id
+                                        var circle = document.querySelector('#green-circle-1');
                                         var r = circle.r.baseVal.value;
                                         var circumference = 2 * Math.PI * r;
 
@@ -244,6 +246,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                         />
                                         <circle 
                                             class="report__body__diogramm__red-circle" 
+                                            id="red-circle-1"
                                             stroke="#EB5757" 
                                             stroke-width="5" 
                                             cx="35" 
@@ -263,7 +266,8 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                     </div>
 
                                     <script>
-                                        var circle = document.querySelector('.report__body__diogramm__red-circle');
+                                        // не забывать подтсавлять номер для id
+                                        var circle = document.querySelector('#red-circle-1');
                                         var r = circle.r.baseVal.value;
                                         var circumference = 2 * Math.PI * r;
 
@@ -280,7 +284,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                 </div>
                                 
                             </div>
-                            <div class="col-lg-6 report__body__images">
+                            <div class="col-md-6 report__body__images">
                                 <div class="report__body__images__slider">
                                     <div class="report__body__images__slider__item">
                                         <img src="https://images.unsplash.com/photo-1595946451139-ea402026bac5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2689&q=80" alt="">
@@ -290,7 +294,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 report__body__info">
+                            <div class="col-md-6 report__body__info">
                                 <div class="report__body__info__title mb-20">Заголовок</div>
                                 <p class="report__body__info__text mb-30">Приятно, граждане, наблюдать, как реплицированные с зарубежных источников, современные исследования, которые представляют собой яркий пример континентально-европейского типа </p>
                                 <div class="report__body__info__price mb-20">Цена: 1 000,00 руб.</div>
@@ -305,7 +309,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                             <div class="report__head__number">Лот № 551093</div>
                         </div>
                         <div class="report__body row">
-                            <div class="col-lg-6 report__body__expert">
+                            <div class="col-md-6 report__body__expert">
                                 <img src="http://dev.ei.ru/uploads/site/user.png" alt="" class="report__body__expert-img">
                                 <span class="report__body__expert__name">
                                     Никита
@@ -313,7 +317,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                     Карпеев
                                 </span>
                             </div>
-                            <div class="col-lg-6 report__body__diogramm">
+                            <div class="col-md-6 report__body__diogramm">
                                 <div class="report__body__diogramm__green">
                                     <svg class="report__body__diogramm__green-svg" width="70" height="70">
                                         <circle 
@@ -327,6 +331,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                         />
                                         <circle 
                                             class="report__body__diogramm__green-circle" 
+                                            id="green-circle-2"
                                             stroke="#077751" 
                                             stroke-width="5" 
                                             cx="35" 
@@ -346,7 +351,8 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                     </div>
 
                                     <script>
-                                        var circle = document.querySelector('.report__body__diogramm__green-circle');
+                                        // не забывать подтсавлять номер для id
+                                        var circle = document.querySelector('#green-circle-2');
                                         var r = circle.r.baseVal.value;
                                         var circumference = 2 * Math.PI * r;
 
@@ -375,6 +381,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                         />
                                         <circle 
                                             class="report__body__diogramm__red-circle" 
+                                            id="red-circle-2"
                                             stroke="#EB5757" 
                                             stroke-width="5" 
                                             cx="35" 
@@ -394,7 +401,8 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                     </div>
 
                                     <script>
-                                        var circle = document.querySelector('.report__body__diogramm__red-circle');
+                                        // не забывать подтсавлять номер для id
+                                        var circle = document.querySelector('#red-circle-2');
                                         var r = circle.r.baseVal.value;
                                         var circumference = 2 * Math.PI * r;
 
@@ -411,14 +419,14 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                 </div>
                                 
                             </div>
-                            <div class="col-lg-6 report__body__images">
+                            <div class="col-md-6 report__body__images">
                                 <div class="report__body__images__slider">
                                     <div class="report__body__images__slider__item">
                                         <img src="./img/lock.png" alt="">
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 report__body__info">
+                            <div class="col-md-6 report__body__info">
                                 <div class="report__body__info__title mb-20">Заголовок</div>
                                 <p class="report__body__info__text mb-30">Оипсание и изображения будут доступны после покупки отчёта.</p>
                                 <div class="report__body__info__price mb-20">Цена: 1 000,00 руб.</div>
@@ -829,11 +837,13 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                         <h5 class="heading-title">Другие лоты должника</h5>
 
-                        <div class="row equal-height cols-1 cols-sm-2 gap-30 mb-25">
+                        <div class="row">
 
-                            <? foreach ($otherLots as $otherLot) {
-                                        echo LotBlock::widget(['lot' => $otherLot, 'url' => $url]);
-                                    } ?>
+                            <? foreach ($otherLots as $otherLot) { ?>
+                                <div class="col-lg-4 col-sm-6 mb-30" itemscope itemtype="http://schema.org/Product">
+                                    <?= LotBlockSmall::widget(['lot' => $otherLot, 'url' => $url]) ?>
+                                </div>
+                            <? } ?>
 
                         </div>
 
