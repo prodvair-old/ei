@@ -641,29 +641,3 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 <?php
 $this->registerJsFile('js/custom-multiply-.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-');
 ?>
-
-<!--<script>-->
-<!--    $(".invoice-form").on("beforeSubmit", function (e) {-->
-<!--        e.preventDefault();-->
-<!--        $.ajax({-->
-<!--            type: "POST",-->
-<!--            url: $(this).attr("action"),-->
-<!--            data: $(this).serializeArray(),-->
-<!--        })-->
-<!--            .done(function (data) {-->
-<!--                if (data) {-->
-<!--                    $(".form-service .form-header").hide();-->
-<!--                    $(".form-service .form-body").hide();-->
-<!--                    $(".form-service .form-confirm").show();-->
-<!--                    toastr.success("Ваша заявку отправлена");-->
-<!--                    setTimeout(location.reload(), 1000);-->
-<!--                } else {-->
-<!--                    toastr.error("Не удалось отправить");-->
-<!--                }-->
-<!--            })-->
-<!--            .fail(function () {-->
-<!--                toastr.error("Ошибка при отправке");-->
-<!--            });-->
-<!--        return false;-->
-<!--    });-->
-<!--</script>-->

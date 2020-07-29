@@ -21,7 +21,7 @@ class m200717_170100_stat extends Migration
             'updated_at' => $this->integer()->notNull(),
         ]);
 
-        $this->addPrimaryKey('pk-param-sid', self::TABLE, 'sid');
+        $this->addPrimaryKey('pk-param-ssid', self::TABLE, 'sid');
 
 		$this->addCommentOnColumn(self::TABLE, 'sid', 'Имя пула статистических данных');
 		$this->addCommentOnColumn(self::TABLE, 'defs', 'JSON массив с любыми параметрами');

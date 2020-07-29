@@ -107,7 +107,7 @@ class LotSearch extends Lot
      * @return ActiveDataProvider
      * @throws \yii\base\InvalidConfigException
      */
-    public function search($params)
+    public function search($params =null)
     {
         $limit = \Yii::$app->params[ 'defaultPageLimit' ];
         $query = Lot::find()
@@ -218,8 +218,8 @@ class LotSearch extends Lot
         }
 
         if ($this->search) {
-            $query->addSelect(new Expression("ts_rank({{%lot}}.fts,plainto_tsquery('ru', :q)) as rank"));
-            $query->andWhere(new Expression("{{%lot}}.fts  @@ plainto_tsquery('ru', :q)", [':q' => $this->search]));
+            $query->addSelect(new Expression("ts_rank({{ %lot }}.fts,plainto_tsquery('ru', :q)) as rank"));
+            $query->andWhere(new Expression("{{ %lot }}.fts  @@ plainto_tsquery('ru', :q)", [':q' => $this->search]));
             $query->addOrderBy(['rank' => SORT_DESC]);
         }
 

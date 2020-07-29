@@ -2,11 +2,47 @@ jQuery(function ($) {
   "use strict";
 
   var $window = $(window);
+  // Report slider Start->
+  $(".report__body__images__slider").slick({
+    infinite: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    dots: false,
+    prevArrow: '<button type="button" class="report__body__images__arrow-prev slick-prev"></button>',
+    nextArrow: '<button type="button" class="report__body__images__arrow-next slick-next"></button>'
+  });
+  // Report slider <-End
+
+  // diogramm procent Start->
+  // const circle = document.querySelector('.progress-ring__circle');
+  // const r = circle.r.baseVal.value;
+  // const circumference = 2 * Math.PI * r;
+  // const input = document.querySelector('.percente');
+
+  // circle.style.strokeDasharray = `${circumference} ${circumference}`;
+  // circle.style.strokeDashoffset = circumference;
+
+  // function setProgress(percent) {
+  //   const offset = circumference - percent / 100 * circumference;
+  //   circle.style.strokeDashoffset = offset;
+  // }
+
+  // setProgress(20);
+
+  // input.addEventListener('input', function () {
+  //   setProgress(input.value);
+  // });
+  // diogramm procent <-End
+
   // wish list start->
+  $('.lot__block__img__favorite').on('click', function (e) {
+    e.preventDefault();
+  });
   $(".wish-js").on("click", function (e) {
     e.preventDefault();
     var lotId = $(this).data("id"),
       star = $(this).children("img"),
+      svgStar = $(this).children("svg").children("path"),
       number = $(this).children("span"),
       item = $(this).parents(".col");
 
@@ -22,10 +58,39 @@ jQuery(function ($) {
 
         if (data["method"] === "save") {
           star.attr("src", "img/star.svg");
+          svgStar
+            .attr("d", `M26.285,2.486l5.407,10.956c0.376,0.762,1.103,1.29,1.944,1.412l12.091,1.757
+              c2.118,0.308,2.963,2.91,1.431,4.403l-8.749,8.528c-0.608,0.593-0.886,1.448-0.742,2.285l2.065,12.042
+              c0.362,2.109-1.852,3.717-3.746,2.722l-10.814-5.685c-0.752-0.395-1.651-0.395-2.403,0l-10.814,5.685
+              c-1.894,0.996-4.108-0.613-3.746-2.722l2.065-12.042c0.144-0.837-0.134-1.692-0.742-2.285l-8.749-8.528
+              c-1.532-1.494-0.687-4.096,1.431-4.403l12.091-1.757c0.841-0.122,1.568-0.65,1.944-1.412l5.407-10.956
+              C22.602,0.567,25.338,0.567,26.285,2.486z`)
+            .css({
+              'fill': '#FFB436'
+            })
+            .removeClass('lot__block__img__favorite-path');
           number.html(Number(num) + 1);
           toastr.success("Лот добавлен в избранное");
         } else if (data["method"] === "delete") {
           star.attr("src", "img/star-o.svg");
+          svgStar
+            .attr("d", `M48.856,22.731c0.983-0.958,1.33-2.364,0.906-3.671c-0.425-1.307-1.532-2.24-2.892-2.438l-12.092-1.757
+              c-0.515-0.075-0.96-0.398-1.19-0.865L28.182,3.043c-0.607-1.231-1.839-1.996-3.212-1.996c-1.372,0-2.604,0.765-3.211,1.996
+              L16.352,14c-0.23,0.467-0.676,0.79-1.191,0.865L3.069,16.623C1.71,16.82,0.603,17.753,0.178,19.06
+              c-0.424,1.307-0.077,2.713,0.906,3.671l8.749,8.528c0.373,0.364,0.544,0.888,0.456,1.4L8.224,44.702
+              c-0.232,1.353,0.313,2.694,1.424,3.502c1.11,0.809,2.555,0.914,3.772,0.273l10.814-5.686c0.461-0.242,1.011-0.242,1.472,0
+              l10.815,5.686c0.528,0.278,1.1,0.415,1.669,0.415c0.739,0,1.475-0.231,2.103-0.688c1.111-0.808,1.656-2.149,1.424-3.502
+              L39.651,32.66c-0.088-0.513,0.083-1.036,0.456-1.4L48.856,22.731z M37.681,32.998l2.065,12.042c0.104,0.606-0.131,1.185-0.629,1.547
+              c-0.499,0.361-1.12,0.405-1.665,0.121l-10.815-5.687c-0.521-0.273-1.095-0.411-1.667-0.411s-1.145,0.138-1.667,0.412l-10.813,5.686
+              c-0.547,0.284-1.168,0.24-1.666-0.121c-0.498-0.362-0.732-0.94-0.629-1.547l2.065-12.042c0.199-1.162-0.186-2.348-1.03-3.17
+              L2.48,21.299c-0.441-0.43-0.591-1.036-0.4-1.621c0.19-0.586,0.667-0.988,1.276-1.077l12.091-1.757
+              c1.167-0.169,2.176-0.901,2.697-1.959l5.407-10.957c0.272-0.552,0.803-0.881,1.418-0.881c0.616,0,1.146,0.329,1.419,0.881
+              l5.407,10.957c0.521,1.058,1.529,1.79,2.696,1.959l12.092,1.757c0.609,0.089,1.086,0.491,1.276,1.077
+              c0.19,0.585,0.041,1.191-0.4,1.621l-8.749,8.528C37.866,30.65,37.481,31.835,37.681,32.998z`)
+            .css({
+              'fill': ''
+            })
+            .addClass('lot__block__img__favorite-path');
           number.html(Number(num) - 1);
           toastr.success("Лот удалён из избранных");
           item.fadeOut();
@@ -175,8 +240,9 @@ jQuery(function ($) {
     function () {
       $("#header-waypoint-sticky").toggleClass("header-waypoint-sticky");
       return false;
-    },
-    { offset: "-20px" }
+    }, {
+      offset: "-20px"
+    }
   );
 
   /**
@@ -189,12 +255,19 @@ jQuery(function ($) {
     var $dropdownSmooth02Menu = $(this).find(".dropdown-menu");
     var orig_margin_top = parseInt($dropdownSmooth02Menu.css("margin-top"));
     $dropdownSmooth02Menu
-      .css({ "margin-top": orig_margin_top + 10 + "px", opacity: 0 })
-      .animate(
-        { "margin-top": orig_margin_top + "px", opacity: 1 },
+      .css({
+        "margin-top": orig_margin_top + 10 + "px",
+        opacity: 0
+      })
+      .animate({
+          "margin-top": orig_margin_top + "px",
+          opacity: 1
+        },
         300,
         function () {
-          $(this).css({ "margin-top": "" });
+          $(this).css({
+            "margin-top": ""
+          });
         }
       );
   });
@@ -207,11 +280,16 @@ jQuery(function ($) {
         opacity: 1,
         display: "block",
       })
-      .animate(
-        { "margin-top": orig_margin_top + 10 + "px", opacity: 0 },
+      .animate({
+          "margin-top": orig_margin_top + 10 + "px",
+          opacity: 0
+        },
         300,
         function () {
-          $(this).css({ "margin-top": "", display: "" });
+          $(this).css({
+            "margin-top": "",
+            display: ""
+          });
         }
       );
   });
@@ -251,10 +329,16 @@ jQuery(function ($) {
    * Chosen
    */
 
-  $(".chosen-the-basic").chosen({ disable_search_threshold: 10 });
-  $(".chosen-no-search").chosen({ disable_search: true });
+  $(".chosen-the-basic").chosen({
+    disable_search_threshold: 10
+  });
+  $(".chosen-no-search").chosen({
+    disable_search: true
+  });
   $(".chosen-sort-select")
-    .chosen({ disable_search_threshold: 10 })
+    .chosen({
+      disable_search_threshold: 10
+    })
     .change(function () {
       $(".load-list").html(
         '<div class="spinner-wrapper"><div class="spinner"></div>Сортируем лоты...</div>'
@@ -267,7 +351,10 @@ jQuery(function ($) {
   }
 
   $(".chosen-type-select")
-    .chosen({ disable_search_threshold: 10, allow_single_deselect: true })
+    .chosen({
+      disable_search_threshold: 10,
+      allow_single_deselect: true
+    })
     .change(function (e, type) {
       $("#search-lot-form").submit();
 
@@ -302,7 +389,10 @@ jQuery(function ($) {
   }
 
   $(".chosen-category-select")
-    .chosen({ disable_search_threshold: 10, allow_single_deselect: true })
+    .chosen({
+      disable_search_threshold: 10,
+      allow_single_deselect: true
+    })
     .change(function (e, id) {
       if (id.selected == 0) {
         $("#searchlot-subcategory")
@@ -310,8 +400,9 @@ jQuery(function ($) {
           .trigger("chosen:updated");
       } else {
         $("#searchlot-subcategory").load(
-          "/load-category",
-          { id: id.selected },
+          "/load-category", {
+            id: id.selected
+          },
           function (data) {
             if (data == '<option value="0">Все подкатегории</option>') {
               $("#searchlot-subcategory")
@@ -328,7 +419,10 @@ jQuery(function ($) {
     });
 
   $(".chosen-category-select-lot")
-    .chosen({ disable_search_threshold: 10, allow_single_deselect: true })
+    .chosen({
+      disable_search_threshold: 10,
+      allow_single_deselect: true
+    })
     .change(function (e, id) {
       if (id.selected == 0) {
         $("#searchlot-subcategory-wrapper").addClass("hidden");
@@ -338,8 +432,9 @@ jQuery(function ($) {
       } else {
         $("#searchlot-subcategory-wrapper").removeClass("hidden");
         $("#searchlot-subcategory").load(
-          "/lot/load-sub-categories",
-          { id: id.selected },
+          "/lot/load-sub-categories", {
+            id: id.selected
+          },
           function (data) {
             if (data == '<option value="0">Все подкатегории</option>') {
               $("#searchlot-subcategory")
@@ -363,7 +458,10 @@ jQuery(function ($) {
   }
 
   $(".chosen-zalog-category-select")
-    .chosen({ disable_search_threshold: 10, allow_single_deselect: true })
+    .chosen({
+      disable_search_threshold: 10,
+      allow_single_deselect: true
+    })
     .change(function (e, id) {
       var lotId = $(this).data("lotid");
       var lotType = $(this).data("lottype");
@@ -374,8 +472,10 @@ jQuery(function ($) {
           .trigger("chosen:updated");
       } else {
         $(".subcategory-" + lotId + "-load").load(
-          "/load-category",
-          { id: id.selected, type: lotType },
+          "/load-category", {
+            id: id.selected,
+            type: lotType
+          },
           function (data) {
             if (data == '<option value="0">Все подкатегории</option>') {
               $(".subcategory-" + lotId + "-load")
@@ -392,7 +492,10 @@ jQuery(function ($) {
     });
 
   $(".chosen-zalog-subcategory-select")
-    .chosen({ disable_search_threshold: 10, allow_single_deselect: true })
+    .chosen({
+      disable_search_threshold: 10,
+      allow_single_deselect: true
+    })
     .change(function (e, id) {
       var lotId = $(this).data("lotid");
       var lotType = $(this).data("lottype");
@@ -401,12 +504,12 @@ jQuery(function ($) {
       );
 
       $.ajax({
-        type: "POST",
-        contentType: false,
-        processData: false,
-        url: $("#lot-" + lotId + "-zalog-categorys").attr("action"),
-        data: formData,
-      })
+          type: "POST",
+          contentType: false,
+          processData: false,
+          url: $("#lot-" + lotId + "-zalog-categorys").attr("action"),
+          data: formData,
+        })
         .done(function (data) {
           if (data) {
             toastr.success("Категории успешно присвоины на лот №" + lotId);
@@ -467,8 +570,7 @@ jQuery(function ($) {
     slidesToScroll: 3,
     prevArrow: $(".testimonial-grid-prev"),
     nextArrow: $(".testimonial-grid-next"),
-    responsive: [
-      {
+    responsive: [{
         breakpoint: 576,
         settings: {
           slidesToShow: 1,
@@ -503,8 +605,7 @@ jQuery(function ($) {
     centerMode: true,
     focusOnSelect: true,
     infinite: true,
-    responsive: [
-      {
+    responsive: [{
         breakpoint: 1199,
         settings: {
           slidesToShow: 7,
@@ -546,17 +647,15 @@ jQuery(function ($) {
     slidesToShow: 2,
     slidesToScroll: 2,
     dots: false,
-    responsive: [
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          dots: false,
-          arrows: false,
-        },
+    responsive: [{
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        dots: false,
+        arrows: false,
       },
-    ],
+    }, ],
   });
 
   $(".slick-hero-alt-02").slick({
@@ -564,17 +663,15 @@ jQuery(function ($) {
     slidesToShow: 1,
     slidesToScroll: 1,
     dots: false,
-    responsive: [
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          dots: false,
-          arrows: false,
-        },
+    responsive: [{
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        dots: false,
+        arrows: false,
       },
-    ],
+    }, ],
   });
 
   $(".slick-top-destination").slick({
@@ -583,8 +680,7 @@ jQuery(function ($) {
     slidesToScroll: 1,
     dots: false,
     arrows: true,
-    responsive: [
-      {
+    responsive: [{
         breakpoint: 991,
         settings: {
           slidesToShow: 2,
@@ -611,8 +707,7 @@ jQuery(function ($) {
     slidesToScroll: 1,
     dots: false,
     arrows: true,
-    responsive: [
-      {
+    responsive: [{
         breakpoint: 991,
         settings: {
           slidesToShow: 2,
@@ -707,14 +802,13 @@ jQuery(function ($) {
   $("a.anchor[href*=#]:not([href=#])").on("click", function () {
     if (
       location.pathname.replace(/^\//, "") ==
-        this.pathname.replace(/^\//, "") &&
+      this.pathname.replace(/^\//, "") &&
       location.hostname == this.hostname
     ) {
       var target = $(this.hash);
       target = target.length ? target : $("[name=" + this.hash.slice(1) + "]");
       if (target.length) {
-        $("html,body").animate(
-          {
+        $("html,body").animate({
             scrollTop: target.offset().top - 140, // 70px offset for navbar menu
           },
           300
