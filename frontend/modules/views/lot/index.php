@@ -304,6 +304,19 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                                     ]) ?>
                                 </div>
                             </div>
+                            <?php if ($model->type == Torg::PROPERTY_BANKRUPT) : ?>
+                                <div class="box-content">
+                                    <div class="custom-control custom-checkbox">
+                                        <?= $form->field($model, 'priceDown')->checkbox([
+                                            'class'    => 'custom-control-input',
+                                            'value'    => '1',
+                                            'id'       => 'priceDown',
+                                            'template' => '{input}<label class="custom-control-label" for="priceDown">Цена снижена</label>'
+                                        ]) ?>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+
                         </div>
 
                         <?php if ($model->type == Torg::PROPERTY_BANKRUPT) : ?>

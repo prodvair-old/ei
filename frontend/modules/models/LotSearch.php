@@ -13,6 +13,7 @@ use yii\db\Expression;
 use yii\db\Query;
 use common\models\db\Torg;
 use common\models\db\Lot;
+use common\models\db\LotPrice;
 
 /**
  * LotSearch represents the model behind the search form of `frontend\modules\models\Lot`.
@@ -67,6 +68,8 @@ class LotSearch extends Lot
 
     public $hasReport;
 
+    public $priceDown;
+
     const NAME_DESC = 'nameDESC',
         NAME_ASC = 'nameASC',
         DATE_DESC = 'dateDESC',
@@ -85,7 +88,7 @@ class LotSearch extends Lot
             [['title', 'description', 'minPrice', 'maxPrice', 'mainCategory', 'type',
                 'subCategory', 'etp', 'owner', 'tradeType', 'search', 'sortBy', 'haveImage', 'region',
                 'offset', 'efrsb', 'bankruptName', 'publishedDate', 'andArchived',
-                'startApplication', 'competedApplication', 'torgDateRange', 'hasReport'], 'safe'],
+                'startApplication', 'competedApplication', 'torgDateRange', 'hasReport', 'priceDown'], 'safe'],
             [['start_price', 'step', 'deposit'], 'number'],
         ];
     }
@@ -229,6 +232,16 @@ class LotSearch extends Lot
 
         if ($this->hasReport) {
             $query->innerJoin(Report::tableName(), 'report.lot_id = lot.id');
+        }
+
+        if ($this->priceDown) {
+            $query->rightJoin(LotPrice::tableName(), LotPrice::tableName() . '.lot_id = ' . Lot::tableName() . '.id');
+            $today = new \DateTime();
+            $query->andFilterWhere([
+                'and',
+                ['<=', LotPrice::tableName() . '.started_at', \Yii::$app->formatter->asTimestamp($today)],
+                ['>=', LotPrice::tableName() . '.end_at', \Yii::$app->formatter->asTimestamp($today)]
+            ]);
         }
 
         if ($this->sortBy) {

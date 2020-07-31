@@ -104,7 +104,7 @@ $wishListAll = WishList::find()->where(['lot_id' => $lot->id])->count();
             </div>
             <?php endif; ?>
         </div>
-        <div class="lot__block__info">
+        <div class="lot__block__info <? ($lot->report)? 'report' : ''?>">
             <div class="lot__block__info__content">
                 <div itemprop="category" class="lot__block__info__content__offer mb-15">
                     <?= Lookup::item('TorgOffer', $lot->torg->offer) ?>
@@ -114,8 +114,12 @@ $wishListAll = WishList::find()->where(['lot_id' => $lot->id])->count();
                     <?= $lot->title ?>
                 </div>
                 <div itemprop="price" class="lot__block__info__content__price text-secondary mb-10">
-                    <?= Yii::$app->formatter->asCurrency($lot->start_price) ?>
-                    <?//<span class="text-muted"><del>880 000,00 ₽</del></span>?>
+                    <?if ($lot->newPrice) { ?>
+                        <?= Yii::$app->formatter->asCurrency($lot->newPrice->price) ?>
+                        <span class="text-muted"><?=Yii::$app->formatter->asCurrency($lot->start_price) ?></span>
+                    <? } else { ?>
+                        <?= Yii::$app->formatter->asCurrency($lot->start_price) ?>
+                    <? }?>
                 </div>
             </div>
             <div class="lot__block__info__footer">

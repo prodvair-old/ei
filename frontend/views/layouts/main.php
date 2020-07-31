@@ -151,7 +151,7 @@ AppAsset::register($this);
                   <?php if (Yii::$app->user->isGuest) { ?>
                   <li class="d-none d-sm-block">
                     <a href="#loginFormTabInModal-register" data-toggle="modal" data-target="#loginFormTabInModal"
-                      data-backdrop="static" data-keyboard="false" class="main-page__link">
+                      data-backdrop="static" data-keyboard="false" class="borr-5 main-page__link">
                       <span class="icon-font"><i class="icon-user-follow"></i></span> Зарегистрироваться
                     </a>
                   </li>

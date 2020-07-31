@@ -9,7 +9,7 @@ use frontend\modules\components\SearchForm;
 use common\models\Query\LotsCategory;
 use common\models\Query\Regions;
 use common\models\db\Lot;
-use common\models\db\LotTrace;
+use common\models\db\LotPrice;
 use common\models\db\Report;
 use common\models\db\Torg;
 use frontend\modules\models\LotSearch;
@@ -23,35 +23,43 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
 
 Yii::$app->params[ 'defaultPageLimit' ] = 8;
 // $LotSearch = new LotSearch();
-$lotPopular = Lot::find()->joinWith(['torg', 'traces']);
-$lotPopular->where(['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED]);
-$lotPopular->andWhere(['>', Torg::tableName() . '.end_at', time()]);
-$lotPopular->groupBy([
-    Lot::tableName() . '.id', 
-    Lot::tableName() . '.torg_id', 
-    Lot::tableName() . '.ordinal_number', 
-    Lot::tableName() . '.title', 
-    Lot::tableName() . '.description', 
-    Lot::tableName() . '.start_price', 
-    Lot::tableName() . '.step', 
-    Lot::tableName() . '.step_measure', 
-    Lot::tableName() . '.deposit', 
-    Lot::tableName() . '.deposit_measure', 
-    Lot::tableName() . '.status', 
-    Lot::tableName() . '.status_changed_at', 
-    Lot::tableName() . '.reason', 
-    Lot::tableName() . '.url', 
-    Lot::tableName() . '.info', 
-    Lot::tableName() . '.created_at', 
-    Lot::tableName() . '.updated_at', 
-    Torg::tableName() . '.published_at', 
+$lotPopular = Lot::find()->joinWith(['torg']);
+$lotPopular->rightJoin(LotPrice::tableName(), LotPrice::tableName() . '.lot_id = ' . Lot::tableName() . '.id');
+$today = new \DateTime();
+$lotPopular->where([
+    'and',
+    ['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED],
+    ['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED],
+    ['<=', LotPrice::tableName() . '.started_at', \Yii::$app->formatter->asTimestamp($today)],
+    ['>=', LotPrice::tableName() . '.end_at', \Yii::$app->formatter->asTimestamp($today)]
 ]);
-$lotPopularList = $lotPopular->orderBy(['count('.LotTrace::tableName() . '.id)' => SORT_DESC, Torg::tableName() . '.published_at' => SORT_DESC])->limit(8)->all();
+// $lotPopular->groupBy([
+//     Lot::tableName() . '.id', 
+//     Lot::tableName() . '.torg_id', 
+//     Lot::tableName() . '.ordinal_number', 
+//     Lot::tableName() . '.title', 
+//     Lot::tableName() . '.description', 
+//     Lot::tableName() . '.start_price', 
+//     Lot::tableName() . '.step', 
+//     Lot::tableName() . '.step_measure', 
+//     Lot::tableName() . '.deposit', 
+//     Lot::tableName() . '.deposit_measure', 
+//     Lot::tableName() . '.status', 
+//     Lot::tableName() . '.status_changed_at', 
+//     Lot::tableName() . '.reason', 
+//     Lot::tableName() . '.url', 
+//     Lot::tableName() . '.info', 
+//     Lot::tableName() . '.created_at', 
+//     Lot::tableName() . '.updated_at', 
+//     Torg::tableName() . '.published_at', 
+// ]);
+$lotPopularList = $lotPopular->orderBy([LotPrice::tableName() . '.id' => SORT_DESC, Torg::tableName() . '.published_at' => SORT_DESC])->limit(8)->all();
+// $lotPopularList = $lotPopular->orderBy([Torg::tableName() . '.published_at' => SORT_DESC])->limit(8)->all();
 
-$lotNew = Lot::find()->joinWith(['torg', 'report']);
+$lotNew = Lot::find()->joinWith(['torg']);
 $lotNew->where(['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED]);
 $lotNew->andWhere(['>', Torg::tableName() . '.end_at', time()]);
-// $lotNew->innerJoin(Report::tableName(), 'report.lot_id = lot.id');
+$lotNew->innerJoin(Report::tableName(), 'report.lot_id = lot.id');
 $lotNew->groupBy([
     Lot::tableName() . '.id', 
     Lot::tableName() . '.torg_id', 
@@ -76,20 +84,19 @@ $newLots = $lotNew->orderBy(['count('.Report::tableName() . '.id)' => SORT_DESC,
 ?>
 
 <div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03"
-    style="background-image:url('img/01.jpg'); background-position: top  center;">
+    style="background-color: #E6EFF4">
 
     <div class="overlay-holder bottom"></div>
 
     <div class="hero-inner">
 
-        <div class="container pt5">
+        <div class="container" style="padding-top: 120px;">
 
             <h1>
                 <!-- <span class="font700 main-page__title">Единый информатор<br><span class="main-page__subtitle">Полный каталог реализуемого имущества организаций, должников и банков России</span> </span></h1> -->
-                <span class="font700 main-page__title">Имущество организаций России<br></span>
+                <span class="font700 main-page__title">Все торги в одном месте<br></span>
             </h1>
-            <p class="main-page__subtitle">Агрегатор банкротных и арестованных торгов, имущества банков, лизинговых
-                компаний, залоговое имущество</p>
+            <p class="main-page__subtitle">Банкротные и арестованные торги, имущество банков и лизинговых компаний</p>
 
             <!-- </span><span class="font200">торгов<span class="block"> <span class="font700">по</span> банкротству</span></span> -->
             <?= SearchForm::widget(['type' => 'bankrupt', 'url' => 'all']) ?>
@@ -103,7 +110,7 @@ $newLots = $lotNew->orderBy(['count('.Report::tableName() . '.id)' => SORT_DESC,
 <section class="pt-0 pb-0">
     <div class="container">
         <div class="clear mb-50"></div>
-        <h2 class="h3 mt-40 line-125 ">Категории</h2>
+        <!-- <h2 class="h3 mt-40 line-125 ">Категории</h2> -->
 
         <div class="row">
             <div class="col-lg-2 col-sm-4 col-6">
@@ -161,32 +168,7 @@ $newLots = $lotNew->orderBy(['count('.Report::tableName() . '.id)' => SORT_DESC,
 <section class="pt-0 pb-0">
     <div class="container">
         <div class="clear mb-50"></div>
-        <h2 class="h3 mt-40 line-125 ">Популярные лоты</h2>
-
-
-        <div class="row">
-            <? if (count($lots = $lotPopularList) > 0) {
-                foreach ($lots as $lot) { ?>
-                <div class="col-lg-3 col-sm-6 mb-40" itemscope itemtype="http://schema.org/Product">
-                    <?= LotBlockSmall::widget(['lot' => $lot, 'url' => $url]) ?>
-                </div>
-            <?  }
-            } else {
-                echo "<div class='p-15 font-bold'>По данному запросу не удалось найти лоты</div>";
-            } ?>
-        </div>
-        <div class="d-flex justify-content-center">
-            <a href="/all/lot-list" class="btn btn-primary">Перейти в каталог</a>
-        </div>
-
-        <div class="clear mb-50"></div>
-    </div>
-</section>
-
-<section class="pt-0 pb-0">
-    <div class="container">
-        <div class="clear mb-50"></div>
-        <h2 class="h3 mt-40 line-125 ">Новые лоты</h2>
+        <h2 class="h3 mt-40 line-125 ">Лоты с отчётами экспертов</h2>
 
 
         <div class="row">
@@ -201,7 +183,36 @@ $newLots = $lotNew->orderBy(['count('.Report::tableName() . '.id)' => SORT_DESC,
             } ?>
         </div>
         <div class="d-flex justify-content-center">
-            <a href="/all/lot-list" class="btn btn-primary">Перейти в каталог</a>
+            <a href="/all/lot-list?LotSearch%5Bsearch%5D=&LotSearch%5Bregion%5D=&LotSearch%5BminPrice%5D=&LotSearch%5BmaxPrice%5D=&LotSearch%5Betp%5D=&LotSearch%5BtradeType%5D=&LotSearch%5BandArchived%5D=0&LotSearch%5BhaveImage%5D=0&LotSearch%5BhasReport%5D=1&LotSearch%5BpriceDown%5D=0&LotSearch%5Befrsb%5D=&LotSearch%5BbankruptName%5D=&LotSearch%5BtorgDateRange%5D=&LotSearch%5BstartApplication%5D=0&LotSearch%5BcompetedApplication%5D=0" class="btn btn-primary">
+                Больше предложений
+            </a>
+        </div>
+
+        <div class="clear mb-50"></div>
+    </div>
+</section>
+
+<section class="pt-0 pb-0">
+    <div class="container">
+        <div class="clear mb-50"></div>
+        <h2 class="h3 mt-40 line-125 ">Цена снижена</h2>
+
+
+        <div class="row">
+            <? if (count($lots = $lotPopularList) > 0) {
+                foreach ($lots as $lot) { ?>
+                <div class="col-lg-3 col-sm-6 mb-40" itemscope itemtype="http://schema.org/Product">
+                    <?= LotBlockSmall::widget(['lot' => $lot, 'url' => $url]) ?>
+                </div>
+            <?  }
+            } else {
+                echo "<div class='p-15 font-bold'>По данному запросу не удалось найти лоты</div>";
+            } ?>
+        </div>
+        <div class="d-flex justify-content-center">
+            <a href="/bankrupt/lot-list?LotSearch%5Bsearch%5D=&LotSearch%5Bregion%5D=&LotSearch%5BminPrice%5D=&LotSearch%5BmaxPrice%5D=&LotSearch%5Betp%5D=&LotSearch%5BtradeType%5D=&LotSearch%5BandArchived%5D=0&LotSearch%5BhaveImage%5D=0&LotSearch%5BhasReport%5D=0&LotSearch%5BpriceDown%5D=1&LotSearch%5Befrsb%5D=&LotSearch%5BbankruptName%5D=&LotSearch%5BtorgDateRange%5D=&LotSearch%5BstartApplication%5D=0&LotSearch%5BcompetedApplication%5D=0" class="btn btn-primary">
+                Больше предложений
+            </a>
         </div>
 
         <div class="clear mb-50"></div>
