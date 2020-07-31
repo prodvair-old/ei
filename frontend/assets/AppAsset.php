@@ -16,7 +16,7 @@ class AppAsset extends AssetBundle
         
 
         'css/data_picker.css',
-        'css/custom.min.css?v=1.06',
+        'css/custom.min.css?v=1.07',
         'css/your-style.css?v1.31',
         'css/map.css?v1.06',
         'https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css'
