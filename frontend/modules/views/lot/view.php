@@ -343,7 +343,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                                     <div class="report__body__diogramm__green__info">
                                         <div class="report__body__diogramm__green__info__number">
-                                            <span>8</span>/10
+                                            <span>7</span>/10
                                         </div>
                                         <div class="report__body__diogramm__green__info__name">
                                             Интерес
@@ -364,7 +364,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                             circle.style.strokeDashoffset = offset;
                                         }
 
-                                        setProgress(80);
+                                        setProgress(70);
                                     </script>
                                 </div>
 

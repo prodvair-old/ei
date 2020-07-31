@@ -36,7 +36,6 @@ phpunit.phar
 /.vagrant
 
 # ignore generated files
-/frontend/web/img
 /frontend/web/files
 /frontend/web/index.php
 /frontend/web/index-test.php
