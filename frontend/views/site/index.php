@@ -375,7 +375,7 @@ $lotLowPriceList = $lotLowPrice->orderBy([Torg::tableName() . '.published_at' =>
 
             <div class="col-lg-4 main-page__link-item">
                 <div class="main-page__category__block">
-                    <p class="h4">Секции имущества</p>
+                    <p class="h4 font600">Секции имущества</p>
                     <hr>
                     <ul>
                         <li><a href="/all/lot-list"> Все имущество
@@ -397,7 +397,7 @@ $lotLowPriceList = $lotLowPrice->orderBy([Torg::tableName() . '.published_at' =>
             </div>
             <div class="col-lg-4 main-page__link-item">
                 <div class="main-page__category__block">
-                    <p class="h4">Категории</p>
+                    <p class="h4 font600">Категории</p>
                     <hr>
                     <ul>
                         <?php foreach ($lotsCategory as $category) {
@@ -408,7 +408,7 @@ $lotLowPriceList = $lotLowPrice->orderBy([Torg::tableName() . '.published_at' =>
             </div>
             <div class="col-lg-4 main-page__link-item">
                 <div class="main-page__category__block">
-                    <p class="h4">Регионы</p>
+                    <p class="h4 font600">Регионы</p>
                     <hr>
                     <ul>
                         <li><a href="/all/lot-list"> Россия

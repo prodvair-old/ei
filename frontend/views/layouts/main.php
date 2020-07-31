@@ -151,7 +151,7 @@ AppAsset::register($this);
                   <?php if (Yii::$app->user->isGuest) { ?>
                   <li class="d-none d-sm-block">
                     <a href="#loginFormTabInModal-register" data-toggle="modal" data-target="#loginFormTabInModal"
-                      data-backdrop="static" data-keyboard="false" class="borr-5 main-page__link">
+                      data-backdrop="static" data-keyboard="false" class="borr-15 main-page__link" style="border-width: 2px">
                       <span class="icon-font"><i class="icon-user-follow"></i></span> Зарегистрироваться
                     </a>
                   </li>
@@ -512,7 +512,7 @@ AppAsset::register($this);
                   положениями Статьи 437 Гражданского кодекса Российской Федерации.</p>
                 <p class="footer-copy-center">
                   <a href="/policy">Политика конфиденциальности</a> и <a href="/license"> Лицензионное соглашение</a> ©
-                  2019 ei.ru
+                  2020 ei.ru
 
                 </p>
               </div>

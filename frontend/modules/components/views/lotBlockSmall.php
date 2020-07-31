@@ -109,23 +109,24 @@ $wishListAll = WishList::find()->where(['lot_id' => $lot->id])->count();
         </div>
         <div class="lot__block__info <?= ($lot->report)? 'report' : ''?>">
             <div class="lot__block__info__content">
-                <? if (!$lot->archiveStat) {?>
                 <div itemprop="category" class="lot__block__info__content__offer mb-15">
-                    <?= Lookup::item('TorgOffer', $lot->torg->offer) ?>
+                    <?= $lot->region->name ?>
                 </div>
-                <? } ?>
                 <div itemprop="name"
                     class="lot__block__info__content__title mb-10 <?= (!empty($lot->archiveStat)) ? ($lot->archiveStat) ? 'text-muted' : '' : '' ?>">
                     <?= $lot->title ?>
                 </div>
                 <?if ($lot->newPrice && $lot->torg->offer == 1) { ?>
                     <div itemprop="price" class="lot__block__info__content__price text-danger mb-10" title="Текущая цена">
-                        <?= Yii::$app->formatter->asCurrency($lot->newPrice->price) ?>
+                        <?= Yii::$app->formatter->asCurrency($lot->newPrice->price) ?> 
+                        <i class="ion-android-arrow-down" title="Публичное предложение"></i>
                         <span class="text-muted" title="Старая цена"><?=Yii::$app->formatter->asCurrency($lot->start_price) ?></span>
                     </div>
                 <? } else { ?>
                     <div itemprop="price" class="lot__block__info__content__price text-secondary mb-10">
                         <?= Yii::$app->formatter->asCurrency($lot->start_price) ?>
+                        <?= ($lot->torg->offer == 1)? '<i class="ion-android-arrow-down" title="Публичное предложение"></i>': ''?>
+                        <?= ($lot->torg->offer == 2)? '<i class="ion-android-arrow-up" title="Аукцион"></i>': ''?>
                     </div>
                 <? }?>
 
