@@ -22,7 +22,7 @@ $regions = Regions::find()->orderBy('id ASC')->all();
 $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
 
 // $LotSearch = new LotSearch();
-$lotPopular = Lot::find()->joinWith(['torg']);
+$lotPopular = Lot::find()->joinWith(['torg'], true, 'INNER JOIN');
 $lotPopular->rightJoin(LotPrice::tableName(), LotPrice::tableName() . '.lot_id = ' . Lot::tableName() . '.id');
 $today = new \DateTime();
 $lotPopular->where([
@@ -34,7 +34,7 @@ $lotPopular->where([
 ]);
 $lotPopularList = $lotPopular->orderBy([LotPrice::tableName() . '.id' => SORT_DESC, Torg::tableName() . '.published_at' => SORT_DESC])->limit(7)->all();
 
-$lotNew = Lot::find()->joinWith(['torg']);
+$lotNew = Lot::find()->joinWith(['torg'], true, 'INNER JOIN');
 $lotNew->where(['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED]);
 $lotNew->andWhere(['>', Torg::tableName() . '.end_at', time()]);
 $lotNew->innerJoin(Report::tableName(), 'report.lot_id = lot.id');
@@ -60,11 +60,11 @@ $lotNew->groupBy([
 ]);
 $newLots = $lotNew->orderBy(['count('.Report::tableName() . '.id)' => SORT_DESC, Torg::tableName() . '.published_at' => SORT_DESC])->limit(7)->all();
 
-$lotEnd = Lot::find()->joinWith(['torg']);
+$lotEnd = Lot::find()->joinWith(['torg'], true, 'INNER JOIN');
 $lotEnd->andWhere(['<=', Torg::tableName() . '.end_at', \Yii::$app->formatter->asTimestamp($today)]);
 $lotEndList = $lotEnd->orderBy([Torg::tableName() . '.end_at' => SORT_DESC])->limit(3)->all();
 
-$lotLowPrice = Lot::find()->joinWith(['torg']);
+$lotLowPrice = Lot::find()->joinWith(['torg'], true, 'INNER JOIN');
 $lotLowPrice->where([
     'and',
     ['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED],
