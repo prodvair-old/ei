@@ -394,6 +394,7 @@ $newLots = $lotNew->orderBy(['count('.Report::tableName() . '.id)' => SORT_DESC,
 
         </div>
     </div>
+    <div class="clear mb-50"></div>
 </section>
 
 <!-- <div class="bg-white-gradient-top-bottom pt-0 mt-40">
