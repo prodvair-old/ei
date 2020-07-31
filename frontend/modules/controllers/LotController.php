@@ -16,6 +16,7 @@ use common\models\db\WishList;
 use frontend\modules\models\LotSearch;
 use frontend\modules\models\MapSearch;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -412,35 +413,36 @@ class LotController extends Controller
         return false;
     }
 
-    public function actionInvoice() {
+    public function actionInvoice()
+    {
 
         $rs = new ReportService();
         $form = new ReportForm();
 
-        if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             $form->load(Yii::$app->request->post());
 
-            if($form->validate()) {
+            if ($form->validate()) {
 
-                $res = $rs->invoiceCreate($form->userId, $form->cost, $form->reportId, $form->returnUrl);
+                $returnUrl = Url::toRoute([
+                    '/lot/purchase/success',
+                    'fromUrl' => $form->returnUrl,
+                ], []);
 
-                if($res) {
+                try {
+                    $res = $rs->invoiceCreate($form->userId, $form->cost, $form->reportId, $returnUrl);
+                } catch (\Exception $e) {
+                    return $this->redirect($form->returnUrl); //TODO fix
+                }
+
+                if ($res) {
                     return $this->redirect($rs->getPaymentUrl());
                 }
             }
-            else {
-                echo "<pre>";
-                var_dump($form->getErrorSummary(true));
-                echo "</pre>";
-            }
+
+            return $this->redirect($form->returnUrl); //TODO fix
         }
 
 
-
     }
-
-    public function actionBuy() {
-
-    }
-
 }

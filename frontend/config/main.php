@@ -130,6 +130,7 @@ return [
                 '/profile/get-code'      => 'user/get-code',
 
                 '/profile/notification' => 'profile/profile/notification',
+                '/profile/purchase'     => 'profile/profile/purchase',
 
 //                old settings routes
 //                '/profile/setting'       => 'user/setting',
@@ -187,6 +188,8 @@ return [
 
                 '/sro/list'     => '/lot/sro/index',
                 '/sro/<id:\d+>' => '/lot/sro/view',
+
+                '/purchase/success' => '/lot/purchase/success',
 
                 '/<type>'                     => 'lot/lot/index',
                 '/<type>/<category>'          => 'lot/lot/index',

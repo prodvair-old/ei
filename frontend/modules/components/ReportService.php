@@ -3,17 +3,10 @@
 
 namespace frontend\modules\components;
 
-
 use common\models\db\Invoice;
-use common\models\db\Place;
-use common\models\db\Profile;
 use common\models\db\Purchase;
-use common\models\db\User;
-use frontend\modules\profile\forms\ProfileForm;
 use Yii;
 use yii\base\Component;
-use yii\db\ActiveRecord;
-use yii\web\NotFoundHttpException;
 
 class ReportService extends Component
 {
@@ -28,21 +21,22 @@ class ReportService extends Component
      * @return bool
      * @throws \Exception
      */
-    public function invoiceCreate($userId, $cost, $reportId, $returnUrl) {
+    public function invoiceCreate($userId, $cost, $reportId, $returnUrl)
+    {
 
-        $orderInnerId = strtoupper(substr(sha1(microtime(true)),0,16)); //TODO
+        $orderInnerId = strtoupper(substr(sha1(microtime(true)), 0, 16)); //TODO
         $orderExternalId = '';
         $formUrl = '';
 
         $data = [
-          'userName' => Yii::$app->params['paymentUserName'],
-          'password' => Yii::$app->params['paymentPassword'],
-          'amount' => $cost * 100,
-          'currency' => 643,
-          'language' => 'ru',
-          'orderNumber' => $orderInnerId,
-          'returnUrl' => $returnUrl,
-          'failUrl' => '', //TODO
+            'userName'    => Yii::$app->params[ 'paymentUserName' ],
+            'password'    => Yii::$app->params[ 'paymentPassword' ],
+            'amount'      => $cost * 100,
+            'currency'    => 643,
+            'language'    => 'ru',
+            'orderNumber' => $orderInnerId,
+            'returnUrl'   => $returnUrl,
+            'failUrl'     => '', //TODO
         ];
 
         $headers = [
@@ -52,11 +46,11 @@ class ReportService extends Component
         ];
 
         $data = http_build_query($data);
-        $response = json_decode($this->sendPayment('register.do', $data, $headers), true);
+        $response = json_decode($this->request('register.do', $data, $headers), true);
 
-        if(isset($response['orderId'])) {
-            $orderExternalId = $response['orderId'];
-            $formUrl = $response['formUrl']; //TODO save ???
+        if (isset($response[ 'orderId' ])) {
+            $orderExternalId = $response[ 'orderId' ];
+            $formUrl = $response[ 'formUrl' ]; //TODO save ???
 
             $invoice = new Invoice();
             $invoice->product = Invoice::PRODUCT_REPORT;
@@ -67,14 +61,57 @@ class ReportService extends Component
             $invoice->orderExternalId = $orderExternalId;
             $invoice->orderInnerId = $orderInnerId;
 
-            if($invoice->save()) {
+            if ($invoice->save()) {
                 $this->_formUrl = $formUrl;
                 return true;
             }
-            else {
-                echo "<pre>";
-                var_dump($invoice->getErrorSummary(true));
-                echo "</pre>";
+        }
+
+        return false;
+    }
+
+    public function buyConfirm($orderId)
+    {
+        //TODO getStatus func??
+        $data = [
+            'userName' => Yii::$app->params[ 'paymentUserName' ],
+            'password' => Yii::$app->params[ 'paymentPassword' ],
+            'orderId'  => $orderId,
+            'language' => 'ru',
+        ];
+
+        $headers = [
+            'Accept: application/json',
+            'Cache-Control: no-cache',
+            'Content-Type: application/x-www-form-urlencoded',
+        ];
+
+        $data = http_build_query($data);
+        $response = json_decode($this->request('getOrderStatusExtended.do', $data, $headers), true);
+
+
+        if ($response[ 'orderStatus' ] == 2) { //TODO magic
+            $invoice = Invoice::findOne(['orderExternalId' => $orderId]);
+            $invoice->paid = true;
+
+            $purchase = new Purchase();
+            $purchase->user_id = $invoice->user_id;
+            $purchase->report_id = $invoice->parent_id;
+            $purchase->invoice_id = $invoice->id;
+
+            $transaction = Yii::$app->db->beginTransaction();
+
+            try {
+                if ($invoice->save() && $purchase->save()) {
+                    $transaction->commit();
+                    return true;
+                }
+
+                $transaction->rollBack();
+                return false;
+
+            } catch (\Throwable $e) {
+                $transaction->rollBack();
             }
         }
 
@@ -84,36 +121,31 @@ class ReportService extends Component
     /**
      * @return string
      */
-    public function getPaymentUrl() { //TODO
+    public function getPaymentUrl()
+    { //TODO
         return $this->_formUrl;
     }
 
-    public function buy($invoiceId, $userId, $reportId) { //TODO
-        $purchase = new Purchase();
-
-        $purchase->user_id = $userId;
-        $purchase->report_id = $reportId;
-        $purchase->invoice_id = $invoiceId;
-
-        return $purchase->save();
-
-    }
-
-        protected function sendPayment(string $requestUri, string $body, array $headers) { //TODO move to a separate service
+    /**
+     * @param string $requestUri
+     * @param string $body
+     * @param array $headers
+     * @param string $method
+     * @return false|string
+     * @throws \Exception
+     */
+    protected function request(string $requestUri, string $body, array $headers, $method = 'POST')
+    { //TODO move to a separate service
 
         $ch = curl_init();
         $baseUrl = 'https://3dsec.sberbank.ru/payment/rest/'; //TODO
 
 
         curl_setopt_array($ch, [
-            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_URL           => $baseUrl . $requestUri,
             CURLOPT_POSTFIELDS    => $body ?: null,
             CURLOPT_HTTPHEADER    => $headers,
-
-//            CURLOPT_SSL_VERIFYHOST => 0,
-//            CURLOPT_SSL_VERIFYPEER => 0,
-//            CURLOPT_FOLLOWLOCATION => true,
 
             CURLOPT_HEADER         => true,
             CURLINFO_HEADER_OUT    => true,
@@ -130,8 +162,7 @@ class ReportService extends Component
         curl_close($ch);
 
         if ($error || $httpCode !== 200) {
-//            throw new ConnectorException(sprintf('curl error: %s, http_code_response : %d',  $error, $httpCode));
-            throw new \Exception(sprintf('curl error: %s, http_code_response : %d',  $error, $httpCode));
+            throw new \Exception(sprintf('curl error: %s, http_code_response : %d', $error, $httpCode));
         }
 
         $responseBody = substr($response, $headerSize);
