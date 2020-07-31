@@ -152,7 +152,16 @@ use yii\widgets\ActiveForm;
             </div>
             <div class="col-md-6 report__body__info">
                 <div class="report__body__info__title mb-20"><?= $report->title ?></div>
-                <p class="report__body__info__text mb-30"><?= $report->content ?></p>
+                <p class="report__body__info__text mb-30">
+                    <?php if ($report->isPaid()) : ?>
+                        <?= $report->content ?>
+                    <?php else : ?>
+                        <p class="bg-white font-sm">&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        <p class="bg-white font-sm">&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        <p class="bg-white font-sm">&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        <p class="bg-white font-sm">&nbsp;&nbsp;&nbsp;</p>
+                    <?php endif; ?>
+                </p>
                 <div class="report__body__info__price mb-20">Цена: <?= $report->cost ?> руб.</div>
                 <?php $form = ActiveForm::begin(['action' => Url::to(['/lot/lot/invoice']), 'options' => [
                     'class' => 'invoice-form'
