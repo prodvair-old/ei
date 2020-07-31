@@ -118,18 +118,21 @@ $wishListAll = WishList::find()->where(['lot_id' => $lot->id])->count();
                     class="lot__block__info__content__title mb-10 <?= (!empty($lot->archiveStat)) ? ($lot->archiveStat) ? 'text-muted' : '' : '' ?>">
                     <?= $lot->title ?>
                 </div>
-                <div itemprop="price" class="lot__block__info__content__price text-secondary mb-10">
-                    <?if ($lot->newPrice && $lot->torg->offer == 1) { ?>
+                <?if ($lot->newPrice && $lot->torg->offer == 1) { ?>
+                    <div itemprop="price" class="lot__block__info__content__price text-danger mb-10" title="Текущая цена">
                         <?= Yii::$app->formatter->asCurrency($lot->newPrice->price) ?>
-                        <span class="text-muted"><?=Yii::$app->formatter->asCurrency($lot->start_price) ?></span>
-                    <? } else { ?>
+                        <span class="text-muted" title="Старая цена"><?=Yii::$app->formatter->asCurrency($lot->start_price) ?></span>
+                    </div>
+                <? } else { ?>
+                    <div itemprop="price" class="lot__block__info__content__price text-secondary mb-10">
                         <?= Yii::$app->formatter->asCurrency($lot->start_price) ?>
-                    <? }?>
-                </div>
+                    </div>
+                <? }?>
+
             </div>
             <? if (!$lot->archiveStat) {?>
             <div class="lot__block__info__footer">
-                <div class="lot__block__info__footer__published">
+                <div class="lot__block__info__footer__published" title="Дата пуликации">
                     <?= Yii::$app->formatter->asDate($lot->torg->published_at, 'long') ?>
                 </div>
                 <? if ($lot->getTraces()->count() > 10) { ?>
