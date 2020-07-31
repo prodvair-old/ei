@@ -70,6 +70,10 @@ class MapSearch extends Place
 
     public $torgDateRange;
 
+    public $hasReport;
+
+    public $priceDown;
+
     public $model_code;
 
     public $north_west_lat;
@@ -94,7 +98,7 @@ class MapSearch extends Place
             [['title', 'description', 'minPrice', 'maxPrice', 'mainCategory', 'type',
                 'subCategory', 'etp', 'owner', 'tradeType', 'search', 'sortBy', 'haveImage', 'region',
                 'offset', 'limit', 'efrsb', 'bankruptName', 'publishedDate', 'torgStartDate', 'torgEndDate', 
-                'andArchived', 'startApplication', 'competedApplication', 'torgDateRange'], 'safe'],
+                'andArchived', 'startApplication', 'competedApplication', 'torgDateRange', 'hasReport', 'priceDown'], 'safe'],
         ];
     }
 
@@ -263,6 +267,20 @@ class MapSearch extends Place
 
         if ($this->haveImage) {
             $query->rightJoin(Onefile::tableName(), 'onefile.parent_id = lot.id AND onefile.model = :lot AND onefile.name IS NOT NULL', ['lot' => Lot::className()]);
+        }
+        
+        if ($this->hasReport) {
+            $query->innerJoin(Report::tableName(), 'report.lot_id = lot.id');
+        }
+
+        if ($this->priceDown) {
+            $query->rightJoin(LotPrice::tableName(), LotPrice::tableName() . '.lot_id = ' . Lot::tableName() . '.id');
+            $today = new \DateTime();
+            $query->andFilterWhere([
+                'and',
+                ['<=', LotPrice::tableName() . '.started_at', \Yii::$app->formatter->asTimestamp($today)],
+                ['>=', LotPrice::tableName() . '.end_at', \Yii::$app->formatter->asTimestamp($today)]
+            ]);
         }
 
         $query->addOrderBy(['torg.published_at' => SORT_DESC]);

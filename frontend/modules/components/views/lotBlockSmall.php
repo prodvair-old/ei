@@ -28,7 +28,7 @@ if ($lot->torg->property == 1) {
     $lotTypeUrl = 'municipal';
 }
 
-$image = $lot->getImage('thumb');
+$image = $lot->getImage();
 
 $darkClass = '';
 
@@ -41,17 +41,20 @@ $wishListAll = WishList::find()->where(['lot_id' => $lot->id])->count();
 ?>
 
     <a href="<?= $lotTypeUrl . '/' .((empty( $lot->categories[0]->slug))? 'lot-list' :  $lot->categories[0]->slug ) . '/' . $lot->id ?>"
-        target="_blank" class="lot__block">
+        target="_blank" class="lot__block <?=($long) ? 'long' : ''?>">
         <div class="lot__block__img" style>
             <div class="lot__block__img__property lot__block__img__property-<?=$lot->torg->property?>"><?= $lotType ?>
             </div>
-            <?= (!empty($lot->archive)) ? ($lot->archive) ? '<div class="lot__block__img__archive">Архив</div>' : '' : '' ?>
-            <div class="lot__block__img__report">
-                <img src="./img/check-report.svg" alt="">
-            </div>
+            <?= ($lot->archiveStat) ? '<div class="lot__block__img__archive">Продано<small>'.Yii::$app->formatter->asDate($lot->torg->end_at, 'long').'</small></div>' : '' ?>
+            <? if ($lot->report) : ?>
+                <div class="lot__block__img__report">
+                    <img src="./img/check-report.svg" alt="">
+                </div>
+            <? endif; ?>
+            <? if (!$lot->archiveStat) {?>
             <div
                 <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="lot__block__img__favorite '.$darkClass.'" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js lot__block__img__favorite '.$darkClass.'" data-id="'.$lot->id.'"'?>>
-                <span><?=$wishListAll?></span>
+                <span><?=($wishListAll > 0)? $wishListAll : ''?></span>
                 <?if ($wishListCheck->lot_id) : ?>
                 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 47.94 47.94"
@@ -84,13 +87,15 @@ $wishListAll = WishList::find()->where(['lot_id' => $lot->id])->count();
                 </svg>
                 <? endif; ?>
             </div>
+            <? } ?>
+
             <?php
                 if ($image) : ?>
             <div class="lot__block__img__image image image-galery">
                 <?php
                         while ($image) {
                             echo Html::img($image, ['alt' => 'Images']);
-                            $image = $lot->getNextImage('thumb');
+                            $image = $lot->getNextImage();
                         }
                         ?>
                 <div class="image-galery__control"></div>
@@ -102,26 +107,38 @@ $wishListAll = WishList::find()->where(['lot_id' => $lot->id])->count();
             </div>
             <?php endif; ?>
         </div>
-        <div class="lot__block__info">
+        <div class="lot__block__info <?= ($lot->report)? 'report' : ''?>">
             <div class="lot__block__info__content">
                 <div itemprop="category" class="lot__block__info__content__offer mb-15">
-                    <?= Lookup::item('TorgOffer', $lot->torg->offer) ?>
+                    <?= $lot->region->name ?>
                 </div>
                 <div itemprop="name"
-                    class="lot__block__info__content__title mb-10 <?= (!empty($lot->archive)) ? ($lot->archive) ? 'text-muted' : '' : '' ?>">
+                    class="lot__block__info__content__title mb-10 <?= (!empty($lot->archiveStat)) ? ($lot->archiveStat) ? 'text-muted' : '' : '' ?>">
                     <?= $lot->title ?>
                 </div>
-                <div itemprop="price" class="lot__block__info__content__price text-secondary mb-10">
-                    <?= Yii::$app->formatter->asCurrency($lot->start_price) ?>
-                    <?//<span class="text-muted"><del>880 000,00 ₽</del></span>?>
-                </div>
+                <?if ($lot->newPrice && $lot->torg->offer == 1) { ?>
+                    <div itemprop="price" class="lot__block__info__content__price text-danger mb-10" title="Текущая цена">
+                        <?= Yii::$app->formatter->asCurrency($lot->newPrice->price) ?> 
+                        <i class="ion-android-arrow-down" title="Публичное предложение"></i>
+                        <span class="text-muted" title="Старая цена"><?=Yii::$app->formatter->asCurrency($lot->start_price) ?></span>
+                    </div>
+                <? } else { ?>
+                    <div itemprop="price" class="lot__block__info__content__price text-secondary mb-10">
+                        <?= Yii::$app->formatter->asCurrency($lot->start_price) ?>
+                        <?= ($lot->torg->offer == 1)? '<i class="ion-android-arrow-down" title="Публичное предложение"></i>': ''?>
+                        <?= ($lot->torg->offer == 2)? '<i class="ion-android-arrow-up" title="Аукцион"></i>': ''?>
+                    </div>
+                <? }?>
+
             </div>
+            <? if (!$lot->archiveStat) {?>
             <div class="lot__block__info__footer">
-                <div class="lot__block__info__footer__published">
+                <div class="lot__block__info__footer__published" title="Дата пуликации">
                     <?= Yii::$app->formatter->asDate($lot->torg->published_at, 'long') ?>
                 </div>
+                <? if ($lot->getTraces()->count() > 10) { ?>
                 <div class="lot__block__info__footer__views">
-                    0
+                    <?= $lot->getTraces()->count()?>
                     <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 511.999 511.999"
                         style="enable-background:new 0 0 511.999 511.999;" xml:space="preserve">
@@ -174,6 +191,8 @@ $wishListAll = WishList::find()->where(['lot_id' => $lot->id])->count();
                         </g>
                     </svg>
                 </div>
+                <? } ?>
             </div>
+            <? } ?>
         </div>
     </a>

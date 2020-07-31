@@ -15,6 +15,7 @@ use yii\helpers\Url;
 use common\models\db\Owner;
 use common\models\db\Etp;
 use frontend\modules\components\LotBlock;
+use frontend\modules\components\LotBlockSmall;
 
 /* @var $this yii\web\View */
 /* @var $queryCategory */
@@ -120,17 +121,29 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                 <aside class="sidebar-wrapper pv">
                     <?php $form = ActiveForm::begin(['id' => 'search-lot-form', 'action' => $url, 'method' => 'GET']); ?>
 
-                    <div class="search-box mb-30">
+                    <div class="search-box mb-30 borr-10 border-dots p-30">
 
                         <div class="row">
 
                             <div class="col-12">
                                 <div class="">
                                     <?= $form->field($model, 'search')->textInput([
-                                        'class'       => 'form-control search-form-control',
-                                        'placeholder' => 'Поиск: Машина, Квартира...',
-                                    ])->label('Поиск'); ?>
+                                        'class'       => 'form-control search-form-control borr-10',
+                                        'placeholder' => 'Я ищу...',
+                                    ])->label('Поисковая фраза'); ?>
                                 </div>
+                            </div>
+                            <div class="col-12">
+                            <div class="col-inne">
+                                <div class="custom-control custom-checkbox">
+                                    <?= $form->field($model, 'hasReport')->checkbox([
+                                        'class'    => 'custom-control-input',
+                                        'value'    => '1',
+                                        'id'       => 'hasReport',
+                                        'template' => '{input}<label class="custom-control-label" for="hasReport">Только с отчетом</label>'
+                                    ]) ?>
+                                </div>
+                            </div>
                             </div>
 
                             <div class="col-12">
@@ -182,7 +195,7 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                                         $regionList,
                                         [
                                             'class'            => 'chosen-the-basic form-control form-control-sm',
-                                            'data-placeholder' => 'Выберите регионы',
+                                            'data-placeholder' => 'По всей России',
                                             'tabindex'         => '2',
                                             'multiple'         => true
                                         ]
@@ -196,7 +209,7 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                         <div
                             class="sidebar-box sidebar-box__collaps <?= ($model->minPrice || $model->maxPrice) ? '' : 'collaps' ?>">
 
-                            <label class="control-label sidebar-box__label">Цена</label>
+                            <label class="control-label sidebar-box__label">Цена, руб.</label>
                             <div class="box-content">
                                 <div class="row">
                                     <div class="col-6">
@@ -271,7 +284,7 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                         </div>
 
                         <div
-                            class="sidebar-box sidebar-box__collaps <?= ($model->haveImage || $model->andArchived) ? '' : 'collaps' ?>">
+                            class="sidebar-box sidebar-box__collaps <?= ($model->haveImage || $model->andArchived || $model->priceDown) ? '' : 'collaps' ?>">
                             <label class="control-label  sidebar-box__label">Другое</label>
                             <div class="box-content">
                                 <div class="custom-control custom-checkbox">
@@ -293,16 +306,19 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                                     ]) ?>
                                 </div>
                             </div>
-                            <div class="box-content">
-                                <div class="custom-control custom-checkbox">
-                                    <?= $form->field($model, 'hasReport')->checkbox([
-                                        'class'    => 'custom-control-input',
-                                        'value'    => '1',
-                                        'id'       => 'hasReport',
-                                        'template' => '{input}<label class="custom-control-label" for="hasReport">Только с отчетом</label>'
-                                    ]) ?>
+                            <?php if ($model->type == Torg::PROPERTY_BANKRUPT) : ?>
+                                <div class="box-content">
+                                    <div class="custom-control custom-checkbox">
+                                        <?= $form->field($model, 'priceDown')->checkbox([
+                                            'class'    => 'custom-control-input',
+                                            'value'    => '1',
+                                            'id'       => 'priceDown',
+                                            'template' => '{input}<label class="custom-control-label" for="priceDown">Цена снижена</label>'
+                                        ]) ?>
+                                    </div>
                                 </div>
-                            </div>
+                            <?php endif; ?>
+
                         </div>
 
                         <?php if ($model->type == Torg::PROPERTY_BANKRUPT) : ?>
@@ -356,7 +372,7 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                                         ]) ?>
                                 </div>
                             </div>
-                            <div class="box-content col-md-12 mt-10">
+                            <div class="box-content col-md-12 mb-10">
                                 <div class="custom-control custom-checkbox">
                                     <?= $form->field($model, 'competedApplication')->checkbox([
                                             'class'    => 'custom-control-input',
@@ -369,9 +385,9 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                         </div>
                         <?php endif; ?>
 
-                        <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click', 'name' => 'login-button']) ?>
+                        <?= Html::submitButton('<i class="ion-android-search"></i> Найти', ['class' => 'btn btn-primary btn-block load-list-click borr-10', 'name' => 'login-button']) ?>
                         <a
-                            <?= (Yii::$app->user->isGuest) ? 'href="#loginFormTabInModal-login" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="save-lot-search-js btn btn-outline-primary btn-block"' ?>>
+                            <?= (Yii::$app->user->isGuest) ? 'href="#loginFormTabInModal-login" class="btn btn-outline-primary btn-block borr-10" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="save-lot-search-js btn btn-outline-primary btn-block borr-10"' ?>>
                             <i class="ion-android-notifications"></i>
                             Отслеживать поиск
                         </a>
@@ -398,14 +414,14 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
 
                     <div class="d-flex justify-content-between flex-row align-items-center sort-group page-result-01">
                         <div class="sort-box">
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col-md-6">
                                     БД: <?= round(Yii::getLogger()->getDbProfiling()[ 1 ], 3) ?> сек.
                                 </div>
                                 <div id="profiling_page_load" class="col-md-6"></div>
-                            </div>
+                            </div> -->
                             <div class="d-flex align-items-center sort-item">
-                                <label class="sort-label d-none d-sm-flex">Сортировка по:</label>
+                                <!-- <label class="sort-label d-none d-sm-flex">Сортировка по:</label> -->
                                 <?php $form = ActiveForm::begin(['id' => 'sort-lot-form', 'method' => 'GET']); ?>
                                 <div class="sort-form">
                                     <?= $form->field($model, 'sortBy')->dropDownList(
@@ -418,17 +434,20 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                                 <?php ActiveForm::end(); ?>
                             </div>
                         </div>
-                        <div class="sort-box">
-                            <a href="<?= Url::to(['lot/map', 'MapSearch' => $mapGET]) ?>"
-                                class="btn btn-primary btn-block mr-30"><i class="oi oi-map-marker"></i> Поиск на
-                                карте</a>
-                        </div>
                     </div>
 
                     <div id="load_list" class="tour-long-item-wrapper-01 load-list">
                         <? if (count($lots) > 0) {
-                            foreach ($lots as $lot) {
-                                echo LotBlock::widget(['lot' => $lot, 'type' => 'long', 'url' => $url]);
+                            foreach ($lots as $key => $lot) {
+                                if ($key == 1) { ?>
+                                    <div class="mb-30 lot_next__btn long">
+                                        <a href="<?= Url::to(['lot/map', 'MapSearch' => $mapGET]) ?>" class="borr-10 btn btn-primary btn-block mr-30">
+                                            <i class="oi oi-map-marker"></i> 
+                                            Показать лоты на карте
+                                        </a>
+                                    </div>
+                                <? }
+                                echo LotBlockSmall::widget(['lot' => $lot, 'long' => true, 'url' => $url]);
                             }
                         } else {
                             echo "<div class='p-15 font-bold'>По данному запросу не удалось найти лоты</div>";

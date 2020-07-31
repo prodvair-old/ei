@@ -1,7 +1,7 @@
 <?php
 use yii\widgets\Breadcrumbs;
 use yii\widgets\LinkPager;
-use frontend\modules\components\LotBlock;
+use frontend\modules\components\LotBlockSmall;
 use frontend\modules\profile\components\ProfileMenu;
 
 $name = Yii::$app->user->identity->getFullName();
@@ -82,7 +82,7 @@ $this->registerJsVar( 'lotType', '', $position = yii\web\View::POS_HEAD );
                         <div class="mb-50"></div>
 
 
-                        <div data-count="<?= $wishCount?>" class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-20 mb-30 wish-lot-list" id="">
+                        <div data-count="<?= $wishCount?>" class="row mb-30 wish-lot-list" id="">
                             <?php if (isset($wishList[0])) {
                                 foreach ($wishList as $wish) {
                                     switch ($wish->lot->torg->property) {
@@ -101,9 +101,11 @@ $this->registerJsVar( 'lotType', '', $position = yii\web\View::POS_HEAD );
                                         default:
                                             $t = 'all';
                                             break;
-                                    }
-                                    echo LotBlock::widget(['lot' => $wish->lot, 'url' => $t.'/'.($wish->lot->categories[0]->slug ? $wish->lot->categories[0]->slug : 'lot-list')]);
-                                }
+                                    }?>
+                                    <div class="col-lg-4 col-sm-6 mb-30" itemscope itemtype="http://schema.org/Product">
+                                        <?= LotBlockSmall::widget(['lot' => $wish->lot, 'url' => $t.'/'.($wish->lot->categories[0]->slug ? $wish->lot->categories[0]->slug : 'lot-list')]);?>
+                                    </div>
+                                <?}
                             } else {
                                 echo "<div class='p-15 font-bold'>Пока нет избранных лотов по арестованному имуществу</div>";
                             } ?>

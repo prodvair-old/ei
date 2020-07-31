@@ -12,7 +12,7 @@
 @import 'style.scss'
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6, label
-  color: #232323
+  color: #181C40
 
 @keyframes slideme
   0%
@@ -198,6 +198,7 @@
     position: relative
     border-radius: 3px
     overflow: hidden
+    border-radius: 20px
     &.color-1
       background-color: #020202
     &.color-2
@@ -228,7 +229,7 @@
 
 
 body
-  color: #232323
+  color: #181C40
 .booking-box .box-heading 
   background-color: $secondary
   display: none
@@ -580,7 +581,7 @@ body
   width: 4rem
   height: 4rem
   margin: 0 auto
-  animation: spinner 1s linear infinite
+  animation: spinner .3s linear infinite
   &-wrapper
     text-align: center
     width: 100%
@@ -611,9 +612,9 @@ body
 
 @keyframes spinner
   to
-    transform: rotate(360deg)
+  transform: rotate(360deg)
   from
-    transform: rotate(0deg)
+  transform: rotate(0deg)
 
 @media (min-width: 992px)
   .hero-banner-01 .search-form-main .form-group
@@ -706,11 +707,11 @@ body
   box-shadow: 0 3px 6px -6px rgba(0,0,0,.43)
 
 .footer-wrapper.light
-  background-color: #f6f7f7
+  background-color: #E6EFF4
 .bottom-footer
-  background-color: #f6f7f7
+  background-color: #E6EFF4
 .footer-wrapper.light .bottom-footer
-  background-color: #f6f7f7
+  background-color: #E6EFF4
   padding-top: 0
   padding-bottom: 19px
   margin-top: 0
@@ -920,7 +921,7 @@ body
     line-height: 20px!important
     letter-spacing: -1px!important
   &__subtitle
-    font-size: 18px!important
+    font-size: 25px!important
     letter-spacing: -1px!important
     font-weight: 400
   &__category
@@ -1458,7 +1459,34 @@ label.toggle-item:before
   box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.1)
   transform: scale(1)
   transition: all 0.1s ease
+  border-radius: 10px
+  overflow: hidden
+  cursor: pointer
+  &.long
+    display: flex
+    margin-bottom: 30px
+    height: 235px
+    .lot__block__img
+      height: 100%
+      width: 40%
+      img
+        max-width: unset
+        min-height: 235px
+    .lot__block__info
+      width: 70%
+      height: auto
 
+@media (max-width: 767px)
+  .lot__block 
+    &.long
+      display: block
+      .lot__block__img
+        height: 160px
+        width: 100%
+      .lot__block__info
+        width: 100%
+        height: auto
+  
 
 .lot__block:hover 
   text-decoration: none
@@ -1479,6 +1507,7 @@ label.toggle-item:before
   z-index: 3
   font-size: 10px
   line-height: 12px
+  border-radius: 5px
 
 
 .lot__block__img__property 
@@ -1509,33 +1538,42 @@ label.toggle-item:before
 
 
 .lot__block__img__archive 
-  top: 42px
-  left: 15px
-  height: 20px
+  top: 30%
+  left: 50%
+  height: 45px
   color: #fff
   background-color: #A52D2D
   display: flex
+  flex-direction: column
   align-items: center
   justify-content: center
-  padding: 4px 9px
+  padding: 15px 15px
+  transform: rotate(-45deg) translateX(-50%) translateY(-50%)
+  transform-origin: center
+  font-size: 18px
+  line-height: 20px
+  opacity: 0.7
+  small
+    font-size: 14px
+    white-space: nowrap
 
 .lot__block__img__report
   position: absolute
-  bottom: 15px
+  bottom: 30px
   left: 15px
   z-index: 3
   display: flex
   align-items: center
   justify-content: center
   background-color: #219653
-  width: 25px
-  height: 25px
+  width: 35px
+  height: 35px
   border-radius: 50%
   &::after
     content: 'Есть отчёт'
     position: absolute
-    bottom: 2px
-    left: 20px
+    bottom: 5px
+    left: 25px
     z-index: -4
     display: block
     height: 20px
@@ -1549,8 +1587,8 @@ label.toggle-item:before
     padding: 0 9px
     transition: all .3s ease
   img
-    width: 15px
-    height: 15px
+    width: 25px
+    height: 25px
   &:hover
     &::after
       left: 30px
@@ -1563,6 +1601,8 @@ label.toggle-item:before
   color: #ffffff
   display: flex
   align-items: center
+  transform: scale(1)
+  transition: all .3s ease
 
 
 .lot__block__img__favorite svg 
@@ -1570,25 +1610,28 @@ label.toggle-item:before
   height: 20px
   margin-left: 5px
 
-
+  
 .lot__block__img__favorite-path 
   fill: #fff
-
-
-.lot__block__img__favorite.dark 
-  color: #696969
-
 
 .lot__block__img__favorite.dark .lot__block__img__favorite-path 
   fill: #696969
 
+.lot__block__img__favorite:hover
+  transform: scale(1.4)
+  cursor: pointer
+  .lot__block__img__favorite-path 
+    fill: #077751
+
+.lot__block__img__favorite.dark 
+  color: #696969
 
 .lot__block__img__image 
   height: 100%
   min-width: 100%
   display: flex
   align-items: center
-  justify-content: center
+  justify-content: flex-start
   overflow: hidden
   position: relative
   z-index: 1
@@ -1600,6 +1643,8 @@ label.toggle-item:before
   display: flex
   flex-direction: column
   justify-content: space-between
+  &.report
+    background-color: #EBFFF8
 
 
 .lot__block__info__content__offer 
@@ -1610,7 +1655,7 @@ label.toggle-item:before
 
 .lot__block__info__content__title 
   max-height: 60px
-  color: #000000
+  color: #181C40
   font-weight: 600
   font-size: 16px
   line-height: 19px
@@ -1660,6 +1705,7 @@ label.toggle-item:before
   transform: scale(1)
   transition: all 0.3s ease
   margin-bottom: 30px
+  border-radius: 10px
 
 
 .category::after 
@@ -1671,7 +1717,8 @@ label.toggle-item:before
   bottom: 0
   width: 100%
   height: 50%
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%)
+  background: linear-gradient(180deg, rgba(24, 28, 64, 0) 0%, rgba(24, 28, 64, 0.6) 100%)
+  border-radius: 10px
 
 
 .category:hover 
@@ -1681,6 +1728,7 @@ label.toggle-item:before
 
 .category__img img 
   width: 100%
+  border-radius: 10px
 
 
 .category__name 
@@ -1793,6 +1841,62 @@ label.toggle-item:before
         font-size: 14px
         line-height: 21px
       &__price
-        font-size: 28px
+        font-size: 20px
         font-weight: 600
         color: #077751
+
+.borr
+  &-5
+    border-radius: 5px!important
+  &-10
+    border-radius: 10px!important
+  &-15
+    border-radius: 15px!important
+  &-20
+    border-radius: 20px!important
+
+.search
+  &__field
+    font-size: 1.5rem
+    border-radius: 20px
+  &__btn
+    padding: 14px 10px 14px
+    border-radius: 0 20px 20px 0
+    font-size: 15px
+
+.lot_next__btn
+  display: flex
+  align-items: center
+  justify-content: center
+  border: 3px dotted #E6EFF4
+  border-radius: 10px
+  &.long
+    height: 150px
+    a
+      padding: 20px 40px
+  a
+    width: auto!important
+
+.border-dots
+  border: 3px solid #E6EFF4!important
+
+.form-group label
+  color: #181c40
+
+.p
+  &-30
+    padding: 30px!important
+
+.header-main .main-nav > li > a
+  color: #181c40!important
+
+.header-main .main-nav li ul
+  background-color: #181c40!important
+
+.main-page__category__block
+  background-color: #E6EFF4
+  border-radius: 10px
+
+.main-page__category__block li:hover
+  background-color: #ffffff
+  border-radius: 10px

@@ -163,7 +163,7 @@ class TorgsBankrupt extends Module
                 $newTorg->msgId         = $torg->msgid;
                 $newTorg->description   = GetInfoFor::mb_ucfirst($torg->description);
                 $newTorg->startDate     = GetInfoFor::date_check($torg->timebegin);
-                $newTorg->endDate       = GetInfoFor::date_check($torg->timeend, 3);
+                $newTorg->endDate       = GetInfoFor::date_check($torg->timeend);
                 $newTorg->completeDate  = GetInfoFor::date_check($torg->timeend);
                 $newTorg->publishedDate = GetInfoFor::date_check($torg->timepublication);
                 $newTorg->tradeTypeId   = ($torg->tradetype == 'PublicOffer')? 1 : 2;

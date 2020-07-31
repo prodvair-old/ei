@@ -29,7 +29,7 @@ class SearchForm extends Widget
         $url = $this->url;
 
         $regions = Region::find()->select(['id', 'name'])->orderBy(['name' => SORT_ASC])->all();
-        $regionList[0] = 'Все регионы';
+        $regionList[0] = 'По всей России';
         foreach ($regions as $region) {
             $regionList[$region->id] = $region->name;
         }

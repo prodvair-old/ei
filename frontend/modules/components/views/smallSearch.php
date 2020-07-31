@@ -51,15 +51,15 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
 
 <?php $form = ActiveForm::begin(['method' => 'get', 'action' => '/' . $url . '/lot-list', 'options' => ['enctype' => 'multipart/form-data', 'class' => 'card-search-form', 'id' => 'mainSearchForm']]) ?>
 
-<div class="card card-search" style="margin-top:25px;">
+<div class="card card-search search borr-20" style="margin-top:25px;">
     <div class="card-body">
         <div class="input-search">
             <?= $form->field($model, 'search')->textInput([
-                'class'       => 'form-control',
-                'placeholder' => 'Поиск по лотам',
+                'class'       => 'form-control search__field',
+                'placeholder' => 'Введите поисковую фразу',
             ])->label(false); ?>
 
-            <?= Html::submitButton('<i class="ion-android-search"></i>', ['class' => 'btn btn-primary btn-block btn-search', 'style' => $btnStyle, 'name' => 'login-button', 'id' => 'buttonSearch']) ?>
+            <?= Html::submitButton('<i class="ion-android-search"></i>', ['class' => 'btn btn-primary btn-block btn-search search__btn', 'style' => $btnStyle, 'name' => 'login-button', 'id' => 'buttonSearch']) ?>
         </div>
         <style>
             .card-search {
@@ -92,7 +92,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
                         Torg::getTypeList(),
                         [
                             'class'            => 'chosen-type-select form-control form-control-sm',
-                            'data-placeholder' => 'Выберите тип лота',
+                            'data-placeholder' => 'Во всех типах',
                             'tabindex'         => '2',
                             'options'          => [
                                 $url => ['Selected' => true]
@@ -108,7 +108,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
                         Category::getMainCategoriesList(),
                         [
                             'class'            => 'chosen-category-select form-control form-control-sm',
-                            'data-placeholder' => 'Все категории',
+                            'data-placeholder' => 'Во всех категориях',
                             'tabindex'         => '2'
                         ]
                     )
@@ -122,7 +122,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
                         $regionList,
                         [
                             'class'            => 'chosen-the-basic form-control form-control-sm',
-                            'data-placeholder' => 'Все регионы',
+                            'data-placeholder' => 'По всей России',
                             'tabindex'         => '2',
                             'multiple'         => false
                         ]

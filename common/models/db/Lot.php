@@ -286,7 +286,20 @@ class Lot extends ActiveRecord
      */
     public function archived()
     {
-        return $this->status == self::STATUS_COMPLETED && $this->torg->end_at > time();
+        return $this->status == self::STATUS_COMPLETED && $this->torg->end_at <= time();
+    }
+
+    /**
+     * GET archive status
+     *
+     * @return yii\db\ActiveQuery
+     */
+    public function getArchiveStat()
+    {
+        if ($this->status == self::STATUS_COMPLETED || $this->torg->end_at <= time()) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -361,7 +374,22 @@ class Lot extends ActiveRecord
      */
     public function getPrices()
     {
-        return $this->hasMany(LotPrice::className(), ['lot_id' => 'id']);
+        return $this->hasMany(LotPrice::className(), ['lot_id' => 'id'])->orderBy([LotPrice::tableName() . '.price' => SORT_DESC]);
+    }
+
+    /**
+     * Get the history of price reduction for a lot.
+     *
+     * @return yii\db\ActiveQuery
+     */
+    public function getNewPrice()
+    {
+        $today = new \DateTime();
+        return $this->hasOne(LotPrice::className(), ['lot_id' => 'id'])->onCondition([
+            'and',
+            ['<=', LotPrice::tableName() . '.started_at', \Yii::$app->formatter->asTimestamp($today)],
+            ['>=', LotPrice::tableName() . '.end_at', \Yii::$app->formatter->asTimestamp($today)]
+        ]);
     }
 
     /**
