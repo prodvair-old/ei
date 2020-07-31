@@ -81,13 +81,13 @@ $lotLowPriceList = $lotLowPrice->orderBy([Torg::tableName() . '.published_at' =>
 
     <div class="hero-inner">
 
-        <div class="container" style="padding-top: 120px;">
+        <div class="container" style="padding-top: 120px;padding-bottom: 60px;">
 
             <h1>
                 <!-- <span class="font700 main-page__title">Единый информатор<br><span class="main-page__subtitle">Полный каталог реализуемого имущества организаций, должников и банков России</span> </span></h1> -->
-                <span class="font700 main-page__title">Все торги в одном месте<br></span>
+                <span class="font700 main-page__title">Все торги в одном месте <span class="font100"> — банкротные и арестованные торги, имущество банков и лизинговых компаний</span></span>
             </h1>
-            <p class="main-page__subtitle">Банкротные и арестованные торги, имущество банков и лизинговых компаний</p>
+            <!-- <p class="main-page__subtitle"></p> -->
 
             <!-- </span><span class="font200">торгов<span class="block"> <span class="font700">по</span> банкротству</span></span> -->
             <?= SearchForm::widget(['type' => 'bankrupt', 'url' => 'all']) ?>
@@ -100,7 +100,7 @@ $lotLowPriceList = $lotLowPrice->orderBy([Torg::tableName() . '.published_at' =>
 
 <section class="pt-0 pb-0 mb-50">
     <div class="container">
-        <div class="clear mb-50"></div>
+        <div class="clear"></div>
         <!-- <h2 class="h3 mt-40 line-125 ">Категории</h2> -->
 
         <div class="row">

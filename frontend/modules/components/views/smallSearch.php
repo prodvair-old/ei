@@ -51,7 +51,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
 
 <?php $form = ActiveForm::begin(['method' => 'get', 'action' => '/' . $url . '/lot-list', 'options' => ['enctype' => 'multipart/form-data', 'class' => 'card-search-form', 'id' => 'mainSearchForm']]) ?>
 
-<div class="card card-search search" style="margin-top:25px;">
+<div class="card card-search search borr-20" style="margin-top:25px;">
     <div class="card-body">
         <div class="input-search">
             <?= $form->field($model, 'search')->textInput([
