@@ -8,6 +8,10 @@ use frontend\modules\components\LotBlockSmall;
 use frontend\modules\components\SearchForm;
 use common\models\Query\LotsCategory;
 use common\models\Query\Regions;
+use common\models\db\Lot;
+use common\models\db\LotTrace;
+use common\models\db\Report;
+use common\models\db\Torg;
 use frontend\modules\models\LotSearch;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -18,9 +22,57 @@ $regions = Regions::find()->orderBy('id ASC')->all();
 $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
 
 Yii::$app->params[ 'defaultPageLimit' ] = 8;
-$LotSearch = new LotSearch();
+// $LotSearch = new LotSearch();
+$lotPopular = Lot::find()->joinWith(['torg', 'traces']);
+$lotPopular->where(['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED]);
+$lotPopular->andWhere(['>', Torg::tableName() . '.end_at', time()]);
+$lotPopular->groupBy([
+    Lot::tableName() . '.id', 
+    Lot::tableName() . '.torg_id', 
+    Lot::tableName() . '.ordinal_number', 
+    Lot::tableName() . '.title', 
+    Lot::tableName() . '.description', 
+    Lot::tableName() . '.start_price', 
+    Lot::tableName() . '.step', 
+    Lot::tableName() . '.step_measure', 
+    Lot::tableName() . '.deposit', 
+    Lot::tableName() . '.deposit_measure', 
+    Lot::tableName() . '.status', 
+    Lot::tableName() . '.status_changed_at', 
+    Lot::tableName() . '.reason', 
+    Lot::tableName() . '.url', 
+    Lot::tableName() . '.info', 
+    Lot::tableName() . '.created_at', 
+    Lot::tableName() . '.updated_at', 
+    Torg::tableName() . '.published_at', 
+]);
+$lotPopularList = $lotPopular->orderBy(['count('.LotTrace::tableName() . '.id)' => SORT_DESC, Torg::tableName() . '.published_at' => SORT_DESC])->limit(8)->all();
 
-$newLots= $LotSearch->search();
+$lotNew = Lot::find()->joinWith(['torg', 'report']);
+$lotNew->where(['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED]);
+$lotNew->andWhere(['>', Torg::tableName() . '.end_at', time()]);
+// $lotNew->innerJoin(Report::tableName(), 'report.lot_id = lot.id');
+$lotNew->groupBy([
+    Lot::tableName() . '.id', 
+    Lot::tableName() . '.torg_id', 
+    Lot::tableName() . '.ordinal_number', 
+    Lot::tableName() . '.title', 
+    Lot::tableName() . '.description', 
+    Lot::tableName() . '.start_price', 
+    Lot::tableName() . '.step', 
+    Lot::tableName() . '.step_measure', 
+    Lot::tableName() . '.deposit', 
+    Lot::tableName() . '.deposit_measure', 
+    Lot::tableName() . '.status', 
+    Lot::tableName() . '.status_changed_at', 
+    Lot::tableName() . '.reason', 
+    Lot::tableName() . '.url', 
+    Lot::tableName() . '.info', 
+    Lot::tableName() . '.created_at', 
+    Lot::tableName() . '.updated_at', 
+    Torg::tableName() . '.published_at', 
+]);
+$newLots = $lotNew->orderBy(['count('.Report::tableName() . '.id)' => SORT_DESC, Torg::tableName() . '.published_at' => SORT_DESC])->limit(8)->all();
 ?>
 
 <div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03"
@@ -109,11 +161,36 @@ $newLots= $LotSearch->search();
 <section class="pt-0 pb-0">
     <div class="container">
         <div class="clear mb-50"></div>
+        <h2 class="h3 mt-40 line-125 ">Популярные лоты</h2>
+
+
+        <div class="row">
+            <? if (count($lots = $lotPopularList) > 0) {
+                foreach ($lots as $lot) { ?>
+                <div class="col-lg-3 col-sm-6 mb-40" itemscope itemtype="http://schema.org/Product">
+                    <?= LotBlockSmall::widget(['lot' => $lot, 'url' => $url]) ?>
+                </div>
+            <?  }
+            } else {
+                echo "<div class='p-15 font-bold'>По данному запросу не удалось найти лоты</div>";
+            } ?>
+        </div>
+        <div class="d-flex justify-content-center">
+            <a href="/all/lot-list" class="btn btn-primary">Перейти в каталог</a>
+        </div>
+
+        <div class="clear mb-50"></div>
+    </div>
+</section>
+
+<section class="pt-0 pb-0">
+    <div class="container">
+        <div class="clear mb-50"></div>
         <h2 class="h3 mt-40 line-125 ">Новые лоты</h2>
 
 
         <div class="row">
-            <? if (count($lots = $newLots->getModels()) > 0) {
+            <? if (count($lots = $newLots) > 0) {
                 foreach ($lots as $lot) { ?>
                 <div class="col-lg-3 col-sm-6 mb-40" itemscope itemtype="http://schema.org/Product">
                     <?= LotBlockSmall::widget(['lot' => $lot, 'url' => $url]) ?>
