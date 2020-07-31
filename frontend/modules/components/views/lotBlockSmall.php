@@ -41,14 +41,16 @@ $wishListAll = WishList::find()->where(['lot_id' => $lot->id])->count();
 ?>
 
     <a href="<?= $lotTypeUrl . '/' .((empty( $lot->categories[0]->slug))? 'lot-list' :  $lot->categories[0]->slug ) . '/' . $lot->id ?>"
-        target="_blank" class="lot__block">
+        target="_blank" class="lot__block <?=($long) ? 'long' : ''?>">
         <div class="lot__block__img" style>
             <div class="lot__block__img__property lot__block__img__property-<?=$lot->torg->property?>"><?= $lotType ?>
             </div>
             <?= (!empty($lot->archive)) ? ($lot->archive) ? '<div class="lot__block__img__archive">Архив</div>' : '' : '' ?>
-            <div class="lot__block__img__report">
-                <img src="./img/check-report.svg" alt="">
-            </div>
+            <? if ($lot->report) : ?>
+                <div class="lot__block__img__report">
+                    <img src="./img/check-report.svg" alt="">
+                </div>
+            <? endif; ?>
             <div
                 <?=(Yii::$app->user->isGuest)? 'href="#loginFormTabInModal-login" class="lot__block__img__favorite '.$darkClass.'" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js lot__block__img__favorite '.$darkClass.'" data-id="'.$lot->id.'"'?>>
                 <span><?=$wishListAll?></span>
@@ -121,7 +123,7 @@ $wishListAll = WishList::find()->where(['lot_id' => $lot->id])->count();
                     <?= Yii::$app->formatter->asDate($lot->torg->published_at, 'long') ?>
                 </div>
                 <div class="lot__block__info__footer__views">
-                    0
+                    <?= $lot->getTraces()->count(); ?>
                     <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 511.999 511.999"
                         style="enable-background:new 0 0 511.999 511.999;" xml:space="preserve">

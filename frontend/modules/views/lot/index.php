@@ -15,6 +15,7 @@ use yii\helpers\Url;
 use common\models\db\Owner;
 use common\models\db\Etp;
 use frontend\modules\components\LotBlock;
+use frontend\modules\components\LotBlockSmall;
 
 /* @var $this yii\web\View */
 /* @var $queryCategory */
@@ -428,7 +429,7 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                     <div id="load_list" class="tour-long-item-wrapper-01 load-list">
                         <? if (count($lots) > 0) {
                             foreach ($lots as $lot) {
-                                echo LotBlock::widget(['lot' => $lot, 'type' => 'long', 'url' => $url]);
+                                echo LotBlockSmall::widget(['lot' => $lot, 'long' => true, 'url' => $url]);
                             }
                         } else {
                             echo "<div class='p-15 font-bold'>По данному запросу не удалось найти лоты</div>";

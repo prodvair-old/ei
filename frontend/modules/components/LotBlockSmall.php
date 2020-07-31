@@ -6,11 +6,11 @@ use yii\base\Widget;
 class LotBlockSmall extends Widget
 {
     public $lot;
-    public $color;
+    public $long = false;
     public $url;
 
     public function run(){
 
-        return $this->render('lotBlockSmall', ['lot' => $this->lot, 'color' => $this->color, 'url' => $this->url]);
+        return $this->render('lotBlockSmall', ['lot' => $this->lot, 'long' => $this->long, 'url' => $this->url]);
     }
 }

@@ -611,9 +611,9 @@ body
 
 @keyframes spinner
   to
-    transform: rotate(360deg)
+  transform: rotate(360deg)
   from
-    transform: rotate(0deg)
+  transform: rotate(0deg)
 
 @media (min-width: 992px)
   .hero-banner-01 .search-form-main .form-group
@@ -1458,7 +1458,27 @@ label.toggle-item:before
   box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.1)
   transform: scale(1)
   transition: all 0.1s ease
+  &.long
+    display: flex
+    margin-bottom: 30px
+    .lot__block__img
+      height: 100%
+      width: 30%
+    .lot__block__info
+      width: 70%
+      height: auto
 
+@media (max-width: 767px)
+  .lot__block 
+    &.long
+      display: block
+      .lot__block__img
+        height: 160px
+        width: 100%
+      .lot__block__info
+        width: 100%
+        height: auto
+  
 
 .lot__block:hover 
   text-decoration: none
@@ -1793,6 +1813,6 @@ label.toggle-item:before
         font-size: 14px
         line-height: 21px
       &__price
-        font-size: 28px
+        font-size: 20px
         font-weight: 600
         color: #077751
