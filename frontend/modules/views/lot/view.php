@@ -769,5 +769,5 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 <!-- end lot form modal -->
 
 <?php
-$this->registerJsFile('js/custom-multiply-.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-');
+$this->registerJsFile('js/custom-multiply-sticky.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-');
 ?>
