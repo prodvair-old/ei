@@ -16,7 +16,7 @@ class AppAsset extends AssetBundle
         
 
         'css/data_picker.css',
-        'css/custom.min.css',
+        'css/custom.min.css?v=1.03',
         'css/your-style.css?v1.31',
         'css/map.css?v1.06',
         'https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css'
@@ -34,7 +34,7 @@ class AppAsset extends AssetBundle
         'js/data_picker.js',
         'https://api-maps.yandex.ru/2.1/?apikey=c779baf7-d09e-4558-9661-55d19272043f&lang=ru_RU',
         'js/map.js?v=1.06',
-        'js/scripts.min.js?v=2.12',
+        'js/scripts.min.js?v=2.13',
     ];
     public $depends = [
         // 'yii\web\YiiAsset',
