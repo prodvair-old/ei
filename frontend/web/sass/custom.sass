@@ -920,7 +920,7 @@ body
     line-height: 20px!important
     letter-spacing: -1px!important
   &__subtitle
-    font-size: 18px!important
+    font-size: 25px!important
     letter-spacing: -1px!important
     font-weight: 400
   &__category
@@ -1458,8 +1458,9 @@ label.toggle-item:before
   box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.1)
   transform: scale(1)
   transition: all 0.1s ease
-  border-radius: 5px
+  border-radius: 10px
   overflow: hidden
+  cursor: pointer
   &.long
     display: flex
     margin-bottom: 30px
@@ -1501,6 +1502,7 @@ label.toggle-item:before
   z-index: 3
   font-size: 10px
   line-height: 12px
+  border-radius: 5px
 
 
 .lot__block__img__property 
@@ -1512,7 +1514,6 @@ label.toggle-item:before
   align-items: center
   justify-content: center
   padding: 4px 9px
-  border-radius: 5px
 
 
 .lot__block__img__property-1 
@@ -1532,15 +1533,24 @@ label.toggle-item:before
 
 
 .lot__block__img__archive 
-  top: 42px
-  left: 15px
-  height: 20px
+  top: 30%
+  left: 50%
+  height: 45px
   color: #fff
   background-color: #A52D2D
   display: flex
+  flex-direction: column
   align-items: center
   justify-content: center
-  padding: 4px 9px
+  padding: 15px 15px
+  transform: rotate(-45deg) translateX(-50%) translateY(-50%)
+  transform-origin: center
+  font-size: 18px
+  line-height: 20px
+  opacity: 0.7
+  small
+    font-size: 14px
+    white-space: nowrap
 
 .lot__block__img__report
   position: absolute
@@ -1586,6 +1596,8 @@ label.toggle-item:before
   color: #ffffff
   display: flex
   align-items: center
+  transform: scale(1)
+  transition: all .3s ease
 
 
 .lot__block__img__favorite svg 
@@ -1593,18 +1605,21 @@ label.toggle-item:before
   height: 20px
   margin-left: 5px
 
-
+  
 .lot__block__img__favorite-path 
   fill: #fff
-
-
-.lot__block__img__favorite.dark 
-  color: #696969
-
 
 .lot__block__img__favorite.dark .lot__block__img__favorite-path 
   fill: #696969
 
+.lot__block__img__favorite:hover
+  transform: scale(1.4)
+  cursor: pointer
+  .lot__block__img__favorite-path 
+    fill: #077751
+
+.lot__block__img__favorite.dark 
+  color: #696969
 
 .lot__block__img__image 
   height: 100%
@@ -1635,7 +1650,7 @@ label.toggle-item:before
 
 .lot__block__info__content__title 
   max-height: 60px
-  color: #000000
+  color: #181C40
   font-weight: 600
   font-size: 16px
   line-height: 19px
@@ -1827,3 +1842,15 @@ label.toggle-item:before
 
 .borr-5
   border-radius: 5px
+
+.search
+  &__field
+    font-size: 1.5rem
+    border-radius: 20px
+  &__btn
+    padding: 14px 10px 13px
+    border-radius: 0 20px 20px 0
+    font-size: 15px
+
+.borr-10
+  border-radius: 10px

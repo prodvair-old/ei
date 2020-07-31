@@ -71,7 +71,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                         <div class="d-flex flex-row align-items-sm-center mb-20">
                             <div class="mr-10 font-lg text-muted">
-                                0 <i class="far fa-eye fa-sm"></i>
+                                <?= $lot->getTraces()->count(); ?> <i class="far fa-eye fa-sm"></i>
                             </div>
                             <div class="mr-10 text-muted">|</div>
                             <div class="mr-10 rating-item rating-inline">
@@ -141,7 +141,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                     <i class="linea-icon-basic-flag2"></i>
                                 </span>
                                 Окончание
-                                торгов<br /><strong><?= Yii::$app->formatter->asDate($lot->torg->end_at, 'long') ?></strong>
+                                торгов<br /><strong><?= Yii::$app->formatter->asDate($lot->torg->completed_at, 'long') ?></strong>
                             </li>
                             <li>
                                 <span class="icon-font d-block">
@@ -167,140 +167,6 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                         <a href="#desc" class="open-text-js">Подробнее</a>
 
                     </div>
-
-                    <div class="report mb-40">
-                        <div class="report__head">
-                            <div class="report__head__name">Отчет эксперта</div>
-                            <div class="report__head__number">Лот № 551093</div>
-                        </div>
-                        <div class="report__body row">
-                            <div class="col-md-6 report__body__expert">
-                                <img src="http://dev.ei.ru/uploads/site/user.png" alt="" class="report__body__expert-img">
-                                <span class="report__body__expert__name">
-                                    Никита
-                                    <br>
-                                    Карпеев
-                                </span>
-                            </div>
-                            <div class="col-md-6 report__body__diogramm">
-                                <div class="report__body__diogramm__green">
-                                    <svg class="report__body__diogramm__green-svg" width="70" height="70">
-                                        <circle 
-                                            class="report__body__diogramm__green-circle--back" 
-                                            stroke="#BDBDBD" 
-                                            stroke-width="5" 
-                                            cx="35" 
-                                            cy="35" 
-                                            r="30" 
-                                            fill="transparent"
-                                        />
-                                        <circle 
-                                            class="report__body__diogramm__green-circle" 
-                                            id="green-circle-2"
-                                            stroke="#077751" 
-                                            stroke-width="5" 
-                                            cx="35" 
-                                            cy="35" 
-                                            r="30" 
-                                            fill="transparent"
-                                        />
-                                    </svg>
-
-                                    <div class="report__body__diogramm__green__info">
-                                        <div class="report__body__diogramm__green__info__number">
-                                            <span>7</span>/10
-                                        </div>
-                                        <div class="report__body__diogramm__green__info__name">
-                                            Интерес
-                                        </div>
-                                    </div>
-
-                                    <script>
-                                        // не забывать подтсавлять номер для id
-                                        var circle = document.querySelector('#green-circle-2');
-                                        var r = circle.r.baseVal.value;
-                                        var circumference = 2 * Math.PI * r;
-
-                                        circle.style.strokeDasharray = `${circumference} ${circumference}`;
-                                        circle.style.strokeDashoffset = circumference;
-
-                                        function setProgress(percent) {
-                                            const offset = circumference - percent / 100 * circumference;
-                                            circle.style.strokeDashoffset = offset;
-                                        }
-
-                                        setProgress(70);
-                                    </script>
-                                </div>
-
-                                <div class="report__body__diogramm__red">
-                                    <svg class="report__body__diogramm__red-svg" width="70" height="70">
-                                        <circle 
-                                            class="report__body__diogramm__red-circle--back" 
-                                            stroke="#BDBDBD" 
-                                            stroke-width="5" 
-                                            cx="35" 
-                                            cy="35" 
-                                            r="30" 
-                                            fill="transparent"
-                                        />
-                                        <circle 
-                                            class="report__body__diogramm__red-circle" 
-                                            id="red-circle-2"
-                                            stroke="#EB5757" 
-                                            stroke-width="5" 
-                                            cx="35" 
-                                            cy="35" 
-                                            r="30" 
-                                            fill="transparent"
-                                        />
-                                    </svg>
-
-                                    <div class="report__body__diogramm__red__info">
-                                        <div class="report__body__diogramm__red__info__number">
-                                            <span>4</span>/10
-                                        </div>
-                                        <div class="report__body__diogramm__red__info__name">
-                                            риск
-                                        </div>
-                                    </div>
-
-                                    <script>
-                                        // не забывать подтсавлять номер для id
-                                        var circle = document.querySelector('#red-circle-2');
-                                        var r = circle.r.baseVal.value;
-                                        var circumference = 2 * Math.PI * r;
-
-                                        circle.style.strokeDasharray = `${circumference} ${circumference}`;
-                                        circle.style.strokeDashoffset = circumference;
-
-                                        function setProgress(percent) {
-                                            const offset = circumference - percent / 100 * circumference;
-                                            circle.style.strokeDashoffset = offset;
-                                        }
-
-                                        setProgress(40);
-                                    </script>
-                                </div>
-                                
-                            </div>
-                            <div class="col-md-6 report__body__images">
-                                <div class="report__body__images__slider">
-                                    <div class="report__body__images__slider__item">
-                                        <img src="./img/lock.png" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 report__body__info">
-                                <div class="report__body__info__title mb-20">Заголовок</div>
-                                <p class="report__body__info__text mb-30">Оипсание и изображения будут доступны после покупки отчёта.</p>
-                                <div class="report__body__info__price mb-20">Цена: 1 000,00 руб.</div>
-                                <a class="btn btn-primary btn-block text-white">Купить отчет</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    
 
                     <? if ($lot->place->geo_lat && $lot->place->geo_lon): ?>
                     <div id="map-lot" data-lat="<?= $lot->place->geo_lat; ?>" data-lng="<?= $lot->place->geo_lon; ?>">
