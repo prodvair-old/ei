@@ -22,7 +22,7 @@ use sergmoro1\lookup\models\Lookup;
  * @var integer $status
  * @var integer $created_at
  * @var integer $updated_at
- * 
+ *
  * @property Lot $lot
  * @property sergmoro1\uploader\models\OneFile[] $files
  */
@@ -136,6 +136,21 @@ class Report extends ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    /**
+     * @return bool|Purchase|null
+     */
+    public function isPaid() {
+
+        if(Yii::$app->user->isGuest) {
+            return false;
+        }
+
+        return Purchase::findOne([
+            'user_id' => Yii::$app->user->getId(),
+            'report_id' => $this->id,
+        ]);
     }
 
     /**

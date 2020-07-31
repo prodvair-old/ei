@@ -110,7 +110,7 @@ class LotSearch extends Lot
      * @return ActiveDataProvider
      * @throws \yii\base\InvalidConfigException
      */
-    public function search($params =null)
+    public function search($params = null)
     {
         $limit = \Yii::$app->params[ 'defaultPageLimit' ];
         $query = Lot::find()
@@ -132,7 +132,7 @@ class LotSearch extends Lot
             return $dataProvider;
         }
 
-        $query->joinWith(['torg', 'categories']);
+        $query->joinWith(['torg', 'categories'], true, 'INNER JOIN');
 
         if (!$this->andArchived) {
             $query->andFilterWhere(['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED]);
@@ -155,7 +155,7 @@ class LotSearch extends Lot
         }
 
         if ($this->type == Torg::PROPERTY_BANKRUPT) {
-            $query->joinWith(['torg.bankrupt']);
+            $query->joinWith(['torg.bankrupt'], true, 'INNER JOIN');
         } elseif ($this->type == Torg::PROPERTY_ZALOG) {
             $query->joinWith(['torg.owner']);
         }
@@ -221,13 +221,13 @@ class LotSearch extends Lot
         }
 
         if ($this->search) {
-            $query->addSelect(new Expression("ts_rank({{ %lot }}.fts,plainto_tsquery('ru', :q)) as rank"));
-            $query->andWhere(new Expression("{{ %lot }}.fts  @@ plainto_tsquery('ru', :q)", [':q' => $this->search]));
+            $query->addSelect(new Expression("ts_rank({{%lot}}.fts,plainto_tsquery('ru', :q)) as rank"));
+            $query->andWhere(new Expression("{{%lot}}.fts  @@ plainto_tsquery('ru', :q)", [':q' => $this->search]));
             $query->addOrderBy(['rank' => SORT_DESC]);
         }
 
         if ($this->haveImage) {
-            $query->rightJoin(Onefile::tableName(), 'onefile.parent_id = lot.id AND onefile.model = :lot AND onefile.name IS NOT NULL', ['lot' => Lot::className()]);
+            $query->innerJoin(Onefile::tableName(), 'onefile.parent_id = lot.id AND onefile.model = :lot AND onefile.name IS NOT NULL', ['lot' => Lot::className()]);
         }
 
         if ($this->hasReport) {

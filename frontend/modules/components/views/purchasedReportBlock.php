@@ -8,7 +8,6 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /* @var $reports Report[] */
-/* @var $lot Lot */
 /* @var $reportForm ReportForm */
 
 ?>
@@ -16,7 +15,6 @@ use yii\widgets\ActiveForm;
     <div class="report mb-40">
         <div class="report__head">
             <div class="report__head__name">Отчет эксперта</div>
-            <div class="report__head__number">Лот № <?= $lot->id ?></div>
         </div>
         <div class="report__body row">
             <div class="col-md-6 report__body__expert">
@@ -132,56 +130,23 @@ use yii\widgets\ActiveForm;
             <div class="col-md-6 report__body__images">
                 <div class="report__body__images__slider">
                     <?php
-                    if ($report->isPaid()) :
-                        $image = $report->getImage('original');
-                        if ($image) :
-                            while ($image) : ?>
-                                <div class="report__body__images__slider__item">
-                                    <img src="<?= $image ?>" alt="Images">
-                                </div>
-                                <?php
-                                $image = $report->getNextImage('original');
-                            endwhile;
-                        endif;
-                    else : ?>
-                        <div class="report__body__images__slider__item">
-                            <img src="/img/lock.png" alt="Images">
-                        </div>
-                    <?php endif; ?>
+                    $image = $report->getImage('original');
+                    if ($image) :
+                        while ($image) : ?>
+                            <div class="report__body__images__slider__item">
+                                <img src="<?= $image ?>" alt="Images">
+                            </div>
+                            <?php
+                            $image = $report->getNextImage('original');
+                        endwhile;
+                    endif;
+                    ?>
                 </div>
             </div>
             <div class="col-md-6 report__body__info">
                 <div class="report__body__info__title mb-20"><?= $report->title ?></div>
                 <p class="report__body__info__text mb-30"><?= $report->content ?></p>
                 <div class="report__body__info__price mb-20">Цена: <?= $report->cost ?> руб.</div>
-                <?php $form = ActiveForm::begin(['action' => Url::to(['/lot/lot/invoice']), 'options' => [
-                    'class' => 'invoice-form'
-                ]]); ?>
-                <?php if (!Yii::$app->user->isGuest) : ?>
-                    <?php if ($report->isPaid()) : ?>
-                        <p>Отчет куплен</p>
-                        <p><a href="<?= Url::to('/profile/purchase') ?>">Мои покупки</a></p>
-                    <?php else : ?>
-                        <?= $form->field($reportForm, 'reportId')->hiddenInput(['value' => $report->id])->label(false); ?>
-                        <?= $form->field($reportForm, 'cost')->hiddenInput(['value' => $report->cost])->label(false); ?>
-                        <?= $form->field($reportForm, 'userId')->hiddenInput(['value' => Yii::$app->user->identity->getId()])->label(false); ?>
-                        <?= $form->field($reportForm, 'returnUrl')->hiddenInput(['value' => Yii::$app->request->absoluteUrl])->label(false); ?>
-                        <?= Html::submitButton('Купить отчет', [
-                            'class' => 'btn btn-primary btn-block text-white', 'name' => 'invoice-button'
-                        ]) ?>
-                    <?php endif; ?>
-                <?php else : ?>
-                    <p>Что бы купить отчет - <a href="#loginFormTabInModal-login" data-toggle="modal"
-                                                data-target="#loginFormTabInModal"
-                                                data-backdrop="static" data-keyboard="false">Войдите
-                        </a> или
-                        <a href="#loginFormTabInModal-register" data-toggle="modal"
-                           data-target="#loginFormTabInModal"
-                           data-backdrop="static" data-keyboard="false">
-                            Зарегистрируйтесь
-                        </a></p>
-                <?php endif; ?>
-                <?php ActiveForm::end(); ?>
             </div>
         </div>
     </div>

@@ -3,6 +3,8 @@
 namespace frontend\modules\profile\controllers;
 
 use common\models\db\Notification;
+use common\models\db\Purchase;
+use common\models\db\Report;
 use common\models\db\SearchQueries;
 use common\models\db\WishList;
 use frontend\modules\profile\components\NotificationService;
@@ -165,6 +167,18 @@ class ProfileController extends Controller
             'formModel' => $formModel,
         ]);
 
+    }
+
+    public function actionPurchase() {
+        $purchaseIdList = Purchase::getPurchasedReportsIdByUser(Yii::$app->user->getId());
+
+        $purchasedReports = Report::find()
+            ->where(['in', 'id', $purchaseIdList])
+            ->all();
+
+        return $this->render('purchase', [
+            'model'   => $purchasedReports,
+        ]);
     }
 
     public function actionSearchPreset()

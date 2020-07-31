@@ -4,8 +4,11 @@ namespace frontend\modules\controllers;
 
 use common\models\db\Order;
 use common\models\db\Region;
+use common\models\db\Report;
+use frontend\modules\forms\ReportForm;
 use frontend\modules\models\Category;
 use frontend\modules\forms\OrderForm;
+use frontend\modules\components\ReportService;
 use Yii;
 use common\models\db\SearchQueries;
 use common\models\db\Lot;
@@ -13,6 +16,7 @@ use common\models\db\WishList;
 use frontend\modules\models\LotSearch;
 use frontend\modules\models\MapSearch;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -269,6 +273,8 @@ class LotController extends Controller
             'url'      => "javascript:void(0)"
         ];
 
+        $model->trigger(Lot::EVENT_VIEWED);
+
         return $this->render('view', [
             'lot'  => $model,
             'type' => 'bankrupt',
@@ -401,12 +407,42 @@ class LotController extends Controller
 
             $form->loadFields($model, $post);
 
-            if ($model->save()) {
-                return true;
-            }
+            return $model->save();
         }
 
         return false;
     }
 
+    public function actionInvoice()
+    {
+
+        $rs = new ReportService();
+        $form = new ReportForm();
+
+        if (Yii::$app->request->isPost) {
+            $form->load(Yii::$app->request->post());
+
+            if ($form->validate()) {
+
+                $returnUrl = Url::toRoute([
+                    '/lot/purchase/success',
+                    'fromUrl' => $form->returnUrl,
+                ], []);
+
+                try {
+                    $res = $rs->invoiceCreate($form->userId, $form->cost, $form->reportId, $returnUrl);
+                } catch (\Exception $e) {
+                    return $this->redirect($form->returnUrl); //TODO fix
+                }
+
+                if ($res) {
+                    return $this->redirect($rs->getPaymentUrl());
+                }
+            }
+
+            return $this->redirect($form->returnUrl); //TODO fix
+        }
+
+
+    }
 }

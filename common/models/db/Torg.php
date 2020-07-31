@@ -168,6 +168,7 @@ class Torg extends ActiveRecord
     {
         return $this->hasMany(Lot::className(), ['torg_id' => 'id'])
             ->andFilterWhere(['!=', Lot::tableName() . '.id', $currentLot])
+            ->limit(15)
             ->all();
     }
 
