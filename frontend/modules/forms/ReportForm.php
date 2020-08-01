@@ -19,11 +19,13 @@ class ReportForm extends Model
 
     public $returnUrl;
 
+    public $checkPolicy;
+
 
     public function rules()
     {
         return [
-            [['reportId', 'userId', 'cost', 'returnUrl'], 'required'],
+            [['reportId', 'userId', 'cost', 'returnUrl', 'checkPolicy'], 'required'],
             [['reportId', 'userId', 'cost'], 'number'],
             [['returnUrl'], 'string'],
         ];

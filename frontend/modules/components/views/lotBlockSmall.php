@@ -134,7 +134,11 @@ $wishListAll = WishList::find()->where(['lot_id' => $lot->id])->count();
             <? if (!$lot->archiveStat) {?>
             <div class="lot__block__info__footer">
                 <div class="lot__block__info__footer__published" title="Дата пуликации">
-                    <?= Yii::$app->formatter->asDate($lot->torg->published_at, 'long') ?>
+                    <? if (Yii::$app->formatter->asDate($lot->torg->published_at, 'long') == Yii::$app->formatter->asDate(time(), 'long')) { ?>
+                        <span class="text-green">Добавлено сегодня!</span>
+                    <? } else { ?>
+                        <?= Yii::$app->formatter->asDate($lot->torg->published_at, 'long') ?>
+                    <? } ?>
                 </div>
                 <? if ($lot->getTraces()->count() > 10) { ?>
                 <div class="lot__block__info__footer__views">

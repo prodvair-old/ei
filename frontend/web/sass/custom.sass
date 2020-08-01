@@ -1748,6 +1748,7 @@ label.toggle-item:before
   background-color: #EBFFF8
   box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.1)
   padding: 30px
+  border-radius: 20px
   &__head
     display: flex
     justify-content: space-between
@@ -1768,7 +1769,13 @@ label.toggle-item:before
           align-items: center
           justify-content: center
           overflow: hidden
-      &__arrow
+          img
+            border-radius: 15px
+            cursor: zoom-in
+          &.lock
+            img
+              cursor: not-allowed
+        &__arrow
         &-next, &-prev
           position: absolute
           top: 50%
@@ -1791,14 +1798,18 @@ label.toggle-item:before
       display: flex
       align-items: center
       &-img
-        width: 60px
-        height: 60px
+        width: 65px
+        height: 65px
         border-radius: 50%
         box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.1)
       &__name
         font-size: 18px
         line-height: 21px
         margin-left: 15px
+        small
+          font-size: 12px
+          line-height: 12px
+          font-weight: 300
     &__diogramm
       display: flex
       justify-content: space-around
@@ -1901,10 +1912,15 @@ label.toggle-item:before
   background-color: #ffffff
   border-radius: 10px
 
+.text-green
+  color: #13b17c!important
+
 .slider
   .slick-arrow
     margin-top: 0
     border-radius: 15px
+    cursor: pointer
+    border-width: 2px
   &__item
     margin: 20px 0
     display: block

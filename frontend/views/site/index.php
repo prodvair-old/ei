@@ -15,6 +15,7 @@ use common\models\db\Torg;
 use frontend\modules\models\LotSearch;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use frontend\modules\models\Category;
 
 
 $this->title = Yii::$app->params[ 'title' ];
@@ -72,6 +73,21 @@ $lotLowPrice->where([
     ['<', Lot::tableName() . '.start_price', 100],
 ]);
 $lotLowPriceList = $lotLowPrice->orderBy([Torg::tableName() . '.published_at' => SORT_DESC])->limit(3)->all();
+
+$lotLowBuild = Lot::find()->joinWith(['torg','categories']);
+$lotLowBuild->where([
+    'and',
+    ['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED],
+    ['>', Torg::tableName() . '.end_at', time()],
+]);
+$subCategories = Category::findOne(['id' => 2]);
+$leaves = $subCategories->leaves()->all();
+$allCategories[] = 2;
+foreach ($leaves as $leaf) {
+    $allCategories[] = $leaf->id;
+}
+$lotLowBuild->andWhere(['IN', Category::tableName() . '.id', $allCategories]);
+$lotLowBuildList = $lotLowBuild->orderBy([Lot::tableName() . '.start_price' => SORT_ASC])->limit(7)->all();
 ?>
 
 <div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03"
@@ -294,32 +310,6 @@ $lotLowPriceList = $lotLowPrice->orderBy([Torg::tableName() . '.published_at' =>
 </section>
 <? } ?>
 
-
-<? if (count($lots = $lotEndList) > 0) { ?>
-<section class="pt-0 pb-0">
-    <div class="container">
-        <h2 class="h3 mt-40 line-125 ">Торги закончены</h2>
-
-
-        <div class="row">
-            <? foreach ($lots as $lot) { ?>
-                <div class="col-lg-3 col-sm-6 mb-40" itemscope itemtype="http://schema.org/Product">
-                    <?= LotBlockSmall::widget(['lot' => $lot, 'url' => $url]) ?>
-                </div>
-            <? } ?>
-            <div class="col-lg-3 col-sm-6 mb-40 lot_next__btn">
-                <a href="/all/lot-list?LotSearch%5Bsearch%5D=&LotSearch%5Bregion%5D=&LotSearch%5BminPrice%5D=&LotSearch%5BmaxPrice%5D=&LotSearch%5BtradeType%5D=&LotSearch%5BandArchived%5D=1&LotSearch%5BhaveImage%5D=0&LotSearch%5BhasReport%5D=0" class="btn btn-primary borr-10">
-                    Перейти в архив
-                    <i class="fa fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-
-        <div class="clear mb-50"></div>
-    </div>
-</section>
-<? } ?>
-
 <? if (count($lots = $lotLowPriceList) > 0) { ?>
 <section class="pt-0 pb-0">
     <div class="container">
@@ -340,6 +330,58 @@ $lotLowPriceList = $lotLowPrice->orderBy([Torg::tableName() . '.published_at' =>
             </div>
         </div>
         
+
+        <div class="clear mb-50"></div>
+    </div>
+</section>
+<? } ?>
+
+
+<? if (count($lots = $lotLowBuildList) > 0) { ?>
+<section class="pt-0 pb-0">
+    <div class="container">
+        <h2 class="h3 mt-40 line-125 ">Самая дешевая недвижимость</h2>
+
+
+        <div class="row">
+            <? foreach ($lots as $lot) { ?>
+                <div class="col-lg-3 col-sm-6 mb-40" itemscope itemtype="http://schema.org/Product">
+                    <?= LotBlockSmall::widget(['lot' => $lot, 'url' => $url]) ?>
+                </div>
+            <? } ?>
+            <div class="col-lg-3 col-sm-6 mb-40 lot_next__btn">
+                <a href="all/nedvizhimost?LotSearch%5Bsearch%5D=&LotSearch%5BhasReport%5D=0&LotSearch%5BsubCategory%5D=&LotSearch%5Bregion%5D=&LotSearch%5BminPrice%5D=&LotSearch%5BmaxPrice%5D=&LotSearch%5BtradeType%5D=&LotSearch%5BandArchived%5D=0&LotSearch%5BhaveImage%5D=0&LotSearch%5BsortBy%5D=priceASC" class="btn btn-primary borr-10">
+                    Большое лотов
+                    <i class="fa fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        
+
+        <div class="clear mb-50"></div>
+    </div>
+</section>
+<? } ?>
+
+<? if (count($lots = $lotEndList) > 0) { ?>
+<section class="pt-0 pb-0">
+    <div class="container">
+        <h2 class="h3 mt-40 line-125 ">Торги закончены</h2>
+
+
+        <div class="row">
+            <? foreach ($lots as $lot) { ?>
+                <div class="col-lg-3 col-sm-6 mb-40" itemscope itemtype="http://schema.org/Product">
+                    <?= LotBlockSmall::widget(['lot' => $lot, 'url' => $url]) ?>
+                </div>
+            <? } ?>
+            <div class="col-lg-3 col-sm-6 mb-40 lot_next__btn">
+                <a href="/all/lot-list?LotSearch%5Bsearch%5D=&LotSearch%5Bregion%5D=&LotSearch%5BminPrice%5D=&LotSearch%5BmaxPrice%5D=&LotSearch%5BtradeType%5D=&LotSearch%5BandArchived%5D=1&LotSearch%5BhaveImage%5D=0&LotSearch%5BhasReport%5D=0" class="btn btn-primary borr-10">
+                    Перейти в архив
+                    <i class="fa fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
 
         <div class="clear mb-50"></div>
     </div>

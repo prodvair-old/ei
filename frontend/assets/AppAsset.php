@@ -16,6 +16,7 @@ class AppAsset extends AssetBundle
         
 
         'css/data_picker.css',
+        'css/popuper.css',
         'css/custom.min.css?v=1.10',
         'css/your-style.css?v1.31',
         'css/map.css?v1.06',
@@ -25,6 +26,7 @@ class AppAsset extends AssetBundle
         'js/jquery-2.2.4.min.js',
         // 'js/costom-plugins/jquery.serializejson.min.js',
         'https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.js',
+        'js/plugins/popuper.js',
         'js/plugins.js',
         'js/costom-plugins/toast.js',
         'js/custom-core.js?v=1.06',

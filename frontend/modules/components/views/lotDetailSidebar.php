@@ -13,7 +13,7 @@ use sergmoro1\lookup\models\Lookup;
 
         <div class="box-heading"><h3 class="h6 text-white text-uppercase">Информация о лоте</h3></div>
 
-        <div class="box-content">
+        <div class="box-content p-0">
 
             <span class="font600 text-muted line-125">Текущая цена</span>
             <h4 class="line-125"> <?= Yii::$app->formatter->asCurrency($lot->start_price) ?> </h4>
