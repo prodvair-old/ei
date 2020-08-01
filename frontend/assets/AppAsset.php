@@ -17,7 +17,7 @@ class AppAsset extends AssetBundle
 
         'css/data_picker.css',
         'css/popuper.css',
-        'css/custom.min.css?v=1.10',
+        'css/custom.min.css?v=1.11',
         'css/your-style.css?v1.31',
         'css/map.css?v1.06',
         'https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css'
@@ -29,7 +29,7 @@ class AppAsset extends AssetBundle
         'js/plugins/popuper.js',
         'js/plugins.js',
         'js/costom-plugins/toast.js',
-        'js/custom-core.js?v=1.06',
+        'js/custom-core.js?v=1.08',
         'https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js',
         // 'https://api-maps.yandex.ru/2.1-stable/?load=package.standard&lang=ru-RU',
         'https://cdn.jsdelivr.net/npm/vue/dist/vue.js',
