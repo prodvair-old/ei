@@ -24,6 +24,8 @@ use yii\helpers\Url;
         <ul>
             <li <?= ($page == 'wishlist') ? 'class="active"' : '' ?>><a href="<?= Url::to(['/profile/favorite']) ?>">Избранные</a>
             </li>
+            <li <?= ($page == 'purchase') ? 'class="active"' : '' ?>><a href="<?= Url::to(['/profile/purchase']) ?>">Покупки</a>
+            </li>
             <li <?= ($page == 'search-preset') ? 'class="active"' : '' ?>><a
                         href="<?= Url::to(['/profile/search-preset']) ?>">Поисковые отслеживания</a></li>
             <?php if (Yii::$app->user->identity->role !== 'user') { ?>

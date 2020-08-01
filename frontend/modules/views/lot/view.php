@@ -121,22 +121,22 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                         </div>
                         <?php endif; ?>
 
-                        <ul class="list-inline-block highlight-list mt-30">
-                            <li>
+                            <ul class="list-inline-block highlight-list mt-30">
+                                <li>
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-basic-chronometer"></i>
                                 </span>
-                                До подачи заявки<br />
-                                <strong><?= ($dateSend > 0) ? NumberWords::widget(['number' => $dateSend, 'words' => ['день', 'дня', 'дней']]) : 'Прошло' ?></strong>
-                            </li>
-                            <li>
+                                    До подачи заявки<br/>
+                                    <strong><?= ($dateSend > 0) ? NumberWords::widget(['number' => $dateSend, 'words' => ['день', 'дня', 'дней']]) : 'Прошло' ?></strong>
+                                </li>
+                                <li>
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-basic-flag1"></i>
                                 </span>
-                                Старт
-                                торгов<br /><strong><?= Yii::$app->formatter->asDate($lot->torg->started_at, 'long') ?></strong>
-                            </li>
-                            <li>
+                                    Старт
+                                    торгов<br/><strong><?= Yii::$app->formatter->asDate($lot->torg->started_at, 'long') ?></strong>
+                                </li>
+                                <li>
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-basic-flag2"></i>
                                 </span>
@@ -147,15 +147,15 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-ecommerce-rublo"></i>
                                 </span>
-                                Сумма
-                                задатка<br /><strong><?= ($lot->deposit_measure == 1) ? Yii::$app->formatter->asCurrency((($lot->start_price / 100) * $lot->deposit)) : Yii::$app->formatter->asCurrency($lot->deposit) ?></strong>
-                            </li>
-                        </ul>
+                                    Сумма
+                                    задатка<br/><strong><?= ($lot->deposit_measure == 1) ? Yii::$app->formatter->asCurrency((($lot->start_price / 100) * $lot->deposit)) : Yii::$app->formatter->asCurrency($lot->deposit) ?></strong>
+                                </li>
+                            </ul>
 
-                        <h5 class="mt-30">Описание</h5>
-                        <p class="long-text" itemprop="description"><?= $lot->description ?></p>
+                            <h5 class="mt-30">Описание</h5>
+                            <p class="long-text" itemprop="description"><?= $lot->description ?></p>
 
-                        <? if ($lot->report) {
+                            <? if ($lot->report) {
                                 try {
                                     echo ReportWidget::widget(['reports' => $lot->report, 'lot' => $lot]);
                                 } catch (\Exception $e) {
@@ -164,15 +164,10 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                             } ?>
 
-                        <a href="#desc" class="open-text-js">Подробнее</a>
+                            <a href="#desc" class="open-text-js">Подробнее</a>
 
+                        </div>
                     </div>
-
-                    <? if ($lot->place->geo_lat && $lot->place->geo_lon): ?>
-                    <div id="map-lot" data-lat="<?= $lot->place->geo_lat; ?>" data-lng="<?= $lot->place->geo_lon; ?>">
-                    </div>
-                    <? endif; ?>
-
 
                     <div class="sidebar-mobile mb-40">
                         <?= LotDetailSidebar::widget(['lot' => $lot]) ?>
@@ -635,5 +630,5 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 <!-- end lot form modal -->
 
 <?php
-$this->registerJsFile('js/custom-multiply-sticky.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-');
+$this->registerJsFile('js/custom-multiply-.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-');
 ?>
