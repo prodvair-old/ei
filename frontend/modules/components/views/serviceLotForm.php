@@ -4,7 +4,7 @@ use common\models\db\Lot;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
-use frontend\modules\components\LotBlock;
+use frontend\modules\components\LotBlockSmall;
 
 /**
  * @var $lot Lot
@@ -84,7 +84,9 @@ if ($lot->start_price < 500000) {
                 <div class="row">
 
                     <div class="col-lg-6 col-12">
-                        <?=LotBlock::widget(['lot' => $lot, 'color' => $color4])?>
+                        <div>
+                            <?=LotBlockSmall::widget(['lot' => $lot])?>
+                        </div>
                     </div>
 									
                     <div class="col-lg-6 col-12">

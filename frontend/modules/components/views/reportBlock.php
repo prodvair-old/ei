@@ -194,7 +194,7 @@ if ($lot->torg->property == 1) {
                         <div class="custom-control custom-checkbox mt-10">
                             <div class="form-group field-checkPolicy">
                                 <input type="hidden" name="ReportForm[checkPolicy]" value="0">
-                                <input type="checkbox" id="checkPolicy" class="custom-control-input" required name="ReportForm[checkPolicy]" value="1">
+                                <input type="checkbox" id="checkPolicy" checked class="custom-control-input" required name="ReportForm[checkPolicy]" value="1">
                                 <label class="custom-control-label" for="checkPolicy">Согласен с <a href="/policy" target="_blank">пользовательскими условиями</a></label>
                             </div>
                         </div>
