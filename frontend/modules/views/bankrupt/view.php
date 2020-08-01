@@ -2,7 +2,7 @@
 
 use common\models\db\Bankrupt;
 use common\models\db\Lot;
-use frontend\modules\components\LotBlock;
+use frontend\modules\components\LotBlockSmall;
 use yii\widgets\Breadcrumbs;
 
 /**
@@ -119,11 +119,13 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                                 <h4 class="heading-title">Лоты <span class="font400">Должника</span></h4>
 
-                                <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-30 mb-25">
+                                <div class="row">
 
-                                    <? foreach ($bankruptLots as $item) {
-                                        echo LotBlock::widget(['lot' => $item, 'url' => '/banrkupt/lot-list']);
-                                    } ?>
+                                    <? foreach ($bankruptLots as $item) { ?>
+                                        <div class="col-lg-3 col-sm-6 mb-40" itemscope itemtype="http://schema.org/Product">
+                                            <?= LotBlockSmall::widget(['lot' => $item]); ?>
+                                        </div>
+                                    <? } ?>
 
                                 </div>
 

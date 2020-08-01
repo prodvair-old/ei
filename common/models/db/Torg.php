@@ -164,11 +164,11 @@ class Torg extends ActiveRecord
      * @param $currentLot
      * @return array|ActiveRecord[]
      */
-    public function getOtherLots($currentLot)
+    public function getOtherLots($currentLot, $limit = 15)
     {
         return $this->hasMany(Lot::className(), ['torg_id' => 'id'])
             ->andFilterWhere(['!=', Lot::tableName() . '.id', $currentLot])
-            ->limit(15)
+            ->limit($limit)
             ->all();
     }
 

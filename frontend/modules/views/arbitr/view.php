@@ -3,7 +3,7 @@
 use common\models\db\Casefile;
 use common\models\db\Lot;
 use common\models\db\Manager;
-use frontend\modules\components\LotBlock;
+use frontend\modules\components\LotBlockSmall;
 use yii\widgets\Breadcrumbs;
 use yii\helpers\Url;
 
@@ -66,7 +66,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                 </div>
                                 <div class="mr-15 text-muted">|</div>
                                 <div class="mr-15 rating-item rating-inline">
-                                    <p class="rating-text font400 text-muted font-12 letter-spacing-1"><?= $model->reg_number ?> </p>
+                                    <p class="rating-text font400 text-muted font-12 letter-spacing-1"><?// $model->reg_number ?> </p>
                                 </div>
                             </div>
 
@@ -83,7 +83,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                                         <li>
                                             <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                            <h6><span class="font400">Рег.номер  </span><?= $model->reg_number ?>
+                                            <h6><span class="font400">Рег.номер  </span><?// $model->reg_number ?>
                                             </h6>
                                         </li>
 
@@ -150,11 +150,13 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                 <h4 class="heading-title">Лоты <span class="font400">Арбитражного управляющего</span>
                                 </h4>
 
-                                <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-30 mb-25">
+                                <div class="row">
 
-                                    <?php foreach ($lots as $item) {
-                                        echo LotBlock::widget(['lot' => $item, 'type' => 'long', 'url' => '/banrkupt/lot-list']);
-                                    } ?>
+                                    <?php foreach ($lots as $item) { ?>
+                                        <div class="col-lg-3 col-sm-6 mb-40" itemscope itemtype="http://schema.org/Product">
+                                            <?= LotBlockSmall::widget(['lot' => $item]); ?>
+                                        </div>
+                                    <? } ?>
 
                                 </div>
 

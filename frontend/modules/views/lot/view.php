@@ -13,6 +13,7 @@ use frontend\modules\components\ServiceLotFormWidget;
 use frontend\models\UserAccess;
 use ymaker\social\share\widgets\SocialShare;
 use common\models\db\WishList;
+use frontend\modules\components\SliderServices;
 
 /* @var $lot Lot */
 /* @var $type */
@@ -30,6 +31,8 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 <section class="page-wrapper page-detail">
 
     <div class="page-title bg-light d-none d-sm-block">
+
+        <?= SliderServices::widget()?>
 
         <div class="container">
 
@@ -556,7 +559,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                     </div>
                     <? } ?>
 
-                    <?php $otherLots = $lot->torg->getOtherLots($lot->id); ?>
+                    <?php $otherLots = $lot->torg->getOtherLots($lot->id, 2); ?>
 
                     <? if ($otherLots) { ?>
                     <div id="other-lot" class="fullwidth-horizon--section">
@@ -571,6 +574,12 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                 </div>
                             <? } ?>
 
+                            <div class="col-lg-4 col-sm-6 mb-30 lot_next__btn">
+                                <a href="<?= Url::to(['/bankrupt']) ?>/<?= $lot->torg->bankruptProfile->id ?>" class="btn btn-primary borr-10">
+                                    Другие лоты
+                                    <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </div>
                         </div>
 
                         <div class="mb-50"></div>
@@ -593,9 +602,9 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
             <div class="col-12 col-lg-4">
 
-                <div class="sidebar-desktop">
-                    <div class="box-content mb-10">
-                        <ul class="border-top mt-20 pt-15">
+                <div class="sidebar-desktop border-dots borr-20">
+                    <div class="box-content">
+                        <ul class="pt-15">
                             <li class="clearfix"> Дата и время актуализации<span
                                     class="float-right"><?= Yii::$app->formatter->asDatetime($lot->status_changed_at) ?></span>
                             </li>
