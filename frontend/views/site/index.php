@@ -98,7 +98,7 @@ $lotLowPriceList = $lotLowPrice->orderBy([Torg::tableName() . '.published_at' =>
 
 </div>
 
-<div class="slick-list-visible">
+<div class="slick-list-visible mb-50">
 			
     <div class="container">
 
@@ -185,8 +185,6 @@ $lotLowPriceList = $lotLowPrice->orderBy([Torg::tableName() . '.published_at' =>
     </div>
     
 </div>
-
-<div class="mb-50"></div>
 
 <section class="pt-0 pb-0 mb-50">
     <div class="container">
