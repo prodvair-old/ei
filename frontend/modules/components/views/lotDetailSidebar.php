@@ -59,12 +59,12 @@ use sergmoro1\lookup\models\Lookup;
 
             <? if ($lot->status !== Lot::STATUS_ARCHIVED): ?>
                 <a <?= (Yii::$app->user->isGuest) ? 'href="#loginFormTabInModal-login" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#lotFormTabInModal-service" data-toggle="modal" data-target="#lotFormTabInModal" data-backdrop="static" data-keyboard="false"' ?>
-                        class="btn btn-primary btn-block">Подать заявку</a>
+                        class="btn btn-primary btn-block borr-10">Подать заявку</a>
             <? endif ?>
 
         </div>
 
-        <div class="box-bottom bg-light">
+        <div class="box-bottom bg-light borr-10">
             <h6 class="font-sm">Техническая поддержка пользователей</h6>
             <p class="font-sm">Мы ответим на все вопросы по данному лоту: <br><a href="tel:8(800)600-33-05"
                                                                                  class="text-primary">8-800-600-33-05</a>.
