@@ -156,10 +156,10 @@ if ($lot->torg->property == 1) {
                         $image = $report->getImage('original');
                         if ($image) :
                             while ($image) : ?>
-                                <div class="report__body__images__slider__item">
-                                    <a href="<?= $image ?>">
+                                <div href="<?= $image ?>" class="report__body__images__slider__item">
+                                    <span>
                                         <img src="<?= $image ?>">
-                                    </a>
+                                    </span>
                                 </div>
                                 <?php
                                 $image = $report->getNextImage('original');
