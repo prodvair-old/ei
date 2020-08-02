@@ -180,6 +180,8 @@ return [
                 '/lot/load-sub-categories' => '/lot/lot/load-sub-categories',
                 '/lot/save-search'         => '/lot/lot/save-search',
 
+                '/lot/unique'         => '/lot/lot/unique',
+
                 '/arbitr/list'     => '/lot/arbitr/index',
                 '/arbitr/<id:\d+>' => '/lot/arbitr/view',
 
@@ -188,6 +190,8 @@ return [
 
                 '/sro/list'     => '/lot/sro/index',
                 '/sro/<id:\d+>' => '/lot/sro/view',
+                '/sro/get-case-count' => '/lot/sro/get-case-count',
+                '/sro/get-lot-count' => '/lot/sro/get-lot-count',
 
                 '/purchase/success' => '/lot/purchase/success',
 
