@@ -13,7 +13,7 @@ if ($lots) : ?>
     <?php endforeach; ?>
     <div class="col-lg-3 col-sm-6 mb-40 lot_next__btn">
         <a href="/all/lot-list?LotSearch%5Bsearch%5D=&LotSearch%5Bregion%5D=&LotSearch%5BminPrice%5D=&LotSearch%5BmaxPrice%5D=100&LotSearch%5BtradeType%5D=&LotSearch%5BandArchived%5D=0&LotSearch%5BhaveImage%5D=0&LotSearch%5BhasReport%5D=0" class="btn btn-primary borr-10">
-            Большое лотов
+            Больше лотов
             <i class="fa fa-arrow-right"></i>
         </a>
     </div>

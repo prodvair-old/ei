@@ -23,7 +23,7 @@ use yii\bootstrap\ActiveForm;
                         <div class="form-inner">
 
                             <div class="form-group">
-                                <?= $form->field($model, 'username')->textInput(['autofocus' => true])->label('E-mail адрес') ?>
+                                <?= $form->field($model, 'username')->textInput(['autofocus' => true])->label('E-mail') ?>
                             </div>
 
                             <div class="form-group">

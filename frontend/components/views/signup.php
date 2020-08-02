@@ -28,7 +28,7 @@ use yii\bootstrap\ActiveForm;
 
                         <div class="form-inner">
                         <div class="form-group">
-                                <?= $form->field($model, 'email')->label('E-mail адрес') ?>
+                                <?= $form->field($model, 'email')->label('E-mail') ?>
                             </div>
                             <div class="form-group">
                                 <?= $form->field($model, 'phone')->label('Номер телефона') ?>

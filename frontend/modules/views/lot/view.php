@@ -288,7 +288,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                 <h6 class="mt-0">VIN номер</h6>
                                 <p itemprop="mpn"><?= $lot->getInfo()[ 'vin' ] ?></p>
                                 <a href="https://avtocod.ru/proverkaavto/<?= $lot->getInfo()[ 'vin' ] ?>?rd=VIN&a_aid=zhukoffed"
-                                    class="btn btn-success btn-sm mt-2" target="_blank" rel="nofollow">Проверить
+                                    class="btn btn-success btn-sm mt-2" style="max-width: 120px" target="_blank" rel="nofollow">Проверить
                                     Автомобиль</a>
                             </li>
                             <? } ?>

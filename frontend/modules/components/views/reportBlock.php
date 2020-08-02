@@ -206,7 +206,7 @@ if ($lot->torg->property == 1) {
                         
                     <?php endif; ?>
                 <?php else : ?>
-                    <div class="report__body__info__price mb-20">Цена: <?= $report->cost ?> руб.</div>
+                    <div class="report__body__info__price mb-20">Цена отчёта: <?= $report->cost ?> руб.</div>
                     <p>Что бы купить отчет - <a href="#loginFormTabInModal-login" data-toggle="modal"
                                                 data-target="#loginFormTabInModal"
                                                 data-backdrop="static" data-keyboard="false">Войдите
