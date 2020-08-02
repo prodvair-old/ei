@@ -84,7 +84,7 @@ $this->params[ 'breadcrumbs' ][] = [
 
                         <div class="row gap-30">
 
-                            <div class="col-12 col-md-12 col-lg-8">
+                            <div class="col-12">
                                 <? if ($model) {
                                     try {
                                         echo ReportWidget::widget(['reports' => $model]);
