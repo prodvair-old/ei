@@ -32,8 +32,6 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
     <div class="page-title bg-light d-none d-sm-block">
 
-        <?= SliderServices::widget()?>
-
         <div class="container">
 
             <div class="row gap-15 align-items-center">
@@ -63,6 +61,36 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
         <?= (!empty($lot->archive)) ? ($lot->archive) ? '<span class="h3 text-primary">Архив</span><hr>' : '' : '' ?>
 
+        <div class="row">
+            <div class="col-lg-8 col-12">
+                <div class="d-flex justify-content-between bg-gray pt-15 pb-15 pl-15 pr-15 borr-20 mb-20">
+                    <div class="d-flex">
+                        <div class="mr-30">
+                            <?= ($lot->getTraces()->count() > 0) ? $lot->getTraces()->count() : '' ?> <i class="far fa-eye fa-sm ml-5"></i>
+                        </div>
+                        <?= SocialShare::widget([
+                            'configurator' => 'socialShare',
+                            'url'          => ('https://ei.ru' . Yii::$app->request->url),
+                            'title'        => 'Посмотри лот на ei.ru: ' . Yii::$app->params[ 'h1' ]
+                        ]); ?>
+                    </div>
+                    <div class="mr-10 rating-item rating-inline">
+                        <a title="Добавить в избранные"
+                            <?= (Yii::$app->user->isGuest) ? 'href="#loginFormTabInModal-login" class="wish-star  d-flex" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star d-flex" data-id="' . $lot->id . '"' ?>>
+                            <span class="pr-5"> <?=($wishListAll > 0)? $wishListAll : ''?></span>
+                            <img src="img/star<?= ($wishListCheck->lot_id) ? '' : '-o' ?>.svg" alt="">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-12">
+                <ul class="mb-20 pl-10">
+                    <li class="clearfix">№ <?= $lot->id ?></li>
+                    <li class="clearfix">Опубликован: <?= Yii::$app->formatter->asDate($lot->torg->published_at, 'long') ?></li>
+                </ul>
+            </div>
+        </div>
+
         <div class="row gap-20 gap-lg-40" itemscope itemtype="http://schema.org/Product">
 
             <div class="col-12 col-lg-8">
@@ -70,30 +98,10 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                 <div class="content-wrapper">
 
                     <div id="desc" class="detail-header mb-30">
-                        <h1 class="h4" itemprop="name"><?= $lot->title ?></h1>
+                        <div class="lot__block__info__content__offer"><?= $lot->region->name ?></div>
+                        <h1 class="h3 lh-h1 mt-5" itemprop="name"><?= $lot->title ?></h1>
 
                         <div class="d-flex flex-row align-items-sm-center mb-20">
-                            <div class="mr-10 font-lg text-muted">
-                                <?= $lot->getTraces()->count(); ?> <i class="far fa-eye fa-sm"></i>
-                            </div>
-                            <div class="mr-10 text-muted">|</div>
-                            <div class="mr-10 rating-item rating-inline">
-                                <p class="rating-text font600 text-muted font-12">
-                                    <?= Yii::$app->formatter->asDate($lot->torg->published_at, 'long') ?> </p>
-                            </div>
-                            <div class="mr-10 text-muted">|</div>
-                            <div class="mr-10 rating-item rating-inline">
-                                <p class="rating-text font400 text-muted font-12 letter-spacing-1">торги
-                                    №<?= $lot->id ?> </p>
-                            </div>
-                            <div class="mr-10 text-muted">|</div>
-                            <div class="mr-10 rating-item rating-inline">
-                                <a
-                                    <?= (Yii::$app->user->isGuest) ? 'href="#loginFormTabInModal-login" class="wish-star  d-flex" data-toggle="modal" data-target="#loginFormTabInModal" data-backdrop="static" data-keyboard="false"' : 'href="#" class="wish-js wish-star d-flex" data-id="' . $lot->id . '"' ?>>
-                                    <span class="pr-5"> <?= $wishListAll ?> </span>
-                                    <img src="img/star<?= ($wishListCheck->lot_id) ? '' : '-o' ?>.svg" alt="">
-                                </a>
-                            </div>
                             <?
                                 if (!Yii::$app->user->isGuest) {
                                     if (Yii::$app->user->identity->role !== 'user' && UserAccess::forManager('lots', 'edit')) {
@@ -127,26 +135,26 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                             <ul class="list-inline-block highlight-list mt-30">
                                 <li>
                                 <span class="icon-font d-block">
-                                    <i class="linea-icon-basic-chronometer"></i>
-                                </span>
-                                    До подачи заявки<br/>
-                                    <strong><?= ($dateSend > 0) ? NumberWords::widget(['number' => $dateSend, 'words' => ['день', 'дня', 'дней']]) : 'Прошло' ?></strong>
-                                </li>
-                                <li>
-                                <span class="icon-font d-block">
-                                    <i class="linea-icon-basic-flag1"></i>
+                                    <i class="linea-icon-basic-flag1 text-green"></i>
                                 </span>
                                     Старт
                                     торгов<br/><strong><?= Yii::$app->formatter->asDate($lot->torg->started_at, 'long') ?></strong>
                                 </li>
                                 <li>
                                 <span class="icon-font d-block">
-                                    <i class="linea-icon-basic-flag2"></i>
+                                    <i class="ri-arrow-right"></i>
+                                </span>
+                                </br>
+                                    <strong class="text-green"><?= ($dateSend > 0) ? NumberWords::widget(['number' => $dateSend, 'words' => ['день', 'дня', 'дней']]) : 'Прошло' ?></strong>
+                                </li>
+                                <li>
+                                <span class="icon-font d-block">
+                                    <i class="linea-icon-basic-flag2 text-danger"></i>
                                 </span>
                                 Окончание
                                 торгов<br /><strong><?= Yii::$app->formatter->asDate($lot->torg->completed_at, 'long') ?></strong>
                             </li>
-                            <li>
+                            <li class="ml-50">
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-ecommerce-rublo"></i>
                                 </span>
@@ -155,9 +163,11 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                 </li>
                             </ul>
 
-                            <h5 class="mt-30">Описание</h5>
+                            <h4 class="mt-50 mb-5">Описание</h4>
                             <p class="long-text" itemprop="description"><?= $lot->description ?></p>
+                            <a href="#desc" class="open-text-js">Подробнее</a>
 
+                            <div class="mt-50"></div>
                             <? if ($lot->report) {
                                 try {
                                     echo ReportWidget::widget(['reports' => $lot->report, 'lot' => $lot]);
@@ -165,26 +175,106 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                     echo (YII_ENV_PROD) ? 'Ошибка загрузки отчетов' : $e->getMessage();
                                 }
 
-                            } ?>
+                            } else { ?>
 
-                            <a href="#desc" class="open-text-js">Подробнее</a>
+                            <div class="slider__item green slider__item-full">
+                                <div class="slider__item__title">У этого лота пока нет отчета <br> Добавьте информацию и заработайте!</div>
+                                <ul class="slider__item__list">
+                                    <li><i class="fa fa-check pr-5"></i>Загрузите фотографии</li>
+                                    <li><i class="fa fa-check pr-5"></i>Добавьте описание</li>
+                                    <li><i class="fa fa-check pr-5"></i>Прикрепите документы</li>
+                                    <li><i class="fa fa-check pr-5"></i>Назначьте цену </li>
+                                </ul>
+                                <p class="slider__item__text mb-0 mt-10">Получайте деньги с продажи отчета!</p>
+                                <div class="mt-30"></div>
+                                <a href="/contact" class="slider__item__link">
+                                        Стать агентом ei
+                                    <i class="ion-ios-arrow-forward"></i>
+                                </a>
+                                <img src="./img/mercedes.png" alt="">
+                            </div>
+
+                            <? } ?>
 
                         <!-- </div> -->
                     </div>
 
-                    <div class="sidebar-mobile mb-40">
+                    <div class="sidebar-mobile mb-50">
                         <?= LotDetailSidebar::widget(['lot' => $lot]) ?>
                     </div>
 
+                    <div class="mt-50"></div>
                     <div id="info" class="fullwidth-horizon--section">
 
                         <h4 class="heading-title">Информация о лоте</h4>
 
-                        <ul class="list-icon-absolute what-included-list mb-30">
+                        <ul class="list-icon-absolute what-included-list row">
+                        <? if ($lot->torg->property === Torg::PROPERTY_BANKRUPT) { ?>
+                            <li class="col-12 col-md-6 pl-15 pr-15">
+                                <figure class="tour-grid-item-01 box-shadow borr-10">
 
-                            <li>
+                                    <a href="<?= ($lot->torg->bankruptProfile->id) ? Url::to(['/bankrupt']).'/'.$lot->torg->bankruptProfile->id : Url::to(['/bankrupt']).'/'.$lot->torg->bankrupt->id ?>">
+                                            
+                                        <figcaption class="content">
+                                            <div class="lot__block__info__content__offer">Должник</div>
+                                            <?php if ($lot->torg->bankruptProfile->id) : ?>
+                                                <h5><?=$lot->torg->bankruptProfile->getFullName()?></h5>
+                                                <ul class="item-meta mt-10 pl-0">
+                                                    <li class="pl-0">
+                                                        <span class="font500">ИНН</span> <?=$lot->torg->bankruptProfile->inn?>
+                                                    </li>
+                                                </ul>
+                                            <?php else: ?>
+                                                <h5><?=$lot->torg->bankrupt->title?></h5>
+                                                <ul class="item-meta mt-10 pl-0">
+                                                    <li class="pl-0">
+                                                        <span class="font500">ИНН</span> <?=$lot->torg->bankrupt->inn?>
+                                                    </li>
+                                                </ul>
+                                            <?php endif; ?>
+                                            <small class="text-green font600">Cмотреть профиль <i class="fa fa-arrow-right"></i></small>
+                                        </figcaption>
+                                    
+                                    </a>
+                                    
+                                </figure>
+                               
+                            </li>
+                            <? } ?>
+
+                            <? if ($lot->torg->manager !== null && $lot->torg->property == Torg::PROPERTY_BANKRUPT) { ?>
+                            <li class="col-12 col-md-6 mt-0 pl-15 pr-15">
+                                <figure class="tour-grid-item-01 box-shadow borr-10 <?= ($lot->torg->manager->arbitrator)? 'bg-green' : ''?>">
+
+                                    <a href="<?= Url::to(['/arbitr']) ?>/<?= $lot->torg->manager->id ?>">
+
+                                        <figcaption class="content">
+                                            <div class="lot__block__info__content__offer">Арбитражный управляющий</div>
+                                            <h5>
+                                                <?php if ($arbitr->arbitrator) : ?>
+                                                    <span class="elegent-icon-check_alt2 text-green" data-toggle="tooltip"
+                                                        title="Арбитражный управляющий верифицирован"></span>
+                                                <?php endif; ?>
+                                                <?= $lot->torg->manager->profile->getFullName() ?>
+                                            </h5>
+
+                                            <ul class="item-meta mt-10 pl-0">
+                                                <li class="pl-0">
+                                                    <i class="elegent-icon-pin_alt text-warning"></i> <?= $lot->torg->manager->placeRel->address ?>
+                                                </li>
+                                            </ul>
+                                            <small class="text-green font600">Cмотреть профиль <i class="fa fa-arrow-right"></i></small>
+                                        </figcaption>
+
+                                    </a>
+
+                                </figure>
+                            </li>
+                            <? } ?>
+
+                            <li class="col-12">
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                <h6>Категории лота</h6>
+                                <h6 class="mt-0">Категории лота</h6>
                                 <ul class="ul">
                                     <?php foreach ($lot->categories as $category) { ?>
                                     <li itemprop="category"><?= $category->name ?></li>
@@ -193,9 +283,9 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                             </li>
 
                             <? if ($lot->getInfo()[ 'vin' ]) { ?>
-                            <li>
+                            <li class="col-12">
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                <h6>VIN номер</h6>
+                                <h6 class="mt-0">VIN номер</h6>
                                 <p itemprop="mpn"><?= $lot->getInfo()[ 'vin' ] ?></p>
                                 <a href="https://avtocod.ru/proverkaavto/<?= $lot->getInfo()[ 'vin' ] ?>?rd=VIN&a_aid=zhukoffed"
                                     class="btn btn-success btn-sm mt-2" target="_blank" rel="nofollow">Проверить
@@ -203,39 +293,10 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                             </li>
                             <? } ?>
 
-                            <? if ($lot->torg->property === Torg::PROPERTY_BANKRUPT) { ?>
-                            <li>
-                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                <h6>Должник</h6>
-                                <ul class="ul">
-                                    <?php if ($lot->torg->bankruptProfile->id) : ?>
-                                    <li>
-                                        <a href="<?= Url::to(['/bankrupt']) ?>/<?= $lot->torg->bankruptProfile->id ?>"
-                                            target="_blank"
-                                            itemprop="brand"><?= $lot->torg->bankruptProfile->getFullName() ?></a>
-                                    </li>
-                                    <li>ИНН: <span class="text-list-name"><?= $lot->torg->bankruptProfile->inn ?></span>
-                                    </li>
-                                    <?php else: ?>
-                                    <li>
-                                        <a href="<?= Url::to(['/bankrupt']) ?>/<?= $lot->torg->bankrupt->id ?>"
-                                            target="_blank" itemprop="brand"><?= $lot->torg->bankrupt->title ?></a>
-                                    </li>
-                                    <li>ИНН: <span class="text-list-name"><?= $lot->torg->bankrupt->inn ?></span>
-                                    </li>
-                                    <?php endif; ?>
-
-                                    <li>
-                                        Адрес: <span class="text-list-name"><?= $lot->place->address; ?></span>
-                                    </li>
-                                </ul>
-                            </li>
-                            <? } ?>
-
                             <? if ($lot->torg->casefile !== null) { ?>
-                            <li>
+                            <li class="col-12">
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                <h6>Сведения о деле</h6>
+                                <h6 class="mt-0">Сведения о деле</h6>
                                 <ul class="ul">
                                     <li>Номер дела: <span
                                             class="text-list-name"><?= $lot->torg->casefile->reg_number ?></span>
@@ -253,28 +314,10 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                             </li>
                             <? } ?>
 
-                            <? if ($lot->torg->manager !== null && $lot->torg->property == Torg::PROPERTY_BANKRUPT) { ?>
-                            <li>
-                                <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                <h6>Арбитражный управляющий</h6>
-                                <ul class="ul">
-                                    <li><a href="<?= Url::to(['/arbitr']) ?>/<?= $lot->torg->manager->id ?>"
-                                            target="_blank"><?= $lot->torg->manager->profile->getFullName() ?></a>
-                                    </li>
-                                    <li>Рег. номер: <span
-                                            class="text-list-name"><?= $lot->torg->manager->sro->reg_number ?></span>
-                                    </li>
-                                    <li>ИНН: <span
-                                            class="text-list-name"><?= $lot->torg->manager->profile->inn ?></span>
-                                    </li>
-                                </ul>
-                            </li>
-                            <? } ?>
-
                             <? if ($lot->torg->owner !== null) { ?>
-                            <li>
+                            <li class="col-12">
                                 <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                <h6>Банк</h6>
+                                <h6 class="mt-0">Банк</h6>
                                 <ul class="ul">
                                     <li>
                                         <a href="/<?= $lot->torg->owner->website ?>"><?= $lot->torg->owner->title ?></a>
@@ -596,6 +639,12 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                     </div>
                     <? } ?>
 
+                    <div class="box-content text-muted">
+                        <ul class="pt-15">
+                            <li class="clearfix"> Обнавлено: <?= Yii::$app->formatter->asDatetime($lot->status_changed_at) ?></li>
+                        </ul>
+                    </div>
+
                 </div>
 
             </div>
@@ -603,18 +652,6 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
             <div class="col-12 col-lg-4">
 
                 <div class="sidebar-desktop border-dots borr-20">
-                    <div class="box-content">
-                        <ul class="pt-15">
-                            <li class="clearfix"> Обнавлено: <span
-                                    class="float-right"><?= Yii::$app->formatter->asDatetime($lot->status_changed_at) ?></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <?= SocialShare::widget([
-                            'configurator' => 'socialShare',
-                            'url'          => ('https://ei.ru' . Yii::$app->request->url),
-                            'title'        => 'Посмотри лот на ei.ru: ' . Yii::$app->params[ 'h1' ]
-                        ]); ?>
                     <?= LotDetailSidebar::widget(['lot' => $lot]) ?>
                 </div>
 

@@ -24,11 +24,15 @@ if ($lot->torg->property == 1) {
 <?php foreach ($reports as $report) : ?>
     <div class="report mb-40">
         <div class="report__head">
-            <div class="report__head__name">Отчет эксперта</div>
-            <a href="<?= $lotTypeUrl . '/' .((empty( $lot->categories[0]->slug))? 'lot-list' :  $lot->categories[0]->slug ) . '/' . $lot->id ?>" class="report__head__number">Лот № <?= $lot->id ?></a>
+            <div class="report__head__name font600 <?=($report->isPaid())? 'text-green' : ''?>">
+                <?=($report->isPaid()) ? '<span class="elegent-icon-check_alt2" data-toggle="tooltip" title="Отчёт куплен"></span>': ''?>
+                Отчет эксперта <?=($report->isPaid())? 'куплен | <a href="'.Url::to('/profile/purchase').'">Мои покупки</a>' : ''?> 
+                
+            </div>
+            <a href="<?= $lotTypeUrl . '/' .((empty( $lot->categories[0]->slug))? 'lot-list' :  $lot->categories[0]->slug ) . '/' . $lot->id ?>" class="font600 report__head__number">Лот № <?= $lot->id ?></a>
         </div>
-        <div class="report__body row">
-            <div class="col-md-6 report__body__expert">
+        <div class="report__body row bg-white borr-20 mt-30 pt-15 pb-15 pl-15 pr-15">
+            <div class="col-md-6 report__body__expert mt-lg-0">
                 <?= $report->user->getAvatar(['class' => "report__body__expert-img"]) ?>
                 <span class="report__body__expert__name">
                     <?= $report->user->profile->first_name ?>
@@ -37,7 +41,7 @@ if ($lot->torg->property == 1) {
                     <br><small>Отчётов: <?=Report::find()->where(['user_id' => $report->user->id])->count()?></small>
                 </span>
             </div>
-            <div class="col-md-6 report__body__diogramm">
+            <div class="col-md-6 report__body__diogramm mt-lg-0">
                 <div class="report__body__diogramm__green">
                     <svg class="report__body__diogramm__green-svg" width="70" height="70">
                         <circle
@@ -139,7 +143,12 @@ if ($lot->torg->property == 1) {
                 </div>
 
             </div>
-            <div class="col-md-6 report__body__images">
+        </div>
+        <div class="report__body row">
+            <div class="col-12 report__body__info">
+                <div class="report__body__info__title"><?= $report->title ?></div>
+            </div>
+            <div class="col-md-6 report__body__images pl-0">
                 <div class="report__body__images__slider <?= ($report->isPaid())? 'zoom-gallery' : ''?>">
                     
                     <?php
@@ -165,8 +174,7 @@ if ($lot->torg->property == 1) {
                 </div>
             </div>
             <div class="col-md-6 report__body__info">
-                <div class="report__body__info__title mb-20"><?= $report->title ?></div>
-                <p class="report__body__info__text mb-30">
+                <div class="report__body__info__text">
                     <?php if ($report->isPaid()) : ?>
                         <?= $report->content ?>
                     <?php else : ?>
@@ -175,20 +183,17 @@ if ($lot->torg->property == 1) {
                         <p class="bg-white font-sm borr-5">&nbsp;&nbsp;&nbsp;&nbsp;</p>
                         <p class="bg-white font-sm borr-5">&nbsp;&nbsp;&nbsp;</p>
                     <?php endif; ?>
-                </p>
+                </div>
                 <?php $form = ActiveForm::begin(['action' => Url::to(['/lot/lot/invoice']), 'options' => [
-                    'class' => 'invoice-form'
+                    'class' => 'invoice-form mt-30'
                 ]]); ?>
                 <?php if (!Yii::$app->user->isGuest) : ?>
-                    <?php if ($report->isPaid()) : ?>
-                        <p>Отчет куплен</p>
-                        <p><a href="<?= Url::to('/profile/purchase') ?>">Мои покупки</a></p>
-                    <?php else : ?>
+                    <?php if (!$report->isPaid()) : ?>
                         <?= $form->field($reportForm, 'reportId')->hiddenInput(['value' => $report->id])->label(false); ?>
                         <?= $form->field($reportForm, 'cost')->hiddenInput(['value' => $report->cost])->label(false); ?>
                         <?= $form->field($reportForm, 'userId')->hiddenInput(['value' => Yii::$app->user->identity->getId()])->label(false); ?>
                         <?= $form->field($reportForm, 'returnUrl')->hiddenInput(['value' => Yii::$app->request->absoluteUrl])->label(false); ?>
-                        <?= Html::submitButton('Купить '.$report->cost.' руб.', [
+                        <?= Html::submitButton('Купить отчёт за '.$report->cost.' руб.', [
                             'class' => 'btn btn-primary btn-block text-white borr-10', 'name' => 'invoice-button'
                         ]) ?>
                         <div class="custom-control custom-checkbox mt-10">

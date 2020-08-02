@@ -15,8 +15,24 @@ use sergmoro1\lookup\models\Lookup;
 
         <div class="box-content p-0">
 
-            <span class="font600 text-muted line-125">Текущая цена</span>
-            <h4 class="line-125"> <?= Yii::$app->formatter->asCurrency($lot->start_price) ?> </h4>
+            <?if ($lot->newPrice && $lot->torg->offer == 1) { ?>
+                <span class="font600 text-muted line-125">Текущая цена</span>
+                <h4 itemprop="price" class="text-danger line-125 mt-0" style="font-size: 28px;" title="Текущая цена">
+                    <?= Yii::$app->formatter->asCurrency($lot->newPrice->price) ?> 
+                    <i class="ion-android-arrow-down" title="Публичное предложение"></i>
+                </h4>
+                <span class="font600 text-muted line-125">Старая цена</span>
+                <h4 itemprop="price" class="text-danger line-125 mt-0" title="Текущая цена">
+                    <span class="text-muted" title="Старая цена"><?=Yii::$app->formatter->asCurrency($lot->start_price) ?></span>
+                </h4>
+            <? } else { ?>
+                <span class="font600 text-muted line-125">Текущая цена</span>
+                <h4 itemprop="price" class="text-secondary line-125 mt-0" style="font-size: 28px;">
+                    <?= Yii::$app->formatter->asCurrency($lot->start_price) ?>
+                    <?= ($lot->torg->offer == 1)? '<i class="ion-android-arrow-down" title="Публичное предложение"></i>': ''?>
+                    <?= ($lot->torg->offer == 2)? '<i class="ion-android-arrow-up" title="Аукцион"></i>': ''?>
+                </h4>
+            <? }?>
 
             <ul class="border-top mt-20 pt-15">
                 <li class="clearfix">Статус<span
@@ -25,35 +41,32 @@ use sergmoro1\lookup\models\Lookup;
                     <span class="float-right">
                         <?= ($lot->step_measure == 1) ? round($lot->step, 2) . '% (' . Yii::$app->formatter->asCurrency((($lot->start_price / 100) * $lot->step)) . ')' : Yii::$app->formatter->asCurrency($lot->step) ?>                    </span>
                 </li>
-                <li class="clearfix">Задаток<span
+                <!-- <li class="clearfix">Задаток<span
                             class="float-right"><?= ($lot->deposit_measure == 1) ? round($lot->deposit, 2) . '% (' . Yii::$app->formatter->asCurrency((($lot->start_price / 100) * $lot->deposit)) . ')' : Yii::$app->formatter->asCurrency($lot->deposit) ?></span>
-                </li>
-                <li class="clearfix">Регион<span class="float-right"><?= $lot->region->name ?></span>
-                </li>
+                </li> -->
+                <!-- <li class="clearfix">Регион<span class="float-right"><?= $lot->region->name ?></span>
+                </li> -->
                 <li class="clearfix">Тип торгов <span
-                            class="float-right text-<?= ($lot->torg->offer == Torg::OFFER_AUCTION_OPEN) ? 'success' : 'primary' ?>"><?= ($lot->torg->offer == Torg::OFFER_AUCTION_OPEN) ? 'Открытый аукцион' : ' Публичное предложение'; ?></span>
+                            class="float-right"><?= ($lot->torg->offer == Torg::OFFER_AUCTION_OPEN) ? 'Открытый аукцион' : ' Публичное предложение'; ?></span>
                 </li>
-                <?php if ($lot->torg->property === Torg::PROPERTY_BANKRUPT) : ?>
-                    <li class="clearfix">ЭТП <span class="float-right"><?= $lot->torg->etp->title ?></span></li>
-                <?php endif; ?>
                 <?php if ($lot->torg->property === Torg::PROPERTY_BANKRUPT) : ?>
                     <li class="clearfix">Номер сообщения в ЕФРСБ <span
                                 class="float-right"><?= $lot->torg->msg_id ?></span></li>
                 <?php endif; ?>
                 <li class="clearfix">Номер лота<span class="float-right"><?= $lot->ordinal_number ?></span></li>
-                <? if ($lot->url) : ?>
-                    <li class="clearfix border-top">
-                        <a href="<?= $lot->url ?>" target="_blank" rel="nofollow">Ссылка на торги</a>
-                    </li>
-                <? endif; ?>
-
-                <li class="clearfix border-top font700">
-                    <div class="border-top mt-1">
-                        <span>Цена</span><span class="float-right text-dark"
-                                               itemprop="https://schema.org/price"><?= Yii::$app->formatter->asCurrency($lot->start_price) ?></span>
-                    </div>
-                </li>
+                
             </ul>
+            <?php if ($lot->torg->property === Torg::PROPERTY_BANKRUPT) : ?>
+            <ul class="mt-20 pt-10 pb-10 bg-green borr-10 pl-10 pr-10">
+                <li class="clearfix"><?= $lot->torg->etp->title ?> </li>
+                <? if ($lot->url) : ?>
+                    <li class="clearfix">
+                        <a href="<?= $lot->url ?>" target="_blank" class=" font600" rel="nofollow">Ссылка на торги <i class="fa fa-arrow-right"></i></a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+            <? endif; ?>
+
 
             <p class="text-right font-sm"></p>
 
@@ -65,12 +78,12 @@ use sergmoro1\lookup\models\Lookup;
         </div>
 
         <div class="box-bottom bg-light borr-10">
-            <h6 class="font-sm">Техническая поддержка пользователей</h6>
-            <p class="font-sm">Мы ответим на все вопросы по данному лоту: <br><a href="tel:8(800)600-33-05"
-                                                                                 class="text-primary">8-800-600-33-05</a>.
+            <h6 class="font-sm">У вас есть вопрос?</h6>
+            <p class="font-sm">
+                <a href="tel:8(800)600-33-05" class="text-primary">8-800-600-33-05</a>
+                <br>
+                <a href="#buyLotModal" class="font-sm" data-toggle="modal" data-target="#buyLotModal" data-backdrop="static" data-keyboard="false">Как самостоятельно приобрести этот лот</a>
             </p>
-            <p><a href="#buyLotModal" class="font-sm" data-toggle="modal" data-target="#buyLotModal"
-                  data-backdrop="static" data-keyboard="false">Как самостоятельно приобрести этот лот</a></p>
         </div>
 
     </div>

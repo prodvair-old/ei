@@ -568,9 +568,18 @@ body
   // color: $secondary
   color: #373739
 .wish-star
+  display: flex
+  align-items: center
+  span
+    font-size: 20px
   img
-    height: 1.1rem
-    width: 1.1rem
+    height: 2rem
+    width: 2rem
+    transform: scale(1)
+    transition: all .3s ease
+  &:hover
+    img
+      transform: scale(1.2)
 .form-service
   width: 100%
   padding: 40px 30px 10px
@@ -977,7 +986,6 @@ body
   border: none
 .social-share
   display: flex
-  margin-bottom: 1rem
   a 
     color: #000000
     border: 1px solid #000000
@@ -1816,7 +1824,9 @@ label.toggle-item:before
           font-weight: 300
     &__diogramm
       display: flex
-      justify-content: space-around
+      justify-content: flex-end
+      &__green
+        margin-right: 30px
       &__green, &__red
         width: 70px!important
         height: 70px!important
@@ -2044,5 +2054,9 @@ label.toggle-item:before
 .lh-h1
   line-height: 45px
 
-.bg-green
-  background-color: #ebfff8
+.bg
+  &-green
+    background-color: #ebfff8
+  &-gray
+    background-color: #E6EFF4
+
