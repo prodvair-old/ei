@@ -43,7 +43,7 @@
                     </div>
                     <div class="slick-item d-flex justify-content-center">
                         <div class="slider__item blue">
-                            <div class="slider__item__title">Нашли имущество. которое хотите купить?</div>
+                            <div class="slider__item__title">Нашли имущество, которое хотите купить?</div>
                             <p class="slider__item__text">Выкупим для Вас любое имущество от 3500 руб. за лот</p>
                             <a href="/contact" class="slider__item__link">
                                 Узнайте подробности

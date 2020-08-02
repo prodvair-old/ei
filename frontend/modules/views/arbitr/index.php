@@ -62,9 +62,9 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                 <aside class="sidebar-wrapper pv">
 
-                    <div class="secondary-search-box mb-30">
+                    <div class="secondary-search-box mb-30 borr-10 border-dots">
 
-                        <h4 class="">Поиск</h4>
+                        <h4 class="bg-white">Поиск</h4>
 
                         <div class="row">
 
@@ -102,7 +102,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                             </div>
 
                             <div class="box-content col-12">
-                                <div class="custom-control custom-checkbox">
+                                <div class="custom-control custom-checkbox pl-10">
                                     <?= $form->field($searchModel, 'torgsIsActive')->checkbox([
                                         'class'    => 'custom-control-input',
                                         'value'    => '1',
@@ -113,7 +113,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                             </div>
 
                             <div class="box-content col-12">
-                                <div class="custom-control custom-checkbox">
+                                <div class="custom-control custom-checkbox pl-10">
                                     <?= $form->field($searchModel, 'isVerified')->checkbox([
                                         'class'    => 'custom-control-input',
                                         'value'    => '1',
@@ -125,7 +125,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                             <div class="col-12">
                                 <div class="col-inner ph-20 pv-15">
-                                    <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click']) ?>
+                                    <?= Html::submitButton('<i class="ion-android-search"></i> Поиск', ['class' => 'btn btn-primary btn-block load-list-click borr-10']) ?>
                                 </div>
                             </div>
 
@@ -133,9 +133,11 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                     </div>
 
+                    <? if (Yii::$app->params[ 'text' ]) : ?>
                     <div class="sidebar-box">
                         <p><?= Yii::$app->params[ 'text' ] ?></p>
                     </div>
+                    <? endif; ?>
 
                 </aside>
 

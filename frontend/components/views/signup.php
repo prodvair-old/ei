@@ -60,7 +60,7 @@ use yii\bootstrap\ActiveForm;
                                 'template' => "{input}{label}"
                                 ])->checkbox(['checked' => true])->label('Я принимаю <a href="/policy" target="_blank">соглашения!</a>') ?>
                         </div>
-                        <?=Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-primary btn-wide', 'name' => 'signup-button'])?>
+                        <?=Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-primary btn-wide borr-10', 'name' => 'signup-button'])?>
                     </div>
                    
                     

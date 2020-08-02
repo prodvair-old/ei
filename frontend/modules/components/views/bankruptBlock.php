@@ -8,13 +8,13 @@ use yii\helpers\Url;
 ?>
 <div class="col">
 										
-    <figure class="tour-grid-item-01">
+    <figure class="tour-grid-item-01 box-shadow borr-10">
 
         <a href="<?=Url::to(['/bankrupt'])?>/<?=$bankrupt->id?>">
                    
             <figcaption class="content">
                 <h5><?=$bankrupt->fullName?></h5>
-                <ul class="item-meta">
+                <ul class="item-meta mt-10">
                     <li>
                         <span class="font500">Тип:</span> <?=($bankrupt->agent == Bankrupt::AGENT_ORGANIZATION)? 'Юр. лицо' : 'Физ. лицо'?>
                     </li>

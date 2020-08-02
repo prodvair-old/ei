@@ -8,13 +8,13 @@ use yii\helpers\Url;
 ?>
 <div class="col">
 										
-    <figure class="tour-grid-item-01">
+    <figure class="tour-grid-item-01 box-shadow borr-10">
 
         <a href="<?=Url::to(['/sro'])?>/<?= $sro->organizationRel->parent_id?>">
                    
             <figcaption class="content">
                 <h5><?=$sro->organizationRel->title?></h5>
-                <ul class="item-meta">
+                <ul class="item-meta mt-10">
                     <li>
                         ИНН <?=$sro->organizationRel->inn?>
                     </li>

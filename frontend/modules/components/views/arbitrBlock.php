@@ -8,7 +8,7 @@ use yii\helpers\Url;
 ?>
 <div class="col">
 
-    <figure class="tour-grid-item-01">
+    <figure class="tour-grid-item-01 box-shadow borr-10">
 
         <a href="<?= Url::to(['/arbitr']) ?>/<?= $arbitr->id ?>">
 
@@ -20,7 +20,7 @@ use yii\helpers\Url;
                     <?php endif; ?>
                 </h5>
 
-                <ul class="item-meta">
+                <ul class="item-meta mt-10">
                     <li>
                         <i class="elegent-icon-pin_alt text-warning"></i> <?= $arbitr->placeRel->address ?>
                     </li>

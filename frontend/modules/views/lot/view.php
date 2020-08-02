@@ -605,7 +605,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                 <div class="sidebar-desktop border-dots borr-20">
                     <div class="box-content">
                         <ul class="pt-15">
-                            <li class="clearfix"> Дата и время актуализации<span
+                            <li class="clearfix"> Обнавлено: <span
                                     class="float-right"><?= Yii::$app->formatter->asDatetime($lot->status_changed_at) ?></span>
                             </li>
                         </ul>

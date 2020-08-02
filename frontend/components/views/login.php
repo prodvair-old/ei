@@ -32,7 +32,7 @@ use yii\bootstrap\ActiveForm;
 
                             <div class="d-flex flex-column flex-md-row mt-25">
                                 <div class="flex-shrink-0">
-                                    <?=Html::submitButton('Войти', ['class' => 'btn btn-primary btn-wide', 'name' => 'login-button'])?>
+                                    <?=Html::submitButton('Войти', ['class' => 'btn btn-primary btn-wide borr-10', 'name' => 'login-button'])?>
                                 </div>
                                 <div class="ml-0 ml-md-15 mt-15 mt-md-0">
                                     <div class="custom-control custom-checkbox">

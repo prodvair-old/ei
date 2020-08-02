@@ -48,8 +48,8 @@ class BankruptController extends Controller
     public function actionView($id)
     {
         $bankruptLots = Lot::find()
-            ->joinWith(['categories', 'torg.debtor deb'])
-            ->andOnCondition(['deb.bankrupt_id' => $id])
+            ->joinWith(['torg.bankrupt bnkr'])
+            ->where(['bnkr.id' => $id])
             ->limit(15)
             ->orderBy(['torg.published_at' => SORT_DESC])
             ->all();
