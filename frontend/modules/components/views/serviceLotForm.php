@@ -11,7 +11,7 @@ use frontend\modules\components\LotBlockSmall;
  * @var $lotType
  */
 
-$btnName = 'Участвовать через агента';
+$btnName = 'Отправить запрос <i class="ion-android-send"></i>';
 
 switch ($lotType) {
     case 'arrest':
@@ -25,7 +25,7 @@ switch ($lotType) {
         break;
     case 'zalog':
             $name = ($lot->torg->owner->title)? $lot->torg->owner->title : 'Имущество организации';
-            $btnName = 'Подать заявку';
+            $btnName = 'Подать заявку <i class="ion-android-send"></i>';
             $color4 = $lot->torg->owner->template['color-4'];
             $color1 = $lot->torg->owner->template['color-1'];
             $logo = $lot->torg->owner->logo;
@@ -56,13 +56,12 @@ if ($lot->start_price < 500000) {
 }
 ?>
 <div role="tabpanel" class="tab-pane" id="lotFormTabInModal-service">
-    
     <div class="form-service">
 
         <div class="form-header row">
             <div class="col-md-11">
-                <h4>Подать заявку на лот №<?= $lot->id ?>, <span class="font400"><?= $name ?></span></h4>
-                <p>Наши опытные специалисты быстро и грамотно подготовят документы для участия в торгах. По статистике мы выигрываем 76% торгов.</p>
+                <h4>Подать заявку на лот №<?= $lot->id ?></h4>
+                <!-- <p>Наши опытные специалисты быстро и грамотно подготовят документы для участия в торгах. По статистике мы выигрываем 76% торгов.</p> -->
                 <?=($logo)? '<img src="http://n.ei.ru'.$logo.'" alt="">': '' ?>
             </div>
 
@@ -75,7 +74,7 @@ if ($lot->start_price < 500000) {
         </div>
 
         
-        <div class="form-body">
+        <div class="form-body pb-30">
         
             <?php $form = ActiveForm::begin(['action'=>Url::to(['/lot/lot/order-save']), 'id'=>'lot-service-form']); ?>
 
@@ -92,24 +91,53 @@ if ($lot->start_price < 500000) {
                     <div class="col-lg-6 col-12">
 
                         <h6 class="mt-10">
-                            Выкупите этот лот через агента!
+                            Выкупите этот лот через <a href="https://agent.broker" class="text-green">agent.broker</a>!
                         </h6>
 
-                        <h4>Стоимость участия в торгах: <span class="text-primary" <?= ($color4)? 'style="color: '.$color4.'!important"' : '' ?>><?=$agentPrice?> руб.!</span></h4>
+                        <h4 style="line-height: 32px;">Стоимость участия в торгах: <span class="text-primary" <?= ($color4)? 'style="color: '.$color4.'!important"' : '' ?>><?=$agentPrice?> руб.!</span></h4>
                         <?=$form->field($model, 'lot_id')->hiddenInput(['value'=> $lot->id])->label(false);?>
                         <?=$form->field($model, 'user_id')->hiddenInput(['value'=> Yii::$app->user->identity->getId()])->label(false);?>
 
-                        <ul class="mt-20">
+                        <!-- <ul class="mt-20">
                             <li class="mt-15 pr-20"><h6 class="text-muted">Подадим заявку на торги, которую не отклонят</h6></li>
                             <li class="mt-15 pr-20"><h6 class="text-muted">Участие в торгах без аккредитации на ЭТП</h6></li>
                             <li class="mt-15 pr-20"><h6 class="text-muted">Не нужно покупать ЭЦП, мы используем свою</h6></li>
-                        </ul>
+                        </ul> -->
+
+                        <style>
+                            .custom-control-label::before, .custom-control-label::after {
+                                top: -3px
+                            }
+                            .search-form-control {
+                                border: 2px solid #077751!important;
+                            }
+                            .search-box {
+                                -webkit-box-shadow: none;
+                                box-shadow: none;
+                                border-radius: 3px;
+                                border: 1px solid #d6dade;
+                                padding: 15px;
+                            }
+                            .search-box .control-label {
+                                display: block;
+                                margin-bottom: .25rem;
+                                line-height: 1;
+                                font-size: 12px;
+                                font-weight: 700;
+                                text-transform: uppercase;
+                            }
+                        </style>
 
                         <div class=" mt-30">
-                            <?=$form->field($model, 'bid_price')->input('number')->label('Назовите вашу стоимость');?>
+                            <?= $form->field($model, 'bid_price')->textInput([
+                                    'type' => 'number',
+                                    'class'       => 'form-control search-form-control borr-10 mt-5 pl-10 pt-5 pr-10 pb-5',
+                                    'placeholder' => 'Не обязательное поле',
+                                    'tabindex'    => '2',
+                                ])->label('Ваша желаемая цена покупки, руб.'); ?>
                         </div>
-                        <div class=" mt-10">
-                            <?=Html::submitButton($btnName, ['class' => 'btn btn-primary btn-wide', 'style' => 'background: '.$color1.';border-color:'.$color1, 'name' => 'signup-button'])?>
+                        <div class=" mt-30">
+                            <?=Html::submitButton($btnName, ['class' => 'btn btn-primary btn-wide borr-10', 'style' => 'background: '.$color1.';border-color:'.$color1, 'name' => 'signup-button'])?>
                         </div>
 
                         <div class="custom-checkbox mt-10">

@@ -2,6 +2,7 @@
 
 use common\models\db\Purchase;
 use frontend\modules\components\PurchasedReportWidget;
+use frontend\modules\components\ReportWidget;
 use yii\widgets\Breadcrumbs;
 use frontend\modules\profile\components\ProfileMenu;
 
@@ -86,7 +87,7 @@ $this->params[ 'breadcrumbs' ][] = [
                             <div class="col-12 col-md-12 col-lg-8">
                                 <? if ($model) {
                                     try {
-                                        echo PurchasedReportWidget::widget(['reports' => $model]);
+                                        echo ReportWidget::widget(['reports' => $model]);
                                     } catch (\Exception $e) {
                                         echo (YII_ENV_PROD) ? 'Ошибка загрузки отчетов' : $e->getMessage();
                                     }
