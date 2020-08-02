@@ -13,7 +13,7 @@ jQuery(function ($) {
     nextArrow:
       '<button type="button" class="report__body__images__arrow-next slick-next"></button>',
   });
-  $(".zoom-gallery .slick-track").magnificPopup({
+  $(".zoom-gallery .slick-track a").magnificPopup({
     delegate: "div",
     type: "image",
     closeOnContentClick: false,
