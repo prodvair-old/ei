@@ -62,8 +62,6 @@ $this->params[ 'breadcrumbs' ][] = [
 
                     <div class="bashboard-nav-box">
 
-                        <div class="box-heading"><h3 class="h6 text-white text-uppercase">Вы авторизованы как:</h3>
-                        </div>
                         <?= ProfileMenu::widget(['page' => 'purchase']) ?>
 
                     </div>
@@ -78,7 +76,7 @@ $this->params[ 'breadcrumbs' ][] = [
 
                     <div class="form-draft-payment">
 
-                        <h3 class="heading-title"><span><?= $caption ?></span></h3>
+                        <h3 class=""><span><?= $caption ?></span></h3>
 
                         <div class="clear"></div>
 

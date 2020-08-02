@@ -60,7 +60,6 @@ $this->registerJsVar( 'lotType', '', $position = yii\web\View::POS_HEAD );
 
                     <div class="bashboard-nav-box">
 
-                        <div class="box-heading"><h3 class="h6 text-white text-uppercase">Профиль:</h3></div>
                         <?= ProfileMenu::widget(['page'=>'wishlist'])?>
 
                     </div>
