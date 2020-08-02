@@ -1987,11 +1987,16 @@ label.toggle-item:before
       width: 265px
       // height: 70px
       margin-bottom: 15px
-    &__text
+    &__text, &__list
       font-weight: 300
       font-size: 14px
       line-height: 18px
       width: 230px
+    &__list
+      margin: 0
+      padding: 0
+      font-weight: 400
+      width: auto
     &__link
       display: block
       font-size: 14px
@@ -2019,7 +2024,12 @@ label.toggle-item:before
       box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1)
       &::before
         transform: translateX(50%) translateY(-50%) rotate(-20deg)
-        
+    &-full
+      width: 100%
+      height: auto
+      .slider__item__title
+        width: auto
+
 @media (max-width: 576px)
   .slider
     &__item
@@ -2033,3 +2043,6 @@ label.toggle-item:before
 
 .lh-h1
   line-height: 45px
+
+.bg-green
+  background-color: #ebfff8

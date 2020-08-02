@@ -13,6 +13,8 @@ use yii\helpers\Url;
         <a href="<?=Url::to(['/sro'])?>/<?= $sro->organizationRel->parent_id?>">
                    
             <figcaption class="content">
+                <div class="lot__block__info__content__offer"><?=$sro->place->region->name?></div>
+
                 <h5><?=$sro->organizationRel->title?></h5>
                 <ul class="item-meta mt-10">
                     <li>

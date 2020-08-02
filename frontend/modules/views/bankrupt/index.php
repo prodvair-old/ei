@@ -149,6 +149,23 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                         </div>
                     </div>
 
+                    <div class="slider__item blue slider__item-full">
+                        <div class="slider__item__title">Создавайте отчеты<br> — зарабатывайте деньги!</div>
+                        <p class="slider__item__text mb-0">Как заработать?</p>
+                        <ul class="slider__item__list">
+                            <li><i class="fa fa-check pr-5"></i>Пройдите верификацию и получите доступ в CRM</li>
+                            <li><i class="fa fa-check pr-5"></i>Выбирайте лот и создавайте к нему отчет (фото, описание)</li>
+                            <li><i class="fa fa-check pr-5"></i>Назначайте цену отчета</li>
+                            <li><i class="fa fa-check pr-5"></i>Если отчет прошел модерацию, вы получаете деньги с продажи!</li>
+                        </ul>
+                        <div class="mt-30"></div>
+                        <a href="/contact" class="slider__item__link">
+                            Получить верификацию
+                            <i class="ion-ios-arrow-forward"></i>
+                        </a>
+                        <img src="./img/mercedes.png" alt="">
+                    </div>
+
                     <div id="load_list" class="row equal-height cols-1 cols-sm-2 gap-20 mb-25 load-list">
                         <?= $this->render('block', ['model' => $model]) ?>
                     </div>

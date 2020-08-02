@@ -53,12 +53,12 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                     <div class="content-wrapper">
 
                         <div id="desc" class="detail-header mb-30">
-                            <span class="text-muted">Арбитражный управляющий</span>
+                            <span class="text-muted h3 mb-20 d-block">Арбитражный управляющий</span>
                             <?php if ($model->arbitrator) : ?>
-                                <span class="elegent-icon-check_alt2" data-toggle="tooltip"
+                                <span class="elegent-icon-check_alt2 text-green" data-toggle="tooltip"
                                       title="Арбитражный управляющий верифицирован"></span>
                             <?php endif; ?>
-                            <h1 class="h3 mt-2"><?= $this->title ?></h1>
+                            <h1 class="h3 lh-h1 mt-2"><?= $this->title ?></h1>
                             <hr>
                             <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-20">
                                 <div class="mr-15 font-lg">
@@ -113,6 +113,23 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                                     <div class="mb-50"></div>
 
+                                </div>
+                                <div class="slider__item green slider__item-full">
+                                    <div class="slider__item__title">Вы арбитражный управляющий?<br> — Получите CRM арбитражника!</div>
+                                    <p class="slider__item__text mb-0">Вам будет доступно:</p>
+                                    <ul class="slider__item__list">
+                                        <li><i class="fa fa-check pr-5"></i>Управление вашими лотами</li>
+                                        <li><i class="fa fa-check pr-5"></i>Просмотр статистики и аналитики</li>
+                                        <li><i class="fa fa-check pr-5"></i>Добавление отчетов</li>
+                                        <li><i class="fa fa-check pr-5"></i>Работа с заявками</li>
+                                        <li><i class="fa fa-check pr-5"></i>Управление личными данными</li>
+                                    </ul>
+                                    <div class="mt-30"></div>
+                                    <a href="/contact" class="slider__item__link">
+                                        Получить верификацию
+                                        <i class="ion-ios-arrow-forward"></i>
+                                    </a>
+                                    <img src="./img/mercedes.png" alt="">
                                 </div>
                             </div>
 

@@ -14,11 +14,6 @@ use yii\helpers\Url;
                    
             <figcaption class="content">
                 <div class="lot__block__info__content__offer"><?=$bankrupt->place->region->name?></div>
-                <!-- <ul class="item-meta mt-10">
-                    <li>
-                        <span class="font300 "></span> <?=$bankrupt->place->region->name?>
-                    </li>
-                </ul> -->
                 <h5><?=$bankrupt->fullName?></h5>
                 <ul class="item-meta mt-10">
                     <!-- <li>

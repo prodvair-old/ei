@@ -55,7 +55,7 @@ $this->registerJsVar('sroId', $model->organizationRel->parent_id , $position = y
                     <div class="content-wrapper">
 
                         <div id="desc" class="detail-header mb-30">
-                            <h3> <?= $this->title ?></h3>
+                            <h1 class="h3 lh-h1 mt-2"><?= $this->title ?></h1>
 
                             <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-20">
                                 <div class="mr-15 font-lg">
@@ -107,6 +107,24 @@ $this->registerJsVar('sroId', $model->organizationRel->parent_id , $position = y
                                     <div class="mb-50"></div>
 
                                 </div>
+
+                                <div class="slider__item green slider__item-full">
+                                    <div class="slider__item__title">Вы арбитражный управляющий?<br> — Получите CRM арбитражника!</div>
+                                    <p class="slider__item__text mb-0">Вам будет доступно:</p>
+                                    <ul class="slider__item__list">
+                                        <li><i class="fa fa-check pr-5"></i>Управление вашими лотами</li>
+                                        <li><i class="fa fa-check pr-5"></i>Просмотр статистики и аналитики</li>
+                                        <li><i class="fa fa-check pr-5"></i>Добавление отчетов</li>
+                                        <li><i class="fa fa-check pr-5"></i>Работа с заявками</li>
+                                        <li><i class="fa fa-check pr-5"></i>Управление личными данными</li>
+                                    </ul>
+                                    <div class="mt-30"></div>
+                                    <a href="/contact" class="slider__item__link">
+                                        Получить верификацию
+                                        <i class="ion-ios-arrow-forward"></i>
+                                    </a>
+                                    <img src="./img/mercedes.png" alt="">
+                                </div>
                             </div>
 
                             <div class="col-md-5">
@@ -152,7 +170,7 @@ $this->registerJsVar('sroId', $model->organizationRel->parent_id , $position = y
 
                             <div id="other-lot" class="fullwidth-horizon--section">
 
-                                <h4 class="heading-title">Арбитражные управляющие <span class="font400">СРО</span></h4>
+                                <h4 class="heading-title">Список арбитражных управляющих <span class="font400">членов СРО</span></h4>
 
                                 <div class="row equal-height cols-1 cols-sm-2 cols-lg-3 gap-30 mb-25">
 
