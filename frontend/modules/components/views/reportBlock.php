@@ -157,7 +157,6 @@ if ($lot->torg->property == 1) {
                         if ($image) :
                             while ($image) : ?>
                                 <div class="report__body__images__slider__item zoom-gallery">
-                                    <img src="<?= $image ?>" alt="Images">
                                     <a href="<?= $image ?>" data-source="<?= $image ?>">
                                         <img src="<?= $image ?>">
                                     </a>
