@@ -58,30 +58,58 @@ class SroController extends Controller
             ->innerJoin(ManagerSro::tableName(), 'manager_sro.manager_id = manager.id')
             ->where(['manager_sro.sro_id' => $id]);
 
-        $caseCount = Casefile::find()
-            ->innerJoin(TorgDebtor::tableName(), 'torg_debtor.case_id = casefile.id')
-            ->innerJoin(Torg::tableName(), 'torg.id = torg_debtor.torg_id')
-            ->where(['in', TorgDebtor::tableName() . '.manager_id', $managersInSroQuery])
-            ->count('casefile.id');
-
-        $lotCount = Lot::find()
-            ->joinWith(['torg.debtor deb'])
-            ->where(['in', 'deb.manager_id', $managersInSroQuery])
-            ->count('lot.id');
+        $managersInSroQuery->joinWith(['profileRel', 'placeRel', 'arbitrator']);
 
         $arbitrs = $managersInSroQuery
-            ->limit(15)
             ->all();
 
         $arbitrCount = $managersInSroQuery->count('manager.id');
 
         return $this->render('view', [
             'model'       => $this->findModel($id),
-            'caseCount'   => $caseCount,
             'arbitrs'     => $arbitrs,
             'arbitrCount' => $arbitrCount,
-            'lotCount'    => $lotCount,
         ]);
+    }
+
+    /**
+     * @param $id
+     * @return int
+     */
+    public function actionGetCaseCount($id) {
+
+        $managersInSroQuery = Manager::find()
+            ->select('manager.id')
+            ->innerJoin(ManagerSro::tableName(), 'manager_sro.manager_id = manager.id')
+            ->where(['manager_sro.sro_id' => $id]);
+
+        $caseCount = Casefile::find()
+            ->innerJoin(TorgDebtor::tableName(), 'torg_debtor.case_id = casefile.id')
+            ->innerJoin(Torg::tableName(), 'torg.id = torg_debtor.torg_id')
+            ->where(['in', TorgDebtor::tableName() . '.manager_id', $managersInSroQuery])
+            ->count('casefile.id');
+
+        return (int)$caseCount;
+    }
+
+    /**
+     * @param $id
+     * @return int
+     */
+    public function actionGetLotCount($id) {
+
+        $managersInSroQuery = Manager::find()
+            ->select('manager.id')
+            ->innerJoin(ManagerSro::tableName(), 'manager_sro.manager_id = manager.id')
+            ->where(['manager_sro.sro_id' => $id]);
+
+        $lotCount = Lot::find()
+//            ->joinWith(['torg.debtor deb', true, 'INNER JOIN'])
+            ->joinWith(['torg.debtor deb'])
+            ->where(['in', 'deb.manager_id', $managersInSroQuery])
+            ->count('lot.id');
+
+        return (int)$lotCount;
     }
 
     /**
