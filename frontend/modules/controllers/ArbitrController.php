@@ -68,9 +68,6 @@ class ArbitrController extends Controller
             ->where(['torg_debtor.manager_id' => $id])
             ->count();
 
-            var_dump($this->findModel($id));
-            die;
-
         return $this->render('view', [
             'model'     => $this->findModel($id),
             'lots'      => $lots,

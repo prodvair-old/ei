@@ -16,7 +16,7 @@ ScrollAsset::register($this);
 $this->registerJsVar('offsetStep', $offsetStep, $position = yii\web\View::POS_END);
 $this->registerJsVar('modelSearchName', 'BankruptSearch', $position = yii\web\View::POS_END);
 
-$this->title = 'База банкротов физических лиц и организаций';
+$this->title = 'Реестр должников';
 $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 ?>
 
@@ -53,7 +53,6 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
     <div class="container">
         <h1 class="h3 mt-40 line-125 "><?= $this->title ?></h1>
-        <hr>
         <div class="row equal-height gap-30 gap-lg-40">
 
             <div class="col-12 col-lg-4">
@@ -64,22 +63,45 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                     <div class="secondary-search-box mb-30 borr-10 border-dots">
 
-                        <h4 class="bg-white">Поиск</h4>
+                        <h4 class="bg-white">Поиск должников</h4>
+
+                        <style>
+                            .custom-control-label::before, .custom-control-label::after {
+                                top: -3px
+                            }
+                            .search-form-control {
+                                border: 2px solid #077751!important;
+                            }
+                            .search-box {
+                                -webkit-box-shadow: none;
+                                box-shadow: none;
+                                border-radius: 3px;
+                                border: 1px solid #d6dade;
+                                padding: 15px;
+                            }
+                            .search-box .control-label {
+                                display: block;
+                                margin-bottom: .25rem;
+                                line-height: 1;
+                                font-size: 12px;
+                                font-weight: 700;
+                                text-transform: uppercase;
+                            }
+                        </style>
 
                         <div class="row">
                             <div class="col-12">
-                                <div class="col-inner">
+                                <div class="">
                                     <?= $form->field($searchModel, 'search')->textInput([
-                                        'class'       => 'form-control form-control-sm',
-                                        'placeholder' => 'Например: Иванов Иван/ИНН',
-                                        'tabindex'    => '2',
-                                    ])
-                                        ->label('Найти'); ?>
+                                        'class'       => 'form-control search-form-control borr-10 mt-5 pl-10 pt-5 pr-10 pb-5',
+                                        'placeholder' => 'Я ищу...',
+                                    ])->label('Поисковый запрос'); ?>
+                                    <p class="text-muted pl-20 pr-20">Пример: организации / ФИО / ИНН</p>
                                 </div>
                             </div>
 
                             <div class="box-content col-12">
-                                <div class="custom-control custom-checkbox">
+                                <div class="custom-control custom-checkbox pl-10">
                                     <?= $form->field($searchModel, 'torgsIsActive')->checkbox([
                                         'class'    => 'custom-control-input',
                                         'value'    => '1',
@@ -91,7 +113,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                             <div class="col-12">
                                 <div class="col-inner ph-20 pv-15">
-                                    <?= Html::submitButton('<i class="ion-android-search"></i> Поиск',
+                                    <?= Html::submitButton('<i class="ion-android-search"></i> Найти',
                                         ['class' => 'btn btn-primary btn-block load-list-click borr-10']) ?>
                                 </div>
                             </div>

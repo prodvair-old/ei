@@ -445,4 +445,41 @@ class LotController extends Controller
 
 
     }
+
+    public function actionUnique($type)
+    {
+        $model = new LotSearch();
+
+        switch ($type) {
+            case 'lotWithReports' :
+                return $this->renderPartial('_lotWithReports', [
+                    'lots' => $model->getLotWithReports()
+                ]);
+                break;
+            case 'lotWithPriceDown' :
+                return $this->renderPartial('_lotWithPriceDown', [
+                    'lots' => $model->getLotWithPriceDown()
+                ]);
+                break;
+            case 'lotLowPrice' :
+                return $this->renderPartial('_lotLowPrice', [
+                    'lots' => $model->getLotLowPrice()
+                ]);
+                break;
+            case 'lotWithCheapRealEstate' :
+                return $this->renderPartial('_lotWithCheapRealEstate', [
+                    'lots' => $model->getLotWithCheapRealEstate()
+                ]);
+                break;
+            case 'lotWithEndedTorg' :
+                return $this->renderPartial('_lotWithEndedTorg', [
+                    'lots' => $model->getLotWithEndedTorg()
+                ]);
+                break;
+            default:
+                break;
+
+        }
+
+    }
 }

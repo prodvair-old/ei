@@ -89,6 +89,14 @@ class Place extends ActiveRecord implements PlaceInterface
         return $this->address;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getRegion()
+    {
+        return $this->hasOne(Region::className(), ['id' => 'region_id']);
+    }
+
     public function getLot()
     {
         return $this->hasOne(Lot::className(), ['id' => 'parent_id']);

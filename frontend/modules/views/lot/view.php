@@ -575,7 +575,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                             <? } ?>
 
                             <div class="col-lg-4 col-sm-6 mb-30 lot_next__btn">
-                                <a href="<?= Url::to(['/bankrupt']) ?>/<?= $lot->torg->bankruptProfile->id ?>" class="btn btn-primary borr-10">
+                                <a href="<?= ($lot->torg->bankruptProfile->id)? Url::to(['/bankrupt']).'/'.$lot->torg->bankruptProfile->id : Url::to(['/bankrupt']).'/'.$lot->torg->bankrupt->id ?>" class="btn btn-primary borr-10">
                                     Другие лоты
                                     <i class="fa fa-arrow-right"></i>
                                 </a>

@@ -7,8 +7,10 @@ use common\models\db\Organization;
 use common\models\db\Place;
 use common\models\db\Profile;
 use common\models\db\Report;
+use DateTime;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\db\Query;
 use common\models\db\Torg;
@@ -293,5 +295,99 @@ class LotSearch extends Lot
             self::PRICE_DESC => 'Цена по убыванию',
             self::PRICE_ASC  => 'Цена по возрастанию'
         ];
+    }
+
+    /**
+     * @return array|ActiveRecord[]
+     */
+    public function getLotWithReports()
+    {
+        return Lot::find()
+            ->joinWith(['torg', 'report'], true, 'INNER JOIN')
+            ->where(['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED])
+            ->andWhere(['>', Torg::tableName() . '.end_at', time()])
+            ->groupBy([
+                Lot::tableName() . '.id',
+                Torg::tableName() . '.published_at',
+            ])
+            ->orderBy(['count(' . Report::tableName() . '.id)' => SORT_DESC, Torg::tableName() . '.published_at' => SORT_DESC])
+            ->limit(7)
+            ->all();
+    }
+
+    /**
+     * @return array|ActiveRecord[]
+     */
+    public function getLotWithPriceDown()
+    {
+        $today = new DateTime();
+
+        return Lot::find()->joinWith(['torg'], true, 'INNER JOIN')
+            ->rightJoin(LotPrice::tableName(), LotPrice::tableName() . '.lot_id = ' . Lot::tableName() . '.id')
+            ->where([
+                'and',
+                ['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED],
+                ['>', Torg::tableName() . '.end_at', time()],
+                ['<=', LotPrice::tableName() . '.started_at', \Yii::$app->formatter->asTimestamp($today)],
+                ['>=', LotPrice::tableName() . '.end_at', \Yii::$app->formatter->asTimestamp($today)]
+            ])
+            ->orderBy([LotPrice::tableName() . '.id' => SORT_DESC, Torg::tableName() . '.published_at' => SORT_DESC])
+            ->limit(7)
+            ->all();
+    }
+
+    /**
+     * @return array|ActiveRecord[]
+     */
+    public function getLotLowPrice()
+    {
+        return Lot::find()->joinWith(['torg'], true, 'INNER JOIN')
+            ->where([
+                'and',
+                ['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED],
+                ['>', Torg::tableName() . '.end_at', time()],
+                ['<', Lot::tableName() . '.start_price', 100],
+            ])
+            ->orderBy([Torg::tableName() . '.published_at' => SORT_DESC])
+            ->limit(3)
+            ->all();
+    }
+
+
+    /**
+     * @return array|ActiveRecord[]
+     */
+    public function getLotWithCheapRealEstate()
+    {
+        $subCategories = Category::findOne(['id' => 2]);
+        $leaves = $subCategories->leaves()->all();
+        $allCategories[] = 2;
+        foreach ($leaves as $leaf) {
+            $allCategories[] = $leaf->id;
+        }
+
+        return Lot::find()->joinWith(['torg', 'categories'])
+            ->where([
+                'and',
+                ['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED],
+                ['>', Torg::tableName() . '.end_at', time()],
+            ])
+            ->andWhere(['IN', Category::tableName() . '.id', $allCategories])
+            ->orderBy([Lot::tableName() . '.start_price' => SORT_ASC])
+            ->limit(7)
+            ->all();
+    }
+
+    /**
+     * @return array|ActiveRecord[]
+     */
+    public function getLotWithEndedTorg()
+    {
+        $today = new DateTime();
+        return Lot::find()->joinWith(['torg'], true, 'INNER JOIN')
+            ->andWhere(['<=', Torg::tableName() . '.end_at', \Yii::$app->formatter->asTimestamp($today)])
+            ->orderBy([Torg::tableName() . '.end_at' => SORT_DESC])
+            ->limit(3)
+            ->all();
     }
 }

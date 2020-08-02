@@ -66,7 +66,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                 </div>
                                 <div class="mr-15 text-muted">|</div>
                                 <div class="mr-15 rating-item rating-inline">
-                                    <p class="rating-text font400 text-muted font-12 letter-spacing-1"><?// $model->reg_number ?> </p>
+                                    <p class="rating-text font400 text-muted font-12 letter-spacing-1"><?= $model->reg_number ?> </p>
                                 </div>
                             </div>
 
@@ -83,7 +83,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                                         <li>
                                             <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                            <h6><span class="font400">Рег.номер  </span><?// $model->reg_number ?>
+                                            <h6><span class="font400">Рег.номер  </span><?= $model->reg_number ?>
                                             </h6>
                                         </li>
 

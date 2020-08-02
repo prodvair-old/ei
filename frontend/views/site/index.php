@@ -2,8 +2,8 @@
 
 /* @var $this yii\web\View */
 
-
 use common\models\db\Owner;
+use frontend\assets\HomeAsset;
 use frontend\modules\components\LotBlockSmall;
 use frontend\modules\components\SliderServices;
 use frontend\modules\components\SearchForm;
@@ -18,77 +18,11 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use frontend\modules\models\Category;
 
+HomeAsset::register($this);
 
 $this->title = Yii::$app->params[ 'title' ];
 $regions = Regions::find()->orderBy('id ASC')->all();
 $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys' => null]], ['translit_name' => 'lot-list']])->orderBy('id ASC')->all();
-
-// $LotSearch = new LotSearch();
-$lotPopular = Lot::find()->joinWith(['torg'], true, 'INNER JOIN');
-$lotPopular->rightJoin(LotPrice::tableName(), LotPrice::tableName() . '.lot_id = ' . Lot::tableName() . '.id');
-$today = new \DateTime();
-$lotPopular->where([
-    'and',
-    ['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED],
-    ['>', Torg::tableName() . '.end_at', time()],
-    ['<=', LotPrice::tableName() . '.started_at', \Yii::$app->formatter->asTimestamp($today)],
-    ['>=', LotPrice::tableName() . '.end_at', \Yii::$app->formatter->asTimestamp($today)]
-]);
-$lotPopularList = $lotPopular->orderBy([LotPrice::tableName() . '.id' => SORT_DESC, Torg::tableName() . '.published_at' => SORT_DESC])->limit(7)->all();
-
-$lotNew = Lot::find()->joinWith(['torg'], true, 'INNER JOIN');
-$lotNew->where(['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED]);
-$lotNew->andWhere(['>', Torg::tableName() . '.end_at', time()]);
-$lotNew->innerJoin(Report::tableName(), 'report.lot_id = lot.id');
-$lotNew->groupBy([
-    Lot::tableName() . '.id', 
-    Lot::tableName() . '.torg_id', 
-    Lot::tableName() . '.ordinal_number', 
-    Lot::tableName() . '.title', 
-    Lot::tableName() . '.description', 
-    Lot::tableName() . '.start_price', 
-    Lot::tableName() . '.step', 
-    Lot::tableName() . '.step_measure', 
-    Lot::tableName() . '.deposit', 
-    Lot::tableName() . '.deposit_measure', 
-    Lot::tableName() . '.status', 
-    Lot::tableName() . '.status_changed_at', 
-    Lot::tableName() . '.reason', 
-    Lot::tableName() . '.url', 
-    Lot::tableName() . '.info', 
-    Lot::tableName() . '.created_at', 
-    Lot::tableName() . '.updated_at', 
-    Torg::tableName() . '.published_at', 
-]);
-$newLots = $lotNew->orderBy(['count('.Report::tableName() . '.id)' => SORT_DESC, Torg::tableName() . '.published_at' => SORT_DESC])->limit(7)->all();
-
-$lotEnd = Lot::find()->joinWith(['torg'], true, 'INNER JOIN');
-$lotEnd->andWhere(['<=', Torg::tableName() . '.end_at', \Yii::$app->formatter->asTimestamp($today)]);
-$lotEndList = $lotEnd->orderBy([Torg::tableName() . '.end_at' => SORT_DESC])->limit(3)->all();
-
-$lotLowPrice = Lot::find()->joinWith(['torg'], true, 'INNER JOIN');
-$lotLowPrice->where([
-    'and',
-    ['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED],
-    ['>', Torg::tableName() . '.end_at', time()],
-    ['<', Lot::tableName() . '.start_price', 100],
-]);
-$lotLowPriceList = $lotLowPrice->orderBy([Torg::tableName() . '.published_at' => SORT_DESC])->limit(3)->all();
-
-$lotLowBuild = Lot::find()->joinWith(['torg','categories']);
-$lotLowBuild->where([
-    'and',
-    ['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED],
-    ['>', Torg::tableName() . '.end_at', time()],
-]);
-$subCategories = Category::findOne(['id' => 2]);
-$leaves = $subCategories->leaves()->all();
-$allCategories[] = 2;
-foreach ($leaves as $leaf) {
-    $allCategories[] = $leaf->id;
-}
-$lotLowBuild->andWhere(['IN', Category::tableName() . '.id', $allCategories]);
-$lotLowBuildList = $lotLowBuild->orderBy([Lot::tableName() . '.start_price' => SORT_ASC])->limit(7)->all();
 ?>
 
 <div class="hero-banner hero-banner-01 overlay-light opacity-2 overlay-relative overlay-gradient gradient-white alt-option-03"
@@ -175,133 +109,65 @@ $lotLowBuildList = $lotLowBuild->orderBy([Lot::tableName() . '.start_price' => S
     </div>
 </section>
 
-<? if (count($lots = $newLots) > 0) { ?>
 <section class="pt-0 pb-0">
     <div class="container">
         <h2 class="h3 mt-40 line-125 ">Лоты с отчётами экспертов</h2>
 
-
-        <div class="row">
-            <? foreach ($lots as $lot) { ?>
-                <div class="col-lg-3 col-sm-6 mb-40" itemscope itemtype="http://schema.org/Product">
-                    <?= LotBlockSmall::widget(['lot' => $lot, 'url' => $url]) ?>
-                </div>
-            <? } ?>
-            <div class="col-lg-3 col-sm-6 mb-40 lot_next__btn">
-                <a href="/all/lot-list?LotSearch%5Bsearch%5D=&LotSearch%5Bregion%5D=&LotSearch%5BminPrice%5D=&LotSearch%5BmaxPrice%5D=&LotSearch%5Betp%5D=&LotSearch%5BtradeType%5D=&LotSearch%5BandArchived%5D=0&LotSearch%5BhaveImage%5D=0&LotSearch%5BhasReport%5D=1&LotSearch%5BpriceDown%5D=0&LotSearch%5Befrsb%5D=&LotSearch%5BbankruptName%5D=&LotSearch%5BtorgDateRange%5D=&LotSearch%5BstartApplication%5D=0&LotSearch%5BcompetedApplication%5D=0" class="btn btn-primary borr-10">
-                    Больше предложений
-                    <i class="fa fa-arrow-right"></i>
-                </a>
-            </div>
+        <div id="lotWithReports" class="row">
+            <div class="spinner-wrapper"><div class="spinner"></div>Ищем лоты...</div>
         </div>
 
         <div class="clear mb-50"></div>
     </div>
 </section>
-<? } ?>
 
-<? if (count($lots = $lotPopularList) > 0) { ?>
 <section class="pt-0 pb-0">
     <div class="container">
         <h2 class="h3 mt-40 line-125 ">Цена снижена</h2>
 
-
-        <div class="row">
-            <? foreach ($lots as $lot) { ?>
-                <div class="col-lg-3 col-sm-6 mb-40" itemscope itemtype="http://schema.org/Product">
-                    <?= LotBlockSmall::widget(['lot' => $lot, 'url' => $url]) ?>
-                </div>
-            <? } ?>
-            <div class="col-lg-3 col-sm-6 mb-40 lot_next__btn">
-                <a href="/bankrupt/lot-list?LotSearch%5Bsearch%5D=&LotSearch%5Bregion%5D=&LotSearch%5BminPrice%5D=&LotSearch%5BmaxPrice%5D=&LotSearch%5Betp%5D=&LotSearch%5BtradeType%5D=&LotSearch%5BandArchived%5D=0&LotSearch%5BhaveImage%5D=0&LotSearch%5BhasReport%5D=0&LotSearch%5BpriceDown%5D=1&LotSearch%5Befrsb%5D=&LotSearch%5BbankruptName%5D=&LotSearch%5BtorgDateRange%5D=&LotSearch%5BstartApplication%5D=0&LotSearch%5BcompetedApplication%5D=0" class="btn btn-primary borr-10">
-                    Больше предложений
-                    <i class="fa fa-arrow-right"></i>
-                </a>
-            </div>
+        <div id="lotWithPriceDown" class="row">
+            <div class="spinner-wrapper"><div class="spinner"></div>Ищем лоты...</div>
         </div>
 
         <div class="clear mb-50"></div>
     </div>
 </section>
-<? } ?>
 
-<? if (count($lots = $lotLowPriceList) > 0) { ?>
 <section class="pt-0 pb-0">
     <div class="container">
         <h2 class="h3 mt-40 line-125 ">Лоты дешевле 100 руб.</h2>
 
-
-        <div class="row">
-            <? foreach ($lots as $lot) { ?>
-                <div class="col-lg-3 col-sm-6 mb-40" itemscope itemtype="http://schema.org/Product">
-                    <?= LotBlockSmall::widget(['lot' => $lot, 'url' => $url]) ?>
-                </div>
-            <? } ?>
-            <div class="col-lg-3 col-sm-6 mb-40 lot_next__btn">
-                <a href="/all/lot-list?LotSearch%5Bsearch%5D=&LotSearch%5Bregion%5D=&LotSearch%5BminPrice%5D=&LotSearch%5BmaxPrice%5D=100&LotSearch%5BtradeType%5D=&LotSearch%5BandArchived%5D=0&LotSearch%5BhaveImage%5D=0&LotSearch%5BhasReport%5D=0" class="btn btn-primary borr-10">
-                    Большое лотов
-                    <i class="fa fa-arrow-right"></i>
-                </a>
-            </div>
+        <div id="lotLowPrice" class="row">
+            <div class="spinner-wrapper"><div class="spinner"></div>Ищем лоты...</div>
         </div>
-        
 
         <div class="clear mb-50"></div>
     </div>
 </section>
-<? } ?>
 
-
-<? if (count($lots = $lotLowBuildList) > 0) { ?>
 <section class="pt-0 pb-0">
     <div class="container">
         <h2 class="h3 mt-40 line-125 ">Самая дешевая недвижимость</h2>
 
-
-        <div class="row">
-            <? foreach ($lots as $lot) { ?>
-                <div class="col-lg-3 col-sm-6 mb-40" itemscope itemtype="http://schema.org/Product">
-                    <?= LotBlockSmall::widget(['lot' => $lot, 'url' => $url]) ?>
-                </div>
-            <? } ?>
-            <div class="col-lg-3 col-sm-6 mb-40 lot_next__btn">
-                <a href="all/nedvizhimost?LotSearch%5Bsearch%5D=&LotSearch%5BhasReport%5D=0&LotSearch%5BsubCategory%5D=&LotSearch%5Bregion%5D=&LotSearch%5BminPrice%5D=&LotSearch%5BmaxPrice%5D=&LotSearch%5BtradeType%5D=&LotSearch%5BandArchived%5D=0&LotSearch%5BhaveImage%5D=0&LotSearch%5BsortBy%5D=priceASC" class="btn btn-primary borr-10">
-                    Большое лотов
-                    <i class="fa fa-arrow-right"></i>
-                </a>
-            </div>
+        <div id="lotWithCheapRealEstate" class="row">
+            <div class="spinner-wrapper"><div class="spinner"></div>Ищем лоты...</div>
         </div>
-        
 
         <div class="clear mb-50"></div>
     </div>
 </section>
-<? } ?>
 
-<? if (count($lots = $lotEndList) > 0) { ?>
 <section class="pt-0 pb-0">
     <div class="container">
         <h2 class="h3 mt-40 line-125 ">Торги закончены</h2>
 
-
-        <div class="row">
-            <? foreach ($lots as $lot) { ?>
-                <div class="col-lg-3 col-sm-6 mb-40" itemscope itemtype="http://schema.org/Product">
-                    <?= LotBlockSmall::widget(['lot' => $lot, 'url' => $url]) ?>
-                </div>
-            <? } ?>
-            <div class="col-lg-3 col-sm-6 mb-40 lot_next__btn">
-                <a href="/all/lot-list?LotSearch%5Bsearch%5D=&LotSearch%5Bregion%5D=&LotSearch%5BminPrice%5D=&LotSearch%5BmaxPrice%5D=&LotSearch%5BtradeType%5D=&LotSearch%5BandArchived%5D=1&LotSearch%5BhaveImage%5D=0&LotSearch%5BhasReport%5D=0" class="btn btn-primary borr-10">
-                    Перейти в архив
-                    <i class="fa fa-arrow-right"></i>
-                </a>
-            </div>
+        <div id="lotWithEndedTorg" class="row">
+            <div class="spinner-wrapper"><div class="spinner"></div>Ищем лоты...</div>
         </div>
 
         <div class="clear mb-50"></div>
     </div>
 </section>
-<? } ?>
 
 <section class="pt-0 pb-0">
 

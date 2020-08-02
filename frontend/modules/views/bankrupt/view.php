@@ -43,7 +43,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
         </div>
 
-        <div class="container pt-30">
+        <div class="container">
 
             <div class="row gap-20 gap-lg-40">
 
@@ -52,8 +52,8 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                     <div class="content-wrapper">
 
                         <div id="desc" class="detail-header mb-30">
-                            <span class="text-muted">Должник</span>
-                            <h1 class="h3 mt-2"> <?= $this->title ?></h1>
+                            <span class="text-muted h3 mb-20 d-block">Должник</span>
+                            <h1 class="h3 lh-h1 mt-2"> <?= $this->title ?></h1>
                             <hr>
 
                             <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-20">

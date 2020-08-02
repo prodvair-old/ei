@@ -9,13 +9,12 @@ use frontend\modules\components\ArbitrBlock;
 
 /** @var $model Sro */
 /** @var $lots Lot[] */
-/** @var $lotCount Lot count */
-/** @var $caseCount Casefile count */
 /** @var $arbitrs Manager[] */
 /** @var $arbitrCount Manager count */
 
 $this->title = $model->organizationRel->title;
 $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
+$this->registerJsVar('sroId', $model->organizationRel->parent_id , $position = yii\web\View::POS_BEGIN);
 ?>
 
     <section class="page-wrapper page-detail">
@@ -118,13 +117,19 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                     <ul class="list-icon-absolute what-included-list mb-30">
 
                                         <li>
-                                            <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                            <h6><span class="font400">Дел в управлении </span><?= $caseCount ?></h6>
+                                            <span class="icon-font">
+                                                <i class="elegent-icon-check_alt2 text-primary"></i>
+                                            </span>
+                                            <h6 id="sro_case_count">
+                                                <span class="font400">Дел в управлении </span>
+                                            </h6>
                                         </li>
                                         <li>
-                                            <span class="icon-font"><i class="elegent-icon-check_alt2 text-primary"></i> </span>
-                                            <h6>
-                                                <span class="font400">Лотов по банкротному имуществу </span><?= $lotCount ?>
+                                            <span class="icon-font">
+                                                <i class="elegent-icon-check_alt2 text-primary"></i>
+                                            </span>
+                                            <h6 id="sro_lot_count">
+                                                <span class="font400">Лотов по банкротному имуществу </span>
                                             </h6>
                                         </li>
                                         <li>
@@ -176,3 +181,44 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 $this->registerJsFile('js/custom-multiply-.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-multiply-');
 $this->registerJsFile('js/custom-core.js', $options = ['position' => yii\web\View::POS_END], $key = 'custom-core');
 ?>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        /**
+         * @var sroId taken from php
+         */
+
+        let url = '/sro/get-case-count?id=' + sroId;
+
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (data) {
+
+                $('#sro_case_count').append(data);
+                console.log('load success');
+            },
+            error: function (result) {
+                console.log('load error');
+                console.log(result);
+            }
+        });
+
+        url = '/sro/get-lot-count?id=' + sroId
+
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (data) {
+
+                $('#sro_lot_count').append(data);
+                console.log('load success');
+            },
+            error: function (result) {
+                console.log('load error');
+                console.log(result);
+            }
+        });
+    });
+</script>

@@ -13,11 +13,17 @@ use yii\helpers\Url;
         <a href="<?=Url::to(['/bankrupt'])?>/<?=$bankrupt->id?>">
                    
             <figcaption class="content">
+                <div class="lot__block__info__content__offer"><?=$bankrupt->place->region->name?></div>
+                <!-- <ul class="item-meta mt-10">
+                    <li>
+                        <span class="font300 "></span> <?=$bankrupt->place->region->name?>
+                    </li>
+                </ul> -->
                 <h5><?=$bankrupt->fullName?></h5>
                 <ul class="item-meta mt-10">
-                    <li>
+                    <!-- <li>
                         <span class="font500">Тип:</span> <?=($bankrupt->agent == Bankrupt::AGENT_ORGANIZATION)? 'Юр. лицо' : 'Физ. лицо'?>
-                    </li>
+                    </li> -->
                     <li>
                         <span class="font500">ИНН</span> <?=$bankrupt->inn?>
                     </li>

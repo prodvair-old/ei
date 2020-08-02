@@ -336,8 +336,8 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                             <div class="box-content col-md-12 mt-10">
                                 <div>
                                     <?= $form->field($model, 'bankruptName')->textInput(
-                                            ['class' => 'form-control', 'placeholder' => 'ФИО']
-                                        )->label('ФИО Должника'); ?>
+                                            ['class' => 'form-control', 'placeholder' => 'Должник']
+                                        )->label('Должник'); ?>
                                 </div>
                             </div>
 
