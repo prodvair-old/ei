@@ -119,7 +119,12 @@ jQuery(function ($) {
               fill: "",
             })
             .addClass("lot__block__img__favorite-path");
-          number.html(Number(num) - 1);
+          var num = Number(num) - 1;
+          if (num > 0) {
+            number.html(num);
+          } else {
+            number.html("");
+          }
           toastr.success("Лот удалён из избранных");
           item.fadeOut();
         }
