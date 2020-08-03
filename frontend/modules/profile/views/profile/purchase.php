@@ -85,7 +85,7 @@ $this->params[ 'breadcrumbs' ][] = [
                             <div class="col-12">
                                 <? if ($model) {
                                     try {
-                                        echo ReportWidget::widget(['reports' => $model, 'lot' => $model->lot]);
+                                        echo ReportWidget::widget(['reports' => $model]);
                                     } catch (\Exception $e) {
                                         echo (YII_ENV_PROD) ? 'Ошибка загрузки отчетов' : $e->getMessage();
                                     }
