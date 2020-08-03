@@ -32,7 +32,7 @@ use yii\widgets\ActiveForm;
                 Отчет эксперта <?=($report->isPaid())? 'куплен | <a href="'.Url::to('/profile/purchase').'">Мои покупки</a>' : ''?> 
                 
             </div>
-            <a href="<?= $lotTypeUrl . '/' .((empty( $report->lot->categories[0]->slug))? 'lot-list' :  $report->lot->categories[0]->slug ) . '/' . $report->lot->id ?>" class="font600 report__head__number">Лот № <?= $lot->id ?></a>
+            <a href="<?= $lotTypeUrl . '/' .((empty( $report->lot->categories[0]->slug))? 'lot-list' :  $report->lot->categories[0]->slug ) . '/' . $report->lot->id ?>" class="font600 report__head__number">Лот № <?= $report->lot->id ?></a>
         </div>
         <div class="report__body row bg-white borr-20 mt-30 pt-15 pb-15 pl-15 pr-15">
             <div class="col-md-6 report__body__expert mt-lg-0">
