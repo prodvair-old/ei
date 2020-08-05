@@ -34,10 +34,14 @@ $mapGET['mainCategory']    = $model->mainCategory;
 
 $this->title = Yii::$app->params[ 'title' ];
 $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
-
+$this->title = $this->params[ 'breadcrumbs' ][0]['label'];
+$this->title .= ($this->params[ 'breadcrumbs' ][1]) ?  " /{$this->params[ 'breadcrumbs' ][1]['label']}" : '';
 $lotsSubcategory[ 0 ] = 'Все подкатегории';
 $subcategoryCheck = true;
 
+//echo "<pre>";
+//var_dump($this->params[ 'breadcrumbs' ][0]['label']);
+//echo "</pre>";
 
 if ($model->mainCategory) {
     $subCategories = Category::findOne(['id' => $model->mainCategory]);
@@ -111,7 +115,7 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
             }
         </style>
 
-        <h1 class="h3 mt-40 line-125 "><?= Yii::$app->params[ 'h1' ] ?></h1>
+        <h1 class="h3 mt-40 line-125 "><?= $this->title ?></h1>
         <hr>
 
         <div class="row equal-height gap-30 gap-lg-40">

@@ -37,6 +37,8 @@ class Report extends ActiveRecord
 
     const SHORT_TITLE_LENGTH = 20;
 
+    private $_isPaid = null;
+
     /**
      * {@inheritdoc}
      */
@@ -147,10 +149,16 @@ class Report extends ActiveRecord
             return false;
         }
 
-        return Purchase::findOne([
+        if($this->_isPaid !== null) {
+            return $this->_isPaid;
+        }
+
+        $this->_isPaid = Purchase::findOne([
             'user_id' => Yii::$app->user->getId(),
             'report_id' => $this->id,
         ]);
+
+        return $this->_isPaid;
     }
 
     /**
