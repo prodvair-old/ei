@@ -143,34 +143,6 @@ class UserController extends Controller
         return $this->goHome();
     }
   }
-  public function actionGetCode() {
-    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-    $code = rand(1000, 9999);
-
-    $post = Yii::$app->request->post();
-    $session = Yii::$app->session;
-    $session->set('userCode', $code);
-    $session->set('userPhone', $post['UserEditPhone']['phone']);
-
-    $model = new SendSMS();
-
-    $model->phone = preg_replace('/[^0-9]/', '', $post['UserEditPhone']['phone']);
-    $model->message = "Vash kod: $code";
-
-    $result = false;
-    $mess = 'Ошибка сервера';
-
-    if ($model->check()) {
-      if ($response = $model->send()) {
-        if ($response['status']) {
-          $result = true;
-        }
-        $mess = $response['text'];
-      }
-    }
-
-    return ['result' => $result, 'mess' => $mess];
-  }
   public function actionEditPhone()
   {
     if (!Yii::$app->user->isGuest && Yii::$app->request->isAjax) {

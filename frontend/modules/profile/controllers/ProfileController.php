@@ -18,7 +18,8 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
-use frontend\models\UserSetting;
+use frontend\modules\profile\models\UserSetting;
+use common\models\SendSMS;
 
 class ProfileController extends Controller
 {
@@ -78,6 +79,9 @@ class ProfileController extends Controller
         $error = null;
 
         $form = new ProfileForm();
+        $form->user_id = Yii::$app->user->id;
+        // var_dump($form->generateSave());
+        // die;
         $readModel = $this->profileService->findProfile(Yii::$app->user->identity->getId())->asArray()->one();
         if ($readModel) {
             $form->setAttributes($readModel);
@@ -105,6 +109,27 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function actionSetting_image()
+    {
+        if (!Yii::$app->user->isGuest) {
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $model = new UserSetting();
+
+        if ($model->load(Yii::$app->request->post())) {
+            $model->photo = UploadedFile::getInstance($model, 'photo');
+            $model->passport = UploadedFile::getInstance($model, 'passport');
+
+            return $model->upload(Yii::$app->user->id);
+        }
+
+        return false;
+        } else {
+        return $this->goHome();
+        }
+    }
+
     public function actionEditPhone()
     {
         if (Yii::$app->request->isAjax) {
@@ -116,6 +141,7 @@ class ProfileController extends Controller
 
             if ($session->has('userCode')) {
                 $model = new UserEditPhone();
+
 
                 if ($model->load(Yii::$app->request->post())) {
                     if (str_replace('-', '', $model->code) == $session->get('userCode')) {
@@ -208,4 +234,32 @@ class ProfileController extends Controller
         return $searchQueries->delete();
     }
 
+    public function actionGetCode() {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $code = rand(1000, 9999);
+    
+        $post = Yii::$app->request->post();
+        $session = Yii::$app->session;
+        $session->set('userCode', $code);
+        $session->set('userPhone', $post['UserEditPhone']['phone']);
+    
+        $model = new SendSMS();
+    
+        $model->phone = preg_replace('/[^0-9]/', '', $post['UserEditPhone']['phone']);
+        $model->message = "Vash kod: $code";
+    
+        $result = false;
+        $mess = 'Ошибка сервера';
+    
+        if ($model->check()) {
+          if ($response = $model->send()) {
+            if ($response['status']) {
+              $result = true;
+            }
+            $mess = $response['text'];
+          }
+        }
+    
+        return ['result' => $result, 'mess' => $mess];
+    }
 }

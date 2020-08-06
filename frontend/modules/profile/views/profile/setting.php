@@ -85,7 +85,7 @@ $this->params[ 'breadcrumbs' ][] = [
 
                             <div class="col-6 col-sm-5 col-md-4 col-lg-4 order-lg-last">
 
-                                <?php $form = ActiveForm::begin(['action' => Url::to(['user/setting_image']), 'options' => ['enctype' => 'multipart/form-data', 'id' => 'setting-image']]) ?>
+                                <?php $form = ActiveForm::begin(['action' => '/profile/setting_image', 'options' => ['enctype' => 'multipart/form-data', 'id' => 'setting-image']]) ?>
 
                                 <div class="avatar-upload">
                                     <img class="profile-pic d-block setting-image-tag"

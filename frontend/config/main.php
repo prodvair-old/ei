@@ -118,16 +118,17 @@ return [
                 '/profile' => 'user/index',
 
 
-                '/profile/setting'    => 'profile/profile/setting',
-                '/profile/edit-phone' => 'profile/profile/edit-phone',
-                '/profile/favorite'      => 'profile/profile/wish-list',
+                '/profile/setting'          => 'profile/profile/setting',
+                '/profile/get-code'         => 'profile/profile/get-code',
+                '/profile/edit-phone'       => 'profile/profile/edit-phone',
+                '/profile/setting_image'    => 'profile/profile/setting_image',
+
+                '/profile/favorite'   => 'profile/profile/wish-list',
 
                 '/profile/search-preset'        => 'profile/profile/search-preset',
                 '/profile/search-preset-change' => 'profile/profile/search-preset-change',
                 '/profile/search-preset-del'    => 'profile/profile/search-preset-del',
 
-                '/profile/setting_image' => 'user/setting_image',
-                '/profile/get-code'      => 'user/get-code',
 
                 '/profile/notification' => 'profile/profile/notification',
                 '/profile/purchase'     => 'profile/profile/purchase',

@@ -10,6 +10,7 @@ use yii\imagine\Image;
 
 class ProfileForm extends Model
 {
+    public $user_id;
     public $first_name;
     public $last_name;
     public $middle_name;
@@ -39,5 +40,12 @@ class ProfileForm extends Model
             [['old_password', 'new_password', 'repeat_password'], 'string', 'min' => 6],
             ['repeat_password', 'compare', 'compareAttribute' => 'new_password', 'message' => "Пароли не совпадают!"],
         ];
+    }
+
+    public function generateSave()
+    {
+        $user = User::findOne(["id" => $this->user_id]);
+
+        var_dump($user->profile);
     }
 }

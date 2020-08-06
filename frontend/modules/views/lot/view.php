@@ -213,7 +213,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                             <li class="col-12 col-md-6 pl-15 pr-15">
                                 <figure class="tour-grid-item-01 box-shadow borr-10">
 
-                                    <a href="<?= ($lot->torg->bankruptProfile->id) ? Url::to(['/bankrupt']).'/'.$lot->torg->bankruptProfile->id : Url::to(['/bankrupt']).'/'.$lot->torg->bankrupt->id ?>">
+                                    <a href="<?= Url::to(['/bankrupt']).'/'.$lot->torg->debtor->bankrupt_id ?>">
                                             
                                         <figcaption class="content">
                                             <div class="lot__block__info__content__offer">Должник</div>
@@ -618,7 +618,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                             <? } ?>
 
                             <div class="col-lg-4 col-sm-6 mb-30 lot_next__btn">
-                                <a href="<?= ($lot->torg->bankruptProfile->id)? Url::to(['/bankrupt']).'/'.$lot->torg->bankruptProfile->id : Url::to(['/bankrupt']).'/'.$lot->torg->bankrupt->id ?>" class="btn btn-primary borr-10">
+                                <a href="<?= Url::to(['/bankrupt']).'/'.$lot->torg->debtor->bankrupt_id ?>" class="btn btn-primary borr-10">
                                     Другие лоты
                                     <i class="fa fa-arrow-right"></i>
                                 </a>
