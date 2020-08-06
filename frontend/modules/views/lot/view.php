@@ -24,7 +24,6 @@ $wishListCheck = WishList::find()->where(['lot_id' => $lot->id, 'user_id' => \Yi
 $wishListAll = WishList::find()->where(['lot_id' => $lot->id])->count();
 
 $this->registerJsVar('lotType', $lot->torg->property, $position = yii\web\View::POS_HEAD);
-$this->title = $lot->title;
 $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 ?>
 
