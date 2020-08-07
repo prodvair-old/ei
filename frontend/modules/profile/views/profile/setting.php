@@ -87,8 +87,8 @@ $this->params[ 'breadcrumbs' ][] = [
 
                                 <?php $form = ActiveForm::begin(['action' => '/profile/setting_image', 'options' => ['enctype' => 'multipart/form-data', 'id' => 'setting-image']]) ?>
 
-                                <div class="avatar-upload">
-                                    <img class="profile-pic d-block setting-image-tag"
+                                <div class="avatar-upload borr-20">
+                                    <img class="profile-pic d-block setting-image-tag borr-20"
                                          src="<?= (Yii::$app->user->identity->getAvatarImage()) ? Yii::$app->user->identity->getAvatarImage() : 'img/image-man/01.jpg' ?>"
                                          alt="avatar"/>
                                     <label for="avatar-upload">
@@ -118,35 +118,35 @@ $this->params[ 'breadcrumbs' ][] = [
                                     <div class="row gap-20">
 
                                         <?php if ($success) : ?>
-                                            <div class="col-md-12 alert alert-success">
+                                            <div class="col-md-12 alert alert-success borr-10">
                                                 <p><?= $success ?></p>
                                             </div>
                                         <?php elseif ($error) : ?>
-                                            <div class="col-md-12 alert alert-danger">
+                                            <div class="col-md-12 alert alert-danger borr-10">
                                                 <p><?= $error ?></p>
                                             </div>
                                         <?php endif; ?>
                                         <div class="col-12 col-sm-4">
                                             <div class="form-group mb-0">
-                                                <?= $form->field($model, 'first_name')->textInput(['class' => 'form-control'])->label('Имя') ?>
+                                                <?= $form->field($model, 'first_name')->textInput(['class' => 'form-control borr-10'])->label('Имя') ?>
                                             </div>
                                         </div>
 
                                         <div class="col-12 col-sm-4">
                                             <div class="form-group mb-0">
-                                                <?= $form->field($model, 'last_name')->textInput(['class' => 'form-control'])->label('Фамилия') ?>
+                                                <?= $form->field($model, 'last_name')->textInput(['class' => 'form-control borr-10'])->label('Фамилия') ?>
                                             </div>
                                         </div>
 
                                         <div class="col-12 col-sm-4">
                                             <div class="form-group mb-0">
-                                                <?= $form->field($model, 'middle_name')->textInput(['class' => 'form-control'])->label('Отчество') ?>
+                                                <?= $form->field($model, 'middle_name')->textInput(['class' => 'form-control borr-10'])->label('Отчество') ?>
                                             </div>
                                         </div>
 
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group mb-0">
-                                                <?= $form->field($model, 'phone')->textInput(['class' => 'form-control phone-ready', 'readonly' => true])->label('Номер телефона') ?>
+                                                <?= $form->field($model, 'phone')->textInput(['class' => 'form-control phone-ready borr-10', 'readonly' => true])->label('Номер телефона') ?>
                                                 <a href="#phoneEditModel-phone" id="edit_phone"
                                                    class="tab-external-link block mt-25" data-toggle="modal"
                                                    data-target="#phoneEditModel" data-backdrop="static"
@@ -156,15 +156,15 @@ $this->params[ 'breadcrumbs' ][] = [
 
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group mb-0">
-                                                <?= $form->field($model, 'email')->textInput(['class' => 'form-control'])->label('E-mail') ?>
+                                                <?= $form->field($model, 'email')->textInput(['class' => 'form-control borr-10'])->label('E-mail') ?>
                                             </div>
                                         </div>
 
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group mb-0 chosen-bg-light">
                                                 <?= $form->field($model, 'birthday')->textInput([
-                                                    'class'   => 'form-control',
-                                                    'value'   => ($model->birthday) ? Yii::$app->formatter->asDate($model->birthday) : '',
+                                                    'class'   => 'form-control borr-10',
+                                                    'value'   => ($model->birthday) ? Yii::$app->formatter->asDate($model->birthday, 'dd.MM.yyyy') : '',
                                                     'onClick' => 'xCal(this, {lang: \'ru\'})'
                                                 ])->label('Дата рождения') ?>
                                             </div>
@@ -172,12 +172,17 @@ $this->params[ 'breadcrumbs' ][] = [
 
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group mb-0">
+                                                <style>
+                                                    .chosen-single {
+                                                        border-radius: 10px!important
+                                                    }
+                                                </style>
                                                 <?= $form->field($model, 'gender')->dropDownList([
                                                     Profile::GENDER_MALE   => 'Мужской',
                                                     Profile::GENDER_FEMALE => 'Женский'
                                                 ],
                                                     [
-                                                        'class'            => 'chosen-the-basic form-control form-control-sm',
+                                                        'class'            => 'chosen-the-basic form-control form-control-sm borr-10',
                                                         'data-placeholder' => 'Все категории',
                                                         'tabindex'         => '2',
                                                         //'options' => [
@@ -190,31 +195,32 @@ $this->params[ 'breadcrumbs' ][] = [
 
                                         <div class="col-12 col-sm-12">
                                             <div class="form-group mb-0">
-                                                <?= $form->field($model, 'city')->textInput(['class' => 'form-control'])->label('Город') ?>
-                                                <?= $form->field($model, 'address')->textInput(['class' => 'form-control'])->label('Адрес') ?>
+                                                <?= $form->field($model, 'city')->textInput(['class' => 'form-control borr-10'])->label('Город') ?>
+                                                <?= $form->field($model, 'address')->textInput(['class' => 'form-control borr-10'])->label('Адрес') ?>
                                             </div>
                                         </div>
 
                                     </div>
 
-                                    <hr class="mt-40 mb-40" />
+                                    <div class="bg-gray borr-20 mt-40 pt-20 pb-20 pl-20 pr-20">
 
-                                    <h5 class="text-uppercase">Сменить пароль</h5>
+                                        <h5 class="text-uppercase mb-20">Сменить пароль</h5>
 
-                                    <div class="row gap-20">
-                                        <div class="col-12 col-sm-12">
-                                            <div class="form-group mb-0">
-                                                <?= $form->field($model, 'old_password')->passwordInput(['class' => 'form-control'])->label('Старый пароль') ?>
+                                        <div class="row gap-20">
+                                            <div class="col-12 col-sm-12 pb-0">
+                                                <div class="form-group mb-0">
+                                                    <?= $form->field($model, 'old_password')->passwordInput(['class' => 'form-control borr-10'])->label('Старый пароль') ?>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group mb-0">
-                                                <?= $form->field($model, 'new_password')->passwordInput(['class' => 'form-control'])->label('Новый пароль') ?>
+                                            <div class="col-12 col-sm-6">
+                                                <div class="form-group mb-0">
+                                                    <?= $form->field($model, 'new_password')->passwordInput(['class' => 'form-control borr-10'])->label('Новый пароль') ?>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group mb-0">
-                                                <?= $form->field($model, 'repeat_password')->passwordInput(['class' => 'form-control'])->label('Подтвердите пароль') ?>
+                                            <div class="col-12 col-sm-6">
+                                                <div class="form-group mb-0">
+                                                    <?= $form->field($model, 'repeat_password')->passwordInput(['class' => 'form-control borr-10'])->label('Подтвердите пароль') ?>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -223,7 +229,7 @@ $this->params[ 'breadcrumbs' ][] = [
 
                                     <div class="row gap-10 mt-15 justify-content-center justify-content-md-start">
                                         <div class="col-auto">
-                                            <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+                                            <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success borr-15']) ?>
                                         </div>
 <!--                                        <div class="col-auto offset-md-2">-->
 <!--                                            <a href="--><?//= Url::to('/lot/profile/change-password') ?><!--"><h5-->
