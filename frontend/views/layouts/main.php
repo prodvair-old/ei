@@ -214,9 +214,9 @@ AppAsset::register($this);
                             ['label' => 'Имущество организаций', 'url' => ['/zalog'], 'items' => $ownersMenu],
                             ['label' => 'Муниципальное имущество', 'url' => ['/municipal'], 'items' => $municipaltLotsCategoryMenu],
                           ]],
-                          ['label' => 'О компании', 'url' => ['pages/about'], 'items' => [
-                            ['label' => 'О нас', 'url' => ['pages/about']],
-                            ['label' => 'Контакты', 'url' => ['pages/contact']],
+                          ['label' => 'О компании', 'url' => '/about', 'items' => [
+                            ['label' => 'О нас', 'url' => '/about'],
+                            ['label' => 'Контакты', 'url' => '/contact'],
                           ]],
                           ['label' => 'Реестры', 'url' => ['/lot/arbitr/index'], 'items' => [
                             ['label' => 'Арбитражные управляющие', 'url' => ['/lot/arbitr/index']],
@@ -225,9 +225,9 @@ AppAsset::register($this);
                           ]],
                           ['label' => 'Услуги', 'url' => ['services/index'], 'items' => [
                             // ['label' => 'Консультация специалиста', 'url' => ['service/specialist']],
-                            ['label' => 'Услуги агента', 'url' => ['service/agent']],
-                            ['label' => 'Оценка лота', 'url' => ['service/lot']],
-                            ['label' => 'Как приобрести лот?', 'url' => ['service/ecp']]
+                            ['label' => 'Услуги агента', 'url' => 'service/agent'],
+                            ['label' => 'Оценка лота', 'url' => 'service/lot'],
+                            ['label' => 'Как приобрести лот?', 'url' => 'service/ecp']
                           ]],
                           // ['label' => 'Войти', 'url' => ['services/index'],
                           // 'options'=>['data-toggle'=>'modal','data-target'=>'#loginFormTabInModal', 'data-target'=>'#loginFormTabInModal']

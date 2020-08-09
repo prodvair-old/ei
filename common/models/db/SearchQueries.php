@@ -221,7 +221,12 @@ class SearchQueries extends ActiveRecord
       } else {
         $path = $parts;
       }
-      parse_str($parts['query'], $query);
+      
+      if (!empty($parts['query'])) {
+        parse_str($parts['query'], $query);
+      } else {
+        $query = false;
+      }
 
       return ['query' => $query, 'path' => $path];
     }
