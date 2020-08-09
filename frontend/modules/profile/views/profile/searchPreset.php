@@ -74,7 +74,7 @@ $this->registerJsVar( 'lotType', '', $position = yii\web\View::POS_HEAD );
                     
                     <div class="form-draft-payment">
                     
-                        <h3 class="heading-title"><span>Мои <span class="font200"> поисковые отслеживания</span></span></h3>
+                        <h3 class="heading-title"><span class="font200">Поисковые отслеживания</span></h3>
                         
                         <div class="clear"></div>
 

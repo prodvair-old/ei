@@ -80,8 +80,7 @@ class ProfileController extends Controller
 
         $form = new ProfileForm();
         $form->user_id = Yii::$app->user->id;
-        // var_dump($form->generateSave());
-        // die;
+
         $readModel = $this->profileService->findProfile(Yii::$app->user->identity->getId())->asArray()->one();
         if ($readModel) {
             $form->setAttributes($readModel);
@@ -116,6 +115,9 @@ class ProfileController extends Controller
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
         $model = new UserSetting();
+        
+        $form = new ProfileForm();
+        $form->user_id = Yii::$app->user->id;
 
         if ($model->load(Yii::$app->request->post())) {
             $model->photo = UploadedFile::getInstance($model, 'photo');

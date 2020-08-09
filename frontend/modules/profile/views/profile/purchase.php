@@ -76,7 +76,7 @@ $this->params[ 'breadcrumbs' ][] = [
 
                     <div class="form-draft-payment">
 
-                        <h3 class=""><span><?= $caption ?></span></h3>
+                        <h3 class=""><span class="font200">Покупки</span></h3>
 
                         <div class="clear"></div>
 

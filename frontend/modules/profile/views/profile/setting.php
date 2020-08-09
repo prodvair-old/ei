@@ -6,6 +6,10 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use frontend\modules\profile\components\ProfileMenu;
+use common\models\db\User;
+use sergmoro1\uploader\widgets\Uploader;
+
+$img_model = User::findOne(Yii::$app->user->identity->id);
 
 
 $name = Yii::$app->user->identity->getFullName();
@@ -105,6 +109,13 @@ $this->params[ 'breadcrumbs' ][] = [
                                                 class="setting-image-info">Изменить аватарку</span>
                                     </div>
                                 </div>
+                                <?= Uploader::widget([
+                                    'model'         => $img_model,
+                                    'limit'         => 1,
+                                    'maxFileSize'   => 0,
+                                    'appendixView'  => '/profile/appendix.php',
+                                    'cropAllowed'   => true,
+                                ]) ?>
 
                                 <?php ActiveForm::end() ?>
 
@@ -113,6 +124,7 @@ $this->params[ 'breadcrumbs' ][] = [
                             <div class="col-12 col-md-12 col-lg-8">
 
                                 <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+
                                 <div class="col-inner">
 
                                     <div class="row gap-20">

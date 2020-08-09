@@ -1790,20 +1790,20 @@ label.toggle-item:before
             img
               cursor: not-allowed
         &__arrow
-        &-next, &-prev
-          position: absolute
-          top: 50%
-          width: 20px
-          height: 20px
-          background: rgba(255, 255, 255, 0.5)
-          z-index: 999
-          transform: scale(1) translateY(-50%)
-          transition: all .3s ease
-          &::before
-            color: #000000
-          &:hover, &:focus
+          &-next, &-prev
+            position: absolute
+            top: 50%
+            width: 20px
+            height: 20px
             background: rgba(255, 255, 255, 0.5)
-            transform: scale(1.03) translateY(-50%)
+            z-index: 999
+            transform: scale(1) translateY(-50%)
+            transition: all .3s ease
+            &::before
+              color: #000000
+            &:hover, &:focus
+              background: rgba(255, 255, 255, 0.5)
+              transform: scale(1.03) translateY(-50%)
         &-next
           right: 20px
         &-prev

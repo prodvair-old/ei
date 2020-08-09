@@ -41,11 +41,4 @@ class ProfileForm extends Model
             ['repeat_password', 'compare', 'compareAttribute' => 'new_password', 'message' => "Пароли не совпадают!"],
         ];
     }
-
-    public function generateSave()
-    {
-        $user = User::findOne(["id" => $this->user_id]);
-
-        var_dump($user->profile);
-    }
 }

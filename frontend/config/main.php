@@ -21,6 +21,7 @@ return [
         'profile' => [
             'class' => 'frontend\modules\profile\Profile',
         ],
+        'uploader' => ['class' => 'sergmoro1\uploader\Module'],
     ],
     'components'          => [
         'socialShare'  => [
