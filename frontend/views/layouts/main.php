@@ -223,7 +223,7 @@ AppAsset::register($this);
                             ['label' => 'Должники', 'url' => ['/lot/bankrupt/index']],
                             ['label' => 'СРО', 'url' => ['/lot/sro/index']]
                           ]],
-                          ['label' => 'Услуги', 'url' => 'services/index', 'items' => [
+                          ['label' => 'Услуги', 'url' => 'services/agent', 'items' => [
                             // ['label' => 'Консультация специалиста', 'url' => ['service/specialist']],
                             ['label' => 'Услуги агента', 'url' => 'service/agent'],
                             ['label' => 'Оценка лота', 'url' => 'service/lot'],
