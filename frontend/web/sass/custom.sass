@@ -1495,6 +1495,7 @@ label.toggle-item:before
   .lot__block 
     &.long
       display: block
+      height: auto
       .lot__block__img
         height: 160px
         width: 100%
@@ -1904,6 +1905,18 @@ label.toggle-item:before
       padding: 20px 40px
   a
     width: auto!important
+
+@media (max-width: 576px)
+  .lot_next__btn
+    border: none
+  .field-lotsearch-search
+    margin-bottom: 0
+  .search
+    &__field
+      font-size: 1rem
+    &__btn
+      padding: 9px 4px 9px
+      width: 3rem!important
 
 .border-dots
   border: 3px solid #E6EFF4!important

@@ -373,7 +373,7 @@ AppAsset::register($this);
 
             <div class="row gap-50">
 
-              <a href="tel:88006003305" class="link-mobile">
+              <a href="tel:88006003305" class="link-mobile d-sm-flex d-none">
                 <span>
                   8 (800) 600-33-05
                 </span>

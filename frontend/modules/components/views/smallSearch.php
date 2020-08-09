@@ -85,7 +85,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
 
         </style>
 
-        <div class="row cols-1 cols-sm-3 gap-10">
+        <div class="row cols-1 cols-sm-3 gap-10 d-sm-flex d-none">
             <div class="col">
                 <div class="col-inner height-100">
                     <?= $form->field($model, 'type')->dropDownList(
@@ -102,7 +102,7 @@ $btnStyle = ($btnColor) ? "background: $btnColor; border-color: $btnColor;" : ''
                 </div>
             </div>
 
-            <div class="col">
+            <div class="col ">
                 <div class="col-inner height-100">
                     <?= $form->field($model, 'mainCategory')->dropDownList(
                         Category::getMainCategoriesList(),

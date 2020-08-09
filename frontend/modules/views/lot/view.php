@@ -98,7 +98,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                     <div id="desc" class="detail-header mb-30">
                         <div class="lot__block__info__content__offer"><?= $lot->region->name ?></div>
-                        <h1 class="h3 lh-h1 mt-5" itemprop="name"><?= $lot->title ?></h1>
+                        <h1 class="h3 lh-h1 mt-5" itemprop="name" style="max-height: 130px;overflow: hidden;"><?= $lot->title ?></h1>
 
                         <div class="d-flex flex-row align-items-sm-center mb-20">
                             <?
@@ -132,28 +132,28 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                         <?php endif; ?>
 
                             <ul class="list-inline-block highlight-list mt-30">
-                                <li>
+                                <li class="mr-lg-50 mr-20">
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-basic-flag1 text-green"></i>
                                 </span>
                                     Старт
                                     торгов<br/><strong><?= Yii::$app->formatter->asDate($lot->torg->started_at, 'long') ?></strong>
                                 </li>
-                                <li>
+                                <li class="mr-lg-50 mr-20">
                                 <span class="icon-font d-block">
                                     <i class="ri-arrow-right"></i>
                                 </span>
                                 </br>
                                     <strong class="text-green"><?= ($dateSend > 0) ? NumberWords::widget(['number' => $dateSend, 'words' => ['день', 'дня', 'дней']]) : 'Прошло' ?></strong>
                                 </li>
-                                <li>
+                                <li class="mr-lg-50 mr-20">
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-basic-flag2 text-danger"></i>
                                 </span>
                                 Окончание
                                 торгов<br /><strong><?= Yii::$app->formatter->asDate($lot->torg->completed_at, 'long') ?></strong>
                             </li>
-                            <li class="ml-50">
+                            <li class="ml-xl-50 mr-lg-50 mr-20">
                                 <span class="icon-font d-block">
                                     <i class="linea-icon-ecommerce-rublo"></i>
                                 </span>
