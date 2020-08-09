@@ -282,9 +282,9 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
 
 <section class="pt-0 pb-0 p-20">
     <div class="container main-page">
-        <div class="row main-page__category" itemscope itemtype="https://schema.org/AggregateOffer">
+        <div class="row" itemscope itemtype="https://schema.org/AggregateOffer">
 
-            <div class="col-lg-4 main-page__link-item">
+            <div class="col-lg-4">
                 <div class="main-page__category__block">
                     <p class="h4 font600">Секции имущества</p>
                     <hr>
@@ -306,7 +306,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-4 main-page__link-item">
+            <div class="col-lg-4">
                 <div class="main-page__category__block">
                     <p class="h4 font600">Категории</p>
                     <hr>
@@ -317,7 +317,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-4 main-page__link-item">
+            <div class="col-lg-4">
                 <div class="main-page__category__block">
                     <p class="h4 font600">Регионы</p>
                     <hr>
