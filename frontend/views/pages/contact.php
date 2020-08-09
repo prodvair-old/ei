@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="container pv-60">
 
-            <h1 class="text-center pb-10"><?= Html::encode($this->title) ?></h1>
+            <h2 class="tpb-10"><?= Html::encode($this->title) ?></h2>
 
             <!-- <?=ContactMap::widget()?> -->
 

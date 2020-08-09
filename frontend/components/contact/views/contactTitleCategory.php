@@ -13,8 +13,6 @@
                     </ol>
                 </nav>
                 
-                <h4 class="mt-0 line-125">Контакты</h4>
-                
             </div>
             
         </div>

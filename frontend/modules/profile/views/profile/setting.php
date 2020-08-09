@@ -85,43 +85,38 @@ $this->params[ 'breadcrumbs' ][] = [
 
                         <div class="clear"></div>
 
+
+                            <!-- <div class="col-6 col-sm-5 col-md-4 col-lg-4 order-lg-last">
+
+                            <?php $form = ActiveForm::begin(['action' => '/profile/setting_image', 'options' => ['enctype' => 'multipart/form-data', 'id' => 'setting-image']]) ?>
+
+<div class="avatar-upload borr-20">
+    <img class="profile-pic d-block setting-image-tag borr-20"
+         src="<?= (Yii::$app->user->identity->getAvatarImage()) ? Yii::$app->user->identity->getAvatarImage() : 'img/image-man/01.jpg' ?>"
+         alt="avatar"/>
+    <label for="avatar-upload">
+        <div class="upload-button text-secondary line-1">
+            <div>
+                <i class="fas fa-upload text-primary"></i>
+                <span class="d-block font12 text-uppercase font700 mt-10 text-primary">Максимальный размер:<br/>250 Мб</span>
+            </div>
+        </div>
+    </label>
+    <?= $form->field($model_image, 'photo')->fileInput(['class'=>'file-upload', 'id'=>'avatar-upload', 'accept' => 'image/*'])->label(false) ?>
+    <div class="labeling">
+        <i class="fas fa-upload"></i> <span
+                class="setting-image-info">Изменить аватарку</span>
+    </div>
+</div>
+
+<?php ActiveForm::end() ?>
+
+</div> -->
+
                         <div class="row gap-30">
 
-                            <div class="col-6 col-sm-5 col-md-4 col-lg-4 order-lg-last">
 
-                                <?php $form = ActiveForm::begin(['action' => '/profile/setting_image', 'options' => ['enctype' => 'multipart/form-data', 'id' => 'setting-image']]) ?>
-
-                                <div class="avatar-upload borr-20">
-                                    <img class="profile-pic d-block setting-image-tag borr-20"
-                                         src="<?= (Yii::$app->user->identity->getAvatarImage()) ? Yii::$app->user->identity->getAvatarImage() : 'img/image-man/01.jpg' ?>"
-                                         alt="avatar"/>
-                                    <label for="avatar-upload">
-                                        <div class="upload-button text-secondary line-1">
-                                            <div>
-                                                <i class="fas fa-upload text-primary"></i>
-                                                <span class="d-block font12 text-uppercase font700 mt-10 text-primary">Максимальный размер:<br/>250 Мб</span>
-                                            </div>
-                                        </div>
-                                    </label>
-                                    <?= $form->field($model_image, 'photo')->fileInput(['class'=>'file-upload', 'id'=>'avatar-upload', 'accept' => 'image/*'])->label(false) ?>
-                                    <div class="labeling">
-                                        <i class="fas fa-upload"></i> <span
-                                                class="setting-image-info">Изменить аватарку</span>
-                                    </div>
-                                </div>
-                                <?= Uploader::widget([
-                                    'model'         => $img_model,
-                                    'limit'         => 1,
-                                    'maxFileSize'   => 0,
-                                    'appendixView'  => '/profile/appendix.php',
-                                    'cropAllowed'   => true,
-                                ]) ?>
-
-                                <?php ActiveForm::end() ?>
-
-                            </div>
-
-                            <div class="col-12 col-md-12 col-lg-8">
+                            <div class="col-12 col-md-12 col-lg-12">
 
                                 <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 

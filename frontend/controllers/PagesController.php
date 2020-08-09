@@ -81,9 +81,9 @@ class PagesController extends Controller
         $model = new ContactForm();
 
         if (!Yii::$app->user->isGuest) {
-            $model->name    = Yii::$app->user->identity->info['firstname'];
-            $model->email   = Yii::$app->user->identity->firstEmail;
-            $model->phone   = Yii::$app->user->identity->firstPhone;
+            $model->name    = Yii::$app->user->identity->profile->first_name;
+            $model->email   = Yii::$app->user->identity->email;
+            $model->phone   = Yii::$app->user->identity->profile->phone;
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
