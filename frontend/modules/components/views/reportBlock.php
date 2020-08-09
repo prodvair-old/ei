@@ -201,7 +201,7 @@ use yii\widgets\ActiveForm;
                         <div class="custom-control custom-checkbox mt-10">
                             <style>
                                 .custom-control-label::before, .custom-control-label::after {
-                                    top: 3px
+                                    top: 3px!important
                                 }
                             </style>
                             <div class="form-group field-checkPolicy">
