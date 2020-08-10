@@ -156,23 +156,30 @@ class SearchQueries extends ActiveRecord
         }
 
         if ($data['query']['LotSearch']['tradeType']) {
-            switch ($data['query']['LotSearch']['tradeType']) {
-                case '1':
-                    $tradeType = 'Публичное предложение';
-                    break;
-                case '2':
-                    $tradeType = 'Открытый аукцион';
-                    break;
-                case '3':
-                    $tradeType = 'Аукцион';
-                    break;
-                case '4':
-                    $tradeType = 'Открытый конкурс';
-                    break;
-                case '5':
-                    $tradeType = 'Конкурс';
-                    break;
+            $tradeType = '';
+            foreach ($data['query']['LotSearch']['tradeType'] as $key => $tradeTypeId) {
+                if ($key !== 0) {
+                    $tradeType .= ', ';
+                }
+                switch ($tradeTypeId) {
+                    case '1':
+                        $tradeType .= 'Публичное предложение';
+                        break;
+                    case '2':
+                        $tradeType .= 'Открытый аукцион';
+                        break;
+                    case '3':
+                        $tradeType .= 'Аукцион';
+                        break;
+                    case '4':
+                        $tradeType .= 'Открытый конкурс';
+                        break;
+                    case '5':
+                        $tradeType .= 'Конкурс';
+                        break;
+                }
             }
+            
             $descripton .= 'Тип торгов: '.$tradeType.'; ';
         }
 
