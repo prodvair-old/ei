@@ -31,7 +31,7 @@ class UsersController extends Controller
     public function actionUp($limit = 100, $offset = 0)
     {
         // получение пользователей из существующего справочника
-        $db = \Yii::$app->dbremote;
+        $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
         $dbn = \Yii::$app->db;
         $selectN = $dbn->createCommand(
             'SELECT * FROM eidb.user ORDER BY "user".id ASC '
