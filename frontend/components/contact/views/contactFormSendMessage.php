@@ -22,7 +22,7 @@ use yii\helpers\Html;
         <div class="custom-control custom-checkbox pl-0">
             <?= $form->field($model, 'checkPolicy',[
                 'template' => "{input}{label}"
-                ])->checkbox(['checked' => true])->label('Согласен с <a href="/oferta">пользовательским соглашением</a> и политикой в отношении обработки персональных данных.') ?>
+                ])->checkbox(['checked' => true])->label('Согласен с <a href="/policy">пользовательским соглашением</a> и политикой в отношении обработки персональных данных.') ?>
         </div>
 
         <?= Html::submitButton('Отправить сообщение', ['class' => 'btn btn-primary btn-send btn-wide mt-15']) ?>        
