@@ -89,7 +89,7 @@ return [
                 '/test/del-lots' => 'test/del-lots',
 
                 '/about'   => 'pages/about',
-                '/license' => 'pages/license',
+                '/oferta' => 'pages/oferta',
                 '/policy'  => 'pages/policy',
                 '/contact' => 'pages/contact',
                 '/faq'     => 'pages/faq',

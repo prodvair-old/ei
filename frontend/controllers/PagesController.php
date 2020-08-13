@@ -68,9 +68,9 @@ class PagesController extends Controller
     {
         return $this->render('about');
     }
-    public function actionLicense()
+    public function actionOferta()
     {
-        return $this->render('license');
+        return $this->render('oferta');
     }
     public function actionPolicy()
     {
