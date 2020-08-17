@@ -176,12 +176,12 @@ class Torg extends ActiveRecord
      * Получить информацию о должнике
      * @return yii\db\ActiveQuery
      * @throws InvalidConfigException
+     * @throws \yii\base\InvalidConfigException
      */
     public function getBankrupt()
     {
-//        if ($this->property != self::PROPERTY_BANKRUPT)
-//            return null;
         return $this->hasOne(Organization::className(), ['parent_id' => 'bankrupt_id'])
+            ->where(['organization.model' => Bankrupt::INT_CODE])
             ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
 
