@@ -14,9 +14,9 @@ class ContactFormSendMessage extends Widget
         $model = new ContactForm();
 
         if (!Yii::$app->user->isGuest) {
-            $model->name    = Yii::$app->user->identity->info['firstname'];
-            $model->email   = Yii::$app->user->identity->firstEmail;
-            $model->phone   = Yii::$app->user->identity->firstPhone;
+            $model->name    = Yii::$app->user->identity->profile->first_name;
+            $model->email   = Yii::$app->user->identity->email;
+            $model->phone   = Yii::$app->user->identity->profile->phone;
         }
 
         return $this->render('contactFormSendMessage', ['model' => $model]);

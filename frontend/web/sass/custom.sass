@@ -1281,6 +1281,7 @@ label.toggle-item
   transition: all 0.3s ease
   transform-origin: 20% center
   cursor: pointer
+  border-radius: 15px
 
 
 label.toggle-item:before 
@@ -1291,6 +1292,7 @@ label.toggle-item:before
   top: 3px
   left: 3px
   border: 2px solid #88cf8f
+  border-radius: 50%
 
 
 .normal label 
@@ -1321,6 +1323,7 @@ label.toggle-item:before
   left: 0
   z-index: 0
   box-shadow: inset 0px 2px 4px -2px rgba(0, 0, 0, 0.2), 0px 1px 2px 0px rgba(151, 151, 151, 0.2)
+  border-radius: 15px
 
 
 .normal-input:checked+label 
@@ -1492,6 +1495,7 @@ label.toggle-item:before
   .lot__block 
     &.long
       display: block
+      height: auto
       .lot__block__img
         height: 160px
         width: 100%
@@ -1773,6 +1777,26 @@ label.toggle-item:before
       margin-top: 30px
     &__images
       position: relative
+      &__arrow
+        &-next, &-prev
+          position: absolute
+          top: 50%
+          width: 20px
+          height: 20px
+          background: rgba(255, 255, 255, 0.5)
+          z-index: 999
+          transform: scale(1) translateY(-50%)
+          transition: all .3s ease
+          border-radius: 50%
+          &::before
+            color: #000000
+          &:hover, &:focus
+            background: rgba(255, 255, 255, 0.5)
+            transform: scale(1.03) translateY(-50%)
+        &-next
+          right: 20px
+        &-prev
+          left: 20px
       &__slider, .slick-track, .slick-list
         height: 100%
         &__item
@@ -1786,25 +1810,6 @@ label.toggle-item:before
           &.lock
             img
               cursor: not-allowed
-        &__arrow
-        &-next, &-prev
-          position: absolute
-          top: 50%
-          width: 20px
-          height: 20px
-          background: rgba(255, 255, 255, 0.5)
-          z-index: 999
-          transform: scale(1) translateY(-50%)
-          transition: all .3s ease
-          &::before
-            color: #000000
-          &:hover, &:focus
-            background: rgba(255, 255, 255, 0.5)
-            transform: scale(1.03) translateY(-50%)
-        &-next
-          right: 20px
-        &-prev
-          left: 20px
     &__expert
       display: flex
       align-items: center
@@ -1901,15 +1906,37 @@ label.toggle-item:before
   a
     width: auto!important
 
+@media (max-width: 576px)
+  .lot_next__btn
+    border: none
+  .field-lotsearch-search
+    margin-bottom: 0
+  .search
+    &__field
+      font-size: 1rem
+    &__btn
+      padding: 9px 4px 9px
+      width: 3rem!important
+
 .border-dots
   border: 3px solid #E6EFF4!important
 .box-shadow
   transform: scale(1)
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1)
   transition: all .3s ease
+  border: none
   &:hover
     transform: scale(1.03)
     box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.1)
+  &-small
+    border: none
+    transform: scale(1)
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1)
+    transition: all .3s ease
+    &:hover
+      transform: scale(1.01)
+      box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.1)
+  
 
 .bg-white
   background-color: #ffffff
@@ -2061,3 +2088,4 @@ label.toggle-item:before
 
 .modal-content
   border-radius: 20px
+  overflow: hidden

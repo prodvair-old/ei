@@ -143,7 +143,8 @@ if ($lot->start_price < 500000) {
                         <div class="custom-checkbox mt-10">
                             <?= $form->field($model, 'checkPolicy',[
                                 'template' => "{input}{hint}{label}{error}"
-                                ])->checkbox(['labelOption' => ['class'=>'line-145'], 'checked'=>true])->label('Я принимаю условия соглашения!') ?>
+                                ])->checkbox(['labelOption' => ['class'=>'line-145'], 'checked'=>true])->label('Согласен с <a href="/policy">пользовательским соглашением</a> и политикой в отношении обработки персональных данных.') ?>
+
                         </div>
                     </div>
                 

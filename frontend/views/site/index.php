@@ -36,7 +36,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
 
             <h1>
                 <!-- <span class="font700 main-page__title">Единый информатор<br><span class="main-page__subtitle">Полный каталог реализуемого имущества организаций, должников и банков России</span> </span></h1> -->
-                <span class="font700 main-page__title">Все торги в одном месте <span class="font100"> — банкротные и арестованные торги, имущество банков и лизинговых компаний</span></span>
+                <span class="font700 main-page__title">Все торги в одном месте <span class="font100 d-sm-inline d-none"> — банкротные и арестованные торги, имущество банков и лизинговых компаний</span></span>
             </h1>
             <!-- <p class="main-page__subtitle"></p> -->
             <span>Общеее количество лотов: <b id="lotTotalCount">Считаем...</b></span>
@@ -280,11 +280,11 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
 
 </section>
 
-<section class="pt-0 pb-0 p-20">
+<section class="pt-0 pb-0 p-20 d-sm-block d-none">
     <div class="container main-page">
-        <div class="row main-page__category" itemscope itemtype="https://schema.org/AggregateOffer">
+        <div class="row" itemscope itemtype="https://schema.org/AggregateOffer">
 
-            <div class="col-lg-4 main-page__link-item">
+            <div class="col-lg-4">
                 <div class="main-page__category__block">
                     <p class="h4 font600">Секции имущества</p>
                     <hr>
@@ -306,7 +306,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-4 main-page__link-item">
+            <div class="col-lg-4">
                 <div class="main-page__category__block">
                     <p class="h4 font600">Категории</p>
                     <hr>
@@ -317,7 +317,7 @@ $lotsCategory = LotsCategory::find()->where(['or', ['not', ['bankrupt_categorys'
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-4 main-page__link-item">
+            <div class="col-lg-4">
                 <div class="main-page__category__block">
                     <p class="h4 font600">Регионы</p>
                     <hr>

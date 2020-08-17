@@ -33,11 +33,9 @@ class ProfileService extends Component
      */
     public function save(ProfileForm $form)
     {
-        $profile = $this->getProfileByUserId(Yii::$app->user->identity->getId());
-        $userPlace = $this->getPlaceByUserId(Yii::$app->user->identity->getId());
-        $model = Profile::findOne($profile->id);
+        $model = $this->getProfileByUserId(Yii::$app->user->identity->getId());
+        $place = $this->getPlaceByUserId(Yii::$app->user->identity->getId());
         $user = User::findOne(Yii::$app->user->identity->getId());
-        $place = Place::findOne($userPlace->id);
 
         if (!$model) {
             $model = new Profile();
@@ -97,8 +95,7 @@ class ProfileService extends Component
 
     public function savePhone($phone)
     {
-        $profile = $this->getProfileByUserId(Yii::$app->user->identity->getId());
-        $model = Profile::findOne($profile->id);
+        $model = $this->getProfileByUserId(Yii::$app->user->identity->getId());
 
         if (!$model) {
             $model = new Profile();
@@ -108,7 +105,6 @@ class ProfileService extends Component
 
         $model->parent_id = \Yii::$app->user->identity->getId();
         $model->model = User::INT_CODE;
-
         if ($model->save()) {
             return true;
         }
@@ -142,11 +138,11 @@ class ProfileService extends Component
      */
     public function getProfileByUserId($id)
     {
-        $model = Profile::find()->select(['id'])->where(['parent_id' => $id, 'model' => User::INT_CODE])->one();
+        $model = Profile::find()->where(['parent_id' => $id, 'model' => User::INT_CODE])->one();
 
-        if (!$model) {
-            throw new NotFoundHttpException('The requested model does not exist.');
-        }
+        // if (!$model) {
+        //     // throw new NotFoundHttpException('The requested model does not exist.');
+        // }
 
         return $model;
 
@@ -159,11 +155,11 @@ class ProfileService extends Component
      */
     public function getPlaceByUserId($id)
     {
-        $model = Place::find()->select(['id'])->where(['parent_id' => $id, 'model' => User::INT_CODE])->one();
+        $model = Place::find()->where(['parent_id' => $id, 'model' => User::INT_CODE])->one();
 
-        if (!$model) {
-            throw new NotFoundHttpException('The requested model does not exist.');
-        }
+        // if (!$model) {
+        //     // throw new NotFoundHttpException('The requested model does not exist.');
+        // }
 
         return $model;
 

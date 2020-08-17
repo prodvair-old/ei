@@ -20,15 +20,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="container pv-60">
 
-            <h1 class="text-center pb-10"><?= Html::encode($this->title) ?></h1>
+            <h2 class="tpb-10"><?= Html::encode($this->title) ?></h2>
 
             <!-- <?=ContactMap::widget()?> -->
 
             <div class="mb-50"></div>
 
-                <div class="row gap-50 gap-lg-0">
+                <div class="row">
                         
-                    <div class="col-12 col-lg-5 col-xl-4">
+                    <div class="col-12 col-lg-6">
             
                         <h4 class="heading-title"><span>Написать <span class="font200">нам:</span></span></h4>
         
@@ -36,9 +36,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     </div>
             
-                    <div class="col-12 col-lg-6 ml-auto" itemscope itemtype="http://schema.org/Organization">
+                    <div class="col-12 col-lg-6" itemscope itemtype="http://schema.org/Organization">
                             
-                        <h4 class="heading-title"><span>Контактная <span class="font200">информация:</span></span></h4>
+                        <h4 class="heading-title"><span>Реквизиты <span class="font200">организации:</span></span></h4>
                         <p class="post-heading mb-10" itemprop="name">Общество с ограниченной ответственностью "Единый информатор"</p>
                 
                         <?=ContactData::widget()?>

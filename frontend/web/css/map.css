@@ -47,6 +47,7 @@
   position: absolute;
   left: -100vw;
   z-index: 9;
+  border-radius: 10px;
   transition: all 0.3s ease;
 }
 .map__panel.active {
@@ -86,6 +87,7 @@
 
 .map__panel__filter-btn {
   text-align: center !important;
+  border-radius: 10px;
   width: 130px;
 }
 .map__panel__filter-btn.active .fa {
@@ -196,6 +198,7 @@
   box-shadow: 0 0 15px rgba(0, 0, 0, 0);
   /* transform: scale(1); */
   transition: all 0.3s ease;
+  border-radius: 10px;
 }
 .map__panel__content__block:hover {
   /* transform: scale(1.05); */

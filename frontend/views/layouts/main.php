@@ -214,20 +214,21 @@ AppAsset::register($this);
                             ['label' => 'Имущество организаций', 'url' => ['/zalog'], 'items' => $ownersMenu],
                             ['label' => 'Муниципальное имущество', 'url' => ['/municipal'], 'items' => $municipaltLotsCategoryMenu],
                           ]],
-                          ['label' => 'О компании', 'url' => ['pages/about'], 'items' => [
-                            ['label' => 'О нас', 'url' => ['pages/about']],
-                            ['label' => 'Контакты', 'url' => ['pages/contact']],
+                          ['label' => 'О компании', 'url' => '/about', 'items' => [
+                            ['label' => 'О нас', 'url' => '/about'],
+                            ['label' => 'Контакты', 'url' => '/contact'],
+                            ['label' => 'Оферта', 'url' => '/oferta'],
                           ]],
                           ['label' => 'Реестры', 'url' => ['/lot/arbitr/index'], 'items' => [
                             ['label' => 'Арбитражные управляющие', 'url' => ['/lot/arbitr/index']],
                             ['label' => 'Должники', 'url' => ['/lot/bankrupt/index']],
                             ['label' => 'СРО', 'url' => ['/lot/sro/index']]
                           ]],
-                          ['label' => 'Услуги', 'url' => ['services/index'], 'items' => [
+                          ['label' => 'Услуги', 'url' => 'service/agent', 'items' => [
                             // ['label' => 'Консультация специалиста', 'url' => ['service/specialist']],
-                            ['label' => 'Услуги агента', 'url' => ['service/agent']],
-                            ['label' => 'Оценка лота', 'url' => ['service/lot']],
-                            ['label' => 'Как приобрести лот?', 'url' => ['service/ecp']]
+                            ['label' => 'Услуги агента', 'url' => 'service/agent'],
+                            ['label' => 'Оценка лота', 'url' => 'service/lot'],
+                            ['label' => 'Как приобрести лот?', 'url' => 'service/ecp']
                           ]],
                           // ['label' => 'Войти', 'url' => ['services/index'],
                           // 'options'=>['data-toggle'=>'modal','data-target'=>'#loginFormTabInModal', 'data-target'=>'#loginFormTabInModal']
@@ -373,7 +374,7 @@ AppAsset::register($this);
 
             <div class="row gap-50">
 
-              <a href="tel:88006003305" class="link-mobile">
+              <a href="tel:88006003305" class="link-mobile d-sm-flex d-none">
                 <span>
                   8 (800) 600-33-05
                 </span>
@@ -507,11 +508,11 @@ AppAsset::register($this);
             <div class="col-auto">
               <div class="col-inner">
                 <hr>
-                <p class="footer-copy-center">Обращаем ваше внимание на то, что данный Интернет-сайт носит исключительно
-                  информационный характер и ни при каких условиях не является публичной офертой, определяемой
-                  положениями Статьи 437 Гражданского кодекса Российской Федерации.</p>
                 <p class="footer-copy-center">
-                  <a href="/policy">Политика конфиденциальности</a> и <a href="/license"> Лицензионное соглашение</a> ©
+                  Посещая сайт www.ei.ru, Вы предоставляете согласие на обработку данных о посещении Вами сайта www.ei.ru (данные cookies и иные пользовательские данные), сбор которых автоматически осуществляется ООО "Е-АЙ" (420080, Татарстан Респ, Казань г, Ибрагимова пр-кт, дом № 56А, офис 20Г) на условиях Политики обработки персональных данных. Компания также может использовать указанные данные для их последующей обработки системами Google Analytics, Яндекс.Метрика и др., которая осуществляется с целью функционирования сайта www.ei.ru.
+                </p>
+                <p class="footer-copy-center">
+                  <a href="/policy">Пользовательское соглашение</a> и <a href="/oplata">Описание оплаты</a> ©
                   2020 ei.ru
 
                 </p>

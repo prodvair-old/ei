@@ -68,22 +68,26 @@ class PagesController extends Controller
     {
         return $this->render('about');
     }
-    public function actionLicense()
+    public function actionOferta()
     {
-        return $this->render('license');
+        return $this->render('oferta');
     }
     public function actionPolicy()
     {
         return $this->render('policy');
+    }
+    public function actionOplata()
+    {
+        return $this->render('oplata');
     }
     public function actionContact()
     {
         $model = new ContactForm();
 
         if (!Yii::$app->user->isGuest) {
-            $model->name    = Yii::$app->user->identity->info['firstname'];
-            $model->email   = Yii::$app->user->identity->firstEmail;
-            $model->phone   = Yii::$app->user->identity->firstPhone;
+            $model->name    = Yii::$app->user->identity->profile->first_name;
+            $model->email   = Yii::$app->user->identity->email;
+            $model->phone   = Yii::$app->user->identity->profile->phone;
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
