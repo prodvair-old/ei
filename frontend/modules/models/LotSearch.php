@@ -156,9 +156,7 @@ class LotSearch extends Lot
             $query->andFilterWhere(['IN', Organization::tableName() . '.id', $this->etp]);
         }
 
-        if ($this->type == Torg::PROPERTY_BANKRUPT) {
-            $query->joinWith(['torg.bankrupt'], true, 'INNER JOIN');
-        } elseif ($this->type == Torg::PROPERTY_ZALOG) {
+        if($this->type == Torg::PROPERTY_ZALOG) {
             $query->joinWith(['torg.owner']);
         }
 
@@ -168,7 +166,7 @@ class LotSearch extends Lot
 
         if ($this->bankruptName) {
             $fullName = explode(' ', $this->bankruptName);
-            $query->joinWith(['torg.bankruptProfile']);
+            $query->joinWith(['torg.bankruptProfile'], true, 'INNER JOIN');
             $query->andFilterWhere(['=', Profile::tableName() . '.last_name', $fullName[ 0 ]]);
             $query->andFilterWhere(['=', Profile::tableName() . '.first_name', $fullName[ 1 ]]);
             $query->andFilterWhere(['=', Profile::tableName() . '.middle_name', $fullName[ 2 ]]);

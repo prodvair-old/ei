@@ -231,7 +231,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                                     </li>
                                                 </ul>
                                             <?php endif; ?>
-                                            <small class="text-green font600">Cмотреть профиль <i class="fa fa-arrow-right"></i></small>
+                                            <small class="text-green font600">Смотреть профиль <i class="fa fa-arrow-right"></i></small>
                                         </figcaption>
                                     
                                     </a>
