@@ -76,6 +76,10 @@ class PagesController extends Controller
     {
         return $this->render('policy');
     }
+    public function actionOplata()
+    {
+        return $this->render('oplata');
+    }
     public function actionContact()
     {
         $model = new ContactForm();

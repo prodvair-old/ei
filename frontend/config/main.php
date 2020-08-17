@@ -89,8 +89,9 @@ return [
                 '/test/del-lots' => 'test/del-lots',
 
                 '/about'   => 'pages/about',
-                '/oferta' => 'pages/oferta',
+                '/oferta'  => 'pages/oferta',
                 '/policy'  => 'pages/policy',
+                '/oplata'  => 'pages/oplata',
                 '/contact' => 'pages/contact',
                 '/faq'     => 'pages/faq',
                 '/sitemap' => 'pages/sitemap',
