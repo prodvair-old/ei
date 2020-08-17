@@ -445,7 +445,7 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
                             foreach ($lots as $key => $lot) {
                                 if ($key == 1) { ?>
                                     <div class="mb-30 lot_next__btn long">
-                                        <a href="<?= Url::to(['lot/map', 'MapSearch' => $mapGET]) ?>" class="borr-10 btn btn-primary btn-block mr-30">
+                                        <a href="<?= Url::to(['lot/map', 'MapSearch' => $mapGET]) ?>" class="borr-10 btn btn-primary btn-block">
                                             <i class="oi oi-map-marker"></i> 
                                             Показать лоты на карте
                                         </a>

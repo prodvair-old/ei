@@ -28,9 +28,9 @@ class NotificationForm extends Model
     public function attributeLabels()
     {
         return [
-			'new_picture' => 'К лоту добавлено новое фото',
-			'new_report' => 'К лоту добавлен отчет',
-			'price_reduction' => 'По лоту снижена цена',
+			'new_picture' => 'К лоту в избранном добавлено новое фото',
+			'new_report' => 'К лоту в избранном добавлен отчет',
+			'price_reduction' => 'По лоту в избранном снижена цена',
         ];
     }
 }

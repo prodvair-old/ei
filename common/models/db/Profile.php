@@ -77,7 +77,7 @@ class Profile extends ActiveRecord implements ProfileInterface
             ['activity', 'default', 'value' => self::ACTIVITY_SIMPLE],
 			['birthday', 'date', 'except' => self::SCENARIO_MIGRATION, 'format' => 'php:d.m.Y', 'timestampAttribute' => 'birthday'],
             ['birthday', 'default', 'value' => null],
-            ['phone', 'match', 'pattern' => '/^\+7 \d\d\d-\d\d\d-\d\d-\d\d$/',
+            ['phone', 'match', 'pattern' => '/^\+7 \(\d\d\d\) \d\d\d-\d\d-\d\d$/',
                 'message' => 'Номер должен состоять ровно из 10 цифр.'],
             [['first_name', 'last_name', 'middle_name'], 'string', 'max' => 255],
             [['created_at', 'updated_at'], 'safe'],

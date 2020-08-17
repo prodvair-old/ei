@@ -57,10 +57,11 @@ jQuery(function ($) {
   // diogramm procent <-End
 
   // wish list start->
-  $(".lot__block__img__favorite").on("click", function (e) {
+  $(".row").on("click", ".lot__block__img__favorite", function (e) {
     e.preventDefault();
   });
-  $(".wish-js").on("click", function (e) {
+  $(".row").on("click", ".wish-js", function (e) {
+    console.log(e);
     e.preventDefault();
     var lotId = $(this).data("id"),
       star = $(this).children("img"),

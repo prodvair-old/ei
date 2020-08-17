@@ -10,6 +10,7 @@ use yii\imagine\Image;
 
 class ProfileForm extends Model
 {
+    public $user_id;
     public $first_name;
     public $last_name;
     public $middle_name;

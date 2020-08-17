@@ -100,7 +100,7 @@ $this->params[ 'breadcrumbs' ][] = [
 
                                         <div class="row gap-10 mt-15 justify-content-center justify-content-md-start">
                                             <div class="col-auto">
-                                                <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+                                                <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success borr-10']) ?>
                                             </div>
                                         </div>
 

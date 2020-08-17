@@ -74,7 +74,7 @@ $this->registerJsVar( 'lotType', '', $position = yii\web\View::POS_HEAD );
                     
                     <div class="form-draft-payment">
                     
-                        <h3 class="heading-title"><span>Мои <span class="font200"> поисковые отслеживания</span></span></h3>
+                        <h3 class="heading-title"><span class="font200">Поисковые отслеживания</span></h3>
                         
                         <div class="clear"></div>
 
@@ -86,7 +86,7 @@ $this->registerJsVar( 'lotType', '', $position = yii\web\View::POS_HEAD );
                                     <div class="mb-15"></div>
                                 </div>
                                 <? foreach ($searchQueries as $searchQuerу) { ?>
-                                    <div class="search-preset-box search-preset-box-<?=$searchQuerу->id?> col-12">
+                                    <div class="search-preset-box search-preset-box-<?=$searchQuerу->id?> col-12 borr-20 box-shadow-small">
                                     <?=$searchQuerу->last_count ? '<span class="search-preset-box__count">'.$searchQuerу->last_count.'</span>' : ''?>
                                     <div class="search-preset-box__left">
                                     <a href="<?=$searchQuerу->url?>" class="search-preset-box__title">

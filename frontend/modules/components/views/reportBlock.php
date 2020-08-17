@@ -199,10 +199,15 @@ use yii\widgets\ActiveForm;
                             'class' => 'btn btn-primary btn-block text-white borr-10', 'name' => 'invoice-button'
                         ]) ?>
                         <div class="custom-control custom-checkbox mt-10">
+                            <style>
+                                .custom-control-label::before, .custom-control-label::after {
+                                    top: 3px!important
+                                }
+                            </style>
                             <div class="form-group field-checkPolicy">
                                 <input type="hidden" name="ReportForm[checkPolicy]" value="0">
                                 <input type="checkbox" id="checkPolicy" checked class="custom-control-input" required name="ReportForm[checkPolicy]" value="1">
-                                <label class="custom-control-label" for="checkPolicy">Согласен с <a href="/policy" target="_blank">пользовательскими условиями</a></label>
+                                <label class="custom-control-label" for="checkPolicy">Согласен с <a href="/oferta">договором оферты</a> и <a href="/policy">пользовательским соглашением</a>.</label>
                             </div>
                         </div>
                         
