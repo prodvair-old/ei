@@ -129,7 +129,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                         Получить верификацию
                                         <i class="ion-ios-arrow-forward"></i>
                                     </a>
-                                    <img src="./img/mercedes.png" alt="">
+                                    <img src="/uploads/site/4.png" alt="">
                                 </div>
                             </div>
 

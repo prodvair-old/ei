@@ -277,7 +277,9 @@ class LotSearch extends Lot
         }
 
         $query->offset($this->offset)
-            ->limit($limit);
+            ->cache(3600 * 24)
+            ->limit($limit)
+            ;
 
         return $dataProvider;
     }
@@ -298,9 +300,9 @@ class LotSearch extends Lot
     }
 
     /**
-     * @return array|ActiveRecord[]
+     * @return \yii\db\ActiveQuery
      */
-    public function getLotWithReports()
+    public function getLotWithReportsQuery()
     {
         return Lot::find()
             ->joinWith(['torg', 'report'], true, 'INNER JOIN')
@@ -311,12 +313,32 @@ class LotSearch extends Lot
                 Torg::tableName() . '.published_at',
             ])
             ->orderBy(['count(' . Report::tableName() . '.id)' => SORT_DESC, Torg::tableName() . '.published_at' => SORT_DESC])
+            ->cache(3600 * 24);
+    }
+
+
+    /**
+     * @return array|ActiveRecord[]
+     */
+    public function getLotWithReports()
+    {
+        return $this->getLotWithReportsQuery()
             ->limit(7)
             ->all();
     }
 
     /**
+     * @return int|string
+     */
+    public function getLotWithReportsTotalCount()
+    {
+        return $this->getLotWithReportsQuery()
+            ->count('lot.id');
+    }
+
+    /**
      * @return array|ActiveRecord[]
+     * @throws \Exception
      */
     public function getLotWithPriceDown()
     {
@@ -333,6 +355,7 @@ class LotSearch extends Lot
             ])
             ->orderBy([LotPrice::tableName() . '.id' => SORT_DESC, Torg::tableName() . '.published_at' => SORT_DESC])
             ->limit(7)
+            ->cache(3600 * 24)
             ->all();
     }
 
@@ -350,6 +373,7 @@ class LotSearch extends Lot
             ])
             ->orderBy([Torg::tableName() . '.published_at' => SORT_DESC])
             ->limit(3)
+            ->cache(3600 * 24)
             ->all();
     }
 
@@ -375,11 +399,13 @@ class LotSearch extends Lot
             ->andWhere(['IN', Category::tableName() . '.id', $allCategories])
             ->orderBy([Lot::tableName() . '.start_price' => SORT_ASC])
             ->limit(7)
+            ->cache(3600 * 24)
             ->all();
     }
 
     /**
      * @return array|ActiveRecord[]
+     * @throws \Exception
      */
     public function getLotWithEndedTorg()
     {
@@ -388,6 +414,24 @@ class LotSearch extends Lot
             ->andWhere(['<=', Torg::tableName() . '.end_at', \Yii::$app->formatter->asTimestamp($today)])
             ->orderBy([Torg::tableName() . '.end_at' => SORT_DESC])
             ->limit(3)
+            ->cache(3600 * 24)
             ->all();
+    }
+
+    /**
+     * @param $type
+     * @return int|string
+     */
+    public function getLotTotalCountByType($type)
+    {
+        switch ($type) {
+            case 'lotTotalCount' :
+                return Lot::find()->count('id');
+            case 'lotWithReportsTotalCount' :
+                return $this->getLotWithReportsTotalCount();
+            default:
+                return 0;
+                break;
+        }
     }
 }

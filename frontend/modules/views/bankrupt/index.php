@@ -163,7 +163,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                             Получить верификацию
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
-                        <img src="./img/mercedes.png" alt="">
+                        <img src="/uploads/site/3.png" alt="">
                     </div>
 
                     <div id="load_list" class="row equal-height cols-1 cols-sm-2 gap-20 mb-25 load-list">
