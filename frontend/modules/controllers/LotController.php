@@ -476,6 +476,9 @@ class LotController extends Controller
                     'lots' => $model->getLotWithEndedTorg()
                 ]);
                 break;
+            case 'lotTotalCount' :
+                return $model->getLotTotalCountByType($type);
+                break;
             default:
                 break;
 

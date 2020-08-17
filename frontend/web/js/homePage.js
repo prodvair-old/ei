@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     request('/lot/unique?type=lotLowPrice', 'lotLowPrice');
     request('/lot/unique?type=lotWithCheapRealEstate', 'lotWithCheapRealEstate');
     request('/lot/unique?type=lotWithEndedTorg', 'lotWithEndedTorg');
+    request('/lot/unique?type=lotTotalCount', 'lotTotalCount');
 
     function request(url, id) {
         $.ajax({

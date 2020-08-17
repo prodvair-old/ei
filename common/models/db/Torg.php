@@ -193,7 +193,7 @@ class Torg extends ActiveRecord
     public function getBankruptProfile()
     {
         return $this->hasOne(Profile::className(), ['parent_id' => 'bankrupt_id'])
-            ->where(['model' => Bankrupt::INT_CODE])
+            ->where(['profile.model' => Bankrupt::INT_CODE])
             ->viaTable(TorgDebtor::tableName(), ['torg_id' => 'id']);
     }
 

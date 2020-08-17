@@ -197,7 +197,7 @@ class Category extends ActiveRecord
     public function afterFind()
     {
         parent::afterFind();
-        $query = LotCategory::find()->where(['category_id' => $this->id]);
+        $query = LotCategory::find()->where(['category_id' => $this->id])->cache(3600 * 48);
         // set Lot count in Category
         $this->model_count = $query->count();
     }

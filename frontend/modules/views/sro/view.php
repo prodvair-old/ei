@@ -123,7 +123,7 @@ $this->registerJsVar('sroId', $model->organizationRel->parent_id , $position = y
                                         Получить верификацию
                                         <i class="ion-ios-arrow-forward"></i>
                                     </a>
-                                    <img src="./img/mercedes.png" alt="">
+                                    <img src="/uploads/site/4.png" alt="">
                                 </div>
                             </div>
 

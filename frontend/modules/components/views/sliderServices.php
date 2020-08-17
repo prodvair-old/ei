@@ -16,7 +16,7 @@
                                 Узнать условия
                                 <i class="ion-ios-arrow-forward"></i>
                             </a>
-                            <img src="./img/mercedes.png" alt="">
+                            <img src="/uploads/site/1.png" alt="">
                         </div>
                     </div>
                     <div class="slick-item d-flex justify-content-center">
@@ -27,7 +27,7 @@
                                 Стать агентом ei
                                 <i class="ion-ios-arrow-forward"></i>
                             </a>
-                            <img src="./img/mercedes.png" alt="">
+                            <img src="/uploads/site/3.png" alt="">
                         </div>
                     </div>
                     <div class="slick-item d-flex justify-content-center">
@@ -38,7 +38,7 @@
                                 Пройти модерацию в CRM арбитражника
                                 <i class="ion-ios-arrow-forward"></i>
                             </a>
-                            <img src="./img/mercedes.png" alt="">
+                            <img src="/uploads/site/4.png" alt="">
                         </div>
                     </div>
                     <div class="slick-item d-flex justify-content-center">
@@ -49,7 +49,7 @@
                                 Узнайте подробности
                                 <i class="ion-ios-arrow-forward"></i>
                             </a>
-                            <img src="./img/mercedes.png" alt="">
+                            <img src="/uploads/site/2.png" alt="">
                         </div>
                     </div>
                     <div class="slick-item d-flex justify-content-center">
@@ -60,7 +60,7 @@
                                 Узнайте подробности
                                 <i class="ion-ios-arrow-forward"></i>
                             </a>
-                            <img src="./img/mercedes.png" alt="">
+                            <img src="/uploads/site/6.png" alt="">
                         </div>
                     </div>
                     <div class="slick-item d-flex justify-content-center">
@@ -71,7 +71,7 @@
                                 Узнайте подробности
                                 <i class="ion-ios-arrow-forward"></i>
                             </a>
-                            <img src="./img/mercedes.png" alt="">
+                            <img src="/uploads/site/5.png" alt="">
                         </div>
                     </div>
                     
