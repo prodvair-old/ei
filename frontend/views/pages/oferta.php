@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <section>
     <div class="container">
         <div class="row">
-            <div class="col-lg-10 offset-1">
+            <div class="col-lg-10 offset-lg-1">
                 <h1 class="text-center pb-30">Условия публичной оферты:</h1>
                 <p>
                     1. Настоящая публичная оферта является письменным предложением (публичной оферты) Исполнителя заключить договор, направляемый Заказчику в соответствии со статьями 432-444 Гражданского кодекса РФ (далее - ГК).

@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <section>
     <div class="container">
         <div class="row">
-            <div class="col-lg-10 offset-1">
+            <div class="col-lg-10 offset-lg-1">
                 <h1 class="pb-30" style="text-align: center"><?= Html::encode($this->title) ?></h1>
                 <br>
                 <h4>ОПЛАТА С ПОМОЩЬЮ БАНКОВСКОЙ КАРТЫ</h4>
