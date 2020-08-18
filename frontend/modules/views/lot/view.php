@@ -190,7 +190,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                         Стать агентом ei
                                     <i class="ion-ios-arrow-forward"></i>
                                 </a>
-                                <img src="./img/mercedes.png" alt="">
+                                <img src="/uploads/site/3.png" alt="">
                             </div>
 
                             <? } ?>
@@ -231,7 +231,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                                     </li>
                                                 </ul>
                                             <?php endif; ?>
-                                            <small class="text-green font600">Cмотреть профиль <i class="fa fa-arrow-right"></i></small>
+                                            <small class="text-green font600">Смотреть профиль <i class="fa fa-arrow-right"></i></small>
                                         </figcaption>
                                     
                                     </a>
