@@ -4,6 +4,7 @@ namespace common\models\db;
 
 use Yii;
 use common\components\IntCode;
+use common\traits\PersonList;
 
 /**
  * Manager model
@@ -21,6 +22,8 @@ use common\components\IntCode;
  */
 class Manager extends BaseAgent
 {
+    use PersonList;
+    
     // внутренний код модели используемый в составном ключе
     const INT_CODE = 3;
      
@@ -75,31 +78,12 @@ class Manager extends BaseAgent
 	{
         $query = self::find()
             ->select(['manager.id', 'inn', 'full_name' => "CONCAT_WS(' ', last_name, first_name, middle_name)"])
-            ->innerJoin('{{%profile}}', 'manager.id=profile.parent_id AND model='. IntCode::MANAGER)
+            ->innerJoin('{{%profile}}', 'manager.id=profile.parent_id AND model='. static::INT_CODE)
             ->where(['manager.agent' => self::AGENT_PERSON])
             ->andWhere(['not like', 'first_name', '-'])
             ->orderBy('full_name');
-        if ($search)
-            $query->andFilterWhere(['or',
-                ['like', 'first_name', $search],
-                ['like', 'middle_name', $search],
-                ['like', 'last_name', $search],
-                ['like', 'inn', $search]
-            ]);
-        else
-            $query->limit(10);
-        
-        $managers = $query->asArray()->all();
-        
-        $a = [];
-        $a[] = ['id' => 0, 'text' => Yii::t('app', 'Select')];
-        foreach($managers as $manager)
-            $a[] = [
-                'id' => $manager['id'], 
-                'text' => ($manager['full_name'] . ' ' . $manager['inn']),
-                'selected' => ($manager['id'] == $selected),
-            ];
-        return $a;
+
+        return self::makePersonList($query, $search, $selected);
 	}
 
     /**

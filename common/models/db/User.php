@@ -10,6 +10,7 @@ use yii\web\IdentityInterface;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use sergmoro1\uploader\behaviors\HaveFileBehavior;
+use common\traits\PersonList;
 
 /**
  * User model
@@ -35,6 +36,8 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    use PersonList;
+        
     // внутренний код модели используемый в составном ключе
     const INT_CODE        = 1;
     
@@ -431,4 +434,22 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->hasOne(SearchQueries::className(), ['user_id' => 'id']);
     }
+
+
+    /**
+     * Getting user items for dropdown list.
+     * 
+     * @param string  $search a part of item
+     * @param integer $selected items IDs
+     * @return array of [id: integer, text: string]
+     */
+	public static function getItems($search = '', $selected = 0)
+	{
+        $query = self::find()
+            ->select(['user.id', 'username', 'inn', 'full_name' => "CONCAT_WS(' ', last_name, first_name, middle_name)"])
+            ->leftJoin('{{%profile}}', 'user.id=profile.parent_id AND model='. static::INT_CODE)
+            ->orderBy('full_name');
+
+        return self::makePersonList($query, $search, $selected, true);
+	}
 }
