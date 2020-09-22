@@ -10,6 +10,7 @@ use yii\web\IdentityInterface;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use sergmoro1\uploader\behaviors\HaveFileBehavior;
+use common\traits\PersonList;
 
 /**
  * User model
@@ -35,6 +36,8 @@ use sergmoro1\uploader\behaviors\HaveFileBehavior;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    use PersonList;
+    
     // внутренний код модели используемый в составном ключе
     const INT_CODE        = 1;
     
