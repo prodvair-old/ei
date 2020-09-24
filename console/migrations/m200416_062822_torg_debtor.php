@@ -12,6 +12,7 @@ class m200416_062822_torg_debtor extends Migration
     public function up()
     {
         $this->createTable(self::TABLE, [
+            'id'          => $this->bigPrimaryKey(),
             'torg_id'     => $this->bigInteger()->notNull(),
             'bankrupt_id' => $this->bigInteger(),
             'manager_id'  => $this->bigInteger(),

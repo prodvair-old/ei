@@ -90,7 +90,7 @@ class TorgController extends Controller
                 $model->save(false);
                 $pledge->torg_id = $model->id;
                 $pledge->save(false);
-                if ($pledge->next_step)
+                if ($pledge->add_lot)
                     return $this->redirect(['create/lot', 'torg_id' => $model->id]);
                 else {
                     Yii::$app->session->setFlash('success', Yii::t('app', 'Created successfully.'));

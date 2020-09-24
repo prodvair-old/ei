@@ -455,7 +455,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $query = self::find()
             ->select(['user.id', 'username', 'inn', 'full_name' => "CONCAT_WS(' ', last_name, first_name, middle_name)"])
-            ->leftJoin('{{%profile}}', 'user.id=profile.parent_id AND model='. static::INT_CODE)
+            ->leftJoin('{{%profile}}', '"user"."id"=profile.parent_id AND model='. static::INT_CODE)
             ->orderBy('full_name');
 
         return self::makePersonList($query, $search, $selected, true);

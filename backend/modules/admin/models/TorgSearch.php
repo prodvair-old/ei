@@ -15,8 +15,8 @@ class TorgSearch extends Torg
     {
         // only fields in rules() are searchable
         return [
-            [['id', 'msg_id', 'property', 'offer'], 'integer'],
-            [['title'], 'safe'],
+            [['id', 'property', 'offer'], 'integer'],
+            [['msg_id', 'title'], 'safe'],
         ];
     }
 

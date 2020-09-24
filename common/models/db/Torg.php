@@ -361,8 +361,8 @@ class Torg extends ActiveRecord
         if (parent::beforeSave($insert)) {
 
             if (!$this->msg_id)
-                // если поле не заполнено, сформировать уникальное значение
-                $this->msg_id = 'u/' . $this->torg_id . '/' . date('dmy', $this->created_at);
+                // if the field is empty, generate a unique value
+                $this->msg_id = uniqid('u/'); // 20200924 -> $this->torg_id . '/' . date('dmy', $this->created_at)
 
             return true;
         }
