@@ -453,9 +453,12 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function getItems($search = '', $selected = 0)
     {
+        $user_equal_parent = '"user"."id"=profile.parent_id';
+        if (Yii::$app->db->driverName === 'mysql')
+            $user_equal_parent = str_replace('"', '', $user_equal_parent);
         $query = self::find()
             ->select(['user.id', 'username', 'inn', 'full_name' => "CONCAT_WS(' ', last_name, first_name, middle_name)"])
-            ->leftJoin('{{%profile}}', '"user"."id"=profile.parent_id AND model='. static::INT_CODE)
+            ->leftJoin('{{%profile}}', $user_equal_parent .' AND model='. static::INT_CODE)
             ->orderBy('full_name');
 
         return self::makePersonList($query, $search, $selected, true);

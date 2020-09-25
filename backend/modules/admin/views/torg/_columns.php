@@ -72,11 +72,6 @@ return [
                     ? Html::a(Yii::$app->params['icons']['pencil'], $url)
                     : '';
             },
-            'delete' => function ($url, $model) {
-                return $model['property_id'] == Torg::PROPERTY_ZALOG
-                    ? Html::a(Yii::$app->params['icons']['trash'], $url)
-                    : '';
-            },
         ],
     ],
 ];

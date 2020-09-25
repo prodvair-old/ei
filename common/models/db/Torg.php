@@ -89,7 +89,11 @@ class Torg extends ActiveRecord
             [['property', 'offer'], 'integer'],
             ['property', 'in', 'range' => self::getProperties()],
             ['offer', 'in', 'range' => self::getOffers()],
-            [['description', 'etp_id', 'started_at', 'end_at', 'completed_at', 'published_at', 'created_at', 'updated_at'], 'safe'],
+			['started_at', 'date', 'format' => 'dd.MM.yyyy', 'timestampAttribute' => 'started_at'],
+			['end_at', 'date', 'format' => 'dd.MM.yyyy', 'timestampAttribute' => 'end_at'],
+			['completed_at', 'date', 'format' => 'dd.MM.yyyy', 'timestampAttribute' => 'completed_at'],
+			['published_at', 'date', 'format' => 'dd.MM.yyyy', 'timestampAttribute' => 'published_at'],
+            [['description', 'etp_id', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -372,10 +376,8 @@ class Torg extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function afterDelete()
+    public function beforeDelete()
     {
-        parent::afterDelete();
-
         foreach($this->lots as $lot)
             $lot->delete();
         foreach($this->documents as $document)
@@ -394,5 +396,7 @@ class Torg extends ActiveRecord
         }
         if ($model)
             $model->delete();
+        
+        return parent::beforeDelete();
     }
 }
