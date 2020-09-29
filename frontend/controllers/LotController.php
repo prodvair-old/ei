@@ -262,7 +262,7 @@ class LotController extends Controller
 
         switch ($type) {
             case 'all':
-                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Все виды иммущества';
+                $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Все виды имущества';
                 break;
             case 'bankrupt':
                 $titleType = ($metaDataType->mdH1)? $metaDataType->mdH1 : 'Банкротное имущество';
