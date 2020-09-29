@@ -190,7 +190,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                                         Стать агентом ei
                                     <i class="ion-ios-arrow-forward"></i>
                                 </a>
-                                <img src="/uploads/site/3.png" alt="">
+                                <img src="/img/banner/cash.png" alt="">
                             </div>
 
                             <? } ?>
@@ -640,7 +640,7 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
 
                     <div class="box-content text-muted">
                         <ul class="pt-15">
-                            <li class="clearfix"> Обнавлено: <?= Yii::$app->formatter->asDatetime($lot->status_changed_at) ?></li>
+                            <li class="clearfix"> Обновлено: <?= Yii::$app->formatter->asDatetime($lot->status_changed_at) ?></li>
                         </ul>
                     </div>
 

@@ -32,7 +32,7 @@ class LotsMunicipal extends Module
         $parser->tableNameFrom = 'bailiff.lots';
         $parser->tableIdFrom = $lot->lotId;
 
-        $chekLot = Lots::find()->joinWith(['torg'])->where(['lots.oldId' => $lot->lotId, 'torg.typeId' => 2])->all();
+        $chekLot = Lots::find()->joinWith(['torg'])->where(['lots.oldId' => $lot->lotId, 'torg.typeId' => 4])->all();
         if (!empty($chekLot[0])) {
 
             $parser->message = 'Был добавлена';

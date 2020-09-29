@@ -29,7 +29,7 @@ class LotsBankrupt extends Module
         $parser->tableNameFrom = 'uds.obj$lots';
         $parser->tableIdFrom = $lot->id;
 
-        $chekLot = Lots::find()->where(['oldId' => $lot->id])->all();
+        $chekLot = Lots::find()->alias('lots')->joinWith(['torgy'])->where(['lots.oldId' => $lot->lotId, 'torgy.typeId' => 1])->all();
         if (!empty($chekLot[0])) {
 
             $parser->message = 'Был добавлена';
@@ -44,7 +44,7 @@ class LotsBankrupt extends Module
             if ($lot->description != null && $lot->torgy->msgid != null && $lot->lotid != null && $lot->startprice != null && $lot->auctionstepunit != null && $lot->advancestepunit != null) {
 
                 // Торг
-                if (!$torg = Torgs::find()->where(['oldId' => $lot->torgy->id])->one()) {
+                if (!$torg = Torgs::find()->where(['oldId' => $lot->torgy->id, 'typeId' => 1])->one()) {
                     echo "Торг для связи отцуствует! \nПробуем спарсить данный Торга. \n";
 
                     $parsingManager = TorgsBankrupt::id($lot->torgy->id);
@@ -69,7 +69,6 @@ class LotsBankrupt extends Module
                         ]);
                     }
                 }
-
 
                 $newLot = new Lots();
 

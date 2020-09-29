@@ -10,7 +10,7 @@ use sergmoro1\lookup\models\Lookup;
 ?>
 <div class='row'>
     <div class='col-sm-3' title='<?= $torg->getAttributeLabel('msg_id') ?>'>
-        <?= Html::a($torg->msg_id, ['/torg/update', 'id' => $torg->id]) ?>
+        <?= Html::a($torg->msg_id, ['torg/update', 'id' => $torg->id]) ?>
     </div>
     <div class='col-sm-3' title='<?= $torg->getAttributeLabel('property') ?>'>
         <?= Lookup::item(Property::TORG_PROPERTY, $torg->property, true) ?>

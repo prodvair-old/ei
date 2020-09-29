@@ -12,6 +12,7 @@ class m200416_100500_torg_drawish extends Migration
     public function up()
     {
         $this->createTable(self::TABLE, [
+            'id'         => $this->bigPrimaryKey(),
             'torg_id'    => $this->bigInteger()->notNull(),
             'manager_id' => $this->bigInteger()->notNull(),
         ]);

@@ -470,6 +470,5 @@ $this->registerJsVar('modelSearchName', 'LotSearch', $position = yii\web\View::P
 <script>
     window.addEventListener('load', function () {
         console.log("Fiered load after " + performance.now() + " ms");
-        document.getElementById('profiling_page_load').innerHTML = 'Страница: ' + (Math.round(performance.now()) / 1000) + ' сек.';
     }, false);
 </script>
