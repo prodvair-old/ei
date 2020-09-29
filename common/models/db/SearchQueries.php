@@ -121,7 +121,7 @@ class SearchQueries extends ActiveRecord
                 $n = 4;
                 break;
             default:
-                $defs = 'Все виды иммущества';
+                $defs = 'Все виды имущества';
                 break;
         }
         $data['query']['LotSearch']['type'] = $n;

@@ -141,7 +141,7 @@ class LotController extends Controller
                 $searchModel->type = 4;
                 break;
             default:
-                $titleType = 'Все виды иммущества';
+                $titleType = 'Все виды имущества';
                 $searchModel->type = 0;
                 break;
         }
@@ -222,7 +222,7 @@ class LotController extends Controller
                 $titleType = 'Муниципальное имущество';
                 break;
             default:
-                $titleType = 'Все виды иммущества';
+                $titleType = 'Все виды имущества';
                 break;
         }
 
