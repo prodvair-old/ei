@@ -49,6 +49,7 @@ class TorgSearch extends Torg
             'query' => $query,
             'pagination' => false,
             'sort' => [
+                'defaultOrder' => ['id' => SORT_DESC],
                 'attributes' => [
                     'id',
                     'msg_id',
