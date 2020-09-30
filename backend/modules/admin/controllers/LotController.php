@@ -106,37 +106,6 @@ class LotController extends Controller
             'torg'  => $torg,
             'place' => $place,
         ]);
-
-
-//----------------------------------
-
-//        $torg  = Torg::findOne($torg_id);
-//        $model = new Lot(['torg_id' => $torg_id]);
-//        $place = new Place(['model' => Lot::INT_CODE, 'parent_id' => $model->id]);
-//
-//        $post = Yii::$app->request->post();
-//        if ($model->load($post) && $place->load($post)) {
-//            $isValid = $model->validate();
-//            $isValid = $place->validate() && $isValid;
-//            if ($isValid) {
-//                $model->save(false);
-//                $place->save(false);
-//                Yii::$app->session->setFlash('success', Yii::t('app', 'Created successfully.'));
-//                return $this->redirect(['update', 'id' => $model->id]);
-//            }
-//        }
-//
-//        echo 'not save';
-//        echo "<pre>";
-//        var_dump($model->getErrorSummary(true));
-//        var_dump($place->getErrorSummary(true));
-//        echo "</pre>";
-//
-//        return $this->render('create', [
-//            'model' => $model,
-//            'torg'  => $torg,
-//            'place' => $place,
-//        ]);
     }
 
     /**
