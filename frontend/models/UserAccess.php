@@ -1,6 +1,7 @@
 <?php
 namespace frontend\models;
 
+use common\models\db\User;
 use Yii;
 use \yii\base\Module;
 
@@ -70,9 +71,9 @@ class UserAccess extends Module
     
     public function forManager($page = null, $access = null)
     {
-        if (Yii::$app->user->identity->role == 'superAdmin') {
+        if (Yii::$app->user->identity->role == User::ROLE_ADMIN) {
             return true;
-        } else if (Yii::$app->user->identity->role == 'admin' || Yii::$app->user->identity->role == 'manager') {
+        } else if (Yii::$app->user->identity->role == User::ROLE_ADMIN || Yii::$app->user->identity->role == User::ROLE_MANAGER) {
 
             if ($page != null) {
                 if ($access != null) {

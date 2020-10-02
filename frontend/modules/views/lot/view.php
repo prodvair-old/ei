@@ -2,6 +2,7 @@
 
 use common\models\db\Lot;
 use common\models\db\Torg;
+use common\models\db\User;
 use frontend\modules\components\ReportWidget;
 use yii\widgets\Breadcrumbs;
 use yii\helpers\Html;
@@ -103,11 +104,11 @@ $this->params[ 'breadcrumbs' ] = Yii::$app->params[ 'breadcrumbs' ];
                         <div class="d-flex flex-row align-items-sm-center mb-20">
                             <?
                                 if (!Yii::$app->user->isGuest) {
-                                    if (Yii::$app->user->identity->role !== 'user' && UserAccess::forManager('lots', 'edit')) {
+                                    if (Yii::$app->user->identity->role !== User::ROLE_USER && UserAccess::forManager('lots', 'edit')) {
                                         ?>
                             <div class="mr-10 text-muted">|</div>
                             <div class="mr-10 rating-item rating-inline">
-                                <a href="<?= Yii::$app->params[ 'backLink' ] . '/login?token=' . Yii::$app->user->identity->auth_key . '&link[to]=lots&link[page]=update&link[id]=' . $lot->id ?>"
+                                <a href="<?= Yii::$app->params[ 'backLink' ] . '/login?token=' . Yii::$app->user->identity->auth_key . '&link[to]=admin/lot&link[page]=update&link[id]=' . $lot->id ?>"
                                     target="_blank">
                                     Редактировать
                                 </a>
