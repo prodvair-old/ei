@@ -3,7 +3,9 @@
 /* @var $this yii\web\View */
 /* @var $model common\models\db\Torg */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $owner Owner */
 
+use common\models\db\Owner;
 use yii\helpers\Html;
 use common\components\Property;
 use sergmoro1\lookup\models\Lookup;
@@ -14,6 +16,7 @@ use yii\jui\DatePicker;
     <div class='col-sm-6'>
         <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
         <?= $form->field($model, 'full_title')->textArea(['maxlength' => true]) ?>
+        <?= $form->field($owner, 'slug')->textArea(['maxlength' => true]) ?>
         <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
         <?= $form->field($model, 'phone')->widget(\yii\widgets\MaskedInput::className(), [
             'mask' => '+7 999-999-99-99',

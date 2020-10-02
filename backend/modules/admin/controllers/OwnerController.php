@@ -85,7 +85,7 @@ class OwnerController extends Controller
         $post = Yii::$app->request->post();
         if ($model->load($post) && $organization->load($post) && $place->load($post)) {
             $isValid = $model->validate();
-            $isValid = $orgnization->validate() && $isValid;
+            $isValid = $organization->validate() && $isValid;
             $isValid = $place->validate() && $isValid;
             if ($isValid) {
                 $model->save(false);

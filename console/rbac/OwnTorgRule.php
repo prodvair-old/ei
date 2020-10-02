@@ -25,7 +25,7 @@ class OwnTorgRule extends Rule
     {
         if (isset($params['model']) && !(strpos(get_class($params['model']), 'Torg') === false)) {
             if (Yii::$app->user->identity->role == User::ROLE_AGENT)
-                return $params['model']->pledge->user_id == $user_id;
+                return $params['model']->torgPledge->user_id == $user_id;
             if (Yii::$app->user->identity->role == User::ROLE_ARBITRATOR)
                 return $params['model']->debtor->manager_id == Arbitrator::getManagerIdBy($user_id);
         } else
