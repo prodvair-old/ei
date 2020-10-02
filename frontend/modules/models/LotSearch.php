@@ -275,7 +275,7 @@ class LotSearch extends Lot
             $query->addOrderBy(['torg.published_at' => SORT_DESC]);
         }
 
-        $query->groupBy('lot.id, torg.published_at');
+//        $query->groupBy('lot.id, torg.published_at');
 
         $query->offset($this->offset)
             ->cache(3600 * 24)
