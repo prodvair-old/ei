@@ -470,8 +470,8 @@ class Lot extends ActiveRecord
         LotCategory::updateOneToMany($this->id, $this->_old_categories, []);
         foreach($this->observers as $observer)
             $observer->delete();
-        foreach($this->views as $view)
-            $view->delete();
+        foreach($this->traces as $trace)
+            $trace->delete();
         foreach($this->prices as $price)
             $price->delete();
         foreach($this->documents as $document)
