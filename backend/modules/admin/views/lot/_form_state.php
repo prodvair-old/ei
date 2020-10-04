@@ -46,9 +46,11 @@ if ($model->torg->property == 1) {
 }
 ?>
 
-<a href="<?= Yii::$app->params['frontLink'] . '/' . $lotTypeUrl . '/'
-    .((empty( $lot->categories[0]->slug))? 'lot-list' :  $lot->categories[0]->slug )
+<?php if ($model->id) : ?>
+    <a href="<?= Yii::$app->params['frontLink'] . '/' . $lotTypeUrl . '/'
+    . ((empty($lot->categories[0]->slug)) ? 'lot-list' : $lot->categories[0]->slug)
     . '/' . $model->id ?>"
-   target="_blank">
-    Лот на сайте
-</a>
+       target="_blank">
+        Лот на сайте
+    </a>
+<?php endif; ?>

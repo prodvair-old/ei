@@ -1,6 +1,8 @@
 <?php
 namespace frontend\models;
 
+use common\models\db\Arbitrator;
+use common\models\db\Lot;
 use common\models\db\User;
 use Yii;
 use \yii\base\Module;
@@ -69,63 +71,33 @@ class UserAccess extends Module
         return false;
     }
     
-    public function forManager($page = null, $access = null)
+    public static function forManager()
     {
-        if (Yii::$app->user->identity->role == User::ROLE_ADMIN) {
+        if (Yii::$app->user->identity->role == User::ROLE_MANAGER) {
             return true;
-        } else if (Yii::$app->user->identity->role == User::ROLE_ADMIN || Yii::$app->user->identity->role == User::ROLE_MANAGER) {
+        }
 
-            if ($page != null) {
-                if ($access != null) {
-                    return Yii::$app->user->identity->access[$page][$access];
-                }
-                return Yii::$app->user->identity->access[$page]['status'];
-            } else {
-                return true;
-            }
-
+        return false;
+    }
+    
+    public static function forAgent(Lot $lot)
+    {
+        if (
+            Yii::$app->user->identity->role == User::ROLE_AGENT
+            && $lot->torg->torgPledge->user_id === Yii::$app->user->identity->getId()
+        ) {
+            return true;
         }
         
         return false;
     }
     
-    public function forAgent($page = null, $access = null)
+    public static function forArbitr(Lot $lot)
     {
-        if (Yii::$app->user->identity->role == 'superAdmin') {
-            return true;
-        } else if (Yii::$app->user->identity->role == 'agent') {
-
-            if ($page != null) {
-                if ($access != null) {
-                    return Yii::$app->user->identity->access[$page][$access];
-                }
-                return Yii::$app->user->identity->access[$page]['status'];
-            } else {
-                return true;
-            }
-
+        if($lot->torg->debtor->manager_id) {
+            return ($lot->torg->debtor->manager_id == Arbitrator::getManagerIdBy(Yii::$app->user->identity->getId()));
         }
-        
-        return false;
-    }
-    
-    public function forArbitr($page = null, $access = null)
-    {
-        if (Yii::$app->user->identity->role == 'superAdmin') {
-            return true;
-        } else if (Yii::$app->user->identity->role == 'arbitr') {
 
-            if ($page != null) {
-                if ($access != null) {
-                    return Yii::$app->user->identity->access[$page][$access];
-                }
-                return Yii::$app->user->identity->access[$page]['status'];
-            } else {
-                return true;
-            }
-
-        }
-        
         return false;
     }
     

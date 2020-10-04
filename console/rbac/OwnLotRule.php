@@ -25,7 +25,7 @@ class OwnLotRule extends Rule
     {
         if (isset($params['model']) && !(strpos(get_class($params['model']), 'Lot') === false)) {
             if (Yii::$app->user->identity->role == User::ROLE_AGENT)
-                return $params['model']->torg->pledge->user_id == $user_id;
+                return $params['model']->torg->torgPledge->user_id == $user_id;
             if (Yii::$app->user->identity->role == User::ROLE_ARBITRATOR)
                 return $params['model']->torg->debtor->manager_id == Arbitrator::getManagerIdBy($user_id);
         } else
