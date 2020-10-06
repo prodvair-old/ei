@@ -14,6 +14,14 @@ return [
             'path' => '@console/runtime/queue',
             'as prep' => \common\behaviors\PrepareNotificationBehavior::class,
         ],
+        'efrsbAPI' => [
+            'class' => 'mongosoft\soapclient\Client',
+            'url' => 'http://test.fedresurs.ru/MessageService/WebService.svc?wsdl',
+            'options' => [
+                "login"=>"Khazeev1",
+                "password"=>"byxxIU"
+            ],
+        ],
         'lookup' => [
             'class' => 'zacksleo\yii2\lookup\models\Lookup',
         ],
@@ -87,7 +95,7 @@ return [
             'username' => 'bankrupt',
             'password' => 'bankrupt',
             'charset'  => 'utf8',
-            'tablePrefix' => 'eidb"."',
+            'tablePrefix' => 'eidev"."',
 /*
             'emulatePrepare' => false,
             'schemaMap' => [
@@ -98,7 +106,7 @@ return [
             ],
 */
             // Schema cache options (for production environment)
-             'enableSchemaCache' => true,
+             'enableSchemaCache' => false,
              'schemaCacheDuration' => 3600,
              'schemaCache' => 'cache',
         ],
