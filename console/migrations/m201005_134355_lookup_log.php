@@ -15,7 +15,7 @@ class m201005_134355_lookup_log extends Migration
     public function safeUp()
     {
         $this->insert(self::TABLE_PROPERTY, ['id' => self::LOG_STATUS_TYPE, 'name' => 'logStatusType']);
-        // product kinds
+        
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Успешно', 'code' => 1, 'property_id' => self::LOG_STATUS_TYPE, 'position' => 1]);
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Внимание', 'code' => 2, 'property_id' => self::LOG_STATUS_TYPE, 'position' => 2]);
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Ошибка', 'code' => 3, 'property_id' => self::LOG_STATUS_TYPE, 'position' => 3]);

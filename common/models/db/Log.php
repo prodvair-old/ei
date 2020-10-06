@@ -22,6 +22,11 @@ use yii\behaviors\TimestampBehavior;
 class Log extends ActiveRecord
 {
 
+    const STATUS_SUCCESS    = 1;
+    const STATUS_WARNING    = 2;
+    const STATUS_ERROR      = 3;
+    const STATUS_IN_A_QUEUE = 4;
+
     /**
      * {@inheritdoc}
      */
