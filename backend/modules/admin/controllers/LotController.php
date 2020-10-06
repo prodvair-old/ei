@@ -20,7 +20,7 @@ use backend\modules\admin\traits\TrExtractor;
 class LotController extends Controller
 {
     use TrExtractor;
-    
+
     private $_model;
 
     public function behaviors()
@@ -82,20 +82,24 @@ class LotController extends Controller
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
         $torg  = Torg::findOne($torg_id);
+
+        $transaction = Yii::$app->db->beginTransaction();
         $model = new Lot(['torg_id' => $torg_id]);
         $place = new Place(['model' => Lot::INT_CODE, 'parent_id' => $model->id]);
 
         $post = Yii::$app->request->post();
-        if ($model->load($post) && $place->load($post)) {
-            $isValid = $model->validate();
-            $isValid = $place->validate() && $isValid;
-            if ($isValid) {
-                $model->save(false);
-                $place->save(false);
+        if ($model->load($post) && $model->save()) {
+
+            $place->parent_id = $model->id;
+
+            if ($place->load($post) && $place->save()) {
+                $transaction->commit();
                 Yii::$app->session->setFlash('success', Yii::t('app', 'Created successfully.'));
                 return $this->redirect(['update', 'id' => $model->id]);
             }
         }
+
+        $transaction->rollBack();
 
         return $this->render('create', [
             'model' => $model,
@@ -165,7 +169,7 @@ class LotController extends Controller
      */
     public function findModel($id)
     {
-        if ($this->_model === null) 
+        if ($this->_model === null)
         {
             if ($this->_model = Lot::findOne($id))
             {

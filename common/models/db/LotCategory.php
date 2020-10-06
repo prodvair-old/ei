@@ -61,6 +61,11 @@ class LotCategory extends ActiveRecord
         ];
     }
 
+    public static function primaryKey()
+    {
+        return 'id';
+    }
+
     /**
      * Update one-to-many links.
      * 

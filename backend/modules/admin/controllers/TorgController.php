@@ -21,6 +21,8 @@ class TorgController extends Controller
     use TrExtractor;
     
     private $_model;
+    
+    const WEEK = 604800; // in sec = 60*60*24*7
 
     public function behaviors()
     {
@@ -78,8 +80,13 @@ class TorgController extends Controller
         if (!Yii::$app->user->can('createTorg'))
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
-        $model = new Torg();
-        $model->property = Torg::PROPERTY_ZALOG;
+        $model = new Torg([
+            'property'     => Torg::PROPERTY_ZALOG,
+        ]);
+
+		$model->started_at = $model->started_at ? date('d.m.Y', $model->started_at) : date('d.m.Y', time());
+		$model->published_at = $model->published_at ? date('d.m.Y', $model->published_at) : date('d.m.Y', time() + self::WEEK);
+        
         $pledge = new TorgPledge();
         $pledge->scenario = TorgPledge::SCENARIO_CREATE;
 
@@ -90,8 +97,8 @@ class TorgController extends Controller
                 $model->save(false);
                 $pledge->torg_id = $model->id;
                 $pledge->save(false);
-                if ($pledge->next_step)
-                    return $this->redirect(['create/lot', 'torg_id' => $model->id]);
+                if ($pledge->add_lot)
+                    return $this->redirect(['lot/create', 'torg_id' => $model->id]);
                 else {
                     Yii::$app->session->setFlash('success', Yii::t('app', 'Created successfully.'));
                     return $this->redirect(['update', 'id' => $model->id]);
@@ -121,11 +128,14 @@ class TorgController extends Controller
         if (!($model->property == Torg::PROPERTY_ZALOG))
             throw new ForbiddenHttpException(Yii::t('app', 'Access denied.'));
 
-        $pledge = new TorgPledge();
-
         $pledge = $model->torgPledge;
         if (!$pledge)
-            $pledge = new TorgPledge();
+            $pledge = new TorgPledge(['torg_id' => $model->id]);
+
+		$model->started_at = $model->started_at ? date('d.m.Y', $model->started_at) : '';
+		$model->end_at = $model->end_at ? date('d.m.Y', $model->end_at) : '';
+		$model->published_at = $model->published_at ? date('d.m.Y', $model->published_at) : '';
+		$model->completed_at = $model->completed_at ? date('d.m.Y', $model->completed_at) : '';
 
         if ($model->load(Yii::$app->request->post()) && $pledge->load(Yii::$app->request->post())) {
             $isValid = $model->validate();

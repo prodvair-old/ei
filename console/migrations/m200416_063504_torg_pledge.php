@@ -12,6 +12,7 @@ class m200416_063504_torg_pledge extends Migration
     public function up()
     {
         $this->createTable(self::TABLE, [
+            'id'       => $this->bigPrimaryKey(),
             'torg_id'  => $this->bigInteger()->notNull(),
             'owner_id' => $this->bigInteger(),
             'user_id'  => $this->bigInteger(),

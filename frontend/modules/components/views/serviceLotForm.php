@@ -9,51 +9,72 @@ use frontend\modules\components\LotBlockSmall;
 /**
  * @var $lot Lot
  * @var $lotType
+ * @var $torgProperty
  */
 
 $btnName = 'Отправить запрос <i class="ion-android-send"></i>';
 
-switch ($lotType) {
-    case 'arrest':
-            $name = 'Арестованное имущество';
+switch ($torgProperty) {
+    case 1:
+        $name = 'Банкротное имущество';
         break;
-    case 'bankrupt':
-            $name = 'Банкротное имущество';
+    case 2:
+        $name = 'Арестованное имущество';
         break;
-    case 'municipal':
-            $name = 'Муниципальное имущество';
+    case 3:
+        $name = 'Имущество организации';
         break;
-    case 'zalog':
-            $name = ($lot->torg->owner->title)? $lot->torg->owner->title : 'Имущество организации';
-            $btnName = 'Подать заявку <i class="ion-android-send"></i>';
-            $color4 = $lot->torg->owner->template['color-4'];
-            $color1 = $lot->torg->owner->template['color-1'];
-            $logo = $lot->torg->owner->logo;
+    case 4:
+        $name = 'Муниципальное имущество';
         break;
 }
 
+function getAgentPrice($lotPrice, $torgProperty) {
+    $agentPriceMap = [
+        'bankrupt' => [
+            6000,
+            8000,
+            10000,
+            15000,
+            20000,
+            30000
+        ],
+        'other'    => [
+            8000,
+            10000,
+            12000,
+            15000,
+            20000,
+            30000
+        ]
+    ];
 
-if ($lot->start_price < 500000) {
-    $agentPrice = 8000;
-} else if ($lot->start_price < 1000000) {
-    $agentPrice = 12000;
-} else if ($lot->start_price < 2000000) {
-    $agentPrice = 15000;
-} else if ($lot->start_price < 4000000) {
-    $agentPrice = 20000;
-} else if ($lot->start_price < 6000000) {
-    $agentPrice = 25000;
-} else if ($lot->start_price < 8000000) {
-    $agentPrice = 30000;
-} else if ($lot->start_price < 10000000) {
-    $agentPrice = 35000;
-} else if ($lot->start_price < 15000000) {
-    $agentPrice = 40000;
-} else if ($lot->start_price < 30000000) {
-    $agentPrice = 50000;
-} else {
-    $agentPrice = 60000;
+    $agentPrice = 6000;
+
+    if($torgProperty == 1) {
+        $agentPriceMap = $agentPriceMap['bankrupt'];
+    }
+    else {
+        $agentPriceMap = $agentPriceMap['other'];
+    }
+
+    if ($lotPrice < 500000) {
+        $agentPrice = $agentPriceMap[0];
+    } else if ($lotPrice >= 500000 && $lotPrice < 2000000) {
+        $agentPrice = $agentPriceMap[1];
+    } else if ($lotPrice >= 2000000 && $lotPrice < 10000000) {
+        $agentPrice = $agentPriceMap[2];
+    } else if ($lotPrice >= 10000000 && $lotPrice < 20000000) {
+        $agentPrice = $agentPriceMap[3];
+    } else if ($lotPrice >= 20000000 && $lotPrice < 30000000) {
+        $agentPrice = $agentPriceMap[4];
+    } else if ($lotPrice >= 30000000) {
+        $agentPrice = $agentPriceMap[5];
+    }
+
+    return $agentPrice;
 }
+
 ?>
 <div role="tabpanel" class="tab-pane" id="lotFormTabInModal-service">
     <div class="form-service">
@@ -62,7 +83,7 @@ if ($lot->start_price < 500000) {
             <div class="col-md-11">
                 <h4>Подать заявку на лот №<?= $lot->id ?></h4>
                 <!-- <p>Наши опытные специалисты быстро и грамотно подготовят документы для участия в торгах. По статистике мы выигрываем 76% торгов.</p> -->
-                <?=($logo)? '<img src="http://n.ei.ru'.$logo.'" alt="">': '' ?>
+<!--                --><?//=($logo)? '<img src="http://n.ei.ru'.$logo.'" alt="">': '' ?>
             </div>
 
 
@@ -94,7 +115,7 @@ if ($lot->start_price < 500000) {
                             Выкупите этот лот через <a href="https://agent.broker" class="text-green">agent.broker</a>!
                         </h6>
 
-                        <h4 style="line-height: 32px;">Стоимость участия в торгах: <span class="text-primary" <?= ($color4)? 'style="color: '.$color4.'!important"' : '' ?>><?=$agentPrice?> руб.!</span></h4>
+                        <h4 style="line-height: 32px;">Стоимость участия в торгах: <span class="text-primary"><?= getAgentPrice($lot->start_price, $torgProperty)?> руб.!</span></h4>
                         <?=$form->field($model, 'lot_id')->hiddenInput(['value'=> $lot->id])->label(false);?>
                         <?=$form->field($model, 'user_id')->hiddenInput(['value'=> Yii::$app->user->identity->getId()])->label(false);?>
 

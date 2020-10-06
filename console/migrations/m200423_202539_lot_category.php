@@ -21,8 +21,8 @@ class m200423_202539_lot_category extends Migration
         // $this->addPrimaryKey('pkey-lot_category', self::TABLE, ['lot_id', 'category_id']);
         $this->createIndex('idx-lot_category-lot', self::TABLE, 'lot_id');
 
-		$this->addForeignKey('fk-lot_category-lot',      self::TABLE, 'lot_id',      '{{%lot}}',      'id', 'restrict', 'restrict');
-		$this->addForeignKey('fk-lot_category-category', self::TABLE, 'category_id', '{{%category}}', 'id', 'restrict', 'restrict');
+		$this->addForeignKey('fk-lot_category-lot',      self::TABLE, 'lot_id',      '{{%lot}}',      'id', 'cascade', 'restrict');
+		$this->addForeignKey('fk-lot_category-category', self::TABLE, 'category_id', '{{%category}}', 'id', 'cascade', 'restrict');
 
 		$this->addCommentOnColumn(self::TABLE, 'lot_id', 'Лот');
 		$this->addCommentOnColumn(self::TABLE, 'category_id', 'Категория');

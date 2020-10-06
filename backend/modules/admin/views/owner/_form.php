@@ -1,9 +1,10 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $model common\models\db\Torg */
+/* @var $model Owner */
 /* @var $pladge common\models\db\TorgPledge */
 
+use common\models\db\Owner;
 use yii\widgets\ActiveForm;
 
 ?>
@@ -34,6 +35,7 @@ use yii\widgets\ActiveForm;
                     <?= $this->render('/organization/_form', [
                         'form'  => $form,
                         'model' => $organization,
+                        'owner' => $model,
                     ]) ?>
                 
                 </div>

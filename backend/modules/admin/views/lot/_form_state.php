@@ -33,3 +33,24 @@ $this->registerJS($script);
         'class' => 'btn btn-success',
     ]) ?>
 </div>
+
+<?php
+if ($model->torg->property == 1) {
+    $lotTypeUrl = 'bankrupt';
+} else if ($model->torg->property == 2) {
+    $lotTypeUrl = 'arrest';
+} else if ($model->torg->property == 3) {
+    $lotTypeUrl = 'zalog';
+} else if ($model->torg->property == 4) {
+    $lotTypeUrl = 'municipal';
+}
+?>
+
+<?php if ($model->id) : ?>
+    <a href="<?= Yii::$app->params['frontLink'] . '/' . $lotTypeUrl . '/'
+    . ((empty($lot->categories[0]->slug)) ? 'lot-list' : $lot->categories[0]->slug)
+    . '/' . $model->id ?>"
+       target="_blank">
+        Лот на сайте
+    </a>
+<?php endif; ?>

@@ -15,6 +15,7 @@ use yii\jui\DatePicker;
             'options' => [
                 'class' => 'form-control',
                 'placeholder' => $model->attributeLabels()['started_at'],
+                'autocomplete'=>'off',
             ],
         ]) ?>
     </div>
@@ -24,6 +25,7 @@ use yii\jui\DatePicker;
             'options' => [
                 'class' => 'form-control',
                 'placeholder' => $model->attributeLabels()['end_at'],
+                'autocomplete'=>'off',
             ],
         ]) ?>
     </div>
@@ -33,6 +35,7 @@ use yii\jui\DatePicker;
             'options' => [
                 'class' => 'form-control',
                 'placeholder' => $model->attributeLabels()['published_at'],
+                'autocomplete'=>'off',
             ],
         ]) ?>
     </div>
@@ -42,6 +45,7 @@ use yii\jui\DatePicker;
             'options' => [
                 'class' => 'form-control',
                 'placeholder' => $model->attributeLabels()['completed_at'],
+                'autocomplete'=>'off',
             ],
         ]) ?>
     </div>

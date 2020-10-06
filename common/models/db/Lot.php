@@ -138,6 +138,7 @@ class Lot extends ActiveRecord
             ['start_price', 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*\.?\d{0,2}\s*$/'],
             [['step', 'deposit'], 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*\.?\d{0,4}\s*$/'],
             [['step', 'deposit'], 'default', 'value' => 0],
+            [['status_changed_at'], 'default', 'value' => time()],
             [['step_measure', 'deposit_measure'], 'in', 'range' => self::getMeasures()],
             [['step_measure', 'deposit_measure'], 'default', 'value' => self::MEASURE_PERCENT],
             ['status', 'in', 'range' => self::getStatuses()],
@@ -170,6 +171,12 @@ class Lot extends ActiveRecord
             'created_at'       => Yii::t('app', 'Created'),
             'updated_at'       => Yii::t('app', 'Modified'),
         ];
+    }
+
+    function beforeSave($insert)
+    {
+        $this->status_changed_at = time();
+        return parent::beforeSave($insert);
     }
 
     /**
@@ -463,8 +470,8 @@ class Lot extends ActiveRecord
         LotCategory::updateOneToMany($this->id, $this->_old_categories, []);
         foreach($this->observers as $observer)
             $observer->delete();
-        foreach($this->views as $view)
-            $view->delete();
+        foreach($this->traces as $trace)
+            $trace->delete();
         foreach($this->prices as $price)
             $price->delete();
         foreach($this->documents as $document)

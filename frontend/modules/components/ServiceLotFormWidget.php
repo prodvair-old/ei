@@ -9,6 +9,7 @@ class ServiceLotFormWidget extends Widget
 {
     public $lot;
     public $lotType;
+    public $torgProperty;
 
     public function run()
     {
@@ -19,6 +20,7 @@ class ServiceLotFormWidget extends Widget
                 'model'   => $model,
                 'lot'     => $this->lot,
                 'lotType' => $this->lotType,
+                'torgProperty' => $this->lot->torg->property,
             ]);
         } else {
             return false;
