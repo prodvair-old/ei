@@ -26,7 +26,7 @@ class HistoryAdd extends Module
         $history->message       = $message;
         $history->messageJson   = $messageJson;
 
-        return $history->save();
+//        return $history->save(); TODO
     }
     public function singOut($status, $message, $messageJson = null)
     {
@@ -39,7 +39,7 @@ class HistoryAdd extends Module
         $history->message       = $message;
         $history->messageJson   = $messageJson;
 
-        return $history->save();
+//        return $history->save(); TODO
     }
 
     public function edit($status, $page, $message, $messageJson = null, $user = null)
@@ -54,7 +54,7 @@ class HistoryAdd extends Module
         $history->messageJson   = $messageJson;
         $history->page          = $page;
 
-        return $history->save();
+//        return $history->save();
     }
     public function add($status, $page, $message, $messageJson = null, $user = null)
     {

@@ -95,7 +95,6 @@ return [
             'username' => 'bankrupt',
             'password' => 'bankrupt',
             'charset'  => 'utf8',
-            'tablePrefix' => 'eidev"."',
 /*
             'emulatePrepare' => false,
             'schemaMap' => [
@@ -106,7 +105,7 @@ return [
             ],
 */
             // Schema cache options (for production environment)
-             'enableSchemaCache' => false,
+             'enableSchemaCache' => true,
              'schemaCacheDuration' => 3600,
              'schemaCache' => 'cache',
         ],

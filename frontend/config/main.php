@@ -14,12 +14,21 @@ return [
     'name'                => 'Единый агрегатор торгов',
     'sourceLanguage'      => 'ru-RU',
     'controllerNamespace' => 'frontend\controllers',
+    'container' => [
+        'singletons' => [
+            'frontend\modules\payment\components\PaymentConnectorInterface' =>
+                'frontend\modules\payment\components\PaymentConnector'
+        ]
+    ],
     'modules'             => [
         'lot'     => [
             'class' => 'frontend\modules\Lot',
         ],
         'profile' => [
             'class' => 'frontend\modules\profile\Profile',
+        ],
+        'payment' => [
+            'class' => 'frontend\modules\payment\Payment',
         ],
         'uploader' => ['class' => 'sergmoro1\uploader\Module'],
     ],
@@ -190,6 +199,9 @@ return [
 
                 '/bankrupt/list'     => '/lot/bankrupt/index',
                 '/bankrupt/<id:\d+>' => '/lot/bankrupt/view',
+
+                '/tariff'     => '/tariff/index',
+
 
                 '/sro/list'     => '/lot/sro/index',
                 '/sro/<id:\d+>' => '/lot/sro/view',

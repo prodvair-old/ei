@@ -29,4 +29,5 @@ return [
         'trash'  => '<i class="glyphicon glyphicon-trash"></i>',
         'lot'    => '<i class="fa fa-money"></i>',
     ],
+    'paymentConnectorBaseUrl' => 'https://3dsec.sberbank.ru/payment/rest/'
 ];

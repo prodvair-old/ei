@@ -5,6 +5,7 @@ namespace frontend\modules\components;
 
 use common\models\db\Invoice;
 use common\models\db\Purchase;
+use Exception;
 use Yii;
 use yii\base\Component;
 
@@ -19,7 +20,7 @@ class ReportService extends Component
      * @param $reportId
      * @param $returnUrl
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function invoiceCreate($userId, $cost, $reportId, $returnUrl)
     {
@@ -132,7 +133,7 @@ class ReportService extends Component
      * @param array $headers
      * @param string $method
      * @return false|string
-     * @throws \Exception
+     * @throws Exception
      */
     protected function request(string $requestUri, string $body, array $headers, $method = 'POST')
     { //TODO move to a separate service
@@ -162,7 +163,7 @@ class ReportService extends Component
         curl_close($ch);
 
         if ($error || $httpCode !== 200) {
-            throw new \Exception(sprintf('curl error: %s, http_code_response : %d', $error, $httpCode));
+            throw new Exception(sprintf('curl error: %s, http_code_response : %d', $error, $httpCode));
         }
 
         $responseBody = substr($response, $headerSize);
