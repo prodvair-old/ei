@@ -18,6 +18,7 @@ class m200410_083045_profile extends Migration
             'parent_id'    => $this->bigInteger()->notNull(),
             
             'inn'          => $this->string(12),
+            'snils'        => $this->string(11),
             'activity'     => $this->smallInteger()->notNull(),
             'gender'       => $this->smallInteger()->defaultValue(null),
             'birthday'     => $this->integer()->defaultValue(null),
@@ -36,6 +37,7 @@ class m200410_083045_profile extends Migration
 		$this->addCommentOnColumn(self::TABLE, 'parent_id', 'ID в соответствующей модели, например в User, Manager');
         
 		$this->addCommentOnColumn(self::TABLE, 'inn', 'ИНН');
+		$this->addCommentOnColumn(self::TABLE, 'snils', 'СНИЛС');
 		$this->addCommentOnColumn(self::TABLE, 'activity', 'Поле деятельности персоны');
 		$this->addCommentOnColumn(self::TABLE, 'gender', 'Пол: 1 - мужской, 2 - женский');
 		$this->addCommentOnColumn(self::TABLE, 'birthday', 'День рождения');

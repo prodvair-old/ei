@@ -55,7 +55,7 @@ class m200429_080505_sro_fill extends Migration
                     'title'      => $row['title'],
                     'full_title' => '',
                     'inn'        => $row['inn'],
-                    'ogrn'       => $row['inn'],
+                    'ogrn'       => $row['ogrn'],
                     'reg_number' => $row['regnum'],
                     'email'      => '',
                     'phone'      => '',

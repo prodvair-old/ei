@@ -53,6 +53,10 @@ class Torg extends ActiveRecord
     const OFFER_CONTEST      = 4;
     const OFFER_CONTEST_OPEN = 5;
 
+    // Вид предложения о цене
+    const PRICE_TYPE_PUBLIC  = 1;
+    const PRICE_TYPE_PRIVATE = 2;
+
     const SHORT_TITLE_LENGTH = 20;
     
     /**
@@ -86,14 +90,14 @@ class Torg extends ActiveRecord
             ['msg_id', 'required', 'on' => self::SCENARIO_MIGRATION],
             ['offer', 'required', 'except' => self::SCENARIO_MIGRATION],
             ['msg_id', 'string', 'max' => 255],
-            [['property', 'offer'], 'integer'],
+            [['property', 'offer', 'price_type'], 'integer'],
             ['property', 'in', 'range' => self::getProperties()],
             ['offer', 'in', 'range' => self::getOffers()],
 			['started_at', 'date', 'format' => 'dd.MM.yyyy', 'timestampAttribute' => 'started_at'],
 			['end_at', 'date', 'format' => 'dd.MM.yyyy', 'timestampAttribute' => 'end_at'],
 			['completed_at', 'date', 'format' => 'dd.MM.yyyy', 'timestampAttribute' => 'completed_at'],
 			['published_at', 'date', 'format' => 'dd.MM.yyyy', 'timestampAttribute' => 'published_at'],
-            [['description', 'etp_id', 'created_at', 'updated_at'], 'safe'],
+            [['description', 'is_repeat', 'additional_text', 'rules', 'etp_id', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 

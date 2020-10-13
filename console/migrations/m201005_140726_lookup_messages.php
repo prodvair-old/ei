@@ -192,7 +192,7 @@ class m201005_140726_lookup_messages extends Migration
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Сообщение о прекращении процедуры внесудебного банкротства гражданина', 'code' => 83, 'property_id' => self::MESSAGES_TYPE, 'position' => 83]);
         // CompletionOfExtrajudicialBankruptcy
         $this->insert(self::TABLE_LOOKUP, ['name' => 'Сообщение о завершении процедуры внесудебного банкротства гражданина', 'code' => 84, 'property_id' => self::MESSAGES_TYPE, 'position' => 84]);
-        
+        $this->insert(self::TABLE_LOOKUP, ['name' => 'Без типа', 'code' => 84, 'property_id' => self::MESSAGES_TYPE, 'position' => 85]);
     }
 
     public function safeDown()

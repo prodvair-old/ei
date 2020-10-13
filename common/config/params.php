@@ -29,4 +29,8 @@ return [
         'trash'  => '<i class="glyphicon glyphicon-trash"></i>',
         'lot'    => '<i class="fa fa-money"></i>',
     ],
+    'parserMessageIds' => [
+        // 2,5,14,15,16,17,20,51,53
+        2
+    ]
 ];

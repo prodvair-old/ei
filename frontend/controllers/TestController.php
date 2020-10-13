@@ -16,6 +16,9 @@ use common\models\Query\Municipal\Torgs;
 
 use common\models\Query\Regions;
 
+use common\models\db\Category;
+use moonland\phpexcel\Excel;
+
 /**
  * Test controller
  */
@@ -75,34 +78,32 @@ class TestController extends Controller
     public function actionIndex()
     {
         // Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
-        $lots = Lots::find()->joinWith(['torg'])->where([
-            'or',
-            ['like', 'lower(status)', mb_strtolower('Окончен', 'UTF-8')],
-            ['like', 'lower(status)', mb_strtolower('Несостоявшиеся', 'UTF-8')],
-            ['like', 'lower(status)', mb_strtolower('Состоявшиеся', 'UTF-8')],
-            ['like', 'lower(status)', mb_strtolower('Не состоялся', 'UTF-8')],
-            ['like', 'lower(status)', mb_strtolower('Отменен/аннулирован', 'UTF-8')],
-            ['like', 'lower(status)', mb_strtolower('Отменён организатором', 'UTF-8')],
-            ['like', 'lower(status)', mb_strtolower('Торги завершены', 'UTF-8')],
-            ['like', 'lower(status)', mb_strtolower('Торги отменены', 'UTF-8')],
-            ['like', 'lower(status)', mb_strtolower('Торги не состоялись', 'UTF-8')],
-            ['like', 'lower(status)', mb_strtolower('Торги по лоту отменены', 'UTF-8')],
-            ['like', 'lower(status)', mb_strtolower('Торги по лоту не состоялись', 'UTF-8')],
-            ['torg.publishedDate' => null],
-            [
-                'or',
-                ['<=', 'torg.endDate', 'NOW()'],
-                ['not', ['torg.endDate' => null]],
-            ],
-            [
-                'or',
-                ['<=', 'torg.completeDate', 'NOW()'],
-                ['not', ['torg.completeDate' => null]],
-            ]
-        ]);
-
-        echo $lots->createCommand()->getRawSql();
+        $categorys = [];
+    $parent = null;
+    foreach (Category::items() as $key => $value) {
+      if ($key < 20) {
+        $parent = ['id' => $key, 'value' => $value];
+      } else if ($key < 20000){
+        $categorys[] = ['parentId' => $parent['id'], 'parentValue' => $parent['value'], 'categoryId' => $key, 'category' => $value];
+      }
+    }
+    Excel::export([
+      'models' => $categorys,
+      'columns' => [
+          'parentId:text',
+          'parentValue:text',
+          'categoryId:text',
+          'category:text',
+      ],
+      'headers' => [
+          'parentId' => 'Id категория',
+          'parentValue' => 'Категория',
+          'categoryId' => 'Id подкатегория',
+          'category' => 'Подкатегория',
+      ],
+    ]);
 
         // return $lots;
     }
