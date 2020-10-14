@@ -78,34 +78,51 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                             <?php foreach ($tariff as $item): ?>
                                 <li class="col-12 col-md-6 pl-15 pr-15">
                                     <figure class="tour-grid-item-01 box-shadow borr-10">
-                                        <a href="<?= Url::to(['/bankrupt']) . '/' . '' ?>">
+                                        <!--                                        <a href="-->
+                                        <? //= Url::to(['/bankrupt']) . '/' . '' ?><!--">-->
 
-                                            <figcaption class="content">
-                                                <div class="lot__block__info__content__offer"></div>
-                                                <h5><?= $item->name ?></h5>
-                                                <ul class="item-meta mt-10 pl-0">
-                                                    <li class="pl-0">
-                                                        <span class="font500"></span> <?= $item->description ?>
-                                                    </li>
-                                                    <li class="pl-0">
-                                                        <span class="font500"><h4> <?= $item->fee ?> ₽</h4></span>
-                                                    </li>
-                                                </ul>
+                                        <figcaption class="content">
+                                            <div class="lot__block__info__content__offer"></div>
+                                            <h5><?= $item->name ?></h5>
+                                            <ul class="item-meta mt-10 pl-0">
+                                                <li class="pl-0">
+                                                    <span class="font500"></span> <?= $item->description ?>
+                                                </li>
+                                                <li class="pl-0">
+                                                    <span class="font500"><h4> <?= $item->fee ?> ₽</h4></span>
+                                                </li>
+                                            </ul>
 
-                                                <small class="text-green font600">Приобрести<i
-                                                            class="fa fa-arrow-right"></i></small>
-                                            </figcaption>
-                                        </a>
+                                            <small class="text-green font600">Приобрести<i
+                                                        class="fa fa-arrow-right"></i></small>
+                                        </figcaption>
+                                        <!--                                        </a>-->
                                     </figure>
 
                                 </li>
 
                             <?php endforeach; ?>
 
-                            <form action="/tariff" method="post">
-                                <button type="submit">pay</button>
-                            </form>
+                            <? if (\Yii::$app->user->isGuest): ?>
+                            <div class="col-md-4">
+                                <h5>Авторизуйтесь для приобретения подписки</h5>
+                                <a href="#loginFormTabInModal-register" data-toggle="modal"
+                                   data-target="#loginFormTabInModal"
+                                   data-backdrop="static" data-keyboard="false">
+                                    Зарегистрироваться
+                                </a>
+                                <a href="#loginFormTabInModal-login" data-toggle="modal"
+                                   data-target="#loginFormTabInModal"
+                                   data-backdrop="static" data-keyboard="false">
+                                    Войти
+                                </a>
+                            </div>
 
+                            <?php else: ?>
+                                <form action="/tariff" method="post">
+                                    <button type="submit">pay</button>
+                                </form>
+                            <?php endif; ?>
 
                         </ul>
 
