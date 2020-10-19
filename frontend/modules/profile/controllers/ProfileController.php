@@ -213,7 +213,7 @@ class ProfileController extends Controller
 
     public function actionSubscription()
     {
-        $subList = Subscription::find()
+        $subscription = Subscription::find()
             ->innerJoinWith('invoice', true)
             ->where(['subscription.user_id' => Yii::$app->user->getId()])
             ->andWhere(['=', 'invoice.paid', true])
@@ -221,7 +221,7 @@ class ProfileController extends Controller
             ->one();
 
         return $this->render('subscription', [
-            'model' => $subList,
+            'model' => $subscription,
         ]);
     }
 

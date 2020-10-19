@@ -24,16 +24,23 @@ class AccessManager extends Component
             return $this->isSubscriber;
         }
 
-        $sub = Subscription::findOne([
-            'user_id'   => $userId,
-            'tariff_id' => $tariffId,
-            ['>', 'till_at', time()]
-        ]);
+//        $subscription = Subscription::findOne([
+//            'user_id'   => $userId,
+//            'tariff_id' => $tariffId,
+//            ['>', 'till_at', time()]
+//        ]);
+        $subscription = Subscription::find()
+            ->innerJoinWith('invoice', true)
+            ->where(['subscription.user_id' => $userId])
+            ->andWhere(['=', 'tariff_id', $tariffId])
+            ->andWhere(['=', 'invoice.paid', true])
+            ->andWhere(['>', 'till_at', time()])
+            ->one();
 
-        if ($sub) {
-            if ($sub->invoice->paid === true) {
+        if ($subscription) {
+//            if ($sub->invoice->paid === true) {
                 return $this->isSubscriber = true;
-            }
+//            }
         }
 
         return $this->isSubscriber = false;

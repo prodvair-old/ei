@@ -63,7 +63,7 @@ $this->params[ 'breadcrumbs' ][] = [
 
                     <div class="bashboard-nav-box">
 
-                        <?= ProfileMenu::widget(['page' => 'purchase']) ?>
+                        <?= ProfileMenu::widget(['page' => 'subscription']) ?>
 
                     </div>
 
@@ -82,7 +82,6 @@ $this->params[ 'breadcrumbs' ][] = [
                         <div class="clear"></div>
 
                         <div class="row gap-30">
-<?php $model= null;?>
                                 <? if ($model):?>
                                 <div class="row">
                                     <div class="col-md-4"><b>Подписка активна</b></div>

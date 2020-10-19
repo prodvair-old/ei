@@ -78,38 +78,50 @@ $this->params[ 'breadcrumbs' ][] = [
 
                         <div class="clear"></div>
 
-                        <div class="row gap-30">
+                        <?php if ((Yii::$app->accessManager->isSubscriber(Yii::$app->user->id))) : ?>
+                            <div class="row gap-30">
 
-                            <div class="col-12 col-md-12 col-lg-8">
-                                <?php if( Yii::$app->session->hasFlash('success') ): ?>
-                                    <div class="alert alert-success alert-dismissible" role="alert">
-                                        <?php echo Yii::$app->session->getFlash('success'); ?>
-                                    </div>
-                                <?php endif;?>
-                                <?php $form = ActiveForm::begin() ?>
-                                <div class="col-inner">
-                                    <div class="row gap-20">
-
-                                        <div class="col-sm-12">
-                                            <?= $form->field($formModel, 'new_picture')->checkbox() ?>
-                                            <?= $form->field($formModel, 'new_report')->checkbox() ?>
-                                            <?= $form->field($formModel, 'price_reduction')->checkbox() ?>
+                                <div class="col-12 col-md-12 col-lg-8">
+                                    <?php if( Yii::$app->session->hasFlash('success') ): ?>
+                                        <div class="alert alert-success alert-dismissible" role="alert">
+                                            <?php echo Yii::$app->session->getFlash('success'); ?>
                                         </div>
+                                    <?php endif;?>
+                                    <?php $form = ActiveForm::begin() ?>
+                                    <div class="col-inner">
+                                        <div class="row gap-20">
 
-                                        <div class="mb-30"></div>
-
-                                        <div class="row gap-10 mt-15 justify-content-center justify-content-md-start">
-                                            <div class="col-auto">
-                                                <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success borr-10']) ?>
+                                            <div class="col-sm-12">
+                                                <?= $form->field($formModel, 'new_picture')->checkbox() ?>
+                                                <?= $form->field($formModel, 'new_report')->checkbox() ?>
+                                                <?= $form->field($formModel, 'price_reduction')->checkbox() ?>
                                             </div>
+
+                                            <div class="mb-30"></div>
+
+                                            <div class="row gap-10 mt-15 justify-content-center justify-content-md-start">
+                                                <div class="col-auto">
+                                                    <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success borr-10']) ?>
+                                                </div>
+                                            </div>
+
                                         </div>
-
                                     </div>
+                                    <?php ActiveForm::end() ?>
                                 </div>
-                                <?php ActiveForm::end() ?>
-                            </div>
 
-                        </div>
+                            </div>
+                        <?php else: ?>
+                            <span>Для доступа к функционалу уведомлений:</span>
+                        <ul>
+                            <li>- к лоту в избранном добавлено новое фото</li>
+                            <li>- к лоту в избранном добавлен отчет</li>
+                            <li>- по лоту в избранном снижена цена</li>
+                        </ul>
+                            <span>Требуется активная <a href="/tariff">подписка</a></span>
+                        <?php endif; ?>
+
+
 
                     </div>
 

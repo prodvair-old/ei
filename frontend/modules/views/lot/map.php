@@ -1,12 +1,9 @@
 <?php
-use yii;
-use common\models\db\Lot;
 use common\models\db\Region;
 use common\models\db\Torg;
 use common\models\db\Owner;
 use common\models\db\Etp;
 use sergmoro1\lookup\models\Lookup;
-use yii\widgets\Breadcrumbs;
 use kartik\daterange\DateRangePicker;
 use frontend\modules\models\Category;
 use yii\bootstrap\ActiveForm;

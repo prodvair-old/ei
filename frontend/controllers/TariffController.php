@@ -69,7 +69,7 @@ class TariffController extends Controller
                         }
                     }
 
-                    $paymentStatus['msg'] = 'Оплата не удалась, повторите попытку11';
+                    $paymentStatus['msg'] = 'Оплата не удалась, повторите попытку';
                 }
             } catch (Exception $e) {
                 $paymentStatus['msg'] = 'Оплата не удалась, повторите попытку';

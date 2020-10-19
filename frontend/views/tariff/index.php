@@ -63,11 +63,13 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
                         <h4 class="heading-title">Тарифы</h4>
 
-                        <?php
-                        echo "<pre>";
-                        var_dump($paymentStatus);
-                        echo "</pre>";
-                        ?>
+                        <?php if ($paymentStatus['msg'] !== null) : ?>
+                            <?php if ($paymentStatus['status']) : ?>
+                                <div class="col-md-12 alert alert-success"><?= $paymentStatus['msg'] ?></div>
+                            <?php else : ?>
+                                <div class="col-md-12 alert alert-danger"><?= $paymentStatus['msg'] ?></div>
+                            <?php endif; ?>
+                        <?php endif; ?>
 
                         <?php foreach ($tariffs as $tariff): ?>
                             <div class="row">
@@ -93,7 +95,9 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                                     </li>
                                                 </ul>
                                                 <?php if (!Yii::$app->user->isGuest) : ?>
-                                                    <?php if (Yii::$app->accessManager->isSubscriber(Yii::$app->user->id)) : ?>
+                                                    <?php if (Yii::$app->accessManager->isSubscriber(Yii::$app->user->getId())) : ?>
+                                                        <p>Подписка активна</p>
+                                                    <?php else: ?>
                                                         <?= $form->field($subForm, 'tariffId')->hiddenInput(['value' => $tariff->id])->label(false); ?>
                                                         <?= $form->field($subForm, 'userId')->hiddenInput(['value' => Yii::$app->user->identity->getId()])->label(false); ?>
                                                         <?= $form->field($subForm, 'fee')->hiddenInput(['value' => $period['fee']])->label(false); ?>
@@ -102,14 +106,13 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                                                         <small class="text-green font600">
                                                             <?= Html::submitButton('Приобрести за ' . $period['fee'] . ' руб.', ['class' => 'btn btn-primary btn-block text-white borr-10']) ?>
                                                         </small>
-                                                    <?php else:?>
-                                                        <p>Подписка активна</p>
                                                     <?php endif; ?>
                                                 <?php else : ?>
                                                     <p>Что бы купить подписку - <a href="#loginFormTabInModal-login"
                                                                                    data-toggle="modal"
                                                                                    data-target="#loginFormTabInModal"
-                                                                                   data-backdrop="static" data-keyboard="false">Войдите
+                                                                                   data-backdrop="static"
+                                                                                   data-keyboard="false">Войдите
                                                         </a> или
                                                         <a href="#loginFormTabInModal-register" data-toggle="modal"
                                                            data-target="#loginFormTabInModal"

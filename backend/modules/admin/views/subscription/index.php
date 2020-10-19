@@ -45,13 +45,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute' => 'from_at',
                             'value'     => function ($data) {
-                                return date('d.m.Y', $data->created_at);
+                                return date('d.m.Y', $data->from_at);
                             },
                         ],
                         [
                             'attribute' => 'till_at',
                             'value'     => function ($data) {
-                                return date('d.m.Y', $data->created_at);
+                                return date('d.m.Y', $data->till_at);
                             },
                         ],
                         [
