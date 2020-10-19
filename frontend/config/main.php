@@ -33,6 +33,9 @@ return [
         'uploader' => ['class' => 'sergmoro1\uploader\Module'],
     ],
     'components'          => [
+        'accessManager' => [
+          'class' => \frontend\modules\components\AccessManager::class
+        ],
         'socialShare'  => [
             'class'          => \ymaker\social\share\configurators\Configurator::class,
             'socialNetworks' => [
@@ -143,6 +146,7 @@ return [
 
                 '/profile/notification' => 'profile/profile/notification',
                 '/profile/purchase'     => 'profile/profile/purchase',
+                '/profile/subscription'     => 'profile/profile/subscription',
 
 //                old settings routes
 //                '/profile/setting'       => 'user/setting',

@@ -1,10 +1,14 @@
 <?php
 
 use common\models\db\Tariff;
+use frontend\modules\forms\SubscribeForm;
+use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 use yii\widgets\Breadcrumbs;
 
-/* @var $tariff Tariff */
+/* @var $tariffs Tariff */
+/* @var $subForm SubscribeForm */
 
 $this->title = 'Тарифы';
 $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
@@ -45,26 +49,17 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
 
         <div class="row gap-20 gap-lg-40" itemscope itemtype="http://schema.org/Product">
 
-            <div class="col-12 col-lg-8">
+            <div class="col-12 col-lg-12">
 
                 <div class="content-wrapper">
 
                     <div id="desc" class="detail-header mb-30">
                         <h1 class="h3 lh-h1 mt-5" itemprop="name"
                             style="max-height: 130px;overflow: hidden;"><?= $this->title ?></h1>
-
-                        <div class="d-flex flex-row align-items-sm-center mb-20">
-                            <? if (!Yii::$app->user->isGuest): ?>
-
-                            <?php else: ?>
-
-                            <?php endif; ?>
-                        </div>
-
                     </div>
 
                     <div class="mt-50"></div>
-                    <div id="info" class="fullwidth-horizon--section">
+                    <div>
 
                         <h4 class="heading-title">Тарифы</h4>
 
@@ -74,57 +69,60 @@ $this->params['breadcrumbs'] = Yii::$app->params['breadcrumbs'];
                         echo "</pre>";
                         ?>
 
-                        <ul class="list-icon-absolute what-included-list row">
-                            <?php foreach ($tariff as $item): ?>
-                                <li class="col-12 col-md-6 pl-15 pr-15">
-                                    <figure class="tour-grid-item-01 box-shadow borr-10">
-                                        <!--                                        <a href="-->
-                                        <? //= Url::to(['/bankrupt']) . '/' . '' ?><!--">-->
+                        <?php foreach ($tariffs as $tariff): ?>
+                            <div class="row">
+                                <h4><?= $tariff->name ?></h4>
+                                <div class="col-md-12 mb-10">
+                                    <?= $tariff->description ?>
+                                </div>
+                                <?php foreach ($tariff->getPeriods() as $period): ?>
 
-                                        <figcaption class="content">
-                                            <div class="lot__block__info__content__offer"></div>
-                                            <h5><?= $item->name ?></h5>
-                                            <ul class="item-meta mt-10 pl-0">
-                                                <li class="pl-0">
-                                                    <span class="font500"></span> <?= $item->description ?>
-                                                </li>
-                                                <li class="pl-0">
-                                                    <span class="font500"><h4> <?= $item->fee ?> ₽</h4></span>
-                                                </li>
-                                            </ul>
+                                    <div class="col-md-4">
+                                        <?php $form = ActiveForm::begin(['action' => Url::to(['/tariff']), 'method' => 'post']); ?>
 
-                                            <small class="text-green font600">Приобрести<i
-                                                        class="fa fa-arrow-right"></i></small>
-                                        </figcaption>
-                                        <!--                                        </a>-->
-                                    </figure>
+                                        <figure class="tour-grid-item-01 box-shadow borr-10">
 
-                                </li>
+                                            <figcaption class="content">
+                                                <div class="lot__block__info__content__offer"></div>
+                                                <ul class="item-meta mt-10 pl-0">
+                                                    <li class="pl-0">
+                                                        <span class="font500"><h4> <?= $period['term'] ?> дней</h4></span>
+                                                    </li>
+                                                    <li class="pl-0">
+                                                        <span class="font500"><h4> <?= $period['fee'] ?> ₽</h4></span>
+                                                    </li>
+                                                </ul>
+                                                <?php if (!Yii::$app->user->isGuest) : ?>
+                                                    <?php if (Yii::$app->accessManager->isSubscriber(Yii::$app->user->id)) : ?>
+                                                        <?= $form->field($subForm, 'tariffId')->hiddenInput(['value' => $tariff->id])->label(false); ?>
+                                                        <?= $form->field($subForm, 'userId')->hiddenInput(['value' => Yii::$app->user->identity->getId()])->label(false); ?>
+                                                        <?= $form->field($subForm, 'fee')->hiddenInput(['value' => $period['fee']])->label(false); ?>
+                                                        <?= $form->field($subForm, 'term')->hiddenInput(['value' => $period['term']])->label(false); ?>
 
-                            <?php endforeach; ?>
-
-                            <? if (\Yii::$app->user->isGuest): ?>
-                            <div class="col-md-4">
-                                <h5>Авторизуйтесь для приобретения подписки</h5>
-                                <a href="#loginFormTabInModal-register" data-toggle="modal"
-                                   data-target="#loginFormTabInModal"
-                                   data-backdrop="static" data-keyboard="false">
-                                    Зарегистрироваться
-                                </a>
-                                <a href="#loginFormTabInModal-login" data-toggle="modal"
-                                   data-target="#loginFormTabInModal"
-                                   data-backdrop="static" data-keyboard="false">
-                                    Войти
-                                </a>
+                                                        <small class="text-green font600">
+                                                            <?= Html::submitButton('Приобрести за ' . $period['fee'] . ' руб.', ['class' => 'btn btn-primary btn-block text-white borr-10']) ?>
+                                                        </small>
+                                                    <?php else:?>
+                                                        <p>Подписка активна</p>
+                                                    <?php endif; ?>
+                                                <?php else : ?>
+                                                    <p>Что бы купить подписку - <a href="#loginFormTabInModal-login"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#loginFormTabInModal"
+                                                                                   data-backdrop="static" data-keyboard="false">Войдите
+                                                        </a> или
+                                                        <a href="#loginFormTabInModal-register" data-toggle="modal"
+                                                           data-target="#loginFormTabInModal"
+                                                           data-backdrop="static" data-keyboard="false">
+                                                            Зарегистрируйтесь
+                                                        </a></p>
+                                                <?php endif; ?>
+                                            </figcaption>
+                                    </div>
+                                    <?php ActiveForm::end(); ?>
+                                <?php endforeach; ?>
                             </div>
-
-                            <?php else: ?>
-                                <form action="/tariff" method="post">
-                                    <button type="submit">pay</button>
-                                </form>
-                            <?php endif; ?>
-
-                        </ul>
+                        <?php endforeach; ?>
 
                     </div>
 

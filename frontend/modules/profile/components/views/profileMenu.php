@@ -26,6 +26,8 @@ use yii\helpers\Url;
             </li>
             <li <?= ($page == 'purchase') ? 'class="active"' : '' ?>><a href="<?= Url::to(['/profile/purchase']) ?>">Покупки</a>
             </li>
+            <li <?= ($page == 'subscription') ? 'class="active"' : '' ?>><a href="<?= Url::to(['/profile/subscription']) ?>">Подписки</a>
+            </li>
             <li <?= ($page == 'search-preset') ? 'class="active"' : '' ?>><a
                         href="<?= Url::to(['/profile/search-preset']) ?>">Поисковые отслеживания</a></li>
             <!-- <?php if (Yii::$app->user->identity->role !== 'user') { ?>

@@ -6,6 +6,7 @@ use common\models\db\Notification;
 use common\models\db\Purchase;
 use common\models\db\Report;
 use common\models\db\SearchQueries;
+use common\models\db\Subscription;
 use common\models\db\WishList;
 use frontend\modules\profile\components\NotificationService;
 use frontend\modules\profile\forms\NotificationForm;
@@ -112,23 +113,23 @@ class ProfileController extends Controller
     {
         if (!Yii::$app->user->isGuest) {
 
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-        $model = new UserSetting();
-        
-        $form = new ProfileForm();
-        $form->user_id = Yii::$app->user->id;
+            $model = new UserSetting();
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->photo = UploadedFile::getInstance($model, 'photo');
-            $model->passport = UploadedFile::getInstance($model, 'passport');
+            $form = new ProfileForm();
+            $form->user_id = Yii::$app->user->id;
 
-            return $model->upload(Yii::$app->user->id);
-        }
+            if ($model->load(Yii::$app->request->post())) {
+                $model->photo = UploadedFile::getInstance($model, 'photo');
+                $model->passport = UploadedFile::getInstance($model, 'passport');
 
-        return false;
+                return $model->upload(Yii::$app->user->id);
+            }
+
+            return false;
         } else {
-        return $this->goHome();
+            return $this->goHome();
         }
     }
 
@@ -197,7 +198,8 @@ class ProfileController extends Controller
 
     }
 
-    public function actionPurchase() {
+    public function actionPurchase()
+    {
         $purchaseIdList = Purchase::getPurchasedReportsIdByUser(Yii::$app->user->getId());
 
         $purchasedReports = Report::find()
@@ -205,7 +207,21 @@ class ProfileController extends Controller
             ->all();
 
         return $this->render('purchase', [
-            'model'   => $purchasedReports,
+            'model' => $purchasedReports,
+        ]);
+    }
+
+    public function actionSubscription()
+    {
+        $subList = Subscription::find()
+            ->innerJoinWith('invoice', true)
+            ->where(['subscription.user_id' => Yii::$app->user->getId()])
+            ->andWhere(['=', 'invoice.paid', true])
+            ->andWhere(['>', 'till_at', time()])
+            ->one();
+
+        return $this->render('subscription', [
+            'model' => $subList,
         ]);
     }
 
@@ -222,46 +238,47 @@ class ProfileController extends Controller
 
     public function actionSearchPresetChange()
     {
-        $searchQueries = SearchQueries::findOne(['id' => Yii::$app->request->queryParams[ 'id' ]]);
+        $searchQueries = SearchQueries::findOne(['id' => Yii::$app->request->queryParams['id']]);
 
-        $searchQueries->send_email = (Yii::$app->request->queryParams[ 'send_email' ] === 'true') ? true : false;
+        $searchQueries->send_email = (Yii::$app->request->queryParams['send_email'] === 'true') ? true : false;
 
         return $searchQueries->update();
     }
 
     public function actionSearchPresetDel()
     {
-        $searchQueries = SearchQueries::findOne(['id' => Yii::$app->request->queryParams[ 'id' ]]);
+        $searchQueries = SearchQueries::findOne(['id' => Yii::$app->request->queryParams['id']]);
 
         return $searchQueries->delete();
     }
 
-    public function actionGetCode() {
+    public function actionGetCode()
+    {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $code = rand(1000, 9999);
-    
+
         $post = Yii::$app->request->post();
         $session = Yii::$app->session;
         $session->set('userCode', $code);
         $session->set('userPhone', $post['UserEditPhone']['phone']);
-    
+
         $model = new SendSMS();
-    
+
         $model->phone = preg_replace('/[^0-9]/', '', $post['UserEditPhone']['phone']);
         $model->message = "Vash kod: $code";
-    
+
         $result = false;
         $mess = 'Ошибка сервера';
-    
+
         if ($model->check()) {
-          if ($response = $model->send()) {
-            if ($response['status']) {
-              $result = true;
+            if ($response = $model->send()) {
+                if ($response['status']) {
+                    $result = true;
+                }
+                $mess = $response['text'];
             }
-            $mess = $response['text'];
-          }
         }
-    
+
         return ['result' => $result, 'mess' => $mess];
     }
 }

@@ -50,8 +50,14 @@ use sergmoro1\lookup\models\Lookup;
                             class="float-right"><?= ($lot->torg->offer == Torg::OFFER_AUCTION_OPEN) ? 'Открытый аукцион' : ' Публичное предложение'; ?></span>
                 </li>
                 <?php if ($lot->torg->property === Torg::PROPERTY_BANKRUPT) : ?>
-                    <li class="clearfix">Номер сообщения в ЕФРСБ <span
-                                class="float-right"><?= $lot->torg->msg_id ?></span></li>
+                <?php if((Yii::$app->accessManager->isSubscriber(Yii::$app->user->id))) :?>
+                        <li class="clearfix">Номер сообщения в ЕФРСБ <span
+                                    class="float-right"><?= $lot->torg->msg_id ?></span></li>
+                <?php else:?>
+                        <li class="clearfix">Номер сообщения в ЕФРСБ <span
+                                    class="float-right">Доступно по подписке</span></li>
+                <?php endif;?>
+
                 <?php endif; ?>
                 <li class="clearfix">Номер лота<span class="float-right"><?= $lot->ordinal_number ?></span></li>
                 
