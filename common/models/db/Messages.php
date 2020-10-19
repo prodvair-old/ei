@@ -29,7 +29,7 @@ class Messages extends ActiveRecord
     // Status
     const STATUS_ADDED      = 1;
     const STATUS_IN_A_QUEUE = 2;
-    const STATUS_SUCCESS    = 2;
+    const STATUS_SUCCESS    = 3;
     const STATUS_ERROR      = 4;
 
     // Type

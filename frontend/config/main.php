@@ -85,7 +85,7 @@ return [
                 '/' => 'site/index',
 
                 '/test'          => 'test/index',
-                '/test/str'      => 'test/str',
+                '/test/convert'  => 'test/convert',
                 '/test/del-lots' => 'test/del-lots',
 
                 '/about'   => 'pages/about',

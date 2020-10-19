@@ -43,7 +43,6 @@ class Log extends ActiveRecord
         return [
             [
                 'class' => TimestampBehavior::className(),
-                'updatedAtAttribute' => false,
             ],
         ];
     }

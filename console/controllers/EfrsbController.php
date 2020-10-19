@@ -31,11 +31,27 @@ use moonland\phpexcel\Excel;
  * Новые поля для таблиц
  * 
  * Profile - "snils" varchar(11) null
+ * Profile - "orgn_ip" varchar(15) null
+ * Profile - "birthplace" text null
  * Bankrupt - "bankrupt_id"  bigint null
  * Torg - "is_repeat"  smallint null = 1,0
  * Torg - "price_type"  smallint null = 1,0
  * Torg - "additional_text"  text null
  * Torg - "rules"  text null
+ * 
+ * ORGANIZATION_ACTIVITY:
+ * 17 - Company = Юридическое лицо
+ * 18 - ArbitrManagerSro = СРО АУ
+ * 19 - FirmTradeOrganizer = Компания организатора торгов
+ * 20 - CentralBankRf = Центральный Банк РФ
+ * 21 - Asv = Агенств по страхованию вкладов
+ * 22 - FnsDepartment = ФНС
+ * 23 - ЕФРСБ = ЕФРСБ
+ * 24 - МФС = МФС
+ * 
+ * PERSON_ACTIVITY
+ * 25 - Person = Физическое лицо
+ * 26 - PersonTradeOrganizer = Организатор торгов
  */
 
 /**
@@ -460,9 +476,175 @@ class EfrsbController extends Controller
     'Percent'   => Lot::MEASURE_PERCENT,
     'Currency'  => Lot::MEASURE_SUM,
   ];
-
   CONST CATEGORY_CODE = [
-    '0103' => 123,
+    "99"      => 11063,
+    "402006"  => 11072,
+    "0202002" => 11067,
+    "0301"    => 11069,
+    "0101006" => 11070,
+    "0102"    => 11076,
+    "0101004" => 11089,
+    "0101011" => 11098,
+    "0105009" => 11099,
+    "0110008" => 11108,
+    "0104005" => 11112,
+    "0105008" => 11119,
+    "0105001" => 11129,
+    "0101001" => 11131,
+    "0110010" => 11132,
+    "0105003" => 11134,
+    "0105005" => 11138,
+    "0104025" => 11149,
+    "0110006" => 11151,
+    "0105006" => 11190,
+    "0104023" => 11065,
+    "0104012" => 11066,
+    "0105002" => 11071,
+    "0104022" => 11083,
+    "0110001" => 11093,
+    "0104001" => 11094,
+    "0104013" => 11095,
+    "0104018" => 11096,
+    "0104016" => 11100,
+    "0104008" => 11101,
+    "0104015" => 11105,
+    "0104014" => 11106,
+    "0104003" => 11111,
+    "0104026" => 11113,
+    "0104007" => 11114,
+    "0104006" => 11115,
+    "0104019" => 11116,
+    "0104010" => 11117,
+    "0105004" => 11123,
+    "0104020" => 11126,
+    "0104011" => 11130,
+    "0104004" => 11135,
+    "0104"    => 11141,
+    "0104017" => 11147,
+    "0105"    => 11192,
+    "0110011" => 11201,
+    "0101005" => 11079,
+    "0107001" => 11110,
+    "0101012" => 11137,
+    "0107002" => 11172,
+    "0110019" => 11179,
+    "0107009" => 11185,
+    "0107010" => 11188,
+    "0107005" => 11189,
+    "0110004" => 11191,
+    "0402005" => 11200,
+    "0106008" => 11060,
+    "0106013" => 11062,
+    "0106010" => 11073,
+    "0106004" => 11075,
+    "0106007" => 11077,
+    "0106011" => 11092,
+    "0104002" => 11118,
+    "0106005" => 11120,
+    "0106006" => 11124,
+    "0106009" => 11127,
+    "0106001" => 11145,
+    "0106"    => 11176,
+    "0303"    => 11074,
+    "0302"    => 11091,
+    "0205002" => 11144,
+    "0205001" => 11166,
+    "0402003" => 11171,
+    "0401"    => 11097,
+    "0205003" => 11107,
+    "0110016" => 11109,
+    "0106012" => 11122,
+    "0108002" => 11125,
+    "0110009" => 11150,
+    "0110012" => 11155,
+    "0201"    => 11156,
+    "0110015" => 11162,
+    "0108003" => 11163,
+    "0110003" => 11164,
+    "0105007" => 11167,
+    "0110021" => 11178,
+    "0110007" => 11182,
+    "0204"    => 11184,
+    "0107003" => 11193,
+    "0403"    => 11121,
+    "0304"    => 11142,
+    "0402004" => 11169,
+    "0402001" => 11170,
+    "0402002" => 11199,
+    "0109012" => 11080,
+    "0104009" => 11081,
+    "0104021" => 11082,
+    "0109001" => 11084,
+    "0109016" => 11152,
+    "0110005" => 11154,
+    "0110013" => 11159,
+    "0109010" => 11160,
+    "0110014" => 11168,
+    "0109018" => 11175,
+    "0110002" => 11177,
+    "0110020" => 11180,
+    "0109015" => 11181,
+    "0110022" => 11183,
+    "0101016" => 11061,
+    "0101015" => 11064,
+    "0101007" => 11078,
+    "0101017" => 11088,
+    "0103"    => 11090,
+    "0101014" => 11102,
+    "0101008" => 11136,
+    "0101013" => 11140,
+    "0101003" => 11143,
+    "0101"    => 11148,
+    "0101002" => 11157,
+    "0101009" => 11161,
+    "0101010" => 11173,
+    "0109004" => 11085,
+    "0109014" => 11086,
+    "0109017" => 11087,
+    "0109008" => 11103,
+    "0109005" => 11104,
+    "0109011" => 11128,
+    "0109006" => 11133,
+    "0109009" => 11139,
+    "0110018" => 11153,
+    "0109007" => 11158,
+    "0109020" => 11165,
+    "0109002" => 11174,
+    "0107008" => 11186,
+    "0109003" => 11187,
+    "01"      => 11202,
+    "0104024" => 11203,
+    "0106002" => 11204,
+    "0106003" => 11205,
+    "0107"    => 11206,
+    "0107004" => 11207,
+    "0107006" => 11208,
+    "0107007" => 11209,
+    "0108"    => 11210,
+    "0108001" => 11211,
+    "0109"    => 11212,
+    "0109013" => 11213,
+    "0109019" => 11214,
+    "0110"    => 11215,
+    "0110017" => 11216,
+    "02"      => 11217,
+    "0202"    => 11218,
+    "0202001" => 11219,
+    "0203"    => 11220,
+    "0203001" => 11221,
+    "0203002" => 11222,
+    "0203003" => 11223,
+    "0203004" => 11224,
+    "0203005" => 11225,
+    "0203006" => 11226,
+    "0203007" => 11227,
+    "0203008" => 11228,
+    "0203009" => 11229,
+    "0205"    => 11230,
+    "0205004" => 11231,
+    "03"      => 11232,
+    "04"      => 11233,
+    "0402"    => 11234
   ];
 
   /** 
@@ -470,6 +652,8 @@ class EfrsbController extends Controller
    * 
    * @param integer $step
    * @var integer $typeIds (в конфиге params.php)
+   * 
+   * Command: php yii efrsb/parse-message [Step count]
    */
   public function actionParseMessage($step = 100)
   {
@@ -482,68 +666,151 @@ class EfrsbController extends Controller
       $where[] = ['type' => $typeId];
     }
 
-    $messages = $model->andFilterWhere($where)->limit($step)->all();
+    $messages = $model->andFilterWhere($where)->limit($step)->orderBy(['status DESC AND id DESC'])->all();
 
     foreach ($messages as $message) {
       $this->dateNow = strtotime(new \DateTime());
-      switch ($message->type) {
-        case 2:
-          $this->getAuction($message);
-          break;
-        
-        default:
-          $this->_messageReady($message);
-          break;
+      try {
+        switch ($message->type) {
+          case 2:
+              $message->status = $this->getAuction($message);
+              $message->update();
+            break;
+        }
+        if ($message->status == 3) {
+          $this->_log([
+            'model'     => Messages::INT_CODE, 
+            'parent_id' => $message->id, 
+            'name'      => 'Успешный парсинг сообщении', 
+            'message'   => 'Всё прошло без ошибок', 
+            'json'      => [
+              'messageType' => $message->type,
+              'msgId'       => $this->msgId,
+              'messageData' => $this->_xmlToArray($message->message)['MessageData'],
+            ]
+          ]);
+        } else {
+          $this->_log([
+            'model'     => Messages::INT_CODE, 
+            'parent_id' => $message->id, 
+            'status'    => Log::STATUS_WARNING, 
+            'name'      => 'Не предвиденные ошибки при парсинге сообщения', 
+            'message'   => 'Возникли ошибки при парсинге проверте оги по данному сообщению', 
+            'json'      => [
+              'messageType' => $message->type,
+              'msgId'       => $this->msgId,
+              'messageData' => $this->_xmlToArray($message->message)['MessageData'],
+            ]
+          ]);
+        }
+      } catch (Exception $e) {
+        $this->_log([
+          'model'     => Messages::INT_CODE, 
+          'parent_id' => $message->id, 
+          'status'    => Log::STATUS_ERROR, 
+          'name'      => 'Ошибка парсинг сообщении', 
+          'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!', 
+          'json'      => [
+            'error'       => $e->getMessage(),
+            'messageType' => $message->type,
+            'msgId'       => $this->msgId,
+            'messageData' => $this->_xmlToArray($message->message)['MessageData'],
+          ]
+        ]);
+        var_dump($message, $e->getMessage());
       }
     }
-    // $messages = Message::find()->where(['']);
-  }
-  public function actionTest()
-  {
-    $model = Messages::find()
-      ->where(['type' => 5])
-      ->one();
-    var_dump($model->message);
-    // var_dump($this->_xmlToArray($model->message)['MessageData']);
   }
 
+  /** 
+   * Получение сообщении из ЕФРСБ
+   * 
+   * Command: php yii efrsb/get-message
+   */
   public function actionGetMessage()
   {
-    $this->_client();
-    $this->dateNow = strtotime(new \DateTime());
+    echo "Начала получения сообщении\n";
+    try {
+      $this->_client();
+      $this->dateNow = strtotime(new \DateTime());
+      $countSuccsess = 0;
+      $countError = 0;
 
-    if ($this->getMessageIds(50)->status) {
-      $messages = [];
+      if ($this->getMessageIds(50)->status) {
+        $messages = [];
+        echo "Получено: ".count($this->messageIds)."\n";
 
-      foreach ($this->messageIds as $msgId) {
-        $message = $this->getMessageContent($msgId);
-        
-        if ($message->status) {
-          $messageContent = $this->_xmlToArray($message->content)['MessageData'];
-          $type = self::TYPE[$messageContent['MessageInfo']['MessageType']]['id'];
-          if (!$type) {
-            $type = 85;
-          }
+        foreach ($this->messageIds as $msgId) {
+          $message = $this->getMessageContent($msgId);
           
-          if (!Messages::find()->where(['msg_id' => $msgId, 'msg_guid' => $messageContent['MessageGUID']])->one()) {
-
-            $model = new Messages();
+          if ($message->status) {
+            $messageContent = $this->_xmlToArray($message->content)['MessageData'];
+            $type = self::TYPE[$messageContent['MessageInfo']['MessageType']]['id'];
+            if (!$type) {
+              $type = 85;
+            }
             
-            $model->msg_id      = $msgId;
-            $model->msg_guid     = $messageContent['MessageGUID'];
-            $model->type        = $type;
-            $model->message     = $message->content;
-            $model->created_at  = $this->dateNow;
-            $model->updated_at  = $this->dateNow;
+            if (!Messages::find()->where(['msg_id' => $msgId, 'msg_guid' => $messageContent['MessageGUID']])->one()) {
 
-            if ($model->validate()) {
-              echo $model->save();
+              $model = new Messages();
+              
+              $model->msg_id      = $msgId;
+              $model->msg_guid    = $messageContent['MessageGUID'];
+              $model->type        = $type;
+              $model->message     = $message->content;
+              $model->created_at  = $this->dateNow;
+              $model->updated_at  = $this->dateNow;
+
+              if (!$model->validate()) {
+                $countError++;
+                $this->_log([
+                  'model'     => Messages::INT_CODE, 
+                  'parent_id' => null, 
+                  'name'      => 'Ошибка валидации сообщения', 
+                  'message'   => 'Какие то данные не правильно вносятся в таблицу сообщения', 
+                  'json'      => [
+                    'modelErrors' => $model->errors,
+                    'modelData'   => $model,
+                    'messageType' => $type,
+                    'msgId'       => $msgId,
+                    'messageData' => $messageContent,
+                  ]
+                ]);
+              } else {
+                if ($model->save()) {
+                  $countSuccsess++;
+                  $this->_log([
+                    'model'     => Messages::INT_CODE, 
+                    'parent_id' => $model->id, 
+                    'name'      => 'Успешный добавлено сообщение', 
+                    'message'   => 'Данные сообщения успешно внесены в таблицу', 
+                    'json'      => [
+                      'messageType' => $type,
+                      'msgId'       => $msgId,
+                      'messageData' => $messageContent,
+                    ]
+                  ]);
+                }
+              }
             }
           }
         }
       }
+    } catch (Exception $e) {
+      echo "Критическая ошибка";
+      $this->_log([
+        'model'     => Messages::INT_CODE, 
+        'parent_id' => null, 
+        'status'    => Log::STATUS_ERROR, 
+        'name'      => 'Ошибка при добавлении сообщения', 
+        'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!', 
+        'json'      => [
+          'error'       => $e->getMessage(),
+        ]
+      ]);
     }
-      
+    echo "Успешный парсинг: $countSuccsess.\n";
+    echo "Ошибки парсинг: $countError.\n";
   }
 
   /** 
@@ -595,6 +862,21 @@ class EfrsbController extends Controller
   }
 
   /** 
+   * Проверка данных на отцуствие
+   * 
+   * @param $value
+   */
+  private function _checkValue($value)
+  {
+    if (isset($value['xsi:nil'])) {
+      if ($value['xsi:nil'] == 'true') {
+        return null;
+      }
+    }
+    return $value;
+  }
+
+  /** 
    * Конвертирование XML в JSON
    * 
    * @param text $xmlMess
@@ -619,7 +901,7 @@ class EfrsbController extends Controller
    * 
    * @param text $name
    */
-  public function _districtConvertor($name)
+  private function _districtConvertor($name)
   {
     return $name
       ? (isset(self::DISTRICT[$name]) ? self::DISTRICT[$name] : 0)
@@ -630,18 +912,13 @@ class EfrsbController extends Controller
    * 
    * @param text $name
    */
-  public function _bankruptCategoryConvertor($name)
+  private function _bankruptCategoryConvertor($name)
   {
     return $name
       ? (isset(self::BANKRUPT_CATEGORY[$name]) ? self::BANKRUPT_CATEGORY[$name] : 0)
       : 16;
   }
-  private function _messageReady($message)
-  {
-    $message->status = Messages::STATUS_SUCCESS;
 
-    $message->update();
-  }
   /**
    * Индексация описания лотов для поиска
    */
@@ -705,7 +982,9 @@ class EfrsbController extends Controller
       '
       )->execute();
       $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
-      $db->createCommand('create index fts_index on {{%lot}} using gin (fts);')->execute();
+      if ($addColumn) {
+        $db->createCommand('create index fts_index on {{%lot}} using gin (fts);')->execute();
+      }
 
       /**
        * ---   ADD AUTO FILL fts TRIGGER ON INSERT AND UPDATE NEW RECORD
@@ -723,7 +1002,7 @@ class EfrsbController extends Controller
       $$ LANGUAGE \'plpgsql\';
       '
       )->execute();
-
+      if ($addColumn) {
       $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
       $db->createCommand(
           '
@@ -757,8 +1036,28 @@ class EfrsbController extends Controller
       END;$$;
       '
       )->execute();
+    }
   }
 
+  private function _log($data)
+  {
+    $model = new Log();
+    
+    $model->model         = $data['model'];
+    $model->parent_id     = $data['parent_id'];
+    $model->status        = (($data['status'])? $data['status'] : Log::STATUS_SUCCESS);
+    $model->name          = $data['name'];
+    $model->message       = $data['message'];
+    $model->message_json  = $data['json'];
+
+    return $model->save();
+  }
+
+  public function actionTest()
+  {
+    $text = str_replace(' ', '', substr('А40-49283/2020',strrpos('А40-49283/2020',"/")+1));
+    var_dump($text, strlen($text) == 4);
+  }
 
   /** 
    * Парсинг сообщения под типом Auction
@@ -768,25 +1067,34 @@ class EfrsbController extends Controller
   private function getAuction($message)
   {
     $messageContent = $this->_xmlToArray($message->message)['MessageData'];
-    var_dump($messageContent['MessageInfo']['Auction']);
+    $result = Messages::STATUS_SUCCESS;
+    $this->msgId = $this->caseId = $this->sroId = $this->managerId = $this->bankruptId = $this->etpId = $this->torgId = $this->lotId = null;
+    // var_dump($messageContent);
+    // die;
     $this->msgId = $messageContent['Id'];
     if ($this->setCasefile($messageContent)) {
       echo "setCasefile - Успешно!\n";
-      if ($this->setSro($messageContent['Publisher']['Sro'])) {
-        echo "setSro - Успешно!\n";
-        if ($this->setManager($messageContent['Publisher'])) {
-          echo "setManager - Успешно!\n";
-          $this->setManagerSro();
-        }
+      
+      if ($this->setManager($messageContent['Publisher'])) {
+        echo "setManager - Успешно!\n";
+      } else {
+        $result = Messages::STATUS_ERROR;
       }
+      
       if ($this->setBankrupt($messageContent)) {
         echo "setBankrupt - Успешно!\n";
+      } else {
+        $result = Messages::STATUS_ERROR;
       }
-      if ($this->getEtp($messageContent['MessageInfo']['Auction'])) {
-        echo "getEtp - Успешно!\n";
+      if (!$messageContent['MessageInfo']['Auction']['IdTradePlace']['xsi:nil']) {
+        if ($this->getEtp($messageContent['MessageInfo']['Auction'])) {
+          echo "getEtp - Успешно!\n";
+        } else {
+          $result = Messages::STATUS_ERROR;
+        }
       }
-      if ($this->managerId && $this->bankruptId && $this->etpId) {
-        if ($this->setTorg($messageContent))  {
+      if ($this->managerId && $this->bankruptId) {
+        if ($this->setTorg($messageContent)) {
           echo "setTorg - Успешно!\n";
 
           if (isset($messageContent['MessageInfo']['Auction']['LotTable']['AuctionLot'][0])) {
@@ -794,25 +1102,44 @@ class EfrsbController extends Controller
             foreach ($messageContent['MessageInfo']['Auction']['LotTable']['AuctionLot'] as $lot) {
               if ($this->setLot($lot, $messageContent['MessageInfo']['Bankrupt']['Address'])) {
                 echo "setLot - Успешно!\n";
+              } else {
+                $result = Messages::STATUS_ERROR;
               }
             }
           } else {
             if ($this->setLot($messageContent['MessageInfo']['Auction']['LotTable']['AuctionLot'], $messageContent['MessageInfo']['Bankrupt']['Address'])) {
               echo "setLot - Успешно!\n";
+            } else {
+              $result = Messages::STATUS_ERROR;
             }
           }
         }
       }
 
       if (isset($messageContent['MessageURLList'])) {
-        if ($this->setDocument($messageContent)) {
-          echo "setDocument - Успешно!\n";
+        if (isset($messageContent['MessageURLList']['MessageURL'][0])) {
+          echo "Несколько документов\n";
+          foreach ($messageContent['MessageURLList']['MessageURL'] as $key => $document) {
+            if ($this->setDocument($document, $messageContent['FileInfoList']['FileInfo'][$key]['Hash'])) {
+              echo "setDocument - Успешно!\n";
+            } else {
+              $result = Messages::STATUS_ERROR;
+            }
+          }
+        } else {
+          if ($this->setDocument($messageContent['MessageURLList']['MessageURL'], $messageContent['FileInfoList']['FileInfo']['Hash'])) {
+            echo "setDocument - Успешно!\n";
+          } else {
+            $result = Messages::STATUS_ERROR;
+          }
         }
       }
-    }
 
-    $this->_lotSearchIndex();
-    echo "Индексация пройдена";
+      $this->_lotSearchIndex();
+      echo "Индексация пройдена...\n";
+    }
+    
+    return $result;
   }
 
   /**
@@ -824,24 +1151,141 @@ class EfrsbController extends Controller
    */
   private function setOrganizationSro($data, $parentId, $modelId)
   {
-    if (!$check = Organization::find()->where(['model' => $modelId, 'parent_id' => $parentId])->one()) {
-      $model = new Organization();
-    
-      $model->model       = $modelId;
-      $model->parent_id   = $parentId;
-      $model->activity    = Organization::ACTIVITY_SIMPLE;
-      $model->title       = $data['Name'];
-      $model->full_title  = '';
-      $model->inn         = $data['Inn'];
-      $model->ogrn        = $data['Ogrn'];
-      $model->website     = '';
-      $model->status      = Organization::STATUS_CHECKED;
+    try {
+      if (!$check = Organization::find()->where(['model' => $modelId, 'parent_id' => $parentId])->one()) {
+        $model = new Organization();
+      
+        $model->model       = $modelId;
+        $model->parent_id   = $parentId;
+        $model->activity    = Organization::ACTIVITY_SIMPLE;
+        $model->title       = $data['Name'];
+        $model->full_title  = '';
+        $model->inn         = $data['Inn'];
+        $model->ogrn        = $data['Ogrn'];
+        $model->website     = '';
+        $model->status      = Organization::STATUS_CHECKED;
 
-      if ($model->save()) {
+        if (!$model->validate()) {
+          $this->_log([
+            'model'     => $modelId, 
+            'parent_id' => $parentId, 
+            'status'    => Log::STATUS_WARNING, 
+            'name'      => 'Ошибка валидации данных о СРО в таблице "'.Organization::tableName().'"', 
+            'message'   => 'Данные не прошли валидацию после при попытке добавить данные в таблицу "'.Organization::tableName().'"', 
+            'json'      => [
+              'modelErrors' => $model->errors,
+              'modelData'   => $model,
+              'msgId'       => $this->msgId,
+              'messageData' => $data,
+            ]
+          ]);
+        } else {
+          if ($model->save()) {
+            $this->_log([
+              'model'     => $modelId, 
+              'parent_id' => $parentId, 
+              'name'      => 'Успешное добавление данных о СРО в таблицу "'.Organization::tableName().'"', 
+              'message'   => 'Данные успешно добавлены в таблицу "'.Organization::tableName().'"', 
+              'json'      => [
+                'modelData'   => $model,
+                'modelId'     => $model->id,
+                'msgId'       => $this->msgId,
+                'messageData' => $data,
+              ]
+            ]);
+            return true;
+          }
+        }
+      } else {
         return true;
       }
-    } else {
-      return true;
+    } catch (Exception $e) {
+      $this->_log([
+        'model'     => $modelId, 
+        'parent_id' => $parentId, 
+        'status'    => Log::STATUS_ERROR, 
+        'name'      => 'Ошибка при парсинге данных о СРО', 
+        'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!. Таблица "'.Organization::tableName().'"', 
+        'json'      => [
+          'error'       => $e->getMessage(),
+          'msgId'       => $this->msgId,
+          'messageData' => $data,
+        ]
+      ]);
+    }
+    return false;
+  }
+
+  /**
+   * Добавление данных о публикаторе в таблицу
+   * 
+   * @param text $data
+   * @param integer $parentId
+   * @param integer $modelId
+   */
+  private function setOrganizationManager($data, $parentId, $modelId, $activity)
+  {
+    try {
+      if (!$check = Organization::find()->where(['model' => $modelId, 'parent_id' => $parentId])->one()) {
+        $model = new Organization();
+      
+        $model->model       = $modelId;
+        $model->parent_id   = $parentId;
+        $model->activity    = $activity;
+        $model->title       = $data['Name'];
+        $model->full_title  = '';
+        $model->inn         = $data['Inn'];
+        $model->ogrn        = $data['Ogrn'];
+        $model->website     = '';
+        $model->status      = Organization::STATUS_CHECKED;
+
+        if (!$model->validate()) {
+          $this->_log([
+            'model'     => $modelId, 
+            'parent_id' => $parentId, 
+            'status'    => Log::STATUS_WARNING, 
+            'name'      => 'Ошибка валидации данных о публикаторе в таблице "'.Organization::tableName().'"', 
+            'message'   => 'Данные не прошли валидацию после при попытке добавить данные в таблицу "'.Organization::tableName().'"', 
+            'json'      => [
+              'modelErrors' => $model->errors,
+              'modelData'   => $model,
+              'msgId'       => $this->msgId,
+              'messageData' => $data,
+            ]
+          ]);
+        } else {
+          if ($model->save()) {
+            $this->_log([
+              'model'     => $modelId, 
+              'parent_id' => $parentId, 
+              'name'      => 'Успешное добавление данных о публикаторе в таблицу "'.Organization::tableName().'"', 
+              'message'   => 'Данные успешно добавлены в таблицу "'.Organization::tableName().'"', 
+              'json'      => [
+                'modelData'   => $model,
+                'modelId'     => $model->id,
+                'msgId'       => $this->msgId,
+                'messageData' => $data,
+              ]
+            ]);
+            return true;
+          }
+        }
+      } else {
+        return true;
+      }
+    } catch (Exception $e) {
+      $this->_log([
+        'model'     => $modelId, 
+        'parent_id' => $parentId, 
+        'status'    => Log::STATUS_ERROR, 
+        'name'      => 'Ошибка при парсинге данных о публикаторе', 
+        'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!. Таблица "'.Organization::tableName().'"', 
+        'json'      => [
+          'error'       => $e->getMessage(),
+          'msgId'       => $this->msgId,
+          'messageData' => $data,
+        ]
+      ]);
     }
     return false;
   }
@@ -855,25 +1299,68 @@ class EfrsbController extends Controller
    */
   private function setOrganizationBankrupt($data, $parentId, $modelId)
   {
-    if (!$check = Organization::find()->where(['model' => $modelId, 'parent_id' => $parentId])->one()) {
-      $model = new Organization();
-      $category = $this->_bankruptCategoryConvertor($data['Category']['Code']);
-    
-      $model->model       = $modelId;
-      $model->parent_id   = $parentId;
-      $model->activity    = ($category == 16 ? 9 : $category);
-      $model->title       = $data['Name'];
-      $model->full_title  = '';
-      $model->inn         = $data['Inn'];
-      $model->ogrn        = $data['Ogrn'];
-      $model->website     = '';
-      $model->status      = Organization::STATUS_CHECKED;
+    try {
+      if (!$check = Organization::find()->where(['model' => $modelId, 'parent_id' => $parentId])->one()) {
+        $model = new Organization();
+        $category = $this->_bankruptCategoryConvertor($data['Category']['Code']);
+      
+        $model->model       = $modelId;
+        $model->parent_id   = $parentId;
+        $model->activity    = ($category == 16 ? 9 : $category);
+        $model->title       = $data['Name'];
+        $model->full_title  = '';
+        $model->inn         = $data['Inn'];
+        $model->ogrn        = $data['Ogrn'];
+        $model->website     = '';
+        $model->status      = Organization::STATUS_CHECKED;
 
-      if ($model->save()) {
+        if (!$model->validate()) {
+          $this->_log([
+            'model'     => $modelId, 
+            'parent_id' => $parentId, 
+            'status'    => Log::STATUS_WARNING, 
+            'name'      => 'Ошибка валидации данных о компании должника в таблице "'.Organization::tableName().'"', 
+            'message'   => 'Данные не прошли валидацию после при попытке добавить данные в таблицу "'.Organization::tableName().'"', 
+            'json'      => [
+              'modelErrors' => $model->errors,
+              'modelData'   => $model,
+              'msgId'       => $this->msgId,
+              'messageData' => $data,
+            ]
+          ]);
+        } else {
+          if ($model->save()) {
+            $this->_log([
+              'model'     => $modelId, 
+              'parent_id' => $parentId, 
+              'name'      => 'Успешное добавление данных о компании должника в таблицу "'.Organization::tableName().'"', 
+              'message'   => 'Данные успешно добавлены в таблицу "'.Organization::tableName().'"', 
+              'json'      => [
+                'modelData'   => $model,
+                'modelId'     => $model->id,
+                'msgId'       => $this->msgId,
+                'messageData' => $data,
+              ]
+            ]);
+            return true;
+          }
+        }
+      } else {
         return true;
       }
-    } else {
-      return true;
+    } catch (Exception $e) {
+      $this->_log([
+        'model'     => $modelId, 
+        'parent_id' => $parentId, 
+        'status'    => Log::STATUS_ERROR, 
+        'name'      => 'Ошибка при парсинге данных о компании должника', 
+        'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!. Таблица "'.Organization::tableName().'"', 
+        'json'      => [
+          'error'       => $e->getMessage(),
+          'msgId'       => $this->msgId,
+          'messageData' => $data,
+        ]
+      ]);
     }
     return false;
   }
@@ -888,24 +1375,68 @@ class EfrsbController extends Controller
    */
   private function setProfile($data, $parentId, $modelId, $activity)
   {
-    if (!$check = Profile::find()->where(['model' => $modelId, 'parent_id' => $parentId])->one()) {
-      $model = new Profile();
-    
-      $model->model       = $modelId;
-      $model->parent_id   = $parentId;
-      $model->activity    = $activity;
-      $model->inn         = $data['Inn'];
-      $model->first_name  = $data['Fio']['FirstName'];
-      $model->last_name   = $data['Fio']['LastName'];
-      $model->middle_name = $data['Fio']['MiddleName'];
-      $model->phone       = '';
-      $model->snils       = $data['Snils'];
+    try {
+      if (!$check = Profile::find()->where(['model' => $modelId, 'parent_id' => $parentId])->one()) {
+        $model = new Profile();
+      
+        $model->model       = $modelId;
+        $model->parent_id   = $parentId;
+        $model->activity    = $activity;
+        $model->inn         = $data['Inn'];
+        $model->first_name  = $data['Fio']['FirstName'];
+        $model->last_name   = $data['Fio']['LastName'];
+        $model->middle_name = $data['Fio']['MiddleName'];
+        $model->phone       = '';
+        $model->snils       = $data['Snils'];
+        $model->orgn_ip     = $data['Ogrnip'];
 
-      if ($model->save()) {
+        if (!$model->validate()) {
+          $this->_log([
+            'model'     => $modelId, 
+            'parent_id' => $parentId, 
+            'status'    => Log::STATUS_WARNING, 
+            'name'      => 'Ошибка валидации данных о человеке в таблице "'.Profile::tableName().'"', 
+            'message'   => 'Данные не прошли валидацию после при попытке добавить данные в таблицу "'.Profile::tableName().'"', 
+            'json'      => [
+              'modelErrors' => $model->errors,
+              'modelData'   => $model,
+              'msgId'       => $this->msgId,
+              'messageData' => $data,
+            ]
+          ]);
+        } else {
+          if ($model->save()) {
+            $this->_log([
+              'model'     => $modelId, 
+              'parent_id' => $parentId, 
+              'name'      => 'Успешное добавление данных о человеке в таблицу "'.Profile::tableName().'"', 
+              'message'   => 'Данные успешно добавлены в таблицу "'.Profile::tableName().'"', 
+              'json'      => [
+                'modelData'   => $model,
+                'modelId'     => $model->id,
+                'msgId'       => $this->msgId,
+                'messageData' => $data,
+              ]
+            ]);
+            return true;
+          }
+        }
+      } else {
         return true;
       }
-    } else {
-      return true;
+    } catch (Exception $e) {
+      $this->_log([
+        'model'     => $modelId, 
+        'parent_id' => $parentId, 
+        'status'    => Log::STATUS_ERROR, 
+        'name'      => 'Ошибка при парсинге данных о человеке', 
+        'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!. Таблица "'.Profile::tableName().'"', 
+        'json'      => [
+          'error'       => $e->getMessage(),
+          'msgId'       => $this->msgId,
+          'messageData' => $data,
+        ]
+      ]);
     }
     return false;
   }
@@ -919,33 +1450,76 @@ class EfrsbController extends Controller
    */
   private function setProfileBankrupt($data, $parentId, $modelId)
   {
-    if (!$check = Profile::find()->where(['model' => $modelId, 'parent_id' => $parentId])->one()) {
-      $model = new Profile();
-      $category = $this->_bankruptCategoryConvertor($data['Category']['Code']);
+    try {
+      if (!$check = Profile::find()->where(['model' => $modelId, 'parent_id' => $parentId])->one()) {
+        $model = new Profile();
+        $category = $this->_bankruptCategoryConvertor($data['Category']['Code']);
 
-      if (isset($data['FioHistory'])) {
-        $fio = $data['FioHistory']['Fio'];
+        if (isset($data['FioHistory'])) {
+          $fio = $data['FioHistory']['Fio'];
+        } else {
+          $fio = $data['Fio'];
+        }
+      
+        $model->model       = $modelId;
+        $model->parent_id   = $parentId;
+        $model->activity    = $category;
+        $model->birthday    = (isset($data['Birthdate']) ? strtotime($data['Birthdate']) : null);
+        $model->birthplace  = (isset($data['Birthplace']) ? $data['Birthplace'] : null);
+        $model->inn         = $data['Inn'];
+        $model->first_name  = $fio['FirstName'];
+        $model->last_name   = $fio['LastName'];
+        $model->middle_name = $fio['MiddleName'];
+        $model->phone       = '';
+        $model->snils       = $data['Snils'];
+
+        if (!$model->validate()) {
+          $this->_log([
+            'model'     => $modelId, 
+            'parent_id' => $parentId, 
+            'status'    => Log::STATUS_WARNING, 
+            'name'      => 'Ошибка валидации данных о должнике в таблице "'.Profile::tableName().'"', 
+            'message'   => 'Данные не прошли валидацию после при попытке добавить данные в таблицу "'.Profile::tableName().'"', 
+            'json'      => [
+              'modelErrors' => $model->errors,
+              'modelData'   => $model,
+              'msgId'       => $this->msgId,
+              'messageData' => $data,
+            ]
+          ]);
+        } else {
+          if ($model->save()) {
+            $this->_log([
+              'model'     => $modelId, 
+              'parent_id' => $parentId, 
+              'name'      => 'Успешное добавление данных о должнике в таблицу "'.Profile::tableName().'"', 
+              'message'   => 'Данные успешно добавлены в таблицу "'.Profile::tableName().'"', 
+              'json'      => [
+                'modelData'   => $model,
+                'modelId'     => $model->id,
+                'msgId'       => $this->msgId,
+                'messageData' => $data,
+              ]
+            ]);
+            return true;
+          }
+        }
       } else {
-        $fio = $data['Fio'];
-      }
-    
-      $model->model       = $modelId;
-      $model->parent_id   = $parentId;
-      $model->activity    = $category;
-      $model->birthday    = (isset($data['Birthdate']) ? strtotime($data['Birthdate']) : null);
-      $model->birthplace  = (isset($data['Birthplace']) ? $data['Birthplace'] : null);
-      $model->inn         = $data['Inn'];
-      $model->first_name  = $fio['FirstName'];
-      $model->last_name   = $fio['LastName'];
-      $model->middle_name = $fio['MiddleName'];
-      $model->phone       = '';
-      $model->snils       = $data['Snils'];
-
-      if ($model->save()) {
         return true;
       }
-    } else {
-      return true;
+    } catch (Exception $e) {
+      $this->_log([
+        'model'     => $modelId, 
+        'parent_id' => $parentId, 
+        'status'    => Log::STATUS_ERROR, 
+        'name'      => 'Ошибка при парсинге данных о Должнике', 
+        'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!. Таблица "'.Profile::tableName().'"', 
+        'json'      => [
+          'error'       => $e->getMessage(),
+          'msgId'       => $this->msgId,
+          'messageData' => $data,
+        ]
+      ]);
     }
     return false;
   }
@@ -959,32 +1533,75 @@ class EfrsbController extends Controller
    */
   private function setPlace($address, $parentId, $modelId)
   {
-    if (!$address) {
-      return false;
-    }
-    if (!$check = Place::find()->where(['model' => $modelId, 'parent_id' => $parentId])->one()) {
-      $addressInfo = GetInfoFor::address($address);
+    try {
+      if (!$address) {
+        return false;
+      }
+      if (!$check = Place::find()->where(['model' => $modelId, 'parent_id' => $parentId])->one()) {
+        $addressInfo = GetInfoFor::address($address);
+        
+        $city     = isset($addressInfo['address']['city']) && $addressInfo['address']['city'] ? $addressInfo['address']['city'] : '';
+        $district = $this->_districtConvertor($addressInfo['address']['district']);
+        $address  = isset($addressInfo['fullAddress']) && $addressInfo['fullAddress'] ? $addressInfo['fullAddress'] : '-';
+
+        $model = new Place();
       
-      $city     = isset($addressInfo['address']['city']) && $addressInfo['address']['city'] ? $addressInfo['address']['city'] : '';
-      $district = $this->_districtConvertor($addressInfo['address']['district']);
-      $address  = isset($addressInfo['fullAddress']) && $addressInfo['fullAddress'] ? $addressInfo['fullAddress'] : '-';
+        $model->model       = $modelId;
+        $model->parent_id   = $parentId;
+        $model->city        = $city;
+        $model->region_id   = $addressInfo['regionId'];
+        $model->district_id = $district;
+        $model->address     = $address;
+        $model->geo_lat     = $addressInfo['address']['geo_lat'];
+        $model->geo_lon     = $addressInfo['address']['geo_lon'];
 
-      $model = new Place();
-    
-      $model->model       = $modelId;
-      $model->parent_id   = $parentId;
-      $model->city        = $city;
-      $model->region_id   = $addressInfo['regionId'];
-      $model->district_id = $district;
-      $model->address     = $address;
-      $model->geo_lat     = $addressInfo['address']['geo_lat'];
-      $model->geo_lon     = $addressInfo['address']['geo_lon'];
-
-      if ($model->save()) {
+        if (!$model->validate()) {
+          $this->_log([
+            'model'     => $modelId, 
+            'parent_id' => $parentId, 
+            'status'    => Log::STATUS_WARNING, 
+            'name'      => 'Ошибка валидации адрес в таблице "'.Place::tableName().'"', 
+            'message'   => 'Данные не прошли валидацию после при попытке добавить данные в таблицу "'.Place::tableName().'"', 
+            'json'      => [
+              'modelErrors' => $model->errors,
+              'modelData'   => $model,
+              'msgId'       => $this->msgId,
+              'messageData' => $data,
+            ]
+          ]);
+        } else {
+          if ($model->save()) {
+            $this->_log([
+              'model'     => $modelId, 
+              'parent_id' => $parentId, 
+              'name'      => 'Успешное добавление адреса в таблицу "'.Place::tableName().'"', 
+              'message'   => 'Данные успешно добавлены в таблицу "'.Place::tableName().'"', 
+              'json'      => [
+                'modelData'   => $model,
+                'modelId'     => $model->id,
+                'msgId'       => $this->msgId,
+                'messageData' => $data,
+              ]
+            ]);
+            return true;
+          }
+        }
+      } else {
         return true;
       }
-    } else {
-      return true;
+    } catch (Exception $e) {
+      $this->_log([
+        'model'     => $modelId, 
+        'parent_id' => $parentId, 
+        'status'    => Log::STATUS_ERROR, 
+        'name'      => 'Ошибка при парсинге Адреса', 
+        'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!. Таблица "'.Place::tableName().'"', 
+        'json'      => [
+          'error'       => $e->getMessage(),
+          'msgId'       => $this->msgId,
+          'messageData' => $data,
+        ]
+      ]);
     }
     return false;
   }
@@ -996,20 +1613,64 @@ class EfrsbController extends Controller
    */
   private function setCasefile($data)
   {
-    if (!$check = Casefile::find()->where(['reg_number' => $data['CaseNumber']])->one()) {
-      $model = new Casefile();
-    
-      $model->reg_number  = $data['CaseNumber'];
-      $model->year        = str_replace(' ', '', substr($data['CaseNumber'],strrpos($data['CaseNumber'],"/")+1));
-      // $model->judje       = null;
+    try {
+      if (!$check = Casefile::find()->where(['reg_number' => $data['CaseNumber']])->one()) {
+        $model = new Casefile();
+      
+        $year = (int)str_replace(' ', '', substr($data['CaseNumber'],strrpos($data['CaseNumber'],"/")+1));
 
-      if ($model->save()) {
-        $this->caseId = $model->id;
+        $model->reg_number  = $data['CaseNumber'];
+        $model->year        = ((strlen(''.$year) == 4)? $year.'' : '0000' );
+        // $model->judje       = null;
+        
+        if (!$model->validate()) {
+          $this->_log([
+            'model'     => Casefile::INT_CODE, 
+            'parent_id' => null, 
+            'status'    => Log::STATUS_WARNING, 
+            'name'      => 'Ошибка валидации "'.Casefile::tableName().'"', 
+            'message'   => 'Данные не прошли валидацию после при попытке добавить данные в таблицу "'.Casefile::tableName().'"', 
+            'json'      => [
+              'modelErrors' => $model->errors,
+              'modelData'   => $model,
+              'msgId'       => $this->msgId,
+              'messageData' => $data,
+            ]
+          ]);
+        } else {
+          if ($model->save()) {
+            $this->caseId = $model->id;
+            $this->_log([
+              'model'     => Casefile::INT_CODE, 
+              'parent_id' => $model->id, 
+              'name'      => 'Успешное добавление "'.Casefile::tableName().'"', 
+              'message'   => 'Данные успешно добавлены в таблицу "'.Casefile::tableName().'"', 
+              'json'      => [
+                'modelData'   => $model,
+                'msgId'       => $this->msgId,
+                'messageData' => $data,
+              ]
+            ]);
+            return true;
+          }
+        }
+      } else {
+        $this->caseId = $check->id;
         return true;
       }
-    } else {
-      $this->caseId = $check->id;
-      return true;
+    } catch (Exception $e) {
+      $this->_log([
+        'model'     => Casefile::INT_CODE, 
+        'parent_id' => null, 
+        'status'    => Log::STATUS_ERROR, 
+        'name'      => 'Ошибка при парсинге "'.Casefile::tableName().'"', 
+        'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!', 
+        'json'      => [
+          'error'       => $e->getMessage(),
+          'msgId'       => $this->msgId,
+          'messageData' => $data,
+        ]
+      ]);
     }
     return false;
   }
@@ -1021,24 +1682,66 @@ class EfrsbController extends Controller
    */
   private function setSro($data)
   {
-    if (!$check = Sro::find()->joinWith(['organizationRel'])->where(['or',[Organization::tableName().'.inn' => $data['Inn']], ['efrsb_id' => $this->caseId]])->one()) {
-      $model = new Sro();
-    
-      $model->efrsb_id  = $this->caseId;
+    try {
+      if (!$check = Sro::find()->joinWith(['organizationRel'])->where(['or',[Organization::tableName().'.inn' => $data['Inn']], ['efrsb_id' => $this->caseId]])->one()) {
+        $model = new Sro();
+      
+        $model->efrsb_id  = $this->caseId;
 
-      if ($model->save()) {
-        $this->sroId = $model->id;
+        if (!$model->validate()) {
+          $this->_log([
+            'model'     => Sro::INT_CODE, 
+            'parent_id' => null, 
+            'status'    => Log::STATUS_WARNING, 
+            'name'      => 'Ошибка валидации "'.Sro::tableName().'"', 
+            'message'   => 'Данные не прошли валидацию после при попытке добавить данные в таблицу "'.Sro::tableName().'"', 
+            'json'      => [
+              'modelErrors' => $model->errors,
+              'modelData'   => $model,
+              'msgId'       => $this->msgId,
+              'messageData' => $data,
+            ]
+          ]);
+        } else {
+          if ($model->save()) {
+            $this->sroId = $model->id;
+            $this->_log([
+              'model'     => Sro::INT_CODE, 
+              'parent_id' => $model->id, 
+              'name'      => 'Успешное добавление "'.Sro::tableName().'"', 
+              'message'   => 'Данные успешно добавлены в таблицу "'.Sro::tableName().'"', 
+              'json'      => [
+                'modelData'   => $model,
+                'msgId'       => $this->msgId,
+                'messageData' => $data,
+              ]
+            ]);
+            if ($this->setOrganizationSro($data, $this->sroId, Sro::INT_CODE)) {
+              $this->setPlace($data['Address'], $this->sroId, Sro::INT_CODE);
+              return true;
+            }
+          }
+        }
+      } else {
+        $this->sroId = $check->id;
         if ($this->setOrganizationSro($data, $this->sroId, Sro::INT_CODE)) {
           $this->setPlace($data['Address'], $this->sroId, Sro::INT_CODE);
           return true;
         }
       }
-    } else {
-      $this->sroId = $check->id;
-      if ($this->setOrganizationSro($data, $this->sroId, Sro::INT_CODE)) {
-        $this->setPlace($data['Address'], $this->sroId, Sro::INT_CODE);
-        return true;
-      }
+    } catch (Exception $e) {
+      $this->_log([
+        'model'     => Sro::INT_CODE, 
+        'parent_id' => null, 
+        'status'    => Log::STATUS_ERROR, 
+        'name'      => 'Ошибка при парсинге "'.Sro::tableName().'"', 
+        'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!', 
+        'json'      => [
+          'error'       => $e->getMessage(),
+          'msgId'       => $this->msgId,
+          'messageData' => $data,
+        ]
+      ]);
     }
     return false;
   }
@@ -1050,30 +1753,194 @@ class EfrsbController extends Controller
    */
   private function setManager($data)
   {
-    if (!$check = Manager::find()->joinWith(['profileRel'])->where([Profile::tableName().'.inn' => $data['Inn']])->one()) {
-      $model = new Manager();
-
+    try {
       $attr = $this->_attributesType($data['xsi:type']);
-      $agent = $attr[1];
+      $type = $attr[1];
       $version = $attr[2];
 
-      if ($agent == 'ArbitrManager' && $version == 'v2') {
-        $model->agent  = 2;
+      if (!$check = Manager::find()->joinWith(['profileRel'])->where([Profile::tableName().'.inn' => $data['Inn']])->one()) {
+        $model = new Manager();
+        if ($version == 'v2') {
+          $model->agent  = 2;
+          
+          if (!$model->validate()) {
+            $this->_log([
+              'model'     => Manager::INT_CODE, 
+              'parent_id' => null, 
+              'status'    => Log::STATUS_WARNING, 
+              'name'      => 'Ошибка валидации "'.Manager::tableName().'"', 
+              'message'   => 'Данные не прошли валидацию после при попытке добавить данные в таблицу "'.Manager::tableName().'"', 
+              'json'      => [
+                'modelErrors' => $model->errors,
+                'modelData'   => $model,
+                'msgId'       => $this->msgId,
+                'messageData' => $data,
+              ]
+            ]);
+          } else {
+            if ($model->save()) {
+              $this->managerId = $model->id;
+              $this->_log([
+                'model'     => Manager::INT_CODE, 
+                'parent_id' => $model->id, 
+                'name'      => 'Успешное добавление "'.Manager::tableName().'"', 
+                'message'   => 'Данные успешно добавлены в таблицу "'.Manager::tableName().'"', 
+                'json'      => [
+                'modelData'   => $model,
+                'msgId'       => $this->msgId,
+                  'messageData' => $data,
+                ]
+              ]);
+              switch ($type) {
+                case 'ArbitrManager':
+                    if ($this->setProfile($data, $this->managerId, Manager::INT_CODE, Profile::ACTIVITY_SIMPLE)) {
+                      $this->setPlace($data['CorrespondenceAddress'], $this->managerId, Manager::INT_CODE);
+                      if ($this->setSro($data['Sro'])) {
+                        echo "setSro - Успешно!\n";
+                        if ($this->setManagerSro()) {
+                          return true;
+                        }
+                      }
+                    }
+                  break;
+                case 'ArbitrManagerSro':
+                    if ($this->setOrganizationManager(['Name' => $data['Name'], 'Inn' => $data['Inn'], 'Ogrn' => $data['Ogrn']], $this->managerId, Manager::INT_CODE, 18)) {
+                      $this->setPlace($data['Address'], $this->managerId, Manager::INT_CODE);
+                      return true;
+                    }
+                  break;
+                case 'FirmTradeOrganizer':
+                    if ($this->setOrganizationManager(['Name' => $data['Name'], 'Inn' => $data['Inn'], 'Ogrn' => $data['Ogrn']], $this->managerId, Manager::INT_CODE, 19)) {
+                      return true;
+                    }
+                  break;
+                case 'PersonTradeOrganizer':
+                    if ($this->setProfile(['Fio' => $data['Fio'], 'Inn' => $data['Inn'], 'Ogrnip' => $data['Ogrnip']], $this->managerId, Manager::INT_CODE, 13)) {
+                      return true;
+                    }
+                  break;
+                case 'Company':
+                    if ($this->setOrganizationManager(['Name' => $data['Name'], 'Inn' => $data['Inn'], 'Ogrn' => $data['Ogrn']], $this->managerId, Manager::INT_CODE, 17)) {
+                      return true;
+                    }
+                  break;
+                case 'Person':
+                    if ($this->setProfile(['Fio' => $data['Fio'], 'Inn' => $data['Inn']], $this->managerId, Manager::INT_CODE, 25)) {
+                      return true;
+                    }
+                  break;
+                case 'CentralBankRf':
+                    if ($this->setOrganizationManager(['Name' => $data['Name'], 'Inn' => $data['Inn'], 'Ogrn' => $data['Ogrn']], $this->managerId, Manager::INT_CODE, 20)) {
+                      return true;
+                    }
+                  break;
+                case 'Asv':
+                    if ($this->setOrganizationManager(['Name' => $data['Name'], 'Inn' => $data['Inn'], 'Ogrn' => $data['Ogrn']], $this->managerId, Manager::INT_CODE, 21)) {
+                      return true;
+                    }
+                  break;
+                case 'FnsDepartment':
+                    if ($this->setOrganizationManager(['Name' => $data['Name'], 'Inn' => $data['Inn'], 'Ogrn' => $data['Ogrn']], $this->managerId, Manager::INT_CODE, 22)) {
+                      return true;
+                    }
+                  break;
+                case 'Efrsb':
+                    if ($this->setOrganizationManager(['Name' => $data['Name'], 'Inn' => '', 'Ogrn' => ''], $this->managerId, Manager::INT_CODE, 23)) {
+                      return true;
+                    }
+                  break;
+                case 'Mfc':
+                    if ($this->setOrganizationManager(['Name' => $data['Name'], 'Inn' => $data['Inn'], 'Ogrn' => $data['Ogrn']], $this->managerId, Manager::INT_CODE, 23)) {
+                      return true;
+                    }
+                  break;
+              }
+            }
+          }
+        }
 
-        if ($model->save()) {
-          $this->managerId = $model->id;
-          if ($this->setProfile($data, $this->managerId, Manager::INT_CODE, Profile::ACTIVITY_SIMPLE)) {
-            $this->setPlace($data['CorrespondenceAddress'], $this->managerId, Manager::INT_CODE);
-            return true;
+      } else {
+        $this->managerId = $check->id;
+        if ($version == 'v2') {
+          switch ($type) {
+            case 'ArbitrManager':
+              if ($this->setProfile($data, $this->managerId, Manager::INT_CODE, Profile::ACTIVITY_SIMPLE)) {
+                $this->setPlace($data['CorrespondenceAddress'], $this->managerId, Manager::INT_CODE);
+                if ($this->setSro($data['Sro'])) {
+                  echo "setSro - Успешно!\n";
+                  if ($this->setManagerSro()) {
+                    return true;
+                  }
+                }
+              }
+              break;
+            case 'ArbitrManagerSro':
+              if ($this->setOrganizationManager(['Name' => $data['Name'], 'Inn' => $data['Inn'], 'Ogrn' => $data['Ogrn']], $this->managerId, Manager::INT_CODE, 18)) {
+                $this->setPlace($data['Address'], $this->managerId, Manager::INT_CODE);
+                return true;
+              }
+              break;
+            case 'FirmTradeOrganizer':
+              if ($this->setOrganizationManager(['Name' => $data['Name'], 'Inn' => $data['Inn'], 'Ogrn' => $data['Ogrn']], $this->managerId, Manager::INT_CODE, 19)) {
+                return true;
+              }
+              break;
+            case 'PersonTradeOrganizer':
+              if ($this->setProfile(['Fio' => $data['Fio'], 'Inn' => $data['Inn'], 'Ogrnip' => $data['Ogrnip']], $this->managerId, Manager::INT_CODE, 13)) {
+                return true;
+              }
+              break;
+            case 'Company':
+              if ($this->setOrganizationManager(['Name' => $data['Name'], 'Inn' => $data['Inn'], 'Ogrn' => $data['Ogrn']], $this->managerId, Manager::INT_CODE, 17)) {
+                return true;
+              }
+              break;
+            case 'Person':
+              if ($this->setProfile(['Fio' => $data['Fio'], 'Inn' => $data['Inn']], $this->managerId, Manager::INT_CODE, 25)) {
+                return true;
+              }
+              break;
+            case 'CentralBankRf':
+              if ($this->setOrganizationManager(['Name' => $data['Name'], 'Inn' => $data['Inn'], 'Ogrn' => $data['Ogrn']], $this->managerId, Manager::INT_CODE, 20)) {
+                return true;
+              }
+              break;
+            case 'Asv':
+              if ($this->setOrganizationManager(['Name' => $data['Name'], 'Inn' => $data['Inn'], 'Ogrn' => $data['Ogrn']], $this->managerId, Manager::INT_CODE, 21)) {
+                return true;
+              }
+              break;
+            case 'FnsDepartment':
+              if ($this->setOrganizationManager(['Name' => $data['Name'], 'Inn' => $data['Inn'], 'Ogrn' => $data['Ogrn']], $this->managerId, Manager::INT_CODE, 22)) {
+                return true;
+              }
+              break;
+            case 'Efrsb':
+              if ($this->setOrganizationManager(['Name' => $data['Name'], 'Inn' => '', 'Ogrn' => ''], $this->managerId, Manager::INT_CODE, 23)) {
+                return true;
+              }
+              break;
+            case 'Mfc':
+              if ($this->setOrganizationManager(['Name' => $data['Name'], 'Inn' => $data['Inn'], 'Ogrn' => $data['Ogrn']], $this->managerId, Manager::INT_CODE, 23)) {
+                return true;
+              }
+              break;
           }
         }
       }
-    } else {
-      $this->managerId = $check->id;
-      if ($this->setProfile($data, $this->managerId, Manager::INT_CODE, Profile::ACTIVITY_SIMPLE)) {
-        $this->setPlace($data['Address'], $this->managerId, Manager::INT_CODE);
-        return true;
-      }
+    } catch (Exception $e) {
+      $this->_log([
+        'model'     => Manager::INT_CODE, 
+        'parent_id' => null, 
+        'status'    => Log::STATUS_ERROR, 
+        'name'      => 'Ошибка при парсинге "'.Manager::tableName().'"', 
+        'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!', 
+        'json'      => [
+          'error'       => $e->getMessage(),
+          'msgId'       => $this->msgId,
+          'messageData' => $data,
+        ]
+      ]);
     }
     return false;
   }
@@ -1085,19 +1952,61 @@ class EfrsbController extends Controller
    */
   private function setManagerSro()
   {
-    if (!$check = ManagerSro::find()->where(['manager_id' => $this->managerId, 'sro_id' => $this->sroId])->one()) {
-      $model = new ManagerSro();
-    
-      $model->manager_id  = $this->managerId;
-      $model->sro_id      = $this->sroId;
+    try {
+      if (!$check = ManagerSro::find()->where(['manager_id' => $this->managerId, 'sro_id' => $this->sroId])->one()) {
+        $model = new ManagerSro();
+      
+        $model->manager_id  = $this->managerId;
+        $model->sro_id      = $this->sroId;
 
-      if ($model->save()) {
-        echo 'setManagerSro - Успешно!';
+        if (!$model->validate()) {
+          $this->_log([
+            'model'     => 0, 
+            'parent_id' => null, 
+            'status'    => Log::STATUS_WARNING, 
+            'name'      => 'Ошибка валидации "'.ManagerSro::tableName().'"', 
+            'message'   => 'Данные не прошли валидацию после при попытке добавить данные в таблицу "'.ManagerSro::tableName().'"', 
+            'json'      => [
+              'modelErrors' => $model->errors,
+              'modelData'   => $model,
+              'msgId'       => $this->msgId,
+              'messageData' => $data,
+            ]
+          ]);
+        } else {
+          if ($model->save()) {
+            $this->_log([
+              'model'     => 0, 
+              'parent_id' => null, 
+              'name'      => 'Успешное добавление "'.ManagerSro::tableName().'"', 
+              'message'   => 'Данные успешно добавлены в таблицу "'.ManagerSro::tableName().'"', 
+              'json'      => [
+                'modelData'   => $model,
+                'msgId'       => $this->msgId,
+                'messageData' => $data,
+              ]
+            ]);
+            echo "setManagerSro - Успешно!\n";
+            return true;
+          }
+        }
+      } else {
         return true;
+        echo "setManagerSro - Успешно!\n";
       }
-    } else {
-      return true;
-      echo 'setManagerSro - Успешно!';
+    } catch (Exception $e) {
+      $this->_log([
+        'model'     => 0, 
+        'parent_id' => null, 
+        'status'    => Log::STATUS_ERROR, 
+        'name'      => 'Ошибка при парсинге "'.ManagerSro::tableName().'"', 
+        'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!', 
+        'json'      => [
+          'error'       => $e->getMessage(),
+          'msgId'       => $this->msgId,
+          'messageData' => $data,
+        ]
+      ]);
     }
     return false;
   }
@@ -1109,18 +2018,62 @@ class EfrsbController extends Controller
    */
   private function setBankrupt($data)
   {
-    if (!$check = Bankrupt::find()->where(['bankrupt_id' => $data['BankruptId']])->one()) {
-      $model = new Bankrupt();
+    try {
+      if (!$check = Bankrupt::find()->where(['bankrupt_id' => $data['BankruptId']])->one()) {
+        $model = new Bankrupt();
+        
+        $attr = $this->_attributesType($data['Bankrupt']['xsi:type']);
+        $agent = (($attr[1] === 'Company')? 2 : 1);
+        $version = $attr[2];
       
-      $attr = $this->_attributesType($data['Bankrupt']['xsi:type']);
-      $agent = (($attr[1] === 'Company')? 2 : 1);
-      $version = $attr[2];
-    
-      $model->agent       = $agent;
-      $model->bankrupt_id = $data['BankruptId'];
+        $model->agent       = $agent;
+        $model->bankrupt_id = $data['BankruptId'];
 
-      if ($model->save()) {
-        $this->bankruptId = $model->id;
+        if (!$model->validate()) {
+          $this->_log([
+            'model'     => Bankrupt::INT_CODE, 
+            'parent_id' => null, 
+            'status'    => Log::STATUS_WARNING, 
+            'name'      => 'Ошибка валидации "'.Bankrupt::tableName().'"', 
+            'message'   => 'Данные не прошли валидацию после при попытке добавить данные в таблицу "'.Bankrupt::tableName().'"', 
+            'json'      => [
+              'modelErrors' => $model->errors,
+              'modelData'   => $model,
+              'msgId'       => $this->msgId,
+              'messageData' => $data,
+            ]
+          ]);
+        } else {
+          if ($model->save()) {
+            $this->bankruptId = $model->id;
+            $this->_log([
+              'model'     => Bankrupt::INT_CODE, 
+              'parent_id' => $model->id, 
+              'name'      => 'Успешное добавление "'.Bankrupt::tableName().'"', 
+              'message'   => 'Данные успешно добавлены в таблицу "'.Bankrupt::tableName().'"', 
+              'json'      => [
+                'modelData'   => $model,
+                'msgId'       => $this->msgId,
+                'messageData' => $data,
+              ]
+            ]);
+            if ($version == 'v2') {
+              if ($agent == 2) {
+                $this->setPlace($data['Bankrupt']['Address'], $this->bankruptId, Bankrupt::INT_CODE);
+                if ($this->setOrganizationBankrupt($data['Bankrupt'], $this->bankruptId, Bankrupt::INT_CODE)) {
+                  return true;
+                }
+              } else {
+                $this->setPlace($data['Bankrupt']['Address'], $this->bankruptId, Bankrupt::INT_CODE);
+                if ($this->setProfileBankrupt($data['Bankrupt'], $this->bankruptId, Bankrupt::INT_CODE)) {
+                  return true;
+                }
+              }
+            }
+          }
+        }
+      } else {
+        $this->bankruptId = $check->id;
         if ($version == 'v2') {
           if ($agent == 2) {
             $this->setPlace($data['Bankrupt']['Address'], $this->bankruptId, Bankrupt::INT_CODE);
@@ -1135,21 +2088,19 @@ class EfrsbController extends Controller
           }
         }
       }
-    } else {
-      $this->bankruptId = $check->id;
-      if ($version == 'v2') {
-        if ($agent == 2) {
-          $this->setPlace($data['Bankrupt']['Address'], $this->bankruptId, Bankrupt::INT_CODE);
-          if ($this->setOrganizationBankrupt($data['Bankrupt'], $this->bankruptId, Bankrupt::INT_CODE)) {
-            return true;
-          }
-        } else {
-          $this->setPlace($data['Bankrupt']['Address'], $this->bankruptId, Bankrupt::INT_CODE);
-          if ($this->setProfileBankrupt($data['Bankrupt'], $this->bankruptId, Bankrupt::INT_CODE)) {
-            return true;
-          }
-        }
-      }
+    } catch (Exception $e) {
+      $this->_log([
+        'model'     => Bankrupt::INT_CODE, 
+        'parent_id' => null, 
+        'status'    => Log::STATUS_ERROR, 
+        'name'      => 'Ошибка при парсинге "'.Bankrupt::tableName().'"', 
+        'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!', 
+        'json'      => [
+          'error'       => $e->getMessage(),
+          'msgId'       => $this->msgId,
+          'messageData' => $data,
+        ]
+      ]);
     }
     return false;
   }
@@ -1161,9 +2112,35 @@ class EfrsbController extends Controller
    */
   private function getEtp($data)
   {
-    if ($etp = Etp::find()->where(['efrsb_id' => $data['IdTradePlace']])->one()) {
-      $this->etpId = $etp->id;
-      return true;
+    try {
+      if ($etp = Etp::find()->where(['efrsb_id' => $data['IdTradePlace']])->one()) {
+        $this->etpId = $etp->id;
+        $this->_log([
+          'model'     => Etp::INT_CODE, 
+          'parent_id' => $etp->id, 
+          'name'      => 'Успешное получены данные "'.Etp::tableName().'"', 
+          'message'   => 'Данные успешно получены из таблицы "'.Etp::tableName().'"', 
+          'json'      => [
+            'modelData'   => $etp,
+            'msgId'       => $this->msgId,
+            'messageData' => $data,
+          ]
+        ]);
+        return true;
+      }
+    } catch (Exception $e) {
+      $this->_log([
+        'model'     => Etp::INT_CODE, 
+        'parent_id' => null, 
+        'status'    => Log::STATUS_ERROR, 
+        'name'      => 'Ошибка при парсинге "'.Etp::tableName().'"', 
+        'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!', 
+        'json'      => [
+          'error'       => $e->getMessage(),
+          'msgId'       => $this->msgId,
+          'messageData' => $data,
+        ]
+      ]);
     }
     return false;
   }
@@ -1175,34 +2152,76 @@ class EfrsbController extends Controller
    */
   private function setTorg($data)
   {
-    if (!$check = Torg::find()->where(['msg_id' => $this->msgId])->one()) {
-      $model = new Torg();
-      $auction = $data['MessageInfo']['Auction'];
-    
-      $model->msg_id          = $this->msgId;
-      $model->property        = Torg::PROPERTY_BANKRUPT;
-      $model->description     = $auction['Text'];
-      $model->started_at      = ((isset($auction['Application']['TimeBegin']) && GetInfoFor::date_check($auction['Application']['TimeEnd']))? strtotime($auction['Application']['TimeBegin']) : null);
-      $model->end_at          = ((isset($auction['Application']['TimeEnd']) && GetInfoFor::date_check($auction['Application']['TimeEnd']))? strtotime($auction['Application']['TimeEnd']) : null);
-      $model->completed_at    = ((isset($auction['Application']['TimeEnd']) && GetInfoFor::date_check($auction['Application']['TimeEnd']))? strtotime($auction['Application']['TimeEnd']) : null);
-      $model->published_at    = ((isset($data['PublishDate']) && GetInfoFor::date_check($data['PublishDate']))? strtotime($auction['Application']['TimeEnd']) : null);
-      $model->offer           = (isset(self::OFFER[$auction['TradeType']]) ? self::OFFER[$auction['TradeType']] : Torg::OFFER_PUBLIC);
-      $model->price_type      = (isset(self::PRICE_TYPE[$auction['PriceType']]) ? self::PRICE_TYPE[$auction['PriceType']] : null);
-      $model->is_repeat       = ($auction['IsRepeat'] === 'false'? 0 : 1 );
-      $model->additional_text = $auction['AdditionalText'];
-      $model->rules           = $auction['Application']['Rules'];
+    try {
+      if (!$check = Torg::find()->where(['msg_id' => $this->msgId])->one()) {
+        $model = new Torg();
+        $auction = $data['MessageInfo']['Auction'];
+      
+        $model->msg_id          = $this->msgId;
+        $model->property        = Torg::PROPERTY_BANKRUPT;
+        $model->description     = $this->_checkValue($auction['Text']);
+        $model->started_at      = ((isset($auction['Application']['TimeBegin']) && GetInfoFor::date_check($auction['Application']['TimeEnd']))? strtotime($auction['Application']['TimeBegin']) : null);
+        $model->end_at          = ((isset($auction['Application']['TimeEnd']) && GetInfoFor::date_check($auction['Application']['TimeEnd']))? strtotime($auction['Application']['TimeEnd']) : null);
+        $model->completed_at    = ((isset($auction['Application']['TimeEnd']) && GetInfoFor::date_check($auction['Application']['TimeEnd']))? strtotime($auction['Application']['TimeEnd']) : null);
+        $model->published_at    = ((isset($data['PublishDate']) && GetInfoFor::date_check($data['PublishDate']))? strtotime($auction['Application']['TimeEnd']) : null);
+        $model->offer           = (isset(self::OFFER[$auction['TradeType']]) ? self::OFFER[$auction['TradeType']] : Torg::OFFER_PUBLIC);
+        $model->price_type      = (isset(self::PRICE_TYPE[$auction['PriceType']]) ? self::PRICE_TYPE[$auction['PriceType']] : null);
+        $model->is_repeat       = ($auction['IsRepeat'] === 'false'? 0 : 1 );
+        $model->additional_text = $auction['AdditionalText'];
+        $model->rules           = $auction['Application']['Rules'];
 
-      if ($model->save()) {
-        $this->torgId = $model->id;
+        if (!$model->validate()) {
+          $this->_log([
+            'model'     => Torg::INT_CODE, 
+            'parent_id' => null, 
+            'status'    => Log::STATUS_WARNING, 
+            'name'      => 'Ошибка валидации "'.Torg::tableName().'"', 
+            'message'   => 'Данные не прошли валидацию после при попытке добавить данные в таблицу "'.Torg::tableName().'"', 
+            'json'      => [
+              'modelErrors' => $model->errors,
+              'modelData'   => $model,
+              'msgId'       => $this->msgId,
+              'messageData' => $data,
+            ]
+          ]);
+        } else {
+          if ($model->save()) {
+            $this->torgId = $model->id;
+            $this->_log([
+              'model'     => Torg::INT_CODE, 
+              'parent_id' => $model->id, 
+              'name'      => 'Успешное добавление "'.Torg::tableName().'"', 
+              'message'   => 'Данные успешно добавлены в таблицу "'.Torg::tableName().'"', 
+              'json'      => [
+                'msgId'       => $this->msgId,
+                'modelData'   => $model,
+                'messageData' => $data,
+              ]
+            ]);
+            if ($this->setTorgDebtor()) {
+              return true;
+            }
+          }
+        }
+      } else {
+        $this->torgId = $check->id;
         if ($this->setTorgDebtor()) {
           return true;
         }
       }
-    } else {
-      $this->torgId = $check->id;
-      if ($this->setTorgDebtor()) {
-        return true;
-      }
+    } catch (Exception $e) {
+      $this->_log([
+        'model'     => Torg::INT_CODE, 
+        'parent_id' => null, 
+        'status'    => Log::STATUS_ERROR, 
+        'name'      => 'Ошибка при парсинге "'.Torg::tableName().'"', 
+        'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!', 
+        'json'      => [
+          'error'       => $e->getMessage(),
+          'msgId'       => $this->msgId,
+          'messageData' => $data,
+        ]
+      ]);
     }
     return false;
   }
@@ -1212,20 +2231,62 @@ class EfrsbController extends Controller
    */
   private function setTorgDebtor()
   {
-    if (!$check = TorgDebtor::find()->where(['torg_id' => $this->torgId])->one()) {
-      $model = new TorgDebtor();
-    
-      $model->torg_id     = $this->torgId;
-      $model->etp_id      = $this->etpId;
-      $model->bankrupt_id = $this->bankruptId;
-      $model->manager_id  = $this->managerId;
-      $model->case_id     = $this->caseId;
+    try {
+      if (!$check = TorgDebtor::find()->where(['torg_id' => $this->torgId])->one()) {
+        $model = new TorgDebtor();
+      
+        $model->torg_id     = $this->torgId;
+        $model->etp_id      = $this->etpId;
+        $model->bankrupt_id = $this->bankruptId;
+        $model->manager_id  = $this->managerId;
+        $model->case_id     = $this->caseId;
 
-      if ($model->save()) {
+        if (!$model->validate()) {
+          $this->_log([
+            'model'     => 0, 
+            'parent_id' => null, 
+            'status'    => Log::STATUS_WARNING, 
+            'name'      => 'Ошибка валидации "'.TorgDebtor::tableName().'"', 
+            'message'   => 'Данные не прошли валидацию после при попытке добавить данные в таблицу "'.TorgDebtor::tableName().'"', 
+            'json'      => [
+              'modelErrors' => $model->errors,
+              'modelData'   => $model,
+              'msgId'       => $this->msgId,
+              'messageData' => $data,
+            ]
+          ]);
+        } else {
+          if ($model->save()) {
+            $this->_log([
+              'model'     => 0, 
+              'parent_id' => $this->torgId, 
+              'name'      => 'Успешное добавление "'.TorgDebtor::tableName().'"', 
+              'message'   => 'Данные успешно добавлены в таблицу "'.TorgDebtor::tableName().'"', 
+              'json'      => [
+                'msgId'       => $this->msgId,
+                'modelData'   => $model,
+                'messageData' => $data,
+              ]
+            ]);
+            return true;
+          }
+        }
+      } else {
         return true;
       }
-    } else {
-      return true;
+    } catch (Exception $e) {
+      $this->_log([
+        'model'     => 0, 
+        'parent_id' => null, 
+        'status'    => Log::STATUS_ERROR, 
+        'name'      => 'Ошибка при парсинге "'.TorgDebtor::tableName().'"', 
+        'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!', 
+        'json'      => [
+          'error'       => $e->getMessage(),
+          'msgId'       => $this->msgId,
+          'messageData' => $data,
+        ]
+      ]);
     }
     return false;
   }
@@ -1238,31 +2299,74 @@ class EfrsbController extends Controller
    */
   private function setLot($data, $address)
   {
-    if (!$check = Lot::find()->where(['torg_id' => $this->torgId, 'ordinal_number' => $data['Order']])->one()) {
-      $model = new Lot();
+    try {
+      if (!$check = Lot::find()->where(['torg_id' => $this->torgId, 'ordinal_number' => $data['Order']])->one()) {
+        $model = new Lot();
 
-      $info = [];
+        $info = [];
 
-      if ($vin = GetInfoFor::vin($data['Description'])) {
-        $info = json_encode(['vin' => $vin]);
-      } else if ($cadastr = GetInfoFor::cadastr($data['Description'])) {
-        $info = json_encode(['cadastr' => $cadastr]);
-        $address = (GetInfoFor::cadastr_address($cadastr))['address'];
-      }
-    
-      $model->torg_id         = $this->torgId;
-      $model->ordinal_number  = $data['Order'];
-      $model->title           = GetInfoFor::mb_ucfirst(GetInfoFor::title($data['Description']));
-      $model->description     = $data['Description'];
-      $model->start_price     = $data['StartPrice'];
-      $model->step            = round(($data['Step'] ? : 0), 4);
-      $model->step_measure    = (isset(self::MEASURE[$data['AuctionStepUnit']])? : null);
-      $model->deposit         = round(($data['Advance'] ? : 0), 4);
-      $model->deposit_measure = (isset(self::MEASURE[$data['AdvanceStepUnit']])? : null);
-      $model->info            = json_encode(isset($obj->vin) ? ['vin' => $obj->vin] : []);
-      
-      if ($model->save()) {
-        $this->lotId = $model->id;
+        if ($vin = GetInfoFor::vin($this->_checkValue($data['Description']))) {
+          $info = json_encode(['vin' => $vin]);
+        } else if ($cadastr = GetInfoFor::cadastr($this->_checkValue($data['Description']))) {
+          $info = json_encode(['cadastr' => $cadastr]);
+          $address = (GetInfoFor::cadastr_address($cadastr))['address'];
+        }
+        
+        $model->torg_id         = $this->torgId;
+        $model->ordinal_number  = $this->_checkValue($data['Order']);
+        $model->title           = GetInfoFor::mb_ucfirst(GetInfoFor::title($data['Description']));
+        $model->description     = $this->_checkValue($data['Description']);
+        $model->start_price     = $this->_checkValue($data['StartPrice']);
+        $model->step            = round(($this->_checkValue($data['Step']) ? : 0), 4);
+        $model->step_measure    = (isset(self::MEASURE[$this->_checkValue($data['AuctionStepUnit'])])? : null);
+        $model->deposit         = round(($this->_checkValue($data['Advance']) ? : 0), 4);
+        $model->deposit_measure = (isset(self::MEASURE[$this->_checkValue($data['AdvanceStepUnit'])])? : null);
+        $model->info            = $info;
+        
+        if (!$model->validate()) {
+          $this->_log([
+            'model'     => Lot::INT_CODE, 
+            'parent_id' => null, 
+            'status'    => Log::STATUS_WARNING, 
+            'name'      => 'Ошибка валидации "'.Lot::tableName().'"', 
+            'message'   => 'Данные не прошли валидацию после при попытке добавить данные в таблицу "'.Lot::tableName().'"', 
+            'json'      => [
+              'modelErrors' => $model->errors,
+              'modelData'   => $model,
+              'msgId'       => $this->msgId,
+              'messageData' => $data,
+            ]
+          ]);
+        } else {
+          if ($model->save()) {
+            $this->lotId = $model->id;
+            $this->_log([
+              'model'     => 0, 
+              'parent_id' => $model->id, 
+              'name'      => 'Успешное добавление "'.Lot::tableName().'"', 
+              'message'   => 'Данные успешно добавлены в таблицу "'.Lot::tableName().'"', 
+              'json'      => [
+                'msgId'       => $this->msgId,
+                'modelData'   => $model,
+                'messageData' => $data,
+              ]
+            ]);
+            $this->setPlace($address, $this->lotId, Lot::INT_CODE);
+            if (isset($data['ClassifierCollection']['AuctionLotClassifier'][0])) {
+              foreach ($data['ClassifierCollection']['AuctionLotClassifier'] as $category) {
+                if ($this->setLotCategory($category)) {
+                  return true;
+                }
+              }
+            } else {
+              if ($this->setLotCategory($data['ClassifierCollection']['AuctionLotClassifier'])) {
+                return true;
+              }
+            }
+          }
+        }
+      } else {
+        $this->lotId = $check->id;
         $this->setPlace($address, $this->lotId, Lot::INT_CODE);
         if (isset($data['ClassifierCollection']['AuctionLotClassifier'][0])) {
           foreach ($data['ClassifierCollection']['AuctionLotClassifier'] as $category) {
@@ -1275,22 +2379,21 @@ class EfrsbController extends Controller
             return true;
           }
         }
+        
       }
-    } else {
-      $this->lotId = $check->id;
-      $this->setPlace($address, $this->lotId, Lot::INT_CODE);
-      if (isset($data['ClassifierCollection']['AuctionLotClassifier'][0])) {
-        foreach ($data['ClassifierCollection']['AuctionLotClassifier'] as $category) {
-          if ($this->setLotCategory($category)) {
-            return true;
-          }
-        }
-      } else {
-        if ($this->setLotCategory($data['ClassifierCollection']['AuctionLotClassifier'])) {
-          return true;
-        }
-      }
-      
+    } catch (Exception $e) {
+      $this->_log([
+        'model'     => Lot::INT_CODE, 
+        'parent_id' => null, 
+        'status'    => Log::STATUS_ERROR, 
+        'name'      => 'Ошибка при парсинге "'.Lot::tableName().'"', 
+        'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!', 
+        'json'      => [
+          'error'       => $e->getMessage(),
+          'msgId'       => $this->msgId,
+          'messageData' => $data,
+        ]
+      ]);
     }
     return false;
   }
@@ -1302,7 +2405,59 @@ class EfrsbController extends Controller
    */
   private function setLotCategory($data)
   {
-    
+    try {
+      if (!LotCategory::find()->where(['lot_id' => $this->lotId, 'category_id' => self::CATEGORY_CODE[$data['Code']]])->one()) {
+        $model = new LotCategory();
+
+        $model->lot_id      = $this->lotId;
+        $model->category_id = self::CATEGORY_CODE[$this->_checkValue($data['Code'])];
+
+        if (!$model->validate()) {
+          $this->_log([
+            'model'     => 0, 
+            'parent_id' => null, 
+            'status'    => Log::STATUS_WARNING, 
+            'name'      => 'Ошибка валидации "'.LotCategory::tableName().'"', 
+            'message'   => 'Данные не прошли валидацию после при попытке добавить данные в таблицу "'.LotCategory::tableName().'"', 
+            'json'      => [
+              'modelErrors' => $model->errors,
+              'modelData'   => $model,
+              'msgId'       => $this->msgId,
+              'messageData' => $data,
+            ]
+          ]);
+        } else {
+          if ($model->save()) {
+            $this->_log([
+              'model'     => 0, 
+              'parent_id' => $this->lotId, 
+              'name'      => 'Успешное добавление "'.LotCategory::tableName().'"', 
+              'message'   => 'Данные успешно добавлены в таблицу "'.LotCategory::tableName().'"', 
+              'json'      => [
+                'msgId'       => $this->msgId,
+                'modelData'   => $model,
+                'messageData' => $data,
+              ]
+            ]);
+            return true;
+          }
+        }
+      }
+    } catch (Exception $e) {
+      $this->_log([
+        'model'     => 0, 
+        'parent_id' => null, 
+        'status'    => Log::STATUS_ERROR, 
+        'name'      => 'Ошибка при парсинге "'.LotCategory::tableName().'"', 
+        'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!', 
+        'json'      => [
+          'error'       => $e->getMessage(),
+          'msgId'       => $this->msgId,
+          'messageData' => $data,
+        ]
+      ]);
+    }
+    return false;
   }
 
   /**
@@ -1310,40 +2465,63 @@ class EfrsbController extends Controller
    * 
    * @param text $data
    */
-  private function setDocument($data)
+  private function setDocument($data, $hash)
   {
-    if (isset($data['MessageURLList']['MessageURL'][0])) {
-      $check = true;
-      foreach ($data['MessageURLList']['MessageURL'] as $key => $document) {
+    try {
+      if (!Document::find()->where(['hash' => $hash])->one()) {
         $model = new Document();
 
         $model->model     = Casefile::INT_CODE;
         $model->parent_id = $this->caseId;
-        $model->name      = $document['URLName'];
-        $model->ext       = GetInfoFor::format($document['URLName']);
-        $model->url       = str_replace('&amp;', '&', $document['URL']);
-        $model->hash      = $data['FileInfoList']['FileInfo'][$key]['Hash'];
+        $model->name      = $data['URLName'];
+        $model->ext       = GetInfoFor::format($data['URLName']);
+        $model->url       = str_replace('&amp;', '&', $data['URL']);
+        $model->hash      = $hash;
 
-        if (!$model->save()) {
-          $check = false;
+        if (!$model->validate()) {
+          $this->_log([
+            'model'     => 0, 
+            'parent_id' => null, 
+            'status'    => Log::STATUS_WARNING, 
+            'name'      => 'Ошибка валидации "'.Document::tableName().'"', 
+            'message'   => 'Данные не прошли валидацию после при попытке добавить данные в таблицу "'.LotCategory::tableName().'"', 
+            'json'      => [
+              'modelErrors' => $model->errors,
+              'modelData'   => $model,
+              'msgId'       => $this->msgId,
+              'messageData' => $data,
+            ]
+          ]);
+        } else {
+          if ($model->save()) {
+            $this->_log([
+              'model'     => 0, 
+              'parent_id' => $model->id, 
+              'name'      => 'Успешное добавление "'.Document::tableName().'"', 
+              'message'   => 'Данные успешно добавлены в таблицу "'.Document::tableName().'"', 
+              'json'      => [
+                'msgId'       => $this->msgId,
+                'modelData'   => $model,
+                'messageData' => $data,
+              ]
+            ]);
+            return true;
+          }
         }
       }
-      if ($check) {
-        return true;
-      }
-    } else {
-      $model = new Document();
-
-      $model->model     = Casefile::INT_CODE;
-      $model->parent_id = $this->caseId;
-      $model->name      = $data['MessageURLList']['MessageURL']['URLName'];
-      $model->ext       = GetInfoFor::format($data['MessageURLList']['MessageURL']['URLName']);
-      $model->url       = str_replace('&amp;', '&', $data['MessageURLList']['MessageURL']['URL']);
-      $model->hash      = $data['FileInfoList']['FileInfo']['Hash'];
-
-      if ($model->save()) {
-        return true;
-      }
+    } catch (Exception $e) {
+      $this->_log([
+        'model'     => 0, 
+        'parent_id' => null, 
+        'status'    => Log::STATUS_ERROR, 
+        'name'      => 'Ошибка при парсинге "'.Document::tableName().'"', 
+        'message'   => 'Критическая ошибка на сервере или в коде нужно проверить данные и код!', 
+        'json'      => [
+          'error'       => $e->getMessage(),
+          'msgId'       => $this->msgId,
+          'messageData' => $data,
+        ]
+      ]);
     }
     return false;
   }
