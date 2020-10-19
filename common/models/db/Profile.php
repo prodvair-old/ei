@@ -123,6 +123,8 @@ class Profile extends ActiveRecord implements ProfileInterface
             self::ACTIVITY_FARMER,
             self::ACTIVITY_SIMPLE,
             self::ACTIVITY_OTHER,
+            25,
+            26
         ];
     }
     

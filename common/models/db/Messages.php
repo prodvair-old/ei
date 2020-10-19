@@ -79,7 +79,6 @@ class Messages extends ActiveRecord
         return [
             [
                 'class' => TimestampBehavior::className(),
-                'updatedAtAttribute' => false,
             ],
         ];
     }

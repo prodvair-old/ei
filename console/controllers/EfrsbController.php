@@ -81,6 +81,8 @@ class EfrsbController extends Controller
 {
   use XmlToArray;
 
+  public $lockHandle;
+  
   private $client;
   private $messageIds;
   private $dateNow;
@@ -478,7 +480,7 @@ class EfrsbController extends Controller
   ];
   CONST CATEGORY_CODE = [
     "99"      => 11063,
-    "402006"  => 11072,
+    "0402006" => 11072,
     "0202002" => 11067,
     "0301"    => 11069,
     "0101006" => 11070,
@@ -647,6 +649,32 @@ class EfrsbController extends Controller
     "0402"    => 11234
   ];
 
+  /**
+   * Проверка запущена ли команда и блокировка повторного запускаы
+   * 
+   * @param text pid
+   */
+  protected function lockProcess($pid)
+  {
+    $path = Yii::getAlias('@app/runtime/logs/'.$pid.'.txt');
+        
+    if(!flock($this->lockHandle = fopen($path, 'w'), LOCK_EX | LOCK_NB)) {            
+      echo "Команда уже запущена!\n";
+      exit;
+    }
+
+    fwrite($this->lockHandle,'run');
+  }
+
+  /**
+   * Разблокировка запуска команды
+   */
+  protected function unlockProcess()
+  {
+    flock($this->lockHandle, LOCK_UN);
+    fclose($this->lockHandle);
+  }
+
   /** 
    * Парсинг сообщении из ЕФРСБ
    * 
@@ -657,6 +685,10 @@ class EfrsbController extends Controller
    */
   public function actionParseMessage($step = 100)
   {
+    $this->lockProcess('parse-message');
+
+    echo "=======================\n";
+    echo "Начала парсинга!\n";
     $typeIds = Yii::$app->params['parserMessageIds'];
     
     $model = Messages::find()->where(['or', ['status' => 1],['status' => 2]]);
@@ -666,14 +698,16 @@ class EfrsbController extends Controller
       $where[] = ['type' => $typeId];
     }
 
-    $messages = $model->andFilterWhere($where)->limit($step)->orderBy(['status DESC AND id DESC'])->all();
+    $messages = $model->andFilterWhere($where)->limit($step)->orderBy(['status' => SORT_DESC, 'id' => SORT_DESC])->all();
 
     foreach ($messages as $message) {
       $this->dateNow = strtotime(new \DateTime());
+      echo "-----------------------\n";
       try {
         switch ($message->type) {
           case 2:
-              $message->status = $this->getAuction($message);
+              $result = $this->getAuction($message);
+              $message->status = $result['status'];
               $message->update();
             break;
         }
@@ -686,6 +720,7 @@ class EfrsbController extends Controller
             'json'      => [
               'messageType' => $message->type,
               'msgId'       => $this->msgId,
+              'table'       => $result['table'],
               'messageData' => $this->_xmlToArray($message->message)['MessageData'],
             ]
           ]);
@@ -699,6 +734,7 @@ class EfrsbController extends Controller
             'json'      => [
               'messageType' => $message->type,
               'msgId'       => $this->msgId,
+              'table'       => $result['table'],
               'messageData' => $this->_xmlToArray($message->message)['MessageData'],
             ]
           ]);
@@ -720,15 +756,24 @@ class EfrsbController extends Controller
         var_dump($message, $e->getMessage());
       }
     }
+    echo "Конец парсинга!\n";
+    echo "=======================\n";
+
+    $this->unlockProcess();
   }
 
   /** 
    * Получение сообщении из ЕФРСБ
    * 
-   * Command: php yii efrsb/get-message
+   * @param integer $days
+   * 
+   * Command: php yii efrsb/get-message [Days count]
    */
-  public function actionGetMessage()
+  public function actionGetMessage($days = 10)
   {
+    $this->lockProcess('get-message');
+
+    echo "=======================\n";
     echo "Начала получения сообщении\n";
     try {
       $this->_client();
@@ -736,11 +781,11 @@ class EfrsbController extends Controller
       $countSuccsess = 0;
       $countError = 0;
 
-      if ($this->getMessageIds(50)->status) {
+      if ($this->getMessageIds($days)->status) {
         $messages = [];
         echo "Получено: ".count($this->messageIds)."\n";
 
-        foreach ($this->messageIds as $msgId) {
+        foreach ($this->messageIds as $key => $msgId) {
           $message = $this->getMessageContent($msgId);
           
           if ($message->status) {
@@ -778,6 +823,9 @@ class EfrsbController extends Controller
                 ]);
               } else {
                 if ($model->save()) {
+                  if($key % 100 == 0) {
+                    echo "Обработано: $key\n";
+                  }
                   $countSuccsess++;
                   $this->_log([
                     'model'     => Messages::INT_CODE, 
@@ -809,8 +857,12 @@ class EfrsbController extends Controller
         ]
       ]);
     }
-    echo "Успешный парсинг: $countSuccsess.\n";
-    echo "Ошибки парсинг: $countError.\n";
+    echo "Успешный добавлены: $countSuccsess.\n";
+    echo "Ошибки при добавлении: $countError.\n";
+    echo "Конец получения сообщении\n";
+    echo "=======================\n";
+
+    $this->unlockProcess();
   }
 
   /** 
@@ -872,6 +924,9 @@ class EfrsbController extends Controller
       if ($value['xsi:nil'] == 'true') {
         return null;
       }
+    }
+    if (isset($value[0])) {
+      return null;
     }
     return $value;
   }
@@ -1039,6 +1094,11 @@ class EfrsbController extends Controller
     }
   }
 
+  /**
+   * Добавления Лог данных и отслеживании в таблицу log
+   * 
+   * @param array $data
+   */
   private function _log($data)
   {
     $model = new Log();
@@ -1053,12 +1113,6 @@ class EfrsbController extends Controller
     return $model->save();
   }
 
-  public function actionTest()
-  {
-    $text = str_replace(' ', '', substr('А40-49283/2020',strrpos('А40-49283/2020',"/")+1));
-    var_dump($text, strlen($text) == 4);
-  }
-
   /** 
    * Парсинг сообщения под типом Auction
    * 
@@ -1067,32 +1121,38 @@ class EfrsbController extends Controller
   private function getAuction($message)
   {
     $messageContent = $this->_xmlToArray($message->message)['MessageData'];
-    $result = Messages::STATUS_SUCCESS;
+    $result['status'] = Messages::STATUS_SUCCESS;
     $this->msgId = $this->caseId = $this->sroId = $this->managerId = $this->bankruptId = $this->etpId = $this->torgId = $this->lotId = null;
     // var_dump($messageContent);
     // die;
     $this->msgId = $messageContent['Id'];
+    echo "Номер сообщения: ".$this->msgId."\n";
     if ($this->setCasefile($messageContent)) {
       echo "setCasefile - Успешно!\n";
       
       if ($this->setManager($messageContent['Publisher'])) {
         echo "setManager - Успешно!\n";
       } else {
-        $result = Messages::STATUS_ERROR;
+        $result['status'] = Messages::STATUS_ERROR;
+        $result['table'] = 'Manager';
       }
       
       if ($this->setBankrupt($messageContent)) {
         echo "setBankrupt - Успешно!\n";
       } else {
-        $result = Messages::STATUS_ERROR;
+        $result['status'] = Messages::STATUS_ERROR;
+        $result['table'] = 'Bankrupt';
       }
+
       if (!$messageContent['MessageInfo']['Auction']['IdTradePlace']['xsi:nil']) {
         if ($this->getEtp($messageContent['MessageInfo']['Auction'])) {
           echo "getEtp - Успешно!\n";
         } else {
-          $result = Messages::STATUS_ERROR;
+          $result['status'] = Messages::STATUS_ERROR;
+          $result['table'] = 'Etp';
         }
       }
+
       if ($this->managerId && $this->bankruptId) {
         if ($this->setTorg($messageContent)) {
           echo "setTorg - Успешно!\n";
@@ -1103,16 +1163,21 @@ class EfrsbController extends Controller
               if ($this->setLot($lot, $messageContent['MessageInfo']['Bankrupt']['Address'])) {
                 echo "setLot - Успешно!\n";
               } else {
-                $result = Messages::STATUS_ERROR;
+                $result['status'] = Messages::STATUS_ERROR;
+                $result['table'] = 'Lot';
               }
             }
           } else {
             if ($this->setLot($messageContent['MessageInfo']['Auction']['LotTable']['AuctionLot'], $messageContent['MessageInfo']['Bankrupt']['Address'])) {
               echo "setLot - Успешно!\n";
             } else {
-              $result = Messages::STATUS_ERROR;
+              $result['status'] = Messages::STATUS_ERROR;
+              $result['table'] = 'Lot';
             }
           }
+        } else {
+          $result['status'] = Messages::STATUS_ERROR;
+          $result['table'] = 'Torg';
         }
       }
 
@@ -1123,20 +1188,25 @@ class EfrsbController extends Controller
             if ($this->setDocument($document, $messageContent['FileInfoList']['FileInfo'][$key]['Hash'])) {
               echo "setDocument - Успешно!\n";
             } else {
-              $result = Messages::STATUS_ERROR;
+              $result['status'] = Messages::STATUS_ERROR;
+              $result['table'] = 'Document';
             }
           }
         } else {
           if ($this->setDocument($messageContent['MessageURLList']['MessageURL'], $messageContent['FileInfoList']['FileInfo']['Hash'])) {
             echo "setDocument - Успешно!\n";
           } else {
-            $result = Messages::STATUS_ERROR;
+            $result['status'] = Messages::STATUS_ERROR;
+            $result['table'] = 'Document';
           }
         }
       }
 
       $this->_lotSearchIndex();
       echo "Индексация пройдена...\n";
+    } else {
+      $result['status'] = Messages::STATUS_ERROR;
+      $result['table'] = 'Casefile';
     }
     
     return $result;
@@ -1786,8 +1856,8 @@ class EfrsbController extends Controller
                 'name'      => 'Успешное добавление "'.Manager::tableName().'"', 
                 'message'   => 'Данные успешно добавлены в таблицу "'.Manager::tableName().'"', 
                 'json'      => [
-                'modelData'   => $model,
-                'msgId'       => $this->msgId,
+                  'modelData'   => $model,
+                  'msgId'       => $this->msgId,
                   'messageData' => $data,
                 ]
               ]);
@@ -1795,11 +1865,15 @@ class EfrsbController extends Controller
                 case 'ArbitrManager':
                     if ($this->setProfile($data, $this->managerId, Manager::INT_CODE, Profile::ACTIVITY_SIMPLE)) {
                       $this->setPlace($data['CorrespondenceAddress'], $this->managerId, Manager::INT_CODE);
-                      if ($this->setSro($data['Sro'])) {
-                        echo "setSro - Успешно!\n";
-                        if ($this->setManagerSro()) {
-                          return true;
+                      if (isset($data['Sro'])) {
+                        if ($this->setSro($data['Sro'])) {
+                          echo "setSro - Успешно!\n";
+                          if ($this->setManagerSro()) {
+                            return true;
+                          }
                         }
+                      } else {
+                        return true;
                       }
                     }
                   break;
@@ -1866,11 +1940,15 @@ class EfrsbController extends Controller
             case 'ArbitrManager':
               if ($this->setProfile($data, $this->managerId, Manager::INT_CODE, Profile::ACTIVITY_SIMPLE)) {
                 $this->setPlace($data['CorrespondenceAddress'], $this->managerId, Manager::INT_CODE);
-                if ($this->setSro($data['Sro'])) {
-                  echo "setSro - Успешно!\n";
-                  if ($this->setManagerSro()) {
-                    return true;
+                if (isset($data['Sro'])) {
+                  if ($this->setSro($data['Sro'])) {
+                    echo "setSro - Успешно!\n";
+                    if ($this->setManagerSro()) {
+                      return true;
+                    }
                   }
+                } else {
+                  return true;
                 }
               }
               break;
@@ -1970,7 +2048,6 @@ class EfrsbController extends Controller
               'modelErrors' => $model->errors,
               'modelData'   => $model,
               'msgId'       => $this->msgId,
-              'messageData' => $data,
             ]
           ]);
         } else {
@@ -1983,7 +2060,6 @@ class EfrsbController extends Controller
               'json'      => [
                 'modelData'   => $model,
                 'msgId'       => $this->msgId,
-                'messageData' => $data,
               ]
             ]);
             echo "setManagerSro - Успешно!\n";
@@ -2004,7 +2080,6 @@ class EfrsbController extends Controller
         'json'      => [
           'error'       => $e->getMessage(),
           'msgId'       => $this->msgId,
-          'messageData' => $data,
         ]
       ]);
     }
@@ -2160,10 +2235,10 @@ class EfrsbController extends Controller
         $model->msg_id          = $this->msgId;
         $model->property        = Torg::PROPERTY_BANKRUPT;
         $model->description     = $this->_checkValue($auction['Text']);
-        $model->started_at      = ((isset($auction['Application']['TimeBegin']) && GetInfoFor::date_check($auction['Application']['TimeEnd']))? strtotime($auction['Application']['TimeBegin']) : null);
-        $model->end_at          = ((isset($auction['Application']['TimeEnd']) && GetInfoFor::date_check($auction['Application']['TimeEnd']))? strtotime($auction['Application']['TimeEnd']) : null);
-        $model->completed_at    = ((isset($auction['Application']['TimeEnd']) && GetInfoFor::date_check($auction['Application']['TimeEnd']))? strtotime($auction['Application']['TimeEnd']) : null);
-        $model->published_at    = ((isset($data['PublishDate']) && GetInfoFor::date_check($data['PublishDate']))? strtotime($auction['Application']['TimeEnd']) : null);
+        $model->started_at      = ((isset($auction['Application']['TimeBegin']) && $this->_checkValue($auction['Application']['TimeBegin']) && GetInfoFor::date_check($auction['Application']['TimeEnd']))? strtotime($auction['Application']['TimeBegin']) : null);
+        $model->end_at          = ((isset($auction['Application']['TimeEnd']) && $this->_checkValue($auction['Application']['TimeEnd']) && GetInfoFor::date_check($auction['Application']['TimeEnd']))? strtotime($auction['Application']['TimeEnd']) : null);
+        $model->completed_at    = ((isset($auction['Date']) && $this->_checkValue($auction['Date']) && GetInfoFor::date_check($auction['Date']))? strtotime($auction['Date']) : null);
+        $model->published_at    = ((isset($data['PublishDate']) && $this->_checkValue($auction['PublishDate']) && GetInfoFor::date_check($data['PublishDate']))? strtotime($data['PublishDate']) : null);
         $model->offer           = (isset(self::OFFER[$auction['TradeType']]) ? self::OFFER[$auction['TradeType']] : Torg::OFFER_PUBLIC);
         $model->price_type      = (isset(self::PRICE_TYPE[$auction['PriceType']]) ? self::PRICE_TYPE[$auction['PriceType']] : null);
         $model->is_repeat       = ($auction['IsRepeat'] === 'false'? 0 : 1 );
@@ -2252,7 +2327,6 @@ class EfrsbController extends Controller
               'modelErrors' => $model->errors,
               'modelData'   => $model,
               'msgId'       => $this->msgId,
-              'messageData' => $data,
             ]
           ]);
         } else {
@@ -2265,7 +2339,6 @@ class EfrsbController extends Controller
               'json'      => [
                 'msgId'       => $this->msgId,
                 'modelData'   => $model,
-                'messageData' => $data,
               ]
             ]);
             return true;
@@ -2284,7 +2357,6 @@ class EfrsbController extends Controller
         'json'      => [
           'error'       => $e->getMessage(),
           'msgId'       => $this->msgId,
-          'messageData' => $data,
         ]
       ]);
     }
@@ -2306,9 +2378,9 @@ class EfrsbController extends Controller
         $info = [];
 
         if ($vin = GetInfoFor::vin($this->_checkValue($data['Description']))) {
-          $info = json_encode(['vin' => $vin]);
+          $info = ['vin' => $vin];
         } else if ($cadastr = GetInfoFor::cadastr($this->_checkValue($data['Description']))) {
-          $info = json_encode(['cadastr' => $cadastr]);
+          $info = ['cadastr' => $cadastr];
           $address = (GetInfoFor::cadastr_address($cadastr))['address'];
         }
         
@@ -2321,7 +2393,7 @@ class EfrsbController extends Controller
         $model->step_measure    = (isset(self::MEASURE[$this->_checkValue($data['AuctionStepUnit'])])? : null);
         $model->deposit         = round(($this->_checkValue($data['Advance']) ? : 0), 4);
         $model->deposit_measure = (isset(self::MEASURE[$this->_checkValue($data['AdvanceStepUnit'])])? : null);
-        $model->info            = $info;
+        $model->info            = json_encode($info);
         
         if (!$model->validate()) {
           $this->_log([
@@ -2526,4 +2598,3 @@ class EfrsbController extends Controller
     return false;
   }
 }
-

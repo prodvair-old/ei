@@ -158,18 +158,87 @@ class TestController extends Controller
             11234 => 'Вещные права на имущество',
         ];
 
+        $categorys = [
+            1   => [
+                'ids'   => [11204, 11205],
+                'name'  => false,
+            ],
+            2   => [
+                'ids'   => [11211],
+                'name'  => false,
+            ],
+            3   => [
+                'ids'   => [11203],
+                'name'  => false,
+            ],
+            4   => [
+                'ids'   => [11207, 11208, 11209, 11216],
+                'name'  => false,
+            ],
+            9   => [
+                'ids'   => [11210, 11213, 11214],
+                'name'  => false,
+            ],
+            11  => [
+                'ids'   => [11202, 11217, 11232],
+                'name'  => 'Активы',
+            ],
+            12  => [
+                'ids'   => [11206],
+                'name'  => 'Животноводство',
+            ],
+            13  => [
+                'ids'   => [11212],
+                'name'  => 'Материалы для производства',
+            ],
+            14  => [
+                'ids'   => [11215],
+                'name'  => 'Товары народного потребления',
+            ],
+            15  => [
+                'ids'   => [11218, 11219],
+                'name'  => 'Компьютерное ПО',
+            ],
+            16  => [
+                'ids'   => [11220, 11221, 11222, 11223, 11224, 11225, 11226, 11227, 11228, 11229],
+                'name'  => 'Наукоемкие промышленные технологии',
+            ],
+            17  => [
+                'ids'   => [11230, 11231],
+                'name'  => 'Нематериальные основные фонды',
+            ],
+            18  => [
+                'ids'   => [11233, 11234],
+                'name'  => 'Имущественные права',
+            ],
+        ];
+
         // создание корневой категории
         // $category = new Category(['id' => 20, 'name' => 'Новые', 'slug' => 'new']);
         // $category->makeRoot();
-        $category=Category::findOne(0);
+        $category = Category::findOne(0);
 
-        foreach ($arr as $key => $value) {
-            $node = new Category([
-                'id'   => $key,
-                'name' => $value,
-                'slug' => translit($value),
-            ]);
-            $node->appendTo($category);
+        foreach ($categorys as $id => $data) {
+            if ($data['name']) {
+                $node = new Category([
+                    'id'   => $id,
+                    'name' => $data['name'],
+                    'slug' => translit($data['name']),
+                ]);
+                $node->appendTo($category);
+            } else {
+                $node = Category::findOne($id);
+            }
+
+            
+            foreach ($data['ids'] as $i) {
+                $leaf = new Category([
+                    'id'   => $i+100,
+                    'name' => $arr[$i],
+                    'slug' => translit($arr[$i]),
+                ]);
+                $leaf->appendTo($node);
+            }
         }
     }
     public function actionIndexssa()
