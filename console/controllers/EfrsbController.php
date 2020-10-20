@@ -762,6 +762,15 @@ class EfrsbController extends Controller
     $this->unlockProcess();
   }
 
+  public function actionAgain()
+  {
+    foreach (Messages::find()->where(['status' => 4])->all() as $message) {
+      $message->status = 2;
+      $message->update();
+    }
+    return true;
+  }
+
   /** 
    * Получение сообщении из ЕФРСБ
    * 
@@ -925,7 +934,7 @@ class EfrsbController extends Controller
         return null;
       }
     }
-    if (isset($value[0])) {
+    if (is_array($value[0])) {
       return null;
     }
     return $value;
@@ -1135,6 +1144,7 @@ class EfrsbController extends Controller
       } else {
         $result['status'] = Messages::STATUS_ERROR;
         $result['table'] = 'Manager';
+        var_dump($result);
       }
       
       if ($this->setBankrupt($messageContent)) {
@@ -1142,6 +1152,7 @@ class EfrsbController extends Controller
       } else {
         $result['status'] = Messages::STATUS_ERROR;
         $result['table'] = 'Bankrupt';
+        var_dump($result);
       }
 
       if (!$messageContent['MessageInfo']['Auction']['IdTradePlace']['xsi:nil']) {
@@ -1165,6 +1176,7 @@ class EfrsbController extends Controller
               } else {
                 $result['status'] = Messages::STATUS_ERROR;
                 $result['table'] = 'Lot';
+                var_dump($result);
               }
             }
           } else {
@@ -1173,11 +1185,13 @@ class EfrsbController extends Controller
             } else {
               $result['status'] = Messages::STATUS_ERROR;
               $result['table'] = 'Lot';
+              var_dump($result);
             }
           }
         } else {
           $result['status'] = Messages::STATUS_ERROR;
           $result['table'] = 'Torg';
+          var_dump($result);
         }
       }
 
@@ -1190,6 +1204,7 @@ class EfrsbController extends Controller
             } else {
               $result['status'] = Messages::STATUS_ERROR;
               $result['table'] = 'Document';
+              var_dump($result);
             }
           }
         } else {
@@ -1198,6 +1213,7 @@ class EfrsbController extends Controller
           } else {
             $result['status'] = Messages::STATUS_ERROR;
             $result['table'] = 'Document';
+            var_dump($result);
           }
         }
       }
@@ -1207,6 +1223,7 @@ class EfrsbController extends Controller
     } else {
       $result['status'] = Messages::STATUS_ERROR;
       $result['table'] = 'Casefile';
+      var_dump($result);
     }
     
     return $result;
@@ -1525,11 +1542,7 @@ class EfrsbController extends Controller
         $model = new Profile();
         $category = $this->_bankruptCategoryConvertor($data['Category']['Code']);
 
-        if (isset($data['FioHistory'])) {
-          $fio = $data['FioHistory']['Fio'];
-        } else {
-          $fio = $data['Fio'];
-        }
+        $fio = $data['Fio'];
       
         $model->model       = $modelId;
         $model->parent_id   = $parentId;
@@ -2094,12 +2107,12 @@ class EfrsbController extends Controller
   private function setBankrupt($data)
   {
     try {
+      $attr = $this->_attributesType($data['Bankrupt']['xsi:type']);
+      $agent = (($attr[1] === 'Company')? 2 : 1);
+      $version = $attr[2];
+
       if (!$check = Bankrupt::find()->where(['bankrupt_id' => $data['BankruptId']])->one()) {
         $model = new Bankrupt();
-        
-        $attr = $this->_attributesType($data['Bankrupt']['xsi:type']);
-        $agent = (($attr[1] === 'Company')? 2 : 1);
-        $version = $attr[2];
       
         $model->agent       = $agent;
         $model->bankrupt_id = $data['BankruptId'];
@@ -2372,17 +2385,17 @@ class EfrsbController extends Controller
   private function setLot($data, $address)
   {
     try {
+      $info = [];
+
+      if ($vin = GetInfoFor::vin($this->_checkValue($data['Description']))) {
+        $info = ['vin' => $vin];
+      } else if ($cadastr = GetInfoFor::cadastr($this->_checkValue($data['Description']))) {
+        $info = ['cadastr' => $cadastr];
+        $address = (GetInfoFor::cadastr_address($cadastr))['address'];
+      }
+
       if (!$check = Lot::find()->where(['torg_id' => $this->torgId, 'ordinal_number' => $data['Order']])->one()) {
         $model = new Lot();
-
-        $info = [];
-
-        if ($vin = GetInfoFor::vin($this->_checkValue($data['Description']))) {
-          $info = ['vin' => $vin];
-        } else if ($cadastr = GetInfoFor::cadastr($this->_checkValue($data['Description']))) {
-          $info = ['cadastr' => $cadastr];
-          $address = (GetInfoFor::cadastr_address($cadastr))['address'];
-        }
         
         $model->torg_id         = $this->torgId;
         $model->ordinal_number  = $this->_checkValue($data['Order']);
@@ -2423,7 +2436,9 @@ class EfrsbController extends Controller
                 'messageData' => $data,
               ]
             ]);
-            $this->setPlace($address, $this->lotId, Lot::INT_CODE);
+            if (isset($address)) {
+              $this->setPlace($address, $this->lotId, Lot::INT_CODE);
+            }
             if (isset($data['ClassifierCollection']['AuctionLotClassifier'][0])) {
               foreach ($data['ClassifierCollection']['AuctionLotClassifier'] as $category) {
                 if ($this->setLotCategory($category)) {
@@ -2439,7 +2454,9 @@ class EfrsbController extends Controller
         }
       } else {
         $this->lotId = $check->id;
-        $this->setPlace($address, $this->lotId, Lot::INT_CODE);
+        if (isset($address)) {
+          $this->setPlace($address, $this->lotId, Lot::INT_CODE);
+        }
         if (isset($data['ClassifierCollection']['AuctionLotClassifier'][0])) {
           foreach ($data['ClassifierCollection']['AuctionLotClassifier'] as $category) {
             if ($this->setLotCategory($category)) {
@@ -2481,6 +2498,7 @@ class EfrsbController extends Controller
       if (!LotCategory::find()->where(['lot_id' => $this->lotId, 'category_id' => self::CATEGORY_CODE[$data['Code']]])->one()) {
         $model = new LotCategory();
 
+
         $model->lot_id      = $this->lotId;
         $model->category_id = self::CATEGORY_CODE[$this->_checkValue($data['Code'])];
 
@@ -2514,6 +2532,8 @@ class EfrsbController extends Controller
             return true;
           }
         }
+      } else {
+        return true;
       }
     } catch (Exception $e) {
       $this->_log([
@@ -2580,6 +2600,8 @@ class EfrsbController extends Controller
             return true;
           }
         }
+      } else {
+        return true;
       }
     } catch (Exception $e) {
       $this->_log([
