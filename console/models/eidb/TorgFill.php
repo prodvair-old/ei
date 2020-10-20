@@ -29,7 +29,7 @@ class TorgFill extends Module
         // получение менеджеров из существующего справочника
         $db = isset(\Yii::$app->dbremote) ? \Yii::$app->dbremote : \Yii::$app->db;
         $select = $db->createCommand(
-            'SELECT * FROM "eiLot".'.self::OLD_TABLE.' ORDER BY "'.self::OLD_TABLE.'".id ASC LIMIT '.$limit.' OFfSET '.$offset
+            'SELECT * FROM "eiLot".'.self::OLD_TABLE.' WHERE "typeId" != 1 ORDER BY "'.self::OLD_TABLE.'".id ASC LIMIT '.$limit.' OFfSET '.$offset
         );
         $rows = $select->queryAll();
 

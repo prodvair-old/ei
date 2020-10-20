@@ -86,7 +86,7 @@ class Torg extends ActiveRecord
     {
         return [
             [['property'], 'required'],
-            [['started_at'], 'required', 'except' => self::SCENARIO_MIGRATION],
+            // [['started_at'], 'required', 'except' => self::SCENARIO_MIGRATION],
             ['msg_id', 'required', 'on' => self::SCENARIO_MIGRATION],
             ['offer', 'required', 'except' => self::SCENARIO_MIGRATION],
             ['msg_id', 'string', 'max' => 255],

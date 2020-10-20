@@ -47,16 +47,16 @@ class EidbController extends Controller
     public function actionIndex($step = 100)
     {
         echo "\nЗапуск парсера! ---------------\n";
-        $this->actionSro($step);
+        // $this->actionSro($step);
         $this->actionManager($step);
-        $this->actionBankrupt($step);
-        $this->actionEtp($step);
+        // $this->actionBankrupt($step);
+        // $this->actionEtp($step);
         $this->actionOwner($step);
-        $this->actionCasefile($step);
+        // $this->actionCasefile($step);
         $this->actionTorg($step);
         $this->actionLot($step);
         $this->actionLotCategory($step);
-        $this->actionLotPrice($step);
+        // $this->actionLotPrice($step);
         $this->actionLotImage($step);
         $this->actionLotDocumentDel();
         $this->actionLotDocument($step);
@@ -152,7 +152,7 @@ class EidbController extends Controller
         $db     = \Yii::$app->db;
        
         $select = $db->createCommand(
-            'SELECT count(id) FROM "eidb".manager' 
+            'SELECT count(id) FROM "eidb".manager WHERE agent = 1'
         );
         $dataCount = $select->queryAll();
 
@@ -179,7 +179,7 @@ class EidbController extends Controller
         }
 
         $select = $db->createCommand(
-            'SELECT count(id) FROM "eidb".manager'
+            'SELECT count(id) FROM "eidb".manager  WHERE agent = 1'
         );
         $count = $select->queryAll();
 
@@ -445,7 +445,7 @@ class EidbController extends Controller
         $db     = \Yii::$app->db;
         
         $select = $db->createCommand(
-            'SELECT count(id) FROM "eidb".torg' 
+            'SELECT count(id) FROM "eidb".torg WHERE property != 1' 
         );
         $dataCount = $select->queryAll();
 
@@ -471,7 +471,7 @@ class EidbController extends Controller
         }
 
         $select = $db->createCommand(
-            'SELECT count(id) FROM "eidb".torg'
+            'SELECT count(id) FROM "eidb".torg WHERE property != 1'
         );
         $count = $select->queryAll();
 
@@ -505,7 +505,7 @@ class EidbController extends Controller
         $db     = \Yii::$app->db;
         
         $select = $db->createCommand(
-            'SELECT count(id) FROM "eidb".lot' 
+            'SELECT count(id) FROM "eidb".lot LEFT JOIN "eidb"."torg" torg ON "torg_id" = torg.id WHERE torg."property" != 1' 
         );
         $dataCount = $select->queryAll();
 
@@ -529,7 +529,7 @@ class EidbController extends Controller
         }
 
         $select = $db->createCommand(
-            'SELECT count(id) FROM "eidb".lot'
+            'SELECT count(id) FROM "eidb".lot LEFT JOIN "eidb"."torg" torg ON "torg_id" = torg.id WHERE torg."property" != 1'
         );
         $count = $select->queryAll();
 

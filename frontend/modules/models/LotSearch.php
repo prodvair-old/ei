@@ -134,8 +134,8 @@ class LotSearch extends Lot
             return $dataProvider;
         }
 
-        $query->joinWith(['torg','region'], true, 'INNER JOIN');
-        $query->joinWith(['categories']);
+        $query->joinWith(['torg'], true, 'INNER JOIN');
+        $query->joinWith(['categories','region']);
 
         if (!$this->andArchived) {
             $query->andFilterWhere(['!=', Lot::tableName() . '.status', Lot::STATUS_COMPLETED]);

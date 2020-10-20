@@ -87,7 +87,6 @@ class EfrsbController extends Controller
   private $messageIds;
   private $dateNow;
 
-  
   private $msgId;
   private $caseId;
   private $sroId;
