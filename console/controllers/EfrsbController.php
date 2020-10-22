@@ -25,8 +25,6 @@ use console\traits\XmlToArray;
 use console\traits\District;
 use console\models\GetInfoFor;
 
-use moonland\phpexcel\Excel;
-
 /**
  * Новые поля для таблиц
  * 
@@ -1143,7 +1141,6 @@ class EfrsbController extends Controller
       } else {
         $result['status'] = Messages::STATUS_ERROR;
         $result['table'] = 'Manager';
-        var_dump($result);
       }
       
       if ($this->setBankrupt($messageContent)) {
@@ -1151,7 +1148,6 @@ class EfrsbController extends Controller
       } else {
         $result['status'] = Messages::STATUS_ERROR;
         $result['table'] = 'Bankrupt';
-        var_dump($result);
       }
 
       if (!$messageContent['MessageInfo']['Auction']['IdTradePlace']['xsi:nil']) {
@@ -1170,27 +1166,24 @@ class EfrsbController extends Controller
           if (isset($messageContent['MessageInfo']['Auction']['LotTable']['AuctionLot'][0])) {
             echo "Несколько лотов\n";
             foreach ($messageContent['MessageInfo']['Auction']['LotTable']['AuctionLot'] as $lot) {
-              if ($this->setLot($lot, $messageContent['MessageInfo']['Bankrupt']['Address'])) {
+              if ($this->setLot($lot, $messageContent['Bankrupt']['Address'])) {
                 echo "setLot - Успешно!\n";
               } else {
                 $result['status'] = Messages::STATUS_ERROR;
                 $result['table'] = 'Lot';
-                var_dump($result);
               }
             }
           } else {
-            if ($this->setLot($messageContent['MessageInfo']['Auction']['LotTable']['AuctionLot'], $messageContent['MessageInfo']['Bankrupt']['Address'])) {
+            if ($this->setLot($messageContent['MessageInfo']['Auction']['LotTable']['AuctionLot'], $messageContent['Bankrupt']['Address'])) {
               echo "setLot - Успешно!\n";
             } else {
               $result['status'] = Messages::STATUS_ERROR;
               $result['table'] = 'Lot';
-              var_dump($result);
             }
           }
         } else {
           $result['status'] = Messages::STATUS_ERROR;
           $result['table'] = 'Torg';
-          var_dump($result);
         }
       }
 
@@ -1203,7 +1196,6 @@ class EfrsbController extends Controller
             } else {
               $result['status'] = Messages::STATUS_ERROR;
               $result['table'] = 'Document';
-              var_dump($result);
             }
           }
         } else {
@@ -1212,7 +1204,6 @@ class EfrsbController extends Controller
           } else {
             $result['status'] = Messages::STATUS_ERROR;
             $result['table'] = 'Document';
-            var_dump($result);
           }
         }
       }
@@ -1222,7 +1213,6 @@ class EfrsbController extends Controller
     } else {
       $result['status'] = Messages::STATUS_ERROR;
       $result['table'] = 'Casefile';
-      var_dump($result);
     }
     
     return $result;

@@ -16,7 +16,7 @@ return [
         ],
         'efrsbAPI' => [
             'class' => 'mongosoft\soapclient\Client',
-            'url' => 'http://test.fedresurs.ru/MessageService/WebService.svc?wsdl',
+            'url' => 'http://bankrot.fedresurs.ru/MessageService/WebService.svc?wsdl',
             'options' => [
                 "login"=>"Khazeev1",
                 "password"=>"byxxIU"
